@@ -6,6 +6,10 @@
 
 本轮新增有限资金回兑还须在真实场次核发行现金预存、独立持有人交币与实付、过期余款回收、继承后的同一账户/条款，以及物理SAVE中的窗口/收据与现金；现有246项及7项新SAVE子例均不替代这些后态。期货盘口须核所选永久合约号、真实有资新仓委托、独立限价和实际交易日VWAP，不能拿现货报价或提交成功代替期货成交。
 
+## R0072：保留E6的累计D30观察失败，资源正常闭环
+
+D0与R71 D14的23279条完整金融／news投影全等、原15条记录保留，Root只接受冷载阶段。新增16自然日／384ticks后已存第二档，E6实际30条记录／29samples而应31／30，缺306观察记录；actual issues len30／continuityfalse。负phase False使公共Generic拒绝，run2／verify2、case／boundary／productfalse；旧notes计数31笔误与全部原件保留，不倒签R71或35日。金融303→319＋16、Whole23279→21061及missing4204／added1986／changed7981仅为跨日事实，根因未定，计数139登记／136活跃／pending0／期货134不授paired容量或到期。两档各8解析0不是连续观察或软件新PASS，第三SAVE／D35未执行。Game／Host／Job／keeper／allocator0、CAS16218释放；Host沿Q49后继来源绑定已消费而无新编译，不重计640／25／115，容量／395日性能／全产品／首发仍待。[原件与严格范围](r0072-retained-epoch-day30-observation.md)。
+
 ## R71后继软件：保留epoch的21日续行合同通过NoGame回归
 
 最终affected03原0／115项0FES，包含新13项及旧timer，不与其优化／隔离复验或旧640／25相加；24叶窗口相同。原93项2ERROR、115项1FAIL、单例隔离失败及TYPE01 import错误全部保留；TYPE02两源0仍有4条既有untyped提示。修复只涵盖显式0／16／21→累计14／30／35的公共case接线、Host两处精确case域和TypedDict optional-key运行时契约，原timer／业务guard不降。尚无新21天或35日实机，Host新来源资格绑定仍待，R71 run2／verify2／GAP不回填，R70有限文本与R69失败保持；容量／395日性能／全产品／首发未授。[软件范围与失败索引](market-evolution-continuation21-software.md)。

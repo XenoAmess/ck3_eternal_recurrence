@@ -1,6 +1,10 @@
 # 施工状态
 
-2026-11-22，machine_id: 4-8e1c2f1861。
+2026-11-23，machine_id: 4-8e1c2f1861。
+
+## 当前进展（R0072累计D30观察缺一条，原续行案PARTIAL）
+
+R71 D14最新档冷载23279条金融／news记录全等，E6及原15条逐值保留；本场两SAVE／新增16自然日到累计D30，raw53151696→53152080。端点金融303→319＋16，但observer仅30records／应31、29samples／应30，305后跳307、缺306观察记录；facts实际30条issues／continuityfalse，不能先归因产品timer或业务漏执行。Root发表显式False后Generic正确拒绝，原run2／verify2／PARTIAL保持；负notes“31issues”笔误不改原件，新记录按len30说明。Game5272／Host／Job／keeper／allocator0、CAS16218释放不授业务。当前Host来源绑定已沿Q49实际消费、未新编译，旧软件段保留当时切点；第三SAVE／D35未执行，640／25／115不重计，容量／性能／全产品／首发仍未授。保最新D30档和原gap，后继先诊断再明确前进合同。[R72实际结果与边界](r0072-retained-epoch-day30-observation.md)。
 
 ## R71闭场后软件：显式21日续行已验证，实机与Host来源绑定待执行
 

@@ -1,0 +1,41 @@
+{
+  "schema": "ck3-financial-crisis-scenes20-software-evidence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "source_ready": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\crisis-scenes-ast-coverage-candidate01\\SOURCE_READY.json",
+    "bytes": 5406,
+    "sha256": "107a91f6fa15782f71108cc832133763613354f19b2248b66dec1337cb7532dc"
+  },
+  "actual_report": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\crisis-scenes20-affected01\\report.json",
+    "bytes": 3952,
+    "sha256": "76254f5e9fe4adce8ce3c264b7e38f969a111ed10ffdc49e868538acb0336b06"
+  },
+  "original_maven_wait": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\crisis-scenes20-affected01\\MAVEN-ORIGINAL-WAIT.actual.json",
+    "bytes": 1029,
+    "sha256": "b814eb8031776ad65a4e00333271a5a75b1f983b78338853b4d0cac8dfb62437"
+  },
+  "source_window": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\crisis-scenes20-affected01\\SOURCE-WINDOW.actual.json",
+    "bytes": 222821,
+    "sha256": "992c288b08c9853f9d59f9661e616e88980c7fedca5cbbc3ec0a23b2876e89d5"
+  },
+  "distinct_testcases": 12,
+  "original_methods_retained": 7,
+  "new_methods": 5,
+  "totals": {
+    "pass": 12,
+    "error": 0,
+    "failure": 0,
+    "skipped": 0
+  },
+  "scope": "Actual production Clausewitz AST in existing narrow software VM, explicit weighted draw port. No Game/Native/death/news dispatch primitives executed.",
+  "twenty_contextual_scene_branches": true,
+  "protected_character_negative_contexts": 21,
+  "locales_structural_keys_only": [
+    "simp_chinese",
+    "english"
+  ],
+  "engine_twenty_scenes_or_global_delivery_or_whole_product_certified": false
+}
