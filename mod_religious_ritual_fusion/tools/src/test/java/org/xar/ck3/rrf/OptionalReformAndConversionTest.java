@@ -541,6 +541,7 @@ final class OptionalReformAndConversionTest {
                 case "every_in_global_list" -> iterate(child, current, global(child.atom("variable", "")));
                 case "every_vassal" -> iterate(child, current, states.keySet().stream().filter(x -> x.kind() == Kind.CHARACTER && current.equals(state(x).links.get("liege"))).toList());
                 case "every_dynasty_member" -> iterate(child, current, states.keySet().stream().filter(x -> x.kind() == Kind.CHARACTER && current.equals(state(x).links.get("dynasty"))).toList());
+                case "every_faith_character" -> iterate(child, current, states.keySet().stream().filter(x -> x.kind() == Kind.CHARACTER && current.equals(state(x).links.get("faith"))).toList());
                 case "run_interaction" -> dispatch(child, current);
                 default -> run(child, Objects.requireNonNull(resolve(e.key(), current), "unsupported scope effect: " + e.key()));
             }
