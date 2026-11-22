@@ -1,0 +1,165 @@
+{
+  "scope": "actual C++ DATA only; no owner/live/business grant",
+  "files": [
+    {
+      "role": "query-request",
+      "source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-prompt-a380/genuine-cpp-frames-a380/query-prompt.request.json",
+        "bytes": 800,
+        "sha256": "c96f66c02b2b8aa6cf54d90822db7a06cb01d44e094e60cea79c1a82a3e82c08"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-prompt-source-a395/candidate/java/ck3-control/native-transport/src/test/resources/current267-xqol-prompt-actual-cpp/query-request.json",
+        "bytes": 800,
+        "sha256": "c96f66c02b2b8aa6cf54d90822db7a06cb01d44e094e60cea79c1a82a3e82c08"
+      }
+    },
+    {
+      "role": "confirm-request",
+      "source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-prompt-a380/genuine-cpp-frames-a380/confirm-conversion.request.json",
+        "bytes": 849,
+        "sha256": "4c4ed9cd1f8d264e0a3d9afebd512d2a388d199b28460667e721ee24b3c94f8d"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-prompt-source-a395/candidate/java/ck3-control/native-transport/src/test/resources/current267-xqol-prompt-actual-cpp/confirm-request.json",
+        "bytes": 849,
+        "sha256": "4c4ed9cd1f8d264e0a3d9afebd512d2a388d199b28460667e721ee24b3c94f8d"
+      }
+    },
+    {
+      "role": "cancel-request",
+      "source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-prompt-a380/genuine-cpp-frames-a380/cancel-conversion.request.json",
+        "bytes": 846,
+        "sha256": "afcd95c81fd9bbdd57403a6db308a7a4df5c29924eb827236cd1c4aa744a6bea"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-prompt-source-a395/candidate/java/ck3-control/native-transport/src/test/resources/current267-xqol-prompt-actual-cpp/cancel-request.json",
+        "bytes": 846,
+        "sha256": "afcd95c81fd9bbdd57403a6db308a7a4df5c29924eb827236cd1c4aa744a6bea"
+      }
+    },
+    {
+      "role": "available",
+      "source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-prompt-a380/genuine-cpp-frames-a380/query-prompt.result.json",
+        "bytes": 2003,
+        "sha256": "9acf0efd1c662a2dc92f3f6fa221496b86b166cb54f564e5314071eea2674100"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-prompt-source-a395/candidate/java/ck3-control/native-transport/src/test/resources/current267-xqol-prompt-actual-cpp/available.json",
+        "bytes": 2003,
+        "sha256": "9acf0efd1c662a2dc92f3f6fa221496b86b166cb54f564e5314071eea2674100"
+      }
+    },
+    {
+      "role": "confirm",
+      "source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-prompt-a380/genuine-cpp-frames-a380/confirm-conversion.result.json",
+        "bytes": 2024,
+        "sha256": "d8bb881c4607e322dfb1895c12eaf919b6392632cfaea1a32b501ffee856250e"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-prompt-source-a395/candidate/java/ck3-control/native-transport/src/test/resources/current267-xqol-prompt-actual-cpp/confirm.json",
+        "bytes": 2024,
+        "sha256": "d8bb881c4607e322dfb1895c12eaf919b6392632cfaea1a32b501ffee856250e"
+      }
+    },
+    {
+      "role": "cancel",
+      "source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-prompt-a380/genuine-cpp-frames-a380/cancel-conversion.result.json",
+        "bytes": 2022,
+        "sha256": "5fbf0ad618236b468ab58618d7bef09ccf2292b02f92dc0da553ad9618379116"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-prompt-source-a395/candidate/java/ck3-control/native-transport/src/test/resources/current267-xqol-prompt-actual-cpp/cancel.json",
+        "bytes": 2022,
+        "sha256": "5fbf0ad618236b468ab58618d7bef09ccf2292b02f92dc0da553ad9618379116"
+      }
+    },
+    {
+      "role": "empty",
+      "source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-prompt-a380/genuine-cpp-frames-a380/query-empty-known.result.json",
+        "bytes": 1332,
+        "sha256": "8ba008b0980fe02f9af2aa5658eca07487126f52fa56c85d485e5dce146dbbfe"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-prompt-source-a395/candidate/java/ck3-control/native-transport/src/test/resources/current267-xqol-prompt-actual-cpp/empty.json",
+        "bytes": 1332,
+        "sha256": "8ba008b0980fe02f9af2aa5658eca07487126f52fa56c85d485e5dce146dbbfe"
+      }
+    },
+    {
+      "role": "can-false",
+      "source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-prompt-a380/genuine-cpp-frames-a380/query-native-can-false.result.json",
+        "bytes": 1992,
+        "sha256": "0bc96b5e721e6dbb1cff73e4496d856cf26b227f6127d858f6ebdde2341ac09a"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-prompt-source-a395/candidate/java/ck3-control/native-transport/src/test/resources/current267-xqol-prompt-actual-cpp/can-false.json",
+        "bytes": 1992,
+        "sha256": "0bc96b5e721e6dbb1cff73e4496d856cf26b227f6127d858f6ebdde2341ac09a"
+      }
+    },
+    {
+      "role": "stale",
+      "source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-prompt-a380/genuine-cpp-frames-a380/stale-source.result.json",
+        "bytes": 2052,
+        "sha256": "199eb5deb60c0736c749e9c6aeac1f1cf27ca779828948bb76b55d7eb4abf790"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-prompt-source-a395/candidate/java/ck3-control/native-transport/src/test/resources/current267-xqol-prompt-actual-cpp/stale.json",
+        "bytes": 2052,
+        "sha256": "199eb5deb60c0736c749e9c6aeac1f1cf27ca779828948bb76b55d7eb4abf790"
+      }
+    },
+    {
+      "role": "expired",
+      "source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-prompt-a380/genuine-cpp-frames-a380/expired.result.json",
+        "bytes": 2025,
+        "sha256": "68433d35addf20b38d079df7c2a37e3342430675d06e63ff14210dfcdf1acae8"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-prompt-source-a395/candidate/java/ck3-control/native-transport/src/test/resources/current267-xqol-prompt-actual-cpp/expired.json",
+        "bytes": 2025,
+        "sha256": "68433d35addf20b38d079df7c2a37e3342430675d06e63ff14210dfcdf1acae8"
+      }
+    },
+    {
+      "role": "indeterminate",
+      "source": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-prompt-a380/genuine-cpp-frames-a380/indeterminate.result.json",
+        "bytes": 1174,
+        "sha256": "29c324d24a0863af15c794fb9a0ccc457f042a1a2e5f8aceeaecfc2a4129a40d"
+      },
+      "target": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-prompt-source-a395/candidate/java/ck3-control/native-transport/src/test/resources/current267-xqol-prompt-actual-cpp/indeterminate.json",
+        "bytes": 1174,
+        "sha256": "29c324d24a0863af15c794fb9a0ccc457f042a1a2e5f8aceeaecfc2a4129a40d"
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-prompt-a380/source-contract.json",
+      "bytes": 3909,
+      "sha256": "d389ea9c169603626f00801fb2f9c60bbf1e0ba47cfd3ab304e24649bff0e4fd"
+    },
+    {
+      "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-prompt-a380/candidate/include/xar_bridge/ck3_121003_xqol_conversion_prompt26785313_v1.hpp",
+      "bytes": 2880,
+      "sha256": "24d71a2af48633a9b9649624032604e118f8a404dd1c74540c18adead9292b6a"
+    },
+    {
+      "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-prompt-a380/candidate/src/ck3_121003_xqol_conversion_prompt26785313_wire_v1.cpp",
+      "bytes": 14464,
+      "sha256": "ff1bad55166b5fc8ef68b500215fdd7cfcad4c54ca73451bdb84768df058e33f"
+    }
+  ]
+}

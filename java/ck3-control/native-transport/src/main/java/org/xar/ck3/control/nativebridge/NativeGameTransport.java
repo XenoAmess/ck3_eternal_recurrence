@@ -3567,6 +3567,117 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     }
 
 
+    public sealed interface XqolPromptRead permits XqolPromptReceived,XqolPromptUnavailable { DispatchOutcome original(); }
+    public static final class XqolPromptReceived implements XqolPromptRead {
+        private final NativeGameTransport issuer;private final CoreReceived before;private final CurrentXqolPromptResult frame;
+        private final AckReceived original;private final NativeRequestChronology custody;private final Instant validUntil;
+        private boolean actionAttempted;private XqolPromptPrepared prepared;
+        private XqolPromptReceived(NativeGameTransport issuer,CoreReceived before,CurrentXqolPromptResult frame,AckReceived original,NativeRequestChronology custody,Instant until){this.issuer=issuer;this.before=before;this.frame=frame;this.original=original;this.custody=custody;validUntil=until;}
+        public CurrentXqolPromptResult frame(){return frame;}@Override public AckReceived original(){return original;}public Instant validUntil(){return validUntil;}
+        public void requireOriginal(NativeGameTransport actual,Instant until)throws IOException{Objects.requireNonNull(actual).requireXqolPromptOriginal(this,until);}
+    }
+    public record XqolPromptUnavailable(DispatchOutcome original,String reason)implements XqolPromptRead {public XqolPromptUnavailable{Objects.requireNonNull(original);StrictJson.text(reason);}}
+    public static final class XqolPromptPrepared {
+        private final NativeGameTransport issuer;private final XqolPromptReceived query;private final String id;private final NativeWire.Bytes packet;
+        private final int instanceId;private final CurrentXqolPrompt.Action action;private final CurrentXqolPromptSource selected;
+        private boolean called;private DispatchOutcome outcome;private CurrentXqolPromptResult latestFrame;
+        private XqolPromptPrepared(NativeGameTransport issuer,XqolPromptReceived query,CurrentXqolPrompt.Action action,int instanceId,CurrentXqolPromptSource selected,String id,byte[] packet){this.issuer=issuer;this.query=query;this.instanceId=instanceId;this.action=action;this.selected=selected;this.id=id;this.packet=new NativeWire.Bytes(packet);}
+        public String requestId(){return id;}public int instanceId(){return instanceId;}public CurrentXqolPrompt.Action action(){return action;}public CurrentXqolPromptSource selected(){return selected;}public NativeWire.Bytes originalPacket(){return packet;}public Instant deadline(){return query.validUntil;}
+        public Optional<CurrentXqolPromptResult> latestFrame(){return Optional.ofNullable(latestFrame);}
+    }
+    private XqolPromptReceived latestXqolPrompt;
+    private byte[] xqolPromptPacket(String id,CurrentXqolPrompt.Action action,CoreReceived before,BigInteger provider,BigInteger query,Optional<Integer> instanceId,Instant until)throws IOException {
+        if(!(before.frame instanceof CoreFrame.Partial core))throw new IOException("Exact current xqolPrompt Core required");
+        var request=CurrentXqolPrompt.request(core,action,provider,query,instanceId);var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));
+        fields.put("core_control_deadline_unix_ms",until.toEpochMilli());return NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+    }
+    private void requireXqolPromptScope(CoreReceived before,Instant until)throws IOException {
+        Objects.requireNonNull(before);requireCoreOriginal(before,until);
+        if(applicationExitAttempted||before.controlAttempted||unresolvedCoreControl!=null||unresolvedFullClockControl!=null||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
+            throw new IOException("Actual unused Core and resolved owner scope required for xqolPrompt observation/reply");
+        if(!(before.frame instanceof CoreFrame.Partial core)||core.build()!=ExactCk3Build.CK3_121003_STEAM_26785313)throw new IOException("Exact current267 Core required");
+        CurrentLetter.requirePrefix(core.prefix());
+    }
+    public synchronized XqolPromptRead readCurrentXqolPrompt(CoreReceived before,Instant deadline)throws InterruptedException {
+        String id="xqolPrompt-query-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome outcome=null;
+        try {
+            requireXqolPromptScope(before,deadline);
+            if(!hello.capabilities().contains(CurrentXqolPrompt.Action.QUERY_PROMPT.capability()))throw new IOException("Actual current xqolPrompt query capability absent");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            Instant until=readDeadline(deadline);byte[] packet=xqolPromptPacket(id,CurrentXqolPrompt.Action.QUERY_PROMPT,before,BigInteger.ZERO,BigInteger.ZERO,Optional.empty(),until);
+            outcome=retainReadOutcome(dispatchRead(id,packet,until,()->{requireBackgroundAtCoreWrite();try{requireXqolPromptScope(before,until);}catch(IOException invalid){throw new UncheckedIOException(invalid);}latestXqolPrompt=null;}));
+            if(!(outcome instanceof AckReceived ack)){if(outcome instanceof Unknown unknown)unresolvedCoreControl=unknown;return new XqolPromptUnavailable(outcome,"Actual xqolPrompt query has no qualified ACK");}
+            var frame=CurrentXqolPromptResult.decodeOutcome(ack);requireXqolPromptFrame(frame,CurrentXqolPrompt.Action.QUERY_PROMPT,before);
+            if(frame.effectAttempted()||frame.nativeReturned()||frame.claimSequence().signum()!=0)throw new IOException("Readonly xqolPrompt query unexpectedly attempted an effect/claim");
+            if(frame.status()!=CurrentXqolPromptResult.Status.AVAILABLE)return new XqolPromptUnavailable(ack,frame.unavailableReason().orElseThrow());
+            var custody=originalRequestChronology(id).orElseThrow(()->new IOException("Actual xqolPrompt query custody absent"));
+            var received=new XqolPromptReceived(this,before,frame,ack,custody,until);latestXqolPrompt=received;
+            requireXqolPromptOriginal(received,until);return received;
+        }catch(IOException|RuntimeException invalid){latestXqolPrompt=null;return new XqolPromptUnavailable(xqolPromptFailure(id,outcome,invalid),reason(invalid));}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();latestXqolPrompt=null;
+            unresolvedCoreControl=new Unknown(id,"Actual xqolPrompt query interrupted after write; preserve original, block effects",retainedOutbound(id),Optional.empty());return new XqolPromptUnavailable(unresolvedCoreControl,"Original xqolPrompt query interrupted");}
+    }
+    private void requireXqolPromptFrame(CurrentXqolPromptResult frame,CurrentXqolPrompt.Action action,CoreReceived before)throws IOException {
+        if(frame.action()!=action||frame.status()==CurrentXqolPromptResult.Status.INDETERMINATE||!frame.cleanupKnown())throw new IOException("Actual xqolPrompt action/cleanup uncertain");
+        if(frame.factsBefore().isPresent()&&!frame.factsBefore().orElseThrow().equals(((CoreFrame.Partial)before.frame).prefix()))throw new IOException("Actual xqolPrompt Core differs from original source");
+        if(frame.owner().isPresent()&&!frame.owner().orElseThrow().connectionGeneration().equals(hello.connectionGeneration()))throw new IOException("Actual xqolPrompt owner crossed connection");
+        if(frame.effectAttempted()&&frame.status()!=CurrentXqolPromptResult.dispatchedStatus(action))throw new IOException("Native xqolPrompt effect unqualified; never replay");
+    }
+    private void requireXqolPromptCustody(AckReceived actual,NativeRequestChronology custody)throws IOException {
+        if(!custody.session().equals(session())||!custody.custodyEpoch().equals(custodyEpoch)||originalRequestChronology(actual.requestId()).filter(custody::equals).isEmpty())throw new IOException("XqolPrompt crossed original Game/session/custody");
+        custody.verify(actual);
+    }
+    private void requireXqolPromptOriginal(XqolPromptReceived actual,Instant until)throws IOException {
+        Objects.requireNonNull(until);if(actual==null||actual.issuer!=this||actual!=latestXqolPrompt||actual.actionAttempted)throw new IOException("Original private xqolPrompt query unavailable or consumed");
+        requireXqolPromptScope(actual.before,until);Instant now=chronologyClock.instant();
+        if(until.isAfter(actual.validUntil)||!now.isBefore(actual.validUntil)||actual.custody.responseReceived().observedAt().isAfter(now)
+                ||actual.custody.responseReceived().observedAt().isAfter(actual.validUntil)||actual.custody.writeEntered().order().compareTo(actual.before.custody.responseReceived().order())<=0)
+            throw new IOException("XqolPrompt query escaped original Core/deadline/chronology");
+        requireXqolPromptCustody(actual.original,actual.custody);
+        var frame=CurrentXqolPromptResult.decodeOutcome(actual.original);requireXqolPromptFrame(frame,CurrentXqolPrompt.Action.QUERY_PROMPT,actual.before);
+        if(!frame.equals(actual.frame)||frame.status()!=CurrentXqolPromptResult.Status.AVAILABLE)throw new IOException("Actual xqolPrompt query frame changed");
+        if(!Arrays.equals(actual.original.outbound().orElseThrow().originalPacket(),xqolPromptPacket(actual.original.requestId(),CurrentXqolPrompt.Action.QUERY_PROMPT,actual.before,BigInteger.ZERO,BigInteger.ZERO,Optional.empty(),actual.validUntil)))throw new IOException("Original xqolPrompt query body/deadline changed");
+    }
+    public synchronized XqolPromptPrepared prepareCurrentXqolPromptAction(XqolPromptReceived query,CurrentXqolPrompt.Action action)throws IOException {
+        Objects.requireNonNull(query);Objects.requireNonNull(action);if(action==CurrentXqolPrompt.Action.QUERY_PROMPT)throw new IOException("A query cannot prepare an effect");
+        if(query.issuer==this&&query.prepared!=null){if(query.prepared.action!=action)throw new IOException("Original prompt query already prepared the other action");return query.prepared;}
+        requireXqolPromptOriginal(query,query.validUntil);
+        if(!hello.capabilities().contains(action.capability()))throw new IOException("Actual fixed known-instance reply capability absent");
+        var selected=query.frame.source().orElseThrow();
+        int actualInstanceId=selected.event().orElseThrow(()->new IOException("Actual current known prompt absent")).instanceId();
+        if(!selected.admits(action))throw new IOException("Desired actual xqolPrompt source does not admit the single reviewed reply");
+        String id="xqolPrompt-ack-"+UUID.randomUUID().toString().replace("-","");
+        return query.prepared=new XqolPromptPrepared(this,query,action,actualInstanceId,selected,id,xqolPromptPacket(id,action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),Optional.of(actualInstanceId),query.validUntil));
+    }
+    public synchronized DispatchOutcome submitCurrentXqolPromptAction(XqolPromptPrepared original)throws InterruptedException {
+        Objects.requireNonNull(original);if(original.issuer!=this||original.query.prepared!=original)return zero(original.id,"Foreign xqolPrompt reply preparation");
+        if(original.called)return original.outcome!=null?original.outcome:zero(original.id,"Original xqolPrompt call has no reusable write authority");original.called=true;DispatchOutcome outcome=null;
+        try {
+            var query=original.query;requireXqolPromptOriginal(query,original.deadline());
+            if(!hello.capabilities().contains(original.action.capability())||!original.selected.admits(original.action)||!query.frame.source().orElseThrow().equals(original.selected)||original.selected.event().filter(e->e.instanceId()==original.instanceId).isEmpty())throw new IOException("Actual original fixed reply no longer admissible");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            if(!Arrays.equals(original.packet.value(),xqolPromptPacket(original.id,original.action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),Optional.of(original.instanceId),original.deadline())))throw new IOException("Original reply packet/body drift");
+            outcome=dispatch(original.id,original.packet.value(),original.deadline(),()->{requireBackgroundAtCoreWrite();try{requireXqolPromptOriginal(query,original.deadline());}catch(IOException invalid){throw new UncheckedIOException(invalid);}query.actionAttempted=true;query.before.controlAttempted=true;heldSnapshotInvalidated=true;});
+            if(outcome instanceof Unknown unknown){unresolvedCoreControl=unknown;return original.outcome=unknown;}
+            if(outcome instanceof AckReceived ack){
+                var frame=CurrentXqolPromptResult.decodeOutcome(ack);requireXqolPromptFrame(frame,original.action,query.before);
+                if(!frame.providerGeneration().equals(query.frame.providerGeneration())||!frame.querySequence().equals(query.frame.querySequence())||frame.instanceId().filter(n->n==original.instanceId).isEmpty())throw new IOException("Reply ACK changed original private lease");
+                var custody=originalRequestChronology(original.id).orElseThrow(()->new IOException("Actual reply custody absent"));requireXqolPromptCustody(ack,custody);
+                if(custody.writeEntered().order().compareTo(query.custody.responseReceived().order())<=0||custody.responseReceived().observedAt().isAfter(original.deadline())||custody.responseReceived().observedAt().isAfter(chronologyClock.instant()))throw new IOException("Reply ACK escaped original query chronology/deadline");
+                if(frame.successful()&&!frame.source().equals(query.frame.source()))throw new IOException("Reply before-source differs from original private query");
+                original.latestFrame=frame;
+            }
+            return original.outcome=outcome;
+        }catch(IOException|RuntimeException invalid){return original.outcome=xqolPromptFailure(original.id,outcome,invalid);}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(original.id))throw interrupted;Thread.currentThread().interrupt();unresolvedCoreControl=new Unknown(original.id,"XqolPrompt reply interrupted after original write; never replay",original.packet.value(),Optional.empty());return original.outcome=unresolvedCoreControl;}
+    }
+    private DispatchOutcome xqolPromptFailure(String id,DispatchOutcome outcome,Exception invalid) {
+        if(!sentRequestIds.contains(id))return zero(id,reason(invalid));
+        if(outcome instanceof AckReceived ack)indeterminateCoreAcknowledgement=ack;
+        unresolvedCoreControl=new Unknown(id,"XqolPrompt original source/custody unqualified after write; no replay: "+reason(invalid),retainedOutbound(id),outcome instanceof AckReceived ack?Optional.of(ack.originalFrame()):Optional.empty());return unresolvedCoreControl;
+    }
+
+
     public sealed interface FullscreenRead permits FullscreenReceived,FullscreenUnavailable { DispatchOutcome original(); }
     public static final class FullscreenReceived implements FullscreenRead {
         private final NativeGameTransport issuer;private final CoreReceived before;private final CurrentFullscreenEventResult frame;

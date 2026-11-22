@@ -1,0 +1,137 @@
+{
+  "schema": "ck3.current267.xqol-prompt-java-qualified-source.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T00:09:55.340240+00:00",
+  "source_plan": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-prompt-source-a395/source-plan-ready.json",
+    "bytes": 13602,
+    "sha256": "089a454a9542d53b639f7993f8cb53d175a3c68fbedcb339aae97ebbefbdde0e"
+  },
+  "qualification": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-prompt-source-a395/compile-qualification-summary.json",
+    "bytes": 6044,
+    "sha256": "24bead5fd8cae16ef3e0dff66378c4a908b466e868d9bf7d105a73d418bba7f1"
+  },
+  "compiler_closure": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-prompt-source-a395/compiler128-closure.json",
+    "bytes": 914,
+    "sha256": "fbd2dbc23745f5c27c70f676e497a6ed1abdb12469e5c2ba44e66bde79cd8604"
+  },
+  "actual_CPP11": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-prompt-a380/first-producer/producer-execution-a01.json",
+    "bytes": 7816,
+    "sha256": "3b57c6b885d140492c5783cd0e13ad5f07cea49a24c00174fafb399cbb41492f"
+  },
+  "actual_Java3_CPP_parser": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-xqol-prompt-a380/actual-java-reverse-a395/actual-result.json",
+    "bytes": 11258,
+    "sha256": "cbb7d3cf83220e9aee7c16adb0e76f38105fb26fd1be79a553cf698047bc0d79"
+  },
+  "actual_reports": [
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeCurrentCuratedDecisionsTransportTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-prompt-source-a395/validation/a01-TEST-org.xar.ck3.control.nativebridge.NativeCurrentCuratedDecisionsTransportTest.xml",
+        "bytes": 18404,
+        "sha256": "211c7753254fee0597d77c803ac18ddea1eb2752a7c73d0a50e9c6635d1051aa"
+      }
+    },
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeCurrentXqolPrompt26785313ProducerTest",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-prompt-source-a395/validation/a01-TEST-org.xar.ck3.control.nativebridge.NativeCurrentXqolPrompt26785313ProducerTest.xml",
+        "bytes": 18776,
+        "sha256": "ee6e0b9e25b5d66f89d1205cbab5208ea4f3e3770807f69c6d9cd52762fdeb5d"
+      }
+    },
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeCurrentXqolPromptTransportTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-prompt-source-a395/validation/a01-TEST-org.xar.ck3.control.nativebridge.NativeCurrentXqolPromptTransportTest.xml",
+        "bytes": 18347,
+        "sha256": "8b0e61a1ddbdc53b5416d04091a9dc0821f2eb3bc6d750d7424049ce65457d58"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "suite": "org.xar.ck3.control.service.root.NativeOwnerCurrentCuratedDecisionSelectionTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-prompt-source-a395/validation/a01-TEST-org.xar.ck3.control.service.root.NativeOwnerCurrentCuratedDecisionSelectionTest.xml",
+        "bytes": 77684,
+        "sha256": "e5d3d41c7cc1552285267d636ca6a5b244e7e108b59638dc26cf9f7cff92a510"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "suite": "org.xar.ck3.control.service.root.NativeOwnerCurrentXqolPromptSelectionTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-xqol-prompt-source-a395/validation/a01-TEST-org.xar.ck3.control.service.root.NativeOwnerCurrentXqolPromptSelectionTest.xml",
+        "bytes": 77676,
+        "sha256": "6588563cb6f858dc1cf737e9cba1e2108514cb333b397d91bf805fdc224a7786"
+      }
+    }
+  ],
+  "actual_graph": {
+    "reactor_listed": 34,
+    "actually_recompiled_modules": [
+      {
+        "module": "native-transport",
+        "phase": "default-compile",
+        "actual_source_files": 519
+      },
+      {
+        "module": "native-transport",
+        "phase": "default-testCompile",
+        "actual_source_files": 71
+      },
+      {
+        "module": "ck3-control-local-service",
+        "phase": "default-compile",
+        "actual_source_files": 653
+      },
+      {
+        "module": "ck3-control-local-service",
+        "phase": "default-testCompile",
+        "actual_source_files": 33
+      }
+    ],
+    "other_AM_modules": "Cached/up-to-date/no sources; listed reactor is not all recompiled."
+  },
+  "actual_Job_peak_commit_bytes": 1895391232,
+  "Maven_seconds": 287.1399581000005,
+  "qualification_scope": "Three exact DTOs + same receiver private actual Core/query/complete known-event census/source/instance/lease/originaldeadline transport. Strict Mainv29 three independent query/confirm/cancel modes, no config event/key/index/instance/Core/permission. Fixed authored keys come from actual xqol.100 source, not display ordinal. Original packet/durableintent before once; no autochain/retry. Known no-effect refusals distinct from sticky UNKNOWN. Oldv24-v28 byte bodies preserved.",
+  "postconditions_not_granted": "Native void dispatch only; native_handled/event_closed/conversion_applied/new_date_observed/physical_save_confirmed remain false. No actual event/NativeCan/selection/conversion/UI/wholeSDK/product qualification.",
+  "actual_source_not_entire_runtime_tree": "This20-target source cut and five wholeclass qualification are narrow; inherited158classpath scope not replaced by Git identity. Package/freeze/live separate.",
+  "all_original_native_defects_and_failures": "a393 curated sentinel refusal and original d375 placeholder event root unchanged in their artifacts; Native a402 two exact repairs qualified separately, no hot rewrite. Original UNKNOWN IDs/deadlines untouched.",
+  "a393_actual_closure": {
+    "path": "D:/ck3-state/upgrade-20261118/xqol-curated-controls-profile-a393/closed-a404/zero-action-failure-closure.json",
+    "bytes": 28824,
+    "sha256": "9e9711166a2d90ed58b0dde4676900cb349dd05bde8156f2f80f4445d2282644"
+  },
+  "a393_closure_scope": "Original Creator22836/Game2100 Natural0 23:56:20.294625Z/Job0/CLEANUP_PROVEN, only typed query unavailable/sourceNull/effectfalse/cleanuptrue, zero open/detail/confirm/date/save. Raw normal_exit_confirmed=false kept separate. Physical0096/source28 exact,35profile34exact only game-written pdx_settings diff retained. First observed allocation377146032 beforedelivery and final metadata observation377150128/4529IDs/logical367145512 are different actual endpoints, not rewritten; old2Gfuture0, held not refunded.",
+  "this_compiler_future_bytes": 0,
+  "old_held_spent_not_refunded": true
+}
