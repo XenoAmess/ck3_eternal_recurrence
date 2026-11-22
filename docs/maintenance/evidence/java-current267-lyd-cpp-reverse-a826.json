@@ -1,0 +1,46 @@
+{
+  "schema": "xar.current267.lyd.actual-cpp-reverse-appendix.v1",
+  "at_utc": "2026-11-22T13:42:09.105764+00:00",
+  "original_parser_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-lyd-candidate-a749\\validation-java-a826\\receipt-final.json",
+    "bytes": 2113,
+    "sha256": "7f12b98c2a76991f07785eed8bcb0e9a21a92ef34136b479e451fea6b77cbe7d"
+  },
+  "actual_Java_bodies": 13,
+  "actual_parser_exits": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "all33_original_EXE_19genuine_13requests_before_after_SHA_FileID_creation_write_times": "IDENTICAL_AS_REPORTED_IN_ORIGINAL_RECEIPT",
+  "no_recompile_reemit_request_ID_or_deadline_change": true,
+  "parser_original_EXE_SHA256": "5eaf4053f152018a4af8b854178d54f9bf66e372aa59a7fd166de0c2dcfb23f7",
+  "actual_frozen_Java_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-lyd-source-a826\\frozen-delivery-final.json",
+    "bytes": 3196,
+    "sha256": "d3e5bcdf29506690949223dfdddfa9309c6129273ff718041f0243f2ae935598"
+  },
+  "actual_six_pins": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-lyd-source-a826\\actual-six-pins.json",
+    "bytes": 1487,
+    "sha256": "c2d496a84f1fdfdabecee8ed0226daf67112bd11e1e3e9b55eee50e96287f7d5"
+  },
+  "earlier_handoff_status_preserved": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-lyd-source-a826\\handoff-final.json",
+    "bytes": 4692,
+    "sha256": "73f395700264eef1a946ca68a8d5712e70f606de62b303ae4ff0c2a7641fc36a"
+  },
+  "open_personal_start_add_scope": "Their request bodies came from explicitly labelled Java DATA; parser qualification grants no native scope/live/business claim",
+  "live_status": "NOT_RUN_NOT_GRANTED",
+  "frozen_metadata_modified": false
+}
