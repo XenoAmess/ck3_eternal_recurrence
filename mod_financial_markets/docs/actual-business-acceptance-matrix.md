@@ -4,6 +4,10 @@
 
 本轮新增有限资金回兑还须在真实场次核发行现金预存、独立持有人交币与实付、过期余款回收、继承后的同一账户/条款，以及物理SAVE中的窗口/收据与现金；现有246项及7项新SAVE子例均不替代这些后态。期货盘口须核所选永久合约号、真实有资新仓委托、独立限价和实际交易日VWAP，不能拿现货报价或提交成功代替期货成交。
 
+## R0071：自然D14连续见证已保存，原35日案PARTIAL
+
+R64自然分支两SAVE／14自然日／336ticks；D0的23514条完整金融／news记录与来源相等，D14保留真实差异。E6 observer150995293的15条原记录覆盖金融289..303、raw53151360..53151696，first／latest日期均一致、issues[]，但35日标志及financialCertified／sourceLayoutQualified／phase签名仍false。登记139→139、pending1→0、活跃135→136、期货计数151→133只授实际读数；全局日291上市计数1与tracked0／coverage0并存，不授全市场零发行或独立IPO现金证明。原D0三次解析失败／两个父失败、正常退出预留触发的D14 GAP及run2／verify2均保留；正常Game／Host／Job／keeper／allocator0、CAS16205释放不升级业务。下一须以本场D14物理档保留同E6、无ARM，新显式0／16／21合同读取原累计14／30／35和289..324共36条原记录；原35日case不改，旧R71不倒签。容量／395日性能／全产品／首发仍未授，R70／R69及640／25各留原范围。[本场原件与续行边界](r0071-natural-market-day14-observation.md)。
+
 ## R0070：本条中文kind10姓名与来源有限通过，非全局通知验收
 
 R69 D0显式诊断分支两SAVE／一天，无注册认购退款重放、不改R69 latest terminal；baseline679记录精确相同，terminal1107／missing0／added428及47变化完整保留，fullglobals仍UNKNOWN。pending frame18967／query11保原join2／0pass，visible18972／query12原join0／3EOF匹配同actor／recipient31254、news731及源coin；实际richtext姓名“公爵罗贝尔”与Raw元数据精确同，无ERROR／literal accessor，Root仅授该CNkind10文本。公共localizationrender flag、business／product／global／allhuman／dailycoverage仍false，R69原失败和25软件不改。run0／verify0、case／boundary／gui有限通过，正常Game／Host／Job／keeper／allocator0、CAS16174释放。English／其他9news／20剧情、容量性能及整产品／首发未授，下一是独立R64自然market-evolution35计划。[R70原件和边界](r0070-localized-actor-toast-acceptance.md)。

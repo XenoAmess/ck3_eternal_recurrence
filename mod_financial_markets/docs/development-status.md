@@ -2,7 +2,11 @@
 
 2026-11-22，machine_id: 4-8e1c2f1861。
 
-## 当前状态（R0070本条中文kind10姓名／来源有限通过，下一自然35日）
+## 当前进展（R0071自然D14已保存，35日观察／整案仍未通过）
+
+R64自然分支继续的两SAVE覆盖raw53151360→53151696／14自然日；E6同一observer150995293保存15条连续记录，金融289→303，读回issues为空但35日标志仍false。登记139保持、活跃135→136／期货计数151→133仅为源计数；64币覆盖不完整，tracked0不等于全市场无新发行／上市。正常退出预留触发时D14 Root阶段仍GAP，原run2／verify2／PARTIAL不改；Game16220／Host／Job／keeper／allocator0、CAS16205释放。D0的3次解析失败和8成功、D14的8成功都保留，仅TASK读回envelope／payload修正，生产234文件／DLL未改；旧640／25不加总。下一须从本场D14档保留E6、不ARM，以显式本地0／16／21续行累计D14／30／35；不回滚R64或补签旧场。35日／容量／395日性能／全产品／首发未授，R70阳性与R69失败保持。[R71实际范围与21日续行条件](r0071-natural-market-day14-observation.md)。
+
+## R0070历史状态（本条中文kind10姓名／来源有限通过，下一自然35日）
 
 显式R69 D0退款诊断分支的两SAVE／1自然日观察中，第二visible Native正文实际显示带CHARACTER31254链接的“公爵罗贝尔”，与Raw meta_player_name精确一致，ERROR／literal accessor均无；Root只授本条中文kind10 actor文本与local source／transport，不改公共render flag=false，不授English／其他9news／20剧情／全游戏送达。原pending join2／0pass和R69 ERROR保留，679→1107完整差异／opaque globals UNKNOWN保持；无重发issuer业务或自然AI信用。run0／verify0、case／boundary／gui有限通过，而business／product／global／all-human／dailycoverage仍false；Game11580／Host／Job／keeper／allocator0，CAS16174释放。旧640／25及GUI／controlled各自6/6不重计。后继按计划由R64指定自然分支做market-evolution35，非本诊断世界或已完成35日；完整Mod与Workshop首发仍待。[R70实际文本与范围](r0070-localized-actor-toast-acceptance.md)。
 
