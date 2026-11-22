@@ -66,6 +66,9 @@ import org.xar.ck3.control.platform.NativeLaunchPlan;
 import org.xar.ck3.control.nativebridge.CurrentCoreCheckpointSave;
 import org.xar.ck3.control.nativebridge.CurrentCoreCheckpointSaveResult;
 import org.xar.ck3.control.nativebridge.CurrentAubObserverFixtureResult;
+import org.xar.ck3.control.nativebridge.CurrentCourtierControls;
+import org.xar.ck3.control.nativebridge.CurrentCourtierControlsSource;
+import org.xar.ck3.control.nativebridge.CurrentCourtierControlsResult;
 import org.xar.ck3.control.nativebridge.CurrentXqolThreshold;
 import org.xar.ck3.control.nativebridge.CurrentXqolThresholdSource;
 import org.xar.ck3.control.nativebridge.CurrentXqolThresholdResult;
@@ -121,8 +124,10 @@ public final class NativeOwnerSnapshotMain268 {
         stage = "INPUTS";
         byte[] configBytes = readBounded(configPath, SMALL);
         ObjectNode config = StrictJson.object(StrictJson.parse(configBytes, SMALL), Set.of("schema", "owner_descriptor",
-                "overall_timeout_seconds", "read_timeout_seconds", "maximum_frames_per_operation"), Set.of("core_prefix_only", "mode", "control_step", "maximum_status_polls", "status_poll_interval_ms", "window_name", "expected_source_rite_id", "checkpoint_archive_path", "maximum_checkpoint_bytes", "checkpoint_observation_attempts", "checkpoint_poll_interval_ms", "previous_checkpoint_source", "previous_checkpoint_archive", "navigation_action", "rite_action", "maximum_confirmation_polls", "target_character_id", "cb_key", "tuple_intent", "maximum_warning_polls", "warning_poll_interval_ms", "instance_id", "decision_key", "target_threshold"));
+                "overall_timeout_seconds", "read_timeout_seconds", "maximum_frames_per_operation"), Set.of("core_prefix_only", "mode", "control_step", "maximum_status_polls", "status_poll_interval_ms", "window_name", "expected_source_rite_id", "checkpoint_archive_path", "maximum_checkpoint_bytes", "checkpoint_observation_attempts", "checkpoint_poll_interval_ms", "previous_checkpoint_source", "previous_checkpoint_archive", "navigation_action", "rite_action", "maximum_confirmation_polls", "target_character_id", "cb_key", "tuple_intent", "maximum_warning_polls", "warning_poll_interval_ms", "instance_id", "decision_key", "target_threshold", "product", "control"));
         ObservationMode observationMode=observationMode(config);
+        boolean currentCourtierControls=observationMode==ObservationMode.CURRENT_COURTIER_CREATOR_CONTROLS_QUERY||observationMode==ObservationMode.CURRENT_COURTIER_CREATOR_CONTROL_EXECUTE;
+        CourtierControlsConfig courtierConfig=currentCourtierControls?currentCourtierControlsConfig(config):null;
         boolean currentXqolThreshold=observationMode==ObservationMode.CURRENT_XQOL_CONVERSION_THRESHOLD_QUERY||observationMode==ObservationMode.CURRENT_XQOL_CONVERSION_THRESHOLD_SET;
         XqolThresholdConfig thresholdConfig=currentXqolThreshold?currentXqolThresholdConfig(config):null;
         boolean currentXqolPrompt=observationMode==ObservationMode.CURRENT_XQOL_CONVERSION_PROMPT_QUERY||observationMode==ObservationMode.CURRENT_XQOL_CONVERSION_PROMPT_CONFIRM||observationMode==ObservationMode.CURRENT_XQOL_CONVERSION_PROMPT_CANCEL;
@@ -261,6 +266,12 @@ public final class NativeOwnerSnapshotMain268 {
                 .put("machine_id",owner.machineId()).put("steam_build_id","26785313").put("target_character_id",declarationConfig.target().value()).put("cb_key",declarationConfig.casusBelli().wire())
                 .put("read_calls",0).put("native_getter_calls",0).put("query_available",false).put("cost_available",false).put("display_scale_verified",false)
                 .putNull("formatted_text").put("open_calls",0).put("select_calls",0).put("send_calls",0).put("accept_calls",0).put("payment_confirmed",false).put("physical_save_confirmed",false);
+        if(currentCourtierControls)result.put("schema","xar.native-owner-current-courtier-controls/v1").put("mode",StrictJson.text(config.get("mode")))
+                .put("machine_id",owner.machineId()).put("steam_build_id","26785313").put("action",courtierConfig.action().wire())
+                .put("product",courtierConfig.product().wire()).put("control",courtierConfig.control().wire())
+                .put("read_calls",0).put("execute_calls",0).put("query_available",false).put("control_callback_dispatched",false)
+                .put("native_returned",false).put("native_handled",false).put("creator_closed",false).put("courtier_created",false)
+                .put("age_changed",false).put("new_date_observed",false).put("physical_save_confirmed",false).put("save_calls",0);
         if(currentXqolThreshold)result.put("schema","xar.native-owner-current-xqol-threshold/v1").put("mode",StrictJson.text(config.get("mode")))
                 .put("machine_id",owner.machineId()).put("steam_build_id","26785313").put("action",thresholdConfig.action().wire()).put("target_threshold",thresholdConfig.targetThreshold())
                 .put("read_calls",0).put("set_calls",0).put("query_available",false).put("route_callback_dispatched",false).put("native_returned",false)
@@ -304,16 +315,18 @@ public final class NativeOwnerSnapshotMain268 {
         stage = "ATTACH";
         try (var supervisor = WindowsJobProcess.retainReadOnlyProcess(owner.supervisorIdentity().pid())) {
             requireSupervisor(supervisor, owner.supervisorIdentity());
-            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,currentXqolThreshold?(thresholdConfig.action()==CurrentXqolThreshold.Action.QUERY_THRESHOLD?2:3):currentXqolPrompt?(xqolPromptAction==CurrentXqolPrompt.Action.QUERY_PROMPT?2:3):currentCuratedDecision?(curatedConfig.action()==CurrentCuratedDecisions.Action.QUERY?2:3):currentFullscreenEvent?(acknowledgeKnownIntro?3:2):currentLetterSet?(letterSetReply?3:2):djcSelectedCost?(djcCostPreview?9:3):currentLetter?(knownLetterReply?3:2):djcUiMode?(djcUiSubmit?declarationConfig.maximumWarningPolls()+12:2):currentSuccession?(continueSuccession?2:1):currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||aubObserver||djcQuery||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
+            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,currentCourtierControls?(courtierConfig.action()==CurrentCourtierControls.Action.QUERY_CONTROL?2:3):currentXqolThreshold?(thresholdConfig.action()==CurrentXqolThreshold.Action.QUERY_THRESHOLD?2:3):currentXqolPrompt?(xqolPromptAction==CurrentXqolPrompt.Action.QUERY_PROMPT?2:3):currentCuratedDecision?(curatedConfig.action()==CurrentCuratedDecisions.Action.QUERY?2:3):currentFullscreenEvent?(acknowledgeKnownIntro?3:2):currentLetterSet?(letterSetReply?3:2):djcSelectedCost?(djcCostPreview?9:3):currentLetter?(knownLetterReply?3:2):djcUiMode?(djcUiSubmit?declarationConfig.maximumWarningPolls()+12:2):currentSuccession?(continueSuccession?2:1):currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||aubObserver||djcQuery||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
             // This factory returns ATTACHED only. Its close releases communication and readonly handles, never a Job.
-            try (ManagedGameSession game = NativeGameAttachment.attach(request, (currentXqolThreshold||currentXqolPrompt||currentCuratedDecision||currentFullscreenEvent||currentLetterSet||djcSelectedCost||currentLetter||djcUiMode||currentFrontendMenu||currentSuccession||aubObserver||djcQuery||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
+            try (ManagedGameSession game = NativeGameAttachment.attach(request, (currentCourtierControls||currentXqolThreshold||currentXqolPrompt||currentCuratedDecision||currentFullscreenEvent||currentLetterSet||djcSelectedCost||currentLetter||djcUiMode||currentFrontendMenu||currentSuccession||aubObserver||djcQuery||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
                 if (game.mode() != ManagedGameSession.Mode.ATTACHED) throw new IOException("actual attachment mode differs");
                 requireSupervisor(supervisor, owner.supervisorIdentity());
                 var transport = game.nativeTransport();
                 var hello = transport.diagnostics().originalHello().orElseThrow(() -> new IOException("actual received HELLO unavailable"));
                 originals.set("new_hello", write(output, "new-hello.bin", hello.original().packet().value()));
                 result.put("hello_observed_at_utc", hello.observedAt().toString());
-                if(currentXqolThreshold) {
+                if(currentCourtierControls) {
+                    runCurrentCourtierControls(transport,owner,plan,courtierConfig,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
+                } else if(currentXqolThreshold) {
                     runCurrentXqolThreshold(transport,owner,plan,thresholdConfig,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
                 } else if(currentXqolPrompt) {
                     runCurrentXqolPrompt(transport,owner,plan,xqolPromptAction,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
@@ -676,11 +689,116 @@ if(riteDraftCosts) {
         // Success is published only after actual ATTACHED endpoint and readonly handles have closed successfully.
         stage = "PUBLISH_ARCHIVED_DATA";
         result.set("originals", originals);
-        String archivedStatus = currentXqolThreshold?"ARCHIVED_CURRENT_XQOL_THRESHOLD_DATA_ENDPOINT_RELEASED":currentXqolPrompt?"ARCHIVED_CURRENT_XQOL_PROMPT_DATA_ENDPOINT_RELEASED":currentCuratedDecision?"ARCHIVED_CURRENT_CURATED_DECISIONS_DATA_ENDPOINT_RELEASED":currentFullscreenEvent?"ARCHIVED_CURRENT_FULLSCREEN_EVENT_DATA_ENDPOINT_RELEASED":currentLetterSet?"ARCHIVED_CURRENT_LETTER_SET_DATA_ENDPOINT_RELEASED":djcSelectedCost?"ARCHIVED_CURRENT_DJC_SELECTED_COST_DATA_ENDPOINT_RELEASED":currentLetter?"ARCHIVED_CURRENT_LETTER_DATA_ENDPOINT_RELEASED":djcUiMode?"ARCHIVED_CURRENT_DJC_DECLARATION_UI_DATA_ENDPOINT_RELEASED":riteFinalConfirmation?"ARCHIVED_CURRENT_RITE_FINAL_CALLBACK_DATA_ENDPOINT_RELEASED":currentDateAdvance?"ARCHIVED_CURRENT_NATIVE_ONE_DAY_ENDPOINT_RELEASED":riteDoctrine?"ARCHIVED_CURRENT_RITE_ACTION_DATA_ENDPOINT_RELEASED":guiNavigation?"ARCHIVED_LITERAL_NAVIGATION_SUBMISSION_ENDPOINT_RELEASED":checkpointSave?"ARCHIVED_CURRENT_CORE_CHECKPOINT_MATERIAL_ENDPOINT_RELEASED":guiControls?"ARCHIVED_NATIVE_GUI_CONTROLS_DATA_ENDPOINT_RELEASED":riteDraftCosts?"ARCHIVED_NATIVE_RITE_DRAFT_COSTS_DATA_ENDPOINT_RELEASED":guiWindow?"ARCHIVED_NATIVE_GUI_WINDOW_DATA_ENDPOINT_RELEASED":guiRootIndex?"ARCHIVED_NATIVE_GUI_ROOT_INDEX_DATA_ENDPOINT_RELEASED":dateAdvance?"ARCHIVED_NATIVE_DATE_SENTINEL_ADVANCE_ENDPOINT_RELEASED":personalCash?"ARCHIVED_NATIVE_PERSONAL_CASH_DATA_ENDPOINT_RELEASED":fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
+        String archivedStatus = currentCourtierControls?"ARCHIVED_CURRENT_COURTIER_CONTROLS_DATA_ENDPOINT_RELEASED":currentXqolThreshold?"ARCHIVED_CURRENT_XQOL_THRESHOLD_DATA_ENDPOINT_RELEASED":currentXqolPrompt?"ARCHIVED_CURRENT_XQOL_PROMPT_DATA_ENDPOINT_RELEASED":currentCuratedDecision?"ARCHIVED_CURRENT_CURATED_DECISIONS_DATA_ENDPOINT_RELEASED":currentFullscreenEvent?"ARCHIVED_CURRENT_FULLSCREEN_EVENT_DATA_ENDPOINT_RELEASED":currentLetterSet?"ARCHIVED_CURRENT_LETTER_SET_DATA_ENDPOINT_RELEASED":djcSelectedCost?"ARCHIVED_CURRENT_DJC_SELECTED_COST_DATA_ENDPOINT_RELEASED":currentLetter?"ARCHIVED_CURRENT_LETTER_DATA_ENDPOINT_RELEASED":djcUiMode?"ARCHIVED_CURRENT_DJC_DECLARATION_UI_DATA_ENDPOINT_RELEASED":riteFinalConfirmation?"ARCHIVED_CURRENT_RITE_FINAL_CALLBACK_DATA_ENDPOINT_RELEASED":currentDateAdvance?"ARCHIVED_CURRENT_NATIVE_ONE_DAY_ENDPOINT_RELEASED":riteDoctrine?"ARCHIVED_CURRENT_RITE_ACTION_DATA_ENDPOINT_RELEASED":guiNavigation?"ARCHIVED_LITERAL_NAVIGATION_SUBMISSION_ENDPOINT_RELEASED":checkpointSave?"ARCHIVED_CURRENT_CORE_CHECKPOINT_MATERIAL_ENDPOINT_RELEASED":guiControls?"ARCHIVED_NATIVE_GUI_CONTROLS_DATA_ENDPOINT_RELEASED":riteDraftCosts?"ARCHIVED_NATIVE_RITE_DRAFT_COSTS_DATA_ENDPOINT_RELEASED":guiWindow?"ARCHIVED_NATIVE_GUI_WINDOW_DATA_ENDPOINT_RELEASED":guiRootIndex?"ARCHIVED_NATIVE_GUI_ROOT_INDEX_DATA_ENDPOINT_RELEASED":dateAdvance?"ARCHIVED_NATIVE_DATE_SENTINEL_ADVANCE_ENDPOINT_RELEASED":personalCash?"ARCHIVED_NATIVE_PERSONAL_CASH_DATA_ENDPOINT_RELEASED":fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
         result.put("status", archivedStatus).put("completed_at_utc", Instant.now().toString());
         ObjectNode published = write(output, "summary.json", FullJsonTree.encode(result, FullJsonTree.MAXIMUM_BYTES));
         System.out.println(StrictJson.object().put("schema", "xar.native-owner-snapshot-stage/v1")
                 .put("status", archivedStatus).put("at_utc", Instant.now().toString()).set("summary", published));
+    }
+
+    record CourtierControlsConfig(CurrentCourtierControls.Action action,CurrentCourtierControls.Product product,CurrentCourtierControls.Control control) {
+        CourtierControlsConfig { Objects.requireNonNull(action);Objects.requireNonNull(product);Objects.requireNonNull(control); }
+    }
+    static CourtierControlsConfig currentCourtierControlsConfig(ObjectNode config) {
+        StrictJson.object(config,Set.of("schema","mode","owner_descriptor","overall_timeout_seconds","read_timeout_seconds","maximum_frames_per_operation","product","control"));
+        StrictJson.require(StrictJson.text(config.get("schema")).equals("xar.native-owner-snapshot-config/v31"),"Explicit v31 fixed courtier control mode required");
+        ExactRef.fromJson(config.get("owner_descriptor"));
+        StrictJson.integer(config.get("overall_timeout_seconds"),1,600);StrictJson.integer(config.get("read_timeout_seconds"),1,60);
+        StrictJson.integer(config.get("maximum_frames_per_operation"),1,65536);
+        var action=switch(StrictJson.text(config.get("mode"))) {
+            case "current_courtier_creator_controls_query"->CurrentCourtierControls.Action.QUERY_CONTROL;
+            case "current_courtier_creator_control_execute"->CurrentCourtierControls.Action.EXECUTE_CONTROL;
+            default->throw new IllegalArgumentException("Only independent fixed creator query or one private-source Execute; no automatic sequence");
+        };
+        try { return new CourtierControlsConfig(action,CurrentCourtierControls.Product.parse(StrictJson.text(config.get("product"))),CurrentCourtierControls.Control.parse(StrictJson.text(config.get("control")))); }
+        catch(IOException invalid){throw new IllegalArgumentException("Exact fixed product and control DATA required",invalid);}
+    }
+    static void requireCurrentCourtierControlsQueryFrame(CurrentCourtierControlsResult frame,CoreFrame.Prefix actual,
+            CurrentCourtierControls.Product product,CurrentCourtierControls.Control control)throws IOException {
+        if(frame.action()!=CurrentCourtierControls.Action.QUERY_CONTROL||frame.status()!=CurrentCourtierControlsResult.Status.AVAILABLE
+                ||frame.effectAttempted()||frame.nativeReturned()||!frame.cleanupKnown()||frame.claimSequence().signum()!=0
+                ||frame.providerGeneration().signum()<=0||frame.querySequence().signum()<=0||frame.owner().isEmpty()
+                ||frame.product()!=product||frame.control()!=control||frame.factsBefore().filter(actual::equals).isEmpty()
+                ||frame.source().filter(s->s.product()==product&&s.control()==control).isEmpty())
+            throw new IOException("Actual readonly fixed creator query differs from its Core/product/control/private lease");
+    }
+    static CurrentCourtierControlsSource requireCurrentCourtierControlsSource(CurrentCourtierControlsResult query,CourtierControlsConfig config)throws IOException {
+        requireCurrentCourtierControlsQueryFrame(query,query.factsBefore().orElseThrow(()->new IOException("Original fixed creator Core absent")),config.product(),config.control());
+        var source=query.source().orElseThrow();
+        if(config.action()!=CurrentCourtierControls.Action.EXECUTE_CONTROL||!source.executeAdmissible())
+            throw new IOException("Original actual creator chain and native predicates do not admit this fixed Execute; no fallback");
+        return source;
+    }
+    static void requireCurrentCourtierControlsDispatchFrame(CurrentCourtierControlsResult query,CurrentCourtierControlsResult dispatched,CourtierControlsConfig config)throws IOException {
+        requireCurrentCourtierControlsSource(query,config);
+        if(dispatched.action()!=CurrentCourtierControls.Action.EXECUTE_CONTROL||dispatched.status()!=CurrentCourtierControlsResult.Status.CONTROL_DISPATCHED
+                ||!dispatched.effectAttempted()||!dispatched.nativeReturned()||!dispatched.cleanupKnown()||dispatched.claimSequence().signum()<=0
+                ||dispatched.product()!=config.product()||dispatched.control()!=config.control()||!dispatched.providerGeneration().equals(query.providerGeneration())
+                ||!dispatched.querySequence().equals(query.querySequence())||!dispatched.factsBefore().equals(query.factsBefore())
+                ||!dispatched.source().equals(query.source())||dispatched.owner().isEmpty()
+                ||!dispatched.owner().orElseThrow().connectionGeneration().equals(query.owner().orElseThrow().connectionGeneration()))
+            throw new IOException("Fixed creator callback differs from original full source/Core/product/control/private lease");
+    }
+    private static void runCurrentCourtierControls(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,
+            NativeLaunchPlan plan,CourtierControlsConfig config,Path output,Instant deadline,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        try {
+            if(!(plan.load() instanceof NativeLaunchPlan.SavedGame))throw new IOException("Current fixed creator controls require their actual SavedGame owner");
+            stage="ONE_ACTUAL_CORE_BEFORE_COURTIER_CONTROLS";result.put("read_calls",1);
+            var coreRead=transport.readCoreFrameReceived(deadline);
+            archiveCurrentLetterOutcome(transport,Files.createDirectory(output.resolve("core-before-courtier-controls")),"core",coreRead.original(),originals);
+            if(!(coreRead instanceof NativeGameTransport.CoreReceived before)||!(before.frame() instanceof CoreFrame.Partial core))throw new IOException("Actual current fixed creator Core unavailable; no configured replacement");
+            requireCurrentDjcAckOwner(transport,owner,before.original(),null);
+            var actualSession=before.original().custody().orElseThrow().session();var p=core.prefix();
+            if(core.build()!=ExactCk3Build.CK3_121003_STEAM_26785313
+                    ||!core.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())
+                    ||!core.build().coreFrameAdapterId().equals(plan.adapterId())||!p.paused()||!p.mapReady()
+                    ||!p.hasPlayedCharacter()||!p.playedCharacterAlive()||p.playedCharacterId()==-1||p.localPlayerId()<0||p.speed()<1||p.speed()>5)
+                throw new IOException("Exact actual paused living current Core required before fixed creator query");
+            Instant until=before.validUntil().isBefore(deadline)?before.validUntil():deadline;before.requireOriginal(transport,until);
+            stage="ONE_READONLY_CURRENT_COURTIER_CONTROLS_QUERY";result.put("read_calls",2);
+            var read=transport.readCurrentCourtierControls(before,config.product(),config.control(),until);Path queryOutput=Files.createDirectory(output.resolve("courtier-controls-query"));
+            archiveCurrentLetterOutcome(transport,queryOutput,"courtier_controls_query",read.original(),originals);
+            if(!(read instanceof NativeGameTransport.CourtierControlsReceived query))throw new IOException("Actual typed fixed creator source unavailable or UNKNOWN; no Execute or retry");
+            until=query.validUntil().isBefore(until)?query.validUntil():until;query.requireOriginal(transport,until);
+            if(query.product()!=config.product()||query.control()!=config.control())throw new IOException("Private query product/control differs from original pure DATA intent");
+            var queryAck=query.original();requireCurrentDjcAckOwner(transport,owner,queryAck,actualSession);
+            var frame=CurrentCourtierControlsResult.decodeOutcome(queryAck);
+            if(!frame.equals(query.frame()))throw new IOException("Actual fixed creator query differs from private retained frame");
+            requireCurrentCourtierControlsQueryFrame(frame,p,config.product(),config.control());
+            if(!frame.owner().orElseThrow().connectionGeneration().equals(actualSession.connectionGeneration()))throw new IOException("Fixed creator query owner crossed actual connection");
+            originals.set("courtier_controls_query_original_result",write(queryOutput,"original-result.json",queryAck.originalResultToken().orElseThrow().bytes()));
+            result.set("query",FullJsonTree.parse(frame.encode().bytes(),SMALL));result.set("session",session(actualSession));
+            result.put("query_available",true).put("query_request_id",queryAck.requestId());
+            if(config.action()==CurrentCourtierControls.Action.QUERY_CONTROL)return;
+            var selected=requireCurrentCourtierControlsSource(frame,config);
+            var prepared=transport.prepareCurrentCourtierControlExecute(query);
+            if(prepared.action()!=CurrentCourtierControls.Action.EXECUTE_CONTROL||prepared.product()!=config.product()||prepared.control()!=config.control()||!prepared.selected().equals(selected))
+                throw new IOException("Private fixed creator preparation differs from complete original product/control source");
+            if(!prepared.deadline().equals(query.validUntil())||prepared.deadline().isAfter(deadline))throw new IOException("Original fixed creator Execute deadline changed");
+            Path actionOutput=Files.createDirectory(output.resolve("one-courtier-control-execute"));
+            var intent=StrictJson.object().put("schema","xar.current-courtier-controls-original-intent/v1").put("request_id",prepared.requestId())
+                    .put("action",prepared.action().wire()).put("product",prepared.product().wire()).put("control",prepared.control().wire())
+                    .put("original_query_request_id",queryAck.requestId()).put("original_deadline_utc",prepared.deadline().toString())
+                    .put("creator_closed",false).put("courtier_created",false).put("age_changed",false).put("new_date_observed",false).put("physical_save_confirmed",false);
+            intent.set("original_query_source",originals.get("courtier_controls_query_original_result").deepCopy());
+            intent.set("original_outbound",write(actionOutput,"original-request.packet",prepared.originalPacket().value()));
+            originals.set("courtier_control_execute_intent",write(actionOutput,"original-intent.json",FullJsonTree.encode(intent,SMALL)));
+            stage="ONE_PRIVATE_SOURCE_COURTIER_CONTROL_EXECUTE";result.put("execute_calls",1);
+            var outcome=transport.submitCurrentCourtierControlExecute(prepared);
+            archiveCurrentLetterOutcome(transport,actionOutput,"courtier_control_execute",outcome,originals);
+            if(!(outcome instanceof NativeActionPort.AckReceived ack))throw new IOException("Original fixed creator Execute UNKNOWN or rejected; never replay");
+            requireCurrentDjcAckOwner(transport,owner,ack,actualSession);var dispatched=CurrentCourtierControlsResult.decodeOutcome(ack);
+            originals.set("courtier_control_execute_original_result",write(actionOutput,"original-result.json",ack.originalResultToken().orElseThrow().bytes()));
+            if(prepared.latestFrame().filter(dispatched::equals).isEmpty())throw new IOException("Original fixed creator ACK was not qualified by its private preparation");
+            requireCurrentCourtierControlsDispatchFrame(frame,dispatched,config);
+            if(!dispatched.owner().orElseThrow().connectionGeneration().equals(actualSession.connectionGeneration()))throw new IOException("Fixed creator Execute owner crossed actual connection");
+            result.set("execute_result",FullJsonTree.parse(dispatched.encode().bytes(),SMALL));
+            result.put("execute_request_id",ack.requestId()).put("control_callback_dispatched",true)
+                    .put("native_returned",dispatched.nativeReturned()).put("native_handled",false).put("native_status",dispatched.status().wire());
+        } finally {
+            archiveNaturalDiagnostics(output,originals,transport.diagnostics());var progress=result.deepCopy();progress.set("originals",originals.deepCopy());
+            write(output,"current-courtier-controls-progress.json",FullJsonTree.encode(progress,FullJsonTree.MAXIMUM_BYTES));
+        }
     }
 
     record XqolThresholdConfig(CurrentXqolThreshold.Action action,int targetThreshold) {
@@ -2144,7 +2262,7 @@ if(riteDraftCosts) {
         return FullSnapshotClockControl.request(profile,step,snapshotId,revision,originalDeadline);
     }
 
-    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE,CURRENT_DJC_TARGET_QUERY,CURRENT_SUCCESSION_QUERY,CURRENT_SUCCESSION_CONTINUE,CURRENT_DJC_DECLARATION_UI,CURRENT_DJC_DECLARATION_SUBMIT,CURRENT_LETTER_QUERY,CURRENT_LETTER_REPLY_KNOWN,CURRENT_DJC_SELECTED_COST,CURRENT_DJC_SELECTED_COST_PREVIEW,CURRENT_LETTER_SET_QUERY,CURRENT_LETTER_SET_REPLY_KNOWN_INSTANCE,CURRENT_FULLSCREEN_EVENT_QUERY,CURRENT_FULLSCREEN_EVENT_ACK_KNOWN_INTRO,CURRENT_CURATED_DECISIONS_QUERY,CURRENT_CURATED_DECISIONS_OPEN,CURRENT_CURATED_DECISION_DETAIL,CURRENT_CURATED_DECISION_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_QUERY,CURRENT_XQOL_CONVERSION_PROMPT_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_CANCEL,CURRENT_XQOL_CONVERSION_THRESHOLD_QUERY,CURRENT_XQOL_CONVERSION_THRESHOLD_SET }
+    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE,CURRENT_DJC_TARGET_QUERY,CURRENT_SUCCESSION_QUERY,CURRENT_SUCCESSION_CONTINUE,CURRENT_DJC_DECLARATION_UI,CURRENT_DJC_DECLARATION_SUBMIT,CURRENT_LETTER_QUERY,CURRENT_LETTER_REPLY_KNOWN,CURRENT_DJC_SELECTED_COST,CURRENT_DJC_SELECTED_COST_PREVIEW,CURRENT_LETTER_SET_QUERY,CURRENT_LETTER_SET_REPLY_KNOWN_INSTANCE,CURRENT_FULLSCREEN_EVENT_QUERY,CURRENT_FULLSCREEN_EVENT_ACK_KNOWN_INTRO,CURRENT_CURATED_DECISIONS_QUERY,CURRENT_CURATED_DECISIONS_OPEN,CURRENT_CURATED_DECISION_DETAIL,CURRENT_CURATED_DECISION_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_QUERY,CURRENT_XQOL_CONVERSION_PROMPT_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_CANCEL,CURRENT_XQOL_CONVERSION_THRESHOLD_QUERY,CURRENT_XQOL_CONVERSION_THRESHOLD_SET,CURRENT_COURTIER_CREATOR_CONTROLS_QUERY,CURRENT_COURTIER_CREATOR_CONTROL_EXECUTE }
     static void requireGuiRootIndexSelection(NativeLaunchPlan plan,GuiRootIndexFrame frame)throws IOException {
         Objects.requireNonNull(plan);Objects.requireNonNull(frame);
         if(!frame.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())
@@ -2176,6 +2294,13 @@ if(riteDraftCosts) {
     }
     static ObservationMode observationMode(ObjectNode config) {
         String schema=StrictJson.text(config.get("schema"));
+        if(schema.equals("xar.native-owner-snapshot-config/v31")) {
+            return switch(currentCourtierControlsConfig(config).action()) {
+                case QUERY_CONTROL->ObservationMode.CURRENT_COURTIER_CREATOR_CONTROLS_QUERY;
+                case EXECUTE_CONTROL->ObservationMode.CURRENT_COURTIER_CREATOR_CONTROL_EXECUTE;
+            };
+        }
+        StrictJson.require(!config.has("product")&&!config.has("control"),"product/control belong only to the explicit v31 fixed creator modes");
         if(schema.equals("xar.native-owner-snapshot-config/v30")) {
             return switch(currentXqolThresholdConfig(config).action()) {
                 case QUERY_THRESHOLD->ObservationMode.CURRENT_XQOL_CONVERSION_THRESHOLD_QUERY;

@@ -1,0 +1,193 @@
+{
+  "schema": "ck3.current267.courtier-fixed-controls-java-qualified-source.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T01:55:45.380817+00:00",
+  "source_plan": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-controls-source-a426/source-plan-ready-a02.json",
+    "bytes": 17250,
+    "sha256": "5fea40cbccc1332a0e1490d309c1382e87defe7f008ae4e48e41444ce26510b3"
+  },
+  "original_plan": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-controls-source-a426/source-plan-ready.json",
+    "bytes": 14725,
+    "sha256": "043e6303fbe5bb93b292f7b6f9de51dd1c9fecf19c7a95e376753a2b258fd835"
+  },
+  "qualification": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-controls-source-a426/compile-qualification-summary.json",
+    "bytes": 7940,
+    "sha256": "17cf13a6802300495b63de90942c18225a0ab3e7f76135448e5d0aa7e60ad9e9"
+  },
+  "actual_CPP12": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-courtier-controls-a425/first-producer/producer-execution-a01.json",
+    "bytes": 8460,
+    "sha256": "507903d4a9f696f3ebd7b5bc2587b67a749db0359192ecfb710f3f58b7a7cd97"
+  },
+  "actual_genuine_copy": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-controls-source-a426/genuine-copy-receipt.json",
+    "bytes": 9142,
+    "sha256": "f08a8af0eb94f005690c55d07f5cea19bd7c9117c708ab2d0523e35e0de7f2c9"
+  },
+  "actual_CPP_two_request_backparse": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-courtier-controls-a425/actual-java-reverse-a426/actual-result.json",
+    "bytes": 10587,
+    "sha256": "0dadff4be26708dd958c69b6dd3449562307ec8ff9066c1130b607d1803d3d9d"
+  },
+  "compiler_closure": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-controls-source-a426/compiler128-closure.json",
+    "bytes": 1197,
+    "sha256": "498972b7557324ae859515178bff68f5252300e131e1ec58709e53f31d02b8c1"
+  },
+  "actual_reports_distinct52": [
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeCurrentCourtierControls26785313ProducerTest",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-controls-source-a426/validation/a01-TEST-org.xar.ck3.control.nativebridge.NativeCurrentCourtierControls26785313ProducerTest.xml",
+        "bytes": 18937,
+        "sha256": "dae57f32d4f9ccefd1dcb0bf8ff762f8e84bd22b7e1bd20fe0edcf74593b50aa"
+      }
+    },
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeCurrentCourtierControlsTransportTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-controls-source-a426/validation/a01-TEST-org.xar.ck3.control.nativebridge.NativeCurrentCourtierControlsTransportTest.xml",
+        "bytes": 18477,
+        "sha256": "a94a616cb2692ac7d15850394e308f8a914061a736384fa3cedb5bf6ea9d3bdc"
+      }
+    },
+    {
+      "module": "native-transport",
+      "suite": "org.xar.ck3.control.nativebridge.NativeCurrentXqolThresholdTransportTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-controls-source-a426/validation/a01-TEST-org.xar.ck3.control.nativebridge.NativeCurrentXqolThresholdTransportTest.xml",
+        "bytes": 18422,
+        "sha256": "5301ea70c14567668b88ce3b4cac8b2b921a963bfe831be2b9dccdd0e3698f06"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "suite": "org.xar.ck3.control.service.root.NativeOwnerCurrentCourtierControlsSelectionTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-controls-source-a426/validation/a02-TEST-org.xar.ck3.control.service.root.NativeOwnerCurrentCourtierControlsSelectionTest.xml",
+        "bytes": 77730,
+        "sha256": "d5837ae84a53f69e1c3b1868782836c016e7ef17ade4888e5d307624f38a1b47"
+      }
+    },
+    {
+      "module": "ck3-control-local-service",
+      "suite": "org.xar.ck3.control.service.root.NativeOwnerCurrentXqolThresholdSelectionTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_xml": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-controls-source-a426/validation/a02-TEST-org.xar.ck3.control.service.root.NativeOwnerCurrentXqolThresholdSelectionTest.xml",
+        "bytes": 77583,
+        "sha256": "c208c86a215dee6649742b9957b347ccaaddbfcb2694ec4f692be0f37bfd1deb"
+      }
+    }
+  ],
+  "actual_graphs": [
+    {
+      "attempt": "a01",
+      "reactor_listed": 33,
+      "actual_compiles": [
+        {
+          "module": "native-transport",
+          "phase": "default-compile",
+          "actual_source_files": 525
+        },
+        {
+          "module": "native-transport",
+          "phase": "default-testCompile",
+          "actual_source_files": 75
+        },
+        {
+          "module": "ck3-control-local-service",
+          "phase": "default-compile",
+          "actual_source_files": 653
+        },
+        {
+          "module": "ck3-control-local-service",
+          "phase": "default-testCompile",
+          "actual_source_files": 35
+        }
+      ],
+      "other_AM": "Listed dependencies reused/up-to-date, not all recompiled."
+    },
+    {
+      "attempt": "a02",
+      "reactor_listed": 34,
+      "actual_compiles": [
+        {
+          "module": "ck3-control-local-service",
+          "phase": "default-testCompile",
+          "actual_source_files": 35
+        }
+      ],
+      "other_AM": "Listed dependencies reused/up-to-date, not all recompiled."
+    }
+  ],
+  "a01_original": {
+    "Maven": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-controls-source-a426/validation/a01-result.json",
+      "bytes": 4123,
+      "sha256": "f69c634345f6ac9bd20f55b6ef1aa2d2f63caf404d30512a79d97300d4ea5d91"
+    },
+    "Job": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-controls-source-a426/validation/a01-managed-result.json",
+      "bytes": 1211,
+      "sha256": "88dc7ee077b7b755332f567bfe89ce45a68c1026f0ba5572e8185dee625fab55"
+    },
+    "native32P": true,
+    "local20": "NOT_RUN; new SelectionTest108 checked IOException missing from method declaration caused testCompile1, not production error/JUnit assertion failure"
+  },
+  "a02_narrow": {
+    "Maven": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-controls-source-a426/validation/a02-result.json",
+      "bytes": 2898,
+      "sha256": "9f1882fe13de7ada2a3d391c02672d5f5f498bf0a43cac37b830c209a38f421b"
+    },
+    "Job": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-controls-source-a426/validation/a02-managed-result.json",
+      "bytes": 1215,
+      "sha256": "5b70143be17faa4392ac8f3d2411b5d00553fdf05821e50100fb53e1dcfe9dba"
+    },
+    "Main20P": true,
+    "repair": "Exactly one new SelectionTest method adds throws IOException, original source/authorMF and diagnostics retained. No production/native/newgolden or existing tests changed.",
+    "source_plan": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-controls-source-a426/source-plan-ready-a02.json",
+      "bytes": 17250,
+      "sha256": "5fea40cbccc1332a0e1490d309c1382e87defe7f008ae4e48e41444ce26510b3"
+    },
+    "same_original128_purpose": true
+  },
+  "scope": "Fixed Main/Viv product enum and four authored literal controls only, two independent query/Execute modes. Exact claim11/source13/result27. Complete actual confirmation/window/modal/panel and Native predicates; false bools readable, absence never calls SGUI. Same receiver private fresh Core/query/whole source/product/control/owner/positive lease/original deadline once. No configured actor/key/scope/ordinal/age/permission and no automatic chain. Void creator_closed/courtier_created/age_changed/date/save false. No Native live/getter/business or fullSDK qualification from compiled DATA. Oldv24–30 complete Transport bodies byte preserved.",
+  "actual52P_composite": "a01 native32P; local main653 compiled, new SelectionTest108 lacked checked IOException declaration and testCompile1 before20Main execution. Exactly that test method adds throws IOException in candidate-a02; original test/authorMF/source/diagnostics retained. a02 runs only2whole Main20P, no Native32 repeat. Five distinct52, not one52 rerun.",
+  "source_and_runtime_distinct": "Actual typed clause codecs/parser/Transport/Main DATA only. Native owned scope/Engine Execute/creation/close/age numeric effects or business not granted. Package/Frozen/newNative/Root scene separate; inherited158 not claimed sameGitTree.",
+  "no_guard_relaxed": true,
+  "compiler128_future0_no_refund": true,
+  "operator_source_only": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-courtier-controls-source-a426/runtime-operator-template-v31.SOURCE_ONLY.json",
+    "bytes": 4547,
+    "sha256": "03066c0529a0563690b675e3d8253b61c81d8912b1347c46ea4dfd804cb2f02e"
+  },
+  "protected": "F409/82d/a422/B298 and all old failures/UNKNOWN unchanged; actual production Native a425 and current NativeTree separately scoped. Published7/17/DJC SourceA/tag unchanged."
+}
