@@ -7,9 +7,10 @@ on_rite_updated = { on_actions = { des_on_rite_updated } }
 on_rite_change = { on_actions = { des_on_rite_change } }
 on_birth_child = { on_actions = { des_on_character_finalization } }
 on_character_created = { on_actions = { des_on_character_finalization } }
-yearly_global_pulse = { on_actions = { des_annual_watchdog des_annual_cadet_recovery } }
+yearly_global_pulse = { on_actions = { des_annual_watchdog des_annual_cadet_recovery des_annual_house_leadership_recovery } }
 random_yearly_everyone_pulse = { on_actions = { des_character_watchdog } }
 on_death = { on_actions = { des_on_death } }
+on_title_gain = { on_actions = { des_on_religious_head_title_gain } }
 
 # Neutral creation contract. Consumers may broadcast this before creating a Rite
 # even when a paused old save predates the persisted defaults registry.
@@ -219,4 +220,42 @@ des_on_death = {
 			clear_variable_list = des_relationship_snapshot
 		}
 	}
+}
+
+
+# Character root is the actual new title holder (stock on_title_gain contract).
+# Only the bound Rite's actual head enters; an ordinary title/Pope does not suffice.
+des_on_religious_head_title_gain = {
+    effect = {
+        if = {
+            limit = { has_global_variable = des_initialized is_alive = yes exists = rite }
+            save_scope_as = des_leadership_title_recipient
+            rite = {
+                if = {
+                    limit = {
+                        des_created_dynasty_leadership_target_trigger = yes
+                        exists = head_of_rite
+                        NOT = { has_variable = des_leadership_sync_in_progress }
+                    }
+                    if = {
+                        limit = { head_of_rite = scope:des_leadership_title_recipient }
+                        des_sync_rite_effect = yes
+                    }
+                }
+            }
+        }
+    }
+}
+
+# Runs after the existing all-living cadet recovery in yearly_global_pulse.
+des_annual_house_leadership_recovery = {
+    effect = {
+        if = {
+            limit = { has_global_variable = des_initialized }
+            every_in_global_list = {
+                variable = des_bound_rites
+                des_sync_created_dynasty_leadership_effect = yes
+            }
+        }
+    }
 }

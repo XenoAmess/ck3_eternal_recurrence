@@ -44,6 +44,8 @@ public record ReleaseProduct(String productId, Path source, String tagPrefix, Li
             "events/dlc/tgp/tgp_japan_yearly_events.txt",
             "common/scripted_triggers/des_cadet_triggers.txt",
             "common/scripted_effects/des_cadet_effects.txt",
+            "common/scripted_triggers/des_leadership_triggers.txt",
+            "common/scripted_effects/des_leadership_effects.txt",
             "common/on_action/des_cadet_on_actions.txt",
             SectPreset.HEAD_TITLE_FILE,
             "common/on_action/des_on_actions.txt",

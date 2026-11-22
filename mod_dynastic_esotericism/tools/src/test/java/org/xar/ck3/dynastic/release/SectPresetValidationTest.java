@@ -61,7 +61,7 @@ final class SectPresetValidationTest {
         String effectFile = "common/scripted_effects/des_initialization_effects.txt";
         String actions = Files.readString(fixture.product().source().resolve(actionFile));
         String effects = Files.readString(fixture.product().source().resolve(effectFile));
-        assertEquals(69, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());
+        assertEquals(71, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());
         rejectChangedDefinitions(fixture, actionFile, List.of(
                 actions.replace("set_global_variable = { name = des_new_game_preset_clergy_pending value = yes }", ""),
                 actions.replace("des_reconcile_new_game_preset_clergy_effect = yes", ""),
@@ -78,7 +78,7 @@ final class SectPresetValidationTest {
                 effects.replace("NOT = { rite_has_doctrine = doctrine_clerical_succession_temporal_appointment }", "always = yes"),
                 effects + "\nnot_a_new_game = { set_global_variable = { name = des_new_game_preset_clergy_pending value = yes } }\n"));
         Files.writeString(fixture.product().source().resolve(effectFile), effects + "\n# des_new_game_preset_clergy_pending is not a setter in a comment.\n", StandardCharsets.UTF_8);
-        assertEquals(69, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());
+        assertEquals(71, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());
     }
 
     @Test
@@ -103,7 +103,7 @@ final class SectPresetValidationTest {
             Files.write(staged, original);
             Files.write(built.manifest(), ManifestJson.encode(manifest));
         }
-        assertEquals(69, builder.verify(fixture.product(), built.staging(), built.manifest()).verifiedFiles());
+        assertEquals(71, builder.verify(fixture.product(), built.staging(), built.manifest()).verifiedFiles());
     }
 
     @Test
@@ -148,8 +148,8 @@ final class SectPresetValidationTest {
         ReleaseProduct product = ReleaseProduct.official(source, ReleaseProduct.LocalizationMode.RELEASE_LOCALIZATION);
         ReleaseBuilder builder = new ReleaseBuilder();
         ReleaseBuilder.BuildResult built = builder.build(product, source.getParent(), temporary.resolve("product"), REVISION, null, null);
-        assertEquals(69, ManifestJson.decode(Files.readAllBytes(built.manifest()), product).files().size());
-        assertEquals(69, builder.verify(product, built.staging(), built.manifest()).verifiedFiles());
+        assertEquals(71, ManifestJson.decode(Files.readAllBytes(built.manifest()), product).files().size());
+        assertEquals(71, builder.verify(product, built.staging(), built.manifest()).verifiedFiles());
         try (ZipFile archive = new ZipFile(built.archive().toFile(), StandardCharsets.UTF_8)) {
             for (String relative : product.runtimeFiles()) {
                 assertArrayEquals(Files.readAllBytes(built.staging().resolve(relative)), archive.getInputStream(archive.getEntry(product.productId() + "/" + relative)).readAllBytes());
@@ -336,7 +336,7 @@ final class SectPresetValidationTest {
         }
         Files.writeString(group, groupOriginal, StandardCharsets.UTF_8);
         // Actual static presets retain dynastic doctrines without a selecting actor.
-        assertEquals(69, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());
+        assertEquals(71, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());
     }
 
     @Test
@@ -379,7 +379,7 @@ final class SectPresetValidationTest {
             assertThrows(IllegalArgumentException.class, () -> StaticValidation.validate(fixture.product(), fixture.repository()));
         }
         Files.writeString(rite, riteOriginal, StandardCharsets.UTF_8);
-        assertEquals(69, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());
+        assertEquals(71, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());
     }
 
     @Test
@@ -417,7 +417,7 @@ final class SectPresetValidationTest {
                 effect.replace("generate_coa = religious_title", ""),
                 effect.replace("set_coa = des_procreation_rite_coa", "set_coa = des_vivhite_rite_coa"),
                 effect + "\nstartup_grant = { title:e_des_procreation_papacy = { change_title_holder = root } }\n"));
-        assertEquals(69, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());
+        assertEquals(71, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());
     }
 
     @Test
@@ -443,7 +443,7 @@ final class SectPresetValidationTest {
             Files.write(staged, original);
             Files.write(built.manifest(), ManifestJson.encode(manifest));
         }
-        assertEquals(69, builder.verify(fixture.product(), built.staging(), built.manifest()).verifiedFiles());
+        assertEquals(71, builder.verify(fixture.product(), built.staging(), built.manifest()).verifiedFiles());
     }
 
     @Test

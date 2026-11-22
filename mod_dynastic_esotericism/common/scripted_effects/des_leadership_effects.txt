@@ -1,0 +1,73 @@
+﻿# Rite scope. This marker is a diagnosis, never permission or a success receipt.
+des_mark_house_leadership_pending_effect = {
+    if = {
+        limit = { NOT = { has_variable = des_house_leadership_pending } }
+        set_variable = { name = des_house_leadership_pending value = yes }
+        debug_log = "DES: created Dynasty House leadership awaits a valid own-Rite head and observed original-House membership"
+    }
+}
+
+# Rite scope. Follow the actual own-Rite religious head, never the current Dynast.
+# All existing creation/edit claims finish before des_sync_rite_effect reaches us.
+des_sync_created_dynasty_leadership_effect = {
+    if = {
+        limit = {
+            des_created_dynasty_leadership_target_trigger = yes
+            NOT = { has_variable = des_leadership_sync_in_progress }
+        }
+        save_scope_as = des_leadership_rite
+        var:des_bound_dynasty.var:des_cadet_main_house = { save_scope_as = des_leadership_main_house }
+        des_mark_house_leadership_pending_effect = yes
+        if = {
+            limit = { des_has_own_living_religious_head_trigger = yes }
+            set_variable = { name = des_leadership_sync_in_progress value = yes }
+            head_of_rite = {
+                save_scope_as = des_leadership_actual_head
+                # The existing product path admits actual followers; it does not
+                # delete their former Dynasty or invent a religious-head identity.
+                des_join_rite_dynasty_effect = yes
+            }
+            if = {
+                limit = {
+                    des_created_dynasty_leadership_target_trigger = yes
+                    des_has_own_living_religious_head_trigger = yes
+                    head_of_rite = scope:des_leadership_actual_head
+                    var:des_bound_dynasty.var:des_cadet_main_house = scope:des_leadership_main_house
+                    scope:des_leadership_actual_head = {
+                        is_alive = yes
+                        rite = scope:des_leadership_rite
+                        faith = scope:des_leadership_rite.faith
+                        dynasty = scope:des_leadership_rite.var:des_bound_dynasty
+                    }
+                }
+                scope:des_leadership_actual_head = {
+                    if = {
+                        limit = { NOT = { house = scope:des_leadership_main_house } }
+                        set_house = scope:des_leadership_main_house
+                    }
+                }
+                if = {
+                    limit = {
+                        scope:des_leadership_actual_head = {
+                            house = scope:des_leadership_main_house
+                            dynasty = scope:des_leadership_rite.var:des_bound_dynasty
+                        }
+                    }
+                    scope:des_leadership_main_house = {
+                        if = {
+                            limit = { NOT = { house_head = scope:des_leadership_actual_head } }
+                            set_house_head = scope:des_leadership_actual_head
+                        }
+                    }
+                    # Inspect the actual field after the effect, not just membership.
+                    if = {
+                        limit = { scope:des_leadership_main_house = { house_head = scope:des_leadership_actual_head } }
+                        remove_variable = des_house_leadership_pending
+                        set_variable = { name = des_last_religious_house_head value = scope:des_leadership_actual_head }
+                    }
+                }
+            }
+            remove_variable = des_leadership_sync_in_progress
+        }
+    }
+}

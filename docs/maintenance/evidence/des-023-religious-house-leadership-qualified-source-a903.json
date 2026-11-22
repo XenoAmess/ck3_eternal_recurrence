@@ -1,0 +1,42 @@
+{
+  "schema": "xar.des023.house-leader.qualified-source.v1",
+  "at_utc": "2026-11-22T20:00:00.513545+00:00",
+  "status": "SOURCE_AND_28_PYTHON_31_JAVA_QUALIFIED_CANDIDATE71_AND_ENGINE_PENDING",
+  "reviewed_user_Source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-religious-house-leadership-source-a01\\source-manifest-final.json",
+    "bytes": 14775,
+    "sha256": "e819fb46c2a70d0323599f4b192003174c3fffd7c8fe27f2ce17dea4f31a2a21"
+  },
+  "exact14_adoption": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-des-leadership-integration-a903\\source-adopted-not-compiled.json",
+    "bytes": 4311,
+    "sha256": "39fb6072632513542523c48681d1c812ee1e989c88c4aa0ad57c0049099a1a6d"
+  },
+  "software": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-des-leadership-integration-a903\\affected31-qualified.json",
+    "bytes": 2350,
+    "sha256": "5d3ec34b84c3390bdec4b91a58d437ec2106f5d7225813b5cf61950eff261d83"
+  },
+  "new_runtime": [
+    "common/scripted_effects/des_leadership_effects.txt",
+    "common/scripted_triggers/des_leadership_triggers.txt"
+  ],
+  "counts": {
+    "development": 50,
+    "release": 71
+  },
+  "scope": {
+    "new_created_dynasty_only": true,
+    "native_dynast_reuse_untouched": true,
+    "actual_own_Rite_head_required": true,
+    "stable_cadet_main_house_never_reselected": true,
+    "original_binding_and_native_claim_pending_untouched": true,
+    "annual_after_all_living_cadet_recovery": true,
+    "HouseHead_observed_after_setter": true,
+    "Dynast_must_be_separately_observed_not_faked": true,
+    "shared_other_Rite_Pope_not_moved": true
+  },
+  "existing_binding_cadet_and_old60_69_candidates_preserved": true,
+  "new_SourceA_tag_formal_upload_Game": false,
+  "new_SDK_Java_Native_changed": false
+}

@@ -17,7 +17,7 @@ import unittest
 REPO=Path(os.environ.get('DES_REPO',str(Path(__file__).resolve().parents[1])))
 SOURCE=Path(os.environ.get('DES_CADET_SOURCE',str(REPO)))
 BASE_SOURCE=Path(os.environ.get('DES_CADET_BASE_SOURCE',str(REPO)))
-STOCK_FIXTURE=Path(__file__).resolve().parent/'testdata/des_cadet_stock_26785313.json'
+STOCK_FIXTURE=REPO/'tools/testdata/des_cadet_stock_26785313.json'
 sys.path.insert(0,str(REPO/'ck3_autonomous_player/src'))
 sys.path.insert(0,str(REPO/'tools/lyd_i3b_checkpoint_readback/reader/dependencies'))
 from xar_autoplayer.campaign_score_save_reader import melt_tokens
@@ -274,7 +274,7 @@ class CadetPolicyTest(unittest.TestCase):
         self.assertEqual(['des_annual_cadet_recovery'],[r['key'] for r in hook])
         original=ast(read(MOD+'common/on_action/des_on_actions.txt'))
         pulse=body(body(original,'yearly_global_pulse'),'on_actions')
-        self.assertEqual(['des_annual_watchdog','des_annual_cadet_recovery'],[r['value'] for r in pulse])
+        self.assertEqual(['des_annual_watchdog','des_annual_cadet_recovery','des_annual_house_leadership_recovery'],[r['value'] for r in pulse])
         self.assertIn('des_annual_cadet_recovery_effect',read(MOD+'common/on_action/des_cadet_on_actions.txt'))
         binding=read(MOD+'common/scripted_effects/des_binding_effects.txt')
         self.assertIn('name = des_cadet_main_house value = scope:des_created_house',binding)
