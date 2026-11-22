@@ -21,6 +21,8 @@
 
 ## 机制篇
 
+- [CK3 1.21 经济分析](ck3-1.21-economy-analysis-2026-11-18.md) / [期货与虚拟货币市场产品入口](../mod_financial_markets/README.md) — 本机 `4-8e1c2f1861` 的 1.21.0／build26622941 研究与独立金融 Mod；产品入口连接综合设计、实施计划、测试方案和实际状态，完整产品验收与 Workshop 首发仍未完成。
+
 - [cross-save-persistence.md](cross-save-persistence.md) — **跨存档全局存储的完整方案**（本项目核心）。通道排查结论、教程位机制、读写架构、分层阈值编码、限制与扩展
 - [gui-system.md](gui-system.md) — GUI 系统：scripted_widgets 注册、动画 state（trigger_when/on_start）求值规则、数据上下文作用域、scripted_gui 执行链
 - [on_actions-events.md](on_actions-events.md) — on_action 覆盖/合并行为、开局钩子选择、effect 与事件的并发陷阱、延迟事件的 root 失效

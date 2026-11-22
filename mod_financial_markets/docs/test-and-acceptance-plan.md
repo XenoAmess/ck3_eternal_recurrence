@@ -2,6 +2,8 @@
 
 日期：2026-11-18。每个用例绑定实际源码、游戏版本、输入和输出。NOT_RUN、BLOCKED、FAIL、PASS 分开记录；一个阶段或工具的 PASS 不外推为整产品通过。
 
+本页定义预期用例与通过标准；已经取得的有限证据和未完成项见[实际业务验收矩阵](actual-business-acceptance-matrix.md)及[当前施工状态](development-status.md)，实施顺序见[实现计划](implementation-plan.md)。各阶段、场次和软件结果保持原范围，不合并为完整产品通过。
+
 ## 1. 分层验证
 
 | 层次 | 如何验证 | 能证明什么 |
