@@ -1,0 +1,73 @@
+{
+  "schema": "current267.health-reason-diagnostic.frozen-pair.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T09:53:08.405867+00:00",
+  "status": "EXACT_DIAGNOSTIC_FROZEN_PAIR_READY_NOT_LIVE_QUALIFICATION",
+  "java_metadata_only_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-health-reason-pair-a761\\frozen-delivery-final.json",
+    "bytes": 5837,
+    "sha256": "3d3613353f0888567ea12e7c61144ff0359be9a2fcb5ff238c9e5a760b6e7b3b"
+  },
+  "pair_sidecar": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-health-reason-pair-a761\\native-pair-binding-final.json",
+    "bytes": 5727,
+    "sha256": "29f987a4543e6d982c242f279ecdc16944d34f60eb6527774cad78fe197a631a"
+  },
+  "operator_template": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-health-reason-pair-a761\\runtime-operator-template-v35.native-pair.json",
+    "bytes": 7035,
+    "sha256": "a319cab98161bc544f684cc178341fb79ee4b76b6d2bed7076ae6124f5485185"
+  },
+  "runtime_manifest": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-cli-runtime-a650-superman-health/runtime-manifest.json",
+    "bytes": 171133,
+    "sha256": "0429cd2506259c5245883fce14e26d3e3c7c61eab107734fda77855f8ca4e296"
+  },
+  "classpath_argfile": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-cli-runtime-a650-superman-health/cli-classpath.args",
+    "bytes": 16387,
+    "sha256": "e9df1bfcbada2d4e56a991200db4087bba4a6acc63aa5b617f41f0b2ebfb38e9"
+  },
+  "native_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-health-reason-diagnostic-a761\\frozen-delivery-final.json",
+    "bytes": 1449,
+    "sha256": "5ace5344f5e4f5ca5d7572ee16ef30fa13a95993b38034935b40a5636a8bc5dd"
+  },
+  "native_refs": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-health-reason-diagnostic-a761\\ordinary-native-artifact-refs.json",
+    "bytes": 3038,
+    "sha256": "1009a5e4f793d5073410d0ed4c5c9a20558a8eb97fc38dc5f16f5cde4b13d4d9"
+  },
+  "NativeTree": "5546bf402a426ce454b960c08c71185e200c3282",
+  "reused_JavaTree": "16d3df7b9a72927c0a2b6b2f729f08f09cbf59ac",
+  "actual_Java_JAR_copies": 0,
+  "actual_Java_JAR_paths_reused": 158,
+  "Maven_tests_package_CRC_or_158identity_recount": 0,
+  "source_cut_all158_from_one_tree": false,
+  "original_Java_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-superman-health-source-a650\\frozen-delivery-final.json",
+    "bytes": 4755,
+    "sha256": "61269233f021dbed0225689b8720191115083290b8063e8b597f1076db9f7b86"
+  },
+  "original_F650_qualified46_composite_reused": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-superman-health-source-a650/compile-qualification-summary.json",
+    "bytes": 6757,
+    "sha256": "4d9d2a63c8a94726d806efa2cee9f2c782d677a3383a462b0d0004845e0556ac"
+  },
+  "metadata_phase_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-health-reason-pair-a761\\metadata-phase-closure.json",
+    "bytes": 2705,
+    "sha256": "62f75b958d2da6550016e2fc193a0865c74612e064d2173c2516ab778b958feb"
+  },
+  "independent_allocation_clarification": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-health-reason-pair-a761\\metadata-allocation-clarification-a02.json",
+    "bytes": 4925,
+    "sha256": "dd37d3d919db03fe7aae142a0c3cc577f391f9d974986562165345d0d3368664"
+  },
+  "actual_FileStandardInfo_allocation_endpoint_before_clarification_record_bytes": 53480,
+  "original_GetCompressedFileSize_sum_not_AllocationSize": 36232,
+  "metadata20MiB_bound_valid_with1MiB_final_record_reserve": true,
+  "future_reserved_bytes": 0,
+  "actual_Native_graph": "893 TUs /1 Raw CL /892 reused; independent new DLL9df362, B298 retained. Identity/registration/ON COFF0.",
+  "scope": "Only last-stage/case/role/value/cleanup failure DATA. No schema/header/cap/guard/success source change. Original a759 typed refusal and c491/F650 immutable. No current20 outcome/Saved/effective-health/render or new live credit."
+}

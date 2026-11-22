@@ -1,0 +1,53 @@
+{
+  "schema": "current267.Main-Vivhite.actual-public-text-partial.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T09:53:08.405867+00:00",
+  "Main": {
+    "explicit_new_operation_EResult1_receipt": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-final-release-a640\\main-native-publish-networkretry-a765-receipt.json",
+      "bytes": 644,
+      "sha256": "a4b1ff408c6f0560b6843d1406fb8b15093c168c04443f3ba956b1e60cec930d"
+    },
+    "publication_result": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-publication-a640\\operator-a765-main-network-retry-a01\\publication-result.json",
+      "bytes": 1365,
+      "sha256": "db25e604f40ddb224fac680b2b5be302a78d68ecee96803e96e87423c619eef6"
+    },
+    "real_download91": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-publication-a640\\operator-a765-main-network-retry-a01\\main-download-native.json",
+      "bytes": 1248,
+      "sha256": "4666c9ff9a2be221d0f9786efc69f9e9cedd5273448c5133209082c54a1d2a00"
+    },
+    "download91_exact": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-publication-a640\\operator-a765-main-network-retry-a01\\main-download-exact.json",
+      "bytes": 759,
+      "sha256": "49b08ebbcc57c06a427f27bd80a9a4ff1feb158973e2aeac8442324a6b5f6f9a"
+    },
+    "complete_API_title_body": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-public-readback-a766\\actual-delivery-final.json",
+      "bytes": 3596,
+      "sha256": "3e40c8b6741f57d90f1453f7aa93a73966e119cb3bcc2661ab470e51f1a47575"
+    },
+    "Notes_followup_429_not_observed": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-public-readback-a766\\notes-followup-a01\\actual-delivery-Notes-not-observed.json",
+      "bytes": 1123,
+      "sha256": "cd488a138194ded95933c9bdd30e146484d618cbe8b13075afa821c4faf05096"
+    },
+    "original_a640_ER2_and_three_beforeSubmit_failures_unchanged": true,
+    "SourceA_tag": "d14908142751c5db95555dc566527613539cba88 / v1.0.3"
+  },
+  "Vivhite": {
+    "complete_API_title_body": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-public-readback-a765\\actual-delivery-pending-Notes.json",
+      "bytes": 5877,
+      "sha256": "613e1ac14b8d70c4fe809a3446294b8211d7bb1da3503d10944872b8bcf8fedb"
+    },
+    "Notes": "Two HTTP429, no Retry-After. Not observed, not a content mismatch. No automatic HTTP polling.",
+    "SourceA_tag": "8dc9af47a022eb9e85ca92bf6616c68e47463765 / vivhite-v1.0.3"
+  },
+  "full_body_matching_includes_entire_footer_and_image_URLs": true,
+  "only_normalized_line_endings_and_final_LF": true,
+  "actual_cache_Game_load_and_complete_Notes_NOT_GRANTED_here": true,
+  "no_new_Steam_SDK_HTTP_Game_by_documentation_owner": true,
+  "all_prior_failed_pending_reports_unchanged": true
+}
