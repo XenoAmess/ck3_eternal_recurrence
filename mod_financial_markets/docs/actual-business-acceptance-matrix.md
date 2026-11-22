@@ -4,6 +4,10 @@
 
 本轮新增有限资金回兑还须在真实场次核发行现金预存、独立持有人交币与实付、过期余款回收、继承后的同一账户/条款，以及物理SAVE中的窗口/收据与现金；现有246项及7项新SAVE子例均不替代这些后态。期货盘口须核所选永久合约号、真实有资新仓委托、独立限价和实际交易日VWAP，不能拿现货报价或提交成功代替期货成交。
 
+## R0068：独立受控engine六格OBSERVED，非整产品通过
+
+三SAVE／两自然日验证实际正资金费12分LONG→SHORT、负资金费13分SHORT→LONG、单手floor0、同日typed重试不重复付款、次日无新合格print不再收资金费、三对正常六单满额平仓。MTM−1280／＋1408／−10与费用分开；六账户599682＝受控初始600000−开仓158−平仓160，原native67／75／82关闭，slice710／717／724及12项零额保证金、所有外部活动保留。Whole11→180→671，终点audit670＋Whole-only news_entry244完整留存，不要求全市场不变。run0／verify0、case／boundary、generic case/gui_contract为true；business_pass／product_release_pass仍false，边界为SOURCE_CASE_OBSERVED_PENDING_PRODUCT_AGGREGATION。Root先手读／分数核账、后继consumer02不自动授Root判定；原baseline05失败及首次续读保留。Game／Host／Job／keeper／allocator0、CAS16140释放。只授本controlled六格，不重计640测试、旧GUI6/6或自然AI／容量性能／20剧情／通知／全产品／首发。[R68原件及范围](r0068-controlled-funding-acceptance.md)。
+
 ## R0065：通知有可见标题，正文与来源／接收人关联未通过（当前P0）
 
 真实3自然日／两SAVE／6份只读DTO：第1天empty×2，第2／3天各pending→visible，标题“新币进入市场”保留阳性；description、saved GUI／script scopes为空，recipient与news-origin不可用、delivery_confirmed=false，不能猜币身份／localization key或据此授本地／全游戏送达。本场合格通知NOT_OBSERVED，原run0／verify2、case／boundary false、整案PARTIAL；Game18364／Host／Job／keeper正常0，CAS16094 done/resources[]。23,514基线完整记录比较相同，终点自然差异与两个原pipeline0保留。正文及来源关联为当前P0；闭场后两行effect→text仅获14项既有source检查通过，无新增mirror测试或新版实机正例，旧634／453不外推。期货GUI有限6/6不变；Q48构建／OFF资格不替代通知、资金费、容量、逐日覆盖、性能、全产品或首发。[本场原件与缺口](r0065-notification-partial.md)。

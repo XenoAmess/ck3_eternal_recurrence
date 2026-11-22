@@ -2,7 +2,11 @@
 
 2026-11-22，machine_id: 4-8e1c2f1861。
 
-## 当前状态（R0067闭场，min90修复完成软件验证，资金费实机继续）
+## 当前状态（R0068受控engine资金费六格有限通过，整产品仍待）
+
+独立schema3合成出资fixture在三SAVE／两自然日实付p仓12分LONG→SHORT、n仓13分反向资金费，单手仅MTM／资金费0；同日原46字段重试相同，次日旧print过期无再扣，三对经正常六单全额平仓。六测试账户最终599682＝600000−开仓158−平仓160，非全市场常量；原仓／关闭slice／外部AI和news-only记录均保留。Root先手工评审，后继consumer02只辅证前四格算术，不授自动Root判断。原baseline05 pipeline1与06首次读回恢复无重SAVE边界保持。原run0／verify0、case／boundary及case/gui_contract有限通过，但generic business_pass／product_release_pass均false、SOURCE_CASE_OBSERVED_PENDING_PRODUCT_AGGREGATION；Game7060／Host／Job／keeper／allocator0，CAS16140释放。与既有期货GUI6/6分开，不授自然AI／容量性能／20剧情／通知／全产品／首发，后继继续通知。[R68实付与完整边界](r0068-controlled-funding-acceptance.md)。
+
+## R0067历史状态（闭场，min90修复完成软件验证，资金费实机继续）
 
 R66六次通知查询均empty，R67首次基线SAVE超过原128MiB上限，两场均保持PARTIAL。R67闭场后独立保全和诊断确认真实oracle96；测试夹具下限100→90已修复，原生产经济规则未改。受影响40项与后继完整640项均0FES，640包含40，不重复累加。下一场须重新emit并以新存档预算执行，正负资金费、通知实际送达、容量／性能、完整Mod和首发仍待。[当前软件验证](controlled-funding-min90-software.md) · [R66事实](r0066-notification-empty-observation.md) · [R67事实](r0067-baseline-limit-diagnostic.md)。
 

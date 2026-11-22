@@ -1,0 +1,719 @@
+{
+  "schema": "ck3-financial-r0068-controlled-engine-six-cell-evidence-v1",
+  "date": "2026-11-22",
+  "machine_id": "4-8e1c2f1861",
+  "run_id": "4-8e1c2f1861--financial-markets--R0068",
+  "source_roots": {
+    "TASK": "C:\\workspace\\ck3-market-task-20261118",
+    "OPS": "C:\\workspace\\ck3-market-live-20261118\\operations",
+    "SCENE": "C:\\workspace\\ck3-market-live-20261122e"
+  },
+  "originals": [
+    {
+      "id": "closure",
+      "root": "TASK",
+      "path": "R0068-closure-before-release.actual.json",
+      "bytes": 4561,
+      "sha256": "5529c199442ec02d690b745843d276423cee479548ce01651f21b8f236ab9b64"
+    },
+    {
+      "id": "released",
+      "root": "TASK",
+      "path": "R0068-closure-released.actual.json",
+      "bytes": 3536,
+      "sha256": "18ba1ff68117ac9b07c35b44dcce133f0cbc0ed4063eaa3bdfe22334e6f8b5b6"
+    },
+    {
+      "id": "registered_source",
+      "root": "TASK",
+      "path": "funding32-scene22e-root-storage-review01.actual.json",
+      "bytes": 5980,
+      "sha256": "a442233acc1117fbf2e2886909bb4da30a22d8b75bf8d7d2f232c59afad50d1e"
+    },
+    {
+      "id": "Core47_manifest",
+      "root": "TASK",
+      "path": "candidate-financial-core47/manifest.json",
+      "bytes": 41450,
+      "sha256": "cd2084d893199891c85d87d9b4ab500fd3550394864f62f162b8b7e177357f38"
+    },
+    {
+      "id": "reviewed_roles",
+      "root": "TASK",
+      "path": "funding32-Root-reviewed-roles01.actual.json",
+      "bytes": 778,
+      "sha256": "8b2de52279f2438410887325bb0b1f19326b70d233a5ca09749f695047d42f82"
+    },
+    {
+      "id": "baseline_Root_phase_review",
+      "root": "TASK",
+      "path": "funding32-baseline-Root-review01.actual.json",
+      "bytes": 3683,
+      "sha256": "a2b8228076a5b04ac86f0964b99abbca16f4ada17c79755a65918cbc7731a86d"
+    },
+    {
+      "id": "book_Root_phase_review",
+      "root": "TASK",
+      "path": "funding32-book-Root-review01.actual.json",
+      "bytes": 3372,
+      "sha256": "043b9e6e2f18d6ad96c78b5bea99992e7b70622312240982b32114385cef67e6"
+    },
+    {
+      "id": "funding_Root_phase_review",
+      "root": "TASK",
+      "path": "funding32-funding-Root-review01.actual.json",
+      "bytes": 4647,
+      "sha256": "a3be86d4adcdcc3e8f9afaba79cb6fadd6974c7738e1f3ea974368be1174d40f"
+    },
+    {
+      "id": "terminal_Root_phase_review",
+      "root": "TASK",
+      "path": "funding32-terminal-Root-review01.actual.json",
+      "bytes": 4254,
+      "sha256": "d8a9eeea9b13f5b370e25172b6f5b684693eecec911d69790adf3bb644042a1a"
+    },
+    {
+      "id": "Root_manual_funding_fraction_review",
+      "root": "TASK",
+      "path": "funding32-funding-Root-independent-numeric01.actual.json",
+      "bytes": 5505,
+      "sha256": "56e167900c24eadb5714b293b0a8764248fb276eedf0f860059bbc67614b3cf7"
+    },
+    {
+      "id": "Root_manual_next_close_review",
+      "root": "TASK",
+      "path": "funding32-terminal-Root-independent-numeric01.actual.json",
+      "bytes": 5909,
+      "sha256": "d68788810f189c06bbf53f067d8b6ae123f30be0141f0062d61a168e85970101"
+    },
+    {
+      "id": "postwindow_four_cell_facts02",
+      "root": "TASK",
+      "path": "funding32-four-cell-facts02.actual.json",
+      "bytes": 872734,
+      "sha256": "ec3244ff2ab3cf1161b44aa9d77e55cf051bd82461771700bb3528b7827e74bf"
+    },
+    {
+      "id": "original_generic_result",
+      "root": "SCENE",
+      "path": "live/4-8e1c2f1861--financial-markets--R0068/case-output/generic-product-case-result.json",
+      "bytes": 174156,
+      "sha256": "ed7c2b571c00657ac5743ac03c8e968d25c3b49dd8ea912cf5519dd41dcb72e9"
+    },
+    {
+      "id": "baseline_pipeline",
+      "root": "TASK",
+      "path": "funding32-baseline01-PIPELINE.actual.json",
+      "bytes": 23311,
+      "sha256": "3b70ebda7a6e2ccb887ad01052e7ed211ba1ba313b0bb84bf68daf1250bbeaa0"
+    },
+    {
+      "id": "funding_pipeline",
+      "root": "TASK",
+      "path": "funding32-funding01-PIPELINE.actual.json",
+      "bytes": 24617,
+      "sha256": "c4e9f785dc8004ba9f8296ddc8db6bcd62224504576f4ca478bc3e38c14813c1"
+    },
+    {
+      "id": "terminal_pipeline",
+      "root": "TASK",
+      "path": "funding32-terminal01-PIPELINE.actual.json",
+      "bytes": 25127,
+      "sha256": "79a9e335b7b9f8d073ece50a7d1a815bdae79441f02f70b9046758a8004c9e87"
+    },
+    {
+      "id": "archive_1",
+      "root": "TASK",
+      "path": "financial-physical-saves-funding32/funding32-baseline01/ARCHIVE.actual.json",
+      "bytes": 7513,
+      "sha256": "ed0106ee2fed90a170e92c80681974cb6e0703397ed80163775d9cc364c8af73"
+    },
+    {
+      "id": "archive_2",
+      "root": "TASK",
+      "path": "financial-physical-saves-funding32/funding32-funding01/ARCHIVE.actual.json",
+      "bytes": 7519,
+      "sha256": "4b4a568290f407dd231b5ab1bbccaf44ccc753ebc6a03f3b049ccfe45cf3e05f"
+    },
+    {
+      "id": "archive_3",
+      "root": "TASK",
+      "path": "financial-physical-saves-funding32/funding32-terminal01/ARCHIVE.actual.json",
+      "bytes": 7529,
+      "sha256": "41e36c1ae3810b730a3372259f690586c0b41694211147433f63641694adb26e"
+    },
+    {
+      "id": "funding32-start01-run",
+      "root": "OPS",
+      "path": "funding32-start01-run/ORIGINAL-WAIT.actual.json",
+      "bytes": 1551,
+      "sha256": "48db412969b31f4968968f5cb926ac6659f5406fa14507d0301f695eb8639e87"
+    },
+    {
+      "id": "funding32-start01-verify",
+      "root": "OPS",
+      "path": "funding32-start01-verify/ORIGINAL-WAIT.actual.json",
+      "bytes": 1560,
+      "sha256": "4fd530af2d7688fbb72615889c410ff85161c4888250cf4cdd1b3725006a41c0"
+    },
+    {
+      "id": "START-funding32-R0068-01",
+      "root": "OPS",
+      "path": "START-funding32-R0068-01/ORIGINAL-WAIT.actual.json",
+      "bytes": 2214,
+      "sha256": "3db73dd8748d669880c3f9c3579b7e1623c34790064360d47b4d1c1835639775"
+    },
+    {
+      "id": "ALLOCATE-funding32-start01",
+      "root": "OPS",
+      "path": "ALLOCATE-funding32-start01/ORIGINAL-WAIT.actual.json",
+      "bytes": 1852,
+      "sha256": "f1bea87ed7e36980b15d7120f0734590053006a82142363100fa658fa085f0be"
+    },
+    {
+      "id": "PIPELINE-funding32-baseline01",
+      "root": "OPS",
+      "path": "PIPELINE-funding32-baseline01/ORIGINAL-WAIT.actual.json",
+      "bytes": 2625,
+      "sha256": "85deccb8c210b510df598a58f16bb5855cddd389cecae216a2f697f84c273ba8"
+    },
+    {
+      "id": "CONTINUE-funding32-baseline-after-archive06-01",
+      "root": "OPS",
+      "path": "CONTINUE-funding32-baseline-after-archive06-01/ORIGINAL-WAIT.actual.json",
+      "bytes": 2823,
+      "sha256": "5b2b94796baed6210a759eb87774e2346f6ee4391812ddac049289c8b17f898e"
+    },
+    {
+      "id": "PIPELINE-funding32-funding02",
+      "root": "OPS",
+      "path": "PIPELINE-funding32-funding02/ORIGINAL-WAIT.actual.json",
+      "bytes": 2619,
+      "sha256": "a3f58760dbe3d0704d62b7eba2bf6cdfc89fbbd86678b8090c2cb48c136f2418"
+    },
+    {
+      "id": "PIPELINE-funding32-terminal02",
+      "root": "OPS",
+      "path": "PIPELINE-funding32-terminal02/ORIGINAL-WAIT.actual.json",
+      "bytes": 2623,
+      "sha256": "39990bb54d9be4d6d548c5e58e1e246aae4c68391b4824914d15c6c2adf1c951"
+    },
+    {
+      "id": "COMPARE-funding32-four-cells02",
+      "root": "OPS",
+      "path": "COMPARE-funding32-four-cells02/ORIGINAL-WAIT.actual.json",
+      "bytes": 1467,
+      "sha256": "8e7887e293f32d4e33388425babbf25eded2394009c6da7bcf9d676b748d2280"
+    }
+  ],
+  "source_scope": {
+    "registered_source": "12451f0bcf4dc2ffb04d5bc6b78e1e31fc25fa15",
+    "Core47_sourceRevision": "12451f0bcf4dc2ffb04d5bc6b78e1e31fc25fa15",
+    "Core47_files": 234,
+    "software640_recounted_as_new": false,
+    "controlled_synthetic_business_effect_fixture_not_natural_AI": true,
+    "original_economic_rules_not_changed_by_this_scene": true
+  },
+  "actual_finite_result": {
+    "controlled_engine_cells_OBSERVED": 6,
+    "public_run": 0,
+    "public_verify": 0,
+    "case_acceptance_pass": true,
+    "qualified_boundary_pass": true,
+    "generic_case_contract_qualified": true,
+    "generic_gui_contract_qualified": true,
+    "generic_result_boundary": "SOURCE_CASE_OBSERVED_PENDING_PRODUCT_AGGREGATION",
+    "generic_business_pass": false,
+    "generic_product_release_pass": false,
+    "whole_product_release_pass": false,
+    "saved_dates_raw": [
+      53144328,
+      53144352,
+      53144376
+    ],
+    "natural_days": 2,
+    "physical_SAVEs_and_archives": 3,
+    "parser_passes_per_SAVE": {
+      "audit": 2,
+      "Whole": 2,
+      "Raw_groups": 2,
+      "total": 6
+    },
+    "actual_total_parser_passes": 18,
+    "extra_SAVE_or_parser_passes_for_docs_or_metadata_consumer": 0
+  },
+  "real_funding_separate_from_MTM_and_fees": {
+    "IDs_are_native_story_IDs_unless_explicitly_permanent": true,
+    "p": {
+      "position": "67",
+      "contract": "62",
+      "index": "53",
+      "lots": 128,
+      "entry_to_new_mark": [
+        106,
+        96
+      ],
+      "rate": "1/1000",
+      "MTM_long_cents": -1280,
+      "funding_cents": 12,
+      "direction": "LONG collateral to SHORT free"
+    },
+    "n": {
+      "position": "75",
+      "contract": "70",
+      "index": "54",
+      "lots": 128,
+      "entry_to_new_mark": [
+        96,
+        107
+      ],
+      "rate": "-1/1000",
+      "MTM_long_cents": 1408,
+      "funding_cents": 13,
+      "direction": "SHORT collateral to LONG free"
+    },
+    "s": {
+      "position": "82",
+      "contract": "62",
+      "lots": 1,
+      "entry_to_new_mark": [
+        106,
+        96
+      ],
+      "rate": "1/1000",
+      "MTM_long_cents": -10,
+      "funding_cents": 0,
+      "fractional_carry_invented": false
+    },
+    "eligibility": "Contract62=129lots/13674c/day0/VWAP106; contract70=128lots/12288c/day0/VWAP96. Actual day1/current quality3 oracle and >=10lots/>=10000c/fresh prior-day print; original gates retained.",
+    "Root_manual_observations_and_four_real_legs": {
+      "p": {
+        "position": "67",
+        "I": 96,
+        "E": 106,
+        "lots": 128,
+        "entry_mark": 106,
+        "new_mark": 96,
+        "entry": [
+          86391,
+          13568,
+          86391,
+          13568
+        ],
+        "funding": [
+          86391,
+          12276,
+          87683,
+          13568
+        ],
+        "opening_fee_each": 41,
+        "rate": "1/1000",
+        "funding_integer_cents": 12,
+        "MTM_integer_cents": -1280,
+        "actual_four_legs": [
+          0,
+          -1292,
+          1292,
+          0
+        ],
+        "expected_four_legs": [
+          0,
+          -1292,
+          1292,
+          0
+        ],
+        "four_leg_order": [
+          "long_free",
+          "long_margin",
+          "short_free",
+          "short_margin"
+        ]
+      },
+      "n": {
+        "position": "75",
+        "I": 107,
+        "E": 96,
+        "lots": 128,
+        "entry_mark": 96,
+        "new_mark": 107,
+        "entry": [
+          87675,
+          12288,
+          87675,
+          12288
+        ],
+        "funding": [
+          89096,
+          12288,
+          87675,
+          10867
+        ],
+        "opening_fee_each": 37,
+        "rate": "-1/1000",
+        "funding_integer_cents": 13,
+        "MTM_integer_cents": 1408,
+        "actual_four_legs": [
+          1421,
+          0,
+          0,
+          -1421
+        ],
+        "expected_four_legs": [
+          1421,
+          0,
+          0,
+          -1421
+        ],
+        "four_leg_order": [
+          "long_free",
+          "long_margin",
+          "short_free",
+          "short_margin"
+        ]
+      },
+      "s": {
+        "position": "82",
+        "I": 96,
+        "E": 106,
+        "lots": 1,
+        "entry_mark": 106,
+        "new_mark": 96,
+        "entry": [
+          99893,
+          106,
+          99893,
+          106
+        ],
+        "funding": [
+          99893,
+          96,
+          99903,
+          106
+        ],
+        "opening_fee_each": 1,
+        "rate": "1/1000",
+        "funding_integer_cents": 0,
+        "MTM_integer_cents": -10,
+        "actual_four_legs": [
+          0,
+          -10,
+          10,
+          0
+        ],
+        "expected_four_legs": [
+          0,
+          -10,
+          10,
+          0
+        ],
+        "four_leg_order": [
+          "long_free",
+          "long_margin",
+          "short_free",
+          "short_margin"
+        ]
+      }
+    },
+    "same_day_retry": {
+      "Root_original_typed_capture_fields_per_pair": 46,
+      "Root_verdict": "All46 original typed fields have identical field sets and exact values before/after on each of positions67,75,82, including both accounts free/reserved, collateral, identities, status/lots, settlement/funding days, execution/oracle context and pending presence. Root ran the bounded JSON-only AST comparison; no SAVE or parser was repeated.",
+      "postwindow_consumer_derived_checks": {
+        "p": {
+          "floor_funding_cents": "12",
+          "separate_MTM_cents": "-1280",
+          "clamped_rate": {
+            "numerator": "1",
+            "denominator": "1000"
+          },
+          "all_six_cash_collateral_leg_deltas_equal": true,
+          "all_source_gates_true": true,
+          "retry_comparison_all_true": true,
+          "derived_retry_comparison_key_count_not_original_capture_field_count": 49,
+          "arithmetic_alone_proves_isolation": false
+        },
+        "n": {
+          "floor_funding_cents": "13",
+          "separate_MTM_cents": "1408",
+          "clamped_rate": {
+            "numerator": "-1",
+            "denominator": "1000"
+          },
+          "all_six_cash_collateral_leg_deltas_equal": true,
+          "all_source_gates_true": true,
+          "retry_comparison_all_true": true,
+          "derived_retry_comparison_key_count_not_original_capture_field_count": 49,
+          "arithmetic_alone_proves_isolation": false
+        },
+        "s": {
+          "floor_funding_cents": "0",
+          "separate_MTM_cents": "-10",
+          "clamped_rate": {
+            "numerator": "1",
+            "denominator": "1000"
+          },
+          "all_six_cash_collateral_leg_deltas_equal": true,
+          "all_source_gates_true": true,
+          "retry_comparison_all_true": true,
+          "derived_retry_comparison_key_count_not_original_capture_field_count": 49,
+          "arithmetic_alone_proves_isolation": false
+        }
+      }
+    }
+  },
+  "next_day_and_actual_full_close_Root_manual_evidence": {
+    "next_day": "Native date53144352→53144376 (one natural24h interval), financial day1→2. All three original next captures version1/oracle_day2/quality3/last_settled_day2. Marks96/107/96 unchanged; MTM0. Actual pre-close execution_day0 is stale versus day2-1=1; no new eligible print. last_funding_day remains1 and same balances/collateral persist. Old +/-1/1000 rate variables do not imply a second payment. No date or financial setters.",
+    "closes": {
+      "p": {
+        "source_position": "67",
+        "slice_position": "710",
+        "orders": [
+          "14",
+          "15"
+        ],
+        "lots": 128,
+        "price": 96,
+        "gross_each": 12288,
+        "fee_each": 37,
+        "pre_free": [
+          86391,
+          87683
+        ],
+        "pre_margin": [
+          12276,
+          13568
+        ],
+        "closed_free": [
+          98630,
+          101214
+        ],
+        "closed_original_lots": 0,
+        "closed_original_status": 2,
+        "closed_margins": [
+          0,
+          0
+        ],
+        "closed_account_reserved": [
+          0,
+          0
+        ],
+        "closing_orders_remaining": [
+          0,
+          0
+        ],
+        "closing_orders_status": [
+          2,
+          2
+        ]
+      },
+      "n": {
+        "source_position": "75",
+        "slice_position": "717",
+        "orders": [
+          "16",
+          "17"
+        ],
+        "lots": 128,
+        "price": 107,
+        "gross_each": 13696,
+        "fee_each": 42,
+        "pre_free": [
+          89096,
+          87675
+        ],
+        "pre_margin": [
+          12288,
+          10867
+        ],
+        "closed_free": [
+          101342,
+          98500
+        ],
+        "closed_original_lots": 0,
+        "closed_original_status": 2,
+        "closed_margins": [
+          0,
+          0
+        ],
+        "closed_account_reserved": [
+          0,
+          0
+        ],
+        "closing_orders_remaining": [
+          0,
+          0
+        ],
+        "closing_orders_status": [
+          2,
+          2
+        ]
+      },
+      "s": {
+        "source_position": "82",
+        "slice_position": "724",
+        "orders": [
+          "18",
+          "19"
+        ],
+        "lots": 1,
+        "price": 96,
+        "gross_each": 96,
+        "fee_each": 1,
+        "pre_free": [
+          99893,
+          99903
+        ],
+        "pre_margin": [
+          96,
+          106
+        ],
+        "closed_free": [
+          99988,
+          100008
+        ],
+        "closed_original_lots": 0,
+        "closed_original_status": 2,
+        "closed_margins": [
+          0,
+          0
+        ],
+        "closed_account_reserved": [
+          0,
+          0
+        ],
+        "closing_orders_remaining": [
+          0,
+          0
+        ],
+        "closing_orders_status": [
+          2,
+          2
+        ]
+      }
+    },
+    "original_position_permanent_IDs": [
+      "1",
+      "2",
+      "3"
+    ],
+    "original_native67_75_82_lots0_status2": true,
+    "closed_slice_native_IDs": [
+      "710",
+      "717",
+      "724"
+    ],
+    "closed_slices_keep_historical_positive_lots_not_live_open_rights": [
+      128,
+      128,
+      1
+    ],
+    "original_six_and_closed_slice_six_margin_remaining0": true,
+    "six_account_reserved0": true,
+    "closing_order_pairs_SELL_BUY": [
+      [
+        "14",
+        "15"
+      ],
+      [
+        "16",
+        "17"
+      ],
+      [
+        "18",
+        "19"
+      ]
+    ],
+    "closing_fee_each_side_p_n_s_cents": [
+      37,
+      42,
+      1
+    ],
+    "closing_total_fee_cents": 160,
+    "opening_total_fee_cents": 158,
+    "six_final_free_cents_in_long_short_p_n_s_order": [
+      98630,
+      101214,
+      101342,
+      98500,
+      99988,
+      100008
+    ],
+    "controlled_balance_identity_cents": "599682 = 600000 - 158 - 160",
+    "identity_not_a_whole_market600000_conservation_claim": true
+  },
+  "complete_graph_and_unknowns": {
+    "Whole_counts": [
+      11,
+      180,
+      671
+    ],
+    "terminal_financial_audit_records": 670,
+    "terminal_Whole_records": 671,
+    "Whole_only_record": {
+      "native_ID": "244",
+      "type": "xfm_news_entry",
+      "news_ID": "1",
+      "canonical_bytes": 570,
+      "canonical_sha256": "972971b2c7edddf747763b18be05be2d337c24d872619b3e079f75297453ea3a"
+    },
+    "terminal_accounts": 273,
+    "terminal_coins": 4,
+    "terminal_positions_including_closed_history_and_foreign": 12,
+    "terminal_debts": 0,
+    "foreign_AI_activity_retained_not_all_unchanged_or_attributed_to_controlled_funding": true,
+    "global_news_prerequisites_missing_remain_UNKNOWN": true,
+    "exit_autosave_verified": false,
+    "general_financialCertified_or_source_layout_pass": false
+  },
+  "original_failure_and_recovery": {
+    "baseline05_original_returncode": 1,
+    "baseline05_original_seconds": 6.00924019998638,
+    "cause": "Metadata-root validation incorrectly included physical.ck3; AUTHOR-archive and ARCHIVE had already returned0.",
+    "successor06_operation": "CONTINUE-funding32-baseline-after-archive06-01",
+    "successor06_returncode": 0,
+    "successor06_seconds": 62.74479090000386,
+    "first_audit_Whole_twoRaw_after_completed_archive_not_a_retry_of_completed_parsers": true,
+    "new_SAVE_copy_or_archive_in_successor06": false,
+    "funding02_seconds": 69.71479410000029,
+    "terminal02_seconds": 73.21773390000453,
+    "R67_or_failed05_rewritten": false
+  },
+  "decision_order_and_postwindow_metadata_only_consumer": {
+    "public_first_consumed_explicit_Root_manual_phase_judgements": true,
+    "Root_phase_and_manual_fraction_review_source_IDs": [
+      "baseline_Root_phase_review",
+      "book_Root_phase_review",
+      "funding_Root_phase_review",
+      "terminal_Root_phase_review",
+      "Root_manual_funding_fraction_review",
+      "Root_manual_next_close_review"
+    ],
+    "consumer02_returncode": 0,
+    "consumer02_original_started_at_utc": "2026-11-22T08:09:11.261288+00:00",
+    "consumer02_seconds": 0.4744139000249561,
+    "consumer02_unknown_required_fields": [],
+    "consumer02_Root_assertions_filled": false,
+    "consumer02_OBSERVED_or_business_pass_generated": false,
+    "consumer02_next_day_and_close_not_evaluated": true,
+    "consumer02_new_SAVE_reads": 0,
+    "consumer02_new_parser_passes": 0,
+    "new_tests_or_automated_Root_judgement_credit": false,
+    "immutable_per_fill_or_funding_cash_receipt_not_invented": true
+  },
+  "normal_closure_and_limits": {
+    "run_seconds": 2576.4662186000205,
+    "verify_seconds": 0.7656191000132822,
+    "START_seconds": 2579.687391100015,
+    "allocator_seconds": 2986.385980799998,
+    "Game_pid": 7060,
+    "Game_birth_filetime": "134398058218167988",
+    "Game_Host_Job_keeper_allocator_all0": true,
+    "CAS": [
+      16139,
+      16140
+    ],
+    "resources": [],
+    "natural_AI_funding_capacity_performance20narratives_notification_daily_or_whole_product_Workshop_credit": false,
+    "existing_futures_GUI_finite6of6_not_recounted_as_twelve_or_fullproduct": true
+  },
+  "document_author": "Completed JSON/source metadata only, no SAVE or large Raw-group/audit payload, parser, tests/build/OS/Game/Git/formal-source operation."
+}
