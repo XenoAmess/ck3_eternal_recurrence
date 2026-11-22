@@ -3,12 +3,13 @@
 #include "xar_bridge/ck3_121003_rite_draft26785313_v2.hpp"
 #include "xar_bridge/ck3_121003_gui_controls26785313_v2.hpp"
 #include "xar_bridge/game_adapter.hpp"
+#include "xar_bridge/ck3_121003_rite_text_values26785313_v1.hpp"
 #include <memory>
 #include <vector>
 namespace xar::ck3_121003::build26785313 {
 struct RiteCreateFrame267V1{bool facts_verified=false;ck3_1210::CoreSnapshotPrefix core{};std::uintptr_t game=0,jomini=0,storage=0,actor=0;std::optional<RiteDraftV2>draft;};
-struct RiteCreateAssociation267V1{std::uintptr_t controller=0,context=0,window_root=0;std::uint32_t source_rite_id=0xFFFFFFFFU;std::int32_t actor_id=-1;std::uint64_t connection=0,original_deadline=0;std::array<std::byte,16>selected_draft_header{};std::vector<std::array<std::byte,0x48>>selected_draft_rows;friend bool operator==(const RiteCreateAssociation267V1&,const RiteCreateAssociation267V1&)=default;};
-struct RiteCreateRaw267V1{RiteCreateSource267V1 source{};std::uintptr_t controller=0,context=0,root=0,create_button=0,modal=0,manager=0;bool pending=false,entered=false,cleanup_known=true;std::optional<RiteDraftV2>draft_witness;std::optional<ck3_1210::GuiControlCaptureV1>controls_witness;RiteDoctrineItems267V1 doctrine_items;std::array<std::byte,16>selected_draft_header{},dialog_header{};std::vector<std::array<std::byte,0x48>>selected_draft_rows;std::vector<std::uintptr_t>dialog_pointers;friend bool operator==(const RiteCreateRaw267V1&,const RiteCreateRaw267V1&)=default;};
+struct RiteCreateAssociation267V1{std::uintptr_t controller=0,context=0,window_root=0;std::uint32_t source_rite_id=0xFFFFFFFFU;std::int32_t actor_id=-1;std::uint64_t connection=0,original_deadline=0;std::array<std::byte,16>selected_draft_header{};std::vector<std::array<std::byte,0x48>>selected_draft_rows;std::optional<RiteTextValues267V1>text_values;friend bool operator==(const RiteCreateAssociation267V1&,const RiteCreateAssociation267V1&)=default;};
+struct RiteCreateRaw267V1{RiteCreateSource267V1 source{};std::uintptr_t controller=0,context=0,root=0,create_button=0,modal=0,manager=0;bool pending=false,entered=false,cleanup_known=true;std::optional<RiteDraftV2>draft_witness;std::optional<ck3_1210::GuiControlCaptureV1>controls_witness;RiteDoctrineItems267V1 doctrine_items;std::array<std::byte,16>selected_draft_header{},dialog_header{};std::vector<std::array<std::byte,0x48>>selected_draft_rows;std::vector<std::uintptr_t>dialog_pointers;std::optional<RiteTextValues267V1>text_values;friend bool operator==(const RiteCreateRaw267V1&,const RiteCreateRaw267V1&)=default;};
 enum class RiteCreateCallStatus267V1{unavailable,returned,indeterminate};
 struct RiteCreateCall267V1{RiteCreateCallStatus267V1 status=RiteCreateCallStatus267V1::unavailable;bool entered=false,cleanup_known=true;};
 struct RiteCreateContext267V1;

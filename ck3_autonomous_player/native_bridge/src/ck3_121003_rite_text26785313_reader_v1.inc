@@ -1,0 +1,15 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_RITE_TEXT_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_TEXT_V1
+namespace {
+bool RiteTextReadValid267V1(ReadonlyContext&q,const ck3_11906::MainThreadExecutionStampV1&s,const OwnerInvocationV1&i,const RiteTextRequest267V1&r,std::uint64_t mono)noexcept{const auto wall=std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();return wall>0&&static_cast<std::uint64_t>(wall)<r.deadline_unix_ms&&mono&&GetTickCount64()<mono&&Owner(q,s,i);}
+}
+bool ReadRiteTextFrameOnOwner267V1(const ReadonlyBindings&b,ck3_11906::MainThreadQueryMailboxV1*m,const ck3_11906::MainThreadQueryTicketV1&t,const ck3_11906::MainThreadExecutionStampV1&s,void*context,const RiteTextRequest267V1&r,std::uint64_t mono,RiteTextFrame267V1&out,std::string&reason)noexcept{
+ out={};reason="rite_text_actual_owner_frame_unavailable";try{if(!m||m->offline_fixture||!context||m->permitted_executor_novemvigintary!=&ExecuteRiteTextOnOwner267V1)return false;ReadonlyContext q;q.bindings=b;q.mailbox=m;q.ticket=t;const OwnerInvocationV1 i{&ExecuteRiteTextOnOwner267V1,context};q.mode=ReadonlyModeV1::core_and_rite_draft_costs;
+ RiteDraftRequestV2 want;want.window.window_name="rite_creation_window";want.window.expected_core=r.expected;want.window.deadline_unix_ms=r.deadline_unix_ms;want.window.connection_generation=static_cast<const RiteTextContext267V1*>(context)->connection_generation;want.expected_source_rite_id=r.expected_source_rite_id;q.rite_draft_request=want;
+ if(!RiteTextReadValid267V1(q,s,i,r,mono)||!Read(q,s,i)||!q.observation.available||q.observation.offline_fixture||!q.observation.main_owner_observed)return false;
+ out.core=q.observation.core;out.facts_verified=true;if(!Same(out.core,r.expected)){reason="rite_text_actual_core_changed";return false;}if(!q.observation.rite_draft)return false;out.draft=q.observation.rite_draft;
+ if(!At(reinterpret_cast<std::uintptr_t>(b.core.game_state_slot),0,out.game)||!At(reinterpret_cast<std::uintptr_t>(b.core.jomini_state_slot),0,out.jomini)||!At(reinterpret_cast<std::uintptr_t>(b.core.character_storage_slot),0,out.storage))return false;
+ out.actor=Resolve(b.core,out.core.played_character_id);std::int32_t id=-1;std::uint32_t magic=0;std::uintptr_t death=1;
+ if(!out.actor||!At(out.actor,0x18,id)||id!=out.core.played_character_id||!At(out.actor,0x1C,magic)||magic!=0x43686172||!At(out.actor,0x1D0,death)||death||!RiteTextReadValid267V1(q,s,i,r,mono))return false;reason.clear();return true;
+ }catch(...){reason="rite_text_actual_frame_exception";return false;}}
+
+#endif

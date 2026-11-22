@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_RITE_TEXT_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_TEXT_V1
+#include "xar_bridge/ck3_121003_rite_text26785313_owner_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RITE_CREATE_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_CREATE_V1
 #include "xar_bridge/ck3_121003_rite_create26785313_owner_v1.hpp"
 #endif
@@ -17140,6 +17143,9 @@ void RunConnectedSession(
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RITE_CREATE_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_CREATE_V1
         if(!early_step_dispatched&&step==xar::ck3_121003::build26785313::kRiteCreateStep267V1&&xar::game::IsCk3_121003Core26785313Descriptor(game.descriptor())){connected=write_frame(pipe,xar::ck3_121003::build26785313::DispatchRiteCreateRequest267V1(game,state.connection_generation,request_id,step,incoming.payload,g_main_thread_query_mailbox_v1));early_step_dispatched=true;}
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_RITE_TEXT_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_TEXT_V1
+        if(!early_step_dispatched&&step==xar::ck3_121003::build26785313::kRiteTextStep267V1&&xar::game::IsCk3_121003Core26785313Descriptor(game.descriptor())){connected=write_frame(pipe,xar::ck3_121003::build26785313::DispatchRiteTextRequest267V1(game,state.connection_generation,request_id,step,incoming.payload,g_main_thread_query_mailbox_v1));early_step_dispatched=true;}
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1) && XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1
         if(!early_step_dispatched&&std::find(xar::ck3_121003::build26785313::kTedTransitionSteps267V1.begin(),xar::ck3_121003::build26785313::kTedTransitionSteps267V1.end(),step)!=xar::ck3_121003::build26785313::kTedTransitionSteps267V1.end()&&xar::game::IsCk3_121003Core26785313Descriptor(game.descriptor())){connected=write_frame(pipe,xar::ck3_121003::build26785313::DispatchTedTransitionRequest267V1(game,state.connection_generation,request_id,step,incoming.payload,g_main_thread_query_mailbox_v1));early_step_dispatched=true;}

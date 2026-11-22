@@ -1,0 +1,28 @@
+{
+  "schema": "xar.native.current267.rite-text.qualified-source-adoption.v1",
+  "at_utc": "2026-11-22T23:53:20.324824+00:00",
+  "qualified_source_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-text-source-a01\\qualified-source-manifest.json",
+    "bytes": 38028,
+    "sha256": "9131bc304d3f069e406deaf5cdb5042b78af8ed677a774138cf316520281839e"
+  },
+  "software_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-text-source-a01\\NoGame\\closure-final.json",
+    "bytes": 4351,
+    "sha256": "3cf544ee0511987eaf0503ec0f0633eb4e708fd030bc58ca6677aeaf17becf5b",
+    "metadata": {
+      "bytes": 4351,
+      "allocated": 8192,
+      "file_id": "281474981891384",
+      "volume": "882653518",
+      "creation_filetime": "134398650892985482",
+      "write_filetime": "134398650892985482",
+      "attributes": 32
+    }
+  },
+  "exact_target_count": 28,
+  "scope": "Name/description actual CUTF8String32 setters + double actual CString32 values, creating-only writes, immutable complete private Source including headers/dirty markers/model/actor/world/connection, once/original deadline/UNKNOWN. Real voidreturn never applied; fresh independent readback required. CREATE original query and originalCreate confirmation bind same text values. Actual new Runtime/live/business NOT_RUN.",
+  "old_Fcreate_1c74_and_bad_first_Create_COFFFFailure_preserved": true,
+  "public_header_contract_and_original15_3Java_requests_unchanged": true,
+  "new_runtime_and_text_applied_or_Game_business": "PENDING_SEPARATE"
+}

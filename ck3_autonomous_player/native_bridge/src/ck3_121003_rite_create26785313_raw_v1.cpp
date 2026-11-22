@@ -56,11 +56,17 @@ template<class T>bool At(std::uintptr_t p,std::size_t n,T&v)noexcept{constexpr a
  out.controls_witness=std::move(controls);out.doctrine_items=std::move(items);
 
  result.create_admissible=result.is_creating&&result.native_can_create&&result.piety_missing_raw<=0&&result.known_dynastic&&result.selected_dynastic&&result.create_button_visible&&result.create_button_enabled&&!result.blocked_by_unrelated_modal&&d.window.tree.front().visible&&d.window.tree.front().enabled;
+#if defined(XAR_CK3_ENABLE_121003_26785313_RITE_TEXT_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_TEXT_V1
+ RiteTextValues267V1 text;if(!ReadRiteTextValues267V1(b,out.controller,q.deadline_unix_ms,mono,text,why))return false;out.text_values=std::move(text);
+#endif
  out.source.draft=result;return Fresh(b,f,q.deadline_unix_ms,mono);
 }
 [[maybe_unused]]bool Confirmation(const ReadonlyBindings&b,const RiteCreateFrame267V1&f,const RiteCreateRequest267V1&q,const RiteCreateAssociation267V1&a,std::uint64_t mono,RiteCreateRaw267V1&out,std::string&why){
  const auto image=b.module_base;if(a.actor_id!=f.core.played_character_id||a.source_rite_id!=q.expected_source_rite_id||a.original_deadline!=q.deadline_unix_ms||!Controller(b,f,a.controller,a.source_rite_id,a.context,a.window_root)){why="rite_create_original_create_controller_or_actor_changed";return false;}
  if(!SelectedDraft(a.controller,out.selected_draft_header,out.selected_draft_rows)||out.selected_draft_header!=a.selected_draft_header||out.selected_draft_rows!=a.selected_draft_rows){why="rite_create_original_selected_draft_changed_before_confirmation";return false;}
+#if defined(XAR_CK3_ENABLE_121003_26785313_RITE_TEXT_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_TEXT_V1
+ RiteTextValues267V1 text;if(!a.text_values||!ReadRiteTextValues267V1(b,a.controller,q.deadline_unix_ms,mono,text,why)||text!=*a.text_values){why="rite_create_original_name_or_description_changed_before_confirmation";return false;}out.text_values=std::move(text);
+#endif
  out.controller=a.controller;out.context=a.context;out.source.phase=RiteCreatePhase267V1::confirmation;out.source.source_rite_id=a.source_rite_id;out.source.actor_id=a.actor_id;out.entered=true;
  if(!ManagerCall(image,out.manager)){out.cleanup_known=false;return false;}
  if(!out.manager||!Copy(out.manager+0x18,out.dialog_header.data(),16))return false;std::uintptr_t data=0;std::int32_t cap=0,count=0;std::memcpy(&data,out.dialog_header.data(),8);std::memcpy(&cap,out.dialog_header.data()+8,4);std::memcpy(&count,out.dialog_header.data()+12,4);

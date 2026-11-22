@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_RITE_TEXT_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_TEXT_V1
+#include "xar_bridge/ck3_121003_rite_text26785313_owner_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RITE_CREATE_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_CREATE_V1
 #include "xar_bridge/ck3_121003_rite_create26785313_owner_v1.hpp"
 #endif
@@ -296,9 +299,14 @@ const game::AdapterDescriptor &PersonalGoldAdapterDescriptorV2() noexcept {
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RITE_CREATE_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_CREATE_V1
   static const auto create_caps=[&]{std::vector<std::string_view>combined(create_base_descriptor.capabilities.begin(),create_base_descriptor.capabilities.end());combined.push_back(kRiteCreateCapability267V1);return combined;}();
-  static const game::AdapterDescriptor create_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",create_caps};return create_descriptor;
+  static const game::AdapterDescriptor create_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",create_caps};const auto&text_base_descriptor=create_descriptor;
 #else
-  return create_base_descriptor;
+  const auto&text_base_descriptor=create_base_descriptor;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_RITE_TEXT_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_TEXT_V1
+  static const auto text_caps=[&]{std::vector<std::string_view>combined(text_base_descriptor.capabilities.begin(),text_base_descriptor.capabilities.end());combined.push_back(kRiteTextCapability267V1);return combined;}();static const game::AdapterDescriptor text_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",text_caps};return text_descriptor;
+#else
+  return text_base_descriptor;
 #endif
 }
 bool PersonalGoldRouteEnabledV2([[maybe_unused]]const game::AdapterDescriptor &d) noexcept {
