@@ -1,0 +1,740 @@
+{
+  "schema": "ck3-financial-controlled-funding-vanilla-source-readback-evidence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "actual_readback_cutoff_utc": "2026-11-22T02:14:30.605444900Z",
+  "status": "OFFLINE_SOURCE_EVIDENCE_ONLY_CURRENT_121_IMPORT_NOT_OBSERVED",
+  "intended_use": "A new isolated controlled funding fixture may attempt the existing saved-startup import. This is neither R64 recovery nor natural-campaign progress.",
+  "actual_source_pin": {
+    "path": "C:\\workspace\\ck3-upgrade-20261001\\baseline\\vanilla-save\\last_save.ck3",
+    "bytes": 10935391,
+    "sha256": "a122e52d4339129d692cd1266fe57795d7c509c0274a739b9b8165bf940cdfeb"
+  },
+  "original_source_PIN_record": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\controlled-funding-vanilla-source-PIN01.actual.json",
+    "bytes": 197,
+    "sha256": "f72da96c0c9ec551bd5a72ae41d8e244cb06dd83a390dd188010428cf0143c93"
+  },
+  "original_stable_source_identity": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\controlled-funding-vanilla-source-IDENTITY01.actual.json",
+    "bytes": 534,
+    "sha256": "cb39f472863e571d2dc7dc9dd595cc3db6a7248c1ec14efda97b5593357e6990"
+  },
+  "actual_PIN_identity_summary": {
+    "source": {
+      "path": "C:\\workspace\\ck3-upgrade-20261001\\baseline\\vanilla-save\\last_save.ck3",
+      "bytes": 10935391,
+      "sha256": "a122e52d4339129d692cd1266fe57795d7c509c0274a739b9b8165bf940cdfeb"
+    },
+    "actual_complete_hash_passes": 1,
+    "st_dev": 11562708564543669174,
+    "st_ino": 5348024558604247,
+    "st_mtime_ns": 1790827644269001400,
+    "st_nlink": 1,
+    "stable_before_after_open_and_path": true,
+    "source_modified_or_copied": false,
+    "actual_header_actor_date_financial_absence_qualified": false
+  },
+  "original_operations": [
+    {
+      "operation": "PIN-controlled-funding-vanilla01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PIN-controlled-funding-vanilla01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 999,
+        "sha256": "240f009c008aa382212a6876e14c122ece17dbea71b0d3842ff6d33d342a3f7f"
+      },
+      "actual_returncode": 0,
+      "elapsed_seconds": 0.27420169999822974,
+      "actual_argv": [
+        "C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:/workspace/ck3-market-task-20261118/pin_controlled_funding_vanilla_Root01.py"
+      ],
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PIN-controlled-funding-vanilla01\\stdout.log",
+        "bytes": 185,
+        "sha256": "9086c3cde8319e95aec12c133f5e67fd1291fd086587f2583c4431a03b4b9892"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PIN-controlled-funding-vanilla01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "operation": "AUTHOR-controlled-funding-vanilla-inspection01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUTHOR-controlled-funding-vanilla-inspection01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1395,
+        "sha256": "680ae265faf66da2ea7f32d91a3e9de78ab39bb2170f360c3087895a7b7043b8"
+      },
+      "actual_returncode": 0,
+      "elapsed_seconds": 0.3791179999971064,
+      "actual_argv": [
+        "C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3-market-task-20261118\\controlled-funding-vanilla-source-readback01\\author_vanilla_App17_readback01.py",
+        "inspection",
+        "--actual-save-pin",
+        "C:\\workspace\\ck3-market-task-20261118\\controlled-funding-vanilla-source-PIN01.actual.json",
+        "--source-commit",
+        "e11ad8dff03b124c27ea0f76fd5bd5b3e3ca149f",
+        "--output",
+        "C:\\workspace\\ck3-market-task-20261118\\controlled-funding-vanilla-inspection01"
+      ],
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUTHOR-controlled-funding-vanilla-inspection01\\stdout.log",
+        "bytes": 210,
+        "sha256": "03c5d07090ae41e3db7f4bb078b13286717ff8d2a7c787b86494ad0527f035a8"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUTHOR-controlled-funding-vanilla-inspection01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "operation": "READ-controlled-funding-vanilla-inspection01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-controlled-funding-vanilla-inspection01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1940,
+        "sha256": "28b705aaca48f83f61cdc771c1d26720c97d217109befc7328a1a2197468e946"
+      },
+      "actual_returncode": 0,
+      "elapsed_seconds": 7.693741399998544,
+      "actual_argv": [
+        "java",
+        "-Xms32m",
+        "-Xmx256m",
+        "--class-path",
+        "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\save-audit-app17\\app\\financial-markets-tools-0.1.0-SNAPSHOT.jar;C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\save-audit-app17\\lib\\main\\org.xar.ck3.ck3-save-core-0.1.0.jar;C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\save-audit-app17\\lib\\main\\com.fasterxml.jackson.core.jackson-databind-2.21.5.jar;C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\save-audit-app17\\lib\\main\\com.fasterxml.jackson.core.jackson-core-2.21.5.jar;C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\save-audit-app17\\lib\\main\\com.fasterxml.jackson.core.jackson-annotations-2.21.jar",
+        "org.xar.ck3.save.Inspection",
+        "--inputs",
+        "C:\\workspace\\ck3-market-task-20261118\\controlled-funding-vanilla-inspection01\\request.json",
+        "--output",
+        "C:\\workspace\\ck3-market-task-20261118\\controlled-funding-vanilla-inspection01\\report.json"
+      ],
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-controlled-funding-vanilla-inspection01\\stdout.log",
+        "bytes": 326,
+        "sha256": "4c678d787efcff401e424cf00970e744ae50fc325d3eda6f388d1ff7f092b99c"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-controlled-funding-vanilla-inspection01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "operation": "AUTHOR-controlled-funding-vanilla-audit01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUTHOR-controlled-funding-vanilla-audit01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1823,
+        "sha256": "8f9a969f2739edfab4b890e44002a54bf17084d5170824a8cd6cfda18812fcde"
+      },
+      "actual_returncode": 0,
+      "elapsed_seconds": 0.3894832000078168,
+      "actual_argv": [
+        "C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3-market-task-20261118\\controlled-funding-vanilla-source-readback01\\author_vanilla_App17_readback01.py",
+        "audit",
+        "--actual-save-pin",
+        "C:\\workspace\\ck3-market-task-20261118\\controlled-funding-vanilla-source-PIN01.actual.json",
+        "--source-commit",
+        "e11ad8dff03b124c27ea0f76fd5bd5b3e3ca149f",
+        "--inspection-preparation",
+        "C:\\workspace\\ck3-market-task-20261118\\controlled-funding-vanilla-inspection01\\PREPARED.actual.json",
+        "--inspection-report",
+        "C:\\workspace\\ck3-market-task-20261118\\controlled-funding-vanilla-inspection01\\report.json",
+        "--inspection-original-wait",
+        "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-controlled-funding-vanilla-inspection01\\ORIGINAL-WAIT.actual.json",
+        "--output",
+        "C:\\workspace\\ck3-market-task-20261118\\controlled-funding-vanilla-App17-audit01"
+      ],
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUTHOR-controlled-funding-vanilla-audit01\\stdout.log",
+        "bytes": 211,
+        "sha256": "698e6dfa6e53d17ba5191bf7e721674a6f54588a8a8173ee5d33814614dfd60e"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUTHOR-controlled-funding-vanilla-audit01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "operation": "READ-controlled-funding-vanilla-audit01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-controlled-funding-vanilla-audit01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1261,
+        "sha256": "a8ad8b0c0680def84ea19a757b188ca1c5a5aa3941d8158ac75a86706bba7951"
+      },
+      "actual_returncode": 2,
+      "elapsed_seconds": 10.230987299990375,
+      "actual_argv": [
+        "java",
+        "-Xms32m",
+        "-Xmx256m",
+        "-jar",
+        "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\save-audit-app17\\quarkus-run.jar",
+        "audit-retired-xfma",
+        "--inputs",
+        "C:\\workspace\\ck3-market-task-20261118\\controlled-funding-vanilla-App17-audit01\\request.json",
+        "--output",
+        "C:\\workspace\\ck3-market-task-20261118\\controlled-funding-vanilla-App17-audit01\\report.json"
+      ],
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-controlled-funding-vanilla-audit01\\stdout.log",
+        "bytes": 361,
+        "sha256": "7b1ecc57ee51803a0edfe505958b0bb783f92475af17bbf519865eccf8c2fc3b"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-controlled-funding-vanilla-audit01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "actual_inspection": {
+    "request": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\controlled-funding-vanilla-inspection01\\request.json",
+      "bytes": 1447,
+      "sha256": "af7f77de32695c0853e55bc0070669569c8fe1ca8c9c180ff6ad3e7a3ba612e4"
+    },
+    "preparation": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\controlled-funding-vanilla-inspection01\\PREPARED.actual.json",
+      "bytes": 12038,
+      "sha256": "4c615aaae2f6768fc005ff8a2626a2ef18c2cbe6c5a52a30e63b976f3fd5830f"
+    },
+    "report": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\controlled-funding-vanilla-inspection01\\report.json",
+      "bytes": 416886,
+      "sha256": "18d479e35696f8deaceab7cc7cfc563966a2039053eeecd70cf215063e86e8cf"
+    },
+    "schema": "ck3-save-inspection-v4",
+    "businessAssessment": "NOT_ASSESSED",
+    "gameStarted": false,
+    "decoder": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\news29-rakaly-dependency01\\package\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+      "bytes": 6552576,
+      "sha256": "e154af990aaed2c2f44284946772188c9749ad3f6b641b41f6c23456a6f1633d"
+    },
+    "decoded_complete_stream_bytes": "91152188",
+    "decoded_complete_stream_sha256": "3e283bf390d4f9309c4624120145b533dcf734edfeb520237e0d93f9cbba84dc",
+    "exitCode": 0,
+    "saveUnchanged": true,
+    "header_original_typed_entries": [
+      {
+        "key": "version",
+        "operator": "=",
+        "value": {
+          "type": "atom",
+          "token": "\"1.20.0.2\""
+        }
+      },
+      {
+        "key": "save_game_version",
+        "operator": "=",
+        "value": {
+          "type": "atom",
+          "token": "17"
+        }
+      },
+      {
+        "key": "meta_date",
+        "operator": "=",
+        "value": {
+          "type": "atom",
+          "token": "1066.9.15"
+        }
+      },
+      {
+        "key": "meta_government",
+        "operator": "=",
+        "value": {
+          "type": "atom",
+          "token": "feudal_government"
+        }
+      },
+      {
+        "key": "meta_player_tier",
+        "operator": "=",
+        "value": {
+          "type": "atom",
+          "token": "3"
+        }
+      }
+    ],
+    "root_date_original_typed_entry": {
+      "key": "date",
+      "operator": "=",
+      "value": {
+        "type": "atom",
+        "token": "1066.9.15"
+      }
+    },
+    "actual_player_original_typed_projections": [
+      {
+        "name": "played_character",
+        "kind": "OTHER",
+        "path": [
+          "played_character"
+        ],
+        "occurrence": 0,
+        "canonicalTokenSha256": "9b2375be3c31b404629103211b27ee8e4aa118fcb7a7ca3ca52a2c0fbc95ce6e",
+        "ast": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "name",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "\"UNKNOWN\""
+              }
+            },
+            {
+              "key": "character",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "31254"
+              }
+            },
+            {
+              "key": "player",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "1"
+              }
+            },
+            {
+              "key": "legacy",
+              "operator": "=",
+              "value": {
+                "type": "block",
+                "entries": [
+                  {
+                    "key": "",
+                    "operator": "",
+                    "value": {
+                      "type": "block",
+                      "entries": [
+                        {
+                          "key": "character",
+                          "operator": "=",
+                          "value": {
+                            "type": "atom",
+                            "token": "31254"
+                          }
+                        },
+                        {
+                          "key": "date",
+                          "operator": "=",
+                          "value": {
+                            "type": "atom",
+                            "token": "1066.9.15"
+                          }
+                        },
+                        {
+                          "key": "wars",
+                          "operator": "=",
+                          "value": {
+                            "type": "block",
+                            "entries": [
+                              {
+                                "key": "",
+                                "operator": "",
+                                "value": {
+                                  "type": "atom",
+                                  "token": "0"
+                                }
+                              },
+                              {
+                                "key": "",
+                                "operator": "",
+                                "value": {
+                                  "type": "atom",
+                                  "token": "0"
+                                }
+                              },
+                              {
+                                "key": "",
+                                "operator": "",
+                                "value": {
+                                  "type": "atom",
+                                  "token": "0"
+                                }
+                              },
+                              {
+                                "key": "",
+                                "operator": "",
+                                "value": {
+                                  "type": "atom",
+                                  "token": "0"
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "key": "rally_points",
+              "operator": "=",
+              "value": {
+                "type": "block",
+                "entries": [
+                  {
+                    "key": "",
+                    "operator": "",
+                    "value": {
+                      "type": "block",
+                      "entries": [
+                        {
+                          "key": "province",
+                          "operator": "=",
+                          "value": {
+                            "type": "atom",
+                            "token": "2619"
+                          }
+                        },
+                        {
+                          "key": "color",
+                          "operator": "=",
+                          "value": {
+                            "type": "atom",
+                            "token": "0"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "key": "last_triggered_court_events_date",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "1066.9.15"
+              }
+            },
+            {
+              "key": "raid_intent",
+              "operator": "=",
+              "value": {
+                "type": "block",
+                "entries": [
+                  {
+                    "key": "type",
+                    "operator": "=",
+                    "value": {
+                      "type": "atom",
+                      "token": "adventure_intent_viking"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "currently_played_characters",
+        "kind": "OTHER",
+        "path": [
+          "currently_played_characters"
+        ],
+        "occurrence": 0,
+        "canonicalTokenSha256": "71574aea1e49ff1768cd3df78403fcbe2105e9864b1cf44fdb2102b44e51ee43",
+        "ast": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "",
+              "operator": "",
+              "value": {
+                "type": "atom",
+                "token": "31254"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "actor": {
+      "path": [
+        "living",
+        "31254"
+      ],
+      "coverage": "FULL_RECORD",
+      "canonicalTokenSha256": "f46d01fff0c0a0f84247693f1986ddd8a988133195110c4735ab60a26319f4b1",
+      "birth_original_typed_entry": {
+        "key": "birth",
+        "operator": "=",
+        "value": {
+          "type": "atom",
+          "token": "1015.1.1"
+        }
+      },
+      "alive_data_present": true,
+      "gold_original_typed_entry": {
+        "key": "gold",
+        "operator": "=",
+        "value": {
+          "type": "block",
+          "entries": [
+            {
+              "key": "value",
+              "operator": "=",
+              "value": {
+                "type": "atom",
+                "token": "255"
+              }
+            }
+          ]
+        }
+      },
+      "financial_PRIMARY_cash_not_inferred": true
+    },
+    "story_structure": [
+      {
+        "path": [
+          "stories"
+        ],
+        "occurrence": 0,
+        "namedBlockChildren": [
+          "active"
+        ],
+        "numericBlockChildren": 0,
+        "scalarKeys": [
+          "next"
+        ]
+      },
+      {
+        "path": [
+          "stories",
+          "active"
+        ],
+        "occurrence": 0,
+        "namedBlockChildren": [],
+        "numericBlockChildren": 51,
+        "scalarKeys": []
+      }
+    ],
+    "structureCoverage": {
+      "enabled": true,
+      "roots": [
+        [
+          "stories"
+        ],
+        [
+          "stories",
+          "active"
+        ]
+      ],
+      "maxRelativeNamedDepth": 4,
+      "maxNodes": 1024,
+      "maxKeys": 4096,
+      "excludesNumericRecordPaths": true
+    }
+  },
+  "actual_financial_audit": {
+    "request": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\controlled-funding-vanilla-App17-audit01\\request.json",
+      "bytes": 915,
+      "sha256": "9e1f2d36229df0a3316950d9d5be22a348223281e3fafb7e6918f5ca8847e357"
+    },
+    "preparation": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\controlled-funding-vanilla-App17-audit01\\PREPARED.actual.json",
+      "bytes": 13596,
+      "sha256": "ba761fe3fc227bfa07eeceb0a7de64a362a9c287b605869f8e6fac1a4b06bdd9"
+    },
+    "report": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\controlled-funding-vanilla-App17-audit01\\report.json",
+      "bytes": 10694,
+      "sha256": "3ec3d50664482b7dcc67e58a9d28e57dd566f81580fb5c63313f064cbab944a2"
+    },
+    "schema": "ck3-financial-save-audit-retired-xfma-source-bound-candidate-v1",
+    "gameVersion": "1.20.0.2",
+    "saveFormat": "17",
+    "gameDate": "1066.9.15",
+    "layoutHypothesis": {
+      "gameVersion": "1.20.0.2",
+      "saveFormat": "17",
+      "numericScale": 100000,
+      "storyReferenceType": "story",
+      "characterReferenceType": "char",
+      "numberIdentityEncoding": "identityRequired"
+    },
+    "complete_streaming_coverage": {
+      "passes": 2,
+      "completeStreamSha256": "3e283bf390d4f9309c4624120145b533dcf734edfeb520237e0d93f9cbba84dc",
+      "completeStreamBytes": "91152188",
+      "tableRecords": 51,
+      "selectedFinancialRecords": 0,
+      "streamedFinancialTokenBytes": 0,
+      "projectedFields": 0,
+      "budgets": {
+        "maxTableRecords": 200000,
+        "maxFinancialRecords": 65536,
+        "maxRecordBytes": 524288,
+        "maxStreamedBytes": 67108864,
+        "maxProjectedFields": 1000000
+      },
+      "tableSlots": 51,
+      "tombstones": []
+    },
+    "recognized_financial_story_count": 0,
+    "firstUntypedRecords": [],
+    "assessment": "INCOMPLETE",
+    "issues_exact": [
+      {
+        "severity": "UNQUALIFIED",
+        "identity": "save",
+        "field": "layout",
+        "detail": "External candidate only; no financial 1.21 source-layout qualification or live funds certification."
+      },
+      {
+        "severity": "INCOMPLETE",
+        "identity": "save",
+        "field": "finance",
+        "detail": "No recognized financial stories; an empty census is not a financial pass."
+      },
+      {
+        "severity": "INCOMPLETE",
+        "identity": "globals",
+        "field": "xfm_exchange",
+        "detail": "Missing singleton pointer."
+      }
+    ],
+    "ledgerCashStockCents": {
+      "known": false,
+      "cents": ""
+    },
+    "projected_counts_as_absence_not_funded_finance": {
+      "accountCount": 0,
+      "coinCount": 0,
+      "futuresPositionCount": 0,
+      "debtCount": 0
+    },
+    "financialCertified": false,
+    "exit2_meaning": "Full two-pass candidate report completed. No recognized financial stories and missing xfm_exchange; cash is unknown and no initialized financial day is claimed. Original exit2 is preserved, never rewritten to0."
+  },
+  "source_revision_boundary": {
+    "inspection_author_requested_source_commit": "e11ad8dff03b124c27ea0f76fd5bd5b3e3ca149f",
+    "audit_author_requested_source_commit": "e11ad8dff03b124c27ea0f76fd5bd5b3e3ca149f",
+    "author_field_was_not_a_Git_state_verification": true,
+    "Root_reported_prepare_window_dirty_not_independently_Git_inspected_here": true,
+    "later_Root_reported_clean_pushed_HEAD": "1e7122a0bf424c8b781f8cd707e44bf37fe5b95a",
+    "later_HEAD_not_backfilled_into_original_preparations_or_execution_cohort": true,
+    "actual_reader_package_origin": "Retained App17 actual provenance and original PACKAGE-save-audit-app17 wait; not relabeled as new build"
+  },
+  "existing_saved_import_review": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\controlled-funding-vanilla-source-readback01\\INSPECTION-SAVED-IMPORT-REVIEW01.actual.json",
+    "bytes": 14238,
+    "sha256": "21945386a8e0647315ca59ca80c103311674bd631cdd2ed4b05de9b6676013ec"
+  },
+  "existing_saved_import_boundary": {
+    "host_source": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\run_ck3_12002_mcp_live.py",
+      "bytes": 423024,
+      "sha256": "5a5f3b1fba2d4a20cae6a6647e1047a4e03be26b6148c0be0a9ff2a53077e9bd"
+    },
+    "generic_source": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\generic_product_adapter.py",
+      "bytes": 307175,
+      "sha256": "ca76432f31bb8461d8f301f809f757dcb8718fdfa83bb1210bf6326de9ac253e"
+    },
+    "functions": [
+      {
+        "function": "saved_campaign_expected",
+        "line": 916,
+        "source_fragment_sha256": "b7f59b2d125beb271bcd9ce091a066539bda8ae36ba51a950c2909aec7dcca3e",
+        "checks_serialized_SAVE_header_version": false
+      },
+      {
+        "function": "prepare_saved_campaign",
+        "line": 932,
+        "source_fragment_sha256": "c080a6c40daf24f2584c409b38b300b1c95a7c32514fbbed17e711c3f18bb1cf",
+        "checks_serialized_SAVE_header_version": false
+      },
+      {
+        "function": "saved_campaign_session",
+        "line": 981,
+        "source_fragment_sha256": "eddff6cab0d0d53968ac5caafad5b2ba992bf8fee395e807fb17a320952ceea8",
+        "checks_serialized_SAVE_header_version": false
+      },
+      {
+        "function": "saved_campaign_native_build_v1",
+        "line": 1125,
+        "source_fragment_sha256": "e884cfcb8ecdefb0b50ef3dca812d651d1fd33cafae1627c69f2dce4cb6774ee",
+        "checks_serialized_SAVE_header_version": "Native current exact-build/version checks are distinct from serialized source header"
+      },
+      {
+        "function": "saved_campaign_florin_admission_frame_v1",
+        "line": 1243,
+        "source_fragment_sha256": "4703ba62aaff292c959a764495ad3c2634f8b55b4736967852a096e098130310",
+        "checks_serialized_SAVE_header_version": "Native current exact-build/version checks are distinct from serialized source header"
+      },
+      {
+        "function": "wait_for_saved_campaign",
+        "line": 1367,
+        "source_fragment_sha256": "ebf9e2252cfe572c8d4efbde889916f9977c3e5939cb1d630c7596f6895fe8e8",
+        "checks_serialized_SAVE_header_version": "Native current exact-build/version checks are distinct from serialized source header"
+      }
+    ],
+    "declarative_route": "Exact external regular .ck3, size/SHA + actual player/date; fresh empty profile/state; exact product-only profile inventory; independently verified copy into restored_campaign; one original -loadsave=restored_campaign, no continue-last-save/second launch. No serialized header1.21 predicate at these copy/launch gates.",
+    "actual_current_Native_admission": "Current exact1.21 HELLO+EXE/adapter/capability/owner+Full path, same actual source player/date, paused/native_campaign/map, no pending interaction/current event under default strict policy, owner-thread/pump/query freshness. No historical header equivalence can substitute.",
+    "required_current_real_import_result": "Actual loader successfully reaches exact Native Full actor31254 and actual source date under current exact1.21 build. Migration warning/failure/changed actor/date or unknown modal remains failure/UNKNOWN; no late special bypass authorized.",
+    "offline_conclusion": "Old1.20.0.2/format17 is not rejected by existing saved copy/CLI startup solely for header mismatch. This makes a new isolated normal saved import attempt syntactically supportable, but current1.21 engine import remains NOT_OBSERVED.",
+    "do_not_claim": [
+      "current1.21 saved header",
+      "currentGame import success",
+      "new campaign generated by1.21",
+      "financial initialized/day0/zero balances",
+      "R64 or natural-lineage recovery/progress"
+    ]
+  },
+  "absence_semantics": {
+    "recognized_financial_objects": "ABSENT_IN_COMPLETE_EXISTING_CLASSIFIER_CENSUS",
+    "xfm_exchange": "ABSENT_MISSING_SINGLETON_POINTER",
+    "financial_day": "ABSENT_UNKNOWN_NOT_DAY0",
+    "ledger_cash": "UNKNOWN_NOT_ZERO",
+    "current_121_serialized_header": "NOT_PRESENT; actual1.20.0.2/format17 preserved",
+    "current_121_Game_import": "NOT_OBSERVED",
+    "Whole_Raw": "NOT_APPLICABLE: no genuine archive receipt, Raw nonempty Story targets not manufactured"
+  },
+  "parse_work": {
+    "Root_actual_stable_complete_source_hash_passes": 1,
+    "Inspection_full_decoder_parser_passes": 1,
+    "App17_full_decoder_parser_passes": 2,
+    "total_full_decoder_parser_passes": 3,
+    "physical_hash_guards_are_additional_IO_not_new_parse_or_performance_credit": true,
+    "new_whole_Raw_or_third_report_parser_passes": 0
+  },
+  "qualification": {
+    "offline_existing_source_header_actor_and_known_financial_absence_evidence_only": true,
+    "current_source_qualification": false,
+    "current_Native_qualification": false,
+    "current_121_saved_import_pass": false,
+    "financialCertified": false,
+    "controlled_funding_business_pass": false,
+    "natural_AI_or_scheduler_credit": false,
+    "whole_product_release_pass": false
+  },
+  "evidence_prepared_only_in_external_TASK": true
+}

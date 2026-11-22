@@ -48,7 +48,7 @@ AI 每日每账户最多使用500分偿债预算；非继承的个人账户可�
 
 每条新闻是持久 story，包含 source、event_id、全局 `xfm_news_id`、actor、kind、day、scene。`xfm_news_entries` 为完整世界新闻簿，无关系或距离过滤，不公布秘密金额。普通消息与死亡优先消息使用两条单链；每个人类玩家保存下一条指针，日处理只走最多3次跳转，不扫描全部历史。被限速的消息仍在队列与新闻簿；高频普通消息不会挡住死亡消息。玩家继承须迁移两个队列指针与当日送达计数。
 
-真实通知使用原版 `send_interface_toast`、`event_toast_effect_neutral/bad` 与 `every_player`，不触发大事件确认、强制暂停、前台激活或置顶。当前代码限制为每游戏日3条总计；原版 `gui/hud_notification_templates.gui:554–593` 的 `ToastMessageHandler.GetMessage` 只提供一个 active message，三种样式互斥，静态 UI 证据支持不会同时铺开所有来信。高速运行的实际显示、队列送达和焦点仍须后台实机验收，不能把接口存在或日限速当作实机已经通过。
+真实通知使用原版 `send_interface_toast`、`event_toast_text_neutral/bad` 与 `every_player`，不触发大事件确认、强制暂停、前台激活或置顶。正文由 text 样式读取；`localization_values` 显式传递接收者、新闻条目与当事人三个命名作用域，语法依据本机原版通知实例。当前代码限制为每游戏日3条总计；原版 `gui/hud_notification_templates.gui:554–593` 的 `ToastMessageHandler.GetMessage` 只提供一个 active message，三种样式互斥，静态 UI 证据支持不会同时铺开所有来信。R0065 实机仅观察到标题，正文与身份关联未通过；后续源码修复及14项相关检查通过不改变该失败记录。修复后的正文、队列送达和焦点仍须后台实机验收。
 
 ## 原版接口依据与验收范围
 

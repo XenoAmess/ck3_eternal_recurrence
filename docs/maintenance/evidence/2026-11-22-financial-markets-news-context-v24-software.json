@@ -1,0 +1,120 @@
+{
+  "schema": "ck3-news-context-and-v24-affected-software-evidence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "baseline_commit": "1e7122a0bf424c8b781f8cd707e44bf37fe5b95a",
+  "source_delta_is_uncommitted_at_test_time": true,
+  "notification_fix": {
+    "source_ready": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\news-localization-values-candidate01\\SOURCE_READY.json",
+      "bytes": 3316,
+      "sha256": "d609bdb6014986e1d6832d76cb7fde0310a86a5332f5c6fdc81390a283328597"
+    },
+    "root_adoption": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\news-localization-values-Root-adoption01.actual.json",
+      "bytes": 1348,
+      "sha256": "a0a8e317be55527910d610ac1af7be727f31d2d329ae19107c6661113c5bb390"
+    },
+    "production_sources": [
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_news_dispatch.txt",
+        "bytes": 3015,
+        "sha256": "8bd3ddf4ba8010aeff5ac1b934dedf8c8c887638c322fd1bf4bf6c717a9bbf14"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\common\\scripted_effects\\xfm_news_queue.txt",
+        "bytes": 7069,
+        "sha256": "9eb5d0f4c88777db8289c7e4bc24a8e3f9c59a4ccb98a130073778d19cffa5f3"
+      }
+    ],
+    "installed_vanilla_syntax": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\news-localization-values-candidate01\\VANILLA-SYNTAX.actual-source.json",
+      "bytes": 5008,
+      "sha256": "5648f90585a9a2c6def549311b3ccacc9fe009c9d754f66e70115e587a4949e5"
+    },
+    "existing_checks_actual_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-news-localization-values-affected01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1017,
+      "sha256": "e1f039e824f3c4acd888f252ef939396c1bd58d1b706e45ddc3cd572fc67f136"
+    },
+    "actual_elapsed_seconds": 17.2268047999969,
+    "actual_passed_distinct_existing_methods": 14,
+    "original_XML_retained": [
+      {
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.build.BuildContractTest.xml",
+          "bytes": 20842,
+          "sha256": "146d84bc72e3dec90bcd01128b21952f445552f8b54ae0df63f2c856893b401d"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\news-localization-values-affected01\\TEST-org.xar.ck3.markets.build.BuildContractTest.xml",
+          "bytes": 20842,
+          "sha256": "146d84bc72e3dec90bcd01128b21952f445552f8b54ae0df63f2c856893b401d"
+        }
+      },
+      {
+        "original": {
+          "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_financial_markets\\tools\\target\\surefire-reports\\TEST-org.xar.ck3.markets.debt.WorldNewsJournalTest.xml",
+          "bytes": 20577,
+          "sha256": "d2daa9302b8b39cbf1a98ab0df70126c806cf935f6bf1861413159892db64260"
+        },
+        "retained": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\news-localization-values-affected01\\TEST-org.xar.ck3.markets.debt.WorldNewsJournalTest.xml",
+          "bytes": 20577,
+          "sha256": "d2daa9302b8b39cbf1a98ab0df70126c806cf935f6bf1861413159892db64260"
+        }
+      }
+    ],
+    "method_ids": [
+      "org.xar.ck3.markets.build.BuildContractTest.rejectsMissingBomUndefinedEffectAndUnlistedRuntime",
+      "org.xar.ck3.markets.build.BuildContractTest.candidateCopiesOnlyRuntimeAndPinsActualBytes",
+      "org.xar.ck3.markets.build.BuildContractTest.rejectsBrokenStructureLocalizationAndUnsafeManifest",
+      "org.xar.ck3.markets.build.BuildContractTest.rejectsMissingTriggersWithoutTreatingCommentsOrQuotesAsCalls",
+      "org.xar.ck3.markets.build.BuildContractTest.actualProductHasConsistentSourceContract",
+      "org.xar.ck3.markets.build.BuildContractTest.rejectsOverlappingOutputAndMalformedRevisionBeforeCreatingOutput",
+      "org.xar.ck3.markets.build.BuildContractTest.rejectsObservedArithmeticEqualityAndNegativeGoldLoadErrors",
+      "org.xar.ck3.markets.build.BuildContractTest.requiresRealScriptedGuiAndRegisteredCustomWindow",
+      "org.xar.ck3.markets.debt.WorldNewsJournalTest.malformedJournalAndReverseDayAreRejected",
+      "org.xar.ck3.markets.debt.WorldNewsJournalTest.remoteFactsReachEveryHumanIndependentlyAtMostThreePerDay",
+      "org.xar.ck3.markets.debt.WorldNewsJournalTest.sameFactDoesNotDuplicateAndConflictCannotReplaceHistory",
+      "org.xar.ck3.markets.debt.WorldNewsJournalTest.deathsTakePriorityOverOrdinaryBacklogWithoutLosingOrRepeatingFacts",
+      "org.xar.ck3.markets.debt.WorldNewsJournalTest.journalAndIndependentQueueCursorsSurviveJsonRoundTrip",
+      "org.xar.ck3.markets.debt.WorldNewsJournalTest.saveLoadPreservesDailyCapAndPendingNotifications"
+    ],
+    "actual_java_main_sources_recompiled": 61,
+    "actual_java_test_sources_recompiled": 53,
+    "no_new_mirror_tests": true,
+    "runtime_localization_context_or_delivery_pass": false
+  },
+  "native_profile_v24": {
+    "source_ready": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-profile-v24-candidate01\\SOURCE_READY.json",
+      "bytes": 4753,
+      "sha256": "8ad3975907b485213b4eccc339bda732cdba188bfad1986520597c0f792865b8"
+    },
+    "root_adoption": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-v24-Root-adoption01.actual.json",
+      "bytes": 1083,
+      "sha256": "07a178209a645e8aacc2c3f7606c68ad6b9362d30d72f432c8bcc2eeaebc2ce2"
+    },
+    "public_consumer_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v24-seven01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1131,
+      "sha256": "63f496a41153f02b486d661147c0b4f59f2c21fc1cbf8a1dbf40450037427758"
+    },
+    "actual_elapsed_seconds": 95.64737500000047,
+    "actual_executed_methods": 7,
+    "new_method_definitions": 3,
+    "same_module_aliases": 4,
+    "actual_Q48_before_flags": 238,
+    "declared_after_flags": 240,
+    "new_foreign_permissions": "Both OFF; forbidden even literal=0 in selected production and original22fixtures",
+    "source_expected_TUs_not_actual_FileAPI": 870,
+    "new_Native_qualification_or_build_or_live_pass": false
+  },
+  "boundaries": {
+    "R65_result": "NOT_OBSERVED / public verify2 / PARTIAL unchanged",
+    "old_639_and_457_scope_not_extended_to_new_source_changes": true,
+    "financial_daily_or_global_or_all_human_or_product_or_Workshop_pass": false,
+    "next": "Finish necessary current-source Native qualification, then one new owned minimized/offline news case from actual R65 terminal. Controlled funding uses the separately inspected isolated seed only."
+  }
+}

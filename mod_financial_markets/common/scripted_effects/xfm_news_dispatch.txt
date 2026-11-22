@@ -28,5 +28,10 @@ xfm_news_send_kind_effect = {
         title = xfm_news_kind_$KIND$_title
         desc = xfm_news_kind_$KIND$_desc
         left_icon = scope:xfm_news_actor
+        localization_values = {
+            xfm_news_recipient = scope:xfm_news_recipient
+            xfm_news_display_entry = scope:xfm_news_display_entry
+            xfm_news_actor = scope:xfm_news_actor
+        }
     }
 }
