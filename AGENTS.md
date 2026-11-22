@@ -1,5 +1,10 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-22 本机当前交付：实际上传10/17，严格全闭环8/17，Main／Vivhite Notes待核
+
+`desktop-3fevhd2-1c74096080` 已实际上传 **10/17（58.8%）**，按完整公开Notes及全部交付条件计，严格全闭环仍为 **8/17（47.1%）**。Main1.0.3／canonical3784706360和Vivhite1.0.3／canonical3787304042均已取得实际EResult1、真实SDK下载全文件精确匹配、无fixture真实工坊缓存冷载及一次正常退出Natural0／Job0／cleanup；两场均Robert36423／.15／paused/map/alive、0Date／0Save，6配置及B0原件／单副本保持。完整API标题和正文已通过；公开Notes持续HTTP429、无Retry-After，Viv长退避后10:19:56Z仍为明确too-many-requests，保持NOT_OBSERVED，不作内容失败或RELEASE_COMPLETE。Main新操作a765成功不改写原a648已知ER2／NoConnection和三次Submit前失败，未重投旧操作。原SourceA／标签／formal／metadata及原rawfalse／早期coldfail／DES诊断均保留，不称wholeproduct、全SDK、纯原版或零错误。场1GiB／Source future0与held分列，不关闭其他池。新健康诊断场F650／Native9df已实际2日后正常退出；a783只读明确拒绝于首receiver反向引用身份比较，provider／query／claim0、effectfalse／cleanuptrue，0Save／begin／post／choose，非UNKNOWN，未授根因修复或健康业务P；旧a746聚合拒绝保持，现场仍由Root独占。本条更新当前计数，下列8／7／6／3等段落保留各自历史时点；长期排序与天朝365最后不变。[最新小索引](docs/maintenance/evidence/main-vivhite-real-cache-Notes-pending-a777.json)。
+
+
 ## 2026-11-22 本机当前交付：XQOL1.1.3有限完整发布闭环，继续Main／Vivhite
 
 `desktop-3fevhd2-1c74096080` 当前已发表 **8/17（47.1%）**。XQOL canonical `3798133925` 已唯一更新1.1.3，SourceA `212ea3ed6343afc036653bf2154340cd042b0939`／annotated `xqol-v1.1.3`保持；正式28文件真实下载精确、原图库不变，独立无fixture真实C缓存场a528已载入暂停Robert36423／.15并Natural0／Job0／cleanup，0Date／0SAVE，Steam已恢复离线。完整公开标题／正文／Notes现均精确；前三次Notes HTTP429与旧NOT_OBSERVED按原时点保留，后继同URL单GET200完成全文核对，未重复成功API或Submit。只授当前有限Song三开关启停与ON存档值、同PID门槛提交100／恢复50／controlled-panel关闭及地图状态；旧266核心／防御历史、当前官职／负值渲染和旧25／wholeproduct／全SDK未验边界保持。下列7／6／3记录保历史，长期排序不变；继续Main／Vivhite既有curated入口与固定控件，动态scope／创建后态按实际新需求补，不把软件Ready作实机通过。[本轮完整有限交付与原件](docs/maintenance/2026-11-20-ck3-121003-followup.md)。

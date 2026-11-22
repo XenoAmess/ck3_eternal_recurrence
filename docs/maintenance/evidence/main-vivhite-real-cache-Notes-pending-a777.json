@@ -1,0 +1,174 @@
+{
+  "schema": "current267.Main-Vivhite.actual-cache-and-Notes-status.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T10:29:12.914586+00:00",
+  "status": "ACTUAL_UPLOAD10_OF17_STRICT_CLOSED8_OF17_NOTES_NOT_OBSERVED",
+  "actual_uploaded_products": 10,
+  "strictly_closed_products": 8,
+  "total_products": 17,
+  "Main": {
+    "canonical": "3784706360",
+    "SourceA": "d14908142751c5db95555dc566527613539cba88",
+    "git_tag": "v1.0.3",
+    "actual_cache_delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-postpublish-cache-profile-a641\\closed-file-receipt-a01\\delivery-final.json",
+      "bytes": 2967,
+      "sha256": "6d5c7ba579d2d6262b4732180488d428c7b08a6339aad41bb181dca1acd2a8c8"
+    },
+    "external_large_closure": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-postpublish-cache-profile-a641\\closed-file-receipt-a01\\cache-actual-closure.json",
+      "bytes": 160003,
+      "sha256": "1b9448153469c24caa05d6de2fb99c108d2aab9ba6c52654426c40d7b14f29cb"
+    },
+    "formal_manifest": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-final-release-a640\\XenoAmess_s_Eternal_Recurrence-v1.0.3.manifest.json",
+      "bytes": 16792,
+      "sha256": "53da049faf423bd81d7d92facd023aad1a29e178fe40865baa5eac28ea9a76b6"
+    },
+    "current_cache_fullSHA_FileID_exact": true,
+    "loaded_Core": {
+      "date_raw": 53144328,
+      "speed": 3,
+      "paused": true,
+      "local_player_id": 1,
+      "map_ready": true,
+      "has_played_character": true,
+      "played_character_id": 36423,
+      "played_character_alive": true
+    },
+    "original_Game_PID": 9792,
+    "creator_PID": 12716,
+    "Game_creator_Natural0_Job0_cleanup": true,
+    "configuration6_exact_no_fixture_zeroDate_zeroSave": true,
+    "D_scene_allocation_endpoint_bytes": 216065744,
+    "C_cache_allocation_endpoint_bytes": 6362568,
+    "actual_successful_new_operation": "networkretry-a765; ER1 at09:38:20 then freshOffline09:40:05",
+    "prior_failures": "Three known-beforeSubmit attempts and original a648/a640 knownER2 NoConnection preserved. New explicit operation did not replay the failed original.",
+    "full_API_text": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-public-readback-a766\\actual-delivery-final.json",
+      "bytes": 3596,
+      "sha256": "3e40c8b6741f57d90f1453f7aa93a73966e119cb3bcc2661ab470e51f1a47575"
+    },
+    "Notes_followup_NOT_OBSERVED_429": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\main-public-readback-a766\\notes-followup-a01\\actual-delivery-Notes-not-observed.json",
+      "bytes": 1123,
+      "sha256": "cd488a138194ded95933c9bdd30e146484d618cbe8b13075afa821c4faf05096"
+    }
+  },
+  "Vivhite": {
+    "canonical": "3787304042",
+    "SourceA": "8dc9af47a022eb9e85ca92bf6616c68e47463765",
+    "git_tag": "vivhite-v1.0.3",
+    "actual_cache_delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-postpublish-cache-profile-a755\\closed-file-receipt-a01\\delivery-final-a02.json",
+      "bytes": 3408,
+      "sha256": "a6613a995619d94e4d7d5b4c89ea80f4aaad20744271cfde14ef404a4712a886"
+    },
+    "external_large_closure": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-postpublish-cache-profile-a755\\closed-file-receipt-a01\\cache-actual-closure-a02.json",
+      "bytes": 93985,
+      "sha256": "5eea13e03c4c84443f601bf5f5b6f56447a5bf70ac94749f61c80948b2b8266b"
+    },
+    "formal_manifest": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-final-release-a748\\Eternal_Recurrence_Vivhite_Courtier-v1.0.3.manifest.json",
+      "bytes": 5060,
+      "sha256": "09762989a0e64e8c316d3c42fdc2eb38ed9dd86cbb6f981a3e5634beabc4bf83"
+    },
+    "current_cache_fullSHA_FileID_exact": true,
+    "loaded_Core": {
+      "date_raw": 53144328,
+      "speed": 3,
+      "paused": true,
+      "local_player_id": 1,
+      "map_ready": true,
+      "has_played_character": true,
+      "played_character_id": 36423,
+      "played_character_alive": true
+    },
+    "original_Game_PID": 15672,
+    "creator_PID": 23088,
+    "Game_creator_Natural0_Job0_cleanup": true,
+    "configuration6_exact_no_fixture_zeroDate_zeroSave": true,
+    "format3_inner_workshop_item_id": null,
+    "D_scene_allocation_endpoint_bytes": 215939448,
+    "C_cache_allocation_endpoint_bytes": 1413696,
+    "full_API_text": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-public-readback-a765\\actual-delivery-pending-Notes.json",
+      "bytes": 5877,
+      "sha256": "613e1ac14b8d70c4fe809a3446294b8211d7bb1da3503d10944872b8bcf8fedb"
+    },
+    "latest_long_backoff_Notes_refusal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\vivhite-public-readback-a765\\notes-long-backoff-a03\\phase-END.json",
+      "bytes": 3372,
+      "sha256": "6c6a8f2e60c7f627ee2b27e3d629de3799dd0f259732aee00ad0e70c4587de77"
+    },
+    "Notes_status": "NOT_OBSERVED; HTTP429/explicit too-many-requests at10:19:56Z; no Retry-After. Full text cannot be compared with error HTML."
+  },
+  "scope": "Exact downloaded-cache mount/Core/normal0 only. Original finite business decisions remain scoped; no new business rerun, wholeproduct/wholeSDK/render/purevanilla/error0 or Notes credit. Scene1G/Source futures0, held retained, other pools not closed.",
+  "health_diagnostic_scene": {
+    "existing_creator_begin": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-diagnostic-profile-a762\\bound-health-diag-a778\\creator-begin.json",
+      "bytes": 1974,
+      "sha256": "5e42cc3e5799e0e60838ab39a9a6f1a608841925cdb91b22e56fcd51f8946743"
+    },
+    "bound_root": "D:\\ck3-state\\upgrade-20261118\\superman-health-diagnostic-profile-a762\\bound-health-diag-a778",
+    "pair_delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-health-reason-pair-a761\\frozen-delivery-final.json",
+      "bytes": 5837,
+      "sha256": "3d3613353f0888567ea12e7c61144ff0359be9a2fcb5ff238c9e5a760b6e7b3b"
+    },
+    "cut": "Root reported launch and waiting first8Corefields, no healthquery/Date/Save at task dispatch. This record only pins existing startup, not later live state.",
+    "stage_diagnostics_not_rootcause_fix_or_health_business": true,
+    "latest_status": "ACTUAL_TWO_DAYS_TYPED_KNOWN_REFUSAL_NATURAL0_NO_HEALTH_SAVE_OR_CHOICE",
+    "original_result_token": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-diagnostic-profile-a762\\bound-health-diag-a778\\operations\\a783-baseline-reason\\result\\superman-health-query\\read-result-token.json",
+      "bytes": 1098,
+      "sha256": "5deff99d98ec2f879376d03053df958c10bfe4ba46fc9cee60908bdaa7e5e8ee"
+    },
+    "creator_end": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-diagnostic-profile-a762\\bound-health-diag-a778\\creator-end.json",
+      "bytes": 635,
+      "sha256": "dabab821c7d7b210fb89e0118ca38b7b8a3c00625683ba0a24f1e8f5e0be0591"
+    },
+    "original_terminal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\superman-health-diagnostic-profile-a762\\bound-health-diag-a778\\owner\\terminal.json",
+      "bytes": 1094,
+      "sha256": "019547a5e21bb9d572ed1fefa0e72863178b5b61d9eb4218bc915440bbbe81c5"
+    },
+    "creator_PID": 20020,
+    "Game_PID": 3232,
+    "begin_utc": "2026-11-22T10:17:54.120080+00:00",
+    "end_utc": "2026-11-22T10:28:51.855887+00:00",
+    "actual_days": 2,
+    "actual_Save_calls": 0,
+    "health_choose_begin_post_calls": 0,
+    "exact_unavailable_reason": "superman_health_numeric_role_reverse_reference_identity_role_player-native-health-75_receiver",
+    "provider_query_claim": [
+      "0",
+      "0",
+      "0"
+    ],
+    "effect_attempted": false,
+    "native_returned": false,
+    "cleanup_known": true,
+    "actual_Core_before": {
+      "date_raw": 53144376,
+      "speed": 3,
+      "paused": true,
+      "local_player_id": 1,
+      "map_ready": true,
+      "has_played_character": true,
+      "played_character_id": 36423,
+      "played_character_alive": true
+    },
+    "original_a746_aggregate_refusal_not_rewritten": true,
+    "scope": "New reason localizes the original guard refusal stage only. No rootcause repair or health20 business/Saved/effective-health/render credit. AUB file-only closure follows separately; no new live query by documentation owner."
+  },
+  "resource_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\Root7-resource-review-a777.json",
+    "bytes": 1336,
+    "sha256": "b06f521053070a8735aff900efd54759369c69657ad1f708418e25671bc52e24"
+  },
+  "documentation_owner_new_HTTP_SDK_Game_Steam_JVM_build_Maven_or_all_JAR_reads": 0,
+  "all_old_failed_pending_raw_reports_preserved": true
+}
