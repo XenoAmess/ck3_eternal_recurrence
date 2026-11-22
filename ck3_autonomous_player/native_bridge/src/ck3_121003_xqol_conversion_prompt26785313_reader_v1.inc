@@ -10,7 +10,7 @@ bool XqolPromptSceneSample267V1(ReadonlyContext&q,const ck3_11906::MainThreadExe
  GuiWindowNodeV1 root,events,letter;std::unordered_set<std::uintptr_t>seen{e.global};std::size_t names=0;if(!GuiWindowNodeReadV1(image,e.global,e.context,0,root))return fail("xqol_prompt_global_widget_unavailable");out.witness.push_back(root);
  const auto children=[&](const GuiWindowNodeV1&parent,std::string_view wanted,GuiWindowNodeV1&found,bool many=false){for(std::int32_t n=0;n<parent.child_count;++n){std::uintptr_t p=0;GuiWindowNodeV1 row;if(!valid()||out.witness.size()>=4096||!At(parent.children,static_cast<std::size_t>(n)*8,p)||!seen.insert(p).second||!GuiWindowNodeReadV1(image,p,e.context,parent.widget,row))return false;row.sibling_index=static_cast<std::uint32_t>(n);row.visible=row.visible&&parent.visible;row.enabled=row.enabled&&parent.enabled;names+=row.name.size();if(names>131072)return false;out.witness.push_back(row);if(row.name==wanted){if(many)out.scene.roots.push_back({row.widget,row.visible,row.enabled});else{if(found.widget)return false;found=row;}}}return true;};
  if(!children(root,"events",events)||!events.widget)return fail("xqol_prompt_events_layer_missing_or_ambiguous");e.events=events.widget;
- if(!children(events,"xqol_prompt_event",letter,true)||out.scene.roots.size()>32)return fail("xqol_prompt_set_complete_named_root_census_invalid");out.scene.complete_named_root_census=true;return valid();
+ if(!children(events,"character_event",letter,true)||out.scene.roots.size()>32)return fail("xqol_prompt_set_complete_named_root_census_invalid");out.scene.complete_named_root_census=true;return valid();
 }
 }
 bool ReadXqolPromptFrameOnOwner267V1(const ReadonlyBindings&b,ck3_11906::MainThreadQueryMailboxV1*m,const ck3_11906::MainThreadQueryTicketV1&t,

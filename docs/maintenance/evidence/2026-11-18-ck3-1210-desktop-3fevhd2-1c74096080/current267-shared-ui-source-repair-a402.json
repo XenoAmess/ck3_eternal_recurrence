@@ -1,0 +1,97 @@
+{
+  "schema": "xar.current267.shared-ui.source-repair-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-22T00:00:06.189976+00:00",
+  "qualified_source": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-shared-ui-repair-a402/qualified-source-manifest.json",
+    "bytes": 9686,
+    "sha256": "d2d7a77eb8dfae706999cc9bd7b27f9912d3db74bfc22083ad04c062ea42ee7e"
+  },
+  "software_closure": {
+    "path": "D:/ck3-state/upgrade-20261118/native-current267-shared-ui-repair-a402/software-closure.json",
+    "bytes": 929,
+    "sha256": "f84b6f1866a9f4f4e3656e281367ed25b3b2c6d9e74cbf5d82ab5ea12d2ce882"
+  },
+  "targets": [
+    {
+      "target": "src/ck3_121003_xqol_conversion_prompt26785313_reader_v1.inc",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_xqol_conversion_prompt26785313_reader_v1.inc",
+        "bytes": 3989,
+        "sha256": "18f9788f831f96bf27655142ccc1e4216578243d03a22ca49e4e52a43539c0a8",
+        "metadata": {
+          "bytes": 3989,
+          "allocated": 4096,
+          "file_id": "281474981744597",
+          "volume": "882653518",
+          "creation_filetime": "134397771701374241",
+          "write_filetime": "134397771701384220",
+          "attributes": 32
+        }
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-xqol-prompt-root-repair-a396\\candidate\\src\\ck3_121003_xqol_conversion_prompt26785313_reader_v1.inc",
+        "bytes": 3987,
+        "sha256": "2654a7160af975b5dc27eab446bf6b117e11ba4c405a5664b06d08ebcb886309",
+        "metadata": {
+          "bytes": 3987,
+          "allocated": 4096,
+          "file_id": "281474981749415",
+          "volume": "882653518",
+          "creation_filetime": "134397785785842595",
+          "write_filetime": "134397785902157007",
+          "attributes": 32
+        }
+      },
+      "target_sha256": "2654a7160af975b5dc27eab446bf6b117e11ba4c405a5664b06d08ebcb886309",
+      "actual_compiled_or_config_source": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a380\\src\\ck3_121003_xqol_conversion_prompt26785313_reader_v1.inc",
+      "scope": "Only concrete real-source guard repair; schemas/actions/claims/old deadlines and old failed live artifacts unchanged."
+    },
+    {
+      "target": "src/ck3_121003_curated_decisions26785313_raw_v1.cpp",
+      "base": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_121003_curated_decisions26785313_raw_v1.cpp",
+        "bytes": 18520,
+        "sha256": "402ce4ef2f254f261ff3fb4c18b2fe5acfe2a4b9e5f689ff84f9846550b93fbd",
+        "metadata": {
+          "bytes": 18520,
+          "allocated": 20480,
+          "file_id": "281474981742962",
+          "volume": "882653518",
+          "creation_filetime": "134397744812063728",
+          "write_filetime": "134397744812063728",
+          "attributes": 32
+        }
+      },
+      "candidate": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-curated-default-repair-a401\\candidate\\src\\ck3_121003_curated_decisions26785313_raw_v1.cpp",
+        "bytes": 20080,
+        "sha256": "106d3a3a92be6dc47f9062aff4609a6c12894c1242e5c22ee0ebc1ae010bdc62",
+        "metadata": {
+          "bytes": 20080,
+          "allocated": 20480,
+          "file_id": "281474981749644",
+          "volume": "882653518",
+          "creation_filetime": "134397789682533314",
+          "write_filetime": "134397789682533314",
+          "attributes": 32
+        }
+      },
+      "target_sha256": "106d3a3a92be6dc47f9062aff4609a6c12894c1242e5c22ee0ebc1ae010bdc62",
+      "actual_compiled_or_config_source": "D:\\workspace\\ck3-project-worktrees\\native-current267-ui-repair-a26\\overlay-a376\\src\\ck3_121003_curated_decisions26785313_raw_v1.cpp",
+      "scope": "Only concrete real-source guard repair; schemas/actions/claims/old deadlines and old failed live artifacts unchanged."
+    }
+  ],
+  "scope": "Two exact actual-source guard repairs. Prompt enumerates actual character_event windows, not a placeholder custom name. Curated raw permits only the observed engine TPdxNullObject hidden-unselected sentinel; real/foreign/visible/badactor/controller/key refusals remain. Schema/action/oldframes unchanged.",
+  "actual_software": "4 distinct TU/5 CL including the retained test source location registration failure; actual ON objects and finite enumeration/classifier regressions qualified by Native, not rerun here.",
+  "a393_original_query": {
+    "path": "D:/ck3-state/upgrade-20261118/xqol-curated-controls-profile-a393/operations/curated-initial-query-a399/result/curated-query/read-result-token.json",
+    "bytes": 1003,
+    "sha256": "af433c0761f3e8ef4134c88588b975ad1a701f29718a12357f5992817305cc1d"
+  },
+  "a393_original_actual": "F384/85d first v28 query Main1, unavailable/curated_actual_selected_definition_unavailable, sourceNull/effectfalse/nativeReturnedfalse/cleanuptrue; independent Core40180/date53144328 paused/map/alive. No Open/Detail/Confirm/Date/SAVE.",
+  "a393_creator_end_parent_actual": "Root explicitly waited original Creator22836/PTY93232 Natural0 end2026-11-21T23:56:20.294625Z. Independent Job/claim closure not imported here; no broader cleanup claim.",
+  "old52_software_qualification_not_live": true,
+  "old_85d_d375_F384_D505_F334_B298_untouched": true,
+  "new_production_and_live": "NOT_RUN by source adoption; fresh Native production separately authorized, no hot deployment."
+}
