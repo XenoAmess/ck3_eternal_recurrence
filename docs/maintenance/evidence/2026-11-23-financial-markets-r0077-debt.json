@@ -1,0 +1,466 @@
+{
+  "schema": "ck3-financial-r0077-debt-actual-evidence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "document_date_local": "2026-11-23",
+  "source_commit": "532e698de740753cec87f8c5e6026313261ea1d6",
+  "Core": "Core52",
+  "game_scope": "This machine CK3 1.21.0/build26622941/exact2F2B; no other-machine267 qualification.",
+  "run_id": "4-8e1c2f1861--financial-markets--R0077",
+  "case": "debt-aid-news-engine-fixture",
+  "public_run": {
+    "name": "debt77-start01-run",
+    "original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\debt77-start01-run\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1536,
+      "sha256": "993462797b2754bf4165c1757ecadea55cfc5076d593d396f7f949826a41eaa6"
+    },
+    "returncode": 2,
+    "elapsed_seconds": 3403.7458059999917,
+    "stdout": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\debt77-start01-run\\stdout.log",
+      "bytes": 90137,
+      "sha256": "3eaa4efc0d2f427ad73037e18833e530583eeef0e483d050d287432190a23242"
+    },
+    "stderr": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\debt77-start01-run\\stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "public_verify": {
+    "name": "debt77-start01-verify",
+    "original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\debt77-start01-verify\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1544,
+      "sha256": "e1c7e41b56b7124dd9ef64695a1a7c28cdd3cf49e0e641bc8e8e174bb1d379a7"
+    },
+    "returncode": 2,
+    "elapsed_seconds": 0.4856185999815352,
+    "stdout": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\debt77-start01-verify\\stdout.log",
+      "bytes": 9284,
+      "sha256": "c75eb7cc6bdb125fbe451747e6728b9bfc8431d37f3922599d8f19cfeac10611"
+    },
+    "stderr": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\debt77-start01-verify\\stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "public_verify_original_stdout": {
+    "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\debt77-start01-verify\\stdout.log",
+    "bytes": 9284,
+    "sha256": "c75eb7cc6bdb125fbe451747e6728b9bfc8431d37f3922599d8f19cfeac10611"
+  },
+  "original_checkpoint_metadata_only_not_rehashed": [
+    {
+      "step_id": "debt77-baseline01",
+      "ok": true,
+      "finished_at": "2026-11-23T03:42:23.983303+00:00",
+      "checkpoint": {
+        "status": "saved",
+        "path": "C:\\workspace\\ck3-market-live-20261123d\\managed-states\\financial-debt77\\state\\profile\\save games\\xar_checkpoint.ck3",
+        "name": "xar_checkpoint.ck3",
+        "size": 148003766,
+        "sha256": "b12b98b189dab98d0330bfe4b702845f22a9c0a4b2c3809907ef6cc805865b50",
+        "date_raw": 53144376,
+        "overwrite_confirmed": false,
+        "strategy": "native-autosave-command-v1",
+        "episode_projection": "native_campaign",
+        "succession_lifecycle": null,
+        "history_index": 8,
+        "episode_character_id": null,
+        "episode_run_id": null
+      }
+    },
+    {
+      "step_id": "debt77-post-help01",
+      "ok": true,
+      "finished_at": "2026-11-23T03:57:13.222361+00:00",
+      "checkpoint": {
+        "status": "saved",
+        "path": "C:\\workspace\\ck3-market-live-20261123d\\managed-states\\financial-debt77\\state\\profile\\save games\\xar_checkpoint.ck3",
+        "name": "xar_checkpoint.ck3",
+        "size": 148014622,
+        "sha256": "997c14260dad0a492f93ef1dbaa2c5fc020694605f0fd58bb3bea4e13802aa05",
+        "date_raw": 53144376,
+        "overwrite_confirmed": true,
+        "strategy": "native-autosave-command-v1",
+        "episode_projection": "native_campaign",
+        "succession_lifecycle": null,
+        "history_index": 16,
+        "episode_character_id": null,
+        "episode_run_id": null
+      }
+    },
+    {
+      "step_id": "debt77-terminal01",
+      "ok": true,
+      "finished_at": "2026-11-23T04:05:14.150316+00:00",
+      "checkpoint": {
+        "status": "saved",
+        "path": "C:\\workspace\\ck3-market-live-20261123d\\managed-states\\financial-debt77\\state\\profile\\save games\\xar_checkpoint.ck3",
+        "name": "xar_checkpoint.ck3",
+        "size": 150493480,
+        "sha256": "9e48bbee924a700c8534f1fbb66a0d2c25c21f84acca923554a4128e4b573b8f",
+        "date_raw": 53144424,
+        "overwrite_confirmed": true,
+        "strategy": "native-autosave-command-v1",
+        "episode_projection": "native_campaign",
+        "succession_lifecycle": null,
+        "history_index": 23,
+        "episode_character_id": null,
+        "episode_run_id": null
+      }
+    }
+  ],
+  "date_raw_endpoints": [
+    53144376,
+    53144376,
+    53144424
+  ],
+  "real_natural_days": 2,
+  "existing_complete_parser_passes": {
+    "per_SAVE": {
+      "Audit": 2,
+      "Whole": 2,
+      "Raw": 1
+    },
+    "total": 15,
+    "author_executed_any_reader": false
+  },
+  "phase_reviews": [
+    {
+      "phase": "S1",
+      "independent_source_ready": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\debt77-S1-independent-source01\\SOURCE_READY.json",
+        "bytes": 3323,
+        "sha256": "d7ce8f96d583fdefd7cb0f82e5fea6010f6d021b9287a954b7b20688094d2b77"
+      },
+      "independent_facts": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\debt77-S1-independent-source01\\FACTS.actual-metadata.json",
+        "bytes": 10022,
+        "sha256": "5e950c9482850b98acb9e14d06a6d4cbcd2bfc91163884890c616969e4b8b2a1"
+      },
+      "Root_review": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\debt77-S1-Root-review01.actual.json",
+        "bytes": 6913,
+        "sha256": "e2c8a4b78d2cdfece2c458448bd6b6b57624389ce5c15151084880bb4a5c6cd7"
+      },
+      "actual_Root_assertions": {
+        "actual_minimized_non_topmost_no_focus_with_current_source_and_storage_grant": true,
+        "actual_fresh_enabled_xfmd_setup_once_preconsumed_and_original_cover_API_creates_exactly_two_declared_uninsured_claims": true,
+        "actual_first_SAVE_audit_raw_whole_bind_stable_source_debt_IDs_account_IDs_engine_AI_PRIMARY_and_original_rights": true,
+        "actual_independent_Raw_captures_two_claims_two_declared_sources_and_three_accounts_complete_AST_preserving_the_exact_two_custom_source_audit_INCOMPLETE_issues": true,
+        "actual_A2000_B1000_are_controlled_API_obligations_not_real_market_loss_and_no_cash_was_created": true
+      },
+      "helper_false_flags_not_overwritten_by_Root_review": true
+    },
+    {
+      "phase": "S2",
+      "independent_source_ready": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\debt77-S2-independent-source01\\SOURCE_READY.json",
+        "bytes": 4474,
+        "sha256": "a52e26eab18e608580ed302df62d88fe42d6a9eb4435af35d0aeb3f2b4c1233c"
+      },
+      "independent_facts": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\debt77-S2-independent-source01\\FACTS.actual-metadata.json",
+        "bytes": 8438,
+        "sha256": "0583d12dcf6979e23750f746ed230ec9aec026a4ff01fe638b959df1f7d63629"
+      },
+      "Root_review": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\debt77-S2-Root-review01.actual.json",
+        "bytes": 7265,
+        "sha256": "4e20b84837b77d0edb80029368532d9eb5be8f6d7079756d8c4f927d863d228f"
+      },
+      "actual_Root_assertions": {
+        "actual_news_aid_row_selects_A_and_original_dot106_freezes_real_payer_and_claim_then_confirms1000_once": true,
+        "actual_player_free_minus1000_creditor_plus1000_A_unpaid1000_repaid1000_without_fund_payment": true,
+        "actual_player_claims_row_selects_B_and_original_dot107_creditor_consent_writes100_haircut900_outstanding_due_and_relief_plus30_without_cash_change": true,
+        "actual_xfmd_review_once_records_original_same_operation_repay_result0_and_repeat_consent_without_second_transfer_haircut_extension_relationship_or_news": true,
+        "actual_S2_original_Raw_request1000_positive_operation_matches_last_operation_payer_free_still_at_least1000_so_retry_is_not_an_insufficient_cash_refusal": true,
+        "actual_second_SAVE_full_cash_rights_immutable_baseline_help_retry_consent_captures_and_production_relief_are_independently_reconciled": true
+      },
+      "helper_false_flags_not_overwritten_by_Root_review": true
+    },
+    {
+      "phase": "S3",
+      "independent_source_ready": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\debt77-S3-independent-source01\\SOURCE_READY.json",
+        "bytes": 8809,
+        "sha256": "8f57efc428153a607faf680c9479bb4269f34a2fb58b052a808c366b85857b90"
+      },
+      "independent_facts": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\debt77-S3-independent-source01\\FACTS.actual-metadata.json",
+        "bytes": 14470,
+        "sha256": "c89ccd362407c603a1da7d09f9ba15d4c7d8d4bcf57f9cbc8ff9cd3af3ad6d26"
+      },
+      "Root_review": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\debt77-S3-Root-partial-review01.actual.json",
+        "bytes": 10260,
+        "sha256": "e4c35da273a59b11feee75c9da18d58260ce9625aec31eaa7d8e1437e850aea1"
+      },
+      "actual_Root_assertions": {
+        "actual_each_original_single_day_immediately_performs_two_readonly_native_toast_queries_before_any_SAVE_or_audit": true,
+        "actual_new_kind2_or3_source_revision_entry_actor_recipient_display_entry_completed_frame_positive_delivery_join_not_available_ACK_or_cursor_credit": false,
+        "actual_old_urgent_ordinary_backlog_preserved_max3_daily_no_guaranteed_target_delivery_by_day2": true,
+        "actual_third_SAVE_reconciles_original_claims_and_later_real_AI_auto_service_cash_and_rights_without_freezing_or_assuming_D0_balances": true,
+        "actual_no_crisis_maturity_stress_death_or_random_guard_setter_no_natural_market_loss_twenty_deaths_remote_or_all_human_credit": true
+      },
+      "helper_false_flags_not_overwritten_by_Root_review": true
+    }
+  ],
+  "combined_original_facts": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\debt77-three-SAVE-independent-facts01.actual.json",
+    "bytes": 40093,
+    "sha256": "67cf28713cc9d6eba54639cfdf37bc2eefcfd0bb1f4037adcc7a24fbdad694eb"
+  },
+  "strict_B_sequence": {
+    "original": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\debt77-S2-Root-original-sequence01.actual.json",
+      "bytes": 3676,
+      "sha256": "a8a57debb988e51ec2a8e43310d114c65b508c72ea205e5287eecbf4d92e5c55"
+    },
+    "actual_sole_human_control": {
+      "widget_id": "707",
+      "runtime_name": "xfm_market_debt_row",
+      "child_path": "3/2/0/4/3/0/5/0/0/0",
+      "vtable_rva": 84670136,
+      "effective_visible": true,
+      "enabled": true,
+      "clickable": true
+    },
+    "B_row707_before_dot107_and_S2": true,
+    "scope": "Original S1 typed A -> aid394/instance1 option1 once -> fresh human Bclaims707 -> consent395/instance2 option1 once -> review3 once -> S2; no rowrank/disabled-state inference."
+  },
+  "retained_original_S2_source02_timeline": {
+    "source_ready": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\debt77-S2-independent-source02\\SOURCE_READY.json",
+      "bytes": 2779,
+      "sha256": "253c26eb191f778fcaf56cc97294db8f97ee8204d6719f9522cc71ca609a2e1c"
+    },
+    "sequence": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\debt77-S2-independent-source02\\SEQUENCE.actual-metadata.json",
+      "bytes": 12003,
+      "sha256": "2b7651f9f7a33f5b1534bfdd7ae36fcc89e8ac91e24385de921a1eb1d90440c6"
+    },
+    "Root_original_sequence_above_is_separate_final_identity_review": true
+  },
+  "controlled_business_summary_from_Root_and_original_facts": {
+    "claims_created_cents": {
+      "A": 2000,
+      "B": 1000
+    },
+    "not_natural_market_loss": true,
+    "S1_all274_original_accounts_cash_reserved_equal_R75": true,
+    "S1_cash_stock_cents": "616461",
+    "S2_A_aid_cents": 1000,
+    "S2_B_haircut_cents": 100,
+    "S2_B_unpaid_cents": 900,
+    "S2_B_due_day": 32,
+    "S2_relief_until": 32,
+    "S2_exact_account_deltas": {
+      "57": {
+        "free_delta_cents": 1000,
+        "reserved_delta_cents": 0
+      },
+      "16777937": {
+        "free_delta_cents": -1000,
+        "reserved_delta_cents": 0
+      }
+    },
+    "S2_all274_reserved_unchanged": true,
+    "S2_same_operation_funded_rejection": {
+      "xfm_request_operation": 1,
+      "xfm_request_cents": 1000,
+      "xfm_result": 0,
+      "xfm_payment_actual_cents": 1000,
+      "xfmd_retry_result": 0,
+      "payer_native": "16777937",
+      "payer_last_operation": 1,
+      "payer_current_free": 1000
+    },
+    "S2_relationship_display_boundary": "Single original thanked-helper/creditor list entries and original repayment/extension guard paths show once-only relationship calls in this declared retry. No standalone Native opinion amount/expiry DTO or full saved opinion table was decoded; that display is not independently granted.",
+    "S3_selected_debtor_to_creditor_new_payment_cents": 1000,
+    "S3_A_cleared_B_unpaid900_due32_relief34": true,
+    "S3_daily_service_inference_boundary": "Endpoints prove 1000c new debtor56-to-creditor57 repayment and latest day4 500c/op2. Production account/day budget500, two actual finance days and operation_counter2 are consistent with two 500c daily services. No independent D1 ledger SAVE/payment journal exists here, so each D1 account amount is not claimed directly observed.",
+    "S3_relief_boundary": "34 is the legitimate day4 successful repayment +30; B due32 and one creditor haircut/extension remain unchanged. S2 aid result/retry captures remain immutable despite fresh AI payment replacing mutable request/result fields.",
+    "S3_three_selected_Gold_literals": [
+      {
+        "actor": "31254",
+        "before_after_exact_original_literal": "gold = { value = 235 }",
+        "changed": false
+      },
+      {
+        "actor": "65869",
+        "before_after_exact_original_literal": "gold = { value = 19000 }",
+        "changed": false
+      },
+      {
+        "actor": "65870",
+        "before_after_exact_original_literal": "gold = { value = 19000 }",
+        "changed": false
+      }
+    ],
+    "S3_cash_scope_and_unquantified_aggregate_Gold": {
+      "account_count_before_after": [
+        274,
+        502
+      ],
+      "no_original_account_removed": true,
+      "new_account_count": 228,
+      "common_account_cash_delta_cents": 942,
+      "new_account_cash_cents": 14402,
+      "account_cash_total_before_after_cents": [
+        615180,
+        630524
+      ],
+      "ledger_cash_stock_before_after_cents": [
+        616461,
+        632638
+      ],
+      "ledger_cash_stock_delta_cents": 16177,
+      "exchange_fee_before_after_cents": [
+        1281,
+        2114
+      ],
+      "common_accounts_with_any_cash_component_change": 21,
+      "selected_debt_payment_accounts": {
+        "56": {
+          "before_free_cents": 98630,
+          "after_free_cents": 97630,
+          "before_reserved_cents": 0,
+          "after_reserved_cents": 0
+        },
+        "57": {
+          "before_free_cents": 102214,
+          "after_free_cents": 103214,
+          "before_reserved_cents": 0,
+          "after_reserved_cents": 0
+        },
+        "16777937": {
+          "before_free_cents": 1000,
+          "after_free_cents": 1000,
+          "before_reserved_cents": 0,
+          "after_reserved_cents": 0
+        }
+      },
+      "aggregate_gold_conversion": "NOT_INDEPENDENTLY_FULLY_QUANTIFIED: only three actors were retained; ordinary deposits/withdrawals and production fees are permitted. Full-market stock endpoints are not required equal across these two natural days."
+    }
+  },
+  "notifications": {
+    "original_daily_readonly_DTO_count": 4,
+    "observed_source_join": {
+      "story_native": "727",
+      "permanent_news_id": 2,
+      "kind": 1,
+      "source_native": "16777939",
+      "actor": "65869",
+      "source_event_id": 1,
+      "source_day": 2,
+      "local_recipient": "31254",
+      "original_DTO_delivery_confirmed_flags": [
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    "target_kind2_kind3_delivery": "NOT_OBSERVED: all four original heads joined kind1/news727; original DTO false delivery flags remain false. Existing kind2/news731 is not the displayed head.",
+    "original_queue_and_daily_limit": {
+      "human_terminal_original_literals": {
+        "xfm_news_delivery_day": {
+          "present": true,
+          "original_literal_excerpt": "flag = xfm_news_delivery_day data = { type = value identity = 400000 }"
+        },
+        "xfm_news_sent_today": {
+          "present": true,
+          "original_literal_excerpt": "flag = xfm_news_sent_today data = { type = value identity = 300000 }"
+        },
+        "xfm_news_cursor": {
+          "present": true,
+          "original_literal_excerpt": "flag = xfm_news_cursor data = { type = value identity = 700000 }"
+        },
+        "xfm_news_next": {
+          "present": true,
+          "original_literal_excerpt": "flag = xfm_news_next data = { type = story identity = 1172 }"
+        },
+        "xfm_news_urgent_next": {
+          "present": false,
+          "original_literal_excerpt": null
+        }
+      },
+      "Native_counts_D1_D2": [
+        3,
+        6
+      ],
+      "production_daily_limit": 3,
+      "boundary": "Per-day sent cap3 is distinct from Native queued-toast count6 across two days. Saved cursor and pending pointers show script dispatch progress, not proof every notification was displayed. One local human observed; no all-human/multiplayer or remote-territory identity credit."
+    },
+    "extra_postS3_queries_excluded": "Excluded from all four original daily DTOs, source joins and case assertions. Parent reports diagnostic empty results after S3 only; no substitution or additional SAVE.",
+    "no_global_all_human_or20_crisis_delivery_credit": true
+  },
+  "original_audit_issues_preserved": [
+    {
+      "severity": "UNQUALIFIED",
+      "identity": "save",
+      "field": "layout",
+      "detail": "External candidate only; no financial 1.21 source-layout qualification or live funds certification."
+    },
+    {
+      "severity": "INCOMPLETE",
+      "identity": "DEBT:1",
+      "field": "xfm_source",
+      "detail": "Active financial reference is unresolved in the complete selected story table."
+    },
+    {
+      "severity": "INCOMPLETE",
+      "identity": "DEBT:2",
+      "field": "xfm_source",
+      "detail": "Active financial reference is unresolved in the complete selected story table."
+    }
+  ],
+  "assessment": "INCOMPLETE",
+  "source_layout_qualification": "UNQUALIFIED",
+  "phase2_publication_time_owner_reported": "04:26:44",
+  "closure_before_release": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\R0077-closure-before-release.actual.json",
+    "bytes": 13288,
+    "sha256": "a410de31cd12a26ad9d3720c6c0c82b97ca4130449c6fec8bf6354664677ac6f"
+  },
+  "closure_released": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\R0077-closure-released.actual.json",
+    "bytes": 1219,
+    "sha256": "500ade38c7bb391198f6bcab91c79519c0d1fb305dd098cca0b9a838081792df"
+  },
+  "game_identity_from_original_closure": {
+    "pid": 15656,
+    "birth_filetime_100ns": "134398782547208670"
+  },
+  "normal_resource_results": {
+    "game_actual_exit_code": 0,
+    "host_actual_exit_code": 0,
+    "keeper_actual_exit_code": 0,
+    "job_active_processes_final": 0,
+    "native_cleanup_proven": true,
+    "normal_close_qualified": true
+  },
+  "release": {
+    "state": "done",
+    "sequence": 16346,
+    "resources": []
+  },
+  "exit_autosave_verified": false,
+  "case_acceptance_pass": false,
+  "qualified_boundary_pass": false,
+  "public_case_outcome": "PARTIAL",
+  "financialCertified": false,
+  "whole_product_release_pass": false,
+  "preserved_boundaries": "R76gap/run2/verify2 not backfilled; R74gap337/finalGAP unchanged; E8 R74D35/daily04 36records,4096/395day performance and first release not completed.",
+  "window_observation_scope": "Root S1 notes one read-only minimized/non-topmost/no-focus observation; no continuous monitoring claim.",
+  "author_actions": {
+    "Root_writes": 0,
+    "new_reader_test_build_OS_Game_or_Git": 0,
+    "SAVE_or_DLL_payload_reads": 0
+  }
+}

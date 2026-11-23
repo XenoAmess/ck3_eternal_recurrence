@@ -3799,5 +3799,127 @@ class FlorinClosedRiteCreationBlockersProfileConsumer(unittest.TestCase):
             sources[:] = original
 
 
+class FlorinClosedStockBookmark1070ProfileConsumer(unittest.TestCase):
+    """Actual Q54/251 to one default-OFF stock bookmark1070 route; no foreign ABI credit."""
+    CONTRACT_ID = "ck3-1210-financial-markets-native-profile-v32"
+    NEW_FLAGS = ("XAR_CK3_ENABLE_121003_26785313_STOCK_BOOKMARK1070_V1",)
+    setUpClass = classmethod(FlorinClosedCoreRouteProfileConsumer.setUpClass.__func__)
+    setUp = FlorinProfileContractConsumer.setUp
+    target = FlorinProfileContractConsumer.target
+    consume = FlorinProfileContractConsumer.consume
+    source_defines = FlorinProfileContractConsumer.source_defines
+    consume_profile_receipt = FlorinSixClosedOptionsProfileConsumer.consume_profile_receipt
+    NEW_RUNTIME_SOURCES = (
+        "src/ck3_121003_stock_bookmark107026785313_raw_v1.cpp",
+        "src/ck3_121003_stock_bookmark107026785313_wire_v1.cpp",
+        "src/ck3_121003_stock_bookmark107026785313_owner_v1.cpp",
+        "src/ck3_121003_stock_bookmark107026785313_dispatch_v1.cpp",
+    )
+
+    def test_actual_q54_gains_only_one_off_and_four_runtime_sources_with_original_twenty_two(self) -> None:
+        prior = builder.select_profile_expansion_contract(self.registry, "ck3-1210-financial-markets-native-profile-v31")
+        expected_before = dict(prior["before_flags"], **{k: v["after"] for k, v in prior["flag_changes"].items()})
+        self.assertEqual(self.contract["before_flags"], expected_before)
+        self.assertEqual(len(expected_before), 251)
+        self.assertEqual(self.contract["flag_changes"], {self.NEW_FLAGS[0]: {"before": None, "after": "OFF"}})
+        self.assertEqual(len(dict(expected_before, **dict.fromkeys(self.NEW_FLAGS, "OFF"))), 252)
+        self.assertEqual(self.contract["production_TUs"], {"xar_ck3_bridge": 268, "xar_ck3_12002_runtime": 644, "xar_bridge_protocol": 1})
+        for target, sources in prior["production_source_lists"].items():
+            extra = list(self.NEW_RUNTIME_SOURCES) if target == "xar_ck3_12002_runtime" else []
+            self.assertEqual(self.contract["production_source_lists"][target], sources + extra)
+        for key in ("fixture_sources", "fixture_included_bodies"):
+            self.assertEqual(self.contract[key], prior[key])
+        self.assertEqual(len(self.fixtures), 22)
+        text = (NATIVE / "cmake/current267_stock_bookmark1070_v1.cmake").read_text(encoding="utf-8-sig")
+        self.assertRegex(text, r"option\(" + self.NEW_FLAGS[0] + r'\s+"[^"\n]*"\s+OFF\)')
+        self.assertIn("set(_xar_bookmark_units " + " ".join(self.NEW_RUNTIME_SOURCES) + ")", text)
+        self.assertIn("target_sources(xar_ck3_12002_runtime PRIVATE", text)
+        self.assertIn("NOT XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1", text)
+        self.assertIn("NOT XAR_CK3_ENABLE_121003_26785313_LYD_V1", text)
+        self.assertIn("NOT XAR_CK3_ENABLE_121003_26785313_LETTER_V1", text)
+        self.assertIn("foreach(state IN ITEMS on off lyd_only)", text)
+        self.assertIn("XAR_CK3_ENABLE_121003_26785313_STOCK_BOOKMARK1070_V1=0", text)
+        self.assertIn("src/ck3_121003_stock_bookmark107026785313_owner_default_off_v1_test.cpp", text)
+        self.assertIn("xar_ck3_stock_bookmark1070_step_" + "$" + "{state}_test", text)
+        self.assertNotIn("xar_ck3_stock_bookmark1070_off_test", self.contract["fixture_sources"])
+        for row, old in zip(self.contract["production_macro_contracts"][:-4], prior["production_macro_contracts"], strict=True):
+            restored = copy.deepcopy(row)
+            self.assertEqual(restored["absent"].pop(), self.NEW_FLAGS[0])
+            self.assertEqual(restored, old)
+        for row, old in zip(self.contract["fixture_contracts"], prior["fixture_contracts"], strict=True):
+            restored = copy.deepcopy(row)
+            self.assertEqual(restored["forbidden_defines"][-3:], [self.NEW_FLAGS[0], self.NEW_FLAGS[0] + "=0", self.NEW_FLAGS[0] + "=1"])
+            del restored["forbidden_defines"][-3:]
+            self.assertEqual(restored, old)
+        self.assertEqual(builder.select_profile_expansion_contract(self.registry)["contract_id"], "ck3-12004-five-gate-native-profile-v1")
+        self.consume()
+
+    def test_stock_bookmark_macro_in_any_spelling_is_rejected_on_selected_and_original_fixture_sources(self) -> None:
+        selected = [("xar_ck3_12002_runtime", path) for path in self.NEW_RUNTIME_SOURCES]
+        selected += [("xar_ck3_bridge", "src/bridge.cpp"), ("xar_ck3_bridge", "src/game_adapter.cpp"),
+                     ("xar_ck3_bridge", "src/main_thread_query_mailbox_v1.cpp")]
+        selected += [(name, sources[0]) for name, sources in self.contract["fixture_sources"].items()]
+        for target, source in selected:
+            definitions = self.source_defines(target, source)
+            message = "fixture compile definitions differ" if target in self.contract["fixture_sources"] else "per-TU present/absent macros differ"
+            for spelling in (self.NEW_FLAGS[0], self.NEW_FLAGS[0] + "=0", self.NEW_FLAGS[0] + "=1"):
+                definitions.append({"define": spelling})
+                try:
+                    with self.subTest(target=target, source=source, spelling=spelling), self.assertRaisesRegex(ValueError, message):
+                        self.consume()
+                finally:
+                    definitions.pop()
+        # The foreign reader is absent from this selected production graph.
+        # Reject both an extra TU and a same-count substitution, rather than
+        # inventing a selected compileGroup for this unreviewed body.
+        foreign = "src/ck3_121003_readonly26785313_v1.cpp"
+        self.assertNotIn(foreign, self.contract["production_source_lists"]["xar_ck3_12002_runtime"])
+        self.indexed = dict(self.indexed)
+        self.indexed[foreign] = builder.pin(NATIVE / foreign)
+        sources = self.targets["xar_ck3_12002_runtime"]["sources"]
+        original = copy.deepcopy(sources)
+        sources.append({"path": foreign, "compileGroupIndex": 0})
+        try:
+            with self.assertRaisesRegex(ValueError, "production TU counts differ"):
+                self.consume()
+        finally:
+            sources[:] = copy.deepcopy(original)
+        sources[0]["path"] = foreign
+        try:
+            with self.assertRaisesRegex(ValueError, "production source bodies differ"):
+                self.consume()
+        finally:
+            sources[:] = original
+
+    def test_receipt_requires_actual_q54_before_and_exact_off_source_graph(self) -> None:
+        expected = dict(self.contract["before_flags"], **{k: v["after"] for k, v in self.contract["flag_changes"].items()})
+        self.assertEqual(self.consume_profile_receipt(actual_flags=expected)["contract"]["contract_id"], self.CONTRACT_ID)
+        for mode in ("ON", "missing", "unknown"):
+            flags = dict(expected)
+            if mode == "missing":
+                del flags[self.NEW_FLAGS[0]]
+            else:
+                flags[self.NEW_FLAGS[0] if mode == "ON" else self.NEW_FLAGS[0] + "_UNKNOWN"] = "ON"
+            with self.subTest(mode=mode), self.assertRaisesRegex(ValueError, "outside the reviewed exact delta"):
+                self.consume_profile_receipt(actual_flags=flags)
+        stale = builder.select_profile_expansion_contract(self.registry, "ck3-1210-financial-markets-native-profile-v31")
+        with self.assertRaisesRegex(ValueError, "prior profile differs"):
+            self.consume_profile_receipt(old_flags=stale["before_flags"], actual_flags=expected)
+        sources = self.targets["xar_ck3_12002_runtime"]["sources"]
+        original = copy.deepcopy(sources)
+        sources.pop()
+        try:
+            with self.assertRaisesRegex(ValueError, "production TU counts differ"):
+                self.consume()
+        finally:
+            sources[:] = copy.deepcopy(original)
+        sources[-1]["path"] = "src/ck3_1210_core.cpp"
+        try:
+            with self.assertRaisesRegex(ValueError, "production source bodies differ"):
+                self.consume()
+        finally:
+            sources[:] = original
+
+
 if __name__ == "__main__":
     unittest.main()
