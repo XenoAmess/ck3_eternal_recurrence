@@ -1,7 +1,7 @@
 ﻿window = {
     name = "xfm_market_window"
     parentanchor = center
-    size = { 1280 920 }
+    size = { 1320 920 }
     layer = middle
     movable = yes
     visible = "[And( GetPlayer.IsValid, GetScriptedGui( 'xfm_market_window_gui' ).IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]"
@@ -9,14 +9,15 @@
     using = Window_Decoration
     state = { name = _show using = Animation_FadeIn_Quick on_start = "[GetVariableSystem.Set( 'xfm_market_tab', 'market' )]" on_start = "[GetVariableSystem.Set( 'xfm_market_ticket', 'spot' )]" }
     state = { name = _hide using = Animation_FadeOut_Quick }
-    vbox = {
-        using = Window_Margins spacing = 10
+    # Fixed frames keep rendered controls inside their parent hit rectangles.
+    # Do not restore percentage-height columns inside an auto-sized box.
         header_pattern = {
-            layoutpolicy_horizontal = expanding
+            position = { 24 14 }
+            size = { 1272 52 }
             blockoverride "header_text" { text = "xfm_market_title" }
             blockoverride "button_close" { onclick = "[GetScriptedGui( 'xfm_market_close_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
         }
-        hbox = { spacing = 6 layoutpolicy_horizontal = expanding
+        hbox = { name = "xfm_market_tabs" position = { 24 74 } size = { 1272 42 }
             button_tab = { name = "xfm_tab_market" down = "[Not( Or( GetVariableSystem.HasValue( 'xfm_market_tab', 'positions' ), Or( GetVariableSystem.HasValue( 'xfm_market_tab', 'orders' ), Or( GetVariableSystem.HasValue( 'xfm_market_tab', 'debts' ), Or( GetVariableSystem.HasValue( 'xfm_market_tab', 'issuer' ), GetVariableSystem.HasValue( 'xfm_market_tab', 'news' ) ) ) ) ) )]" onclick = "[GetVariableSystem.Set( 'xfm_market_tab', 'market' )]" blockoverride "tab_label" { text = "xfm_market_tab_market" } }
             button_tab = { name = "xfm_tab_positions" down = "[GetVariableSystem.HasValue( 'xfm_market_tab', 'positions' )]" onclick = "[GetVariableSystem.Set( 'xfm_market_tab', 'positions' )]" blockoverride "tab_label" { text = "xfm_market_tab_positions" } }
             button_tab = { name = "xfm_tab_orders" down = "[GetVariableSystem.HasValue( 'xfm_market_tab', 'orders' )]" onclick = "[GetVariableSystem.Set( 'xfm_market_tab', 'orders' )]" blockoverride "tab_label" { text = "xfm_market_tab_orders" } }
@@ -24,9 +25,10 @@
             button_tab = { name = "xfm_tab_issuer" down = "[GetVariableSystem.HasValue( 'xfm_market_tab', 'issuer' )]" onclick = "[GetVariableSystem.Set( 'xfm_market_tab', 'issuer' )]" blockoverride "tab_label" { text = "xfm_market_tab_issuer" } }
             button_tab = { name = "xfm_tab_news" down = "[GetVariableSystem.HasValue( 'xfm_market_tab', 'news' )]" onclick = "[GetVariableSystem.Set( 'xfm_market_tab', 'news' )]" blockoverride "tab_label" { text = "xfm_market_tab_news" } }
         }
-        hbox = { spacing = 12 layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding
-            vbox = { size = { 760 100% } spacing = 8
-                text_multi = { text = "xfm_market_wallet_summary" max_width = 745 autoresize = yes }
+        widget = { name = "xfm_market_body" position = { 24 126 } size = { 1272 766 }
+            widget = { name = "xfm_market_browser" size = { 790 766 }
+              vbox = { name = "xfm_market_wallet" size = { 790 116 } spacing = 6
+                text_multi = { text = "xfm_market_wallet_summary" max_width = 780 autoresize = yes }
                 hbox = { spacing = 6
                     button_standard = { name = "xfm_market_cash_down" size = { 40 34 } text = "xfm_market_minus" enabled = "[GetScriptedGui( 'xfm_market_cash_down_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" tooltip = "[GetScriptedGui( 'xfm_market_cash_down_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_cash_down_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
                     text_single = { text = "xfm_market_cash_amount" }
@@ -36,17 +38,18 @@
                     button_standard = { name = "xfm_market_step" size = { 130 34 } text = "xfm_market_step" enabled = "[GetScriptedGui( 'xfm_market_step_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" tooltip = "[GetScriptedGui( 'xfm_market_step_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_step_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
                     button_standard = { name = "xfm_market_fund_donate" size = { 130 34 } text = "xfm_market_fund_donate" enabled = "[GetScriptedGui( 'xfm_market_fund_donate_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_fund_donate_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
                 }
-                scrollbox = { name = "xfm_market_accounts" layoutpolicy_horizontal = expanding size = { 750 45 } blockoverride "scrollbox_content" { vbox = { layoutpolicy_horizontal = expanding spacing = 4 datamodel = "[GetPlayer.MakeScope.GetList( 'xfm_accounts' )]" item = { xfm_market_account_row = {} } } } }
-                hbox = { spacing = 6 button_standard = { name = "xfm_market_index_grain" size = { 235 32 } text = "xfm_market_index_grain" enabled = "[GetScriptedGui( 'xfm_market_index_grain_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_index_grain_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetVariableSystem.Set( 'xfm_market_ticket', 'futures' )]" } button_standard = { name = "xfm_market_index_military" size = { 235 32 } text = "xfm_market_index_military" enabled = "[GetScriptedGui( 'xfm_market_index_military_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_index_military_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetVariableSystem.Set( 'xfm_market_ticket', 'futures' )]" } button_standard = { name = "xfm_market_index_trade" size = { 235 32 } text = "xfm_market_index_trade" enabled = "[GetScriptedGui( 'xfm_market_index_trade_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_index_trade_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetVariableSystem.Set( 'xfm_market_ticket', 'futures' )]" } }
-                widget = { layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding
-                    vbox = { visible = "[Not( Or( GetVariableSystem.HasValue( 'xfm_market_tab', 'positions' ), Or( GetVariableSystem.HasValue( 'xfm_market_tab', 'orders' ), Or( GetVariableSystem.HasValue( 'xfm_market_tab', 'debts' ), Or( GetVariableSystem.HasValue( 'xfm_market_tab', 'issuer' ), GetVariableSystem.HasValue( 'xfm_market_tab', 'news' ) ) ) ) ) )]" size = { 100% 100% } spacing = 8
-                        hbox = { spacing = 6
+                scrollbox = { name = "xfm_market_accounts" size = { 790 44 } blockoverride "scrollbox_margins" { margin_top = 4 margin_bottom = 4 margin_left = 8 margin_right = 16 } blockoverride "scrollbox_content" { vbox = { layoutpolicy_horizontal = expanding spacing = 4 datamodel = "[GetPlayer.MakeScope.GetList( 'xfm_accounts' )]" item = { xfm_market_account_row = {} } } } }
+              }
+                hbox = { name = "xfm_market_indexes" position = { 0 128 } size = { 790 34 } spacing = 8 button_standard = { name = "xfm_market_index_grain" size = { 258 34 } text = "xfm_market_index_grain" enabled = "[GetScriptedGui( 'xfm_market_index_grain_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_index_grain_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetVariableSystem.Set( 'xfm_market_ticket', 'futures' )]" } button_standard = { name = "xfm_market_index_military" size = { 258 34 } text = "xfm_market_index_military" enabled = "[GetScriptedGui( 'xfm_market_index_military_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_index_military_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetVariableSystem.Set( 'xfm_market_ticket', 'futures' )]" } button_standard = { name = "xfm_market_index_trade" size = { 258 34 } text = "xfm_market_index_trade" enabled = "[GetScriptedGui( 'xfm_market_index_trade_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_index_trade_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetVariableSystem.Set( 'xfm_market_ticket', 'futures' )]" } }
+                widget = { name = "xfm_market_pages" position = { 0 174 } size = { 790 592 }
+                    widget = { name = "xfm_market_page_market" visible = "[Not( Or( GetVariableSystem.HasValue( 'xfm_market_tab', 'positions' ), Or( GetVariableSystem.HasValue( 'xfm_market_tab', 'orders' ), Or( GetVariableSystem.HasValue( 'xfm_market_tab', 'debts' ), Or( GetVariableSystem.HasValue( 'xfm_market_tab', 'issuer' ), GetVariableSystem.HasValue( 'xfm_market_tab', 'news' ) ) ) ) ) )]" size = { 790 592 }
+                        hbox = { name = "xfm_market_filters" position = { 0 0 } size = { 790 34 } spacing = 6
                             button_standard = { name = "xfm_market_sort" size = { 175 34 } text = "xfm_market_sort" enabled = "[GetScriptedGui( 'xfm_market_sort_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" tooltip = "[GetScriptedGui( 'xfm_market_sort_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_sort_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
                             button_standard = { name = "xfm_market_type_filter" size = { 175 34 } text = "xfm_market_type_filter" enabled = "[GetScriptedGui( 'xfm_market_type_filter_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" tooltip = "[GetScriptedGui( 'xfm_market_type_filter_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_type_filter_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
                             button_standard = { name = "xfm_market_holdings_filter" size = { 150 34 } text = "xfm_market_holdings_filter" enabled = "[GetScriptedGui( 'xfm_market_holdings_filter_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" tooltip = "[GetScriptedGui( 'xfm_market_holdings_filter_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_holdings_filter_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
                             button_standard = { name = "xfm_market_clear_filters" size = { 135 34 } text = "xfm_market_clear_filters" enabled = "[GetScriptedGui( 'xfm_market_clear_filters_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" tooltip = "[GetScriptedGui( 'xfm_market_clear_filters_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_clear_filters_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
                         }
-                        hbox = { spacing = 6
+                        hbox = { name = "xfm_market_search" position = { 0 44 } size = { 790 34 } spacing = 6
                             text_single = { text = "xfm_market_coin_id_label" }
                             button_standard = { name = "xfm_market_id_down" size = { 40 34 } text = "xfm_market_minus" enabled = "[GetScriptedGui( 'xfm_market_id_down_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" tooltip = "[GetScriptedGui( 'xfm_market_id_down_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_id_down_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
                             text_single = { text = "[GetPlayer.MakeScope.Var( 'xfm_ui_id_filter' ).GetValue|0]" }
@@ -54,22 +57,22 @@
                             expand = {}
                             button_standard = { name = "xfm_market_refresh" size = { 130 34 } text = "xfm_market_refresh" enabled = "[GetScriptedGui( 'xfm_market_refresh_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" tooltip = "[GetScriptedGui( 'xfm_market_refresh_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_refresh_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
                         }
-                        text_multi = { visible = "[GetScriptedGui( 'xfm_market_issuer_filter_active_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" text = "xfm_market_issuer_filter_active" max_width = 720 autoresize = yes }
-                        text_multi = { text = "xfm_market_columns" max_width = 720 autoresize = yes }
-                        scrollbox = { name = "xfm_market_coin_scroll" layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding blockoverride "scrollbox_content" { vbox = { layoutpolicy_horizontal = expanding spacing = 4 datamodel = "[GetPlayer.MakeScope.GetList( 'xfm_ui_coin_page' )]" item = { xfm_market_coin_row = {} } } } }
-                        text_multi = { visible = "[IsDataModelEmpty( GetPlayer.MakeScope.GetList( 'xfm_ui_coin_page' ) )]" text = "xfm_market_no_matching_coins" max_width = 730 autoresize = yes }
-                        hbox = { spacing = 10
+                        text_single = { position = { 8 88 } size = { 774 24 } visible = "[GetScriptedGui( 'xfm_market_issuer_filter_active_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" text = "xfm_market_issuer_filter_active" tooltip = "xfm_market_issuer_filter_active" autoresize = no }
+                        text_single = { position = { 8 116 } size = { 774 26 } text = "xfm_market_columns" autoresize = no }
+                        scrollbox = { name = "xfm_market_coin_scroll" position = { 0 150 } size = { 790 396 } blockoverride "scrollbox_margins" { margin_top = 6 margin_bottom = 6 margin_left = 6 margin_right = 18 } blockoverride "scrollbox_content" { vbox = { layoutpolicy_horizontal = expanding spacing = 4 datamodel = "[GetPlayer.MakeScope.GetList( 'xfm_ui_coin_page' )]" item = { xfm_market_coin_row = {} } } } }
+                        text_multi = { position = { 16 170 } visible = "[IsDataModelEmpty( GetPlayer.MakeScope.GetList( 'xfm_ui_coin_page' ) )]" text = "xfm_market_no_matching_coins" max_width = 730 autoresize = yes }
+                        hbox = { name = "xfm_market_pagination" position = { 0 558 } size = { 790 34 } spacing = 10
                             button_standard = { name = "xfm_market_previous" size = { 145 34 } text = "xfm_market_previous" enabled = "[GetScriptedGui( 'xfm_market_previous_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" tooltip = "[GetScriptedGui( 'xfm_market_previous_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_previous_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
                             expand = {} text_single = { text = "xfm_market_page" } expand = {}
                             button_standard = { name = "xfm_market_next" size = { 145 34 } text = "xfm_market_next" enabled = "[GetScriptedGui( 'xfm_market_next_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" tooltip = "[GetScriptedGui( 'xfm_market_next_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_next_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
                         }
                      }
-                    vbox = { visible = "[GetVariableSystem.HasValue( 'xfm_market_tab', 'positions' )]" size = { 100% 100% } spacing = 8 text_multi = { text = "xfm_market_positions_help" max_width = 720 autoresize = yes }scrollbox = { name = "xfm_market_positions_scroll" layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding blockoverride "scrollbox_content" { vbox = { layoutpolicy_horizontal = expanding spacing = 4 datamodel = "[GetPlayer.MakeScope.GetList( 'xfm_ui_positions_page' )]" item = { xfm_market_position_row = {} } } } } hbox = { spacing = 8
+                    vbox = { name = "xfm_market_page_positions" visible = "[GetVariableSystem.HasValue( 'xfm_market_tab', 'positions' )]" size = { 790 592 } spacing = 8 ignoreinvisible = yes text_multi = { text = "xfm_market_positions_help" max_width = 760 autoresize = yes }scrollbox = { name = "xfm_market_positions_scroll" size = { 790 100 } layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding blockoverride "scrollbox_content" { vbox = { layoutpolicy_horizontal = expanding spacing = 4 datamodel = "[GetPlayer.MakeScope.GetList( 'xfm_ui_positions_page' )]" item = { xfm_market_position_row = {} } } } } hbox = { spacing = 8
  button_standard = { name = "xfm_market_positions_previous" size = { 150 30 } text = "xfm_market_previous" enabled = "[GetScriptedGui( 'xfm_market_positions_previous_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_positions_previous_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
  expand = {}
  button_standard = { name = "xfm_market_positions_next" size = { 150 30 } text = "xfm_market_next" enabled = "[GreaterThan_int32( GetDataModelSize( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_positions' ) ), Add_int32( FixedPointToInt( GetPlayer.MakeScope.Var( 'xfm_ui_positions_offset' ).GetValue ), '(int32)16' ) )]" onclick = "[GetScriptedGui( 'xfm_market_positions_next_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
 } }
-                    vbox = { visible = "[GetVariableSystem.HasValue( 'xfm_market_tab', 'orders' )]" size = { 100% 100% } spacing = 8 text_multi = { text = "xfm_market_orders_help" max_width = 720 autoresize = yes }scrollbox = { name = "xfm_market_orders_scroll" layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding blockoverride "scrollbox_content" { vbox = { layoutpolicy_horizontal = expanding spacing = 4 datamodel = "[GetPlayer.MakeScope.GetList( 'xfm_ui_orders_page' )]" item = { vbox = {
+                    vbox = { name = "xfm_market_page_orders" visible = "[GetVariableSystem.HasValue( 'xfm_market_tab', 'orders' )]" size = { 790 592 } spacing = 8 ignoreinvisible = yes text_multi = { text = "xfm_market_orders_help" max_width = 760 autoresize = yes }scrollbox = { name = "xfm_market_orders_scroll" size = { 790 100 } layoutpolicy_horizontal = expanding layoutpolicy_vertical = expanding blockoverride "scrollbox_content" { vbox = { layoutpolicy_horizontal = expanding spacing = 4 datamodel = "[GetPlayer.MakeScope.GetList( 'xfm_ui_orders_page' )]" item = { vbox = {
 
         layoutpolicy_horizontal = expanding spacing = 5
         hbox = {
@@ -122,22 +125,23 @@
  expand = {}
  button_standard = { name = "xfm_market_history_next" size = { 150 30 } text = "xfm_market_next" enabled = "[GreaterThan_int32( GetDataModelSize( GetPlayer.MakeScope.Var( 'xfm_active_account' ).GetList( 'xfm_order_history' ) ), Add_int32( FixedPointToInt( GetPlayer.MakeScope.Var( 'xfm_ui_history_offset' ).GetValue ), '(int32)16' ) )]" onclick = "[GetScriptedGui( 'xfm_market_history_next_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
 } }
-                    vbox = { visible = "[GetVariableSystem.HasValue( 'xfm_market_tab', 'debts' )]" size = { 100% 100% } spacing = 8 xfm_market_debts_panel = {} }
-                    vbox = { visible = "[GetVariableSystem.HasValue( 'xfm_market_tab', 'issuer' )]" size = { 100% 100% } spacing = 8 xfm_market_issuer_panel = {} }
-                    vbox = { visible = "[GetVariableSystem.HasValue( 'xfm_market_tab', 'news' )]" size = { 100% 100% } spacing = 8 xfm_market_news_panel = {} }
+                    scrollbox = { name = "xfm_market_page_debts" visible = "[GetVariableSystem.HasValue( 'xfm_market_tab', 'debts' )]" size = { 790 592 } blockoverride "scrollbox_content" { vbox = { layoutpolicy_horizontal = expanding ignoreinvisible = yes xfm_market_debts_panel = {} } } }
+                    scrollbox = { name = "xfm_market_page_issuer" visible = "[GetVariableSystem.HasValue( 'xfm_market_tab', 'issuer' )]" size = { 790 592 } blockoverride "scrollbox_content" { vbox = { layoutpolicy_horizontal = expanding ignoreinvisible = yes xfm_market_issuer_panel = {} } } }
+                    scrollbox = { name = "xfm_market_page_news" visible = "[GetVariableSystem.HasValue( 'xfm_market_tab', 'news' )]" size = { 790 592 } blockoverride "scrollbox_content" { vbox = { layoutpolicy_horizontal = expanding ignoreinvisible = yes xfm_market_news_panel = {} } } }
                 }
             }
-            divider = { layoutpolicy_vertical = expanding }
-            scrollbox = { size = { 420 100% } blockoverride "scrollbox_content" { vbox = { layoutpolicy_horizontal = expanding spacing = 8
-                text_label_left = { text = "xfm_market_detail_title" }
+            divider = { position = { 801 0 } size = { 2 766 } }
+            widget = { name = "xfm_market_trading" position = { 812 0 } size = { 460 766 }
+              text_label_left = { position = { 12 0 } size = { 436 30 } text = "xfm_market_detail_title" }
+              scrollbox = { name = "xfm_market_detail_scroll" position = { 0 38 } size = { 460 728 } blockoverride "scrollbox_margins" { margin_top = 8 margin_bottom = 12 margin_left = 12 margin_right = 20 } blockoverride "scrollbox_content" { vbox = { layoutpolicy_horizontal = expanding spacing = 8 ignoreinvisible = yes
                 text_multi = { visible = "[Not( GetScriptedGui( 'xfm_market_asset_selected_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) )]" text = "xfm_market_select_hint" max_width = 400 autoresize = yes }
                 vbox = {
                     visible = "[GetScriptedGui( 'xfm_market_asset_selected_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
-                    layoutpolicy_horizontal = expanding spacing = 8
+                    layoutpolicy_horizontal = expanding spacing = 8 ignoreinvisible = yes
                     datacontext = "[GetPlayer.MakeScope.Var( 'xfm_selected_coin' )]"
-                    text_multi = { visible = "[GetScriptedGui( 'xfm_market_coin_selected_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" text = "xfm_market_coin_details" max_width = 400 autoresize = yes }
-                    text_multi = { visible = "[GetScriptedGui( 'xfm_market_index_selected_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" text = "xfm_market_index_details" max_width = 400 autoresize = yes }
-                    hbox = {
+                    text_multi = { visible = "[GetScriptedGui( 'xfm_market_coin_selected_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" text = "xfm_market_coin_summary" tooltip = "xfm_market_coin_details" max_width = 420 autoresize = yes }
+                    text_multi = { visible = "[GetScriptedGui( 'xfm_market_index_selected_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" text = "xfm_market_index_summary" tooltip = "xfm_market_index_details" max_width = 420 autoresize = yes }
+                    hbox = { ignoreinvisible = yes
 
                         button_tab = { name = "xfm_ticket_spot" visible = "[GetScriptedGui( 'xfm_market_coin_selected_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" down = "[Or( GetVariableSystem.HasValue( 'xfm_market_ticket', 'spot' ), And( Not( Or( GetVariableSystem.HasValue( 'xfm_market_ticket', 'spot' ), Or( GetVariableSystem.HasValue( 'xfm_market_ticket', 'futures' ), GetVariableSystem.HasValue( 'xfm_market_ticket', 'history' ) ) ) ), GetScriptedGui( 'xfm_market_coin_selected_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ) )]" onclick = "[GetVariableSystem.Set( 'xfm_market_ticket', 'spot' )]" blockoverride "tab_label" { text = "xfm_market_ticket_spot" } }
                         button_tab = { name = "xfm_ticket_futures" down = "[Or( GetVariableSystem.HasValue( 'xfm_market_ticket', 'futures' ), And( Not( Or( GetVariableSystem.HasValue( 'xfm_market_ticket', 'spot' ), Or( GetVariableSystem.HasValue( 'xfm_market_ticket', 'futures' ), GetVariableSystem.HasValue( 'xfm_market_ticket', 'history' ) ) ) ), GetScriptedGui( 'xfm_market_index_selected_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End ) ) )]" onclick = "[GetVariableSystem.Set( 'xfm_market_ticket', 'futures' )]" blockoverride "tab_label" { text = "xfm_market_ticket_futures" } }
@@ -148,6 +152,6 @@
                     xfm_market_history_panel = { visible = "[GetVariableSystem.HasValue( 'xfm_market_ticket', 'history' )]" }
                 }
             } } }
+            }
         }
-    }
 }

@@ -12,10 +12,13 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.regex.Pattern;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.xar.ck3.markets.build.ContentValidator;
+import org.xar.ck3.save.Clausewitz;
 
 /** Source composition and real generated-reference regressions; never CK3/business acceptance. */
 final class OtcGuiContractTest {
@@ -53,8 +56,8 @@ final class OtcGuiContractTest {
         assertEquals(normalize(previousCancel), normalize(currentCancel));
         String previousTicket = baseline("xfm_market_spot_ticket.gui");
         String currentTicket = read(CANDIDATE, "gui/xfm_market_spot_ticket.gui");
-        assertEquals(previousTicket, currentTicket.replace("        xfm_market_otc_panel = {}\n", "")
-                .replace("        xfm_market_redemption_panel = {}\n", "")); // independent redemption contract covers this approved panel extension
+        // The order form may move above the book; all original controls and callbacks stay identical.
+        assertEquals(spotControls(previousTicket), spotControls(currentTicket));
         assertFalse(guis.contains("trigger_event"));
         assertFalse(read(CANDIDATE, "common/scripted_effects/xfm_market_ui_otc_targets.txt").contains("every_living_character"));
     }
@@ -76,6 +79,23 @@ final class OtcGuiContractTest {
         assertEquals(paths.size(), report.files());
         assertEquals("STATIC_ONLY_NOT_ENGINE_OR_BUSINESS_PASS", report.boundary());
         assertTrue(report.runtimeFiles().containsAll(ADDITIONS));
+    }
+
+    private static Map<String, String> spotControls(String source) {
+        Map<String, String> controls = new TreeMap<>();
+        spotControls(Clausewitz.parse(source), controls);
+        assertFalse(controls.isEmpty());
+        return controls;
+    }
+    private static void spotControls(Clausewitz.Block block, Map<String, String> controls) {
+        for (var entry : block.entries()) if (entry.value() instanceof Clausewitz.Block child) {
+            if (entry.key().equals("button_standard")) {
+                String name = child.atom("name", "");
+                assertFalse(name.isEmpty());
+                assertEquals(null, controls.put(name, normalize(child.render())), "duplicate spot control");
+            }
+            spotControls(child, controls);
+        }
     }
 
     private static String read(Path root, String relative) throws IOException {

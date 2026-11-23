@@ -1,6 +1,6 @@
 # 期货与虚拟货币市场
 
-[Steam 创意工坊：0.1.0-alpha.1](https://steamcommunity.com/sharedfiles/filedetails/?id=3844765196) · 首次公开 Alpha，完整实机与规模验收仍在推进。
+[Steam 创意工坊](https://steamcommunity.com/sharedfiles/filedetails/?id=3844765196) · 当前开发版 0.1.0-alpha.2 修复市场界面，实际发布状态见发布记录。
 
 一个独立 CK3 Mod，共用账本，包含虚拟货币现货与期货两个内部模块。面向 CK3 1.21.0。
 
@@ -10,7 +10,7 @@
 - [施工状态及实际验证](docs/development-status.md)
 - [中文玩家手册](docs/player-guide.md)
 
-当前为 Alpha 试用版，完整实机业务、规模及长期性能验收仍在推进，不宣称正式版或全产品验收通过。安装入口与已知范围见[Alpha 玩家说明](docs/releases/0.1.0-alpha.1-player-notes.md)。玩家运行时只使用 CK3 脚本及界面；tools 中 Java / Maven / Quarkus 是开发、构建与验证工具。
+当前为 Alpha 试用版，完整实机业务、规模及长期性能验收仍在推进，不宣称正式版或全产品验收通过。界面改动见[Alpha.2 玩家说明](docs/releases/0.1.0-alpha.2-player-notes.md)，完整功能边界见[首次 Alpha 玩家说明](docs/releases/0.1.0-alpha.1-player-notes.md)。玩家运行时只使用 CK3 脚本及界面；tools 中 Java / Maven / Quarkus 是开发、构建与验证工具。
 
 已写入原生模块的功能：
 
