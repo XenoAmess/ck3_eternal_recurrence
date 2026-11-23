@@ -34,7 +34,7 @@
     "final": "Actual own-Rite getter noHead; MainHouse head40738/Dynast36423/pending retained",
     "force_refresh_invocation": "NOT_INDEPENDENTLY_WITNESSED"
   },
-  "limits": "No eligible surviving Rite-head successor was guaranteed by this fixture (observed surviving77333 female/unlanded). Need a controlled eligible-successor fixture and independent actual Dynast competition before causally judging this path or formal release. Initial callback/old-Rite finite observations do not promote the whole candidate.",
+  "limits": "The fixture did not guarantee an eligible surviving successor; this does not prove all candidates were ineligible. Observed backup77333 was unlanded/rank0. Rite150/Faith32 actually has gender_equal, clerical_gender_either and a temporal head: female gender itself is not the cause. No comprehensive candidate census or independent force_refresh-entry witness was obtained. Need controlled eligible landed successor and an independent actual Dynast competition before causal judgement or formal release.",
   "actual_reader_scope": [
     {
       "name": "actor-only",
@@ -136,5 +136,17 @@
   "current_public_DES": "0.2.3 canonical3826991345",
   "distinct_products_uploaded": 12,
   "distinct_products_strict_finite_complete": 9,
-  "distinct_product_total": 17
+  "distinct_product_total": 17,
+  "Root_factual_refinement": {
+    "Rite150_Faith32": "gender_equal / clericalgender_either / temporal head",
+    "gender_causal_claim": false,
+    "actual_observed_backup_rank": "unlanded/rank0; actual fallback ranking requires >0 and !=1",
+    "exhaustive_successor_census": false,
+    "Root_original_summary_wording_clarified_not_rewritten": true
+  },
+  "runtime71_equivalence": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-des024-finite-docs-a1194\\runtime71-equivalence.json",
+    "bytes": 3018,
+    "sha256": "88420461211c59e5441e8632e174e274c9317e8c361c9583c1aad14eee9a1c7d"
+  }
 }
