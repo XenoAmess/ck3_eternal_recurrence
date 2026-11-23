@@ -1,0 +1,165 @@
+{
+  "schema": "xar.des023.actual-formal-source-tag-artifact-index.v1",
+  "at_utc": "2026-11-23T05:49:06.635354+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status": "FORMAL_READY_PUBLICATION_NOT_RUN_AT_THIS_CUT",
+  "formal_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des023-formal-release-a1121\\formal-delivery-final.json",
+    "bytes": 7745,
+    "sha256": "75d7e79eb42c4ba3b30758281d8c4e7b61b971117fadddd158fc9845d83e0784"
+  },
+  "source_commit": "ca702a2174845067f5d31165377a696199ab6565",
+  "git_tag": "dynastic-esotericism-v0.2.3",
+  "tag_object": "6336d261a8ea0d564c65eeefa57d8f11928932e0",
+  "source_tag_record": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des023-formal-release-a1121\\source-tag-record.json",
+    "bytes": 2741,
+    "sha256": "b3c39c2c19685fe6bc0b41936f2d67073ea4745e315c38681cae9e198b07ce6d"
+  },
+  "content_root": "D:\\ck3-state\\upgrade-20261118\\des023-formal-release-a1121\\mod_dynastic_esotericism",
+  "runtime_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des023-formal-release-a1121\\mod_dynastic_esotericism.manifest.json",
+    "bytes": 12617,
+    "sha256": "19946fef2d5005a4b439a89da1aa667ee7e1ce66171ebb06977038ee88f55dbb"
+  },
+  "archive": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des023-formal-release-a1121\\mod_dynastic_esotericism.zip",
+    "bytes": 1062500,
+    "sha256": "727747cd4d0b77ffcb40663bd492b46b3448a5367d61376316815039931d268d"
+  },
+  "accepted_runtime_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-des-annual-performance-source-a01\\candidate-release71\\mod_dynastic_esotericism.manifest.json",
+    "bytes": 12592,
+    "sha256": "ab2d8da1a20e5d63fd44523a8c3bd7c982d024b58980be49faa7f391f9e2af13"
+  },
+  "accepted_actual_loaded_projection": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\des023-Root-accepted-runtime71-a1122.json",
+    "bytes": 14028,
+    "sha256": "d8d1b1ace51df4a277d2488ac084b6d4471b9c99d6d186c67e9b9333115334b4"
+  },
+  "Root_projection_bytes_standard_MF_size_normalized": true,
+  "metadata_file_refs": {
+    "title": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des023-formal-release-a1121\\metadata\\title.txt",
+      "bytes": 38,
+      "sha256": "c9b14d7358fb0c86461f759a3b8c8253a03da418a7fef9a8ab318f32278839fa"
+    },
+    "description": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des023-formal-release-a1121\\metadata\\workshop-description.bbcode",
+      "bytes": 7595,
+      "sha256": "4992745026f18ca102de370160f3f76bd1f45afbfadf3c15d9ad0b70448241b8"
+    },
+    "change_note": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des023-formal-release-a1121\\metadata\\change-notes.txt",
+      "bytes": 6695,
+      "sha256": "3a65a77189ee126bd1bb716f2574da94b8e5451a6d536d87b3082ee55806fa44"
+    }
+  },
+  "permanent_changelog_copy": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des023-formal-release-a1121\\metadata\\0.2.3.md",
+    "bytes": 6171,
+    "sha256": "10b8d9282e4a54019f3961dc9a838038b1703f3858b040563d41aa541a4ac639"
+  },
+  "actual_build": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des023-formal-release-a1121\\build-result.json",
+    "bytes": 947,
+    "sha256": "c94d0ce4c8560f1a8160045878050541666a408fc6d6d133b2f29221c167f707"
+  },
+  "actual_verify": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des023-formal-release-a1121\\verify-result.json",
+    "bytes": 978,
+    "sha256": "ffb59e81e6bc02c33dda57f4cdd89ac06e4e132a139f48d938f48fbc1be3f1e6"
+  },
+  "accepted71_comparison": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des023-formal-release-a1121\\accepted71-comparison.json",
+    "bytes": 2090,
+    "sha256": "310f5025b71852fcc3e7cb7bf4b3ea9df417c7349fdbe86e41c0a3696af4a397"
+  },
+  "CodeSource_source_tag_mapping": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des023-formal-release-a1121\\CodeSource-source-tag-mapping.json",
+    "bytes": 8465,
+    "sha256": "4a40d88a23aef686109da5663f98b1484fee0745810f716c33351933e03fffaf"
+  },
+  "formal_phase_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des023-formal-release-a1121\\formal-phase-closure.json",
+    "bytes": 1711,
+    "sha256": "a38ef97615fa302dda4e5be78d018ce8ad8b19b0af61a00132ceff8f1655eb62"
+  },
+  "new_qualified_runtime_paths": 0,
+  "payloads": 71,
+  "runtime_bytes": 2956896,
+  "ZIP_byte_identical_to_accepted_candidate": true,
+  "build_once_seconds": 3.137085800000932,
+  "verify_once_seconds": 1.3554535000002943,
+  "actual_build_Job_peak": 192860160,
+  "actual_verify_Job_peak": 190156800,
+  "new_formal_disk_upper": 16777216,
+  "accounted_held_upper": 4352080,
+  "future_reserved_bytes": 0,
+  "Maven_or_tests_rerun": false,
+  "Game_Save_Steam_SDK_HTTP_or_publish_by_this_unit": false,
+  "first_metadata_path_spelling_guard_refusal": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des023-formal-release-a1121\\metadata-path-spelling-refusal-a01.json",
+    "bytes": 2157,
+    "sha256": "e8865042c04b26e73bf4fa2a9c7f75c2f323fe59ce2081bfc444a83f1817f3fc"
+  },
+  "release_evidence": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-oldsave-inspection-a942\\final-cold-business-facts-a1120.json",
+      "bytes": 4086,
+      "sha256": "77eed825cdf103e296c4aeb54716f7f309da449d4f95fb02402a678142e0b4e3"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\des023-Root-accepted-runtime71-a1122.json",
+      "bytes": 14028,
+      "sha256": "d8d1b1ace51df4a277d2488ac084b6d4471b9c99d6d186c67e9b9333115334b4"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-oldsave-inspection-a942\\annual-Jan3-finite-business-facts-a1112.json",
+      "bytes": 2367,
+      "sha256": "1e32de0f4aba4fd4cc2ff4017da8a38e4f7ec77e405400527ad54f6a7a7eb1c0"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\des-annual-oldsave-finite-core-a959.json",
+      "bytes": 6806,
+      "sha256": "7669a48b7b59d786c028e2e86cf361f1003546250b709a3be76483387156f763"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\des-legacy-preset-finite-closure-a990.json",
+      "bytes": 3616,
+      "sha256": "12b7fb63020df7c3a7a62620f73fa3969e7c740024a46dea062015a8650cd393"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\des-legacy-monthly31-finite-closure-a999.json",
+      "bytes": 10642,
+      "sha256": "bd033a692ebff6109cc15f86de2d549263f986d8a4a078b3e625c05fbc5bc428"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\evidence\\des023-final-finite-source-a1121.json",
+      "bytes": 5881,
+      "sha256": "42128c3abee13101cd748f4d549b39a4de8076c060f3d76d4292dada632aa094"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\evidence\\des-final-cold-and-retired-inputs-a1120.json",
+      "bytes": 15077,
+      "sha256": "607067ed7928a130046bb2b3879451e31c7b8b9ec39134a180523466d1d441e4"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-des-annual-performance-source-a01\\affected23-qualified.json",
+      "bytes": 9121,
+      "sha256": "523bf6c15a332d2ad496196c706e7bf91b83f7e4783d4c0c8958ee2574a6e91c"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-023-release-draft-a856\\final-finite-a1120\\delivery-final.json",
+      "bytes": 1832,
+      "sha256": "849c82559d0faee0fcebb6aa9f668470000e1a06947b96e1e9f4ebd229e6f245"
+    }
+  ],
+  "counts_at_cut": {
+    "uploaded": "12/17",
+    "strict": "9/17",
+    "DES_uploaded": false
+  },
+  "boundary": "Root accepted finite current267 true-unmodded old-save initialization, intact legacy procreation migration, 31-day old lease compatibility, all56 living members annual MainHouse recovery including player and cross-RiteAI, actual own-Rite HouseHead following and independent cold reload+Save persistence with controls preserved. No NativeCreate, instant title callback, wholeproduct/fullSDK, measured CPU/FPS/wallclock speedup or new publication credit. Original Jan1 NOT_OBSERVED, pruned-House request failure, old UNKNOWN/nativefalse and all actual earlier failures remain.",
+  "followup_HEAD_may_change": "SourceA/tag/formal files are frozen; later docs HEAD is not relabeled as the original build HEAD."
+}
