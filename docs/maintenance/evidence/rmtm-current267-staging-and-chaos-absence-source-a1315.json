@@ -1,0 +1,49 @@
+{
+  "schema": "xar.current267.rmtm.real-staging-and-channel-absence.Source-qualified.v1",
+  "status": "SOURCE_AND_FOCUSED_SOFTWARE_QUALIFIED_NEW_FROZEN_PAIR_PENDING",
+  "Main_staging_Source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-threshold-staging-source-a1313\\a02\\delivery-final.json",
+    "bytes": 2003,
+    "sha256": "77d3f02151135dbfbada29673ad1a4b6c866da43b9831f922f74a2a3bbce26e7"
+  },
+  "Java_exact_adoption": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-staging-build-a1315\\source-plan-ready.json",
+    "bytes": 1303,
+    "sha256": "e5f0f172827a907744bd2041b23ed92f141415f1bbbbe8b83d9df719bf9d5e8f"
+  },
+  "actual_two_required_methods": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-staging-build-a1315\\affected-qualification-final.json",
+    "bytes": 1286,
+    "sha256": "8e2e86866c79978c9ec18488373a9c7fbece430ff042cde2d20c528afe7f126a"
+  },
+  "Native_Raw1_exact_adoption": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-staging-build-a1315\\native-Raw1-source-adoption.json",
+    "bytes": 947,
+    "sha256": "533e119cd9384ecaa1753c840752c2438cec3b64915dca86e35add9a5ca17194"
+  },
+  "changes": [
+    "Threshold mode from original seed privately stages four actual natural days and original callbacks/probe Send; D1 fixed Chaos+summary onceACK/independentabsence, D3 original physical law, D4 actualCore/role count4 epoch0 then existing50falseCan/fulltooltip/51production once suffix.",
+    "Both original andthreshold realflows bind actual private fullLater ID through sameReceiver D3afterCore freshrole/count3 before existing physical Title observation.",
+    "Native channel-specific complete double-sampled actual runtime/GUI targetabsence can retain unrelated ordinary events; missingcontroller or unreadable/incomplete/sameoriginalinstance still unavailable. Original ACK is not replayed."
+  ],
+  "finite_upper_submissions": {
+    "original": "85+8poll (256=>2133)",
+    "threshold": "82+4poll (256=>1106)"
+  },
+  "planned_Date_calls": {
+    "original": 8,
+    "threshold": 4
+  },
+  "Save_calls": 0,
+  "configuration_schema_unchanged": "xar.native-owner-snapshot-config/v47",
+  "DTO_Transport_public_header_wire_not_changed": true,
+  "old_70_20_inverse_and_Frozens_immutable": true,
+  "new_runtime_package_freeze_and_Native_production": "PENDING_AT_SOURCE_CUT",
+  "live_26_checkpoint_law_50_51_or_performance_PASS": false,
+  "original_firstcase_connection_stale_and_secondcase_Chaos_known_unavailable_and_threshold_zeroDay_hidden_rows_failures_retained": true,
+  "Source_preparer_before_Python_shell_refusal_retained": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-staging-build-a1315\\package-helper-preparation-first-shell-refusal.json",
+    "bytes": 292,
+    "sha256": "65f7a0018800d4b9519be6626c018d37512439916dcf9f88d9f14e81b81b27cd"
+  }
+}

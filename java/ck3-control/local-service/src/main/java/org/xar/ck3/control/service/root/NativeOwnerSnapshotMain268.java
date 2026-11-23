@@ -4003,8 +4003,8 @@ if(riteDraftCosts) {
     enum RmtmMode { QUERY_ROLE, QUERY_DECISION, ORIGINAL_CASE_ONCE, THRESHOLD_50_51_ONCE }
     record RmtmConfig(RmtmMode mode,int maximumStatusPolls,long statusPollDelayMillis) {
         boolean queryOnly(){return mode==RmtmMode.QUERY_ROLE||mode==RmtmMode.QUERY_DECISION;}
-        int submissions(){return switch(mode){case QUERY_ROLE,QUERY_DECISION->2;case THRESHOLD_50_51_ONCE->54;
-            case ORIGINAL_CASE_ONCE->Math.addExact(84,Math.multiplyExact(8,maximumStatusPolls));};}
+        int submissions(){return switch(mode){case QUERY_ROLE,QUERY_DECISION->2;case THRESHOLD_50_51_ONCE->Math.addExact(82,Math.multiplyExact(4,maximumStatusPolls));
+            case ORIGINAL_CASE_ONCE->Math.addExact(85,Math.multiplyExact(8,maximumStatusPolls));};}
     }
     static RmtmConfig currentRmtmConfig(ObjectNode config) {
         StrictJson.require("xar.native-owner-snapshot-config/v47".equals(StrictJson.text(config.get("schema"))),"Explicit v47 RMTM family required");
@@ -4239,20 +4239,63 @@ if(riteDraftCosts) {
         }
         return new RmtmDecisionObservation(core,query);
     }
+    static void requireCurrentRmtmThresholdPrestate(CurrentRmtmActorTransitionResult role,CoreFrame.Prefix current,int song,int startRaw)throws IOException {
+        if(current.dateRaw()!=Math.addExact(startRaw,96))throw new IOException("Independent threshold seed requires four actual natural days before setup");
+        requireCurrentRmtmPositiveRole(role,current,CurrentRmtmActorTransitionSource.Role.SONG,java.math.BigInteger.ZERO,song,-1,false,4,startRaw);
+        // The original script checkpoint is independently evidenced by Root logs and the actual setup decision row/Can.
+    }
+    private static CoreFrame.Prefix stageCurrentRmtmThreshold(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeLaunchPlan plan,
+            NativeGameTransport.RmtmRoleReceived capture,RmtmConfig config,NativeObservationPort.TransportSession session,Path output,Instant deadline,Duration readTimeout,
+            ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        var start=capture.frame().factsBefore().orElseThrow();int song=start.playedCharacterId();var current=start;
+        requireCurrentRmtmPositiveRole(capture.frame(),start,CurrentRmtmActorTransitionSource.Role.SONG,java.math.BigInteger.ZERO,song,-1,false,0,start.dateRaw());
+        for(int day=1;day<=4;day++){
+            String label="rmtm-threshold-day"+String.format(java.util.Locale.ROOT,"%02d",day);var role=capture;
+            if(day>1){var before=readCurrentRmtmCore(transport,owner,plan,output,label+"-before-core",deadline,result,originals,session,current);
+                role=readCurrentRmtmRole(transport,owner,before,session,output,label+"-before-role",deadline,result,originals);}
+            requireCurrentRmtmPositiveRole(role.frame(),current,CurrentRmtmActorTransitionSource.Role.SONG,java.math.BigInteger.ZERO,song,-1,false,day-1,start.dateRaw());
+            var prepared=transport.prepareCurrentRmtmAdvance(role);
+            var terminal=runCurrentRmtmDay(transport,owner,role,prepared,config,session,output,label,deadline,readTimeout,result,originals);
+            if(terminal.status()!=CurrentRmtmActorTransitionResult.Status.COMPLETED_DAY||terminal.progress().orElseThrow().transitionPending())
+                throw new IOException("Threshold staging cannot import a pending transition or successor epoch");
+            var expected=currentRmtmAfter(current,prepared.targetDateRaw(),song);
+            var after=readCurrentRmtmCore(transport,owner,plan,output,label+"-after-core",deadline,result,originals,session,expected);
+            requireCurrentRmtmAfterRequest(transport,after,terminal.requestId());current=((CoreFrame.Partial)after.frame()).prefix();
+            result.put("natural_days_observed",day).put("threshold_staging_natural_days",day);
+            if(day==1){
+                acknowledgeCurrentRmtmChannel(transport,owner,plan,CurrentRmtmEvent.Action.QUERY_CHAOS,session,current,output,"rmtm-threshold-chaos",deadline,result,originals);
+                acknowledgeCurrentRmtmChannel(transport,owner,plan,CurrentRmtmEvent.Action.QUERY_SUMMARY,session,current,output,"rmtm-threshold-summary",deadline,result,originals);
+            }
+            if(day==3){
+                var actualRole=readCurrentRmtmRole(transport,owner,after,session,output,"rmtm-threshold-d3-after-role",deadline,result,originals);
+                requireCurrentRmtmPositiveRole(actualRole.frame(),current,CurrentRmtmActorTransitionSource.Role.SONG,java.math.BigInteger.ZERO,song,-1,false,3,start.dateRaw());
+                var observed=observeCurrentRmtm(transport,owner,plan,CurrentRmtmObservation.Action.QUERY_TITLE_PHASE,Optional.of(CurrentRmtmObservation.Phase.D3),Optional.empty(),
+                        session,current,output,"rmtm-threshold-d3-title",deadline,result,originals);
+                var phase=observed.query().frame().source().orElseThrow().titlePhase().orElseThrow();
+                requireCurrentRmtmPhysicalHolder(phase.physical(),current);
+                currentRmtmPhysicalLawForm(phase.physical(),phase.scriptOwnSingleHeir(),phase.holderRealmSingleHeir());
+            }
+            if(day==4){
+                var roleAfter=readCurrentRmtmRole(transport,owner,after,session,output,"rmtm-threshold-d4-ready-role",deadline,result,originals);
+                requireCurrentRmtmThresholdPrestate(roleAfter.frame(),current,song,start.dateRaw());
+            }
+        }
+        result.put("threshold_prestate_staging_completed",true);
+        return current;
+    }
     private static void runCurrentRmtmThreshold(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeLaunchPlan plan,NativeGameTransport.RmtmRoleReceived capture,
-            NativeObservationPort.TransportSession session,Path output,Instant deadline,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
-        var start=capture.frame().factsBefore().orElseThrow();requireCurrentRmtmPositiveRole(capture.frame(),start,CurrentRmtmActorTransitionSource.Role.SONG,
-                java.math.BigInteger.ZERO,start.playedCharacterId(),-1,false,0,start.dateRaw());
-        var setup=navigateCurrentRmtmDecision(transport,owner,plan,NativeGameTransport.RmtmDecisionPurpose.PREPARE_FIFTY,CurrentRmtmDecision.DecisionKey.PREPARE_FIFTY,true,session,start,output,"rmtm50-setup",deadline,result,originals);
-        var fifty=navigateCurrentRmtmDecision(transport,owner,plan,NativeGameTransport.RmtmDecisionPurpose.INSPECT_FIFTY,CurrentRmtmDecision.DecisionKey.RESTORE,false,session,start,output,"rmtm50-inspect",deadline,result,originals);
+            RmtmConfig config,NativeObservationPort.TransportSession session,Path output,Instant deadline,Duration readTimeout,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        var current=stageCurrentRmtmThreshold(transport,owner,plan,capture,config,session,output,deadline,readTimeout,result,originals);
+        var setup=navigateCurrentRmtmDecision(transport,owner,plan,NativeGameTransport.RmtmDecisionPurpose.PREPARE_FIFTY,CurrentRmtmDecision.DecisionKey.PREPARE_FIFTY,true,session,current,output,"rmtm50-setup",deadline,result,originals);
+        var fifty=navigateCurrentRmtmDecision(transport,owner,plan,NativeGameTransport.RmtmDecisionPurpose.INSPECT_FIFTY,CurrentRmtmDecision.DecisionKey.RESTORE,false,session,current,output,"rmtm50-inspect",deadline,result,originals);
         var f=fifty.query().frame().source().orElseThrow();
         if(!f.caseBound()||!f.detailVisible()||!f.selectedDecisionKey().equals(Optional.of(CurrentRmtmDecision.DecisionKey.RESTORE))||f.nativeCanConfirm().isEmpty()
                 ||f.nativeCanConfirm().orElseThrow()||f.confirmAdmissible()||!f.confirmTooltipObserved())throw new IOException("Independent original50 requires actual false Can/full observed tooltip DATA");
         transport.retainCurrentRmtmFifty(fifty.query());result.put("threshold50_false_can_observed",true).put("threshold50_tooltip",f.confirmTooltip().orElseThrow());
-        navigateCurrentRmtmDecision(transport,owner,plan,NativeGameTransport.RmtmDecisionPurpose.PREPARE_FIFTYONE,CurrentRmtmDecision.DecisionKey.PREPARE_FIFTYONE,true,session,start,output,"rmtm51-setup",deadline,result,originals);
-        navigateCurrentRmtmDecision(transport,owner,plan,NativeGameTransport.RmtmDecisionPurpose.RESTORE_FIFTYONE,CurrentRmtmDecision.DecisionKey.RESTORE,true,session,start,output,"rmtm51-restore",deadline,result,originals);
-        navigateCurrentRmtmDecision(transport,owner,plan,NativeGameTransport.RmtmDecisionPurpose.VERIFY_RESTORE,CurrentRmtmDecision.DecisionKey.VERIFY_RESTORE,true,session,start,output,"rmtm51-verify",deadline,result,originals);
-        result.put("threshold_private_dispatch_chain_completed",true); // The actual production verifier/log outcome remains independent; no business PASS inferred.
+        navigateCurrentRmtmDecision(transport,owner,plan,NativeGameTransport.RmtmDecisionPurpose.PREPARE_FIFTYONE,CurrentRmtmDecision.DecisionKey.PREPARE_FIFTYONE,true,session,current,output,"rmtm51-setup",deadline,result,originals);
+        navigateCurrentRmtmDecision(transport,owner,plan,NativeGameTransport.RmtmDecisionPurpose.RESTORE_FIFTYONE,CurrentRmtmDecision.DecisionKey.RESTORE,true,session,current,output,"rmtm51-restore",deadline,result,originals);
+        navigateCurrentRmtmDecision(transport,owner,plan,NativeGameTransport.RmtmDecisionPurpose.VERIFY_RESTORE,CurrentRmtmDecision.DecisionKey.VERIFY_RESTORE,true,session,current,output,"rmtm51-verify",deadline,result,originals);
+        result.put("threshold_private_dispatch_chain_completed",true); // Root original script checkpoints/outcome remain independent AND.
     }
     static CurrentRmtmObservationSource requireCurrentRmtmObservationQuery(CurrentRmtmObservationResult f,CurrentRmtmObservation.Action action,CoreFrame.Prefix core,
             java.math.BigInteger connection)throws IOException {
@@ -4381,6 +4424,8 @@ if(riteDraftCosts) {
                 acknowledgeCurrentRmtmChannel(transport,owner,plan,CurrentRmtmEvent.Action.QUERY_SUMMARY,session,current,output,"rmtm-summary",deadline,result,originals);
             }
             if(day==3){
+                var actualRole=readCurrentRmtmRole(transport,owner,after,session,output,"rmtm-d3-after-role",deadline,result,originals);
+                requireCurrentRmtmPositiveRole(actualRole.frame(),current,CurrentRmtmActorTransitionSource.Role.SONG,java.math.BigInteger.ZERO,song,-1,false,3,start.dateRaw());
                 var q=observeCurrentRmtm(transport,owner,plan,CurrentRmtmObservation.Action.QUERY_TITLE_PHASE,Optional.of(CurrentRmtmObservation.Phase.D3),Optional.empty(),session,current,output,"rmtm-d3-title",deadline,result,originals);d3=q.query().frame();
                 var p=d3.source().orElseThrow().titlePhase().orElseThrow();requireCurrentRmtmPhysicalHolder(p.physical(),current);currentRmtmPhysicalLawForm(p.physical(),p.scriptOwnSingleHeir(),p.holderRealmSingleHeir());
                 council=observeCurrentRmtm(transport,owner,plan,CurrentRmtmObservation.Action.QUERY_COUNCIL,Optional.empty(),Optional.empty(),session,current,output,"rmtm-d3-council",deadline,result,originals).query().frame().source().orElseThrow().council().orElseThrow();requireCurrentRmtmCouncilRetained(council,council);
@@ -4415,7 +4460,7 @@ if(riteDraftCosts) {
             if(config.mode()==RmtmMode.QUERY_DECISION){readCurrentRmtmDecision(transport,owner,core,session,output,"rmtm-decision-query",deadline,result,originals);result.put("query_available",true);return;}
             var role=readCurrentRmtmRole(transport,owner,core,session,output,"rmtm-role-query",deadline,result,originals);result.put("query_available",true);
             if(config.queryOnly())return;
-            if(config.mode()==RmtmMode.THRESHOLD_50_51_ONCE)runCurrentRmtmThreshold(transport,owner,plan,role,session,output,deadline,result,originals);
+            if(config.mode()==RmtmMode.THRESHOLD_50_51_ONCE)runCurrentRmtmThreshold(transport,owner,plan,role,config,session,output,deadline,readTimeout,result,originals);
             else runCurrentRmtmOriginalCase(transport,owner,plan,role,config,session,output,deadline,readTimeout,result,originals);
         }finally{
             archiveNaturalDiagnostics(output,originals,transport.diagnostics());var progress=result.deepCopy();progress.set("originals",originals.deepCopy());

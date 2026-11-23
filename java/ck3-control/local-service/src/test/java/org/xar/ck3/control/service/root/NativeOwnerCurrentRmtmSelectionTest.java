@@ -66,10 +66,24 @@ final class NativeOwnerCurrentRmtmSelectionTest {
             var c=config(mode);assertEquals(6,c.size());assertEquals(2,NativeOwnerSnapshotMain268.currentRmtmConfig(c).submissions());
             assertTrue(NativeOwnerSnapshotMain268.currentRmtmConfig(c).queryOnly());assertEquals(NativeOwnerSnapshotMain268.ObservationMode.CURRENT_RMTM_REMAINING,NativeOwnerSnapshotMain268.observationMode(c));
         }
-        assertEquals(54,NativeOwnerSnapshotMain268.currentRmtmConfig(config("current_rmtm_threshold_50_51_once")).submissions());
+        assertEquals(594,NativeOwnerSnapshotMain268.currentRmtmConfig(config("current_rmtm_threshold_50_51_once")).submissions());
+        assertEquals(1106,NativeOwnerSnapshotMain268.currentRmtmConfig(config("current_rmtm_threshold_50_51_once").put("maximum_status_polls",256)).submissions());
         var original=NativeOwnerSnapshotMain268.currentRmtmConfig(config("current_rmtm_original_case_once"));assertFalse(original.queryOnly());
-        assertEquals(1108,original.submissions());assertEquals(2132,NativeOwnerSnapshotMain268.currentRmtmConfig(config("current_rmtm_original_case_once").put("maximum_status_polls",256)).submissions());
+        assertEquals(1109,original.submissions());assertEquals(2133,NativeOwnerSnapshotMain268.currentRmtmConfig(config("current_rmtm_original_case_once").put("maximum_status_polls",256)).submissions());
     }
+    @Test void thresholdPrestateRequiresActualD4SongEpochZeroAndOriginalStart() throws IOException {
+        var d4=core(4,SONG);var valid=role(source(4,SONG,SUCCESSOR,true,true),d4);
+        assertDoesNotThrow(()->NativeOwnerSnapshotMain268.requireCurrentRmtmThresholdPrestate(valid,d4,SONG,START));
+        for(int day:List.of(0,3,5)){
+            var before=core(day,SONG);var actual=role(source(day,SONG,SUCCESSOR,true,true),before);
+            assertThrows(IOException.class,()->NativeOwnerSnapshotMain268.requireCurrentRmtmThresholdPrestate(actual,before,SONG,START));
+        }
+        var foreignCore=core(4,SUCCESSOR);var foreign=role(source(4,SUCCESSOR,SONG,true,true),foreignCore);
+        assertThrows(IOException.class,()->NativeOwnerSnapshotMain268.requireCurrentRmtmThresholdPrestate(foreign,foreignCore,SONG,START));
+        assertThrows(IOException.class,()->NativeOwnerSnapshotMain268.requireCurrentRmtmThresholdPrestate(valid,d4,SONG,START+24));
+        // Four observed days and role do not fabricate the original script checkpoint or actual decision Can.
+    }
+
     @Test void CallerSelectorsBorrowedFieldsMalformedOwnerAndUnboundedPollingAreRejected() throws IOException {
         for(String key:List.of("actor","title_id","days","maximum_natural_days","phase","epoch","operation_id","decision_key","event_role","instance_id","claim_sequence","allow_actor_change","checkpoint_archive_path","status_poll_interval_ms"))
             assertThrows(IllegalArgumentException.class,()->NativeOwnerSnapshotMain268.currentRmtmConfig(config("current_rmtm_original_case_once").put(key,1)));
