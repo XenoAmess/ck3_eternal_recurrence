@@ -112,6 +112,7 @@ template<class T>bool At(std::uintptr_t p,std::size_t off,T&v)noexcept{return p&
  }
  value.open_admissible=!value.visible&&!blocked;value.cancel_admissible=value.visible&&value.enabled&&!blocked&&value.owner_id==f.core.played_character_id;out.source.budget=std::move(value);return true;
 }
+#include "ck3_121003_rmtm_offer_visibility26785313_v1.inc"
 #include "ck3_121003_rmtm_offer_diagnostic26785313_v1.inc"
 #include "ck3_121003_rmtm_offer_origin26785313_v1.inc"
 #include "ck3_121003_rmtm_observation26785313_native_v1.inc"
@@ -201,6 +202,13 @@ static_assert(sizeof(OfferItemAny267V1)==40);
  OfferTraceSub267("offer_manager_windows_and_modal");if(!At(f.scene.handler,0xE8,menu)||!At(f.scene.handler,0xF0,confirmation)||!menu||!confirmation||!At(menu,0x60,menuRoot)||!At(confirmation,0x60,confirmRoot)||!menuRoot||!confirmRoot||!Add(proof,f.scene.handler+0xE8,16)||!Modal(f,proof,blocked))return false;
  GuiWindowNodeV1 menuNode,confirmNode;
  OfferTraceSub267("offer_root_context_backrefs");if(!Root(f,"character_interaction_menu_window",menuRoot,menuNode,proof)||!Root(f,"character_interaction_confirmation_window",confirmRoot,confirmNode,proof)||!Window(b,f,menu,0x4BDB6B8,0,menuRoot,proof)||!Window(b,f,confirmation,0x4BAC188,0,confirmRoot,proof))return false;
+ // Offer uses the exact official logical visibility including channels0/1.
+ // Keep generic Root flags/identity and every other family unchanged.
+ bool menuVisible=false,confirmationVisible=false;
+ OfferTraceSub267("offer_official_logical_visibility");
+ if(!OfferLogicalVisible267V1(b.module_base,menu,proof,menuVisible)||
+  !OfferLogicalVisible267V1(b.module_base,confirmation,proof,confirmationVisible))return false;
+ menuNode.visible=menuVisible;confirmNode.visible=confirmationVisible;
  RmtmOfferData267V1 value;value.target=*q.offer_target;value.actor_id=f.core.played_character_id;value.recipient_id=std::bit_cast<std::int32_t>(full);value.found=true;value.visible=confirmNode.visible;value.enabled=confirmNode.enabled;value.blocked_by_visible_modal=blocked;value.sampled_twice=true;
  out.window=confirmation;out.root=confirmRoot;out.menu=menu;
  // The official opener toggles/no-ops when its origin equals the cached
@@ -239,6 +247,7 @@ bool VerifyRmtmObservationImage267V1([[maybe_unused]]std::uintptr_t image)noexce
  if(!image||image!=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr))||!VerifyRmtmRoleImage267V1(image)||!VerifyRmtmDecisionImage267V1(image)||!VerifyRmtmTitleImage267V1(image))return false;
  for(const auto&p:rmtm_observation_pins::kPins){if(p.hex.empty()||p.hex.size()%2||p.hex.size()/2>kImageSize||p.rva>kImageSize-p.hex.size()/2)return false;for(std::size_t n=0;n<p.hex.size()/2;++n){const auto digit=[](char c){return static_cast<unsigned char>(c<='9'?c-'0':c-'a'+10);};const auto expected=static_cast<unsigned char>((digit(p.hex[n*2])<<4)|digit(p.hex[n*2+1]));unsigned char actual=0;if(!At(image+p.rva,n,actual)||actual!=expected)return false;}}
  for(const auto&p:kOfferOriginPins267V1){if(p.hex.empty()||p.hex.size()%2||p.hex.size()/2>kImageSize||p.rva>kImageSize-p.hex.size()/2)return false;for(std::size_t n=0;n<p.hex.size()/2;++n){const auto digit=[](char c){return static_cast<unsigned char>(c<='9'?c-'0':c-'a'+10);};const auto expected=static_cast<unsigned char>((digit(p.hex[n*2])<<4)|digit(p.hex[n*2+1]));unsigned char actual=0;if(!At(image+p.rva,n,actual)||actual!=expected)return false;}}
+ for(const auto&p:kOfferVisibilityPins267V1){if(p.hex.empty()||p.hex.size()%2||p.hex.size()/2>kImageSize||p.rva>kImageSize-p.hex.size()/2)return false;for(std::size_t n=0;n<p.hex.size()/2;++n){const auto digit=[](char c){return static_cast<unsigned char>(c<='9'?c-'0':c-'a'+10);};const auto expected=static_cast<unsigned char>((digit(p.hex[n*2])<<4)|digit(p.hex[n*2+1]));unsigned char actual=0;if(!At(image+p.rva,n,actual)||actual!=expected)return false;}}
  return true;
 #else
  return false;
@@ -272,13 +281,18 @@ RmtmObservationCall267V1 CallRmtmObservationRaw267V1([[maybe_unused]]const Reado
   }else if(q.action==A::open_offer){
    if(!now.source.offer||!now.source.offer->open_admissible||!q.offer_target||!now.origin_widget)return call;
    call.entered=true;call.cleanup_known=false;call.status=RmtmObservationCallStatus267V1::indeterminate;
-   if(!RightClick(b.module_base,static_cast<std::uint32_t>(now.source.offer->recipient_id),now.origin_widget))return call;
+   OfferTraceScalar267(0,f,now);
+   const bool openerReturned=RightClick(b.module_base,static_cast<std::uint32_t>(now.source.offer->recipient_id),now.origin_widget);
+   OfferTraceScalar267(1,f,now);
+   if(!openerReturned)return call;
    // Re-read the real complete menu produced by the official opener. A lazy
    // or unavailable model is not replaced by a synthetic item or success.
    RmtmObservationRaw267V1 opened;
    if(!Fresh(b,f,q,mono)){OfferTraceMark267(OfferStage267V1::post_click_fresh_rejected);return call;}
    OfferTraceMark267(OfferStage267V1::opened_take_enter);
-   if(!Take(b,f,q,mono,opened,why)){OfferTraceTakeReason267(why);return call;}
+   const bool openedRead=Take(b,f,q,mono,opened,why);
+   OfferTraceScalar267(2,f,now);
+   if(!openedRead){OfferTraceTakeReason267(why);return call;}
    OfferTraceMark267(OfferStage267V1::opened_take_returned,true);
    if(!opened.item){OfferTraceMark267(OfferStage267V1::opened_item_missing);return call;}
    if(!opened.definition){OfferTraceMark267(OfferStage267V1::opened_definition_missing);return call;}
@@ -305,14 +319,27 @@ std::string RmtmOfferDiagnostic267V1(){
   const int written=std::snprintf(tail+used,sizeof(tail)-used,"%s%u",n==first?"":",",static_cast<unsigned>(d.events[n%d.events.size()]));
   if(written<0||static_cast<std::size_t>(written)>=sizeof(tail)-used)break;used+=static_cast<std::size_t>(written);
  }
- char out[768]{};
+ char out[1536]{};
  const int written=std::snprintf(out,sizeof(out),";offer_diag_v1 stage=%u completed=%u milestones=%llx seh=%u code=%08x module_rva_known=%u module_rva=%08x exception_stage=%u exception_count=%u item_handled=%d item_bool_type=%u item_payload=%d item_cleanup=%d events=%u tail=%s sub=%s take=%s",
   static_cast<unsigned>(d.stage),static_cast<unsigned>(d.last_completed),static_cast<unsigned long long>(d.milestones),
   d.exception_observed?1U:0U,static_cast<unsigned>(d.exception_code),d.exception_in_module?1U:0U,
   static_cast<unsigned>(d.exception_module_rva),static_cast<unsigned>(d.exception_stage),static_cast<unsigned>(d.exception_count),
   static_cast<int>(d.item_handled),d.item_type_expected?1U:0U,static_cast<int>(d.item_payload),static_cast<int>(d.item_cleanup),
   count,tail,d.subreason.data(),d.take_reason.data());
- return written>0&&static_cast<std::size_t>(written)<sizeof(out)?std::string(out,static_cast<std::size_t>(written)):std::string{};
+ if(written<=0||static_cast<std::size_t>(written)>=sizeof(out))return {};
+ std::size_t length=static_cast<std::size_t>(written);
+ for(std::size_t point=0;point<d.scalar_points.size();++point){const auto&s=d.scalar_points[point];
+  const int appendCount=std::snprintf(out+length,sizeof(out)-length,
+   ";s%u=k%02x,mf%02x,cf%02x,vb_rva%08x,id%u,ce%u,ca%u,oa%u,cx%u,cat%d,more%d,mv%u,cv%u",
+   static_cast<unsigned>(point),static_cast<unsigned>(s.known),static_cast<unsigned>(s.menu_flags),
+   static_cast<unsigned>(s.confirmation_flags),static_cast<unsigned>(s.view_B0_slot_rva),
+   static_cast<unsigned>(s.menu_selected_id),static_cast<unsigned>(s.cached_equals_origin),
+   static_cast<unsigned>(s.cached_anchor),static_cast<unsigned>(s.chosen_anchor),static_cast<unsigned>(s.context_matches),
+   static_cast<int>(s.category_count),static_cast<int>(s.more_count),static_cast<unsigned>(s.menu_logical_visible),static_cast<unsigned>(s.confirmation_logical_visible));
+  if(appendCount<=0||static_cast<std::size_t>(appendCount)>=sizeof(out)-length)break;
+  length+=static_cast<std::size_t>(appendCount);
+ }
+ return std::string(out,length);
 }
 
 }

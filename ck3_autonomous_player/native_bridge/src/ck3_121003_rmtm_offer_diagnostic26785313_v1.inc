@@ -15,6 +15,14 @@ enum class OfferStage267V1:unsigned {
  record_destroy_returned,populate_returned_true,populate_returned_false,final_fresh_rejected,
  call_returned,call_refused,call_cpp_exception,record_definition_mismatch
 };
+struct OfferScalarPoint267V1 {
+ std::uint32_t known=0,menu_selected_id=0;
+ std::uint8_t menu_logical_visible=0,confirmation_logical_visible=0;
+ std::int32_t category_count=0,more_count=0;
+ std::uint8_t menu_flags=0,confirmation_flags=0;
+ std::uint32_t view_B0_slot_rva=0;
+ std::uint8_t cached_equals_origin=0,cached_anchor=0,chosen_anchor=0,context_matches=0;
+};
 struct OfferTrace267V1 {
  volatile unsigned stage=0,last_completed=0,event_count=0;
  volatile std::uint64_t milestones=0;
@@ -23,6 +31,7 @@ struct OfferTrace267V1 {
  volatile bool exception_observed=false,exception_in_module=false,active=false;
  std::uintptr_t image=0;
  std::array<unsigned char,192>events{};
+ std::array<OfferScalarPoint267V1,3>scalar_points{};
  std::array<char,161>take_reason{};
  std::array<char,97>subreason{};
 };
@@ -50,6 +59,32 @@ void OfferTraceCan267(bool handled,bool expected,unsigned value,bool known,int c
  auto&d=offer_trace267;if(!d.active)return;d.item_handled=handled?1:0;
  d.item_type_expected=expected;d.item_payload=known&&value<=1?static_cast<int>(value):-1;
  if(cleanup>=0)d.item_cleanup=cleanup;
+}
+// Read-only snapshots of already-bound objects on the existing open path.
+// known bits distinguish failed reads from actual zero. This never rejects,
+// grants authority, changes status or invokes any additional native callback.
+__declspec(noinline) void OfferTraceScalar267(unsigned point,const RmtmObservationFrame267V1&f,
+ const RmtmObservationRaw267V1&bound)noexcept{
+ auto&d=offer_trace267;if(!d.active||point>=d.scalar_points.size())return;
+ _ReadWriteBarrier();OfferScalarPoint267V1 value;
+ const auto anchor=[&](std::uintptr_t p){for(const auto&n:f.witness)if(n.widget==p&&n.parent==f.scene.global){if(n.name=="hud_layer")return std::uint8_t{1};if(n.name=="windows_layer")return std::uint8_t{2};}return p?std::uint8_t{3}:std::uint8_t{0};};
+ value.chosen_anchor=anchor(bound.origin_widget);
+ std::uintptr_t root=0,cache=0,context=0;
+ if(At(bound.menu,0x60,root)&&At(root,0xD0,value.menu_flags))value.known|=1;
+ if(At(bound.window,0x60,root)&&At(root,0xD0,value.confirmation_flags))value.known|=2;
+ std::uintptr_t viewVt=0,viewB0=0;
+ if(At(bound.menu,0,viewVt)&&At(viewVt,0xB0,viewB0)&&viewB0>=d.image&&viewB0-d.image<kImageSize){value.known|=4;value.view_B0_slot_rva=static_cast<std::uint32_t>(viewB0-d.image);}
+ if(At(f.scene.handler,0x16C38,cache)){value.known|=16;value.cached_equals_origin=cache==bound.origin_widget;value.cached_anchor=anchor(cache);}
+ if(At(bound.menu,0xD0,value.menu_selected_id))value.known|=32;
+ if(At(bound.menu,0x98,context)){value.known|=64;value.context_matches=context==f.scene.jomini;}
+ if(At(bound.menu,0x124,value.category_count))value.known|=128;
+ if(At(bound.menu,0xEC,value.more_count))value.known|=256;
+ try{std::vector<std::byte>temporary;bool logical=false;
+  if(OfferLogicalVisible267V1(d.image,bound.menu,temporary,logical)){value.known|=512;value.menu_logical_visible=logical?1:0;}
+  temporary.clear();
+  if(OfferLogicalVisible267V1(d.image,bound.window,temporary,logical)){value.known|=1024;value.confirmation_logical_visible=logical?1:0;}
+ }catch(...){/* telemetry is best effort and never changes action/status */}
+ d.scalar_points[point]=value;_ReadWriteBarrier();
 }
 int OfferTraceException267(EXCEPTION_POINTERS*exception)noexcept{
  auto&d=offer_trace267;
