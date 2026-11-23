@@ -8,6 +8,8 @@
 #include <limits>
 #include <unordered_set>
 #include <windows.h>
+#include <cstdio>
+#include <intrin.h>
 #ifndef XAR_RMTM_OBSERVATION_CALL_ADDRESS
 #define XAR_RMTM_OBSERVATION_CALL_ADDRESS(image,rva) ((image)+(rva))
 #endif
@@ -110,6 +112,7 @@ template<class T>bool At(std::uintptr_t p,std::size_t off,T&v)noexcept{return p&
  }
  value.open_admissible=!value.visible&&!blocked;value.cancel_admissible=value.visible&&value.enabled&&!blocked&&value.owner_id==f.core.played_character_id;out.source.budget=std::move(value);return true;
 }
+#include "ck3_121003_rmtm_offer_diagnostic26785313_v1.inc"
 #include "ck3_121003_rmtm_observation26785313_native_v1.inc"
 [[maybe_unused]]bool EmptyConfirmationTrigger([[maybe_unused]]std::uintptr_t image,std::uintptr_t definition,std::vector<std::byte>&proof){
  std::uint8_t subtype=255;std::int32_t count=-1;std::uintptr_t alternate=1;
@@ -132,15 +135,19 @@ static_assert(sizeof(OfferItemAny267V1)==40);
   boolean=reinterpret_cast<Factory>(XAR_RMTM_OBSERVATION_CALL_ADDRESS(image,0x8C2930))();
   owned.any.type=empty;initialized=true;
   if(empty&&boolean&&item&&Copy(item,before.data(),before.size())){
+   OfferTraceMark267(OfferStage267V1::item_can_enter);
    const bool handled=reinterpret_cast<bool(__fastcall*)(const void*,OfferItemAny267V1*)>(XAR_RMTM_OBSERVATION_CALL_ADDRESS(image,0xD3E460))(
       reinterpret_cast<const void*>(item),&owned.any);
+   OfferTraceMark267(OfferStage267V1::item_can_returned,true);
    const auto value=std::to_integer<unsigned char>(owned.any.storage[0]);
    const auto physical=std::to_integer<unsigned char>(before[0x1C]);
+   OfferTraceCan267(handled,owned.any.type==boolean,value,handled&&owned.any.type==boolean);
    valid=handled&&owned.any.type==boolean&&value<=1&&physical<=1&&value==physical&&
     Copy(item,after.data(),after.size())&&before==after&&owned.before==front&&owned.after==back;
+   OfferTraceMark267(valid?OfferStage267V1::item_can_payload_valid:OfferStage267V1::item_can_payload_rejected,true);
    if(valid)can=value!=0;
   }
- }__except(EXCEPTION_EXECUTE_HANDLER){cleanup=false;}
+ }__except(OfferTraceException267(GetExceptionInformation())){cleanup=false;}
  if(owned.before!=front||owned.after!=back)cleanup=false;
  if(initialized){
   __try{
@@ -149,27 +156,28 @@ static_assert(sizeof(OfferItemAny267V1)==40);
     const auto vt=*reinterpret_cast<const std::uintptr_t*>(owned.any.type);
     const auto dtor=*reinterpret_cast<const std::uintptr_t*>(vt+0x18);
     if(dtor<image||dtor-image>=kImageSize)cleanup=false;
-    else reinterpret_cast<void(__fastcall*)(void*,void*)>(XAR_RMTM_OBSERVATION_CALL_ADDRESS(image,dtor-image))(
-      reinterpret_cast<void*>(owned.any.type),owned.any.storage.data());
+    else {OfferTraceMark267(OfferStage267V1::item_any_destroy_enter);reinterpret_cast<void(__fastcall*)(void*,void*)>(XAR_RMTM_OBSERVATION_CALL_ADDRESS(image,dtor-image))(
+      reinterpret_cast<void*>(owned.any.type),owned.any.storage.data());OfferTraceMark267(OfferStage267V1::item_any_destroy_returned,true);}
    }
-  }__except(EXCEPTION_EXECUTE_HANDLER){cleanup=false;}
+  }__except(OfferTraceException267(GetExceptionInformation())){cleanup=false;}
  }
+ if(offer_trace267.active)offer_trace267.item_cleanup=cleanup?1:0;
  if(!valid||!cleanup)can=false;return valid&&cleanup;
 }
 [[maybe_unused]]bool OfferRows(const ReadonlyBindings&b,const RmtmObservationFrame267V1&f,std::uintptr_t menu,RmtmObservationRaw267V1&out){
  auto&proof=out.fingerprint;std::uintptr_t categories=0,more=0,matched=0;std::int32_t categoryCount=0,moreCount=0;std::size_t total=0;std::unordered_set<std::uintptr_t>visited;
  const auto items=[&](std::uintptr_t header){
-  std::uintptr_t rows=0;std::int32_t count=0;if(!Array(header,4096,rows,count,proof)||total+static_cast<std::size_t>(count)>4096)return false;total+=static_cast<std::size_t>(count);
+  std::uintptr_t rows=0;std::int32_t count=0;OfferTraceSub267("offer_rows_array_header");if(!Array(header,4096,rows,count,proof)||total+static_cast<std::size_t>(count)>4096)return false;total+=static_cast<std::size_t>(count);
   for(std::int32_t n=0;n<count;++n){std::uintptr_t item=0,owner=0,definition=0;std::uint32_t tag=99;
-   if(!At(rows,static_cast<std::size_t>(n)*8,item)||!item||!At(item,0,owner)||owner!=menu||!At(item,0x20,tag)||tag>1||!Add(proof,rows+static_cast<std::size_t>(n)*8,8)||!Add(proof,item,0x28))return false;
+   OfferTraceSub267("offer_row_owner_tag");if(!At(rows,static_cast<std::size_t>(n)*8,item)||!item||!At(item,0,owner)||owner!=menu||!At(item,0x20,tag)||tag>1||!Add(proof,rows+static_cast<std::size_t>(n)*8,8)||!Add(proof,item,0x28))return false;
    // Repeated membership of the same physical item is not a second item. Every
    // occurrence is still captured; two distinct fixed Offer rows are refused.
    if(!visited.insert(item).second||tag!=0)continue;
-   if(!At(item,8,definition)||!Typed(definition,b.module_base,0x5006388))return false;std::string key;std::uint32_t magic=0;
-   if(!At(definition,0x38,magic)||magic!=0x4744624FU||!String(definition+0x18,256,key,proof,true))return false;
-   if(key!="offer_vassalization_interaction")continue;if(matched)return false;matched=item;
-   if(!EmptyConfirmationTrigger(b.module_base,definition,proof))return false;bool can=false,clean=true;out.entered=true;
-   const bool read=ItemCan(b.module_base,item,can,clean);out.cleanup_known&=clean;if(!read)return false;
+   OfferTraceSub267("offer_row_definition");if(!At(item,8,definition)||!Typed(definition,b.module_base,0x5006388))return false;std::string key;std::uint32_t magic=0;
+   OfferTraceSub267("offer_definition_canonical_key");if(!At(definition,0x38,magic)||magic!=0x4744624FU||!String(definition+0x18,256,key,proof,true))return false;
+   if(key!="offer_vassalization_interaction")continue;OfferTraceSub267("fixed_offer_uniqueness");if(matched)return false;matched=item;
+   OfferTraceSub267("fixed_offer_empty_confirmation_trigger");if(!EmptyConfirmationTrigger(b.module_base,definition,proof))return false;bool can=false,clean=true;out.entered=true;
+   OfferTraceSub267("fixed_offer_typed_ItemCan");const bool read=ItemCan(b.module_base,item,can,clean);out.cleanup_known&=clean;if(!read)return false;
    const auto value=static_cast<unsigned char>(can);proof.push_back(static_cast<std::byte>(value));
    std::uint8_t admitted=0;if(!At(item,0x1C,admitted)||admitted>1)return false;
    // A known false Boolean is readable DATA, not a malformed source. It never
@@ -177,32 +185,32 @@ static_assert(sizeof(OfferItemAny267V1)==40);
    if(!can||!admitted)continue;out.item=item;out.definition=definition;
   }return true;
  };
- if(!Array(menu+0x118,256,categories,categoryCount,proof))return false;
+ OfferTraceSub267("offer_categories_header");if(!Array(menu+0x118,256,categories,categoryCount,proof))return false;
  for(std::int32_t n=0;n<categoryCount;++n){const auto category=categories+static_cast<std::size_t>(n)*0x78;std::uintptr_t owner=0,definition=0;std::int32_t ordinal=-1;
-  if(!At(category,0x60,owner)||owner!=menu||!At(category,0x68,definition)||!definition||!At(definition,0x60,ordinal)||ordinal!=n||!Add(proof,category,0x78)||!items(category+0x20))return false;
+  OfferTraceSub267("offer_category_owner_ordinal");if(!At(category,0x60,owner)||owner!=menu||!At(category,0x68,definition)||!definition||!At(definition,0x60,ordinal)||ordinal!=n||!Add(proof,category,0x78)||!items(category+0x20))return false;
  }
- if(!Array(menu+0xE0,4096,more,moreCount,proof)||!items(menu+0xE0))return false;
+ OfferTraceSub267("offer_more_rows");if(!Array(menu+0xE0,4096,more,moreCount,proof)||!items(menu+0xE0))return false;
  (void)f;return true;
 }
 [[maybe_unused]]bool Offer(const ReadonlyBindings&b,const RmtmObservationFrame267V1&f,const RmtmObservationRequest267V1&q,RmtmObservationRaw267V1&out){
  if(!q.offer_target)return false;auto&proof=out.fingerprint;std::uint32_t full=invalid;std::uintptr_t target=0;std::array<std::byte,16>ref{};bool clean=true;
- out.entered=true;if(!OfferTarget(b.module_base,reinterpret_cast<std::uintptr_t>(f.role.world.actor),static_cast<std::uint32_t>(f.core.played_character_id),*q.offer_target,full,target,ref,clean)){out.cleanup_known&=clean;return false;}
- bool alive=false;std::uintptr_t resolved=0;if(!Character(b,f,full,resolved,alive)||resolved!=target||!alive)return false;proof.insert(proof.end(),ref.begin(),ref.end());
+ OfferTraceSub267("offer_target_scope_ref");out.entered=true;if(!OfferTarget(b.module_base,reinterpret_cast<std::uintptr_t>(f.role.world.actor),static_cast<std::uint32_t>(f.core.played_character_id),*q.offer_target,full,target,ref,clean)){out.cleanup_known&=clean;return false;}
+ bool alive=false;std::uintptr_t resolved=0;OfferTraceSub267("offer_target_character_fullID_alive");if(!Character(b,f,full,resolved,alive)||resolved!=target||!alive)return false;proof.insert(proof.end(),ref.begin(),ref.end());
  std::uintptr_t menu=0,confirmation=0,menuRoot=0,confirmRoot=0;bool blocked=false;
- if(!At(f.scene.handler,0xE8,menu)||!At(f.scene.handler,0xF0,confirmation)||!menu||!confirmation||!At(menu,0x60,menuRoot)||!At(confirmation,0x60,confirmRoot)||!menuRoot||!confirmRoot||!Add(proof,f.scene.handler+0xE8,16)||!Modal(f,proof,blocked))return false;
+ OfferTraceSub267("offer_manager_windows_and_modal");if(!At(f.scene.handler,0xE8,menu)||!At(f.scene.handler,0xF0,confirmation)||!menu||!confirmation||!At(menu,0x60,menuRoot)||!At(confirmation,0x60,confirmRoot)||!menuRoot||!confirmRoot||!Add(proof,f.scene.handler+0xE8,16)||!Modal(f,proof,blocked))return false;
  GuiWindowNodeV1 menuNode,confirmNode;
- if(!Root(f,"character_interaction_menu_window",menuRoot,menuNode,proof)||!Root(f,"character_interaction_confirmation_window",confirmRoot,confirmNode,proof)||!Window(b,f,menu,0x4BDB6B8,0,menuRoot,proof)||!Window(b,f,confirmation,0x4BAC188,0,confirmRoot,proof))return false;
+ OfferTraceSub267("offer_root_context_backrefs");if(!Root(f,"character_interaction_menu_window",menuRoot,menuNode,proof)||!Root(f,"character_interaction_confirmation_window",confirmRoot,confirmNode,proof)||!Window(b,f,menu,0x4BDB6B8,0,menuRoot,proof)||!Window(b,f,confirmation,0x4BAC188,0,confirmRoot,proof))return false;
  RmtmOfferData267V1 value;value.target=*q.offer_target;value.actor_id=f.core.played_character_id;value.recipient_id=std::bit_cast<std::int32_t>(full);value.found=true;value.visible=confirmNode.visible;value.enabled=confirmNode.enabled;value.blocked_by_visible_modal=blocked;value.sampled_twice=true;
  out.window=confirmation;out.root=confirmRoot;out.menu=menu;
  // This is the actual previously captured owned HUD widget, never a menu root
  // or a caller supplied address. Its binding and flags remain part of Source.
  for(const auto&n:f.witness)if(n.name=="hud_layer"){if(out.origin_widget)return false;out.origin_widget=n.widget;std::uintptr_t ctx=0,parent=0;if(!At(n.widget,0xD8,ctx)||ctx!=f.scene.context||!At(n.widget,0xE8,parent)||parent!=n.parent||!Add(proof,n.widget+0xD0,0x28))return false;}
- if(!out.origin_widget||out.origin_widget==menuRoot)return false;
- if(menuNode.visible){std::uint32_t selected=invalid;if(!At(menu,0xD0,selected)||selected!=full||!Add(proof,menu+0xD0,4)||!OfferRows(b,f,menu,out))return false;}
+ OfferTraceSub267("offer_owned_HUD_origin");if(!out.origin_widget||out.origin_widget==menuRoot)return false;
+ if(menuNode.visible){std::uint32_t selected=invalid;OfferTraceSub267("offer_menu_recipient_and_rows");if(!At(menu,0xD0,selected)||selected!=full||!Add(proof,menu+0xD0,4)||!OfferRows(b,f,menu,out))return false;}
  if(confirmNode.visible){
   std::uint32_t actor=invalid,recipient=invalid;std::uintptr_t definition=0;std::string key;
-  if(!At(confirmation,0x3B4,recipient)||recipient!=full||!At(confirmation,0x3C4,actor)||actor!=static_cast<std::uint32_t>(f.core.played_character_id)||!At(confirmation,0xC8,definition)||!Typed(definition,b.module_base,0x5006388)||!String(definition+0x18,256,key,proof,true)||key!="offer_vassalization_interaction"||!Add(proof,confirmation+0xC8,0x310))return false;
-  out.definition=definition;out.entered=true;bool cleanup=true;if(!Description(b.module_base,confirmation,value.description,proof,cleanup)){out.cleanup_known&=cleanup;return false;}
+  OfferTraceSub267("offer_confirmation_actor_recipient_definition");if(!At(confirmation,0x3B4,recipient)||recipient!=full||!At(confirmation,0x3C4,actor)||actor!=static_cast<std::uint32_t>(f.core.played_character_id)||!At(confirmation,0xC8,definition)||!Typed(definition,b.module_base,0x5006388)||!String(definition+0x18,256,key,proof,true)||key!="offer_vassalization_interaction"||!Add(proof,confirmation+0xC8,0x310))return false;
+  out.definition=definition;out.entered=true;bool cleanup=true;OfferTraceSub267("offer_confirmation_description");if(!Description(b.module_base,confirmation,value.description,proof,cleanup)){out.cleanup_known&=cleanup;return false;}
  }
  value.open_admissible=!menuNode.visible&&!confirmNode.visible&&!blocked;value.cancel_admissible=confirmNode.visible&&confirmNode.enabled&&!blocked;out.source.offer=std::move(value);return true;
 }
@@ -238,10 +246,13 @@ RmtmObservationCall267V1 CallRmtmObservationRaw267V1([[maybe_unused]]const Reado
  RmtmObservationCall267V1 call;
 #if defined(XAR_CK3_ENABLE_121003_26785313_RMTM_OBSERVATION_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_OBSERVATION_V1
  using namespace rmtm_observation_native;using A=RmtmObservationAction267V1;
+ OfferTraceScope267 diagnostic(b.module_base,q.action==A::open_offer);
  try{
   if(RmtmObservationQuery267V1(q.action))return call;RmtmObservationRaw267V1 now;std::string why;
-  if(!ReadRmtmObservationRaw267V1(b,f,q,mono,now,why)){call.cleanup_known=now.cleanup_known;if(!call.cleanup_known)call.status=RmtmObservationCallStatus267V1::indeterminate;return call;}
-  if(now!=issued||!Fresh(b,f,q,mono))return call;
+  OfferTraceMark267(OfferStage267V1::issued_read_enter);
+  if(!ReadRmtmObservationRaw267V1(b,f,q,mono,now,why)){OfferTraceTakeReason267(why);call.cleanup_known=now.cleanup_known;if(!call.cleanup_known)call.status=RmtmObservationCallStatus267V1::indeterminate;return call;}
+  OfferTraceMark267(OfferStage267V1::issued_read_returned,true);
+  if(now!=issued||!Fresh(b,f,q,mono)){OfferTraceMark267(OfferStage267V1::issued_source_changed);return call;}
   if(q.action==A::open_budget){if(!now.source.budget||!now.source.budget->open_admissible)return call;call=OpenBudget(b,f,q,mono);}
   else if(q.action==A::cancel_budget||q.action==A::cancel_offer){
    if(q.action==A::cancel_budget?(!now.source.budget||!now.source.budget->cancel_admissible):(!now.source.offer||!now.source.offer->cancel_admissible))return call;
@@ -253,17 +264,44 @@ RmtmObservationCall267V1 CallRmtmObservationRaw267V1([[maybe_unused]]const Reado
    if(!RightClick(b.module_base,static_cast<std::uint32_t>(now.source.offer->recipient_id),now.origin_widget))return call;
    // Re-read the real complete menu produced by the official opener. A lazy
    // or unavailable model is not replaced by a synthetic item or success.
-   RmtmObservationRaw267V1 opened;if(!Fresh(b,f,q,mono)||!Take(b,f,q,mono,opened,why)||!opened.item||!opened.definition||!opened.source.offer||opened.source.offer->recipient_id!=now.source.offer->recipient_id)return call;
-   std::vector<std::byte>gateProof;if(!EmptyConfirmationTrigger(b.module_base,opened.definition,gateProof)||!Fresh(b,f,q,mono))return call;
+   RmtmObservationRaw267V1 opened;
+   if(!Fresh(b,f,q,mono)){OfferTraceMark267(OfferStage267V1::post_click_fresh_rejected);return call;}
+   OfferTraceMark267(OfferStage267V1::opened_take_enter);
+   if(!Take(b,f,q,mono,opened,why)){OfferTraceTakeReason267(why);return call;}
+   OfferTraceMark267(OfferStage267V1::opened_take_returned,true);
+   if(!opened.item){OfferTraceMark267(OfferStage267V1::opened_item_missing);return call;}
+   if(!opened.definition){OfferTraceMark267(OfferStage267V1::opened_definition_missing);return call;}
+   if(!opened.source.offer||opened.source.offer->recipient_id!=now.source.offer->recipient_id){OfferTraceMark267(OfferStage267V1::opened_recipient_mismatch);return call;}
+   std::vector<std::byte>gateProof;OfferTraceMark267(OfferStage267V1::fixed_trigger_guard_enter);
+   if(!EmptyConfirmationTrigger(b.module_base,opened.definition,gateProof)||!Fresh(b,f,q,mono)){OfferTraceMark267(OfferStage267V1::fixed_trigger_guard_rejected);return call;}
+   OfferTraceMark267(OfferStage267V1::fixed_trigger_guard_returned,true);
    bool clean=true,entered=false;
-   if(!PopulateOffer(b.module_base,f.scene.handler,opened.item,opened.definition,now.window,clean,entered)){call.cleanup_known=clean;if(clean&&!entered){call.native_returned=true;call.status=RmtmObservationCallStatus267V1::returned;}return call;}
-   call.native_returned=true;call.cleanup_known=clean;call.status=RmtmObservationCallStatus267V1::returned;
+   if(!PopulateOffer(b.module_base,f.scene.handler,opened.item,opened.definition,now.window,clean,entered)){OfferTraceMark267(OfferStage267V1::populate_returned_false);call.cleanup_known=clean;if(clean&&!entered){call.native_returned=true;call.status=RmtmObservationCallStatus267V1::returned;}return call;}
+   OfferTraceMark267(OfferStage267V1::populate_returned_true,true);call.native_returned=true;call.cleanup_known=clean;call.status=RmtmObservationCallStatus267V1::returned;
   }
-  if(call.status==RmtmObservationCallStatus267V1::returned&&!Fresh(b,f,q,mono)){call.status=RmtmObservationCallStatus267V1::indeterminate;call.cleanup_known=false;}
-  return call;
- }catch(...){if(call.entered){call.status=RmtmObservationCallStatus267V1::indeterminate;call.cleanup_known=false;}return call;}
+  if(call.status==RmtmObservationCallStatus267V1::returned&&!Fresh(b,f,q,mono)){OfferTraceMark267(OfferStage267V1::final_fresh_rejected);call.status=RmtmObservationCallStatus267V1::indeterminate;call.cleanup_known=false;}
+  OfferTraceMark267(call.status==RmtmObservationCallStatus267V1::returned?OfferStage267V1::call_returned:OfferStage267V1::call_refused,true);return call;
+ }catch(...){OfferTraceMark267(OfferStage267V1::call_cpp_exception);if(call.entered){call.status=RmtmObservationCallStatus267V1::indeterminate;call.cleanup_known=false;}return call;}
 #else
  return call;
 #endif
 }
+std::string RmtmOfferDiagnostic267V1(){
+ using namespace rmtm_observation_native;const auto&d=offer_trace267;
+ if(!d.event_count)return {};char tail[97]{};std::size_t used=0;
+ const unsigned count=d.event_count;const unsigned first=count>16?count-16:0;
+ for(unsigned n=first;n<count&&used+4<sizeof(tail);++n){
+  const int written=std::snprintf(tail+used,sizeof(tail)-used,"%s%u",n==first?"":",",static_cast<unsigned>(d.events[n%d.events.size()]));
+  if(written<0||static_cast<std::size_t>(written)>=sizeof(tail)-used)break;used+=static_cast<std::size_t>(written);
+ }
+ char out[768]{};
+ const int written=std::snprintf(out,sizeof(out),";offer_diag_v1 stage=%u completed=%u milestones=%llx seh=%u code=%08x module_rva_known=%u module_rva=%08x exception_stage=%u exception_count=%u item_handled=%d item_bool_type=%u item_payload=%d item_cleanup=%d events=%u tail=%s sub=%s take=%s",
+  static_cast<unsigned>(d.stage),static_cast<unsigned>(d.last_completed),static_cast<unsigned long long>(d.milestones),
+  d.exception_observed?1U:0U,static_cast<unsigned>(d.exception_code),d.exception_in_module?1U:0U,
+  static_cast<unsigned>(d.exception_module_rva),static_cast<unsigned>(d.exception_stage),static_cast<unsigned>(d.exception_count),
+  static_cast<int>(d.item_handled),d.item_type_expected?1U:0U,static_cast<int>(d.item_payload),static_cast<int>(d.item_cleanup),
+  count,tail,d.subreason.data(),d.take_reason.data());
+ return written>0&&static_cast<std::size_t>(written)<sizeof(out)?std::string(out,static_cast<std::size_t>(written)):std::string{};
+}
+
 }

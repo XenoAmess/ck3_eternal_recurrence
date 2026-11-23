@@ -5,7 +5,8 @@
 #include <limits>
 #include <mutex>
 #include <windows.h>
-namespace xar::ck3_121003::build26785313 {namespace {
+namespace xar::ck3_121003::build26785313 {
+std::string RmtmOfferDiagnostic267V1();namespace {
 [[maybe_unused]]std::uint64_t Wall()noexcept{const auto n=std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();return n>0?static_cast<std::uint64_t>(n):0;}
 [[maybe_unused]]bool Time(const RmtmObservationContext267V1&q){const auto w=Wall();return w&&w<q.request.deadline_unix_ms&&q.monotonic_deadline_ms&&GetTickCount64()<q.monotonic_deadline_ms;}
 [[maybe_unused]]bool Core(const ck3_1210::CoreSnapshotPrefix&a,const ck3_1210::CoreSnapshotPrefix&b){return a.clock.date_raw==b.clock.date_raw&&a.clock.speed==b.clock.speed&&a.clock.paused==b.clock.paused&&a.local_player_id==b.local_player_id&&a.map_ready==b.map_ready&&a.has_played_character==b.has_played_character&&a.played_character_id==b.played_character_id&&a.played_character_alive==b.played_character_alive;}
@@ -55,7 +56,9 @@ bool ExecuteRmtmObservationInner267V1(RmtmObservationContext267V1&q,[[maybe_unus
  if(!ActionAllowed(raw.source,q.request.action))return reject(S::unavailable,"rmtm_observation_actual_fixed_UI_action_refused");const auto purpose=Purpose(q.request);if(st.spent[purpose]||st.claims.size()>=6)return reject(S::claim_consumed,"rmtm_observation_fixed_UI_purpose_once_per_case");
  if(!Time(q))return reject(S::expired,"rmtm_observation_beforeclaim_original_deadline");const auto claim=++st.claim;st.claims.push_back({claim,std::string(q.request.id())});st.spent[purpose]=true;lease.consumed=true;q.result.claim_sequence=claim;
  const auto call=CallRmtmObservationRaw267V1(q.bindings,f,q.request,q.monotonic_deadline_ms,raw);q.result.effect_attempted=call.entered;q.result.native_returned=call.native_returned;q.result.native_handled=call.native_handled;q.result.cleanup_known=call.cleanup_known;
- if(!call.cleanup_known||call.status==RmtmObservationCallStatus267V1::indeterminate){st.unknown.store(true);return reject(S::indeterminate,"rmtm_observation_actual_UI_completion_UNKNOWN");}if(call.status!=RmtmObservationCallStatus267V1::returned)return reject(S::stale_source,"rmtm_observation_preentry_refused_spentclaim_retained");
+ if(!call.cleanup_known||call.status==RmtmObservationCallStatus267V1::indeterminate){st.unknown.store(true);const bool terminal=reject(S::indeterminate,"rmtm_observation_actual_UI_completion_UNKNOWN");
+  if(q.request.action==RmtmObservationAction267V1::open_offer){try{q.result.reason+=RmtmOfferDiagnostic267V1();}catch(...){/* Diagnostic allocation must not change original UNKNOWN. */}}
+  return terminal;}if(call.status!=RmtmObservationCallStatus267V1::returned)return reject(S::stale_source,"rmtm_observation_preentry_refused_spentclaim_retained");
  q.result.status=S::navigation_dispatched;q.result.source_available=true;q.result.source=lease.raw.source;q.result.reason.clear();return true;
  }catch(...){const bool unknown=q.observation_entered||q.result.effect_attempted;if(q.session&&unknown)BlockRmtmObservationUnknown267V1(*q.session);q.result.status=unknown?RmtmObservationStatus267V1::indeterminate:RmtmObservationStatus267V1::unavailable;q.result.cleanup_known=!unknown;q.result.source_available=false;q.result.source.reset();q.result.reason="rmtm_observation_owner_exception";}
 #endif
