@@ -1,0 +1,164 @@
+{
+  "schema": "xar.current267.stock-bookmark1070.frozen-pair-maintenance-index.v1",
+  "at_utc": "2026-11-23T04:32:09.543149+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status": "ACTUAL_FROZEN_PAIR_READY_NEW_LIVE_NOT_RUN",
+  "actual_sixpins": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-bookmark1070-source-a01\\actual-six-pins.json",
+    "bytes": 1536,
+    "sha256": "4eac61c1cb7066f7de6799e5e4cdae28518b092db88e79a592761b1e4c4054d7"
+  },
+  "Java_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-bookmark1070-source-a01\\frozen-delivery-final.json",
+    "bytes": 5564,
+    "sha256": "598a0e386a681067083073eab758a5eb5291c22a581a221b668ea7679101747d"
+  },
+  "pair_binding": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-bookmark1070-source-a01\\native-pair-binding-final.json",
+    "bytes": 2982,
+    "sha256": "1801a64d0e64d27dcfe3b47ed623738623bbf10967877328f0a60ac71618e584"
+  },
+  "operator_templates": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-bookmark1070-source-a01\\operator-templates.json",
+    "bytes": 8221,
+    "sha256": "b6f148eeb0d220421d2a8d71c88f974d3ca52b5dceaebdba0a4ad633efb1d16c"
+  },
+  "configuration_schema": "xar.native-owner-snapshot-config/v44",
+  "configuration_modes": [
+    "current_stock_bookmark1070_query",
+    "current_stock_bookmark1070_choose_c"
+  ],
+  "template_pointers": {
+    "query": "/query_config",
+    "choose_c": "/choose_c_config",
+    "prior_LYD_query": "/lyd_events_query_config",
+    "prior_blockers": "/blockers_query_config"
+  },
+  "actual_Java_software": {
+    "methods_P": 33,
+    "wholeclass_groups": {
+      "Main": 10,
+      "original_CPP_producer": 12,
+      "private_Transport": 11
+    },
+    "qualification": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-bookmark1070-source-a01\\affected-qualification.json",
+      "bytes": 9511,
+      "sha256": "7951aae35634f61ec3e8825a174338c92b166e6722359ec5e5f8f65878788f3a"
+    },
+    "actual_elapsed_seconds": 391.4004757000075,
+    "actual_Job_peak_commit": 1879588864,
+    "normal_source_commit": "b4e079d99477ac820453f4832b0d58850b3d3c16",
+    "normal_source_push": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-bookmark1070-source-a01\\source-push-result.json",
+      "bytes": 654,
+      "sha256": "5621ce4b42ecbe24088f60f8f6f597d2539ec050bbf7e04d64b57bffcc0a4a68"
+    },
+    "actual_two_request_CPP_inverse": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-stock-bookmark1070-source-a1070\\NoGame\\actual-java-inverse-a01\\result.json",
+      "bytes": 20492,
+      "sha256": "484426e5e99cba5fa0866647f2beb85bffded277123104c906b26475d3b46518"
+    }
+  },
+  "actual_Native": {
+    "delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-stock-bookmark1070-production-a1070\\frozen-delivery-final.json",
+      "bytes": 1750,
+      "sha256": "78244a2812b08f7bb74f13639e7ed0c26e87944259773de1a4e984d4e0469178"
+    },
+    "refs": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-stock-bookmark1070-production-a1070\\ordinary-native-artifact-refs.json",
+      "bytes": 14034,
+      "sha256": "b2c6196a0b6fab3e7a2b1d32c2758c30ee429815ec678b299c9eb37ac7055cb8"
+    },
+    "NativeTree": "5f917e937d467ce3a7ac5435ee6b9a7d6bd8e2a8",
+    "actual_source_adoption_HEAD": "c7dc25d09deac29d78677e24adbec989b06a3fe2",
+    "normal_source_commit": "c7dc25d09deac29d78677e24adbec989b06a3fe2",
+    "normal_source_push": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-bookmark1070-source-a01\\native-source-push-result.json",
+      "bytes": 714,
+      "sha256": "3a8691d93b7d62b053fb766954aa39c3798a8c4e09300c0fe104182a97faff9e"
+    },
+    "qualified_manifest": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-stock-bookmark1070-source-a1070\\qualified-source-manifest.json",
+      "bytes": 26688,
+      "sha256": "1b817bbfc83616bc938d44df2eff3c0e2acaabf1eeecc6728982b54a8e179d27"
+    },
+    "software_closure": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-stock-bookmark1070-source-a1070\\NoGame\\final-closure.json",
+      "bytes": 13509,
+      "sha256": "5a6a960f5b055b692f74ba3412ab961367b93928e39631cd888cbf95904d0eae"
+    },
+    "actual_total_TUs": 921,
+    "actual_CL": 9,
+    "reused_objects": 912,
+    "new_DLL": {
+      "kind": "bridge_dll",
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-stock-bookmark1070-production-a1070\\new-artifacts\\xar_ck3_bridge.dll",
+      "sha256": "d1e80d549b38cac5406a9c94f3f151e226a3391666b81dc62ac5dad295f2eeef",
+      "metadata": {
+        "bytes": 14644736,
+        "allocated": 14647296,
+        "file_id": "281474981925508",
+        "volume": "882653518",
+        "creation_filetime": "134398811952579477",
+        "write_filetime": "134398811986942680",
+        "attributes": 32
+      }
+    },
+    "Identity_registration_and_COFF": "Actual0/verified, Raw/Owner/Step actualON bodies nonconstantfalse; source/reuse/oldprotected drift[]. Java-only later HEAD does not relabel actual Native BEGIN."
+  },
+  "runtime_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-stock-bookmark1070-a1070\\runtime-manifest.json",
+    "bytes": 167224,
+    "sha256": "178b05cd8cf2cc3d6aa5653042f4c67e3ec035bd7908a5fc1051e901e6140403"
+  },
+  "classpath_argfile": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-stock-bookmark1070-a1070\\cli-classpath.args",
+    "bytes": 16395,
+    "sha256": "77ec97b52c2d73e9e3c34b981ba01f621d4be8bcdf9312b0a995acb910e50b1c"
+  },
+  "runtime_reuse": {
+    "total": 158,
+    "new_copies": 2,
+    "actual_new_JAR_allocation": 18870272,
+    "old_dependencies_reused_by_qualified_identity": 156,
+    "no_blanket_old158_body_hash_CRC_or_copy": true
+  },
+  "semantic_boundary": "Only fixed stock bookmark.1070.c. Private complete single actual event census/Core/recipient/instance/owner/lease/deadline/once, no caller selectors or LYD role. Selection ACK preserves immutable beforeSource, native_handled/event_closed/new_date_observed/physical_save_confirmed false; independent freshCore and complete census establishes target-instance presence/absence as separate KnownDATA, never time-gate-clear or business proof. Original scopes/Frozens/UNKNOWN/knownrefusals/deadlines stay unchanged; actual new live NOT_RUN.",
+  "unknown": "Written query/selection original UNKNOWN stays sticky, no replay/newID laundering or clearing any old family UNKNOWN. Old Date23/v27/v37/identity-unused and all original bodies/deadlines/Frozens remain as recorded.",
+  "initial_Source_only_attempts": [
+    "Initial send_message did not awaken completed DTO owner; corrected with followup_task before any compiler BEGIN.",
+    "A guessed query filename and three guessed manifest filenames failed read-only lookup before mutation; corrected using actual listed filenames/delivery pointers."
+  ],
+  "independent_whole_DY_consumer": {
+    "original3_DATA_only": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-des-whole-dynasty-membership-qualification-a1075\\actual-result.json",
+      "bytes": 8984,
+      "sha256": "360946e70307ff566cafc87563db2a1d65aecdc58be09b82eca2d87d0d019ad2"
+    },
+    "new_private_Win32_3_DATA_and_tiny_identity": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-des-whole-dynasty-membership-win32-qualification-a02\\actual-result.json",
+      "bytes": 13339,
+      "sha256": "39e3954d328d59a0abf88fb66d53312ecbb95c5b79d3d728aa8c955887184d78"
+    },
+    "new_classes": "D:\\ck3-state\\upgrade-20261118\\java-des-whole-dynasty-membership-win32-qualification-a02\\classes",
+    "actual_archive_business": "NOT_RUN_BY_JAVA_NOT_GRANTED",
+    "note": "Separate private consumer, no public core/App55/Maven change. Root original a1079 null-JDK-fileKey failure remains; initial3DATA did not validate actual Windows file identity. New Win32 fixture only touches self-owned tiny files."
+  },
+  "all_phases_END": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-bookmark1070-source-a01\\all-phases-END.json",
+    "bytes": 3304,
+    "sha256": "fc6475b05282bdf6c829e2f655df13e436fc99a8cb3c9cfbeb43098e5579e2aa"
+  },
+  "source_footprint": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-bookmark1070-source-a01\\source-footprint-final.json",
+    "bytes": 20997,
+    "sha256": "2c972849cc619ae8ae8c67086c0da951a238ee1e5079aed2e7cfefa568dd5bb2"
+  },
+  "source_publication": "Normal Native20 and Java20+small evidence commits, followed by finite pair index; no product SourceA/tag/version/Workshop operation.",
+  "Workshop_published_count": 12,
+  "strict_closed_count": 9,
+  "denominator": 17,
+  "DES_published": false
+}
