@@ -1,0 +1,28 @@
+{
+  "schema": "xar.native.current267.stock-bookmark1070.qualified-source-adoption.v1",
+  "at_utc": "2026-11-23T04:15:17.688845+00:00",
+  "qualified_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-stock-bookmark1070-source-a1070\\qualified-source-manifest.json",
+    "bytes": 26688,
+    "sha256": "1b817bbfc83616bc938d44df2eff3c0e2acaabf1eeecc6728982b54a8e179d27"
+  },
+  "software_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-stock-bookmark1070-source-a1070\\NoGame\\final-closure.json",
+    "bytes": 13509,
+    "sha256": "5a6a960f5b055b692f74ba3412ab961367b93928e39631cd888cbf95904d0eae",
+    "metadata": {
+      "bytes": 13509,
+      "allocated": 16384,
+      "file_id": "281474981925280",
+      "volume": "882653518",
+      "creation_filetime": "134398807873107269",
+      "write_filetime": "134398807873117262",
+      "attributes": 32
+    }
+  },
+  "exact_target_count": 20,
+  "scope": "Only actual current fixed stock bookmark.1070.c query/once. Reuse existing strict ordinary event Raw/NativeCan/officialSelect with owner31 fixed wrapper; full Source/Core/recipient/loadeddef/instance/authored3/textCan/privateheaders/deadlines/connection/once/UNKNOWN guards. No caller event/key/index/role/pointer/boolean; old LYD roles and all public contracts preserved. Void never eventclosed/date/save proof. Live NOT_RUN.",
+  "actual_Java_inverse": "Original retained b238 parser accepted2actualJavafactory bodies, all ID/MAXdeadline and original12genuine unchanged.",
+  "old_frozen_and_unknown": "Preserved; no hot swap or replay.",
+  "new_production_and_live": "PENDING_NOT_GRANTED"
+}

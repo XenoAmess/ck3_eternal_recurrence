@@ -10710,3 +10710,5 @@ include(cmake/current267_rite_create_v1.cmake)
 include(cmake/current267_rite_text_v1.cmake)
 
 include(cmake/current267_rite_creation_blockers_v1.cmake)
+
+include(cmake/current267_stock_bookmark1070_v1.cmake)

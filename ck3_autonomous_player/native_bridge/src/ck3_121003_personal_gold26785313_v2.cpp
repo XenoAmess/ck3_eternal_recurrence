@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_STOCK_BOOKMARK1070_V1) && XAR_CK3_ENABLE_121003_26785313_STOCK_BOOKMARK1070_V1
+#include "xar_bridge/ck3_121003_stock_bookmark107026785313_owner_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RITE_CREATION_BLOCKERS_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_CREATION_BLOCKERS_V1
 #include "xar_bridge/ck3_121003_rite_creation_blockers26785313_owner_v1.hpp"
 #endif
@@ -312,9 +315,16 @@ const game::AdapterDescriptor &PersonalGoldAdapterDescriptorV2() noexcept {
   const auto&blockers_base_descriptor=text_base_descriptor;
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RITE_CREATION_BLOCKERS_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_CREATION_BLOCKERS_V1
-  static const auto blockers_caps=[&]{std::vector<std::string_view>combined(blockers_base_descriptor.capabilities.begin(),blockers_base_descriptor.capabilities.end());combined.push_back(kRiteBlockersCapability267V1);return combined;}();static const game::AdapterDescriptor blockers_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",blockers_caps};return blockers_descriptor;
+  static const auto blockers_caps=[&]{std::vector<std::string_view>combined(blockers_base_descriptor.capabilities.begin(),blockers_base_descriptor.capabilities.end());combined.push_back(kRiteBlockersCapability267V1);return combined;}();static const game::AdapterDescriptor blockers_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",blockers_caps};const auto&stock_base_descriptor=blockers_descriptor;
 #else
-  return blockers_base_descriptor;
+  const auto&stock_base_descriptor=blockers_base_descriptor;
+#endif
+
+#if defined(XAR_CK3_ENABLE_121003_26785313_STOCK_BOOKMARK1070_V1) && XAR_CK3_ENABLE_121003_26785313_STOCK_BOOKMARK1070_V1
+  static const auto stock_caps=[&]{std::vector<std::string_view>combined(stock_base_descriptor.capabilities.begin(),stock_base_descriptor.capabilities.end());combined.insert(combined.end(),kStockBookmarkCaps267V1.begin(),kStockBookmarkCaps267V1.end());return combined;}();
+  static const game::AdapterDescriptor stock_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",stock_caps};return stock_descriptor;
+#else
+  return stock_base_descriptor;
 #endif
 
 }
