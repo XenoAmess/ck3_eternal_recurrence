@@ -94,6 +94,32 @@ class NativeCurrentCccOriginalCaseTransportTest {
             var open=t.prepareCurrentCccDecision(decision(t),CurrentCccDecision.Action.OPEN_LIST);ack(t.submitCurrentCccDecision(open));assertFalse(open.latestFrame().orElseThrow().nativeHandled());assertFalse(open.latestFrame().orElseThrow().decisionApplied());assertEquals(1,r.listWrites);}
     }
 
+    static void cancel(NativeGameTransport t)throws Exception{var q=events(t);ack(t.submitCurrentCccEvent(t.prepareCurrentCccTemporaryCancel(q)));}
+    @Test void postCancelFreshAbsentCensusAllowsOnlyNewFixedNavigationAndPreservesFalseCanTooltip()throws Exception{
+        var r=new Replay("post-cancel");try(var t=transport(r)){confirmedDecision(t);cancel(t);events(t);
+            var q=decision(t);assertFalse(q.frame().source().orElseThrow().detailVisible());var open=t.prepareCurrentCccDecision(q,CurrentCccDecision.Action.OPEN_LIST);
+            var original=ack(t.submitCurrentCccDecision(open));assertSame(original,t.submitCurrentCccDecision(open));decisionAction(t,CurrentCccDecision.Action.OPEN_DETAIL);
+            var after=decision(t).frame().source().orElseThrow();assertFalse(after.nativeCanConfirm().orElseThrow());assertEquals("actual cooldown why",after.confirmTooltip().orElseThrow());
+            assertTrue(after.cooldownExpiryDateRaw().isEmpty());assertFalse(after.cooldownReadbackComplete());assertEquals(2,r.listWrites);assertEquals(2,r.detailWrites);assertEquals(1,r.confirmWrites);assertEquals(1,r.fWrites);assertEquals(3,r.days);
+            assertThrows(IOException.class,()->t.prepareCurrentCccDecision(decision(t),CurrentCccDecision.Action.CONFIRM));}
+    }
+    @Test void postConfirmBeforeCancelAndPostCancelWithoutIndependentCensusCannotNavigate()throws Exception{
+        var r=new Replay("post-cancel");try(var t=transport(r)){confirmedDecision(t);assertThrows(IOException.class,()->t.prepareCurrentCccDecision(decision(t),CurrentCccDecision.Action.OPEN_LIST));
+            cancel(t);assertThrows(IOException.class,()->t.prepareCurrentCccDecision(decision(t),CurrentCccDecision.Action.OPEN_LIST));assertEquals(1,r.listWrites);assertEquals(1,r.confirmWrites);}
+    }
+    @Test void stillPresentCancelledInstanceDoesNotAuthorizePostCaseNavigation()throws Exception{
+        var r=new Replay("post-present");try(var t=transport(r)){confirmedDecision(t);cancel(t);events(t);
+            assertThrows(IOException.class,()->t.prepareCurrentCccDecision(decision(t),CurrentCccDecision.Action.OPEN_LIST));assertEquals(1,r.listWrites);assertEquals(1,r.detailWrites);}
+    }
+    @Test void postCancelNavigationCannotUseAnotherNewIdAfterAnActualListAttempt()throws Exception{
+        var r=new Replay("post-cancel");try(var t=transport(r)){confirmedDecision(t);cancel(t);events(t);decisionAction(t,CurrentCccDecision.Action.OPEN_LIST);r.decisionStage=0;
+            assertThrows(IOException.class,()->t.prepareCurrentCccDecision(decision(t),CurrentCccDecision.Action.OPEN_LIST));assertEquals(2,r.listWrites);assertEquals(1,r.confirmWrites);}
+    }
+    @Test void postCancelObservedEmptyAndEmbeddedNulWhyAreCompleteDataNotInferredExpiry()throws Exception{
+        for(String mode:List.of("post-empty","post-rich")){var r=new Replay(mode);try(var t=transport(r)){confirmedDecision(t);cancel(t);events(t);decisionAction(t,CurrentCccDecision.Action.OPEN_LIST);decisionAction(t,CurrentCccDecision.Action.OPEN_DETAIL);
+            var s=decision(t).frame().source().orElseThrow();assertEquals(mode.equals("post-empty")?"":"actual\u0000cooldown\u0015\n",s.confirmTooltip().orElseThrow());assertFalse(s.nativeCanConfirm().orElseThrow());assertTrue(s.cooldownExpiryDateRaw().isEmpty());assertFalse(s.cooldownReadbackComplete());assertEquals(1,r.confirmWrites);}}
+    }
+
     static final class Replay implements NativePacketPort {
         final String mode;final ArrayDeque<byte[]> packets=new ArrayDeque<>();boolean closed,pending,confirmed,dChosen,decisionConfirmed,cancelled;int days,advanceWrites,epochWrites,dWrites,fWrites,listWrites,detailWrites,confirmWrites,decisionStage;
         String operation;long originalDeadline;ObjectNode opCore,opBefore,roleBefore,eventBefore,decisionBefore;int opDay;
@@ -131,13 +157,15 @@ class NativeCurrentCccOriginalCaseTransportTest {
                     ok=result.get("ok").booleanValue();
                 }else if(fields.has("ccc_event")){
                     var c=fields.get("ccc_event");var a=CurrentCccEvent.Action.parse(c.get("action").textValue());boolean later=decisionConfirmed;result=token("event",a==CurrentCccEvent.Action.QUERY?(later?"query-cancel-source":"query-original-source"):a==CurrentCccEvent.Action.SELECT_TIER_FOUR?"tier-four-dispatched":"cancel-dispatched");
-                    if(a==CurrentCccEvent.Action.QUERY){eventBefore=NativeWire.object(result.get("source"));int instance=later&&!mode.equals("same-instance")?32:31;eventBefore.put("fixed_instance_id",instance);var row=(ObjectNode)eventBefore.get("event_census").get("events").get(0);row.put("instance_id",instance).put("recipient_character_id",actor());result.set("source",eventBefore);}
-                    else{result.set("source",eventBefore.deepCopy());result.put("instance_id",c.get("instance_id").intValue());if(a==CurrentCccEvent.Action.SELECT_TIER_FOUR){dWrites++;dChosen=true;if(mode.equals("changed-event-source"))((ObjectNode)result.get("source").get("event_census").get("events").get(0)).put("opening","different actual cached title");}else{fWrites++;cancelled=true;}}
+                    if(a==CurrentCccEvent.Action.QUERY){eventBefore=NativeWire.object(result.get("source"));int instance=later&&!mode.equals("same-instance")?32:31;eventBefore.put("fixed_instance_id",instance);var row=(ObjectNode)eventBefore.get("event_census").get("events").get(0);row.put("instance_id",instance).put("recipient_character_id",actor());
+                        if(cancelled&&mode.startsWith("post-")&&!mode.equals("post-present")){eventBefore.putNull("fixed_instance_id").put("select_d_admissible",false).put("select_f_admissible",false);var census=(ObjectNode)eventBefore.get("event_census");census.put("named_root_count",0);census.putArray("events");}result.set("source",eventBefore);}
+                    else{result.set("source",eventBefore.deepCopy());result.put("instance_id",c.get("instance_id").intValue());if(a==CurrentCccEvent.Action.SELECT_TIER_FOUR){dWrites++;dChosen=true;if(mode.equals("changed-event-source"))((ObjectNode)result.get("source").get("event_census").get("events").get(0)).put("opening","different actual cached title");}else{fWrites++;cancelled=true;if(mode.startsWith("post-"))decisionStage=0;}}
                     result.set("facts_before",NativeWire.object(c.get("expected_core")));result.put("provider_generation","5").put("query_sequence",later?"8":"7");
                 }else{
                     var c=fields.get("ccc_decision");var a=CurrentCccDecision.Action.parse(c.get("action").textValue());String q=decisionStage==0?"query-open-list-source":decisionStage==1?"query-open-detail-source":"query-confirm-source";
                     result=token("decision",a==CurrentCccDecision.Action.QUERY?q:a==CurrentCccDecision.Action.OPEN_LIST?"open-list-dispatched":a==CurrentCccDecision.Action.OPEN_DETAIL?"open-detail-dispatched":"confirm-dispatched");
-                    if(a==CurrentCccDecision.Action.QUERY){decisionBefore=NativeWire.object(result.get("source"));if(mode.equals("not-half"))decisionBefore.put("fixture_tax_exact_half",false);if(cancelled){var ar=decisionBefore.putArray("corruption_traits");for(int i=0;i<4;i++)ar.add(false);}result.set("source",decisionBefore);}
+                    if(a==CurrentCccDecision.Action.QUERY){decisionBefore=NativeWire.object(result.get("source"));if(mode.equals("not-half"))decisionBefore.put("fixture_tax_exact_half",false);if(cancelled){var ar=decisionBefore.putArray("corruption_traits");for(int i=0;i<4;i++)ar.add(false);
+                        if(mode.startsWith("post-")&&decisionStage==2)decisionBefore.put("native_can_confirm",false).put("confirm_admissible",false).put("confirm_tooltip",mode.equals("post-empty")?"":mode.equals("post-rich")?"actual\u0000cooldown\u0015\n":"actual cooldown why");}result.set("source",decisionBefore);}
                     else{result.set("source",decisionBefore);if(a==CurrentCccDecision.Action.OPEN_LIST){listWrites++;decisionStage=1;result.put("native_handled",false);}else if(a==CurrentCccDecision.Action.OPEN_DETAIL){detailWrites++;decisionStage=2;}else{confirmWrites++;decisionConfirmed=true;}}
                     result.set("facts_before",NativeWire.object(c.get("expected_core")));
                 }

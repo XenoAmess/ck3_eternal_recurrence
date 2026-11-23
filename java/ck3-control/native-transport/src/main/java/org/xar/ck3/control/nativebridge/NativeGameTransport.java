@@ -4023,6 +4023,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     private AckReceived cccTierFourReceipt,cccDecisionConfirmationReceipt,cccCancelReceipt;
     private Integer cccTierFourInstance;
     private boolean cccDecisionConfirmationAttempted;
+    private boolean cccPostCancelOpenListAttempted,cccPostCancelOpenDetailAttempted;
     /** Validate the original receipt without extending the consumed D1 deadline or recreating its authority. */
     private void requireCccCase(CoreReceived before)throws IOException {
         if(confirmedCccEpoch==null||cccFirstDay==null||confirmedCccEpoch.operation!=cccFirstDay||!cccFirstDay.confirmed||cccFirstDay.unknown
@@ -4391,13 +4392,44 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         return query.prepared=new CccDecisionPrepared(this,query,action,id,cccDecisionPacket(id,action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),cccDecisionSelector(action),query.validUntil));
     }
     private void requireCccDecisionAdmission(CccDecisionReceived query,CurrentCccDecision.Action action)throws IOException {
-        var s=query.frame.source().orElseThrow();if(!s.caseBound()||knownCccDays<3||cccTierFourReceipt==null||cccCancelReceipt!=null||cccDecisionConfirmationReceipt!=null)throw new IOException("Original CCC actual tier-four receipt and D3+ decision case required");
+        var s=query.frame.source().orElseThrow();if(!s.caseBound()||knownCccDays<3||cccTierFourReceipt==null)throw new IOException("Original CCC actual tier-four receipt and D3+ decision case required");
+        if(cccCancelReceipt!=null||cccDecisionConfirmationReceipt!=null){
+            if(action==CurrentCccDecision.Action.CONFIRM||cccCancelReceipt==null||cccDecisionConfirmationReceipt==null)
+                throw new IOException("Original CCC confirmation is spent; only post-cancel fixed navigation may follow");
+            requireCccPostCancelDecisionNavigation(query);
+            if(action==CurrentCccDecision.Action.OPEN_LIST&&cccPostCancelOpenListAttempted
+                    ||action==CurrentCccDecision.Action.OPEN_DETAIL&&cccPostCancelOpenDetailAttempted)
+                throw new IOException("Post-cancel CCC fixed navigation was already attempted; no new-ID retry");
+        }
         switch(action){
             case OPEN_LIST -> {if(!s.openListAdmissible())throw new IOException("Actual hidden-list Toggle admission required");}
             case OPEN_DETAIL -> {if(s.rows().stream().noneMatch(r->r.decisionKey()==CurrentCccDecision.DecisionKey.CORRUPTION_POLICY&&r.canOpenDetail()))throw new IOException("Actual fixed decision row admission required");}
             case CONFIRM -> {if(cccDecisionConfirmationAttempted||!s.confirmAdmissible()||!s.fixtureTaxVariablePresent().orElse(false)||!s.fixtureTaxExactHalf().orElse(false)||!s.selectedDecisionKey().equals(Optional.of(CurrentCccDecision.DecisionKey.CORRUPTION_POLICY)))throw new IOException("Original once CCC confirm needs actual half-tax predicate and official Can");}
             default -> throw new IOException("Query DATA cannot prepare a business action");
         }
+    }
+    /** Historical absence proves the completed original case, never permission to reuse its old query lease. */
+    private void requireCccPostCancelDecisionNavigation(CccDecisionReceived query)throws IOException {
+        var absence=latestCccEvent;
+        if(absence==null||absence.issuer!=this||absence.actionAttempted||!cccDecisionConfirmationAttempted)
+            throw new IOException("Independent original post-cancel complete census required");
+        var cancel=CurrentCccEventResult.decodeOutcome(cccCancelReceipt);
+        if(cancel.action()!=CurrentCccEvent.Action.SELECT_TEMPORARY_CANCEL||!cancel.successful()||cancel.instanceId().isEmpty())
+            throw new IOException("Original known CCC temporary-cancel receipt required");
+        var actual=CurrentCccEventResult.decodeOutcome(absence.original);requireCccEventFrame(actual,CurrentCccEvent.Action.QUERY,absence.before);
+        requireCccCustody(absence.original,absence.custody);
+        var cancelCustody=originalRequestChronology(cccCancelReceipt.requestId()).orElseThrow(()->new IOException("Original CCC cancel custody absent"));
+        requireCccCustody(cccCancelReceipt,cancelCustody);
+        if(!actual.equals(absence.frame)||!actual.source().equals(absence.frame.source())
+                ||absence.custody.writeEntered().order().compareTo(cancelCustody.responseReceived().order())<=0
+                ||query.before.custody.writeEntered().order().compareTo(absence.custody.responseReceived().order())<=0
+                ||!((CoreFrame.Partial)absence.before.frame).prefix().equals(((CoreFrame.Partial)query.before.frame).prefix())
+                ||!Arrays.equals(absence.original.outbound().orElseThrow().originalPacket(),cccEventPacket(absence.original.requestId(),CurrentCccEvent.Action.QUERY,absence.before,BigInteger.ZERO,BigInteger.ZERO,Optional.empty(),absence.validUntil)))
+            throw new IOException("CCC post-cancel census/source/Core/custody chronology changed");
+        var census=actual.source().orElseThrow().eventCensus();var source=query.frame.source().orElseThrow();
+        if(!census.censusComplete()||census.events().stream().anyMatch(row->row.instanceId()==cancel.instanceId().orElseThrow())
+                ||source.corruptionTraits().filter(values->values.size()==4&&values.stream().noneMatch(Boolean::booleanValue)).isEmpty())
+            throw new IOException("Actual complete cancelled-instance absence and four cleared traits required");
     }
     public synchronized DispatchOutcome submitCurrentCccDecision(CccDecisionPrepared prepared)throws InterruptedException {
         if(prepared!=null&&prepared.issuer==this&&prepared.called&&prepared.outcome!=null)return prepared.outcome;
@@ -4409,7 +4441,9 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             if(!hello.capabilities().contains(prepared.action.capability())||sentRequestIds.size()>=maximumSubmissions)throw new IOException("CCC action capability/retention unavailable");
             if(!Arrays.equals(prepared.packet.value(),cccDecisionPacket(id,prepared.action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),cccDecisionSelector(prepared.action),query.validUntil)))throw new IOException("CCC original private action packet/deadline drift");
             outcome=dispatch(id,prepared.packet.value(),query.validUntil,()->{requireBackgroundAtCoreWrite();try{requireCccDecisionOriginal(query,query.validUntil);requireCccCase(query.before);requireCccDecisionAdmission(query,prepared.action);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
-                if(prepared.action==CurrentCccDecision.Action.CONFIRM)cccDecisionConfirmationAttempted=true;prepared.called=true;query.actionAttempted=true;query.before.controlAttempted=true;heldSnapshotInvalidated=true;latestCccDecision=null;});
+                if(prepared.action==CurrentCccDecision.Action.CONFIRM)cccDecisionConfirmationAttempted=true;
+                else if(cccCancelReceipt!=null){if(prepared.action==CurrentCccDecision.Action.OPEN_LIST)cccPostCancelOpenListAttempted=true;else if(prepared.action==CurrentCccDecision.Action.OPEN_DETAIL)cccPostCancelOpenDetailAttempted=true;}
+                prepared.called=true;query.actionAttempted=true;query.before.controlAttempted=true;heldSnapshotInvalidated=true;latestCccDecision=null;});
             if(outcome instanceof Unknown unknown){unresolvedCoreControl=unknown;unresolvedCccDecision=new CccDecisionUnavailable(unknown,"Original CCC business UNKNOWN");return prepared.outcome=unknown;}
             if(outcome instanceof AckReceived ack){
                 var frame=CurrentCccDecisionResult.decodeOutcome(ack);requireCccDecisionFrame(frame,prepared.action,query.before);

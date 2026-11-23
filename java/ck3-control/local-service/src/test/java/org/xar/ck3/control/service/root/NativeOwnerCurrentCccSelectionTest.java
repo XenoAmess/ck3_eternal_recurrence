@@ -56,8 +56,8 @@ final class NativeOwnerCurrentCccSelectionTest {
         for(String mode:List.of("current_ccc_query_role","current_ccc_query_event","current_ccc_query_decision")){
             var c=config(mode);assertEquals(6,c.size());assertTrue(NativeOwnerSnapshotMain268.currentCccConfig(c).queryOnly());assertEquals(2,NativeOwnerSnapshotMain268.currentCccConfig(c).submissions());
         }
-        var c=config("current_ccc_original_case_once");assertEquals(8,c.size());assertEquals(1745,NativeOwnerSnapshotMain268.currentCccConfig(c).submissions());
-        assertEquals(3409,NativeOwnerSnapshotMain268.currentCccConfig(c.put("maximum_status_polls",256)).submissions());
+        var c=config("current_ccc_original_case_once");assertEquals(8,c.size());assertEquals(1751,NativeOwnerSnapshotMain268.currentCccConfig(c).submissions());
+        assertEquals(3415,NativeOwnerSnapshotMain268.currentCccConfig(c.put("maximum_status_polls",256)).submissions());
         assertEquals(NativeOwnerSnapshotMain268.ObservationMode.CURRENT_CCC,NativeOwnerSnapshotMain268.observationMode(c));
     }
     @Test void callerSelectorsWrongSchemasOwnerTypesAndUnboundedPollingAreRejected() throws IOException {
@@ -125,5 +125,16 @@ final class NativeOwnerCurrentCccSelectionTest {
             assertThrows(IllegalArgumentException.class,()->decisionAck(q,s,false,false));
         }
         assertThrows(IllegalArgumentException.class,()->detail(false,"x".repeat(16385)));
+    }
+    @Test void postCancelDetailRequiresActualSelectedVisibleFixedDetailAndClearedTraits()throws IOException{
+        assertThrows(IOException.class,()->NativeOwnerSnapshotMain268.requireCurrentCccPostCancelDetail(closedList()));
+        assertThrows(IOException.class,()->NativeOwnerSnapshotMain268.requireCurrentCccPostCancelDetail(detail(false,"actual why")));
+    }
+    @Test void postCancelFalseCanAndFullEmptyRichTooltipDoNotInventExpiryOrPermission()throws IOException{
+        for(String why:List.of("","x".repeat(16384),"actual\u0000why\u0015\n")){
+            var json=detail(false,why).encode();var traits=json.putArray("corruption_traits");for(int i=0;i<4;i++)traits.add(false);
+            var actual=CurrentCccDecisionSource.decode(json);NativeOwnerSnapshotMain268.requireCurrentCccPostCancelDetail(actual);
+            assertFalse(actual.nativeCanConfirm().orElseThrow());assertEquals(why,actual.confirmTooltip().orElseThrow());assertTrue(actual.cooldownExpiryDateRaw().isEmpty());assertFalse(actual.cooldownReadbackComplete());
+        }
     }
 }

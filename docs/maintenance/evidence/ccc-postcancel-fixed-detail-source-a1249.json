@@ -1,0 +1,23 @@
+{
+  "schema": "xar.current267.ccc.postcancel-fixed-detail-source.v1",
+  "status": "JAVA29_SOFTWARE_PASS_NEW_LIVE_READBACK_NOT_RUN",
+  "problem": "The original oneReceiver case queried after .f without reopening the closed decision detail. The shared Java admission also rejected all decision navigation after the onceConfirm receipt. Hidden detail correctly yielded nullable NativeCan/tooltip; the successful channel did not prove cooldown readback.",
+  "change": "After original known Confirm plus new-instance .f, independently read the complete cancelled-instance absence and four cleared traits. Only then allow conditional fixed OPEN_LIST and OPEN_DETAIL once each, under the same Receiver/epoch/official/date/private chronology and fresh query lease. Never re-confirm or retry an unknown/attempted UI operation. Read complete official tooltip and actual Can as DATA; typed expiry remains null/readbackfalse.",
+  "source_root": "D:/ck3-state/upgrade-20261118/java-current267-ccc-post-cancel-readback-a1248",
+  "actual_first_affected_wholeclasses": {"NativeCurrentCccOriginalCaseTransportTest": 17, "NativeOwnerCurrentCccSelectionTest": 12},
+  "actual_methods": 29,
+  "actual_reactor_entries": 34,
+  "actual_recompiled_main_sources": {"native-transport": 567, "ck3-control-local-service": 653},
+  "other32_dependency_entries_reused": true,
+  "new_submissions_upper": "87 + 13 * maximum_status_polls; default128=1751, max256=3415",
+  "Native_ABI_wire_DTO_or_RMTM_changes": false,
+  "old_Producer23_and_request_inverse11_not_repeated": true,
+  "old_actual_scene": {
+    "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/CCC-first-actual-three-day-finite-PARTIAL-a1248.json",
+    "bytes": 7017,
+    "sha256": "4a22492dbf926729f0d970ab36bbcc4214527fdb1bc688d101bf5fc18aebffc2"
+  },
+  "old_PARTIAL_UNKNOWN_claims_and_all_Frozen_inputs_preserved": true,
+  "new_Game_or_cooldown_or_product_PASS": false,
+  "package_freeze_actual_evidence_separate": true
+}

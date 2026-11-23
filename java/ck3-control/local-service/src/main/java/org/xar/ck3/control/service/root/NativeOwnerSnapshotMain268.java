@@ -4049,7 +4049,7 @@ if(riteDraftCosts) {
     enum CccMode { QUERY_ROLE, QUERY_EVENT, QUERY_DECISION, ORIGINAL_CASE_ONCE }
     record CccConfig(CccMode mode,int maximumStatusPolls,long statusPollDelayMillis) {
         boolean queryOnly(){return mode!=CccMode.ORIGINAL_CASE_ONCE;}
-        int submissions(){return queryOnly()?2:Math.addExact(81,Math.multiplyExact(13,maximumStatusPolls));}
+        int submissions(){return queryOnly()?2:Math.addExact(87,Math.multiplyExact(13,maximumStatusPolls));}
     }
     static CccConfig currentCccConfig(ObjectNode config) {
         StrictJson.require("xar.native-owner-snapshot-config/v45".equals(StrictJson.text(config.get("schema"))),"Explicit v45 CCC family required");
@@ -4258,6 +4258,7 @@ if(riteDraftCosts) {
                 .put("machine_id",machine).put("read_calls",0).put("advance_calls",0).put("status_queries",0).put("epoch_confirm_calls",0).put("event_select_calls",0).put("decision_action_calls",0)
                 .put("maximum_natural_days",13).put("natural_days_observed",0).put("original_case_channel_completed",false).put("epoch_confirmed",false)
                 .put("event_closed",false).put("decision_applied",false).put("cooldown_readback_complete",false).putNull("cooldown_expiry_date_raw")
+                .put("post_cancel_decision_readback_complete",false).put("post_cancel_navigation_calls",0).putNull("final_confirm_tooltip")
                 .put("physical_save_confirmed",false).put("save_calls",0);
     }
     private static void runCurrentCcc(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeLaunchPlan plan,CccConfig config,Path output,
@@ -4341,7 +4342,27 @@ if(riteDraftCosts) {
             var finalDecisionCore=readCurrentCccCore(transport,owner,plan,output,"ccc-core-before-final-decision-read",deadline,result,originals,session,current);requireCurrentCccAfterRequest(transport,finalDecisionCore,cancel.requestId());
             var finalDecision=readCurrentCccDecision(transport,owner,finalDecisionCore,session,output,"ccc-independent-traits-and-tooltip",deadline,result,originals);var fs=finalDecision.frame().source().orElseThrow();
             boolean traitsAbsent=fs.corruptionTraits().filter(v->v.size()==4&&v.stream().noneMatch(Boolean::booleanValue)).isPresent();
-            result.put("four_corruption_traits_absent_observed",traitsAbsent).put("final_tooltip_observed",fs.confirmTooltipObserved()).put("final_native_can_observed",fs.nativeCanConfirm().isPresent());
+            result.put("cancel_before_navigation_detail_visible",fs.detailVisible()).put("post_cancel_navigation_calls",0)
+                    .put("four_corruption_traits_absent_observed",traitsAbsent).put("original_case_channel_completed",absent&&traitsAbsent)
+                    .put("final_date_raw",current.dateRaw()).put("official_actor_id",official).put("independent_after_core_verified",true);
+            if(!absent||!traitsAbsent)throw new IOException("Actual complete post-cancel census/traits do not match original case; no post-cancel navigation");
+            if(!fs.listVisible()){
+                var reopened=transport.prepareCurrentCccDecision(finalDecision,CurrentCccDecision.Action.OPEN_LIST);
+                submitCurrentCccDecision(transport,owner,finalDecision,reopened,session,output,"ccc-post-cancel-open-list-once",result,originals);
+                result.put("post_cancel_navigation_calls",result.path("post_cancel_navigation_calls").intValue()+1);
+                var observed=readCurrentCccCore(transport,owner,plan,output,"ccc-core-after-post-cancel-open-list",deadline,result,originals,session,current);requireCurrentCccAfterRequest(transport,observed,reopened.requestId());
+                finalDecision=readCurrentCccDecision(transport,owner,observed,session,output,"ccc-post-cancel-list-readback",deadline,result,originals);fs=finalDecision.frame().source().orElseThrow();
+            }
+            if(!fs.detailVisible()||!fs.selectedDecisionKey().equals(Optional.of(CurrentCccDecision.DecisionKey.CORRUPTION_POLICY))){
+                var reopened=transport.prepareCurrentCccDecision(finalDecision,CurrentCccDecision.Action.OPEN_DETAIL);
+                submitCurrentCccDecision(transport,owner,finalDecision,reopened,session,output,"ccc-post-cancel-open-detail-once",result,originals);
+                result.put("post_cancel_navigation_calls",result.path("post_cancel_navigation_calls").intValue()+1);
+                var observed=readCurrentCccCore(transport,owner,plan,output,"ccc-core-after-post-cancel-open-detail",deadline,result,originals,session,current);requireCurrentCccAfterRequest(transport,observed,reopened.requestId());
+                finalDecision=readCurrentCccDecision(transport,owner,observed,session,output,"ccc-post-cancel-detail-readback",deadline,result,originals);fs=finalDecision.frame().source().orElseThrow();
+            }
+            requireCurrentCccPostCancelDetail(fs);
+            result.put("four_corruption_traits_absent_observed",traitsAbsent).put("final_tooltip_observed",fs.confirmTooltipObserved()).put("final_native_can_observed",fs.nativeCanConfirm().isPresent())
+                    .put("post_cancel_decision_readback_complete",true).put("final_confirm_tooltip",fs.confirmTooltip().orElseThrow());
             if(fs.nativeCanConfirm().isPresent())result.put("final_native_can_confirm",fs.nativeCanConfirm().orElseThrow());
             result.put("final_date_raw",current.dateRaw()).put("official_actor_id",official).put("independent_after_core_verified",true)
                     .put("original_case_channel_completed",absent&&traitsAbsent).put("cooldown_readback_complete",false).putNull("cooldown_expiry_date_raw");
@@ -4350,6 +4371,14 @@ if(riteDraftCosts) {
             archiveNaturalDiagnostics(output,originals,transport.diagnostics());var progress=result.deepCopy();progress.set("originals",originals.deepCopy());
             write(output,"current-ccc-original-case-progress.json",FullJsonTree.encode(progress,FullJsonTree.MAXIMUM_BYTES));
         }
+    }
+
+    static void requireCurrentCccPostCancelDetail(CurrentCccDecisionSource source)throws IOException {
+        if(!source.caseBound()||!source.detailVisible()||!source.selectedDecisionKey().equals(Optional.of(CurrentCccDecision.DecisionKey.CORRUPTION_POLICY))
+                ||!source.confirmTooltipObserved()||source.confirmTooltip().isEmpty()||source.nativeCanConfirm().isEmpty()
+                ||source.corruptionTraits().filter(values->values.size()==4&&values.stream().noneMatch(Boolean::booleanValue)).isEmpty())
+            throw new IOException("Actual fixed post-cancel detail/full tooltip/nullable NativeCan and four cleared traits required");
+        // Both false Can and an observed empty tooltip are DATA. Typed expiry remains unqualified/null.
     }
 
     record StockBookmark1070Config(boolean chooseC){int submissions(){return chooseC?5:2;}}
