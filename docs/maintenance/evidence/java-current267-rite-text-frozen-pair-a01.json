@@ -1,0 +1,166 @@
+{
+  "schema": "xar.current267.rite-text.frozen-pair-maintenance-index.v1",
+  "at_utc": "2026-11-23T00:02:14.507637+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status": "ACTUAL_FROZEN_PAIR_READY_NEW_LIVE_NOT_RUN",
+  "actual_sixpins": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-text-source-a01\\actual-six-pins.json",
+    "bytes": 1518,
+    "sha256": "62ad1a07cc3c783d9c147a6acd5758f38a58b1b0267061ba263233462a9c6123"
+  },
+  "actual_Java_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-text-source-a01\\frozen-delivery-final.json",
+    "bytes": 5281,
+    "sha256": "62f533b38de62b2966c141105556e1f88132298ff8b6142e8fcf2ce7774cde42"
+  },
+  "actual_pair_binding": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-text-source-a01\\native-pair-binding-final.json",
+    "bytes": 2581,
+    "sha256": "1a7cbf3d140d4f28683558bfec3f28a008adc8ce1a62e640fb6fcc032b510f9b"
+  },
+  "actual_operator_templates": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-text-source-a01\\operator-templates.json",
+    "bytes": 6581,
+    "sha256": "04ac597b1a135130ed4f8bbcc37e46f10f193c227e98098071e5a703f4926c5b"
+  },
+  "configuration_schema": "xar.native-owner-snapshot-config/v42",
+  "configuration_modes": [
+    "current_rite_text_query",
+    "current_rite_text_set_name",
+    "current_rite_text_set_description"
+  ],
+  "template_JSON_pointers": [
+    "/query_config",
+    "/set_name_config",
+    "/set_description_config"
+  ],
+  "independent_prior_v41_templates": [
+    "/create_query_config",
+    "/create_and_accept_config",
+    "/navigation_config"
+  ],
+  "actual_Java_software": {
+    "methods_P": 31,
+    "qualification": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-text-source-a01\\affected-qualification.json",
+      "bytes": 5327,
+      "sha256": "cdd35961927ffe7b741c34f33b4653050a50886cb7b51ac840df8e5aec50651d"
+    },
+    "groups": {
+      "Main_selection": 10,
+      "actual_CPP_producer_consumer": 12,
+      "private_Transport": 9
+    },
+    "original_15_CPP_frames_plus_one_independent_same_beforeSource_query": "Preserved unchanged; Java request inverse3/3 actual0.",
+    "Native_actual_Java_inverse": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-text-source-a01\\NoGame\\actual-java-inverse-a01\\result.json",
+      "bytes": 25196,
+      "sha256": "88c717dd7fb183e8a75a918e08d80e0ff1eefd0193276a66de62f28ab9c67ce0"
+    }
+  },
+  "actual_native": {
+    "delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-text-production-a01\\frozen-delivery-final.json",
+      "bytes": 1680,
+      "sha256": "25bcb9d466f13045ed6df9cdf6f88f2b8389ce5c4b04183cd254c9d5323aa3ed"
+    },
+    "refs": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-text-production-a01\\ordinary-native-artifact-refs.json",
+      "bytes": 12415,
+      "sha256": "5f522bdb525edb625ff625454319e8ea0846676016782d4155fd3b369057968d"
+    },
+    "NativeTree": "7da3d15c30668b7d0259c325e938abbcc4e3a428",
+    "actual_source_adoption_HEAD": "0a5bd9fa7d326ade640d2eaa509ba0eb3ef13e94",
+    "total_TUs": 913,
+    "actual_CL": 12,
+    "reused_objects": 901,
+    "software_source_manifest": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-text-source-a01\\qualified-source-manifest.json",
+      "bytes": 38028,
+      "sha256": "9131bc304d3f069e406deaf5cdb5042b78af8ed677a774138cf316520281839e"
+    },
+    "new_DLL_SHA256": "471821c8032c31d7073491550a0eacc9b50dc0dfb958d88139d37b734e3935be",
+    "old_Frozen_artifacts": "No drift; old bad CREATE COFF refusal and historical unknown operations unchanged."
+  },
+  "runtime_reuse": {
+    "JARs": 158,
+    "actual_new_copies": 2,
+    "dependencies_reused_without_copy_body_hash_or_CRC": 156,
+    "new_allocation_bytes": 18812928
+  },
+  "exact_compiled_Source_provenance": {
+    "normal_remote_integration": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-text-source-a01\\source-remote-integration.json",
+      "bytes": 27188,
+      "sha256": "fae4037e74df815629f81f9fcab9113861e6b6c159f89a3ac500929e4f07d24f"
+    },
+    "exact_EOL_restoration": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-text-source-a01\\compiled-Source-exact-EOL-restoration.json",
+      "bytes": 77975,
+      "sha256": "c653c0c50e018bd26a8cebd9cc9682b003688ca446f8177c097aaef14dbd4a83"
+    },
+    "scope": "Git normalization of Main/Transport CRLF to LF is documented; exact compiled raw bytes reconstruct from immutable Git blobs and line indices. No recompile claimed."
+  },
+  "all_phases_END": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-text-source-a01\\all-phases-END.json",
+    "bytes": 1517,
+    "sha256": "81d68a9c926592ce2032f93cf05fafd07db661b0b9f0cf34cf43b0409e8fd252"
+  },
+  "text_result_boundary": "Only fixed creating draft private once setter with independent fresh Core/query exact UTF8 readback. Void handledfalse/text_appliedfalse remain false; mismatch is KnownDATA finite failure, never UNKNOWN clearing, APPLIED or retry. SourceRiteID is observed guard DATA. No Date/Save/new text/Create business credit.",
+  "actual_DES_independent_cold": {
+    "Root_closure": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\des-annual-cold-finite-closure-a979.json",
+      "bytes": 2899,
+      "sha256": "f8bce6fd1092a788fe725988df45703902a96681fc83b847a38383cb97c20ac7"
+    },
+    "status": "FINITE_COLD_CORE_AND_READONLY_INIT_GUARD_PASS",
+    "Core": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-cold-reload-current267-profile-a958\\operations\\a976-loaded-core\\result\\summary.json",
+      "bytes": 10003,
+      "sha256": "9798b419f55e60749ba1de61ea92c027623404ab1425c011ef3c4293202698df"
+    },
+    "guard": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-cold-reload-current267-profile-a958\\operations\\a977-independent-fixed-guard\\result\\summary.json",
+      "bytes": 17096,
+      "sha256": "244eaf2703378bd217cfd1f38670f9372853873bfc66d9b937741e9ea2ec9c43"
+    },
+    "source_Save_unchanged": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-performance-oldsave-current267-profile-a940\\checkpoints\\des-annual-oldsave71-after.ck3",
+      "bytes": 166793469,
+      "sha256": "bc1b3daf368922dfb7e0a87cb71b4db2000fbb85caaecd65a93667bcf9de3279"
+    },
+    "actual_profile_save_count": 1,
+    "natural_days": 0,
+    "Save_calls": 0,
+    "Execute_calls": 0,
+    "reserved_normal_exit_confirmed": false,
+    "reserved_physical_save_confirmed": false,
+    "actual_terminal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-cold-reload-current267-profile-a958\\owner-a973\\terminal.json",
+      "bytes": 1071,
+      "sha256": "d7ba4d6cf29b58d74d6bc9f95679c00c509eb22764126c5d31103ed2b4a11e0a"
+    },
+    "actual_creator_end": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-cold-reload-current267-profile-a958\\creator-end-a973.json",
+      "bytes": 611,
+      "sha256": "c83e7b4b535bc065503cb968ac8aa4174336b6f654e81a0cb99c13dfef5aadac"
+    },
+    "Game_PID": 21984,
+    "Creator_PID": 12972,
+    "normal_exit_utc": "2026-11-22T23:55:48.979846100Z",
+    "prior_a958_preparse_failure_and_a975_loading_unavailable": "Retained unchanged; compact configuration did not enlarge codec bound or claim GSV recursively checks shader bodies.",
+    "pending": [
+      "Actual Jan1 annual policy",
+      "AI cadet prevention and all living annual return",
+      "Religious MainHouseHead following",
+      "Existing preset tenet/funeral migration and new defaults",
+      "Measured population wallclock performance",
+      "DES formal release/publication"
+    ]
+  },
+  "Workshop_published": 12,
+  "strict_finite_closed": 9,
+  "product_denominator": 17,
+  "DES_published": false,
+  "new_SourceA_tag_version_Game_Steam_HTTP_calls_in_this_unit": 0
+}
