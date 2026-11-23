@@ -1,0 +1,183 @@
+{
+  "schema": "xar.des.controlled-partials-and-replica-retirement.maintenance-index.v1",
+  "at_utc": "2026-11-23T02:23:11.612929+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "newDY_controlled_a981": {
+    "Root_actual_index": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\des-newDY-controlled-partial-a1023.json",
+      "bytes": 4212,
+      "sha256": "deb9fbedd1986ad919550626bc6587f678f46ff1fb553914c1dc4e55ab33cd64"
+    },
+    "status": "PARTIAL_NO_CREATE",
+    "real_selection": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-new-dynasty-yearly-current267-profile-a981\\operations\\a1012-independent-selection\\result\\summary.json",
+      "bytes": 22891,
+      "sha256": "d3426304a06f12ca30e66890bb7afd02d56fd889a1686626b7bc91958af7a00f"
+    },
+    "text_callbacks_and_independent_exact_matches": [
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-new-dynasty-yearly-current267-profile-a981\\operations\\a1013-native-name\\result\\summary.json",
+        "bytes": 36765,
+        "sha256": "0a99c4a7d51a52aee5549ccb1169b9574da320b309598a8db64976d48bfc49d8"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-new-dynasty-yearly-current267-profile-a981\\operations\\a1014-native-description\\result\\summary.json",
+        "bytes": 36775,
+        "sha256": "8e0bc8d0918e4e29dd6ab001979b03bb604569b89dadd29404c957c3bfcb9217"
+      }
+    ],
+    "reserved_text_applied": false,
+    "native_CanCreate": false,
+    "actual_create_query": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-new-dynasty-yearly-current267-profile-a981\\operations\\a1016-fresh-native-cancreate\\result\\summary.json",
+      "bytes": 24109,
+      "sha256": "148d12e27a315af08a94d725eb8824063d1f469a78680b91a51636c21e954604"
+    },
+    "actual_required_input_header_diagnostic": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-new-dynasty-yearly-current267-profile-a981\\operations\\a1018-required-input-headers\\report.json",
+      "bytes": 10807,
+      "sha256": "e37d1030b919329ceaddd8b979d5499f95d9dea4631f10e2d836ae47b76c3af7"
+    },
+    "dual_sample_total_bytes": 768,
+    "all7_nonempty_header_lengths": {
+      "name": 18,
+      "adjective": 21,
+      "single_adherent": 24,
+      "plural_adherent": 24,
+      "description": 36,
+      "icon_text_slot_one": 8,
+      "icon_text_slot_two": 15
+    },
+    "interpretation": "Missing three naming fields/icon was excluded by this actual header observation. It is not a proved root cause or justification to adopt stopped identity SDK. No implication that CanCreate is true or business completed.",
+    "actual_initial_archive_unchanged": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-performance-oldsave-current267-profile-a940\\checkpoints\\des-annual-oldsave71-after.ck3",
+      "bytes": 166793469,
+      "sha256": "bc1b3daf368922dfb7e0a87cb71b4db2000fbb85caaecd65a93667bcf9de3279"
+    },
+    "natural_days": 0,
+    "Save_calls": 0,
+    "Create_calls": 0,
+    "Accept_calls": 0,
+    "terminal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-new-dynasty-yearly-current267-profile-a981\\owner\\terminal.json",
+      "bytes": 1068,
+      "sha256": "26c3f44cd5495625a2894e9b85aa37e138ddd79dbb6b05101ca705fd52786189"
+    },
+    "creator_end": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-new-dynasty-yearly-current267-profile-a981\\creator-end.json",
+      "bytes": 600,
+      "sha256": "8cabc71d4746d5c471a79430e7c6ff42786ae2fb0038ea241bcdf9a01df458e5"
+    },
+    "Game_PID": 18444,
+    "Creator_PID": 9652,
+    "normal_exit_utc": "2026-11-23T01:16:19.872141700Z",
+    "actual_Natural0_Job0_cleanup": true,
+    "old_unavailable_and_early_noeffect_nav_failures": "All retained unchanged; existing second fixed puppet literal is used without expanding arbitrary navigation.",
+    "late_v13_before_operation_refusal": "Retained at original close reserve; no deadline refresh or Unknown replay.",
+    "next_diagnostic": "Separate actual official GetCreationBlockers read; ready software/runtime does not stand in for live why.",
+    "identity_partial_Source": "Unused/unqualified/not adopted"
+  },
+  "ordinary_fixture_a1026": {
+    "Root_actual_index": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\des-ordinary-fixture-not-dispatched-partial-a1032.json",
+      "bytes": 2787,
+      "sha256": "63710d2703a446c2dce8bf01091a9c7f085a63269597ebc467c0744714a5e825"
+    },
+    "status": "PARTIAL_FIXTURE_NOT_DISPATCHED",
+    "missing_widget": "Empty widget name; no fixture input observation",
+    "actual_registration": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly-current267-profile-a1026\\source-candidate-a01\\fixture\\gui\\scripted_widgets\\des_oay_startup.txt",
+      "bytes": 27,
+      "sha256": "67d83ac2c5f4456c14a29c69eaeb80e1984a6c1d3640ff708991fc877e6c710a"
+    },
+    "registration_Source_defect": "Original registration omits the = des_oay_startup_window mapping; separate corrected fixture is in progress, not hot-patched or already engine-qualified here.",
+    "fixture_log_observations": 0,
+    "Date_Save_Create_calls": 0,
+    "business_pass": false,
+    "actual_terminal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly-current267-profile-a1026\\owner\\terminal.json",
+      "bytes": 1071,
+      "sha256": "8820321a275b94e6d1f0e9a6c8ff0ae1d6246b1e12876d37df5533f9aed14769"
+    },
+    "actual_Natural0_Job0_cleanup": true,
+    "source_save": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-legacy-monthly-drain-current267-profile-a991\\checkpoints\\des-legacy-monthly-drain-after31.ck3",
+      "bytes": 166732930,
+      "sha256": "23253f2dff1687845f1c5d3a170ec7efdcca1a132fcf81c4a7a400a2cf80fb27"
+    },
+    "a904_UNKNOWN": "Preserved unchanged",
+    "C_new_bulk": 0
+  },
+  "a991_output_replica_retirement": {
+    "Root_actual_result": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-a991-save-duplicates-reclamation-a01\\actual-result.json",
+      "bytes": 5169,
+      "sha256": "3dbbca9733279117eacbd96f5a965290bafaa45f0e6ca6a42c3e88f666e1bf53"
+    },
+    "Root_actual_scope": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\a991-save-retirement-scope-a1025.json",
+      "bytes": 5114,
+      "sha256": "38b718f5d489ac102af6ada7fa4bfac1c9ac851145319d1a057f96efed44d306"
+    },
+    "actual_intent": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-a991-save-duplicates-reclamation-a01\\pending-intent.json",
+      "bytes": 3250,
+      "sha256": "bf11345655305b573167aa4c24af57d266d9e34b0bf2e3f4146eb941de9f5427"
+    },
+    "executor": "Root; Java only reads receipts and publishes docs",
+    "complete": true,
+    "retired_replicas": [
+      {
+        "historical_path": "D:\\ck3-state\\upgrade-20261118\\des-legacy-monthly-drain-current267-profile-a991\\profile-states\\gui-96b6c1bae7674133986086009ae6a874\\profile\\last_save.ck3",
+        "original_file_id128": "a3394f00000001000000000000000000",
+        "original_volume_serial": "7220568048185129294",
+        "original_sha256": "23253f2dff1687845f1c5d3a170ec7efdcca1a132fcf81c4a7a400a2cf80fb27",
+        "availability": "DELETED_UNREADABLE_NOT_A_FUTURE_INPUT"
+      },
+      {
+        "historical_path": "D:\\ck3-state\\upgrade-20261118\\des-legacy-monthly-drain-current267-profile-a991\\profile-states\\gui-96b6c1bae7674133986086009ae6a874\\profile\\save games\\autosave.ck3",
+        "original_file_id128": "a1394f00000001000000000000000000",
+        "original_volume_serial": "7220568048185129294",
+        "original_sha256": "23253f2dff1687845f1c5d3a170ec7efdcca1a132fcf81c4a7a400a2cf80fb27",
+        "availability": "DELETED_UNREADABLE_NOT_A_FUTURE_INPUT"
+      },
+      {
+        "historical_path": "D:\\ck3-state\\upgrade-20261118\\des-legacy-monthly-drain-current267-profile-a991\\profile-states\\gui-96b6c1bae7674133986086009ae6a874\\profile\\save games\\xar_checkpoint.ck3",
+        "original_file_id128": "a4394f00000001000000000000000000",
+        "original_volume_serial": "7220568048185129294",
+        "original_sha256": "23253f2dff1687845f1c5d3a170ec7efdcca1a132fcf81c4a7a400a2cf80fb27",
+        "availability": "DELETED_UNREADABLE_NOT_A_FUTURE_INPUT"
+      }
+    ],
+    "allocated_removed_bytes": 500207616,
+    "logical_removed_bytes": 500198790,
+    "retained_readable_distinct_archive": {
+      "bytes": 166732930,
+      "metadata": {
+        "allocated_bytes": 166735872,
+        "attributes": 32,
+        "creation_filetime": "134398672183838014",
+        "delete_pending": false,
+        "directory": false,
+        "file_id128": "a5394f00000001000000000000000000",
+        "links": 1,
+        "logical_bytes": 166732930,
+        "mtime_ns": 1795393612851195300,
+        "volume_serial": "7220568048185129294"
+      },
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-legacy-monthly-drain-current267-profile-a991\\checkpoints\\des-legacy-monthly-drain-after31.ck3",
+      "sha256": "23253f2dff1687845f1c5d3a170ec7efdcca1a132fcf81c4a7a400a2cf80fb27"
+    },
+    "input_archive_unchanged": true,
+    "C_new_bulk": 0,
+    "free_space_delta": "NOT_MEASURED_NO_ATTRIBUTION",
+    "old_spent_or_held_refund": false,
+    "historical_records": "Original day31 observation remains true at that time; three profile output replicas are now retired and unreadable. Immutable archive is a different retained identity, not the original files still present."
+  },
+  "qualification_boundary": "No new Rite/Dynasty creation, membership/yearly, AIcadet, Househead, wholeproduct, performance or publication pass added. Existing actual failures and old flags remain.",
+  "Workshop_uploaded": 12,
+  "strict_closed": 9,
+  "denominator": 17,
+  "DES_published": false,
+  "this_docs_unit_business_source_JVM_tests_Game_OS_delete_Steam_HTTP_calls": 0
+}
