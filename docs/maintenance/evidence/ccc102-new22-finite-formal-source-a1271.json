@@ -1,0 +1,77 @@
+{
+  "schema": "xar.ccc102.new22-finite-formal-source.v1",
+  "at_utc": "2026-11-23T13:16:20.339810+00:00",
+  "status": "SOURCE_FINITE_PASS_FORMAL_AND_PUBLICATION_PENDING",
+  "product": "mod_celestial_commerce_corruption",
+  "version": "1.0.2",
+  "canonical_workshop_item_id": "3804807463",
+  "previous_public_version": "1.0.1",
+  "actual_Root_finite_PASS": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\CCC-new22-popular-opinion-and-original-case-finite-PASS-a1271.json",
+    "bytes": 7659,
+    "sha256": "204d0cd13d84be7119fa395a0fba637828eb44d5fb023fbeb1ed98de3c5454c4"
+  },
+  "accepted_runtime_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc-popular-opinion-candidate-a1260\\staging.manifest.json",
+    "bytes": 4108,
+    "sha256": "ef91a20a56f72e1bbc4c5e42c0194cbcabc982185dc90e8028607a1239e19083"
+  },
+  "candidate_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc-popular-opinion-candidate-a1260\\candidate-delivery-final.json",
+    "bytes": 3229,
+    "sha256": "d7a5d71edad8a345fc069e26efff7a182eef239be901f07021e6bced571e6d86"
+  },
+  "complete_text_acceptance": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\CCC102-Root-complete-player-text-accepted-a1272.json",
+    "bytes": 2699,
+    "sha256": "4cff690ed27d3fdbca454d749d1605ef02ab232692df36b96ce8d288aab36f95"
+  },
+  "metadata_file_refs": {
+    "description": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-full-public-text-source-a01\\Root-reviewed-a1272\\workshop-description.bbcode",
+      "bytes": 6978,
+      "sha256": "0fd54f13bdca67836cd6702571a20741ff750deaf6998e0c99ed42c6aedd9556"
+    },
+    "change_note": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-full-public-text-source-a01\\Root-reviewed-a1272\\change-notes.txt",
+      "bytes": 2031,
+      "sha256": "32fe43325f4414c0242a0a595bf8a4f3a2cb8bb350621983276d040674851f27"
+    },
+    "title": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-full-public-text-source-a01\\title.txt",
+      "bytes": 58,
+      "sha256": "c9fa3d584acef6aa9d2f71ac6334e84ad194b4849ceca5a1df235f6ffbc68288"
+    }
+  },
+  "actual_new22_after_SHA_exact": true,
+  "old_four_loader_errors_absent": true,
+  "new_popular_key_errors_absent": true,
+  "actual_natural_days": 3,
+  "actual_Confirm_calls": 1,
+  "actual_Save_calls": 0,
+  "actual_final_native_Can_confirm": false,
+  "actual_native_tooltip_expiry_text": "1069.9.18",
+  "tooltip_is_native_not_computed": true,
+  "reserved_native_fields": {
+    "event_closed": false,
+    "decision_applied": false,
+    "cooldown_readback_complete": false,
+    "cooldown_expiry_date_raw": null
+  },
+  "Natural_exit_Job0_cleanup_creator0": true,
+  "original_input_fullSHA_unchanged": true,
+  "prior_PARTIAL": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\CCC-first-actual-three-day-finite-PARTIAL-a1248.json",
+    "bytes": 7017,
+    "sha256": "4a22492dbf926729f0d970ab36bbcc4214527fdb1bc688d101bf5fc18aebffc2"
+  },
+  "old_errors_and_unobserved_results_preserved": true,
+  "formal_tag_or_build_claim": false,
+  "Steam_Submit_download_public_readback_cache_claim": false,
+  "distinct_counts": {
+    "uploaded": 12,
+    "strict_complete": 9,
+    "total": 17
+  },
+  "scope": "New22 loader key delta and bounded tier4/half/ordinary onceConfirm/new-instance withdrawal/full census/four traits absent/full native cooldown tooltip and falseCan only. No net county opinion/treasury/alltiers/alllanguages/permanent optout/three-year wait/save persistence/wholeSDK/performance qualification."
+}

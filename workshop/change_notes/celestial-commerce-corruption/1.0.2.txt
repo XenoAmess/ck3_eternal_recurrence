@@ -1,0 +1,15 @@
+天朝制允许经商&贪腐框架 1.0.2 / Celestial Commerce & Corruption 1.0.2
+适配 CK3 1.21 Florin／1.21.0.3。
+
+- 以当前原版天朝政府与属官契约为基线，保留新版行政、家族权势、庄园、俸禄、军事与部院预算规则；政府只额外开放易货，契约保留当前兵役规则。
+- 修复四档贪腐特质的民望修正兼容问题，使用当前版本支持的修正类型。四项惩罚仍为-10／-30／-50／-80，不调整档位强度。
+- 保留75%契约基准、70%／65%／60%／50%四档税率、持续易货收益与对应代价；不是立即发放金币，也不把税率冒称最终国库转账量。
+- 玩家与AI原资格、性格权重、暂时收手、当前角色永久退出及确认后的三年冷却保持。既有九语文本、图标、封面与图库保留；仍不覆盖宴会或伯爵领窗口。
+- 不宣称所有档位、非简中语言、永久退出、长期存档或性能已全部实测。升级前保留存档备份，不要与上游版同时启用。
+
+For CK3 1.21 Florin / 1.21.0.3.
+- Rebase on the current Celestial government and subject contract, preserving administration, house power, estates, salaries, military/ministry budgets and current levy rules. The government gains only barter eligibility.
+- Fix the four corruption traits to use the supported popular-opinion modifier. Penalties remain -10/-30/-50/-80; no tier balance changes.
+- Retain the 75% contract baseline, 70/65/60/50% tier rates, ongoing barter output and costs. This is not an immediate gold grant or proof of final treasury transfer amounts.
+- Preserve player/AI eligibility, personality weights, temporary withdrawal, character-only permanent opt-out and the three-year cooldown after confirmation. Keep nine languages, icons, cover/gallery; no feast or county-window override.
+- No claim that every tier, non-Chinese language, permanent opt-out, long-term save or performance scenario was fully retested. Back up before upgrading; do not enable with the upstream edition.

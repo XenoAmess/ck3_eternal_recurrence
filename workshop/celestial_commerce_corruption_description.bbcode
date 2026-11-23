@@ -1,48 +1,55 @@
 [h1]天朝制允许经商&贪腐框架（XenoAmess维护版）[/h1]
+Celestial Commerce & Corruption — maintained edition
 
-面向 CK3 1.20.0.3 的非官方维护版：让天朝制角色进入原版易货与商旅规则，并提供四档持续生效的贪腐政策。
+CK3 1.21 Florin／1.21.0.3，版本1.0.2。让天朝制角色使用原版易货与商旅系统，并让符合条件的属官选择持续生效的贪腐政策。
 
+[h2]经商与四档贪腐[/h2]
+天朝政府允许易货；宴会等活动沿用当前原版的货物成本与资格规则。贪腐增加持续易货产出、减少向上级缴纳的税赋，不会直接发放一笔金币；原版国库提款是另一项功能。
+
+本维护版保留75%的契约基准税率。四档分别扣减5、10、15、25个百分点，结果如下；不是额外再扣这些百分比，也不代表每月国库最终到账额。
 [list]
-[*]天朝政府允许使用易货资源；宴会等原版活动会沿用当前原版的易货成本分支。
-[*]天朝属官可通过决议选择四档贪腐政策，把 75% 的基础税率分别降至 70%、65%、60% 或 50%。
-[*]更深的贪腐会提高易货产出，但同时损害功绩、领地民望、普遍好感、压力与建设效率。
-[*]可以暂时收手，或为当前角色永久关闭这套贪腐决议。
+[*]官场油吏：税率70%，民望-10，易货月产出+0.5及+5%。
+[*]聚敛能吏：税率65%，民望-30，易货月产出+1及+10%。
+[*]贪墨成阀：税率60%，民望-50，易货月产出+1.5及+20%。
+[*]蠹国权奸：税率50%，民望-80，易货月产出+2及+30%。
+[/list]
+四档相互替换，不叠加。档位越深，上级好感与民望代价越重；较高档还会损害普遍好感、功绩、压力应对和建设时间／花费。各档实际修正以角色特质说明为准。
+
+[h2]谁能使用，怎样选择[/h2]
+需要提供天朝制与功绩机制的All Under Heaven内容，无其他模组前置。贪腐决议面向有地、非独立、拥有功绩机制的角色；须为能事的成年人，未被囚禁且不在战争中，也未为本角色永久退出。经商资格与贪腐决议资格分别遵守各自条件。
+
+玩家和AI均可使用，AI依性格权重选择，并非玩家专属。贪婪、专断或冷酷等性格会影响偏好，诚实、公正、怯懦等也有相应权重，不保证每名AI作出固定选择。
+[list]
+[*]打开决议“定夺贪墨之策”，确认“翻开账册”，在“歧路账册”中选择政策。
+[*]确认决议后进入三年冷却；当前档位不重复列为同一选择，其他档位会替换旧特质。
+[*]“暂且收手，避一避风头”：移除四档贪腐特质，冷却结束且仍合资格时可以再选，不会立刻清除冷却。
+[*]“从此封存这本账册”：移除四档特质，并为当前角色永久隐藏该决议；不是全局关闭其他角色的政策。
 [/list]
 
-[h1]Compatibility fixes[/h1]
+[h2]1.0.2更新与兼容[/h2]
+迁移至当前Florin天朝政府与属官契约，保留新版行政、家族权势、庄园、俸禄、军事及部院预算规则；政府仍只额外开放易货。契约采用当前兵役规则，保留本模组75%税率及原四档扣减，没有暗改为原版的新税率。
 
-[list]
-[*]Removed the obsolete full override of [code]feast.txt[/code]. Current CK3 already routes feast costs through [code]government_allows = barter[/code].
-[*]Removed the obsolete full override of [code]window_county_view.gui[/code], preserving current shortcuts and special-building UI.
-[*]Rebased [code]celestial_government[/code] on the exact CK3 1.20 definition, preserving its administrative, estate, bureaucracy and budget features and retained only the intentional [code]barter = yes[/code] delta.
-[*]Updated the renamed accolade modifier and current decision interval syntax.
-[*]Namespaced the corruption traits, decision, event, script values, flags, art, and localization.
-[/list]
+修复四档特质民望修正的版本兼容问题，改用当前版本支持的修正类型；-10／-30／-50／-80及其他档位数值保持原样。决议、事件、退出选项与三年冷却不作平衡改动。
 
-Requires the All Under Heaven content that provides the Celestial government and Merit systems. No other mod dependency.
+不覆盖原版宴会或伯爵领窗口，保留当前活动成本、快捷键和特殊建筑界面。可与现有维护版存档继续使用；变更模组列表前请留备份。不要同时启用上游版；与改写相同天朝政府、税赋契约、贪腐决议或特质的模组可能冲突。提供简中、英语、法、德、日、韩、波、俄、西九语文本。
 
-[h1]更新日志 / Changelog[/h1]
+1.0.0建立独立维护版，修复旧版覆盖、勋号字段、决议间隔与命名冲突；1.0.1迁移至1.20.0.3。历史版本的验证不代表本次全部档位、语言、存档与长期情形已逐一实测，本版不宣称帧率或运行速度提升。
 
-[h2]1.0.1 — CK3 1.20.0.3 compatibility maintenance[/h2]
-[list]
-[*]迁移天朝政府覆盖，保留原版 1.20 的行政机制、属官发展、东亚庄园、天朝官僚、俸禄、军事与部院预算，以及 AI 传奇和可授予神权政府的能力。
-[*]政府仍只额外加入 [code]barter = yes[/code]；四档贪腐、税率、退出选项及三年冷却保持不变。
-[*]更新兼容声明与说明；九語本地化沿用既有结构。
-[/list]
+[h2]English[/h2]
+For CK3 1.21 Florin / 1.21.0.3, version 1.0.2. Enables vanilla barter/travel rules for the Celestial government and recurring corruption policies for eligible officials. Barter follows vanilla activity costs and eligibility; corruption supplies ongoing barter production and withholds tax, not an immediate gold grant. Vanilla treasury withdrawals are separate.
 
-[h2]1.0.0 — Initial maintained release[/h2]
-[list]
-[*]适配 CK3 1.19.0.6，建立新的独立维护版发布基线。
-[*]让天朝制政府接入当前版本的易货与商旅系统。
-[*]加入四档持续生效的贪腐政策，以及对应的税率、易货产出、功绩、民望、好感、压力与建设效率影响。
-[*]移除会回退新版功能的旧宴会与伯爵领窗口整文件覆盖。
-[*]以原版 1.19.0.6 天朝制政府为基线，仅保留 [code]barter = yes[/code] 这一项有意差分。
-[*]修复勋号字段、AI 检查间隔、冷却时间、本地化键与命名空间冲突。
-[*]补齐九语本地化；简体中文完成隔离实机验收，其他语言完成静态键集、token、数字、术语与格式审计。
-[/list]
+The mod retains its 75% contract baseline. Four mutually exclusive tiers reduce it by 5/10/15/25 percentage points to 70/65/60/50%. Popular-opinion penalties are -10/-30/-50/-80; monthly barter bonuses are +0.5/+1/+1.5/+2 and+5/+10/+20/+30%. These are tax rates, not independently guaranteed final treasury transfers. Deeper tiers worsen liege/public opinion; higher tiers also impose general-opinion, merit, stress and construction-time/cost penalties. See each trait for its modifiers.
 
-[h1]来源与署名 / Provenance[/h1]
+Requires All Under Heaven content supplying Celestial government and Merit; no other mod dependency. The decision requires a landed, non-independent character with the Merit mechanic, a capable adult, not imprisoned or at war, and no permanent opt-out. Trade and corruption have separate eligibility. Both players and AI can participate; AI personality weights affect choices rather than guarantee them.
 
-本维护版经原作者许可，基于 HydroWood 的 [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3596263413]Corruption & Trading under the Celestial government[/url]（上游物品 3596263413、内嵌提交 [code]9faf3bc[/code]）。XenoAmess 维护版不是上游物品的官方更新，不会覆盖或冒用上游 Workshop ID。
+Use “Adopt a Corruption Policy” → “Review the accounts” → choose in “Accounts at the Crossroads”. Confirmation starts a three-year cooldown. Selecting another tier replaces the old traits. “Step back for now” clears all four; use the decision again after cooldown if eligible. “Close these books forever” clears them and permanently hides this decision for that character, not everyone. Stepping back does not erase the cooldown.
 
-版本：1.0.1；支持 CK3 1.20.0.3。
+1.0.2 rebases the government and subject contract on current Florin rules, retaining administration, house power, estates, salaries, military and ministry budgets. Only barter eligibility is added to the government. Current levy rules are retained while the mod's 75% baseline and four tax deductions remain. The four traits now use the supported popular-opinion modifier, retaining -10/-30/-50/-80 and every other tier value; events, choices and cooldown are unchanged.
+
+No full feast or county-window override: vanilla activity costs, shortcuts and special-building UI remain. Existing maintained-edition saves can continue; back up before changing mods. Do not enable alongside the upstream item. Other mods replacing the same government, tax contract, decision or traits may conflict. Includes Simplified Chinese, English, French, German, Japanese, Korean, Polish, Russian and Spanish.
+
+1.0.0 established this maintained edition and repaired obsolete overrides, accolade fields, decision cadence and identity conflicts; 1.0.1 targeted1.20.0.3. Historical checks are not a claim that every tier, language, save or long campaign was retested here. No FPS or runtime speed-up is claimed.
+
+[h2]来源与署名 / Credits[/h2]
+经原作者许可，基于HydroWood的[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3596263413]Corruption & Trading under the Celestial government[/url]继续维护。XenoAmess维护版是独立条目3804807463，不冒用或更新上游条目。原有封面与图库保留。
+Based on HydroWood's original with the author's permission. This is XenoAmess's independent maintained edition, item 3804807463; the upstream item 3596263413 is unchanged. Existing cover and gallery are retained.

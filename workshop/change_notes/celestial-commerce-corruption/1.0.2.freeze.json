@@ -1,0 +1,24 @@
+{
+  "schema": "ck3.workshop-change-notes-freeze.v1",
+  "version": "1.0.2",
+  "workshop_item_id": "3804807463",
+  "status": "ROOT_TEXT_ACCEPTED_PUBLICATION_NOT_RUN",
+  "actual_file": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\workshop\\change_notes\\celestial-commerce-corruption\\1.0.2.txt",
+    "bytes": 2031,
+    "sha256": "32fe43325f4414c0242a0a595bf8a4f3a2cb8bb350621983276d040674851f27"
+  },
+  "accepted_source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-full-public-text-source-a01\\Root-reviewed-a1272\\change-notes.txt",
+    "bytes": 2031,
+    "sha256": "32fe43325f4414c0242a0a595bf8a4f3a2cb8bb350621983276d040674851f27"
+  },
+  "Root_acceptance": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\CCC102-Root-complete-player-text-accepted-a1272.json",
+    "bytes": 2699,
+    "sha256": "4cff690ed27d3fdbca454d749d1605ef02ab232692df36b96ce8d288aab36f95"
+  },
+  "complete_text_not_excerpt": true,
+  "public_entry_id": null,
+  "published_at_utc": null
+}
