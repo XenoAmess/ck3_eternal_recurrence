@@ -121,6 +121,28 @@ def exact_formal(staging, reference):
     return actual
 
 
+def disabled_dlc_inputs(inputs, game):
+    """Resolve explicitly pinned installed DLCs for basic product profiles."""
+    if 'disabled_dlcs' not in inputs:
+        return [], []
+    require(not inputs.get('plain_configuration'),
+            'DLC overrides require the basic settings-only product profile')
+    rows = inputs['disabled_dlcs']
+    require(isinstance(rows, list) and rows, 'Nonempty explicit DLC descriptor pins required')
+    paths, pins = [], []
+    game_data = (Path(game) / 'game').resolve()
+    for value in rows:
+        row = check_pin(value)
+        source = Path(row['path']).resolve()
+        require(source.is_relative_to(game_data / 'dlc') and source.suffix == '.dlc',
+                'Disabled DLC must be an installed game/dlc descriptor')
+        relative = source.relative_to(game_data).as_posix()
+        require(relative not in paths, 'Duplicate disabled DLC descriptor')
+        paths.append(relative)
+        pins.append(row)
+    return paths, pins
+
+
 def budget(value, name, maximum=None):
     require(type(value) in (int, float) and math.isfinite(value) and value > 0,
             'Positive finite budget required: ' + name)
@@ -228,7 +250,7 @@ class GuiSelection:
         if _materialization_inputs is not None:
             # Internal prepare-only route; no CLI permissive flag and no live admission.
             required = {'staging', 'formal_manifest', 'settings', 'mcp_fallback_evidence'}
-            allowed = required | {'plain_configuration', 'save', 'debug_mode', 'warm_cache'}
+            allowed = required | {'plain_configuration', 'save', 'debug_mode', 'warm_cache', 'disabled_dlcs'}
             require(self.args.mode == 'prepare' and self.args.case_inputs and
                     self.prepared is None and self.context is None and
                     not self.workshop_cache and not self.vanilla_diagnostic,
@@ -284,7 +306,7 @@ def prepare(selection: GuiSelection) -> dict[str, object]:
     require(args.case_inputs and args.prepare_output, 'prepare requires case-inputs and prepare-output')
     inputs = read_json(args.case_inputs)
     required = {'staging', 'formal_manifest', 'settings', 'mcp_fallback_evidence'}
-    allowed = required | {'plain_configuration', 'save', 'debug_mode', 'warm_cache'}
+    allowed = required | {'plain_configuration', 'save', 'debug_mode', 'warm_cache', 'disabled_dlcs'}
     pinned_product_only = (not selection.workshop_cache and not selection.vanilla_diagnostic and
                            isinstance(inputs, dict) and required <= inputs.keys() <= allowed)
     preflight = (selection.preflight(_materialization_inputs=inputs) if pinned_product_only
@@ -295,8 +317,10 @@ def prepare(selection: GuiSelection) -> dict[str, object]:
         return dict(prepare_vanilla_diagnostic(selection, inputs))
     from ck3_mod_acceptance_prepare import compatibility_mods
     if compatibility_mods(inputs):
+        require('disabled_dlcs' not in inputs, 'DLC overrides cannot select compatibility profiles')
         return prepare_compatibility_fixture(selection, inputs)
     require('profile_kind' not in inputs, 'Diagnostic inputs cannot select a product preparation')
+    disabled_dlcs, dlc_pins = disabled_dlc_inputs(inputs, selection.paths['game_dir'])
     required = {'staging', 'formal_manifest', 'settings', 'mcp_fallback_evidence'}
     require(required <= inputs.keys(), 'Missing explicit GUI case inputs')
     staging = Path(inputs['staging']).resolve()
@@ -306,6 +330,7 @@ def prepare(selection: GuiSelection) -> dict[str, object]:
             check_pin(inputs['formal_manifest']), check_pin(inputs['settings'])]
     pins.extend(check_pin(row) for row in inputs['mcp_fallback_evidence'])
     pins.extend(rows.values())
+    pins.extend(dlc_pins)
     fixture = inputs.get('fixture')
     fixture_manifest = inputs.get('fixture_manifest')
     require(bool(fixture) == bool(fixture_manifest), 'Fixture directory and exact manifest must be supplied together')
@@ -347,7 +372,7 @@ def prepare(selection: GuiSelection) -> dict[str, object]:
         shutil.copytree(staging, target)
         (profile / 'mod').mkdir()
         (profile / 'mod/product.mod').write_text(_outer_from_inner(target / 'descriptor.mod', target), encoding='utf-8')
-        write_new(profile / 'dlc_load.json', {'enabled_mods': ['mod/product.mod'], 'disabled_dlcs': []})
+        write_new(profile / 'dlc_load.json', {'enabled_mods': ['mod/product.mod'], 'disabled_dlcs': disabled_dlcs})
     settings = profile / 'pdx_settings.txt'
     content = settings.read_text(encoding='utf-8-sig')
     settings.write_text(chinese_settings(content), encoding='utf-8', newline='\n')

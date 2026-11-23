@@ -95,6 +95,44 @@ class GuiAcceptanceTests(unittest.TestCase):
         self.assertFalse(result['business_pass'])
         self.assertEqual(result['runtime_status'], 'NOT_RUN')
 
+    def test_explicit_disabled_dlc_is_mounted_and_frozen_without_changing_source(self):
+        descriptor = self.game / 'game/dlc/example/example.dlc'
+        descriptor.parent.mkdir(parents=True)
+        descriptor.write_text('name="Example DLC"\n', encoding='utf-8')
+        source = gui.pin(descriptor)
+        inputs = gui.read_json(self.inputs)
+        inputs['disabled_dlcs'] = [source]
+        self.write(self.inputs, inputs)
+        result = self.prepare()
+        self.assertEqual(gui.read_json(Path(result['profile']) / 'dlc_load.json'),
+            {'enabled_mods': ['mod/product.mod'], 'disabled_dlcs': ['dlc/example/example.dlc']})
+        self.assertIn(source, result['inputs'])
+        self.assertEqual(gui.pin(descriptor), source)
+        self.assertFalse(result['business_pass'])
+        descriptor.write_text('changed=yes\n', encoding='utf-8')
+        with self.assertRaisesRegex(ValueError, 'Pinned input changed'):
+            gui.check_pin(source)
+
+    def test_dlc_override_rejects_duplicate_foreign_and_plain_profile_inputs(self):
+        descriptor = self.game / 'game/dlc/example/example.dlc'
+        descriptor.parent.mkdir(parents=True)
+        descriptor.write_bytes(b'name="Example"')
+        source = gui.pin(descriptor)
+        baseline = gui.read_json(self.inputs)
+        for extra, pattern in [
+            ({'disabled_dlcs': [source, source]}, 'Duplicate disabled'),
+            ({'disabled_dlcs': [gui.pin(self.settings)]}, 'installed game/dlc'),
+            ({'disabled_dlcs': [source], 'plain_configuration': {'unexpected': source}}, 'settings-only'),
+            ({'disabled_dlcs': []}, 'Nonempty explicit'),
+        ]:
+            with self.subTest(pattern=pattern):
+                inputs = dict(baseline)
+                inputs.update(extra)
+                self.write(self.inputs, inputs)
+                with self.assertRaisesRegex(ValueError, pattern):
+                    self.prepare()
+                self.assertFalse(self.args.prepare_output.exists())
+
     def test_pinned_prepare_actual_stage_drift_rejects_before_provenance_or_writes(self):
         (self.staging / 'sample.txt').write_text('changed=yes\n', encoding='utf-8')
         with patch.object(gui, '_observe_checkout_for_materialization') as observe:

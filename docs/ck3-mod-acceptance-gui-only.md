@@ -39,6 +39,9 @@ product 只声明 `runtime_mod_key`、`external_mod` 与 cases。每个 case 明
 - 可选 `debug_mode`：literal boolean，默认false；true才添加原生游戏 `-debug_mode`，供console fixture、文本存档等验收动作使用，不授native bridge资格。
 - 可选 `save`：明确存档的精确pin，复制到隔离 `save games` 并计入准备预算；由操作者经官方菜单加载，可在同场切换新局和旧档，工具不自动读档。
 - 可选 `fixture` 与 `fixture_manifest`：必须成对提供外置业务夹具目录及逐文件精确清单 pin。准备时校验、独立复制至 `mod-content/fixture`，排在正式产品之后挂载，计入同一准备预算并冻结全部来源和复制后字节。正式产品 staging 不改，不上传夹具；此选项不授业务通过。`workshop_cache` 仍拒绝夹具输入。
+- 可选 `disabled_dlcs`：非空的已安装 `game/dlc/**/*.dlc` 描述文件精确 pins 列表；拒绝重复、外部路径与来源变化。仅适用于基础 settings-only 产品 profile，不能与 `plain_configuration` 混用，以保留已有四配置 materializer 的清单合同。`prepare` 将相对游戏数据目录的 DLC 路径写入本场 `dlc_load.json`，将描述文件 pins 纳入冻结输入；不改安装、Steam DLC 所有权、其他 userdir 或默认启用策略。旧 vanilla-diagnostic/cache 路由的封闭输入合同不变。此选项只控制启动配置，实际是否加载仍应由本场引擎日志确认。
+
+2026-11-23，这项通用扩展来自 [MTS 礼仪编辑问题的 DLC 对照需求](https://github.com/XenoAmess/ck3_mod_more_tenant_slots/blob/master/docs/rite-edit-investigation-2026-11-23.md)。完整 GUI 离线回归 41 项通过，生产模块 mypy 通过（现有默认规则、imports silent/ignoremissing、无增量缓存）；新增用例检查实际 prepare 输出、来源不变、输入冻结及错误配置拒绝。最初两个测试断言分别误用了 pin 错误消息和复用了前一个 subtest 的配置，修正后全套通过。此次软件结果不授 CK3、DLC 实际装载、业务或闪退修复资格；产品夹具、存档及现场证据继续归独立项目。
 
 先按通用存储策略取得本轮容量准入。模块另外核准备输入字节预算与当前可用空间；它不是通用容量预约器，不替代 Root 的容量预约/存储闭账。
 
