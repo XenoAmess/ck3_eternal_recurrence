@@ -6,4 +6,9 @@ bool TedDatePredecessorResolved267V1(const ck3_1210::DateSentinelStateV1&)noexce
 bool ClaimTedDateCustody267V1(const ck3_1210::DateSentinelStateV1&,bool recipient_continuation)noexcept;
 void CompleteTedDateCustody267V1(const ck3_1210::DateSentinelStateV1&)noexcept;
 void BlockTedDateCustodyUnknown267V1(const ck3_1210::DateSentinelStateV1&)noexcept;
+// Independent CCC custody shares exclusion/UNKNOWN, never TED permissions.
+bool CccDatePredecessorResolved267V1(const ck3_1210::DateSentinelStateV1&)noexcept;
+bool ClaimCccDateCustody267V1(const ck3_1210::DateSentinelStateV1&,bool official_continuation)noexcept;
+void CompleteCccDateCustody267V1(const ck3_1210::DateSentinelStateV1&)noexcept;
+void BlockCccDateCustodyUnknown267V1(const ck3_1210::DateSentinelStateV1&)noexcept;
 }

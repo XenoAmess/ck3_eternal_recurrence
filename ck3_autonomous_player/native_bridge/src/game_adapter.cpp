@@ -1,5 +1,6 @@
 #if defined(XAR_CK3_ENABLE_121003_26785313_STOCK_BOOKMARK1070_V1) && XAR_CK3_ENABLE_121003_26785313_STOCK_BOOKMARK1070_V1
 #include "xar_bridge/ck3_121003_stock_bookmark107026785313_owner_v1.hpp"
+#include "xar_bridge/ck3_121003_ccc_all26785313_v1.hpp"
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RITE_CREATION_BLOCKERS_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_CREATION_BLOCKERS_V1
 #include "xar_bridge/ck3_121003_rite_creation_blockers26785313_owner_v1.hpp"
@@ -548,6 +549,11 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
   if(step==ck3_121003::build26785313::kRiteBlockersStep267V1)return ck3_121003::build26785313::RiteBlockersStepEnabled267V1(actual,step);
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_STOCK_BOOKMARK1070_V1) && XAR_CK3_ENABLE_121003_26785313_STOCK_BOOKMARK1070_V1
+#if defined(XAR_CK3_ENABLE_121003_26785313_CCC_V1) && XAR_CK3_ENABLE_121003_26785313_CCC_V1
+  if(std::find(ck3_121003::build26785313::kCccTransitionSteps267V1.begin(),ck3_121003::build26785313::kCccTransitionSteps267V1.end(),step)!=ck3_121003::build26785313::kCccTransitionSteps267V1.end())return ck3_121003::build26785313::CccTransitionStepEnabled267V1(actual,step);
+  if(std::find(ck3_121003::build26785313::kCccEventSteps267V1.begin(),ck3_121003::build26785313::kCccEventSteps267V1.end(),step)!=ck3_121003::build26785313::kCccEventSteps267V1.end())return ck3_121003::build26785313::CccEventStepEnabled267V1(actual,step);
+  if(std::find(ck3_121003::build26785313::kCccDecisionSteps267V1.begin(),ck3_121003::build26785313::kCccDecisionSteps267V1.end(),step)!=ck3_121003::build26785313::kCccDecisionSteps267V1.end())return ck3_121003::build26785313::CccDecisionStepEnabled267V1(actual,step);
+#endif
   if(std::find(ck3_121003::build26785313::kStockBookmarkSteps267V1.begin(),ck3_121003::build26785313::kStockBookmarkSteps267V1.end(),step)!=ck3_121003::build26785313::kStockBookmarkSteps267V1.end())return ck3_121003::build26785313::StockBookmarkStepEnabled267V1(actual,step);
 #endif
   std::string_view capability;

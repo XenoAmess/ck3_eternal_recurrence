@@ -1,5 +1,6 @@
 #if defined(XAR_CK3_ENABLE_121003_26785313_STOCK_BOOKMARK1070_V1) && XAR_CK3_ENABLE_121003_26785313_STOCK_BOOKMARK1070_V1
 #include "xar_bridge/ck3_121003_stock_bookmark107026785313_owner_v1.hpp"
+#include "xar_bridge/ck3_121003_ccc_all26785313_v1.hpp"
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RITE_CREATION_BLOCKERS_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_CREATION_BLOCKERS_V1
 #include "xar_bridge/ck3_121003_rite_creation_blockers26785313_owner_v1.hpp"
@@ -17154,6 +17155,11 @@ void RunConnectedSession(
         if(!early_step_dispatched&&step==xar::ck3_121003::build26785313::kRiteTextStep267V1&&xar::game::IsCk3_121003Core26785313Descriptor(game.descriptor())){connected=write_frame(pipe,xar::ck3_121003::build26785313::DispatchRiteTextRequest267V1(game,state.connection_generation,request_id,step,incoming.payload,g_main_thread_query_mailbox_v1));early_step_dispatched=true;}
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_STOCK_BOOKMARK1070_V1) && XAR_CK3_ENABLE_121003_26785313_STOCK_BOOKMARK1070_V1
+#if defined(XAR_CK3_ENABLE_121003_26785313_CCC_V1) && XAR_CK3_ENABLE_121003_26785313_CCC_V1
+        if(!early_step_dispatched&&std::find(xar::ck3_121003::build26785313::kCccTransitionSteps267V1.begin(),xar::ck3_121003::build26785313::kCccTransitionSteps267V1.end(),step)!=xar::ck3_121003::build26785313::kCccTransitionSteps267V1.end()&&xar::game::IsCk3_121003Core26785313Descriptor(game.descriptor())){connected=write_frame(pipe,xar::ck3_121003::build26785313::DispatchCccTransitionRequest267V1(game,state.connection_generation,request_id,step,incoming.payload,g_main_thread_query_mailbox_v1));early_step_dispatched=true;}
+        if(!early_step_dispatched&&std::find(xar::ck3_121003::build26785313::kCccEventSteps267V1.begin(),xar::ck3_121003::build26785313::kCccEventSteps267V1.end(),step)!=xar::ck3_121003::build26785313::kCccEventSteps267V1.end()&&xar::game::IsCk3_121003Core26785313Descriptor(game.descriptor())){connected=write_frame(pipe,xar::ck3_121003::build26785313::DispatchCccEventRequest267V1(game,state.connection_generation,request_id,step,incoming.payload,g_main_thread_query_mailbox_v1));early_step_dispatched=true;}
+        if(!early_step_dispatched&&std::find(xar::ck3_121003::build26785313::kCccDecisionSteps267V1.begin(),xar::ck3_121003::build26785313::kCccDecisionSteps267V1.end(),step)!=xar::ck3_121003::build26785313::kCccDecisionSteps267V1.end()&&xar::game::IsCk3_121003Core26785313Descriptor(game.descriptor())){connected=write_frame(pipe,xar::ck3_121003::build26785313::DispatchCccDecisionRequest267V1(game,state.connection_generation,request_id,step,incoming.payload,g_main_thread_query_mailbox_v1));early_step_dispatched=true;}
+#endif
         if(!early_step_dispatched&&std::find(xar::ck3_121003::build26785313::kStockBookmarkSteps267V1.begin(),xar::ck3_121003::build26785313::kStockBookmarkSteps267V1.end(),step)!=xar::ck3_121003::build26785313::kStockBookmarkSteps267V1.end()&&xar::game::IsCk3_121003Core26785313Descriptor(game.descriptor())){connected=write_frame(pipe,xar::ck3_121003::build26785313::DispatchStockBookmarkRequest267V1(game,state.connection_generation,request_id,step,incoming.payload,g_main_thread_query_mailbox_v1));early_step_dispatched=true;}
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RITE_CREATION_BLOCKERS_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_CREATION_BLOCKERS_V1
@@ -32290,6 +32296,13 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
         (void)xar::ck3_1210::UninstallDailyFinalHookV1(g_daily_final_hook_1210_v1);
       return FALSE; // no resume, reset or hot-unload permission is inferred.
     }
+#if defined(XAR_CK3_ENABLE_121003_26785313_CCC_V1) && XAR_CK3_ENABLE_121003_26785313_CCC_V1
+    if(!current::BindCccTransitionSession267V1(current::RetainedCccTransitionSession267V1(),g_current_date_session267_v1,g_date_sentinel_1210_v1)){
+      xar::ck3_1210::RequestDateSentinelShutdownV1(g_date_sentinel_1210_v1);
+      if(xar::ck3_1210::DateSentinelShutdownSafeV1(g_date_sentinel_1210_v1))(void)xar::ck3_1210::UninstallDailyFinalHookV1(g_daily_final_hook_1210_v1);
+      return FALSE;
+    }
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1) && XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1
     if(!current::BindTedTransitionSession267V1(current::RetainedTedTransitionSession267V1(),g_current_date_session267_v1,g_date_sentinel_1210_v1)){
       xar::ck3_1210::RequestDateSentinelShutdownV1(g_date_sentinel_1210_v1);

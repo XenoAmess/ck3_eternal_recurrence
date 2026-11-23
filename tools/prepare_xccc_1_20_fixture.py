@@ -139,9 +139,73 @@ def saved_entry_files() -> dict[str, str]:
     }
 
 
-def prepare(repo: Path, output: Path, saved_entry_bridge: bool = False) -> dict:
+
+ROLE_WITNESS_RELATIVE = 'common/scripted_guis/xca120_actor_transition_witnesses.txt'
+SELECTED_OFFICIAL_WITNESS = 'xca120_witness_selected_official'
+ROLE_WITNESS_KEYS = (
+    'xca120_current_song_actor_witness_gui',
+    'xca120_current_official_actor_witness_gui',
+)
+
+
+def project_selected_official_witness(effects: str) -> str:
+    """Record only the already selected original scope, on Song before the existing switch."""
+    if SELECTED_OFFICIAL_WITNESS in effects:
+        raise ValueError('Selected-official witness is already projected')
+    anchor = '\t\t\tset_player_character = scope:xca_official\n'
+    record = ('\t\t\t# Fixture-only observation; original ordered_vassal selection is unchanged.\n'
+              '\t\t\tset_variable = { name = xca120_witness_selected_official value = scope:xca_official }\n')
+    return replace_once(effects, anchor, record + anchor)
+
+
+def readonly_role_witness_files() -> dict[str, str]:
+    """Fixed IsShown predicates only; no Execute or permission granted by this fixture."""
+    return {ROLE_WITNESS_RELATIVE: """# FIXTURE ONLY: current player Root must be independently bound by Native.
+xca120_current_song_actor_witness_gui = {
+    scope = character
+    is_shown = {
+        this = character:han_8052
+        is_ai = no
+        is_alive = yes
+        is_landed = yes
+        is_independent_ruler = yes
+        has_title = title:h_china
+        government_has_flag = government_is_celestial
+        government_allows = barter
+        has_character_flag = xca_setup_pending
+    }
+}
+xca120_current_official_actor_witness_gui = {
+    scope = character
+    is_shown = {
+        is_ai = no
+        is_alive = yes
+        is_landed = yes
+        is_independent_ruler = no
+        government_has_flag = government_has_merit
+        NOT = { this = character:han_8052 }
+        trigger_if = {
+            limit = { exists = character:han_8052 }
+            character:han_8052 = {
+                trigger_if = {
+                    limit = { has_variable = xca120_witness_selected_official }
+                    var:xca120_witness_selected_official = root
+                }
+                trigger_else = { always = no }
+            }
+        }
+        trigger_else = { always = no }
+    }
+}
+"""}
+
+def prepare(repo: Path, output: Path, saved_entry_bridge: bool = False, readonly_role_witnesses: bool = False, readonly_business_observations: bool = False) -> dict:
     if type(saved_entry_bridge) is not bool:
         raise ValueError('saved_entry_bridge must be a strict boolean')
+    if type(readonly_role_witnesses) is not bool:
+        raise ValueError('readonly_role_witnesses must be a strict boolean')
+    if type(readonly_business_observations) is not bool or (readonly_business_observations and not readonly_role_witnesses):
+        raise ValueError("Business observations require the actual original selected-role observer")
     repo, output = checked_output(repo, output)
     source = repo / "tools/fixtures/celestial_commerce_corruption_acceptance"
     files = sorted(path for path in source.rglob("*") if path.is_file()
@@ -152,6 +216,8 @@ def prepare(repo: Path, output: Path, saved_entry_bridge: bool = False) -> dict:
     old = "XCA: TEST PASS production_decision_event_round_trip"
     new = "XCA: TEST PASS scripted_decision_effect_event_result"
     effects = replace_once(effects, old, new)
+    if readonly_role_witnesses:
+        effects = project_selected_official_witness(effects)
     write_script(output, "common/scripted_effects/xca_effects.txt", effects)
     body, provenance = decision_effect(repo, "mod_celestial_commerce_corruption",
                                        "common/decisions/xccc_corruption_decision.txt", "xccc_corruption_policy_decision")
@@ -161,6 +227,11 @@ def prepare(repo: Path, output: Path, saved_entry_bridge: bool = False) -> dict:
     else:
         write_script(output, "common/on_action/xca120_on_actions.txt", ON_ACTION)
     write_script(output, "events/xca120_events.txt", EVENTS.replace("__PRODUCTION_EFFECT__", "\n".join("            " + line for line in body.splitlines())))
+    if readonly_role_witnesses:
+        for relative, value in readonly_role_witness_files().items():
+            write_script(output, relative, value)
+    if readonly_business_observations:
+        write_script(output, "common/scripted_guis/xca120_business_observations.txt", 'xca120_observe_corruption_1_gui = {\n    scope = character\n    is_shown = { is_ai = no\n        is_alive = yes\n        trigger_if = {\n            limit = { exists = character:han_8052 }\n            character:han_8052 = {\n                trigger_if = {\n                    limit = { has_variable = xca120_witness_selected_official }\n                    var:xca120_witness_selected_official = root\n                }\n                trigger_else = { always = no }\n            }\n        }\n        trigger_else = { always = no }\n        has_trait = xccc_corruption_1\n    }\n}\n\nxca120_observe_corruption_2_gui = {\n    scope = character\n    is_shown = { is_ai = no\n        is_alive = yes\n        trigger_if = {\n            limit = { exists = character:han_8052 }\n            character:han_8052 = {\n                trigger_if = {\n                    limit = { has_variable = xca120_witness_selected_official }\n                    var:xca120_witness_selected_official = root\n                }\n                trigger_else = { always = no }\n            }\n        }\n        trigger_else = { always = no }\n        has_trait = xccc_corruption_2\n    }\n}\n\nxca120_observe_corruption_3_gui = {\n    scope = character\n    is_shown = { is_ai = no\n        is_alive = yes\n        trigger_if = {\n            limit = { exists = character:han_8052 }\n            character:han_8052 = {\n                trigger_if = {\n                    limit = { has_variable = xca120_witness_selected_official }\n                    var:xca120_witness_selected_official = root\n                }\n                trigger_else = { always = no }\n            }\n        }\n        trigger_else = { always = no }\n        has_trait = xccc_corruption_3\n    }\n}\n\nxca120_observe_corruption_4_gui = {\n    scope = character\n    is_shown = { is_ai = no\n        is_alive = yes\n        trigger_if = {\n            limit = { exists = character:han_8052 }\n            character:han_8052 = {\n                trigger_if = {\n                    limit = { has_variable = xca120_witness_selected_official }\n                    var:xca120_witness_selected_official = root\n                }\n                trigger_else = { always = no }\n            }\n        }\n        trigger_else = { always = no }\n        has_trait = xccc_corruption_4\n    }\n}\n\nxca120_observe_tax_variable_gui = {\n    scope = character\n    is_shown = { is_ai = no\n        is_alive = yes\n        trigger_if = {\n            limit = { exists = character:han_8052 }\n            character:han_8052 = {\n                trigger_if = {\n                    limit = { has_variable = xca120_witness_selected_official }\n                    var:xca120_witness_selected_official = root\n                }\n                trigger_else = { always = no }\n            }\n        }\n        trigger_else = { always = no }\n        has_variable = xca_tax_after_tier_four\n    }\n}\n\nxca120_observe_tax_half_gui = {\n    scope = character\n    is_shown = { is_ai = no\n        is_alive = yes\n        trigger_if = {\n            limit = { exists = character:han_8052 }\n            character:han_8052 = {\n                trigger_if = {\n                    limit = { has_variable = xca120_witness_selected_official }\n                    var:xca120_witness_selected_official = root\n                }\n                trigger_else = { always = no }\n            }\n        }\n        trigger_else = { always = no }\n        has_variable = xca_tax_after_tier_four\n        trigger_if = { limit = { has_variable = xca_tax_after_tier_four } var:xca_tax_after_tier_four = 0.50 }\n        trigger_else = { always = no }\n    }\n}\n')
     markers = [new if marker == old else marker for marker in required_markers(repo / "tools/run_celestial_commerce_corruption_acceptance.py")]
     entry_metadata: dict[str, object] = {}
     if saved_entry_bridge:
@@ -177,6 +248,20 @@ def prepare(repo: Path, output: Path, saved_entry_bridge: bool = False) -> dict:
                 'runtime_status': 'NOT_RUN',
             },
         }
+    if readonly_role_witnesses:
+        entry_metadata['readonly_role_witnesses'] = {
+            'schema': 'xca120.fixed-actor-role-witnesses.v1',
+            'fixed_keys': list(ROLE_WITNESS_KEYS),
+            'relative': ROLE_WITNESS_RELATIVE,
+            'selected_scope_record': 'Original Song scope records scope:xca_official immediately before the existing set_player_character',
+            'variable': SELECTED_OFFICIAL_WITNESS,
+            'selection_and_player_switch_changed': False,
+            'events_markers_calendar_and_production_effects_changed': False,
+            'Native_permission_or_actual_role_observed': False,
+            'runtime_status': 'NOT_RUN',
+        }
+        if saved_entry_bridge:
+            entry_metadata['saved_entry']['original_events_and_setup'] = 'ORIGINAL_BEHAVIOR_WITH_EXPLICIT_SELECTED_SCOPE_OBSERVER'
     return finish_receipt(repo, source, output, files, {
         "product": "mod_celestial_commerce_corruption", "mode": "scripted-decision-entry-real-event-choice",
         "entry": "post-lobby -> xca_initialize_effect -> Song at D1 xca_setup_effect -> official at D2 production decision effect -> actual xccc.1001 option -> original verifier",
@@ -198,8 +283,11 @@ def main() -> None:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument('--saved-entry-bridge', action='store_true',
                         help='explicit Robert1128/1066.9.15 Saved bootstrap; original CCC setup and choice required')
+    parser.add_argument('--readonly-business-observations', action='store_true')
+    parser.add_argument('--readonly-role-witnesses', action='store_true',
+                        help='explicit fixture-only original Song/selected official readonly role observations; no gameplay or Native permission')
     args = parser.parse_args()
-    receipt = prepare(args.repo, args.output, args.saved_entry_bridge)
+    receipt = prepare(args.repo, args.output, args.saved_entry_bridge, args.readonly_role_witnesses, args.readonly_business_observations)
     print(json.dumps({"prepared_fixture": receipt["prepared_fixture"], "runtime_status": "NOT_RUN"}))
 
 if __name__ == "__main__":

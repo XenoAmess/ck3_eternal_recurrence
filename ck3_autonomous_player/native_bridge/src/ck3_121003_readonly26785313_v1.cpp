@@ -1,5 +1,6 @@
 #if defined(XAR_CK3_ENABLE_121003_26785313_STOCK_BOOKMARK1070_V1) && XAR_CK3_ENABLE_121003_26785313_STOCK_BOOKMARK1070_V1
 #include "xar_bridge/ck3_121003_stock_bookmark107026785313_owner_v1.hpp"
+#include "xar_bridge/ck3_121003_ccc_all26785313_v1.hpp"
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RITE_CREATION_BLOCKERS_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_CREATION_BLOCKERS_V1
 #include "xar_bridge/ck3_121003_rite_creation_blockers26785313_owner_v1.hpp"
@@ -216,6 +217,9 @@ bool OwnerInner(ReadonlyContext&q,const ck3_11906::MainThreadExecutionStampV1&s,
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_STOCK_BOOKMARK1070_V1) && XAR_CK3_ENABLE_121003_26785313_STOCK_BOOKMARK1070_V1
     fixed_current_executor=fixed_current_executor||invocation.executor==&ExecuteStockBookmarkOnOwner267V1;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_CCC_V1) && XAR_CK3_ENABLE_121003_26785313_CCC_V1
+    fixed_current_executor=fixed_current_executor||invocation.executor==&ExecuteCccOnOwner267V1;
 #endif
     if(!fixed_current_executor||!invocation.context)return false;
   }
@@ -593,6 +597,9 @@ bool ReadDjcTargetQueryCoreOnOwner267V1(const ReadonlyBindings&bindings,
 #include "ck3_121003_superman_health26785313_reader_v1.inc"
 #include "ck3_121003_lyd26785313_reader_v1.inc"
 #include "ck3_121003_stock_bookmark107026785313_reader_v1.inc"
+#include "ck3_121003_ccc_actor_transition26785313_reader_v1.inc"
+#include "ck3_121003_ccc_event26785313_reader_v1.inc"
+#include "ck3_121003_ccc_decision26785313_reader_v1.inc"
 #include "ck3_121003_ted_actor_transition26785313_reader_v1.inc"
 #include "ck3_121003_des_init_guard26785313_reader_v1.inc"
 #include "ck3_121003_rite_create26785313_reader_v1.inc"

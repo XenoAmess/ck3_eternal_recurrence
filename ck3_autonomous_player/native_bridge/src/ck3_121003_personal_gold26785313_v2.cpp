@@ -1,5 +1,6 @@
 #if defined(XAR_CK3_ENABLE_121003_26785313_STOCK_BOOKMARK1070_V1) && XAR_CK3_ENABLE_121003_26785313_STOCK_BOOKMARK1070_V1
 #include "xar_bridge/ck3_121003_stock_bookmark107026785313_owner_v1.hpp"
+#include "xar_bridge/ck3_121003_ccc_all26785313_v1.hpp"
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RITE_CREATION_BLOCKERS_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_CREATION_BLOCKERS_V1
 #include "xar_bridge/ck3_121003_rite_creation_blockers26785313_owner_v1.hpp"
@@ -322,9 +323,15 @@ const game::AdapterDescriptor &PersonalGoldAdapterDescriptorV2() noexcept {
 
 #if defined(XAR_CK3_ENABLE_121003_26785313_STOCK_BOOKMARK1070_V1) && XAR_CK3_ENABLE_121003_26785313_STOCK_BOOKMARK1070_V1
   static const auto stock_caps=[&]{std::vector<std::string_view>combined(stock_base_descriptor.capabilities.begin(),stock_base_descriptor.capabilities.end());combined.insert(combined.end(),kStockBookmarkCaps267V1.begin(),kStockBookmarkCaps267V1.end());return combined;}();
-  static const game::AdapterDescriptor stock_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",stock_caps};return stock_descriptor;
+  static const game::AdapterDescriptor stock_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",stock_caps};const auto&ccc_base_descriptor=stock_descriptor;
 #else
-  return stock_base_descriptor;
+  const auto&ccc_base_descriptor=stock_base_descriptor;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_CCC_V1) && XAR_CK3_ENABLE_121003_26785313_CCC_V1
+  static const auto ccc_caps=[&]{std::vector<std::string_view>combined(ccc_base_descriptor.capabilities.begin(),ccc_base_descriptor.capabilities.end());combined.insert(combined.end(),kCccTransitionCapabilities267V1.begin(),kCccTransitionCapabilities267V1.end());combined.insert(combined.end(),kCccEventCaps267V1.begin(),kCccEventCaps267V1.end());combined.insert(combined.end(),kCccDecisionCapabilities267V1.begin(),kCccDecisionCapabilities267V1.end());return combined;}();
+  static const game::AdapterDescriptor ccc_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",ccc_caps};return ccc_descriptor;
+#else
+  return ccc_base_descriptor;
 #endif
 
 }

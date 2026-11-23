@@ -1,0 +1,33 @@
+{
+  "schema": "xar.native.current267.ccc.qualified-source-adoption.v1",
+  "at_utc": "2026-11-23T07:43:35.968218+00:00",
+  "qualified_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc-current267-source-a1126\\qualified-source-manifest.json",
+    "bytes": 65970,
+    "sha256": "5563cd61fcddf7e7f2a9dadb40ffda7e44ba2c7d029a20b95ea00b83d612cc79"
+  },
+  "software_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc-current267-source-a1126\\NoGame\\final-closure.json",
+    "bytes": 38252,
+    "sha256": "3de3e15b136015d8cf36718273a6d05d704523c115176210955dd78cb36fdc4a",
+    "metadata": {
+      "bytes": 38252,
+      "allocated": 40960,
+      "file_id": "1407374888755432",
+      "volume": "882653518",
+      "creation_filetime": "134398932926425498",
+      "write_filetime": "134398932930622605",
+      "attributes": 32
+    }
+  },
+  "exact_target_count": 55,
+  "project_fixture_source_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc-current267-source-a1126\\fixture-qualified-source-manifest.json",
+    "bytes": 2491,
+    "sha256": "da727f0480bdfd21e6da9435fbac1b52a97844005ab41d44d47f52f8652396c3"
+  },
+  "scope": "Finite independent CCC3families only: fixed13day actor epoch/custody, xccc1001 authored d/f with full actual source/instance/textCan/private model, one fixed production decision/official tooltip and6readonly observations. OldDate17/TED/LYD/v44 and any original firstActor/claims/UNKNOWN unchanged. No caller arbitrary role/key/index/pointer, no expiry guess, callback returned not applied or closed. No live in this phase.",
+  "actual_Java_inverse": "Original retained parser6cab accepted11actualJavafactory bodies, all ID/MAXdeadline and original31genuine unchanged; receipt08cf50 preserved.",
+  "old_frozen_and_unknown": "Preserved; no hot swap or replay.",
+  "new_production_and_live": "PENDING_NOT_GRANTED"
+}
