@@ -1,7 +1,20 @@
-0.2.4 未发布候选 / Unreleased candidate
+宗族化密教 0.2.4 / Dynastic Esotericism 0.2.4
+CK3 1.21 Florin — 1.21.0.3
 
-宗族化产品新建的绑定宗族以实际所属礼仪领袖同时担任宗家家主与宗族族长为目标。实际两项均对齐才完成；族长错位且有在世支系时，仅归并该绑定宗族到稳定宗家后重算。增加已初始化旧档的一次兼容入口与领袖相关生命周期有界重读，保留年度兜底；已对齐局部路径不扫描全员。复用原生宗族、来源不明旧绑定、原生pending及外礼仪共享教宗不误改。
+变更
+- 对唯一有效双向绑定、且稳定宗家可证的宗族（含复用的原生宗族和可证旧绑定），宗家家主和宗族族长共同跟随所属礼仪的在世领袖。分别检查两个实际职位，不把只改家主当作族长也已同步。
+- 覆盖相关家主、族长、领袖离开旧礼仪和死亡后的局部复核。匹配的离任／死亡只安排一次后续检查；仍无有效本礼仪在世领袖时，交由原版重新选择。有有效继任者时不重选；仍无合法头或两个职位未对齐则保留待处理，不借共享信仰教宗充当目标。
+- 年度归宗照常涵盖全部在世支系；在年度之间，只有实际族长错位且存在在世支系成员时，才提前把该单一绑定宗族的在世成员归并到稳定宗家，再按原版规则重算；包含玩家和异礼仪成员，不改死者谱系，也不扩大到其他宗族。归并和原生头衔／继承规则可能改变家族归属与头衔效果，请保留升级前存档。
+- 为已经初始化的旧档增加一次独立领袖校正入口，不重跑世界初始化、不重复建族，也不把新局神职校正用于旧档。
+- 年度兜底保留，覆盖全部在世支系成员，包括玩家。已对齐的局部变化不扫描全员；未触发已覆盖事件的原生换届等变化可等到年度校正，不承诺所有换届即时同步。
+- 缺少可证关系或稳定宗家、冲突绑定及原生待处理流程不强修，也不借非本礼仪共享教宗作目标。
+- 保留0.2.3旧档初始化、AI支系入口保护、年度归宗、背离处罚与赦免／消耗关系；繁育仍为肉欲高扬、祖先崇拜、追逐权力及制为木乃伊，白绮和RRF兼容顺序不变。无新增游戏规则，不以本次修复宣称CPU、FPS或墙钟提速。
 
-目前只有离线源码／软件资格与候选构建计划，双职位、头衔副作用、保存／冷载和公开发布待独立实机；不授CPU／FPS提速或即时通用同步。0.2.3原71文件发布、旧证据与媒体保持。
-
-Targets both actual House Head and Dynasty Head for genuinely mod-created bound dynasties, following the living head of their own rite. Only an observed mismatch with living cadets uses single-dynasty consolidation and vanilla recalculation. Adds one-time initialized-save compatibility and bounded leader-lifecycle re-observation, retaining yearly fallback and protected reused/uncertain legacy dynasties. Engine positions, title side effects, persistence and publication are pending; no speed claim is made.
+Changes
+- For dynasties with a unique valid reciprocal binding and a proven stable main house, including reused native dynasties and provable legacy bindings, both House Head and Dynasty Head follow the living leader of their own rite. Check both actual positions separately; a House Head write alone is not a Dynast result.
+- Recheck relevant head changes, departure from the old rite and death. A matched departure/death schedules one follow-up check. If no valid living own-rite head remains, request vanilla selection; do not re-elect a valid successor. A still-missing legal head or mismatched positions stay pending, rather than substituting another rite’s shared Pope.
+- Between annual recovery cycles, only an actual Dynast mismatch with living cadets takes the early single-dynasty recovery path, including player and other-rite members, into its stable main house before vanilla recalculation. Dead genealogies and other dynasties remain unchanged. Consolidation and vanilla title/inheritance rules can affect house membership and titles: keep a pre-upgrade save.
+- Add an independent one-time check for existing initialized saves, without reinitializing the world, recreating dynasties or applying the new-game clergy correction to old saves.
+- Keep yearly recovery of all living cadets, including players. Aligned local changes do not enumerate all members. Native elections outside covered hooks can wait for annual fallback; universal instant updates are not promised.
+- Protect conflicting or unprovable bindings, invalid anchors and pending native operations; never substitute a foreign-rite shared Pope. Provenance alone does not exempt a valid binding.
+- Retain 0.2.3 initialization, covered AI-cadet protection, annual recovery, apostasy penalties and pardoned/consumed relationships. Procreation still uses Carnal Exaltation, Ancestor Worship, Pursuit of Power and Mummification; Vivhite and RRF loading order remain unchanged. No new game rules or CPU/FPS/wall-clock speed-up claim.

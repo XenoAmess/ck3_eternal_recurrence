@@ -10,7 +10,7 @@
 
 原生创建或首次改革启用时，现任宗族族长复用原宗族、家族及纹章；其他合格创建者走新建宗族路径。在世信徒加入对应宗族，包括AI、无地人物和儿童，后续改信者也会迁入；重复编辑复用同一绑定。
 
-0.2.3禁止有效绑定宗族的AI通过已覆盖原版入口建支系，含异信仰成员；玩家保留原条件。年度将全部在世支系成员迁回固定宗家，包括玩家，不改死者谱系；旧档宗家不唯一或锚点失效不强迁。0.2.4候选将产品新建绑定宗族的宗家家主与宗族族长同时跟随实际存活同礼仪领袖；族长因在世支系错位时，仅把该绑定宗族成员归并到稳定宗家后按原版规则重算。复用的原生宗族、异礼仪共享教宗及待处理原生流程不强制改头。两个实际职位未对齐时保留待处理；本候选仍待实机验证。
+0.2.3禁止有效绑定宗族的AI通过已覆盖原版入口建支系，含异信仰成员；玩家保留原条件。年度将全部在世支系成员迁回固定宗家，包括玩家，不改死者谱系；旧档宗家不唯一或锚点失效不强迁。0.2.4对唯一有效双向绑定、且稳定宗家可证的宗族（含复用的原生宗族和可证旧绑定），让宗家家主和宗族族长共同跟随所属礼仪的在世领袖；两个实际职位均对齐才完成。在年度归宗之外，若族长错位且有在世支系，才提前将该绑定宗族的在世成员归并到稳定宗家，再按原版规则重算。缺少可证关系或稳定宗家、冲突绑定及待处理原生流程不强修，不把同信仰其他礼仪的共享教宗当作自己的礼仪领袖。没有有效的本礼仪在世领袖，或两个职位仍未对齐时，保留待处理。
 
 新建宗族时，原家族族长优先向原家族合格在世成员交接；无可交接人物或其他合法创始人时，生成并保留一名真实同礼仪成年创始人，留下新增人物及建族历史。
 
@@ -24,9 +24,9 @@
 回归对应礼仪后撤销本来源状态。持续背离不会反复刷新已赦免或消耗的罪行理由。
 
 [h2]维护与存档[/h2]
-全世界周期兜底改为每年一次：集中维护、全员归宗及适用家主校正；不持续月度全扫或逐人物分散全年扫描。出生、人物生成后次日同步；创建、编辑、改礼仪、死亡仍事件处理。领袖获任头衔仅校正家主，不重扫整礼仪。批量关系更新合并重复工作，保留赦免与已消耗理由。
+全世界周期兜底仍为每年一次：集中维护、全员归宗及适用的家主／族长校正；不持续月度全扫或逐人物分散全年扫描。出生、人物生成后次日同步；创建、编辑、改礼仪、死亡仍按已覆盖事件处理。相关领袖／家主／族长变动作局部复核，已对齐时不扫全员；这些局部检查只有在实际族长错位并有在世支系时，才提前归并该单一绑定宗族；年度全员归宗不受这个提前修复条件限制。匹配的离任或死亡只安排一次后续检查；仍缺有效在世领袖时请求原版重新选择，已有有效继任者不重选。未触发已覆盖事件的原生换届等变化由年度兜底，不承诺全部即时同步。批量关系更新合并重复工作，保留赦免与已消耗理由。
 
-新局自动初始化；0.2.3兼容启用前旧档，加载后自动补齐，无需重开，手动决议保留。只有两选项皆缺的礼仪补“无”，不强制宗族化；已有选择、绑定、已初始化世界不重建。固定繁育礼仪完整旧三信条＋天葬仅迁移一次，自定义／后续编辑保留；新局神职校正不用于旧档。旧月度回调只清记录，不扫描续排。
+新局自动初始化；0.2.3兼容启用前旧档，加载后自动补齐，无需重开，手动决议保留。只有两选项皆缺的礼仪补“无”，不强制宗族化；已有选择、绑定、已初始化世界不重建。0.2.4为已初始化旧档增加一次独立的绑定领袖校正，不重跑世界初始化或新局神职校正。固定繁育礼仪完整旧三信条＋天葬仅迁移一次，自定义／后续编辑保留；新局神职校正不用于旧档。旧月度回调只清记录，不扫描续排。
 
 关闭宗族化后，自动入族、背离处罚和年度归宗停止，已有宗族、家族及人物身份保留；重启同礼仪复用原宗族。改信另一宗族化礼仪则迁入其宗族。
 
@@ -39,8 +39,11 @@
 
 宗教礼仪融合0.2.2-alpha使用新版默认教义应用回调；旧注册接口／条目保留，旧接口扩展须跟进新应用回调。RRF放本模组之后，两者同步更新。
 
-[h2]0.2.3 更新与范围[/h2]
-本轮在1.21.0.3确认跨年后全员归宗及实际所属礼仪领袖与宗家家主一致；不外推即时领袖变更、创建全路径或性能倍数。
+[h2]0.2.4 双职位跟随[/h2]
+家主和宗族族长分别跟随自己的礼仪领袖，领袖相关的离任／死亡有一次后续检查；没有有效在世领袖时保持待处理。原版仍决定合法继任者与头衔效果，不强塞共享教宗或任意人物。年度归宗继续包括玩家支系；本次不承诺所有未覆盖的纯原生换届即时同步，也不报告CPU、FPS或墙钟提速倍数。
+
+[h2]0.2.3 既有有限验证范围[/h2]
+0.2.3在1.21.0.3确认跨年后全员归宗及实际所属礼仪领袖与宗家家主一致；该历史范围不外推本次双职位、全部即时领袖变更或创建全路径。
 
 旧0.2.2在1.21.0.3有限首次改革由“无”启用宗族化，原族长的宗族／家族／完整纹章／同步名在随后两日独立存档保留。0.2.1开局／列表／存档只属CK3 1.20。旧失败保留，均非本次全功能、多人与长期／继承后编辑通过。
 
@@ -51,12 +54,12 @@ Bound members abandoning the rite receive -100 opinion and imprisonment/banishme
 
 Procreation/Vivhite have separate Christian faiths, main rites, icons and arms, Dynastic defaults and 867 history. Procreation uses Carnal Exaltation, Ancestor Worship, Pursuit of Power and Mummification; Vivhite is unchanged. Only its intact legacy tenet/funeral bundle migrates once; custom/later edits remain.
 
-0.2.3 initializes pre-mod saves without restarting; manual fallback remains. Missing choices receive None, never forced Dynastic; existing choices/bindings stay, initialized worlds are not rebuilt. Clerical correction is new-game only. Disabling affiliation stops adoption, penalties and annual recovery, retaining identities; re-enabling reuses the dynasty. A different Dynastic rite changes membership. Moves affect names, heads, renown, legacies and inheritance, not bloodlines: keep a pre-enable save.
+0.2.3 initializes pre-mod saves without restarting; manual fallback remains. Missing choices receive None, never forced Dynastic; existing choices/bindings stay, initialized worlds are not rebuilt. Clerical correction is new-game only. An independent one-time 0.2.4 check updates existing initialized bindings without reinitializing the world or applying the new-game clergy correction. Disabling affiliation stops adoption, penalties and annual recovery, retaining identities; re-enabling reuses the dynasty. A different Dynastic rite changes membership. Moves affect names, heads, renown, legacies and inheritance, not bloodlines: keep a pre-enable save.
 
-Covered vanilla paths block AI cadets across the bound dynasty, including other faiths; players retain normal rules. Annual recovery returns all living cadets, including players, to the fixed main house; dead genealogies and ambiguous/invalid anchors stay untouched. The 0.2.4 candidate targets both main-house Head and Dynasty Head for mod-created bound dynasties, following the actual living same-rite leader. If living cadets leave the Dynast mismatched, only that bound dynasty is consolidated into its stable main house before vanilla recalculation. Reused dynasties, foreign-rite shared Popes and pending native operations remain protected. Both actual positions must agree; live validation of this candidate is pending.
+Covered vanilla paths block AI cadets across the bound dynasty, including other faiths; players retain normal rules. Annual recovery returns all living cadets, including players, to the fixed main house; dead genealogies and ambiguous/invalid anchors stay untouched. In 0.2.4, dynasties with a unique valid reciprocal binding and a proven stable main house, including reused native dynasties and provable legacy bindings, have both the main-house Head and Dynasty Head follow their own rite’s living leader; both actual positions must agree. Between annual recovery cycles, an observed Dynast mismatch with living cadets can consolidate that one bound dynasty into its stable main house before vanilla recalculation. Conflicting or unprovable bindings, invalid anchors and pending native operations stay protected; provenance alone does not exempt a valid binding. A Pope shared by another rite is not substituted for the rite’s own leader. No valid living own-rite head, or either position still mismatched, leaves the task pending.
 
-Yearly upkeep covers world maintenance, member recovery and applicable head correction. Births/new characters synchronize next day; creation/edits/rite changes/deaths remain event-driven. Title gains update only the relevant head. Old monthly callbacks drain without scanning/rescheduling; merged relationship work preserves pardons/consumed reasons. Third-party bypasses may wait one year; guards are not engine-wide and file overrides can conflict.
+Yearly upkeep still covers world maintenance, recovery of all living cadets including players, and applicable House/Dynasty Head correction. Births/new characters synchronize next day; covered creation, edit, rite-change and death events remain active. Relevant leader/head changes receive local checks without enumerating all members when already aligned. A matched departure or death schedules one follow-up check; a still-missing valid head requests vanilla selection, while an existing valid successor is not re-elected. Native elections outside covered hooks may wait for yearly fallback; universal instant synchronization is not promised. Old monthly callbacks drain without scanning/rescheduling; merged relationship work preserves pardons/consumed reasons. Guards are not engine-wide and file overrides can conflict.
 
 Florin 1.21.0.3 keeps faith-window changes, temporal-head rules, neutral diet/alcohol and one-time new-game clergy fixes; later edits remain. RRF 0.2.2-alpha V2 defaults keep old registration/entries. Load RRF after this mod; update both. V1-only providers need the application bridge.
 
-Checked on 1.21.0.3: year-boundary member recovery and own-rite/main-house-head agreement, not instant head changes, all creation paths or speed-up. Earlier 0.2.2 first-reform/name/arms/two-save-day and 0.2.1 CK3 1.20 scopes remain. Failures stand; no whole-product/multiplayer/long-term/post-inheritance pass.
+The earlier 0.2.3 checks on 1.21.0.3 established year-boundary member recovery and own-rite/main-house-head agreement; that historical scope is not a pass for this dual-position update, every instant native election, all creation paths or a speed-up. Earlier 0.2.2 first-reform/name/arms/two-save-day and 0.2.1 CK3 1.20 scopes remain. Failures stand; no whole-product/multiplayer/long-term/post-inheritance pass.

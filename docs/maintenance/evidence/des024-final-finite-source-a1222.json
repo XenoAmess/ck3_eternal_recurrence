@@ -1,0 +1,72 @@
+{
+  "schema": "xar.des024.final-finite-source-evidence.v1",
+  "at_utc": "2026-11-23T10:37:29.401750+00:00",
+  "status": "R4_AND_PURE_COLD_FINITE_PASS_SOURCEA_PREPARATION_PUBLICATION_NOT_RUN",
+  "runtime_candidate": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des024-head-refresh-candidate-a1171\\candidate-delivery-final.json",
+    "bytes": 4260,
+    "sha256": "b7d837f4d5c7f6a77c28a1918645cd46501a62d85e134d93520818e455a30117"
+  },
+  "accepted_runtime_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des024-head-refresh-candidate-a1171\\mod_dynastic_esotericism.manifest.json",
+    "bytes": 12594,
+    "sha256": "9b2276b2d73d59c19873375260ecbca4fff4e427cf0b3bb34907d90c80da0c12"
+  },
+  "actual_R4": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\des024-separated-twelve-day-actual-finite-PASS-a1209.json",
+    "bytes": 8171,
+    "sha256": "9374e654fbb745a83fc08ab7e165c5a6774f66ccee856fa6918c03de980c7258"
+  },
+  "actual_pure_cold": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\des024-purecold-actual-finite-PASS-a1221.json",
+    "bytes": 7341,
+    "sha256": "7b80aba88659911c677b0effd35419cb627e6c2397299c13dbb1a3d5987b5334"
+  },
+  "scope_corrected_metadata_Source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des024-player-publication-draft-a1198\\scope-corrected-a04\\delivery-final.json",
+    "bytes": 4003,
+    "sha256": "964b8bb10da064ce3dbf9d5b83ef9d8438c830a8bd127ebb9d7b2bfa336d9f8a"
+  },
+  "independent_text_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des024-player-publication-independent-review-a1209\\review-final.json",
+    "bytes": 10238,
+    "sha256": "daedf30238866b1b88a7b4c46c92e859d7a8a3df168888055adf2fac5c6e1cb1"
+  },
+  "actual23_tools": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-des024-tools-a1147\\actual23-qualification.json",
+    "bytes": 1936,
+    "sha256": "4df0eb94b069b486b5e407c574abbcefa7b83e251f9facdc812c68b0ea13a454"
+  },
+  "retained_first_RED": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\des024-nine-day-actual-regression-RED-a1173.json",
+    "bytes": 6140,
+    "sha256": "fee4d203fc97fcf6f8c7e79dd559f5eabb663e0a022e0fbc6fe04dee5c08f3ef"
+  },
+  "retained_second_INCOMPLETE": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\des024-twelve-day-actual-finite-INCOMPLETE-a1194.json",
+    "bytes": 5836,
+    "sha256": "b211308447e672621c84bed539365c1c51073c06d6c2d2a9d79c3b9e1bff43bd"
+  },
+  "finite_summary": {
+    "R4_days": 12,
+    "R4_Save_calls": 1,
+    "strong_real_Dynast_callback_before_death": true,
+    "own_Rite_MainHead_Dynast_after_death": 42423,
+    "all56_living_in_Main16113": true,
+    "cold_product_files": 71,
+    "cold_fixture_files": 0,
+    "cold_days": 0,
+    "cold_Save_calls": 1,
+    "cold56_ID_House_pairs_exact_R4": true,
+    "controls_unchanged": true,
+    "Game_Natural0_Job0_cleanup_and_five_readers_each_exit0": true
+  },
+  "source_scope": "Unique active reciprocal binding and proven stable Main includes reused native/provable legacy; R4 actual qualification remains controlled newDY. Invalid/unproven/conflicting/nativepending not forced.",
+  "runtime_changed_this_SourceA": false,
+  "publication_or_CPU_FPS_or_universal_instant_election_granted": false,
+  "distinct_product_counts": {
+    "uploaded": 12,
+    "strict": 9,
+    "total": 17
+  }
+}
