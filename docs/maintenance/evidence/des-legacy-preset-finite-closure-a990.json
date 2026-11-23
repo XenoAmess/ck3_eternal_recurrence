@@ -1,0 +1,167 @@
+{
+  "schema": "xar.des.legacy-preset.finite-maintenance-index.v1",
+  "at_utc": "2026-11-23T00:16:11.874343+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status": "COMPLETE_LEGACY_PRESET_BUNDLE_MIGRATION_FINITE_PASS",
+  "actual_Root_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\des-legacy-preset-finite-closure-a990.json",
+    "bytes": 3616,
+    "sha256": "12b7fb63020df7c3a7a62620f73fa3969e7c740024a46dea062015a8650cd393"
+  },
+  "actual_Inspection_facts": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-oldsave-inspection-a942\\legacy-migration-facts-a989.json",
+    "bytes": 6229,
+    "sha256": "bbe7bfff5683d4fffef30028b62d1621ee46bb0c185b2bd1e5a1fc38edb14694"
+  },
+  "actual_input_Save": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-difference-r02\\userdirs\\gui-6f57b1196f4f4fc69601a1c7dcaf8f75\\profile\\save games\\阿普利亚公爵，罗贝尔_1066_09_15DES02_B0.ck3",
+    "bytes": 12472221,
+    "sha256": "f4883c442d3d440090e7bfeade40f4ee53d149d6b47de78929658f0ddf37352f"
+  },
+  "actual_output_Save": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-legacy-preset-migration-current267-profile-a962\\checkpoints\\des-legacy-preset-migration-after.ck3",
+    "bytes": 168626052,
+    "sha256": "6195cb119a7bd9eb57d10e4646e7390efd5bdfe802480f9da3e3d5b98ff579b0"
+  },
+  "actual_procreation_Rite150": {
+    "Rite_ID": "150",
+    "type_before": "des_procreation_rite",
+    "type_after": "des_procreation_rite",
+    "Faith_before": "32",
+    "Faith_after": "32",
+    "tenets_before": [
+      "tenet_be_fruitful_and_multiply",
+      "tenet_carnal_exaltation",
+      "tenet_sacred_childbirth"
+    ],
+    "tenets_after": [
+      "tenet_carnal_exaltation",
+      "tenet_ancestor_worship",
+      "tenet_pursuit_of_power"
+    ],
+    "funerals_before": [
+      "doctrine_funeral_sky_burial"
+    ],
+    "funerals_after": [
+      "doctrine_funeral_mummification"
+    ],
+    "whole_scope_same": false
+  },
+  "actual_Faith_main_Rite_links": [
+    {
+      "Faith": "32",
+      "type": "des_procreation_faith",
+      "actual_main_Rite": "150",
+      "before_and_after_exact_backlinks": true
+    },
+    {
+      "Faith": "33",
+      "type": "des_vivhite_faith",
+      "actual_main_Rite": "151",
+      "before_and_after_exact_backlinks": true
+    }
+  ],
+  "one_shot_marker": "des_procreation_preset_023_checked boolean identity1",
+  "unrelated_Vivhite_Rite151_whole_AST_unchanged": true,
+  "player_identity_and_domains": {
+    "actual_actor_identity": {
+      "first_name": {
+        "before": "\"Robert\"",
+        "after": "\"Robert\""
+      },
+      "birth": {
+        "before": "1015.1.1",
+        "after": "1015.1.1"
+      },
+      "rite": {
+        "before": "0",
+        "after": "0"
+      },
+      "dynasty_house": {
+        "before": "174",
+        "after": "174"
+      }
+    },
+    "actual_fields_unchanged": {
+      "dna": true,
+      "family_data": true,
+      "landed_domain": true,
+      "landed_realm_capital": true
+    },
+    "whole_AST_unchanged": [
+      "House174",
+      "Dynasty174",
+      "Catholic Rite0",
+      "Catholic Faith14"
+    ]
+  },
+  "actual_readback_Save_unchanged_EOF0_Job0": true,
+  "actual_Core": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-legacy-preset-migration-current267-profile-a962\\operations\\a983-loaded-core\\result\\summary.json",
+    "bytes": 10114,
+    "sha256": "208d4dd290b9f6f72585a3804e000a7dc9b27374f4e42d2812e9622f3b8dcc0d"
+  },
+  "actual_readonly_guard": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-legacy-preset-migration-current267-profile-a962\\operations\\a984-fixed-guard\\result\\summary.json",
+    "bytes": 17013,
+    "sha256": "e604495dd4e69d31d980930c263b326f82e02e3fa6e4a90b7860647047784114"
+  },
+  "actual_Save_and_archive_summary": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-legacy-preset-migration-current267-profile-a962\\operations\\a985-first-migration-checkpoint\\result\\summary.json",
+    "bytes": 16555,
+    "sha256": "9aad99d4f7f98e5d757fe9f01d22f9a597dc8982186e66f06f5e8925b4776698"
+  },
+  "actual_natural_days": 0,
+  "actual_Save_calls": 1,
+  "archive_copy_is_not_a_second_Save": true,
+  "manual_Execute_calls": 0,
+  "reserved_physical_save_confirmed": false,
+  "reserved_normal_exit_confirmed": false,
+  "actual_Natural0_Job0_cleanup": true,
+  "actual_terminal": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-legacy-preset-migration-current267-profile-a962\\owner\\terminal.json",
+    "bytes": 1067,
+    "sha256": "79a10eed1079a01c5b5e458ce18f3acdec9d4a9b97ffab3d72628c31981efb94"
+  },
+  "actual_creator_end": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-legacy-preset-migration-current267-profile-a962\\creator-end.json",
+    "bytes": 611,
+    "sha256": "b9915bb116910002f1999e5cc71f2ba94287dff56d87edbf3a58fe0de03de8a7"
+  },
+  "actual_Game_PID": 14264,
+  "actual_Creator_PID": 23848,
+  "normal_exit_utc": "2026-11-23T00:06:00.222193200Z",
+  "legacy_monthly_tick31_at_zero_new_days": "Expected retained old callback/lease; drain/no-requeue still requires actual natural31day evidence.",
+  "source_optimization_commit": "73a91182e1",
+  "high_frequency_Source_review": {
+    "delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-high-frequency-source-review-a959\\delivery-final.json",
+      "bytes": 3589,
+      "sha256": "4626631d1277473407ac5d4783a9616dccf08bbe4fbf39f9081db935e2e0030a"
+    },
+    "review": {
+      "path": "D:/ck3-state/upgrade-20261118/des-high-frequency-source-review-a959/review.md",
+      "bytes": 4658,
+      "sha256": "6b551104cdfdbf46597c83ca3947626e1f91118560cb6801a5ef81dfbd88b77e"
+    },
+    "classification": "READONLY_SOURCE_ONLY_NOT_RUNTIME_CAUSE_OR_PERFORMANCE_PROOF",
+    "result": "No second automatic high-frequency full-maintenance entry found. Pending native head claim can still queue daily per Rite without a bound; no current queue cardinality or live cause proven. Existing immediate lifecycle fanout and annual population work remain."
+  },
+  "prior_a940_S1_without_preset_fullcase_PARTIAL": "Preserved unchanged; this is a separate legacy complete-bundle branch.",
+  "pending": [
+    "Edited/mixed/arbitrary preset bundle matrix (not covered by this finite branch)",
+    "New-world preset defaults",
+    "Legacy monthly callback natural drain/no requeue",
+    "Natural Jan1 annual scheduling",
+    "AI cadet prohibition and all-living annual return",
+    "Religious HouseHead following",
+    "Measured population wallclock performance",
+    "DES SourceA/tag/formal publication"
+  ],
+  "published_count": 12,
+  "strict_closed_count": 9,
+  "denominator": 17,
+  "DES_published": false,
+  "this_purpose": "Ordinary RootSource3MiB metadata/docs, source delta below64KiB; previous compiler/package/freeze/metadata purposes remain END/future0, not reopened.",
+  "new_compilation_tests_Maven_Game_Steam_HTTP_or_Product_Source_changes": 0
+}
