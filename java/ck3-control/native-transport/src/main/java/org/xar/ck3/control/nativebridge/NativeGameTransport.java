@@ -4571,6 +4571,78 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         }catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;unresolvedCoreControl=new Unknown(id,"Create navigation interrupted after actual write; no replay",retainedOutbound(id),Optional.empty());if(prepared!=null)prepared.outcome=unresolvedCoreControl;Thread.currentThread().interrupt();return unresolvedCoreControl;}
     }
 
+    public sealed interface RiteCreationBlockersRead permits RiteCreationBlockersReceived,RiteCreationBlockersUnavailable { DispatchOutcome original(); }
+    /** Complete read DATA only; this receipt cannot prepare or authorize any Create or mutation. */
+    public static final class RiteCreationBlockersReceived implements RiteCreationBlockersRead {
+        private final NativeGameTransport issuer;private final CoreReceived before;private final long sourceRiteId;
+        private final CurrentRiteCreationBlockersResult frame;private final AckReceived original;private final NativeRequestChronology custody;private final Instant validUntil;
+        private RiteCreationBlockersReceived(NativeGameTransport issuer,CoreReceived before,long sourceRiteId,CurrentRiteCreationBlockersResult frame,AckReceived original,NativeRequestChronology custody,Instant until){this.issuer=issuer;this.before=before;this.sourceRiteId=sourceRiteId;this.frame=frame;this.original=original;this.custody=custody;validUntil=until;}
+        public CurrentRiteCreationBlockersResult frame(){return frame;}@Override public AckReceived original(){return original;}public Instant validUntil(){return validUntil;}
+        public void requireOriginal(NativeGameTransport actual,Instant until)throws IOException{Objects.requireNonNull(actual).requireRiteCreationBlockersOriginal(this,until);}
+    }
+    public record RiteCreationBlockersUnavailable(DispatchOutcome original,String reason)implements RiteCreationBlockersRead {public RiteCreationBlockersUnavailable{Objects.requireNonNull(original);StrictJson.text(reason);}}
+    private RiteCreationBlockersReceived latestRiteCreationBlockers;
+    private RiteCreationBlockersUnavailable unresolvedRiteCreationBlockersRead;
+    private byte[] riteCreationBlockersPacket(String id,CoreReceived before,long sourceRiteId,Instant until)throws IOException {
+        if(!(before.frame instanceof CoreFrame.Partial core))throw new IOException("Actual current267 blockers Core required");
+        var request=CurrentRiteCreationBlockers.request(core,sourceRiteId);var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));
+        fields.put("core_control_deadline_unix_ms",BigInteger.valueOf(until.toEpochMilli()));return NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+    }
+    private void requireRiteCreationBlockersScope(CoreReceived before,Instant until)throws IOException {
+        Objects.requireNonNull(before);Objects.requireNonNull(until);requireCoreOriginal(before,until);
+        if(applicationExitAttempted||before.controlAttempted||unresolvedCoreControl!=null||unresolvedFullClockControl!=null||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null||unresolvedRiteCreationBlockersRead!=null)
+            throw new IOException("Actual unused Core and resolved original blockers family required");
+        if(!(before.frame instanceof CoreFrame.Partial core)||core.build()!=ExactCk3Build.CK3_121003_STEAM_26785313)throw new IOException("Exact current267 Core required");
+        CurrentLetter.requirePrefix(core.prefix());
+    }
+    public synchronized RiteCreationBlockersRead readCurrentRiteCreationBlockers(CoreReceived before,long sourceRiteId,Instant deadline)throws InterruptedException {
+        if(unresolvedRiteCreationBlockersRead!=null)return unresolvedRiteCreationBlockersRead;
+        String id="rite-blockers-query-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome outcome=null;
+        try {
+            requireRiteCreationBlockersScope(before,deadline);
+            if(!hello.capabilities().contains(CurrentRiteCreationBlockers.CAPABILITY))throw new IOException("Actual current Rite creation blockers query capability absent");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            Instant until=readDeadline(deadline);byte[] packet=riteCreationBlockersPacket(id,before,sourceRiteId,until);
+            outcome=retainReadOutcome(dispatchRead(id,packet,until,()->{requireBackgroundAtCoreWrite();try{requireRiteCreationBlockersScope(before,until);}catch(IOException invalid){throw new UncheckedIOException(invalid);}latestRiteCreationBlockers=null;}));
+            if(!(outcome instanceof AckReceived ack)){
+                var unavailable=new RiteCreationBlockersUnavailable(outcome,"Actual blockers query has no qualified ACK");
+                if(outcome instanceof Unknown)unresolvedRiteCreationBlockersRead=unavailable;
+                return unavailable;
+            }
+            var frame=CurrentRiteCreationBlockersResult.decodeOutcome(ack);requireRiteCreationBlockersFrame(frame,before,sourceRiteId);
+            if(frame.status()!=CurrentRiteCreationBlockersResult.Status.AVAILABLE)return new RiteCreationBlockersUnavailable(ack,frame.unavailableReason().orElseThrow());
+            var custody=originalRequestChronology(id).orElseThrow(()->new IOException("Actual blockers query custody absent"));
+            var received=new RiteCreationBlockersReceived(this,before,sourceRiteId,frame,ack,custody,until);latestRiteCreationBlockers=received;
+            requireRiteCreationBlockersOriginal(received,until);return received;
+        }catch(IOException|RuntimeException invalid){latestRiteCreationBlockers=null;return riteCreationBlockersFailure(id,outcome,invalid);}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();latestRiteCreationBlockers=null;
+            var unknown=new Unknown(id,"Actual blockers query interrupted after write; preserve original family UNKNOWN",retainedOutbound(id),Optional.empty());
+            return unresolvedRiteCreationBlockersRead=new RiteCreationBlockersUnavailable(unknown,"Original blockers query interrupted");}
+    }
+    private void requireRiteCreationBlockersFrame(CurrentRiteCreationBlockersResult frame,CoreReceived before,long sourceRiteId)throws IOException {
+        if(frame.status()==CurrentRiteCreationBlockersResult.Status.INDETERMINATE||!frame.cleanupKnown())throw new IOException("Actual blockers cleanup uncertain");
+        if(frame.factsBefore().isPresent()&&!frame.factsBefore().orElseThrow().equals(((CoreFrame.Partial)before.frame).prefix()))throw new IOException("Actual blockers Core differs from original");
+        if(frame.owner().isPresent()&&!frame.owner().orElseThrow().connectionGeneration().equals(hello.connectionGeneration()))throw new IOException("Actual blockers owner crossed connection");
+        if(frame.source().isPresent()&&(frame.source().orElseThrow().actorId()!=((CoreFrame.Partial)before.frame).prefix().playedCharacterId()||frame.source().orElseThrow().sourceRiteId()!=sourceRiteId))throw new IOException("Actual blockers actor/sourceRite differs from original Core and guard DATA");
+    }
+    private void requireRiteCreationBlockersOriginal(RiteCreationBlockersReceived actual,Instant until)throws IOException {
+        Objects.requireNonNull(until);if(actual==null||actual.issuer!=this||actual!=latestRiteCreationBlockers)throw new IOException("Original private blockers DATA query unavailable");
+        requireRiteCreationBlockersScope(actual.before,until);Instant now=chronologyClock.instant();
+        if(until.isAfter(actual.validUntil)||!now.isBefore(actual.validUntil)||actual.custody.responseReceived().observedAt().isAfter(now)
+                ||actual.custody.responseReceived().observedAt().isAfter(actual.validUntil)||actual.custody.writeEntered().order().compareTo(actual.before.custody.responseReceived().order())<=0)
+            throw new IOException("Blockers query escaped original Core/deadline/chronology");
+        if(!actual.custody.session().equals(session())||!actual.custody.custodyEpoch().equals(custodyEpoch)||originalRequestChronology(actual.original.requestId()).filter(actual.custody::equals).isEmpty())throw new IOException("Blockers query crossed original Game/session/custody");
+        actual.custody.verify(actual.original);
+        var frame=CurrentRiteCreationBlockersResult.decodeOutcome(actual.original);requireRiteCreationBlockersFrame(frame,actual.before,actual.sourceRiteId);
+        if(!frame.equals(actual.frame)||frame.status()!=CurrentRiteCreationBlockersResult.Status.AVAILABLE)throw new IOException("Actual complete blockers DATA changed");
+        if(!Arrays.equals(actual.original.outbound().orElseThrow().originalPacket(),riteCreationBlockersPacket(actual.original.requestId(),actual.before,actual.sourceRiteId,actual.validUntil)))throw new IOException("Original blockers query body/guard/deadline changed");
+    }
+    private RiteCreationBlockersUnavailable riteCreationBlockersFailure(String id,DispatchOutcome outcome,Exception invalid) {
+        if(!sentRequestIds.contains(id))return new RiteCreationBlockersUnavailable(zero(id,reason(invalid)),reason(invalid));
+        var unknown=new Unknown(id,"Blockers original source/custody unqualified after write; preserve family UNKNOWN: "+reason(invalid),retainedOutbound(id),outcome instanceof AckReceived ack?Optional.of(ack.originalFrame()):Optional.empty());
+        return unresolvedRiteCreationBlockersRead=new RiteCreationBlockersUnavailable(unknown,reason(invalid));
+    }
+
     public sealed interface DesInitGuardRead permits DesInitGuardReceived,DesInitGuardUnavailable { DispatchOutcome original(); }
     public static final class DesInitGuardReceived implements DesInitGuardRead {
         private final NativeGameTransport issuer;private final CoreReceived before;private final CurrentDesInitGuardResult frame;

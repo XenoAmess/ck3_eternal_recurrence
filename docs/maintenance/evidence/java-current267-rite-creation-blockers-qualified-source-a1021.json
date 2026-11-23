@@ -1,0 +1,135 @@
+{
+  "schema": "xar.current267.rite-creation-blockers.actual-software-qualification.v1",
+  "at_utc": "2026-11-23T01:46:12.314779+00:00",
+  "all_required_exit0": true,
+  "actual_methods": 26,
+  "expected_distinct_methods": 26,
+  "wholeclasses": [
+    {
+      "class": "NativeOwnerCurrentRiteCreationBlockersSelectionTest",
+      "actual_methods": 10,
+      "actual_report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-creation-blockers-source-a1021\\validation\\qualified26-reports\\TEST-org.xar.ck3.control.service.root.NativeOwnerCurrentRiteCreationBlockersSelectionTest.xml",
+        "bytes": 77736,
+        "sha256": "c55aaab75a5e0482020c9abb0e371696528edab29b5730383c16e9b694919fc6"
+      }
+    },
+    {
+      "class": "NativeCurrentRiteCreationBlockers26785313ProducerTest",
+      "actual_methods": 10,
+      "actual_report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-creation-blockers-source-a1021\\validation\\qualified26-reports\\TEST-org.xar.ck3.control.nativebridge.NativeCurrentRiteCreationBlockers26785313ProducerTest.xml",
+        "bytes": 18685,
+        "sha256": "32660cfc886e87ab38f646d95a4efb23e3dbe2da708550a5a7a48bc9190fe6f2"
+      }
+    },
+    {
+      "class": "NativeCurrentRiteCreationBlockersTransportTest",
+      "actual_methods": 6,
+      "actual_report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-creation-blockers-source-a1021\\validation\\qualified26-reports\\TEST-org.xar.ck3.control.nativebridge.NativeCurrentRiteCreationBlockersTransportTest.xml",
+        "bytes": 17722,
+        "sha256": "92c02d3c6000d2ba1042445ad73cbc4a11cbe7fef2d16a8e9a90e1a91c2c3580"
+      }
+    }
+  ],
+  "actual_compiler_result": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-creation-blockers-source-a1021\\validation\\compiler-a01-result.json",
+    "bytes": 7450,
+    "sha256": "f7c42b956da79e81232448ad1deb6b6a2f61b65e7bb952e6b1575abfd6dc0666"
+  },
+  "actual_command": [
+    "mvn",
+    "-o",
+    "-B",
+    "-ntp",
+    "-s",
+    "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\machine-dependency-cache-settings.xml",
+    "-Dmaven.repo.local=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\maven-repository",
+    "-Dck3.build.root=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\target",
+    "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-current267-rite-creation-blockers-source-a1021\\validation\\scratch",
+    "-Djna.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-current267-rite-creation-blockers-source-a1021\\validation\\scratch",
+    "-Dxar.rite.creation.blockers.java.requests.output.directory=D:\\ck3-state\\upgrade-20261118\\java-current267-rite-creation-blockers-source-a1021\\validation\\compiler-a01-actual-java-requests",
+    "-Dtest=NativeOwnerCurrentRiteCreationBlockersSelectionTest,NativeCurrentRiteCreationBlockers26785313ProducerTest,NativeCurrentRiteCreationBlockersTransportTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "-DargLine=-Xmx1024m",
+    "-pl",
+    ":native-transport,:ck3-control-local-service",
+    "-am",
+    "-T2",
+    "test"
+  ],
+  "actual_compilation_and_test_lines": [
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Compiling 555 source files with javac [debug parameters release 21] to ..\\..\\target\\native-transport\\classes",
+    "[INFO] Compiling 96 source files with javac [debug parameters release 21] to ..\\..\\target\\native-transport\\test-classes",
+    "[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.379 s -- in org.xar.ck3.control.nativebridge.NativeCurrentRiteCreationBlockers26785313ProducerTest",
+    "[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.504 s -- in org.xar.ck3.control.nativebridge.NativeCurrentRiteCreationBlockersTransportTest",
+    "[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0",
+    "[INFO] Compiling 653 source files with javac [debug parameters release 21] to ..\\..\\target\\ck3-control-local-service\\classes",
+    "[INFO] Compiling 47 source files with javac [debug parameters release 21] to ..\\..\\target\\ck3-control-local-service\\test-classes",
+    "[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.493 s -- in org.xar.ck3.control.service.root.NativeOwnerCurrentRiteCreationBlockersSelectionTest",
+    "[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0",
+    "[INFO] BUILD SUCCESS"
+  ],
+  "compilation_scope": "Existing independent dev/M2/target cache; only changed native-transport and local-service plus required cached dependencies, -pl ... -am -T2. Listed reactor dependencies are not claimed recompiled. No original Text31/Create42/fullSDK rerun.",
+  "actual_CPP_producer": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-creation-blockers-source-a1021\\NoGame\\genuine-producer-receipt.json",
+    "bytes": 13038,
+    "sha256": "7936e3ff09f7247d8119374e6c3ee6bdd388ce70c159a4b6b20d8f6b711e6e32"
+  },
+  "actual_CPP_to_Java": "10 original responses typed roundtrip and1 original request/factory; all11 resources exact original bytes. HELLO/Core/response-ID wrappers and negative Java mutations are labelled exchange DATA, never new Native genuine frames.",
+  "actual_Java_request_CPP_inverse": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-creation-blockers-source-a1021\\NoGame\\actual-java-inverse-a01\\result.json",
+    "bytes": 16170,
+    "sha256": "d759b000ed35d45c7475ff7f29367daef53454672a96e25d1c1ea5e91166328b"
+  },
+  "source_input": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-creation-blockers-source-a1021\\source-plan-qualified.json",
+    "bytes": 6899,
+    "sha256": "a3d55cc033e677eafc5fc80960501e5e7ac74df2d4ba1b401e41707608603707"
+  },
+  "configuration_schema": "xar.native-owner-snapshot-config/v43",
+  "mode": "current_rite_creation_blockers",
+  "configuration": "Strict common6+mandatory observed expected_source_rite_id uint32 exceptFFFFFFFF, 0 legitimate, no default/callerkey/actor/lease/text/Bool witness.",
+  "maximum_submissions": 2,
+  "scope": "Official GetCreationBlockers readonly complete text DATA <=16384 UTF8 bytes incl actual NUL/control/richtext. IsCreating/CanCreate false, hidden/disabled and empty why remain qualified DATA. Informational provider/query are not a lease or Create permission. No prepared action API, mutation, Date/Save, rendered tooltip or business credit.",
+  "UNKNOWN": "Original query/body/custody retained; indeterminate cleanup remains sticky in this family, no old request replay or clearing/replacing old other-family UNKNOWN.",
+  "original_identity_Source": "STOPPED_UNUSED_NOT_INCLUDED",
+  "old_Text_Create_Frozens": "UNCHANGED_IMMUTABLE",
+  "warnings": "Original Maven/LogManager diagnostics remain in actual logs; no zero-log-errors assertion.",
+  "Game_Steam_HTTP_calls": 0,
+  "new_Native_owner_and_runtime": "PENDING_SEPARATE"
+}

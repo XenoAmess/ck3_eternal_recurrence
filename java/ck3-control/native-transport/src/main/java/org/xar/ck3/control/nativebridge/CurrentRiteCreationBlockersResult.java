@@ -1,0 +1,161 @@
+package org.xar.ck3.control.nativebridge;
+
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import org.xar.ck3.control.application.action.NativeActionPort.AckReceived;
+import org.xar.ck3.control.application.action.RawJson;
+import org.xar.ck3.control.contracts.ExactCk3Build;
+import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFrame;
+
+/** Readonly guard response DATA. Even AVAILABLE does not authorize an effect or mint Create or Accept authority. */
+public record CurrentRiteCreationBlockersResult(Status status, boolean cleanupKnown, BigInteger providerGeneration,
+        BigInteger querySequence, Optional<CoreFrame.Prefix> factsBefore,
+        Optional<CurrentLetterResult.OwnerWitness> owner, Optional<CurrentRiteCreationBlockersSource> source,
+        Optional<String> unavailableReason) {
+    public enum Status {
+        UNAVAILABLE("unavailable"), EXPIRED("expired"), STALE_SOURCE("stale_source"),
+        AVAILABLE("available"), INDETERMINATE("indeterminate");
+        private final String wire;
+        Status(String wire) { this.wire = wire; }
+        public String wire() { return wire; }
+        static Status parse(String text) throws IOException {
+            for (var value : values()) if (value.wire.equals(text)) return value;
+            throw new IOException("Unknown Rite creation blockers status");
+        }
+    }
+
+    public CurrentRiteCreationBlockersResult {
+        Objects.requireNonNull(status);
+        CurrentRiteCreationBlockers.unsigned(providerGeneration, false);
+        CurrentRiteCreationBlockers.unsigned(querySequence, false);
+        Objects.requireNonNull(factsBefore); Objects.requireNonNull(owner);
+        Objects.requireNonNull(source); Objects.requireNonNull(unavailableReason);
+        StrictJson.require(factsBefore.isPresent() == owner.isPresent(), "Actual Core/owner nullable roles differ");
+        factsBefore.ifPresent(CurrentRiteCreationBlockers::requirePrefix);
+        if (status == Status.AVAILABLE) {
+            StrictJson.require(cleanupKnown && factsBefore.isPresent() && source.isPresent()
+                    && providerGeneration.signum() > 0 && querySequence.signum() > 0 && unavailableReason.isEmpty(),
+                    "Available readonly guard coherence differs");
+            StrictJson.require(source.orElseThrow().actorId() == factsBefore.orElseThrow().playedCharacterId(),
+                    "Guard source differs from actual played actor");
+        } else {
+            StrictJson.require(source.isEmpty(), "Refused or unknown guard must retain SourceNull");
+            StrictJson.require(providerGeneration.signum() == 0 && querySequence.signum() == 0,
+                    "Refused readonly query cannot retain an available-query identity");
+            StrictJson.require(unavailableReason.filter(reason -> !reason.isEmpty()).isPresent(),
+                    "Original guard refusal reason required");
+        }
+        if (!cleanupKnown) StrictJson.require(status == Status.INDETERMINATE && source.isEmpty(),
+                "Unknown cleanup must remain indeterminate without source");
+    }
+
+    public boolean successful() { return status == Status.AVAILABLE; }
+    public boolean sourceAvailable() { return source.isPresent(); }
+    public boolean effectAttempted() { return false; }
+    public boolean nativeReturned() { return false; }
+    public boolean nativeHandled() { return false; }
+    public BigInteger claimSequence() { return BigInteger.ZERO; }
+    public boolean newDateObserved() { return false; }
+    public boolean physicalSaveConfirmed() { return false; }
+
+    public static CurrentRiteCreationBlockersResult decode(RawJson raw) throws IOException {
+        try {
+            var result = StrictJson.object(NativeWire.parse(raw.bytes()), Set.of("schema", "game_version",
+                    "executable_sha256", "adapter_id", "backend", "action", "status", "source_available",
+                    "provider_generation", "query_sequence", "claim_sequence", "effect_attempted", "native_returned",
+                    "native_handled", "cleanup_known", "facts_before", "owner", "source", "addresses_redacted",
+                    "new_date_observed", "physical_save_confirmed",
+                    "unavailable_reason"));
+            var build = ExactCk3Build.CK3_121003_STEAM_26785313;
+            CurrentRiteCreationBlockers.identity(result, "schema", CurrentRiteCreationBlockers.RESULT_SCHEMA);
+            CurrentRiteCreationBlockers.identity(result, "game_version", build.version());
+            CurrentRiteCreationBlockers.identity(result, "executable_sha256", build.executableSha256().toUpperCase(Locale.ROOT));
+            CurrentRiteCreationBlockers.identity(result, "adapter_id", build.coreFrameAdapterId());
+            CurrentRiteCreationBlockers.identity(result, "backend", CurrentRiteCreationBlockers.BACKEND);
+            CurrentRiteCreationBlockers.identity(result, "action", CurrentRiteCreationBlockers.ACTION);
+            if (!CurrentRiteCreationBlockers.bool(result, "addresses_redacted")) throw new IOException("Guard addresses must be redacted");
+            for (var key : Set.of("effect_attempted", "native_returned", "native_handled", "new_date_observed", "physical_save_confirmed"))
+                if (CurrentRiteCreationBlockers.bool(result, key)) throw new IOException("Readonly guard cannot claim: " + key);
+
+            if (CurrentRiteCreationBlockers.decimal(result, "claim_sequence").signum() != 0)
+                throw new IOException("Readonly blockers cannot consume a claim");
+            Optional<CoreFrame.Prefix> facts = Optional.empty();
+            Optional<CurrentLetterResult.OwnerWitness> owner = Optional.empty();
+            Optional<CurrentRiteCreationBlockersSource> source = Optional.empty();
+            if (!result.get("facts_before").isNull()) {
+                var prefix = StrictJson.object(result.get("facts_before"), Set.of("date_raw", "speed", "paused",
+                        "local_player_id", "map_ready", "has_played_character", "played_character_id", "played_character_alive"));
+                facts = Optional.of(new CoreFrame.Prefix(CurrentRiteCreationBlockers.i32(prefix.get("date_raw")),
+                        CurrentRiteCreationBlockers.i32(prefix.get("speed")), CurrentRiteCreationBlockers.bool(prefix, "paused"),
+                        CurrentRiteCreationBlockers.i32(prefix.get("local_player_id")), CurrentRiteCreationBlockers.bool(prefix, "map_ready"),
+                        CurrentRiteCreationBlockers.bool(prefix, "has_played_character"), CurrentRiteCreationBlockers.i32(prefix.get("played_character_id")),
+                        CurrentRiteCreationBlockers.bool(prefix, "played_character_alive")));
+            }
+            if (!result.get("owner").isNull()) {
+                var witness = StrictJson.object(result.get("owner"), Set.of("connection_generation", "ticket_sequence", "pump_epoch", "thread_id"));
+                owner = Optional.of(new CurrentLetterResult.OwnerWitness(CurrentRiteCreationBlockers.decimal(witness, "connection_generation"),
+                        CurrentRiteCreationBlockers.decimal(witness, "ticket_sequence"), CurrentRiteCreationBlockers.decimal(witness, "pump_epoch"),
+                        NativeWire.integer(witness.get("thread_id"), BigInteger.ONE, BigInteger.valueOf(0xffff_ffffL)).longValueExact()));
+            }
+            if (!result.get("source").isNull()) source = Optional.of(CurrentRiteCreationBlockersSource.decode(result.get("source")));
+            if (CurrentRiteCreationBlockers.bool(result, "source_available") != source.isPresent())
+                throw new IOException("Guard source availability/null mismatch");
+            Optional<String> reason = result.get("unavailable_reason").isNull() ? Optional.empty()
+                    : Optional.of(NativeWire.text(result.get("unavailable_reason")));
+            return new CurrentRiteCreationBlockersResult(Status.parse(NativeWire.text(result.get("status"))),
+                    CurrentRiteCreationBlockers.bool(result, "cleanup_known"), CurrentRiteCreationBlockers.decimal(result, "provider_generation"),
+                    CurrentRiteCreationBlockers.decimal(result, "query_sequence"),
+                    facts, owner, source, reason);
+        } catch (IllegalArgumentException | ArithmeticException invalid) {
+            throw new IOException("Invalid exact current Rite creation blockers DATA", invalid);
+        }
+    }
+
+    public static CurrentRiteCreationBlockersResult decodeOutcome(AckReceived original) throws IOException {
+        Objects.requireNonNull(original);
+        try {
+            var envelope = StrictJson.object(NativeWire.parse(original.originalFrame().bytes()),
+                    Set.of("type", "protocol_version", "request_id", "ok", "result"));
+            CurrentRiteCreationBlockers.identity(envelope, "type", "command_result");
+            CurrentRiteCreationBlockers.identity(envelope, "request_id", original.requestId());
+            NativeWire.integer(envelope.get("protocol_version"), BigInteger.ONE, BigInteger.ONE);
+            if (CurrentRiteCreationBlockers.bool(envelope, "ok") != original.nativeOk()) throw new IOException("Original guard envelope ok mismatch");
+            var token = original.originalResultToken().orElseThrow(() -> new IOException("Original guard result token absent"));
+            if (!NativeWire.parse(token.bytes()).equals(envelope.get("result"))) throw new IOException("Guard token differs from original envelope");
+            var result = decode(new RawJson(token.bytes()));
+            if (result.successful() != original.nativeOk()) throw new IOException("Native ok differs from coherent readonly guard status");
+            return result;
+        } catch (IllegalArgumentException invalid) {
+            throw new IOException("Invalid actual Rite creation blockers acknowledgement", invalid);
+        }
+    }
+
+    public RawJson encode() {
+        var build = ExactCk3Build.CK3_121003_STEAM_26785313;
+        var result = StrictJson.object().put("schema", CurrentRiteCreationBlockers.RESULT_SCHEMA).put("game_version", build.version())
+                .put("executable_sha256", build.executableSha256().toUpperCase(Locale.ROOT)).put("adapter_id", build.coreFrameAdapterId())
+                .put("backend", CurrentRiteCreationBlockers.BACKEND).put("action", CurrentRiteCreationBlockers.ACTION).put("status", status.wire())
+                .put("source_available", source.isPresent()).put("provider_generation", providerGeneration.toString())
+                .put("query_sequence", querySequence.toString()).put("claim_sequence", "0")
+                .put("effect_attempted", false).put("native_returned", false).put("native_handled", false).put("cleanup_known", cleanupKnown);
+        if (factsBefore.isPresent()) {
+            result.set("facts_before", CurrentRiteCreationBlockers.prefix(factsBefore.orElseThrow()));
+            var witness = owner.orElseThrow();
+            result.putObject("owner").put("connection_generation", witness.connectionGeneration().toString())
+                    .put("ticket_sequence", witness.ticketSequence().toString()).put("pump_epoch", witness.pumpEpoch().toString())
+                    .put("thread_id", witness.threadId());
+        } else { result.putNull("facts_before"); result.putNull("owner"); }
+        if (source.isPresent()) result.set("source", source.orElseThrow().encode()); else result.putNull("source");
+        result.put("addresses_redacted", true)
+                .put("new_date_observed", false).put("physical_save_confirmed", false);
+        if (unavailableReason.isPresent()) result.put("unavailable_reason", unavailableReason.orElseThrow());
+        else result.putNull("unavailable_reason");
+        return new RawJson(StrictJson.canonical(result));
+    }
+}
