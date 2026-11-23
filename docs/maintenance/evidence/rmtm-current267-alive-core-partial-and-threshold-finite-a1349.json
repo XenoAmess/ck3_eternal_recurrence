@@ -1,0 +1,208 @@
+{
+  "schema": "xar.rmtm.current267.alive-core-partial-and-threshold-finite.machine-facts.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "current_game": {
+    "version": "1.21.0.3",
+    "build": 26785313,
+    "executable_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28"
+  },
+  "runtime_context": {
+    "actual_sixpins": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-alive-pair-a1335\\actual-six-pins.json",
+      "bytes": 1526,
+      "sha256": "929224d325ae137d8c9c36bfbed6d9a8f5aaacda7baecb37d4ff1800a8db1ac2"
+    },
+    "source_code_HEAD": "c675936068a6f275f846936c05ed1ddad3b508fb",
+    "NativeTree": "034ace2e8d3035dcdfddc36934656250c12359d9",
+    "native_delivery_sha256": "b00c887ed097029f49d31039715864bb92d2dac8e2773562d7ebfc7ac1a1c46a",
+    "DLL_sha256": "1d34cabd6a44f3488b926a3da4dcce83bc9f7bd11b08166a3b30aec4812ff00b",
+    "Java_runtime_manifest_sha256": "c770187a8b2a05e1260852d6f39a165f26e88eea9655ceb24865795307c123e4",
+    "Java_classpath_args_sha256": "eff331fe148e151f03448a8b77c4d4b5d59a1ea9fe910f5a68bfd03b2a8f6a7d"
+  },
+  "core": {
+    "status": "FINITE_PARTIAL_OFFER_UNKNOWN_PRESERVED",
+    "Root_facts": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\RMTM-repaired-core-D4-offer-UNKNOWN-PARTIAL-a1345.json",
+      "bytes": 3288,
+      "sha256": "e4b8c682292902ccc9532fd90ce5c06cc739b9c599e3f71ce55e5582aca3a7bf"
+    },
+    "original_progress": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rmtm-current267-original-case-profile-a1333\\operations\\original-case-a1344\\result\\current-rmtm-progress.json",
+      "bytes": 298842,
+      "sha256": "9aa50400cb51af544193d8add9db38da6cb72338a5aaa64f4f6d05d3879b0176"
+    },
+    "original_UNKNOWN": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rmtm-current267-original-case-profile-a1333\\operations\\original-case-a1344\\result\\rmtm-d4-offer-a-open-result\\read-raw-return.json",
+      "bytes": 1106,
+      "sha256": "7b1dfbe2b409ce682948eeb833b87d5c83c0f1c67bbea4c15cdf96087b61d5ad"
+    },
+    "original_request": "rmtm-observation-ui-ca6ba40cca4d4a4f8aac6cd49a853718",
+    "advance_calls": 4,
+    "event_ACK_calls": 2,
+    "decision_calls": 0,
+    "Save_calls": 0,
+    "observations": "Two original event ACKs and independent absence, D3 fresh role/physical title20377 realm-baseline route, D3/D4 council and Budget Open/Cancel/independent hidden retained.",
+    "D3_heir": {
+      "full_id": 44132,
+      "alive": true,
+      "qualification": "DATA; not D5 execute-time identity"
+    },
+    "UNKNOWN": {
+      "effect_attempted": true,
+      "native_returned": false,
+      "cleanup_known": false,
+      "source": null,
+      "claim_sequence": "3",
+      "cause": "UNRESOLVED; no actual exception code, faultPC or SEH observation",
+      "replayed": false
+    },
+    "terminal": {
+      "terminal": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rmtm-current267-original-case-profile-a1333\\owner\\terminal.json",
+        "bytes": 1059,
+        "sha256": "21b7be34c203ed3879350f8d00ddc185d438f7edcf4cbd369c8f8dc2bd2684f7"
+      },
+      "creator": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rmtm-current267-original-case-profile-a1333\\creator-end.json",
+        "bytes": 595,
+        "sha256": "a69c98ba52171dd6c11dc75731798a53d6078482c6093f08ba0c2b64eb457617"
+      },
+      "NaturalExit": 0,
+      "Job_active": 0,
+      "cleanup": true,
+      "creator_exit": 0
+    }
+  },
+  "independent_threshold": {
+    "status": "FINITE_THRESHOLD_PASS",
+    "Root_facts": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\RMTM-independent-50-51-finite-PASS-a1349.json",
+      "bytes": 2715,
+      "sha256": "0afad7e6431f0ea95dcb0d529240b21b1b44ef79bc67d80aecd84741b1628571"
+    },
+    "summary": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rmtm-current267-threshold-50-51-profile-a1334\\operations\\independent-50-51-a1348\\result\\summary.json",
+      "bytes": 470122,
+      "sha256": "3a9bc74fc2f4fed147f77d5a457fe2e9288957133ad7c6f0fd7432c453afbf88"
+    },
+    "advance_calls": 4,
+    "event_ACK_calls": 2,
+    "decision_navigation_or_confirm_calls": 10,
+    "Save_calls": 0,
+    "private_dispatch_chain_completed": true,
+    "fifty": {
+      "native_can_confirm": false,
+      "complete_native_tooltip": "\u0016warning_icon!\u0015X 你未满足所有要求\u0015!",
+      "tooltip_observed": true,
+      "boundary": "Generic native unmet-requirements warning only; no numeric50percent reason is inferred from tooltip."
+    },
+    "fiftyone": {
+      "native_can_confirm": true,
+      "confirmation_status": "confirmation_dispatched",
+      "native_returned": true,
+      "ACK_decision_applied": false
+    },
+    "independent_original_script_effect_verification": {
+      "debug_log": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rmtm-current267-threshold-50-51-profile-a1334\\profile-states\\gui-f99536317e9d4c37a9c2c9bb6e240a79\\profile\\logs\\debug.log",
+        "bytes": 645682,
+        "sha256": "dcce2461a6983f1df388c3688c3860a52bd76f6c708f82298a810aeb8728e24e"
+      },
+      "markers": [
+        {
+          "marker": "RQAUI: TEST PASS fifty_percent_below_claim_threshold",
+          "line_byte_range": [
+            625282,
+            625466
+          ],
+          "raw_line": "[05:39:32][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/rqaui_effects.txt line: 42 (rqaui_prepare_fifty_effect): RQAUI: TEST PASS fifty_percent_below_claim_threshold"
+        },
+        {
+          "marker": "RQAUI: TEST PASS original_fifty_one_percent_threshold_reached",
+          "line_byte_range": [
+            630547,
+            630743
+          ],
+          "raw_line": "[05:39:36][D][jomini_effect_impl.cpp:444]: file: common/scripted_effects/rqaui_effects.txt line: 74 (rqaui_prepare_fiftyone_effect): RQAUI: TEST PASS original_fifty_one_percent_threshold_reached"
+        },
+        {
+          "marker": "RQAUI: TEST PASS actual_production_restoration_effect_observed",
+          "line_byte_range": [
+            644782,
+            644992
+          ],
+          "raw_line": "[05:39:42][D][jomini_effect_impl.cpp:444]: file: common/decisions/rqaui_decisions.txt line: 45 (rqaui_verify_actual_restoration_decision:effect): RQAUI: TEST PASS actual_production_restoration_effect_observed"
+        },
+        {
+          "marker": "RQAUI: TEST DONE threshold_ui",
+          "line_byte_range": [
+            644992,
+            645169
+          ],
+          "raw_line": "[05:39:42][D][jomini_effect_impl.cpp:444]: file: common/decisions/rqaui_decisions.txt line: 46 (rqaui_verify_actual_restoration_decision:effect): RQAUI: TEST DONE threshold_ui"
+        }
+      ],
+      "meaning": "Original independent script verifier observed actual production restoration effect and DONE threshold_ui. Effect proof is separate from ACK, whose decision_applied=false remains unchanged."
+    },
+    "normal_quit_request": {
+      "summary": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rmtm-current267-threshold-50-51-profile-a1334\\operations\\normal-quit-a1349\\result\\summary.json",
+        "bytes": 14650,
+        "sha256": "c1841417284c20319450c7107ba20797a6e72c722e494a405a17195a2aedb0b7"
+      },
+      "normal_exit_confirmed": false,
+      "meaning": "Request acknowledgement only; actual exit independently proved by terminal and creator."
+    },
+    "terminal": {
+      "terminal": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rmtm-current267-threshold-50-51-profile-a1334\\owner\\terminal.json",
+        "bytes": 1060,
+        "sha256": "d8f4cfcb470dc2a0940b7e29226119a72bbb11fbef48f096e6d238799773b194"
+      },
+      "creator": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\rmtm-current267-threshold-50-51-profile-a1334\\creator-end.json",
+        "bytes": 599,
+        "sha256": "da48638fbfbac0ee9d8e6cca42d0f8286778a944f58efe7f9f2e71cd8cb15da9"
+      },
+      "NaturalExit": 0,
+      "Job_active": 0,
+      "cleanup": true,
+      "creator_exit": 0
+    }
+  },
+  "current_availability": {
+    "core_generated_replicas_reclamation": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\RMTM-coreUnknown-duplicate-reclamation-a1345\\actual-result.json",
+      "bytes": 2046798,
+      "sha256": "4691b6404cba44485574edceaa29b44873f398c827b43fbe0c6484b51fe053d6"
+    },
+    "retired_profile_files": 4153,
+    "allocated_removed_bytes": 357602048,
+    "retired": "Only closed a1333 profile4152shader copies and one initial Save copy; old prepared-input paths unreadable and must not be replayed as active wrappers.",
+    "preserved": "Independent821S0 checkpoint,940shader master,SDKcache,logs and original failure/UNKNOWN records.",
+    "archives_unchanged": true,
+    "old_spent_held_refund": false,
+    "later_threshold_retirement": "Not asserted by this index; any subsequent cleanup requires its own actual receipt."
+  },
+  "remaining": {
+    "RMTM26": false,
+    "D5_three_original_scope_dumps": false,
+    "three_physical_phases": false,
+    "whole_product": false,
+    "formal_release": false,
+    "Workshop_publication": false,
+    "Offer_diagnostics": "External Source only at this cut; no new compiled Native/pair or root cause claimed.",
+    "counts": {
+      "uploaded_distinct": 13,
+      "strict_distinct": 9,
+      "total": 17
+    },
+    "old_Notes429_SourceA_tags_all_failures_and_UNKNOWN_preserved": true
+  },
+  "this_docs_unit": {
+    "runtime_changes": 0,
+    "tests": 0,
+    "JVM_Game_Steam_HTTP_or_deletion_calls": 0,
+    "tuple_or_release_artifacts_changed": false
+  }
+}

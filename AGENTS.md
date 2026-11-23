@@ -1,5 +1,13 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-24 当前 RMTM：独立50/51有限通过，Core Offer仍UNKNOWN
+
+`desktop-3fevhd2-1c74096080` 当前实际tuple `929224d3…`，Java MF `c770187a…`／args `eff331fe…`保持冻结；Native `1d34cabd…` 已真实装载，其实际BEGIN HEAD `c675936068a6`／NativeTree `034ace2e…`保留。a1333 Core场完成4自然日、2次原事件ACK及独立absence、D3 freshRole/物理title-law与九席、D4 Budget取消独立hidden，随后Offer Open再次返回效果已尝试但返回/清理未知的原UNKNOWN；没有重发，原因及实际faultPC/SEH未观察，后继诊断仅外置Source。D3 heir44132的alive=true仅当前DATA，不替D5执行见证。
+
+另一个独立a1334场完成原4自然日staging、2次ACK及独立absence、10次决议导航或确认、0Save。50真实NativeCan=false及完整tooltip已读，但只含通用“未满足所有要求”，不冒数字阈值说明；51真实NativeCan=true及生产Confirm dispatched，原ACK的`decision_applied=false`保持，由独立原脚本`actual_production_restoration_effect_observed`和`DONE threshold_ui`证明有限实际效果。两场均由各自真实terminal证明Natural0/Job0/cleanup及creator0；quit请求摘要的`normal_exit_confirmed=false`不回写。
+
+原26、D5三dump、三物理phase及wholeproduct尚未通过，本轮RMTM更新未正式化/未发布。原三dump只在D5 EXEC与callback前后，D3没有额外dump义务；SourceParser5P不授实机场景资格。原a1333的4153个生成副本实际退役357602048 allocated bytes，旧profile初始输入/重复shader现不可读，821原S0与940master/log/SDK保留，不重跑旧wrapper、不退spent/held。独立计数仍13/17上传、9/17严格，Notes429及全部旧失败、UNKNOWN、SourceA/tag保留。详见[本次机器事实与精确原件索引](docs/maintenance/evidence/rmtm-current267-alive-core-partial-and-threshold-finite-a1349.json)。以下较早切点保留历史范围。
+
 ## 2026-11-24 当前 RMTM v47 实际软件与新 Native 配对已闭
 
 本机已正常推送独立 RMTM Java 四族70个不同方法及20份原Cpp解析器反核资格；Native另有25个有限NoGame目标通过，48个目标按39新叶与9共享叶25处精确字节采用并正常推送。实际Native生产956TU/32CL/924复用、Identity0及登记verified，新DLL为b11e8902…；Java只在原冻结时复制2新JAR并按身份复用156旧JAR，本次metadata配对无新编包、测试或旧158CRC。Java原328四phase及Native400均真实END/future0；旧spent/held/UNKNOWN不退。先前Native-pending小节保留当时切点，最新见[实际配对索引](docs/maintenance/evidence/java-current267-rmtm-v47-actual-frozen-pair-a1300.json)。
