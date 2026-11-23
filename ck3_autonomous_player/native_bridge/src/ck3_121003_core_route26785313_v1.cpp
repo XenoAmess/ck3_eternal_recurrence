@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_QUERY_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_QUERY_V1 && defined(XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_V1
+#include "xar_bridge/ck3_121003_rmtm_title_query26785313_owner_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_STOCK_BOOKMARK1070_V1) && XAR_CK3_ENABLE_121003_26785313_STOCK_BOOKMARK1070_V1
 #include "xar_bridge/ck3_121003_stock_bookmark107026785313_owner_v1.hpp"
 #include "xar_bridge/ck3_121003_ccc_all26785313_v1.hpp"
@@ -218,6 +221,10 @@ ck3_11906::MainThreadQueryInstallEnvironmentV1 BindCoreRouteMailboxEnvironmentV1
 #if defined(XAR_CK3_ENABLE_121003_26785313_CCC_V1) && XAR_CK3_ENABLE_121003_26785313_CCC_V1
   if(!VerifyCccImage267V1(image_base))return {};
   out.permitted_executor_duotrigintary=&ExecuteCccOnOwner267V1;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_QUERY_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_QUERY_V1 && defined(XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_V1
+  if(out.permitted_executor_tritrigintary||!VerifyRmtmTitleImage267V1(image_base))return {};
+  out.permitted_executor_tritrigintary=&ExecuteRmtmTitleQueryOnOwner267V1;
 #endif
   return out;
 }

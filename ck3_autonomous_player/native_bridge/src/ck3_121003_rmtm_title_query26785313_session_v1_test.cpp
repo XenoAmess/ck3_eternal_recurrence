@@ -1,0 +1,46 @@
+// Source-only Inner owner/session test. Frame/Capture/Raw are explicit DATA
+// seams; this does not claim real mailbox/TLS/shared-reader execution.
+#include "ck3_121003_rmtm_title_query26785313_owner_v1.cpp"
+#include "ck3_121003_rmtm_title_query26785313_wire_v1.cpp"
+#include <iostream>
+#include <stdexcept>
+namespace fixture {
+using namespace xar::ck3_121003::build26785313;
+using Core=xar::ck3_1210::CoreSnapshotPrefix;using Stamp=xar::ck3_11906::MainThreadExecutionStampV1;using Mailbox=xar::ck3_11906::MainThreadQueryMailboxV1;using Status=RmtmTitleQueryStatus267V1;
+void Need(bool x,const char*s){if(!x)throw std::runtime_error(s);}
+Core Actual(std::int32_t actor=0){Core c;c.clock.date_raw=53144328;c.clock.speed=3;c.clock.paused=true;c.local_player_id=1;c.map_ready=c.has_played_character=c.played_character_alive=true;c.played_character_id=actor;return c;}
+void Drift(Core&c,unsigned n){switch(n){case 0:c.clock.date_raw+=24;break;case 1:c.clock.speed=2;break;case 2:c.clock.paused=false;break;case 3:c.local_player_id=2;break;case 4:c.map_ready=false;break;case 5:c.has_played_character=false;break;case 6:c.played_character_id=7;break;case 7:c.played_character_alive=false;break;default:break;}}
+struct State{Core core=Actual();std::uint32_t title=0;std::array<std::uint64_t,9>world{};unsigned frames=0,captures=0,raw=0,driftCore=8,driftPointer=7;bool captureMissing=false,captureUnknown=false,captureDrift=false,rawMissing=false,rawUnknown=false,partial=false,empty=false,noHeir=false,expireAfter=false,badPrivateGuard=false;void*context=nullptr;void Reset(){*this=State{};}}state;
+std::unique_ptr<Mailbox> Box(){auto m=std::make_unique<Mailbox>();m->offline_fixture=false;m->permitted_executor_tritrigintary=&ExecuteRmtmTitleQueryOnOwner267V1;return m;}
+unsigned ids=0;
+RmtmTitleQueryContext267V1 Query(RmtmTitleQuerySession267V1&s,Mailbox*m){RmtmTitleQueryContext267V1 q;q.session=&s;q.mailbox=m;q.connection_generation=9;q.ticket.sequence=++ids;q.request.expected=state.core;q.request.deadline_unix_ms=TitleQueryWall()+60000;const auto id="rmtm-title-owner-"+std::to_string(ids);std::copy(id.begin(),id.end(),q.request.request_id.begin());q.request.request_id_size=static_cast<std::uint8_t>(id.size());ArmRmtmTitleQueryDeadline267V1(q);return q;}
+void Run(RmtmTitleQueryContext267V1&q){Stamp s;s.thread_id=GetCurrentThreadId();s.pump_epoch=17;s.paused=true;Need(ExecuteRmtmTitleQueryOnOwner267V1(&q,s),"actual inner owner thunk failed");}
+void None(const RmtmTitleQueryContext267V1&q){Need(!q.result.source_available&&!q.result.source&&!q.result.provider_generation&&!q.result.query_sequence,"false Source/sequence minted");}
+void Wire(const RmtmTitleQueryContext267V1&q,bool available){const auto w=SerializeRmtmTitleQueryResult267V1(q.request.id(),q.result);Need(w.find(available?"\"ok\":true":"\"ok\":false")!=std::string::npos,"serializer owner coherence");for(const auto s:{"\"claim_sequence\":\"0\"","\"effect_attempted\":false","\"native_returned\":false","\"native_handled\":false"})Need(w.find(s)!=std::string::npos,"query permission flag fabricated");}
+}
+namespace xar::ck3_121003::build26785313 {
+ReadonlyBindings BindReadonlyImage(std::uintptr_t,std::string_view)noexcept{return {};}
+bool ReadRmtmTitleQueryFrameOnOwner267V1(const ReadonlyBindings&,ck3_11906::MainThreadQueryMailboxV1*,const ck3_11906::MainThreadQueryTicketV1&,const ck3_11906::MainThreadExecutionStampV1&,void*context,const RmtmTitleQueryRequest267V1&,std::uint64_t,RmtmTitleFrame267V1&out,std::string&)noexcept{
+ auto&s=fixture::state;s.context=context;++s.frames;out={};out.facts_verified=true;out.core=s.core;if(s.frames>1)fixture::Drift(out.core,s.driftCore);std::array<std::uintptr_t*,7>p{&out.game,&out.jomini,&out.storage,&out.actor,&out.data,&out.players,&out.player};for(unsigned i=0;i<7;++i)*p[i]=reinterpret_cast<std::uintptr_t>(&s.world[s.frames>1&&s.driftPointer==i?8:i]);return true;
+}
+bool CaptureRmtmTitleQueryPrimary267V1(const ReadonlyBindings&,const RmtmTitleFrame267V1&,const RmtmTitleQueryRequest267V1&,std::uint64_t,std::uint32_t&out,bool&entered,bool&cleanup,std::string&why)noexcept{auto&s=fixture::state;++s.captures;entered=true;out=0xFFFFFFFFU;cleanup=!s.captureUnknown;if(s.captureMissing||s.captureUnknown){why="explicit_capture_DATA_refusal";return false;}out=s.title+(s.captureDrift&&s.captures>1?1U:0U);return true;}
+bool ReadRmtmTitleRaw267V1(const ReadonlyBindings&,const RmtmTitleFrame267V1&f,const RmtmTitleRequest267V1&r,std::uint64_t,RmtmTitleRaw267V1&out,std::string&why)noexcept{auto&s=fixture::state;++s.raw;out={};out.entered=true;out.cleanup_known=!s.rawUnknown;if(r.expected_full_title_id!=s.title){s.badPrivateGuard=true;why="private_capture_guard_wrong";return false;}if(s.rawMissing){why="explicit_raw_missing_not_EMPTY";return false;}if(s.expireAfter)static_cast<RmtmTitleQueryContext267V1*>(s.context)->monotonic_deadline_ms=1;out.source.full_title_id=s.title;out.source.holder=RmtmTitleCharacter267V1{static_cast<std::uint32_t>(f.core.played_character_id),true};if(!s.noHeir){out.source.engine_current_heir=RmtmTitleCharacter267V1{0xFE000001U,true};out.source.engine_successor_count=1;}if(!s.empty){out.source.physical_own_laws={{0,"single_heir_succession_law"}};out.source.native_law_count=1;}out.source.sampled_twice=!s.partial;return true;}
+}
+int main(){try{using namespace fixture;unsigned groups=0;
+#if defined(XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_QUERY_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_QUERY_V1 && defined(XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_V1
+ state.Reset();{RmtmTitleQuerySession267V1 s;auto m=Box();auto q=Query(s,m.get());q.captured_full_title_id=12345;Run(q);Need(q.result.source_available&&q.result.source->title.full_title_id==0&&!state.badPrivateGuard,"private actual capture not used");Wire(q,true);const auto first=q.result.query_sequence;state.frames=0;auto next=Query(s,m.get());Run(next);Need(next.result.query_sequence>first,"informational query sequence");++groups;}
+ state.Reset();{state.empty=state.noHeir=true;RmtmTitleQuerySession267V1 s;auto m=Box();auto q=Query(s,m.get());Run(q);Need(q.result.source&&q.result.source->title.physical_own_laws.empty()&&!q.result.source->title.engine_current_heir,"EMPTY/None DATA lost");++groups;}
+ state.Reset();{state.core=Actual(-2);state.title=0xFE000001U;RmtmTitleQuerySession267V1 s;auto m=Box();auto q=Query(s,m.get());Run(q);Need(q.result.source&&q.result.source->actor_id==-2&&q.result.source->title.holder->full_id==0xFFFFFFFEU&&q.result.source->title.full_title_id==state.title,"full ID bits lost");++groups;}
+ for(unsigned n=0;n<8;++n){state.Reset();state.driftCore=n;RmtmTitleQuerySession267V1 s;auto m=Box();auto q=Query(s,m.get());Run(q);None(q);}++groups;
+ for(unsigned n=0;n<7;++n){state.Reset();state.driftPointer=n;RmtmTitleQuerySession267V1 s;auto m=Box();auto q=Query(s,m.get());Run(q);None(q);}++groups;
+ state.Reset();{state.captureDrift=true;RmtmTitleQuerySession267V1 s;auto m=Box();auto q=Query(s,m.get());Run(q);None(q);Need(q.result.status==Status::stale_source,"after primary ID drift not stale");++groups;}
+ for(unsigned n=0;n<3;++n){state.Reset();RmtmTitleQuerySession267V1 s;auto m=Box();auto q=Query(s,m.get());if(n==0)m->offline_fixture=true;if(n==1)m->permitted_executor_tritrigintary=nullptr;if(n==2)q.connection_generation=0;Run(q);None(q);Need(state.frames==0,"bad private custody reached frame");}++groups;
+ state.Reset();{RmtmTitleQuerySession267V1 s;auto m=Box();auto q=Query(s,m.get());q.request.deadline_unix_ms=1;Run(q);None(q);Need(state.frames==0&&q.result.status==Status::expired,"expired before entry");++groups;}
+ state.Reset();{state.expireAfter=true;RmtmTitleQuerySession267V1 s;auto m=Box();auto q=Query(s,m.get());Run(q);None(q);Need(q.result.status==Status::expired,"expired after Raw read");++groups;}
+ for(bool capture:{false,true}){state.Reset();state.captureMissing=capture;state.rawMissing=!capture;RmtmTitleQuerySession267V1 s;auto m=Box();auto q=Query(s,m.get());Run(q);None(q);Need(q.result.cleanup_known,"known missing incorrectly unknown");state.captureMissing=state.rawMissing=false;state.frames=state.captures=0;auto next=Query(s,m.get());Run(next);Need(next.result.source_available,"known read refusal poisoned next read");}++groups;
+ for(bool capture:{false,true}){state.Reset();state.captureUnknown=capture;state.rawUnknown=!capture;RmtmTitleQuerySession267V1 s;auto m=Box();auto q=Query(s,m.get());Run(q);None(q);Need(!q.result.cleanup_known&&q.result.status==Status::indeterminate,"unknown lost");state.captureUnknown=state.rawUnknown=false;state.frames=0;auto next=Query(s,m.get());Run(next);None(next);Need(state.frames==0,"new ID cleared same-family unknown");}++groups;
+ state.Reset();{state.partial=true;RmtmTitleQuerySession267V1 s;auto m=Box();auto q=Query(s,m.get());Run(q);None(q);Wire(q,false);++groups;}
+#else
+ state.Reset();RmtmTitleQuerySession267V1 s;auto m=Box();auto q=Query(s,m.get());Run(q);None(q);Need(!state.frames&&!state.captures&&!state.raw,"OFF executed native data seam");Wire(q,false);++groups;
+#endif
+ std::cout<<"PASS "<<groups<<" private owner groups; explicit NoGame Frame/Capture/Raw DATA, no shared owner/TLS/live claim\n";return 0;}catch(const std::exception&e){std::cerr<<e.what()<<'\n';return 1;}}

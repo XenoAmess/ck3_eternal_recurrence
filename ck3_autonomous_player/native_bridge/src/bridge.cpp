@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_QUERY_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_QUERY_V1 && defined(XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_V1
+#include "xar_bridge/ck3_121003_rmtm_title_query26785313_owner_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_STOCK_BOOKMARK1070_V1) && XAR_CK3_ENABLE_121003_26785313_STOCK_BOOKMARK1070_V1
 #include "xar_bridge/ck3_121003_stock_bookmark107026785313_owner_v1.hpp"
 #include "xar_bridge/ck3_121003_ccc_all26785313_v1.hpp"
@@ -17161,6 +17164,9 @@ void RunConnectedSession(
         if(!early_step_dispatched&&std::find(xar::ck3_121003::build26785313::kCccDecisionSteps267V1.begin(),xar::ck3_121003::build26785313::kCccDecisionSteps267V1.end(),step)!=xar::ck3_121003::build26785313::kCccDecisionSteps267V1.end()&&xar::game::IsCk3_121003Core26785313Descriptor(game.descriptor())){connected=write_frame(pipe,xar::ck3_121003::build26785313::DispatchCccDecisionRequest267V1(game,state.connection_generation,request_id,step,incoming.payload,g_main_thread_query_mailbox_v1));early_step_dispatched=true;}
 #endif
         if(!early_step_dispatched&&std::find(xar::ck3_121003::build26785313::kStockBookmarkSteps267V1.begin(),xar::ck3_121003::build26785313::kStockBookmarkSteps267V1.end(),step)!=xar::ck3_121003::build26785313::kStockBookmarkSteps267V1.end()&&xar::game::IsCk3_121003Core26785313Descriptor(game.descriptor())){connected=write_frame(pipe,xar::ck3_121003::build26785313::DispatchStockBookmarkRequest267V1(game,state.connection_generation,request_id,step,incoming.payload,g_main_thread_query_mailbox_v1));early_step_dispatched=true;}
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_QUERY_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_QUERY_V1 && defined(XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_V1
+        if(!early_step_dispatched&&step==xar::ck3_121003::build26785313::kRmtmTitleQueryStep267V1&&xar::game::IsCk3_121003Core26785313Descriptor(game.descriptor())){connected=write_frame(pipe,xar::ck3_121003::build26785313::DispatchRmtmTitleQueryRequest267V1(game,state.connection_generation,request_id,step,incoming.payload,g_main_thread_query_mailbox_v1));early_step_dispatched=true;}
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RITE_CREATION_BLOCKERS_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_CREATION_BLOCKERS_V1
         if(!early_step_dispatched&&step==xar::ck3_121003::build26785313::kRiteBlockersStep267V1&&xar::game::IsCk3_121003Core26785313Descriptor(game.descriptor())){connected=write_frame(pipe,xar::ck3_121003::build26785313::DispatchRiteBlockersRequest267V1(game,state.connection_generation,request_id,step,incoming.payload,g_main_thread_query_mailbox_v1));early_step_dispatched=true;}
