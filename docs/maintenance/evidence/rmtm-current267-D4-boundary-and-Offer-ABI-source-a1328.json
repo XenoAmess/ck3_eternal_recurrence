@@ -1,0 +1,35 @@
+{
+  "schema": "xar.rmtm.current267.D4-ui-boundary-and-Offer-ABI.source.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "scope": "Two separate actual failures: D4 threshold stage90 has no further Advance admission, while Offer Open returned original indeterminate after an attempted native effect. Preserve both originals and all claims.",
+  "Java_D4": {
+    "source_delivery": {"path": "D:/ck3-state/upgrade-20261118/java-current267-rmtm-threshold-boundary-source-a1324/delivery-final.json", "bytes": 1536, "sha256": "e548282f3d93e3c275efb1b22e5a58b48145d63a155ea8875d9e34a9b0aa7e71"},
+    "actual_qualification": {"path": "D:/ck3-state/upgrade-20261118/java-current267-rmtm-boundary-build-a1328/affected-qualification-final.json", "bytes": 1666, "sha256": "bddedce977a03df5a7695b6c15cfec34ca8db9ee2689033be47aa48014f2df81"},
+    "actual_methods": 2,
+    "actual_exit": 0,
+    "elapsed_seconds": 200.11609690001933,
+    "actual_Job_peak_commit_bytes": 1784397824,
+    "recompiled_production_module": "local-service,653 source files; reactor dependencies reused",
+    "behavior": "A complete actual readonly D4 Song role at epoch0/count4/original start permits the subsequent UI checkpoint even when advance_admissible=false. Wrong day, actor, frontier, pending and missing readiness remain rejected. The ordinary Advance/Confirm helper remains byte exact and still rejects this non-admitted next step.",
+    "configuration_or_Transport_or_DTO_or_wire_or_fixture_change": false,
+    "prior70_inverse20_and_old_staging2_repeated": false
+  },
+  "Native_Offer": {
+    "source_commit": "316c12f24adc209a4ddb220181d27ab38488d59e",
+    "NativeTree": "a4e571be9bcd020a5ad8204c290e0069407a25bc",
+    "qualified_manifest": {"path": "D:/ck3-state/upgrade-20261118/rmtm-offer-isvalid-nogame-a1327/validation/software-qualified-source-a02.json", "bytes": 5637, "sha256": "65f8d45104997c6867238a7746c1908cf107baaab609aec82f5f6c45b6e7397c"},
+    "actual_NoGame_ON_groups": 15,
+    "actual_NoGame_OFF_groups": 1,
+    "target": "ck3_autonomous_player/native_bridge/src/ck3_121003_rmtm_observation26785313_raw_v1.cpp",
+    "target_bytes": 28894,
+    "target_sha256": "f5c5f0a97bb6871a53f048060627cdfb8bb06330674dcf31b397b6da450d3392",
+    "behavior": "Use the actual two-argument D3E460 typed40B Any result; distinguish handled from Boolean payload and preserve false DATA with complete fixed-row uniqueness and owned cleanup.",
+    "original_Q_wrong_target_label_preserved_and_metadata_corrected_only": true,
+    "old_indeterminate_replayed_or_cleared": false,
+    "new_production_or_live_qualification_in_this_record": false
+  },
+  "phase_cut": "New Java200 compiler64 END; package96/freeze20/meta20 pending at this source commit. Independently admitted Native production may proceed from its stable NativeTree.",
+  "actual_RMTM26_or_50_51_PASS": false,
+  "workshop_counts": {"uploaded_distinct": 13, "strict_distinct": 9, "total": 17},
+  "old_frozen_SourceA_tags_public_receipts_UNKNOWN_and_failures_unchanged": true
+}

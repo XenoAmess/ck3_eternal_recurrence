@@ -4240,8 +4240,14 @@ if(riteDraftCosts) {
         return new RmtmDecisionObservation(core,query);
     }
     static void requireCurrentRmtmThresholdPrestate(CurrentRmtmActorTransitionResult role,CoreFrame.Prefix current,int song,int startRaw)throws IOException {
-        if(current.dateRaw()!=Math.addExact(startRaw,96))throw new IOException("Independent threshold seed requires four actual natural days before setup");
-        requireCurrentRmtmPositiveRole(role,current,CurrentRmtmActorTransitionSource.Role.SONG,java.math.BigInteger.ZERO,song,-1,false,4,startRaw);
+        requireCurrentRmtmRole(role,current);var s=role.source().orElseThrow();
+        if((long)startRaw+96!=current.dateRaw()||!s.caseStartCaptured()||!s.definitionFound()||!s.nativeShown().orElse(false)
+                ||!s.runtimeReady()||!s.predecessorResolved()||s.role()!=CurrentRmtmActorTransitionSource.Role.SONG
+                ||s.actorEpoch().signum()!=0||role.actorEpoch().signum()!=0||s.completedNaturalDays()!=4||role.completedNaturalDays()!=4
+                ||s.maximumNaturalDays()!=14||s.caseStartDateRaw()!=startRaw||current.playedCharacterId()!=song
+                ||s.songActorId().filter(id->id==song).isEmpty()||s.successorActorId().isPresent()||s.pending().isPresent()||s.confirmAdmissible())
+            throw new IOException("Independent threshold UI requires the actual completed D4 Song checkpoint, original clock/frontier and no pending succession");
+        // Stage90 may end date advancement. This UI boundary grants neither Advance nor ConfirmEpoch authority.
         // The original script checkpoint is independently evidenced by Root logs and the actual setup decision row/Can.
     }
     private static CoreFrame.Prefix stageCurrentRmtmThreshold(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeLaunchPlan plan,

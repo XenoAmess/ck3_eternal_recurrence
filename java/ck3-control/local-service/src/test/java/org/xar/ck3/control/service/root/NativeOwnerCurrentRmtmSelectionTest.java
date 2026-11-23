@@ -72,16 +72,43 @@ final class NativeOwnerCurrentRmtmSelectionTest {
         assertEquals(1109,original.submissions());assertEquals(2133,NativeOwnerSnapshotMain268.currentRmtmConfig(config("current_rmtm_original_case_once").put("maximum_status_polls",256)).submissions());
     }
     @Test void thresholdPrestateRequiresActualD4SongEpochZeroAndOriginalStart() throws IOException {
-        var d4=core(4,SONG);var valid=role(source(4,SONG,SUCCESSOR,true,true),d4);
+        var d4=core(4,SONG);var stopped=source(4,SONG,SUCCESSOR,true,false);var valid=role(stopped,d4);
+        assertFalse(stopped.advanceAdmissible());assertFalse(stopped.confirmAdmissible());assertTrue(stopped.pending().isEmpty());
         assertDoesNotThrow(()->NativeOwnerSnapshotMain268.requireCurrentRmtmThresholdPrestate(valid,d4,SONG,START));
+        // A still-readable advance permission is DATA here, not an additional UI prerequisite or a required false value.
+        assertDoesNotThrow(()->NativeOwnerSnapshotMain268.requireCurrentRmtmThresholdPrestate(role(source(4,SONG,SUCCESSOR,true,true),d4),d4,SONG,START));
         for(int day:List.of(0,3,5)){
-            var before=core(day,SONG);var actual=role(source(day,SONG,SUCCESSOR,true,true),before);
+            var before=core(day,SONG);var actual=role(source(day,SONG,SUCCESSOR,true,false),before);
             assertThrows(IOException.class,()->NativeOwnerSnapshotMain268.requireCurrentRmtmThresholdPrestate(actual,before,SONG,START));
         }
-        var foreignCore=core(4,SUCCESSOR);var foreign=role(source(4,SUCCESSOR,SONG,true,true),foreignCore);
+        var foreignCore=core(4,SUCCESSOR);var foreign=role(source(4,SUCCESSOR,SONG,true,false),foreignCore);
         assertThrows(IOException.class,()->NativeOwnerSnapshotMain268.requireCurrentRmtmThresholdPrestate(foreign,foreignCore,SONG,START));
         assertThrows(IOException.class,()->NativeOwnerSnapshotMain268.requireCurrentRmtmThresholdPrestate(valid,d4,SONG,START+24));
+        for(String field:List.of("case_start_captured","runtime_ready","predecessor_resolved","native_shown")){
+            var changed=stopped.encode();changed.put(field,false);var actual=role(CurrentRmtmActorTransitionSource.decode(changed),d4);
+            assertThrows(IOException.class,()->NativeOwnerSnapshotMain268.requireCurrentRmtmThresholdPrestate(actual,d4,SONG,START));
+        }
+        var noDefinition=stopped.encode();noDefinition.put("definition_found",false).putNull("native_shown");
+        var undefined=role(CurrentRmtmActorTransitionSource.decode(noDefinition),d4);
+        assertThrows(IOException.class,()->NativeOwnerSnapshotMain268.requireCurrentRmtmThresholdPrestate(undefined,d4,SONG,START));
+        var wrongSourceClock=role(source(3,SONG,SUCCESSOR,true,false),d4);
+        assertThrows(IOException.class,()->NativeOwnerSnapshotMain268.requireCurrentRmtmThresholdPrestate(wrongSourceClock,d4,SONG,START));
+        var nextFrontier=new CurrentRmtmActorTransitionSource(CurrentRmtmActorTransitionSource.Role.SUCCESSOR,true,Optional.of(true),O,
+                Optional.of(SONG),Optional.of(SUCCESSOR),Optional.empty(),4,14,START,true,Optional.empty(),true,true,false,false);
+        assertThrows(IOException.class,()->NativeOwnerSnapshotMain268.requireCurrentRmtmThresholdPrestate(role(nextFrontier,d4),d4,SONG,START));
+        var pending=new CurrentRmtmActorTransitionSource.Pending("rmtm-other-pending",BigInteger.TEN,O,MAX,SONG,SUCCESSOR,START+72,START+96,1,true,true,true);
+        var unresolved=new CurrentRmtmActorTransitionSource(CurrentRmtmActorTransitionSource.Role.SUCCESSOR,true,Optional.of(true),Z,
+                Optional.of(SONG),Optional.of(SUCCESSOR),Optional.of(pending),4,14,START,true,Optional.empty(),true,true,false,false);
+        assertThrows(IOException.class,()->NativeOwnerSnapshotMain268.requireCurrentRmtmThresholdPrestate(role(unresolved,d4),d4,SONG,START));
         // Four observed days and role do not fabricate the original script checkpoint or actual decision Can.
+    }
+    @Test void thresholdD4UiBoundaryDoesNotGrantAdvanceOrConfirmEpoch() throws IOException {
+        var d4=core(4,SONG);var actual=role(source(4,SONG,SUCCESSOR,true,false),d4);
+        assertDoesNotThrow(()->NativeOwnerSnapshotMain268.requireCurrentRmtmThresholdPrestate(actual,d4,SONG,START));
+        assertThrows(IOException.class,()->NativeOwnerSnapshotMain268.requireCurrentRmtmPositiveRole(actual,d4,
+                CurrentRmtmActorTransitionSource.Role.SONG,Z,SONG,-1,false,4,START));
+        assertThrows(IOException.class,()->NativeOwnerSnapshotMain268.requireCurrentRmtmPositiveRole(actual,d4,
+                CurrentRmtmActorTransitionSource.Role.SONG,Z,SONG,-1,true,4,START));
     }
 
     @Test void CallerSelectorsBorrowedFieldsMalformedOwnerAndUnboundedPollingAreRejected() throws IOException {
