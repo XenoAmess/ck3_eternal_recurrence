@@ -1,0 +1,28 @@
+{
+  "schema": "xar.native.current267.lyd-step-fix.qualified-source-adoption.v1",
+  "at_utc": "2026-11-23T03:04:02.045803+00:00",
+  "qualified_source_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-lyd-step-fix-source-a1050\\qualified-source-manifest.json",
+    "bytes": 5763,
+    "sha256": "d770d6030d3610e199670af426d3330b812d9587b787e3ed01b1e36e0adfe6ca"
+  },
+  "software_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-lyd-step-fix-source-a1050\\NoGame\\final-closure.json",
+    "bytes": 9763,
+    "sha256": "312efb5ea282b56dcf191677574f4e68bfa35a883e68d87bcb68753a4a68dfbe",
+    "metadata": {
+      "bytes": 9763,
+      "allocated": 12288,
+      "file_id": "562949958628412",
+      "volume": "882653518",
+      "creation_filetime": "134398764912996806",
+      "write_filetime": "134398764913006801",
+      "attributes": 32
+    }
+  },
+  "exact_target_count": 3,
+  "actual_wholemethod_checks": 195,
+  "scope": "Correct only existing LYD StepEnabled own feature macro; no new public wire/schema/cap/semantic role/ABI. Real linked whole-method positive/off/foreign-feature profiles. New live ordinary query pending; no bookmark.1070 selection permission added.",
+  "original_efcf_failure_and_Java26_F5af5": "PRESERVED_UNCHANGED",
+  "new_live_event_read_or_ordinary_choice": "PENDING_NOT_GRANTED"
+}

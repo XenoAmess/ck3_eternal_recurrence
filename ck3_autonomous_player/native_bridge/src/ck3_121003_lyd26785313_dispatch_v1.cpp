@@ -3,7 +3,7 @@
 #include <algorithm>
 namespace xar::ck3_121003::build26785313 {
 bool LydStepEnabled267V1([[maybe_unused]]const game::AdapterDescriptor&d,[[maybe_unused]]std::string_view step)noexcept{
-#if defined(XAR_CK3_ENABLE_121003_26785313_SUPERMAN_HEALTH_V1) && XAR_CK3_ENABLE_121003_26785313_SUPERMAN_HEALTH_V1
+#if defined(XAR_CK3_ENABLE_121003_26785313_LYD_V1) && XAR_CK3_ENABLE_121003_26785313_LYD_V1
  if(!game::IsCk3_121003Core26785313Descriptor(d))return false;
  const auto found=std::find(kLydSteps267V1.begin(),kLydSteps267V1.end(),step);
  if(found==kLydSteps267V1.end())return false;const auto cap=kLydCapabilities267V1[static_cast<std::size_t>(found-kLydSteps267V1.begin())];
