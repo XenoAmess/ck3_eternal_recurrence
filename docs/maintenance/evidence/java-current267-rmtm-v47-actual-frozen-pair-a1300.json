@@ -1,0 +1,117 @@
+{
+  "schema": "xar.current267.rmtm-v47.actual-frozen-pair.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-23T18:11:50.478520+00:00",
+  "status": "ACTUAL_SOFTWARE_AND_FROZEN_PAIR_READY_LIVE_NOT_RUN",
+  "actual_six_pins": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-remaining-build-a1300\\actual-six-pins.json",
+    "bytes": 1516,
+    "sha256": "5fa36a9c16b0d56987647bfb181514ffd652db73a6e4beee481010ae34abde5e"
+  },
+  "Java_frozen_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-remaining-build-a1300\\frozen-delivery-final.json",
+    "bytes": 7462,
+    "sha256": "11301d9e85352e4640830c5ec243dcbf9abdfddd61ba3ebdea1b45336dd4cde4"
+  },
+  "Java_native_pair_binding": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-remaining-build-a1300\\native-pair-binding-final.json",
+    "bytes": 3261,
+    "sha256": "f1f29ad3fb34f47980ad6c394bc686974b5fab451b7f71e64a98670f6979540f"
+  },
+  "operator_templates": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-remaining-build-a1300\\operator-templates.json",
+    "bytes": 6983,
+    "sha256": "c852158e93c41423d1fed140ad70dd826fd9095bb1b1ca70ef84d982fce2b6ae"
+  },
+  "all_original_Java328_phases_END": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-remaining-build-a1300\\all-phases-END.json",
+    "bytes": 2106,
+    "sha256": "4777fdb6bcaf1f5f82920f890caf8cce4d84e8537a80d230277c3a59468fbad8"
+  },
+  "actual_Java70_and20parser_inverse": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-remaining-build-a1300\\affected-qualification-final.json",
+    "bytes": 15485,
+    "sha256": "e4328528a5d414f9c580350f3195a0c4a91b9dd4d3a9bee8b0379a158fd76d88"
+  },
+  "actual_original_Cpp20_parser_inverse": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rmtm-current267-remaining-nogame-a01\\validation\\actual-Java20-inverse-receipt-a01.json",
+    "bytes": 34871,
+    "sha256": "db96c9cb577f74b41597984194ccc037a7279230a69b3beb4141a99a79b215e0"
+  },
+  "Java_source_push": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-remaining-build-a1300\\normal-source-push-result.json",
+    "bytes": 514,
+    "sha256": "81490c1951f94244252f6b826af181707d5b95dadd02172798f116b8bbd50dab"
+  },
+  "Native48_exact_adoption": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-remaining-build-a1300\\native48-source-adoption-a1305.json",
+    "bytes": 13364,
+    "sha256": "56f1b53a78c4137c4e51a50abc141ac07205045d2e465142f3583b764d083b4d"
+  },
+  "Native48_source_push": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-remaining-build-a1300\\native48-normal-source-push-a1305.json",
+    "bytes": 850,
+    "sha256": "1ce5efc605a9e2cafd8e1a11737fa7f5517c20c5c2370fc9012e22e390abbcd4"
+  },
+  "Native_frozen_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rmtm-finite-production-a01\\frozen-delivery-final.json",
+    "bytes": 2675,
+    "sha256": "ac32fe2824065c20c01f3a56d8ee13756edc9685af31ca8ae1c096821515b9c0"
+  },
+  "Native_refs": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rmtm-finite-production-a01\\ordinary-native-artifact-refs.json",
+    "bytes": 16431,
+    "sha256": "ca19272f64d4d21038239a75054cfb11794b536f8db6b4bb8917a219f0da06dd"
+  },
+  "NativeTree": "7974d9ade8fce6f00679e959b996d7319589865e",
+  "Native_actual_BEGIN_HEAD": "020b30c04033c7b80fb06322069d928ebb4d6193",
+  "Native_qualified_NoGame": {
+    "finite_targets_passed": 25,
+    "original_responses": 12,
+    "original_requests": 20
+  },
+  "Native_actual_production": {
+    "total_TUs": 956,
+    "CL": 32,
+    "reused": 924,
+    "Identity_exit": 0,
+    "registration": "verified",
+    "protected_drift": []
+  },
+  "new_Native_DLL": {
+    "bytes": 15198720,
+    "sha256": "b11e89024cc2f1b05a815114d1c87b4c663bf25fe2376794ec07f90a8e1c860a"
+  },
+  "Java_original70_methods_repeated": false,
+  "Java_new_JARs_copied_at_freeze": 2,
+  "Java_old_JARs_identity_reused": 156,
+  "metadata_phase_JAR_copies_or_tests_or_CRC_walk": 0,
+  "protected_Java_and_Native_pair_inputs_before_after_unchanged": true,
+  "stage5_readonly_derived_fixtures": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rmtm-readonly-two-fixtures-next-a1304\\delivery-final.json",
+    "bytes": 2207,
+    "sha256": "574d4b3c2b3177691f70be0f3172120768b517704b02c57ee6eeec7bdfd7269d"
+  },
+  "stage5_fixture_new1_END": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rmtm-readonly-two-fixtures-execution-a1304\\phase-END.json",
+    "bytes": 1154,
+    "sha256": "b5b52505159eeaa22b21396a671f49d35ebc4dba97d84e374ad25ece1e8e3ebd"
+  },
+  "first_readonly_derived_fixtures_retained": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rmtm-readonly-two-fixtures-next-a1303\\delivery-final.json",
+    "bytes": 2207,
+    "sha256": "869556c3e6f447da38cfbf19738e731df9baa0a1c7afdfec5d186676d38522ff"
+  },
+  "fixture_scope": "Original core18/threshold22 parents and36 preserved; derived19/23 add only exact2139B stage5 readonly leaf. Files are not mounted or business-qualified. Prior2090B derived cut retained.",
+  "qualification_boundary": "No live, actual loaded rules, RMTM26, D5 execute-time identity/three dumps, physical own-law/realm/effective-law runtime,50/51 business, performance or publication credit. Root new owned Saved scene remains independent. No querySequence-to-native_revision conversion or predeath substitution. RawUnavailable/UNKNOWN remains PARTIAL.",
+  "retained_failures": "First test-only colon assumption and uppercase machineId, all Source guards and Native compile/collector refusals remain at original cuts. Final production collector corrected only verifier use of actual descriptor/arrays after an optimized alias; no C++/DLL change or repeated CL/Identity.",
+  "Java_remaining_future_each": 0,
+  "Native400_remaining_future": 0,
+  "old_spent_held_and_UNKNOWN_not_refunded": true,
+  "migration_distinct_counts": {
+    "uploaded": 13,
+    "strict": 9,
+    "denominator": 17
+  },
+  "prior_CCC_DES_Notes429_and_SourceA_tag_release_artifacts_preserved": true
+}

@@ -1,4 +1,11 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
+
+## 2026-11-24 当前 RMTM v47 实际软件与新 Native 配对已闭
+
+本机已正常推送独立 RMTM Java 四族70个不同方法及20份原Cpp解析器反核资格；Native另有25个有限NoGame目标通过，48个目标按39新叶与9共享叶25处精确字节采用并正常推送。实际Native生产956TU/32CL/924复用、Identity0及登记verified，新DLL为b11e8902…；Java只在原冻结时复制2新JAR并按身份复用156旧JAR，本次metadata配对无新编包、测试或旧158CRC。Java原328四phase及Native400均真实END/future0；旧spent/held/UNKNOWN不退。先前Native-pending小节保留当时切点，最新见[实际配对索引](docs/maintenance/evidence/java-current267-rmtm-v47-actual-frozen-pair-a1300.json)。
+
+原Saved18与独立threshold22保持；两次新1MiB派生均自然退出0/Job0，最新19/23只追加2139B只读定义并将ready_succession严格绑定原stage5，原2090B派生物及全部失败保留。文件生成/软件配对不授装载、RMTM26、D5执行身份、三dump、物理law/realm、50/51、性能或发布资格，后继真实Saved现场由Root独占。独立产品计数仍13/17上传、9/17严格；CCC/DES Notes429、SourceA/tag/Frozen与公开原件不改。
+
 ## 2026-11-24 当前 RMTM v47 软件70P，Java 已冻结，新 Native 配对待闭
 
 `desktop-3fevhd2-1c74096080` 已正常采用独立 RMTM 四族薄消费者，增量取得70个不同方法通过（DATA19、Main10、原CppProducer32、私有JavaDATA守卫9），20份实际Java请求由四个原Cpp解析器各一次逆核0；不重复旧Title32、CCC或全SDK矩阵。最终仅选定两模块package一次，复制2个新JAR（19,177,472 allocated bytes）、按身份复用156个旧JAR，原158不重做CRC遍历。Compiler128/package160/freeze20已END；metadata20仍预留，等实际新Native FD，不误称整个Java328已END，不以c9daf/54a1冒新能力。首冒号测试假设及大写测试machineId的两次失败保留，只修测试，生产语义和旧共享LYD不放宽。
