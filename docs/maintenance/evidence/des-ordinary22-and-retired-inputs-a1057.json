@@ -1,0 +1,306 @@
+{
+  "schema": "xar.des.ordinary22-inputs-and-save-retirement.finite-maintenance-index.v1",
+  "at_utc": "2026-11-23T03:32:06.209034+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status": "CONTROLLED_ORDINARY_INPUTS_OBSERVED_22_DAYS_SAVED_ANNUAL_NOT_PROVEN",
+  "actual_controlled_inputs": {
+    "typed_refs": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-oldsave-inspection-a942\\ordinary-setup-actual-typed-refs-a1042.json",
+      "bytes": 3406,
+      "sha256": "14c883dfd2b63e3bd610a312ae2d4c27d07b54239d94d94d59b3a7791d9793e8"
+    },
+    "member_and_house_inputs": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-oldsave-inspection-a942\\ordinary-setup-members-finite-inputs-a1045.json",
+      "bytes": 5190,
+      "sha256": "23549fb083cd6904afd110fc00cee2ebae29e05e9acc7efca107ea4ab1fa1b67"
+    },
+    "binding_route": "Ordinary product binding, new_dynasty mode. No current267 Native CREATE or confirmation credit.",
+    "actual_rite": 150,
+    "actual_faith": 32,
+    "actual_bound_dynasty": 15400,
+    "actual_stable_main_house": 16113,
+    "cross_rite_AI_guard_probe": {
+      "actor": 77331,
+      "actual_rite": 6,
+      "actual_house": 16113,
+      "bound_rite": 150,
+      "scope": "Finite controlled cross-Rite guard input/observation, not universal AI behavior or annual recovery."
+    },
+    "AI_primitive_bypass_cadet_input": {
+      "actor": 77332,
+      "actual_rite": 6,
+      "actual_house": 16114,
+      "parent_main_house": 16113,
+      "actual_dynasty": 15400
+    },
+    "player_primitive_cadet_input": {
+      "actor": 36423,
+      "actual_rite": 150,
+      "actual_house": 16115,
+      "parent_main_house": 16113,
+      "actual_dynasty": 15400
+    },
+    "independent_control": {
+      "actual_dynasty": 15399,
+      "main_house": 16111,
+      "cadet_house": 16112,
+      "actor": 77330
+    },
+    "head_candidate_and_title": "Only actual inputs: actor77333 and title19694; no head transfer/following result granted."
+  },
+  "actual_end22": {
+    "Root_actual_known_natural_day_advances": 22,
+    "checkpoint_summary": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly-current267-profile-a1033\\operations\\checkpoint-end22\\result\\summary.json",
+      "bytes": 16621,
+      "sha256": "111d4e933e97052b388250cb1aaf6e89b4447ed71d9139f7b35162beac11cfeb"
+    },
+    "actual_player_readback": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-oldsave-inspection-a942\\ordinary-end22-player-finite-readback-a1057.json",
+      "bytes": 2326,
+      "sha256": "a6970f94a5478649f45d9353f00132883d7afccf6de9b7ffbb9e13dea2176a23"
+    },
+    "Saved_date": "1066.11.7",
+    "source_date_raw": 53145600,
+    "player": 36423,
+    "player_rite": 150,
+    "player_house": 16115,
+    "save_calls_in_end22_checkpoint": 1,
+    "archive_witness_from_original_summary": {
+      "reference": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly-current267-profile-a1033\\checkpoints\\des-ordinary-dynasty-end22.ck3",
+        "bytes": 168406845,
+        "sha256": "0667ba1f52aaaefbaea8512055b53262e33ffff8e87bc1f45c23bcd776df76f6"
+      },
+      "identity": {
+        "bytes": 168406845,
+        "file_id": "1407374888760553",
+        "mtime_ns": "1795402824188113900"
+      }
+    },
+    "archive_is_copy_not_another_SAVE": true,
+    "changed_physical_material_observed": true,
+    "Native_physical_save_confirmed": false,
+    "current_source_output_availability": "The original three profile outputs are now retired/unreadable per the a1033 actual cleanup below. Use the distinct retained0667 archive, never those historical output paths.",
+    "setup5f_checkpoint": {
+      "reference": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly-current267-profile-a1033\\profile-states\\gui-cbd611565d4e402d98c9303e9c561626\\profile\\save games\\xar_checkpoint.ck3",
+        "bytes": 166772974,
+        "sha256": "5f50c6a404daed297ec22f6612e719c75dadaaf9ffec1f2eadce02652569de74"
+      },
+      "identity": {
+        "bytes": 166772974,
+        "file_id": "281474981917931",
+        "mtime_ns": "1795401089163629600"
+      }
+    },
+    "setup_archive": "Root reports independent setup5f archive retained; the historical live checkpoint baseline path was later replaced/retired and is not a substitute for the archive."
+  },
+  "day23_known_preARM_refusal": {
+    "original_token": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly-current267-profile-a1033\\operations\\advance-day23\\result\\date-advance\\read-result-token.json",
+      "bytes": 1037,
+      "sha256": "0ef839bdb742c4e329fe0f455d61bf9b4043aaadf6c23070b1cd1442863a34af"
+    },
+    "operation_id": "date-op-246682185e84460d92bc9768879e07ce",
+    "status": "rejected",
+    "failure_flags": 0,
+    "claim_found": false,
+    "arm_attempted": false,
+    "resume_attempted": false,
+    "resume_submitted": false,
+    "claim_sequence": null,
+    "generation": null,
+    "raw_core_before": {
+      "date_raw": 53145600,
+      "speed": 3,
+      "paused": true,
+      "local_player_id": 1,
+      "map_ready": true,
+      "has_played_character": true,
+      "played_character_id": 36423,
+      "played_character_alive": true
+    },
+    "Native_source_diagnosis": "RuntimeEventTimeGate blocked, preclaim/preARM; not64-claim capacity. Original raw token/deadline/refusal remains unchanged and un-replayed."
+  },
+  "actual_scene_terminal": {
+    "terminal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly-current267-profile-a1033\\owner\\terminal.json",
+      "bytes": 1069,
+      "sha256": "7f3043eeabde57c73eb1c21e82ab693d36942beb12c632abf1d0a2fb929dc649"
+    },
+    "creator_end": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly-current267-profile-a1033\\creator-end.json",
+      "bytes": 612,
+      "sha256": "c3a1eb16b03ba0eeb1f861877f6a2f3102bae917f0c18dbeb774d8183b55f6c2"
+    },
+    "Game": {
+      "creation_filetime": "134398744666271106",
+      "executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "pid": 3584
+    },
+    "creator_PID": 6660,
+    "terminal_kind": "NATURAL_EXIT",
+    "Game_exit_code": 0,
+    "creator_exit_code": 0,
+    "Job_active_processes": 0,
+    "cleanup_proven": true,
+    "observed_at_utc": "2026-11-23T03:01:24.220042300Z"
+  },
+  "actual_retirements": [
+    {
+      "scope": "a962_three_output_replicas",
+      "actual_result": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-a962-save-duplicates-reclamation-a01\\actual-result.json",
+        "bytes": 5194,
+        "sha256": "93b45d6e18ff1923f121db0907fd82e366fb347d32dcbf8fabc2cc8308362e60"
+      },
+      "actual_removed_allocated_bytes": 505884672,
+      "actual_removed_logical_bytes": 505878156,
+      "deleted_originals": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\des-legacy-preset-migration-current267-profile-a962\\profile-states\\gui-69d9ea1ccb1c4ccb92599a8a88d4712b\\profile\\last_save.ck3",
+          "FileID128": "4b204f00000001000000000000000000",
+          "sha256": "6195cb119a7bd9eb57d10e4646e7390efd5bdfe802480f9da3e3d5b98ff579b0",
+          "availability": "DELETED_ORIGINAL_REPLICA_UNREADABLE",
+          "allocated_bytes": 168628224
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\des-legacy-preset-migration-current267-profile-a962\\profile-states\\gui-69d9ea1ccb1c4ccb92599a8a88d4712b\\profile\\save games\\autosave.ck3",
+          "FileID128": "49204f00000001000000000000000000",
+          "sha256": "6195cb119a7bd9eb57d10e4646e7390efd5bdfe802480f9da3e3d5b98ff579b0",
+          "availability": "DELETED_ORIGINAL_REPLICA_UNREADABLE",
+          "allocated_bytes": 168628224
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\des-legacy-preset-migration-current267-profile-a962\\profile-states\\gui-69d9ea1ccb1c4ccb92599a8a88d4712b\\profile\\save games\\xar_checkpoint.ck3",
+          "FileID128": "4c204f00000001000000000000000000",
+          "sha256": "6195cb119a7bd9eb57d10e4646e7390efd5bdfe802480f9da3e3d5b98ff579b0",
+          "availability": "DELETED_ORIGINAL_REPLICA_UNREADABLE",
+          "allocated_bytes": 168628224
+        }
+      ],
+      "independent_retained_archive": {
+        "bytes": 168626052,
+        "metadata": {
+          "allocated_bytes": 168628224,
+          "attributes": 32,
+          "creation_filetime": "134398658890198437",
+          "delete_pending": false,
+          "directory": false,
+          "file_id128": "4d204f00000001000000000000000000",
+          "links": 1,
+          "logical_bytes": 168626052,
+          "mtime_ns": 1795392280968555600,
+          "volume_serial": "7220568048185129294"
+        },
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-legacy-preset-migration-current267-profile-a962\\checkpoints\\des-legacy-preset-migration-after.ck3",
+        "sha256": "6195cb119a7bd9eb57d10e4646e7390efd5bdfe802480f9da3e3d5b98ff579b0"
+      },
+      "current_availability": "Deleted original identities are retired and unreadable; retained archive is a distinct identity. No direct Save re-read or OS deletion was performed by this docs unit."
+    },
+    {
+      "scope": "a1033_three_output_replicas",
+      "actual_result": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-a1033-save-duplicates-reclamation-a01\\actual-result.json",
+        "bytes": 5176,
+        "sha256": "81516bcb0c979a0f8f98eca72e03814b7cdc74580a488d6061907a0207e56fa0"
+      },
+      "actual_removed_allocated_bytes": 505221120,
+      "actual_removed_logical_bytes": 505220535,
+      "deleted_originals": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly-current267-profile-a1033\\profile-states\\gui-cbd611565d4e402d98c9303e9c561626\\profile\\last_save.ck3",
+          "FileID128": "ea744f00000001000000000000000000",
+          "sha256": "0667ba1f52aaaefbaea8512055b53262e33ffff8e87bc1f45c23bcd776df76f6",
+          "availability": "DELETED_ORIGINAL_REPLICA_UNREADABLE",
+          "allocated_bytes": 168407040
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly-current267-profile-a1033\\profile-states\\gui-cbd611565d4e402d98c9303e9c561626\\profile\\save games\\autosave.ck3",
+          "FileID128": "097c4f00000001000000000000000000",
+          "sha256": "0667ba1f52aaaefbaea8512055b53262e33ffff8e87bc1f45c23bcd776df76f6",
+          "availability": "DELETED_ORIGINAL_REPLICA_UNREADABLE",
+          "allocated_bytes": 168407040
+        },
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly-current267-profile-a1033\\profile-states\\gui-cbd611565d4e402d98c9303e9c561626\\profile\\save games\\xar_checkpoint.ck3",
+          "FileID128": "eb744f00000001000000000000000000",
+          "sha256": "0667ba1f52aaaefbaea8512055b53262e33ffff8e87bc1f45c23bcd776df76f6",
+          "availability": "DELETED_ORIGINAL_REPLICA_UNREADABLE",
+          "allocated_bytes": 168407040
+        }
+      ],
+      "independent_retained_archive": {
+        "bytes": 168406845,
+        "metadata": {
+          "allocated_bytes": 168407040,
+          "attributes": 32,
+          "creation_filetime": "134398764322261069",
+          "delete_pending": false,
+          "directory": false,
+          "file_id128": "e9744f00000005000000000000000000",
+          "links": 1,
+          "logical_bytes": 168406845,
+          "mtime_ns": 1795402824188113900,
+          "volume_serial": "7220568048185129294"
+        },
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly-current267-profile-a1033\\checkpoints\\des-ordinary-dynasty-end22.ck3",
+        "sha256": "0667ba1f52aaaefbaea8512055b53262e33ffff8e87bc1f45c23bcd776df76f6"
+      },
+      "current_availability": "Deleted original identities are retired and unreadable; retained archive is a distinct identity. No direct Save re-read or OS deletion was performed by this docs unit."
+    },
+    {
+      "scope": "a981_single_initial_derived_input",
+      "actual_result": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-a981-initial-input-reclamation-a01\\actual-result.json",
+        "bytes": 2700,
+        "sha256": "c4cf76beb2303af6f35cb56c13e31473ae3cca54710aa79568617d6efb47cf98"
+      },
+      "actual_removed_allocated_bytes": 166797312,
+      "actual_removed_logical_bytes": 166793469,
+      "deleted_originals": [
+        {
+          "path": "D:\\ck3-state\\upgrade-20261118\\des-new-dynasty-yearly-current267-profile-a981\\profile-states\\gui-c719f07b65e54f37bf7efc11a6b01f56\\profile\\save games\\des-annual-oldsave71-after.ck3",
+          "FileID128": "bf4a4f00000001000000000000000000",
+          "sha256": "bc1b3daf368922dfb7e0a87cb71b4db2000fbb85caaecd65a93667bcf9de3279",
+          "availability": "DELETED_ORIGINAL_REPLICA_UNREADABLE",
+          "allocated_bytes": 166797312
+        }
+      ],
+      "independent_retained_archive": {
+        "bytes": 166793469,
+        "metadata": {
+          "allocated_bytes": 166797312,
+          "attributes": 32,
+          "creation_filetime": "134398617259728068",
+          "delete_pending": false,
+          "directory": false,
+          "file_id128": "1df84e00000001000000000000000000",
+          "links": 1,
+          "logical_bytes": 166793469,
+          "mtime_ns": 1795388120155473200,
+          "volume_serial": "7220568048185129294"
+        },
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-performance-oldsave-current267-profile-a940\\checkpoints\\des-annual-oldsave71-after.ck3",
+        "sha256": "bc1b3daf368922dfb7e0a87cb71b4db2000fbb85caaecd65a93667bcf9de3279"
+      },
+      "current_availability": "Deleted original identities are retired and unreadable; retained archive is a distinct identity. No direct Save re-read or OS deletion was performed by this docs unit."
+    }
+  ],
+  "retired_prepared_input_rule": "The a981 old prepared input profile/save games/des-annual-oldsave71-after.ck3 is explicitly retired and unreadable. Its old prepared-case pin is historical, not an active consumer. Do not rerun an old wrapper or cite this deleted path as an available input; a new attempt must bind the retained archive separately.",
+  "storage_scope": "Root performed fullSHA/independent identity/short-CAS/lock-outside exact-handle deletion. This is explicit retired Save-replica scope, not seven-day video authorization. Cbulk0/noonline and no held/spent refund; no volume free-space attribution.",
+  "not_granted": [
+    "Jan1/annual all-members recovery",
+    "Head succession/following",
+    "Native Create/Accept",
+    "population wallclock performance",
+    "whole product or whole SDK",
+    "formal release"
+  ],
+  "this_docs_unit": "Read only small existing JSON originals; no Save body/OS/Game/SDK/Steam/HTTP/JVM/test/compiler/build/cleanup action. Normal docs-only commit/push; no product SourceA/tag/version change.",
+  "Workshop_published_count": 12,
+  "strict_closed_count": 9,
+  "denominator": 17,
+  "DES_published": false
+}
