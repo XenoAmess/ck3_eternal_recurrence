@@ -1,5 +1,13 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-24 当前 RMTM Origin 修复软件已闭，实机 D4 Offer 仍 UNKNOWN
+
+`desktop-3fevhd2-1c74096080` 已正常推送 Origin 三叶 `e140c42354a533369f8e6ed31907f043a66f7e56`／NativeTree `65069fb35d3f5ca5b22fc3141f468b420bda7d5b`。27 个必要 NoGame case 通过，生产956/1CL/955复用及 Identity/登记通过；ND `6d904200…`／DLL `d6ecabd3…` 与原 Java MFc770／args eff3 配成实际六针 `428ae047…`，新 metadata20 已 END/future0，未重编 Java、测试或复制 JAR。这些软件／产物事实不授实机成功。
+
+a1370 场的唯一 original-case-a1372 完成4自然日、2次原事件ACK及独立absence、D3 freshRole/物理title-law/九席和D4 Budget取消独立hidden；随后 A-open 再次 UNKNOWN。读前真实 `open_admissible=true`，actor40180／recipient33664非self；原1417B回执为effect=true、returned=false、cleanup=false、claim3，stage10/completed9、ItemCan未入、seh0，末子步骤为official_opener_guards。不能据此证明窗口已打开或确定旧首因；原请求、body、期限和UNKNOWN不重发、不回写。normal-quit-a1373请求与独立Natural0/Job0/cleanup、creator0分列。
+
+本场4153个生成输入副本实际退役357602048 allocated bytes，旧初始Save副本及重复shader路径现不可读，821原S0／940master／logs／SDK保留，不重跑旧wrapper、不退spent/held。官方可见性getter含动画状态，与物理mask并不等价；实际flags未捕获，后继getter／最小遥测仍Source-only，未编译或授Runtime P。原独立50/51有限通过保留，本轮RMTM26／D5三dump／三物理phase／新正式发布仍未闭；计数仍13/17上传、9/17严格，旧429及全部失败保留。[本次紧凑事实与精确原件](docs/maintenance/evidence/rmtm-current267-origin-core-offer-unknown-a1373.json)。下方记录保留较早切点。
+
 ## 2026-11-24 当前 RMTM：独立50/51有限通过，Core Offer仍UNKNOWN
 
 `desktop-3fevhd2-1c74096080` 当前实际tuple `929224d3…`，Java MF `c770187a…`／args `eff331fe…`保持冻结；Native `1d34cabd…` 已真实装载，其实际BEGIN HEAD `c675936068a6`／NativeTree `034ace2e…`保留。a1333 Core场完成4自然日、2次原事件ACK及独立absence、D3 freshRole/物理title-law与九席、D4 Budget取消独立hidden，随后Offer Open再次返回效果已尝试但返回/清理未知的原UNKNOWN；没有重发，原因及实际faultPC/SEH未观察，后继诊断仅外置Source。D3 heir44132的alive=true仅当前DATA，不替D5执行见证。

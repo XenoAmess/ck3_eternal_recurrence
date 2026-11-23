@@ -1,0 +1,151 @@
+{
+  "schema": "xar.rmtm.current267.origin-core-offer-unknown.machine-facts.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "game": {
+    "version": "1.21.0.3",
+    "build": 26785313,
+    "executable_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28"
+  },
+  "software_and_frozen_artifacts": {
+    "actual_source_HEAD": "e140c42354a533369f8e6ed31907f043a66f7e56",
+    "NativeTree": "65069fb35d3f5ca5b22fc3141f468b420bda7d5b",
+    "qualified_source": {
+      "path": "D:/ck3-state/upgrade-20261118/rmtm-offer-origin-nogame-a1365/validation/software-qualified-source-final.json",
+      "bytes": 11374,
+      "sha256": "3e133fce350b61adbc5f40dee62326bb2485e1ef8e3fce6ff7d7e0e088433beb"
+    },
+    "NoGame_distinct_cases_passed": 27,
+    "actual_production_TUs_CL_reuse": [956, 1, 955],
+    "identity_exit": 0,
+    "registration": "verified",
+    "native_delivery": {
+      "path": "D:/ck3-state/upgrade-20261118/native-current267-rmtm-offer-origin-production-a1365/frozen-delivery-final.json",
+      "bytes": 2685,
+      "sha256": "6d904200f44ddc407103360cf0377a9b966900aee11e1a654fdd7796ca801388"
+    },
+    "native_refs": {
+      "path": "D:/ck3-state/upgrade-20261118/native-current267-rmtm-offer-origin-production-a1365/ordinary-native-artifact-refs.json",
+      "bytes": 18377,
+      "sha256": "82fb29f738eed661b4d02273a88c2bae5df993a5974b1835d139448133fb5d8b"
+    },
+    "DLL_sha256": "d6ecabd3acfaec056a81aeca3c927833dc665ff429b2be2cad10675d2613dd4c",
+    "actual_sixpins": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-rmtm-offer-origin-pair-a1365/actual-six-pins.json",
+      "bytes": 1534,
+      "sha256": "428ae04765e6eaea828fdc7cb117372b931763b8cafac5ce0ff8ac1e4d31bcbb"
+    },
+    "Java_runtime_manifest_sha256": "c770187a8b2a05e1260852d6f39a165f26e88eea9655ceb24865795307c123e4",
+    "Java_classpath_args_sha256": "eff331fe148e151f03448a8b77c4d4b5d59a1ea9fe910f5a68bfd03b2a8f6a7d",
+    "Java_compiled_source_HEAD_unchanged": "dee3c1cfa184b39e46c9d46da8a23e1c9bcc7d40",
+    "metadata_END": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-rmtm-offer-origin-pair-a1365/all-phases-END.json",
+      "bytes": 4642,
+      "sha256": "61af1a4324beb5694aa00f504f9d3c556bb67ce58ce5acfd44098b77274a2808"
+    },
+    "metadata_new_JAR_copies": 0,
+    "metadata_Maven_tests_or_old158CRC": 0,
+    "metadata_held_upper_bytes": 40960,
+    "metadata_remaining_future_bytes": 0,
+    "scope": "Software/production closure only. New actual scene outcome is independently PARTIAL below; old UNKNOWN is not settled."
+  },
+  "actual_core_scene": {
+    "scene": "rmtm-current267-original-case-profile-a1370",
+    "operation": "original-case-a1372",
+    "status": "FINITE_PARTIAL_OFFER_UNKNOWN_PRESERVED",
+    "Root_facts": {
+      "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/RMTM-repaired-core-D4-offer-UNKNOWN-PARTIAL-a1373.json",
+      "bytes": 3481,
+      "sha256": "57badfb69cb766ab75cd08e8b11d675c01835b1653df3e11b8e060dd7cbf0c3a"
+    },
+    "original_progress": {
+      "path": "D:/ck3-state/upgrade-20261118/rmtm-current267-original-case-profile-a1370/operations/original-case-a1372/result/current-rmtm-progress.json",
+      "bytes": 298793,
+      "sha256": "9dedd5058f75cbf4058a7a5fc8813e62f1d18542e19034e707fb4e7d567734b3"
+    },
+    "advance_calls": 4,
+    "event_ACK_calls": 2,
+    "decision_calls": 0,
+    "Save_calls": 0,
+    "finite_observations": "Both original event ACKs and independent absence, D3 fresh role/physical title-law/council and D4 Budget Open/Cancel/independent hidden. D3 own0/scriptOwn=false/realm=true and heir44132 alive=true retain their DATA scope, not D5/26 proof.",
+    "before_Offer": {
+      "open_admissible": true,
+      "actor_full_id": 40180,
+      "recipient_full_id": 33664,
+      "recipient_nonself": true
+    },
+    "original_UNKNOWN": {
+      "path": "D:/ck3-state/upgrade-20261118/rmtm-current267-original-case-profile-a1370/operations/original-case-a1372/result/rmtm-d4-offer-a-open-result/read-raw-return.json",
+      "bytes": 1417,
+      "sha256": "d3a360697e0141705c1c99385c02c55bddccd53af7da2e7e6ce81df3e662d060"
+    },
+    "request_id": "rmtm-observation-ui-19a115b88a7b492a97b761a6959b556d",
+    "claim_sequence": "3",
+    "effect_attempted": true,
+    "native_returned": false,
+    "cleanup_known": false,
+    "source_available": false,
+    "diagnostic": {
+      "stage": 10,
+      "completed": 9,
+      "ItemCan_entered": false,
+      "seh_recorded": false,
+      "last_substep": "offer_official_opener_guards",
+      "window_opened": "NOT_OBSERVED",
+      "unique_cause": "UNRESOLVED"
+    },
+    "normal_quit_request": {
+      "path": "D:/ck3-state/upgrade-20261118/rmtm-current267-original-case-profile-a1370/operations/normal-quit-a1373/result/summary.json",
+      "bytes": 14612,
+      "sha256": "c2af138c2aa2a3c2f6516c6abde8fa74a68717730a1f15698c2704bdacb8f846"
+    },
+    "actual_terminal": {
+      "path": "D:/ck3-state/upgrade-20261118/rmtm-current267-original-case-profile-a1370/owner/terminal.json",
+      "bytes": 1057,
+      "sha256": "4dfa1f8824f3da1a8cb70a602b01059ea7d8bab33ae68b35ba88e82c34e31c00"
+    },
+    "creator_END": {
+      "path": "D:/ck3-state/upgrade-20261118/rmtm-current267-original-case-profile-a1370/creator-end.json",
+      "bytes": 595,
+      "sha256": "da56593d985900166534b28d64afd8ad5bdd7411c0c2f560c21b82ff15100a88"
+    },
+    "actual_Natural_exit_code": 0,
+    "actual_Job_active": 0,
+    "actual_cleanup_proven": true,
+    "creator_exit_code": 0,
+    "UNKNOWN_body_deadline_preserved_no_replay": true
+  },
+  "visibility_static_boundary": {
+    "delivery": {
+      "path": "D:/ck3-state/upgrade-20261118/current267-rmtm-visibility-flags-static-a1370/delivery-final.json",
+      "bytes": 862,
+      "sha256": "3f0da734f7c5d80869c30018451d726b390eb49233df482b78dee658a8c763a7"
+    },
+    "facts": "Official two-view getter +0x38 bool/2516E20 includes animation state, so it is not equivalent to a physical raw mask. bit0x10 is requestedHidden and bit0x08 propagated; actual flags were not captured, so no particular original branch is established.",
+    "next_getter_and_minimal_telemetry": "SOURCE_ONLY_NOT_COMPILED_NOT_RUNTIME_QUALIFIED"
+  },
+  "actual_duplicate_reclamation": {
+    "receipt": {
+      "path": "D:/ck3-state/upgrade-20261118/RMTM-coreUnknown-duplicate-reclamation-a1373/actual-result.json",
+      "bytes": 2046798,
+      "sha256": "026c9212b62cbdbaae9583416e5c6ebe09204df9e22fde4df7dd83dd34b5040e"
+    },
+    "retired_count": 4153,
+    "allocated_removed_bytes": 357602048,
+    "availability": "RETIRED_PROFILE_INPUT_UNREADABLE",
+    "scope": "This closed scene's initial Save copy and 4152 duplicate shader files only. Original821S0,940master,logs,SDK and other inputs remain; old prepared paths/wrappers cannot be reused.",
+    "archives_unchanged": true,
+    "old_spent_held_refund": false,
+    "volume_free_delta": "NOT_ATTRIBUTED"
+  },
+  "boundaries": {
+    "prior_independent_50_51_finite_PASS": "Preserved at rmtm-current267-alive-core-partial-and-threshold-finite-a1349.json; this new core scene does not repeat or replace it.",
+    "D5_execute_identity_three_scope_dumps": "NOT_OBSERVED_NOT_PASSED",
+    "all_three_physical_phases": "NOT_PASSED",
+    "RMTM_26_whole_product_formal_current267_publication": "NOT_PASSED_NOT_PERFORMED",
+    "uploaded_distinct_products": 13,
+    "strict_finite_release_complete_products": 9,
+    "total_products": 17,
+    "Notes429_and_all_old_failures_UNKNOWN_SourceA_tags_frozen_artifacts": "Preserved",
+    "this_docs_unit_Maven_tests_JVM_Game_Steam_HTTP_cleanup_calls": 0
+  }
+}
