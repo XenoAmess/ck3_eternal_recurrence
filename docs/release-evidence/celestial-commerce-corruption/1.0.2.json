@@ -1,0 +1,103 @@
+{
+  "schema": "ck3.workshop-release-evidence.v1",
+  "status": "FORMAL_READY_PUBLICATION_NOT_RUN",
+  "release_complete": false,
+  "product": "mod_celestial_commerce_corruption",
+  "version": "1.0.2",
+  "workshop_item_id": "3804807463",
+  "forbidden_upstream_target_id": "3596263413",
+  "previous_public_version": "1.0.1",
+  "release_tag": "celestial-commerce-corruption-v1.0.2",
+  "release_commit": "7724df83655475197a39042e9dbef20ae7fd2fde",
+  "tag_object": "1aa795badaa44d01e173179aaa72a89bae9369bc",
+  "formal_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-formal-release-a1273\\formal-delivery-final.json",
+    "bytes": 6834,
+    "sha256": "ef5e6c5edc7ea6dff5ea55526d9a8bf593966564f606ccb5b24f0b6ff6681541"
+  },
+  "formal_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-formal-release-a1273\\mod_celestial_commerce_corruption-v1.0.2.manifest.json",
+    "bytes": 4142,
+    "sha256": "e022bcf394430ffb0f4b30313e154ade329af535d349916fb06eb015c31ed68a"
+  },
+  "formal_archive": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-formal-release-a1273\\mod_celestial_commerce_corruption-v1.0.2.zip",
+    "bytes": 1158622,
+    "sha256": "a2e4bdedb910e4de1a8ac8bf6d363580f20b6469413710e5b13ce7d5da6c8394"
+  },
+  "actual_accepted_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc-popular-opinion-candidate-a1260\\staging.manifest.json",
+    "bytes": 4108,
+    "sha256": "ef91a20a56f72e1bbc4c5e42c0194cbcabc982185dc90e8028607a1239e19083"
+  },
+  "metadata_file_refs": {
+    "title": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-formal-release-a1273\\metadata\\title.txt",
+      "bytes": 58,
+      "sha256": "c9fa3d584acef6aa9d2f71ac6334e84ad194b4849ceca5a1df235f6ffbc68288"
+    },
+    "description": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-formal-release-a1273\\metadata\\workshop-description.bbcode",
+      "bytes": 6978,
+      "sha256": "0fd54f13bdca67836cd6702571a20741ff750deaf6998e0c99ed42c6aedd9556"
+    },
+    "change_note": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-formal-release-a1273\\metadata\\change-notes.txt",
+      "bytes": 2031,
+      "sha256": "32fe43325f4414c0242a0a595bf8a4f3a2cb8bb350621983276d040674851f27"
+    }
+  },
+  "source_tag_mapping": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-formal-release-a1273\\CodeSource-source-tag-mapping.json",
+    "bytes": 12496,
+    "sha256": "27f5c19bad67066af05ed72f9d0d91b3ba099305b68afa1ff8d030e5a6787c30"
+  },
+  "source_tag_record": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-formal-release-a1273\\source-tag-record.json",
+    "bytes": 993,
+    "sha256": "014081d62affc61334e88715f6be0e47a14c5021a4c9db8402fcb3f593c5c4fb"
+  },
+  "actual_build": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-formal-release-a1273\\build-result.json",
+    "bytes": 618,
+    "sha256": "96f041dc186742d7a9971266f677cb7e44eba3ac4a154eb061e321893cfa3d7a"
+  },
+  "actual_verify": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-formal-release-a1273\\verify-result.json",
+    "bytes": 604,
+    "sha256": "0511e83e7836e971c2dfbf682e3e6107ac5e2886be26c050953eb807c2e73372"
+  },
+  "all22_formal_bytes_and_ZIP_equal_accepted_candidate": true,
+  "finite_Root_business": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\CCC-new22-popular-opinion-and-original-case-finite-PASS-a1271.json",
+    "bytes": 7659,
+    "sha256": "204d0cd13d84be7119fa395a0fba637828eb44d5fb023fbeb1ed98de3c5454c4"
+  },
+  "raw_native_expiry_null_and_false_flags_unchanged": true,
+  "phase_END": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-formal-release-a1273\\formal8-END.json",
+    "bytes": 654,
+    "sha256": "c94694be6f54e06a1cd925371417af071ffd5b094b4a67e8b1ac1afaffb27d85"
+  },
+  "held_allocation_upper_bytes": 3608576,
+  "future_reserved_bytes": 0,
+  "old_spent_held_not_refunded": true,
+  "published_at_utc": null,
+  "native_publish": null,
+  "public_exact": null,
+  "fresh_download": null,
+  "actual_cache_load": null,
+  "distinct_counts": {
+    "uploaded": 12,
+    "strict_complete": 9,
+    "total": 17
+  },
+  "pending_completion": [
+    "Root actual publisher local plan/freeze/check-only",
+    "one canonical SDK Submit, actual download and offline restoration",
+    "independent full public API/Notes verification",
+    "actual downloaded cache match and CK3 load/normal exit"
+  ],
+  "SourceB_does_not_move_SourceA_tag_or_artifacts": true,
+  "scope": "Actual new22 finite current267 loader/three-day tier4/half/once ordinaryConfirm/new-instance temporary withdrawal/full census/four absent traits/full native disabled cooldown tooltip through1069.9.18 and actual falseCan. Reserved native expiry null and applied/readback/eventclosed flags false remain. No net county opinion/treasury transfers/alltiers/alllanguages/permanentoptout/full three-year wait/save persistence/wholeSDK/performance or publication qualification. All22 formal bytes and ZIP exactly equal accepted candidate; SourceA/tag remain independent from later SourceB documentation HEAD."
+}
