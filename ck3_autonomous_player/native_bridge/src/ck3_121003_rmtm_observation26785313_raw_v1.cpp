@@ -36,10 +36,11 @@ template<class T>bool At(std::uintptr_t p,std::size_t off,T&v)noexcept{return p&
  if(id==invalid||!At(db,0x2C,count)||index>=count||!At(db,0x20,rows)||!At(rows,static_cast<std::size_t>(index)*16+8,p)||!p||p==fallback||!At(p,idOff,actual)||actual!=id)return false;out=p;return true;
 }
 [[maybe_unused]]bool Character(const ReadonlyBindings&b,const RmtmObservationFrame267V1&f,std::uint32_t id,std::uintptr_t&out,bool&alive){
- std::uintptr_t fallback=0,living=0,dead=0;std::uint32_t magic=0;
- if(!At(b.module_base,0x68A8930,fallback)||!Resolve(reinterpret_cast<std::uintptr_t>(f.role.world.storage),fallback,id,0x18,out)||!At(out,0x1C,magic)||magic!=0x43686172U||!At(out,0x1C0,living)||!At(out,0x1D0,dead))return false;
+ std::uintptr_t fallback=0,dead=0;std::uint32_t magic=0;
+ if(!At(b.module_base,0x68A8930,fallback)||!Resolve(reinterpret_cast<std::uintptr_t>(f.role.world.storage),fallback,id,0x18,out)||!At(out,0x1C,magic)||magic!=0x43686172U||!At(out,0x1D0,dead))return false;
  __try{if(ck3_1210::ResolveCoreCharacter(b.core,std::bit_cast<std::int32_t>(id))!=reinterpret_cast<void*>(out))return false;}__except(EXCEPTION_EXECUTE_HANDLER){return false;}
- alive=living&&!dead;return true;
+ // Official current859 Character.IsAlive does not require optional +1C0.
+ alive=dead==0;return true;
 }
 [[maybe_unused]]bool String(std::uintptr_t p,std::size_t max,std::string&out,std::vector<std::byte>&proof,bool key=false){
  std::array<std::byte,32>a{},z{};std::uint64_t len=0,cap=0;std::uintptr_t data=p;

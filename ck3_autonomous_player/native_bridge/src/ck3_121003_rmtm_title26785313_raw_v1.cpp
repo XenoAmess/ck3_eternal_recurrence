@@ -50,12 +50,13 @@ bool Resolve(std::uintptr_t storage,std::uintptr_t fallback,std::uint32_t id,std
  out=p;return true;
 }
 bool Character(const ReadonlyBindings&b,const RmtmTitleFrame267V1&f,std::uint32_t id,std::uintptr_t expected,RmtmTitleCharacter267V1&out)noexcept {
- std::uintptr_t fallback=0,p=0,living=0,dead=0;std::uint32_t magic=0;
+ std::uintptr_t fallback=0,p=0,dead=0;std::uint32_t magic=0;
  if(!At(b.module_base,char_fallback_rva,fallback)||!Resolve(f.storage,fallback,id,0x18,p)||
- (expected&&p!=expected)||!At(p,0x1C,magic)||magic!=0x43686172U||!At(p,0x1C0,living)||!At(p,0x1D0,dead))return false;
+ (expected&&p!=expected)||!At(p,0x1C,magic)||magic!=0x43686172U||!At(p,0x1D0,dead))return false;
  __try{if(ck3_1210::ResolveCoreCharacter(b.core,std::bit_cast<std::int32_t>(id))!=reinterpret_cast<void*>(p))return false;}
  __except(EXCEPTION_EXECUTE_HANDLER){return false;}
- out={id,living!=0&&dead==0};return true;
+ // Official current859 Character.IsAlive: valid Character, death pointer zero.
+ out={id,dead==0};return true;
 }
 struct Array16 {std::uintptr_t data=0;std::int32_t capacity=0,count=0;friend bool operator==(const Array16&,const Array16&)=default;};
 static_assert(sizeof(Array16)==16);

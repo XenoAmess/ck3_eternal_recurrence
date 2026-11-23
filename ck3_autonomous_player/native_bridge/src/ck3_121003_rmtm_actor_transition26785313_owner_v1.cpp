@@ -35,9 +35,12 @@ struct ResumeAdmission{RmtmTransitionContext267V1&q;const ck3_11906::MainThreadE
  if(!fresh.current_image_verified||fresh.offline_fixture||!CurrentCommandTargetsMatchV1(fresh)||fresh.commands.command_manager!=a.commands.commands.command_manager||fresh.commands.queue_owned_command!=a.commands.commands.queue_owned_command||fresh.commands.pause_primary_vtable!=a.commands.commands.pause_primary_vtable||fresh.commands.pause_secondary_vtable!=a.commands.commands.pause_secondary_vtable||!Time(q))return false;
  q.result.progress->resume_attempted=true;return true;
 }
+// Actual death witness = valid private predecessor fullID AND !official IsAlive.
+// This is not a component-release/lifetime test; all pending/worker/epoch guards stay.
 bool RmtmActualPredecessorDead267V1(const ReadonlyBindings&b,std::int32_t expected)noexcept{
- __try{const auto p=reinterpret_cast<std::uintptr_t>(ck3_1210::ResolveCoreCharacter(b.core,expected));std::uint32_t id=0xFFFFFFFFU,magic=0;std::uintptr_t living=0,dead=0;
-  if(p){std::memcpy(&id,reinterpret_cast<void*>(p+0x18),4);std::memcpy(&magic,reinterpret_cast<void*>(p+0x1C),4);std::memcpy(&living,reinterpret_cast<void*>(p+0x1C0),8);std::memcpy(&dead,reinterpret_cast<void*>(p+0x1D0),8);}return p&&id==static_cast<std::uint32_t>(expected)&&magic==0x43686172U&&!living&&dead;
+ if(expected==-1)return false;
+ __try{const auto p=reinterpret_cast<std::uintptr_t>(ck3_1210::ResolveCoreCharacter(b.core,expected));std::uint32_t id=0xFFFFFFFFU,magic=0;std::uintptr_t dead=0;
+  if(p){std::memcpy(&id,reinterpret_cast<void*>(p+0x18),4);std::memcpy(&magic,reinterpret_cast<void*>(p+0x1C),4);std::memcpy(&dead,reinterpret_cast<void*>(p+0x1D0),8);}return p&&id==static_cast<std::uint32_t>(expected)&&magic==0x43686172U&&dead!=0;
  }__except(EXCEPTION_EXECUTE_HANDLER){return false;}
 }
 bool ExactProof(const ck3_1210::RmtmFixedDayProof267V1&p,const RmtmTransitionRequest267V1&q,const RmtmRoleFrame267V1&before)noexcept{
