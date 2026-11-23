@@ -1,0 +1,178 @@
+{
+  "schema": "xar.current267.ccc.actual-software-qualification.v1",
+  "at_utc": "2026-11-23T07:35:52.559357+00:00",
+  "all_required_exit0": true,
+  "actual_methods": 45,
+  "expected_distinct_methods": 45,
+  "wholeclasses": [
+    {
+      "wholeclass": "NativeCurrentCccActorTransition26785313ProducerTest",
+      "actual_methods": 8,
+      "actual_report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ccc-source-a1128\\validation\\qualified45-reports\\TEST-org.xar.ck3.control.nativebridge.NativeCurrentCccActorTransition26785313ProducerTest.xml",
+        "bytes": 18098,
+        "sha256": "e680f8fe9e19102ddf9453b09778d9f2c49307def84938c39000c24f326f6262"
+      },
+      "actual_stage": "a01"
+    },
+    {
+      "wholeclass": "NativeCurrentCccDecision26785313ProducerTest",
+      "actual_methods": 8,
+      "actual_report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ccc-source-a1128\\validation\\qualified45-reports\\TEST-org.xar.ck3.control.nativebridge.NativeCurrentCccDecision26785313ProducerTest.xml",
+        "bytes": 18006,
+        "sha256": "a4241731c2d62a7decccde9f9f4cb2b91dc162893e0e2b8c0818a58b066f813a"
+      },
+      "actual_stage": "a01"
+    },
+    {
+      "wholeclass": "NativeCurrentCccEvent26785313ProducerTest",
+      "actual_methods": 7,
+      "actual_report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ccc-source-a1128\\validation\\qualified45-reports\\TEST-org.xar.ck3.control.nativebridge.NativeCurrentCccEvent26785313ProducerTest.xml",
+        "bytes": 17811,
+        "sha256": "2dbd5e5a6649537e1ccf526b10885994aaec76138337d03fab1a31f347e9fdcd"
+      },
+      "actual_stage": "a01"
+    },
+    {
+      "wholeclass": "NativeCurrentCccOriginalCaseTransportTest",
+      "actual_methods": 12,
+      "actual_report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ccc-source-a1128\\validation\\qualified45-reports\\TEST-org.xar.ck3.control.nativebridge.NativeCurrentCccOriginalCaseTransportTest.xml",
+        "bytes": 18690,
+        "sha256": "19132626de40bf681c24e36bb04a25bdca308cd09d52cc1a3eaf729dafbb793e"
+      },
+      "actual_stage": "a05"
+    },
+    {
+      "wholeclass": "NativeOwnerCurrentCccSelectionTest",
+      "actual_methods": 10,
+      "actual_report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ccc-source-a1128\\validation\\qualified45-reports\\TEST-org.xar.ck3.control.service.root.NativeOwnerCurrentCccSelectionTest.xml",
+        "bytes": 77423,
+        "sha256": "67cf4608d3a1365c9da3d013b94acee5ac06ee975e8d5c191dbb73fa9289fad0"
+      },
+      "actual_stage": "a06"
+    }
+  ],
+  "actual_stages_including_failures": [
+    {
+      "stage": "a01",
+      "actual_exit": 1,
+      "actual_seconds": 199.1482895000081,
+      "actual_Job_peak_commit": 1697177600,
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ccc-source-a1128\\validation\\compiler-a01-result.json",
+        "bytes": 14948,
+        "sha256": "2ce5add9192d40a30bb417b17b8b29df49246cfb46bd89aca7d83b9efcbc8c45"
+      }
+    },
+    {
+      "stage": "a02",
+      "actual_exit": 1,
+      "actual_seconds": 51.42401840002276,
+      "actual_Job_peak_commit": 1278500864,
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ccc-source-a1128\\validation\\compiler-a02-result.json",
+        "bytes": 14646,
+        "sha256": "7fdc9fd3213ac48852c09604e61b7423b2a85de004ec90e3a1d3e1619b0e474e"
+      }
+    },
+    {
+      "stage": "a03",
+      "actual_exit": 1,
+      "actual_seconds": 30.804044399992563,
+      "actual_Job_peak_commit": 1296388096,
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ccc-source-a1128\\validation\\compiler-a03-result.json",
+        "bytes": 15363,
+        "sha256": "c1066729aa15e6cec61b249cff26d65983672bb9c775fee9ed3255fe91b71193"
+      }
+    },
+    {
+      "stage": "a04",
+      "actual_exit": 1,
+      "actual_seconds": 63.81648690000293,
+      "actual_Job_peak_commit": 1228910592,
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ccc-source-a1128\\validation\\compiler-a04-result.json",
+        "bytes": 15257,
+        "sha256": "246a34735a2fdcfa8e2a918ff545c63ff185624d045c70a9be98a86701626738"
+      }
+    },
+    {
+      "stage": "a05",
+      "actual_exit": 1,
+      "actual_seconds": 204.19062399998074,
+      "actual_Job_peak_commit": 1286115328,
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ccc-source-a1128\\validation\\compiler-a05-result.json",
+        "bytes": 15363,
+        "sha256": "8c5a9fc8436b2d662d727080e4eb0010a9575e57ce9751a24d4ecdb0cc5c07d2"
+      }
+    },
+    {
+      "stage": "a06",
+      "actual_exit": 0,
+      "actual_seconds": 166.8331734999956,
+      "actual_Job_peak_commit": 1799204864,
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ccc-source-a1128\\validation\\compiler-a06-result.json",
+        "bytes": 15252,
+        "sha256": "2437f7182585da2b6f8a8eeab6cb79f356f0dc5f8a5d2999f221741e37ea7c02"
+      }
+    }
+  ],
+  "source_input": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ccc-source-a1128\\source-plan-qualified-a02.json",
+    "bytes": 14641,
+    "sha256": "4b81f11282f7a1fac464d398968c99c6f3b2c46f419bebaf374e74e96b43001d"
+  },
+  "actual_microcontract": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc-current267-source-a1126\\source-contract-a03.json",
+    "bytes": 18702,
+    "sha256": "40336c427f71fbe8689c2baa593457f912dbdf36a1fc87f274fa7df845be0b38"
+  },
+  "actual_CPP_first_producer": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc-current267-source-a1126\\NoGame\\genuine-producer-receipt-a01.json",
+    "bytes": 19094,
+    "sha256": "4079a68839a134db30c39b7a0489a316c9acb10371dccc1f4b18de46e6ff8656"
+  },
+  "actual_Java11_request_CPP_inverse": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc-current267-source-a1126\\NoGame\\actual-Java11-inverse-a01.json",
+    "bytes": 39244,
+    "sha256": "08cf50b06d88fd8ab2e8cbb24707b796b7e958c0617041a0ddd8aabb768999e6"
+  },
+  "compilation_scope": "Same independent dev/M2/target. Necessary native-transport plus local-service and cached AM dependencies with T2. Actual changed modules compiled567 and653 production source files; reactor AM dependency listings are not claimed all recompiled. New45 distinct software methods only, no old33/Text31/Create42/TED32/fullSDK/158-dependencyCRC repeats. Final complete affected-module package follows these repairs.",
+  "original_CPP_DATA": "31 exact original resources:20responses+11requests. Original independent request/response identities are not invented exchanges. All11 actual Java factory NativeWire bodies retain original IDs/MAXdeadline and each original parser invocation exits0. Java replay mutable Source/envelopes are explicit self-owned DATA, never new Native genuine or live permissions.",
+  "private_authority": "One Receiver original D1 pending/fresh official/once epoch1 confirmation; epoch1 remains constant through separate <=13natural-day count. Independent chronological Core/source and immutable whole-source receipts. D2 actual .d then D3+ actual half-tax predicate/once official fixed-decision confirm, then a new .f instance. No caller actor/key/role/epoch, oldTED/v17 borrowing, import of epoch or UNKNOWN reset.",
+  "business_limits": "Readonly falseCan/hidden/empty or richtext-NUL tooltip are DATA. OPEN_LIST handled true/false is actual Toggle result; other void callbacks handledfalse. No applied/eventClosed/dateSave credit, inferred expiry or invented three-year cooldown. Expiry remains null/false pending a separately qualified producer.",
+  "config_schema": "xar.native-owner-snapshot-config/v45",
+  "config_modes": [
+    "current_ccc_query_role",
+    "current_ccc_query_event",
+    "current_ccc_query_decision",
+    "current_ccc_original_case_once"
+  ],
+  "query_submissions": 2,
+  "case_submission_upper": "81+13*maximum_status_polls;128=>1745,256=>3409",
+  "configuration": "Exact common6; composite only adds maximum_status_polls1..256/status_poll_delay_ms1..1000. Actual operator maximum_submissions must cover chosen bound, no stale1024 reuse.",
+  "real_failures_preserved": [
+    "a01 first23Producer passed;12Port failed beforeCore because test HELLO generation was a string.",
+    "a02 integer fixture then duplicate query capability correctly rejected.",
+    "a03 10PortP;pending business-read rejection expected too late by a test helper, and13day fixture hit configured40retention limit.",
+    "a04 11PortP;diagnostic precisely identified retention40.",
+    "a05 native12P;local-service first compile found two unresolved Optional references, corrected by one explicit import for a06.",
+    "Only Java DATA fixtures changed:integer unique actual capabilities, correct early unavailable assertion,128frames/512retained submissions. Production guards were not relaxed. Enum a01 TED substring pollution was restored before first compilation using exact single-leaf a02; wire unchanged."
+  ],
+  "warnings": "Original Maven/Quarkus/log diagnostics preserved; no zero-log-errors claim.",
+  "Native_runtime": "Source/NoGame/production qualified independently by Native owner; no new DLL qualification inferred from these45 Java methods.",
+  "Game_Steam_HTTP_calls": 0,
+  "live_business_and_product": "NOT_RUN",
+  "nonsemantic_format_delta": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ccc-source-a1128\\validation\\source-format-delta.json",
+    "bytes": 775,
+    "sha256": "965080162af81ec76d7cdced2a0d5933e4721ad8188a71e1befca8fd18d5197c"
+  }
+}

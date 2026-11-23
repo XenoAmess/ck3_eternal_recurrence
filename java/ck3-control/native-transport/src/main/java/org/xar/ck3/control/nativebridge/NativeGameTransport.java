@@ -1377,6 +1377,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         private boolean riteCreateQueryAttempted;
         private boolean riteTextQueryAttempted;
         private boolean stockBookmark1070QueryAttempted;
+        private boolean cccRoleQueryAttempted,cccEventQueryAttempted,cccDecisionQueryAttempted;
         private RiteCreateUnavailable unresolvedRiteCreateRead;
         private RiteTextUnavailable unresolvedRiteTextRead;
         private boolean riteDoctrineReadAttempted;
@@ -2993,6 +2994,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     /** Preparation archives the exact identity/body/deadline before the single action write. */
     public synchronized CurrentDatePrepared prepareCurrentDateAdvance(CoreReceived before,Instant deadline)throws IOException {
         Objects.requireNonNull(before);Objects.requireNonNull(deadline);requireCoreOriginal(before,deadline);
+        if(cccFirstDay!=null&&cccFirstDay.called)throw new IOException("Original CCC case cannot borrow old v17 Date authority");
         if(unresolvedCoreControl!=null||unresolvedFullClockControl!=null)throw new IOException("Unresolved original control forbids another date action");
         if(activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null||applicationExitAttempted||before.controlAttempted)
             throw new IOException("Current date action requires an unused actual Core outside business/recovery/exit scopes");
@@ -3848,6 +3850,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         requireCoreOriginal(before,until);
         if(!(before.frame instanceof CoreFrame.Partial p)||p.build()!=ExactCk3Build.CK3_121003_STEAM_26785313)throw new IOException("Exact current267 Core required");
         CurrentTedActorTransition.requireCore(p.prefix());
+        if(cccFirstDay!=null&&cccFirstDay.called)throw new IOException("Original CCC case cannot borrow TED Date authority");
         if(before.controlAttempted||applicationExitAttempted||unresolvedCoreControl!=null||unresolvedFullClockControl!=null||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
             throw new IOException("Unused actual Core and resolved owner required; no old UNKNOWN/claim reset");
         if(preparedCurrentDate!=null&&(!preparedCurrentDate.completed||preparedCurrentDate.unknown))throw new IOException("Original v17 Date remains unresolved");
@@ -3983,6 +3986,446 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         if(!sentRequestIds.contains(id)&&!(outcome instanceof Unknown))return zero(id,reason(invalid));
         if(operation!=null)operation.unknown=true;if(outcome instanceof AckReceived ack)indeterminateCoreAcknowledgement=ack;
         if(unresolvedCoreControl==null)unresolvedCoreControl=new Unknown(id,"Original TED source/custody uncertain; no new-ID/deadline workaround: "+reason(invalid),retainedOutbound(id),outcome instanceof AckReceived ack?Optional.of(ack.originalFrame()):Optional.empty());return unresolvedCoreControl;
+    }
+    // Independent CCC original-case custody. Caller-created DATA cannot grant an epoch or business lease.
+    public sealed interface CccRoleRead permits CccRoleReceived,CccRoleUnavailable { DispatchOutcome original(); }
+    public static final class CccRoleReceived implements CccRoleRead {
+        private final NativeGameTransport issuer;private final CoreReceived before;
+        private final CurrentCccActorTransitionResult frame;private final AckReceived original;
+        private final NativeRequestChronology custody;private final Instant until;private boolean consumed;
+        private CccAdvancePrepared advance;private CccEpochPrepared confirmation;
+        private CccRoleReceived(NativeGameTransport issuer,CoreReceived before,CurrentCccActorTransitionResult frame,AckReceived original,NativeRequestChronology custody,Instant until){this.issuer=issuer;this.before=before;this.frame=frame;this.original=original;this.custody=custody;this.until=until;}
+        public CurrentCccActorTransitionResult frame(){return frame;}public AckReceived original(){return original;}public Instant validUntil(){return until;}
+        public void requireOriginal(NativeGameTransport actual,Instant deadline)throws IOException{actual.requireCccRole(this,deadline);}
+    }
+    public record CccRoleUnavailable(DispatchOutcome original,String reason)implements CccRoleRead {public CccRoleUnavailable{Objects.requireNonNull(original);StrictJson.text(reason);}}
+    public static final class CccAdvancePrepared {
+        private final NativeGameTransport issuer;private final CccRoleReceived query;private final String id,operation;
+        private final Instant until;private final NativeWire.Bytes packet;private final int target;
+        private boolean called,unknown,pending,confirmed,completed;private DispatchOutcome outcome;
+        private CurrentCccActorTransitionResult latest,firstClaim;private NativeRequestChronology pendingCustody;
+        private CccAdvancePrepared(NativeGameTransport issuer,CccRoleReceived query,String id,String operation,byte[] packet,int target){this.issuer=issuer;this.query=query;this.id=id;this.operation=operation;this.until=query.until;this.packet=new NativeWire.Bytes(packet);this.target=target;}
+        public String requestId(){return id;}public String operationId(){return operation;}public Instant deadline(){return until;}public NativeWire.Bytes originalPacket(){return packet;}
+        public int targetDateRaw(){return target;}public Optional<CurrentCccActorTransitionResult> latestFrame(){return Optional.ofNullable(latest);}public boolean originalUnknown(){return unknown;}
+    }
+    public static final class CccEpochPrepared {
+        private final NativeGameTransport issuer;private final CccAdvancePrepared operation;private final CccRoleReceived query;
+        private final String id;private final NativeWire.Bytes packet;private boolean called;private DispatchOutcome outcome;private CurrentCccActorTransitionResult latest;
+        private CccEpochPrepared(NativeGameTransport issuer,CccAdvancePrepared operation,CccRoleReceived query,String id,byte[] packet){this.issuer=issuer;this.operation=operation;this.query=query;this.id=id;this.packet=new NativeWire.Bytes(packet);}
+        public String requestId(){return id;}public String operationId(){return operation.operation;}public Instant deadline(){return query.until;}public NativeWire.Bytes originalPacket(){return packet;}
+        public Optional<CurrentCccActorTransitionResult> latestFrame(){return Optional.ofNullable(latest);}
+    }
+    private CccRoleReceived latestCccRole;private CccAdvancePrepared preparedCccAdvance;private CccEpochPrepared confirmedCccEpoch;
+    private final java.util.Map<String,CccAdvancePrepared> retainedCccOperations=new java.util.LinkedHashMap<>();
+    private CccAdvancePrepared cccFirstDay;
+    private int knownCccDays;
+    private NativeRequestChronology lastCccCaseProof;
+    private AckReceived cccTierFourReceipt,cccDecisionConfirmationReceipt,cccCancelReceipt;
+    private Integer cccTierFourInstance;
+    private boolean cccDecisionConfirmationAttempted;
+    /** Validate the original receipt without extending the consumed D1 deadline or recreating its authority. */
+    private void requireCccCase(CoreReceived before)throws IOException {
+        if(confirmedCccEpoch==null||cccFirstDay==null||confirmedCccEpoch.operation!=cccFirstDay||!cccFirstDay.confirmed||cccFirstDay.unknown
+                ||!(confirmedCccEpoch.outcome instanceof AckReceived ack)||confirmedCccEpoch.latest==null||lastCccCaseProof==null||knownCccDays<1||knownCccDays>13)
+            throw new IOException("This Receiver's actual original CCC epoch confirmation is required");
+        var custody=originalRequestChronology(ack.requestId()).orElseThrow(()->new IOException("Original CCC epoch custody absent"));requireCccCustody(ack,custody);
+        var confirmed=CurrentCccActorTransitionResult.decodeOutcome(ack);
+        if(!confirmed.equals(confirmedCccEpoch.latest)||confirmed.status()!=CurrentCccActorTransitionResult.Status.EPOCH_CONFIRMED
+                ||!confirmed.source().equals(confirmedCccEpoch.query.frame.source())||!confirmed.actorEpoch().equals(BigInteger.ONE)||confirmed.completedNaturalDays()!=1)
+            throw new IOException("Original CCC epoch proof changed");
+        var start=((CoreFrame.Partial)cccFirstDay.query.before.frame).prefix();var expected=new CoreFrame.Prefix(Math.addExact(start.dateRaw(),Math.multiplyExact(knownCccDays,24)),
+                start.speed(),start.paused(),start.localPlayerId(),start.mapReady(),start.hasPlayedCharacter(),confirmed.factsBefore().orElseThrow().playedCharacterId(),start.playedCharacterAlive());
+        if(!((CoreFrame.Partial)before.frame).prefix().equals(expected)||before.custody.writeEntered().order().compareTo(lastCccCaseProof.responseReceived().order())<=0)
+            throw new IOException("A fresh same-official CCC Core after the last actual case receipt is required");
+        if(preparedCccAdvance!=null&&preparedCccAdvance.called&&!preparedCccAdvance.completed&&!preparedCccAdvance.confirmed)
+            throw new IOException("Original CCC day must resolve before a business operation");
+    }
+    private void recordCccCaseEffect(AckReceived ack)throws IOException {
+        var c=originalRequestChronology(ack.requestId()).orElseThrow(()->new IOException("Actual CCC business custody absent"));requireCccCustody(ack,c);lastCccCaseProof=c;
+    }
+    private byte[] cccPacket(String id,CurrentCccActorTransition.Action action,CoreReceived before,String operation,BigInteger provider,BigInteger query,BigInteger epoch,Instant until)throws IOException {
+        if(!(before.frame instanceof CoreFrame.Partial partial))throw new IOException("Actual partial current CCC Core required");
+        var request=CurrentCccActorTransition.request(partial,action,operation,provider,query,epoch);
+        var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));fields.put("core_control_deadline_unix_ms",until.toEpochMilli());
+        return NativeWire.execute(id,action.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+    }
+    private void requireCccScope(CoreReceived before,Instant until)throws IOException {
+        requireCoreOriginal(before,until);
+        if(!(before.frame instanceof CoreFrame.Partial p)||p.build()!=ExactCk3Build.CK3_121003_STEAM_26785313)throw new IOException("Exact current267 Core required");
+        CurrentCccActorTransition.requireCore(p.prefix());
+        if(before.controlAttempted||applicationExitAttempted||unresolvedCoreControl!=null||unresolvedFullClockControl!=null||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
+            throw new IOException("Unused actual Core and resolved owner required; no old UNKNOWN/claim reset");
+        if(preparedCurrentDate!=null&&(!preparedCurrentDate.completed||preparedCurrentDate.unknown))throw new IOException("Original v17 Date remains unresolved");
+        if(preparedTedAdvance!=null&&(!preparedTedAdvance.completed&&!preparedTedAdvance.confirmed||preparedTedAdvance.unknown))throw new IOException("Original TED Date remains unresolved");
+        if(preparedCccAdvance!=null&&preparedCccAdvance.unknown)throw new IOException("Original CCC date remains UNKNOWN");
+    }
+    private void requireCccCustody(AckReceived ack,NativeRequestChronology custody)throws IOException {
+        if(!custody.session().equals(session())||!custody.custodyEpoch().equals(custodyEpoch)||originalRequestChronology(ack.requestId()).filter(custody::equals).isEmpty())throw new IOException("CCC crossed actual held session/custody");custody.verify(ack);
+    }
+    private void requireCccFrame(CurrentCccActorTransitionResult f,CurrentCccActorTransition.Action action,String id,String operation,CoreReceived before)throws IOException {
+        if(f.action()!=action||!f.requestId().equals(id)||!f.operationId().equals(operation)||!f.cleanupKnown()||f.status()==CurrentCccActorTransitionResult.Status.INDETERMINATE)throw new IOException("CCC action/identity/cleanup uncertain");
+        if(f.factsBefore().isPresent()&&!f.factsBefore().orElseThrow().equals(((CoreFrame.Partial)before.frame).prefix()))throw new IOException("CCC changed the original checked Core");
+        if(f.factsBefore().isPresent()&&!f.connectionGeneration().equals(hello.connectionGeneration()))throw new IOException("CCC changed original owner connection");
+    }
+    public synchronized CccRoleRead readCurrentCccRole(CoreReceived before,Instant deadline)throws InterruptedException {
+        String id="ccc-role-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome outcome=null;
+        try {
+            requireCccScope(before,deadline);if(before.cccRoleQueryAttempted)throw new IOException("Fresh Core required for CCC role query");if(preparedCccAdvance!=null&&preparedCccAdvance.called&&!preparedCccAdvance.completed&&!preparedCccAdvance.confirmed&&!preparedCccAdvance.pending)throw new IOException("Running CCC operation permits only original status reads");
+            if(!hello.capabilities().contains(CurrentCccActorTransition.Action.QUERY_ROLE.capability()))throw new IOException("Actual CCC role capability absent");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native identity retention limit reached");Instant until=readDeadline(deadline);
+            byte[] packet=cccPacket(id,CurrentCccActorTransition.Action.QUERY_ROLE,before,"",BigInteger.ZERO,BigInteger.ZERO,BigInteger.ZERO,until);
+            outcome=retainReadOutcome(dispatchRead(id,packet,until,()->{requireBackgroundAtCoreWrite();try{requireCccScope(before,until);}catch(IOException e){throw new UncheckedIOException(e);}if(before.cccRoleQueryAttempted)throw new IllegalStateException("CCC role Core already queried");before.cccRoleQueryAttempted=true;latestCccRole=null;}));
+            if(!(outcome instanceof AckReceived ack)){if(outcome instanceof Unknown u)unresolvedCoreControl=u;return new CccRoleUnavailable(outcome,"Actual CCC role ACK unavailable");}
+            var frame=CurrentCccActorTransitionResult.decodeOutcome(ack);requireCccFrame(frame,CurrentCccActorTransition.Action.QUERY_ROLE,id,"",before);
+            if(!frame.deadlineUnixMs().equals(BigInteger.valueOf(until.toEpochMilli())))throw new IOException("Original CCC query deadline changed");
+            if(frame.status()!=CurrentCccActorTransitionResult.Status.AVAILABLE)return new CccRoleUnavailable(ack,frame.unavailableReason().orElseThrow());
+            var custody=originalRequestChronology(id).orElseThrow();var actual=new CccRoleReceived(this,before,frame,ack,custody,until);latestCccRole=actual;requireCccRole(actual,until);return actual;
+        }catch(IOException|RuntimeException invalid){latestCccRole=null;return new CccRoleUnavailable(cccFailure(id,null,outcome,invalid),reason(invalid));}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();latestCccRole=null;unresolvedCoreControl=new Unknown(id,"Original CCC role read interrupted; preserve, no action replay",retainedOutbound(id),Optional.empty());return new CccRoleUnavailable(unresolvedCoreControl,"Interrupted original role query");}
+    }
+    private void requireCccRole(CccRoleReceived query,Instant until)throws IOException {
+        if(query==null||query.issuer!=this||query!=latestCccRole||query.consumed)throw new IOException("Actual unused private CCC role query required");
+        requireCccScope(query.before,until);Instant now=chronologyClock.instant();
+        if(until.isAfter(query.until)||!now.isBefore(query.until)||query.custody.responseReceived().observedAt().isAfter(now)||query.custody.responseReceived().observedAt().isAfter(query.until)
+                ||query.custody.writeEntered().order().compareTo(query.before.custody.responseReceived().order())<=0)throw new IOException("CCC role escaped original Core/query window");
+        requireCccCustody(query.original,query.custody);var frame=CurrentCccActorTransitionResult.decodeOutcome(query.original);
+        if(!query.before.cccRoleQueryAttempted||!frame.equals(query.frame)||frame.status()!=CurrentCccActorTransitionResult.Status.AVAILABLE||!Arrays.equals(query.original.outbound().orElseThrow().originalPacket(),cccPacket(query.original.requestId(),CurrentCccActorTransition.Action.QUERY_ROLE,query.before,"",BigInteger.ZERO,BigInteger.ZERO,BigInteger.ZERO,query.until)))throw new IOException("Original CCC role frame/body changed");
+    }
+    public synchronized CccAdvancePrepared prepareCurrentCccAdvance(CccRoleReceived query)throws IOException {
+        if(query!=null&&query.issuer==this&&query.advance!=null)return query.advance;requireCccRole(query,query.until);
+        var source=query.frame.source().orElseThrow();if(!source.advanceAdmissible()||source.pending().isPresent()||source.actorEpoch().compareTo(BigInteger.ONE)>0)throw new IOException("Actual role source does not admit the next single CCC day");
+        if(source.actorEpoch().signum()==0&&preparedCccAdvance!=null&&preparedCccAdvance.called)throw new IOException("The original D1 cannot be repeated or bypassed with a new ID");
+        if(source.actorEpoch().equals(BigInteger.ONE)){
+            requireCccCase(query.before);var original=confirmedCccEpoch.latest.source().orElseThrow();
+            if(source.completedNaturalDays()!=knownCccDays||source.caseStartDateRaw()!=((CoreFrame.Partial)cccFirstDay.query.before.frame).prefix().dateRaw()
+                    ||!source.songActorId().equals(original.songActorId())||!source.officialActorId().equals(original.officialActorId()))
+                throw new IOException("CCC day count/original actor identities changed");
+        }else if(source.completedNaturalDays()!=0||source.caseStartDateRaw()!=((CoreFrame.Partial)query.before.frame).prefix().dateRaw())
+            throw new IOException("Original CCC D1 requires the actual zero-day Song source");
+        if(preparedCccAdvance!=null&&preparedCccAdvance.called&&!preparedCccAdvance.completed&&!preparedCccAdvance.confirmed)throw new IOException("Prior CCC date requires its own known confirmation, never a new ID workaround");
+        if(!hello.capabilities().contains(CurrentCccActorTransition.Action.ADVANCE_DAY.capability()))throw new IOException("Actual CCC advance capability absent");
+        String id="ccc-advance-"+UUID.randomUUID().toString().replace("-","");String operation="ccc-op-"+UUID.randomUUID().toString().replace("-","");
+        int target=Math.addExact(((CoreFrame.Partial)query.before.frame).prefix().dateRaw(),24);
+        if(retainedCccOperations.size()>=13)throw new IOException("Original CCC case retains at most thirteen actual days");
+        var prepared=new CccAdvancePrepared(this,query,id,operation,cccPacket(id,CurrentCccActorTransition.Action.ADVANCE_DAY,query.before,operation,query.frame.providerGeneration(),query.frame.querySequence(),source.actorEpoch(),query.until),target);
+        retainedCccOperations.put(operation,prepared);if(cccFirstDay==null)cccFirstDay=prepared;return preparedCccAdvance=query.advance=prepared;
+    }
+    public synchronized DispatchOutcome submitCurrentCccAdvance(CccAdvancePrepared original)throws InterruptedException {
+        if(original==null||original.issuer!=this||original!=preparedCccAdvance)return zero("ccc-foreign","Foreign CCC advance preparation");
+        if(original.called)return original.outcome!=null?original.outcome:zero(original.id,"Original CCC call has no reusable write authority");original.called=true;DispatchOutcome outcome=null;
+        try {requireCccRole(original.query,original.until);var q=original.query;var source=q.frame.source().orElseThrow();
+            if(!source.advanceAdmissible()||!hello.capabilities().contains(CurrentCccActorTransition.Action.ADVANCE_DAY.capability())||sentRequestIds.size()>=maximumSubmissions)throw new IOException("Original CCC advance no longer admissible");
+            if(!Arrays.equals(original.packet.value(),cccPacket(original.id,CurrentCccActorTransition.Action.ADVANCE_DAY,q.before,original.operation,q.frame.providerGeneration(),q.frame.querySequence(),source.actorEpoch(),original.until)))throw new IOException("Original CCC advance body/deadline drift");
+            outcome=dispatch(original.id,original.packet.value(),original.until,()->{requireBackgroundAtCoreWrite();try{requireCccRole(q,original.until);}catch(IOException e){throw new UncheckedIOException(e);}q.consumed=true;q.before.controlAttempted=true;heldSnapshotInvalidated=true;});
+            if(outcome instanceof AckReceived ack)retainCccOperation(original,ack,CurrentCccActorTransition.Action.ADVANCE_DAY,original.id);else if(outcome instanceof Unknown){original.unknown=true;unresolvedCoreControl=(Unknown)outcome;}
+            return original.outcome=outcome;
+        }catch(IOException|RuntimeException invalid){return original.outcome=cccFailure(original.id,original,outcome,invalid);}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(original.id))throw interrupted;Thread.currentThread().interrupt();return original.outcome=cccFailure(original.id,original,outcome,interrupted);}
+    }
+    public synchronized DispatchOutcome queryCurrentCccOperation(CccAdvancePrepared original,Instant receiveDeadline)throws InterruptedException {
+        String id="ccc-status-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome outcome=null;
+        try {
+            if(original==null||original.issuer!=this||retainedCccOperations.get(original.operation)!=original||!original.called||!sentRequestIds.contains(original.id))throw new IOException("Original entered CCC advance required for status");
+            verifyHeld(receiveDeadline);var q=original.query;requireCccCustody(q.original,q.custody);
+            if(!hello.capabilities().contains(CurrentCccActorTransition.Action.QUERY_OPERATION.capability())||sentRequestIds.size()>=maximumSubmissions)throw new IOException("Actual bounded CCC status capability required");
+            // The wire keeps the original absolute deadline/Core/epoch/lease. Only this READ wait gets a new bounded receive interval.
+            byte[] packet=cccPacket(id,CurrentCccActorTransition.Action.QUERY_OPERATION,q.before,original.operation,q.frame.providerGeneration(),q.frame.querySequence(),q.frame.source().orElseThrow().actorEpoch(),original.until);
+            outcome=retainReadOutcome(dispatchRead(id,packet,readDeadline(receiveDeadline),()->{}));
+            if(outcome instanceof AckReceived ack)retainCccOperation(original,ack,CurrentCccActorTransition.Action.QUERY_OPERATION,id);else if(outcome instanceof Unknown)cccFailure(original.id,original,outcome,new IOException("Original CCC operation status unavailable"));return outcome;
+        }catch(IOException|RuntimeException invalid){return cccFailure(id,original,outcome,invalid);}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();return cccFailure(id,original,outcome,interrupted);}
+    }
+    private void retainCccOperation(CccAdvancePrepared original,AckReceived ack,CurrentCccActorTransition.Action action,String id)throws IOException {
+        var f=CurrentCccActorTransitionResult.decodeOutcome(ack);requireCccFrame(f,action,id,original.operation,original.query.before);var custody=originalRequestChronology(id).orElseThrow();requireCccCustody(ack,custody);
+        var q=original.query;
+        if(!f.ok()&&f.claimSequence().signum()==0&&!f.effectAttempted()&&!f.nativeReturned()&&original.firstClaim==null
+                &&f.progress().filter(p->p.armAttempted()||p.resumeAttempted()||p.armed()||p.accessCleanupUnknown()).isEmpty()){
+            if(!f.deadlineUnixMs().equals(BigInteger.valueOf(original.until.toEpochMilli())))throw new IOException("Original known CCC refusal changed its deadline");original.latest=f;return;
+        }
+        if(!f.providerGeneration().equals(q.frame.providerGeneration())||!f.querySequence().equals(q.frame.querySequence())||!f.deadlineUnixMs().equals(BigInteger.valueOf(original.until.toEpochMilli())))throw new IOException("CCC operation changed original private lease/deadline");
+        if(custody.writeEntered().order().compareTo(q.custody.responseReceived().order())<=0)throw new IOException("CCC advance/status predates original source ACK");
+        if(action==CurrentCccActorTransition.Action.ADVANCE_DAY&&f.ok()&&!f.source().equals(q.frame.source()))throw new IOException("Successful advance changed immutable beforeSource");
+        if(!f.actorEpoch().equals(q.frame.actorEpoch()))throw new IOException("CCC confirmed frontier is one; natural days are a separate counter");
+        int expectedDays=q.frame.source().orElseThrow().completedNaturalDays()+(f.progress().filter(CurrentCccActorTransitionResult.Progress::exactDayConfirmed).isPresent()?1:0);
+        if(f.completedNaturalDays()!=expectedDays)throw new IOException("CCC result changed the original natural-day counter");
+        if(f.claimSequence().signum()>0){if(original.firstClaim==null)original.firstClaim=f;else {
+            var first=original.firstClaim;
+            if(!f.claimSequence().equals(first.claimSequence())||f.progress().isPresent()!=first.progress().isPresent())throw new IOException("Original CCC claim/progress presence changed");
+            if(first.progress().isPresent()&&(!f.progress().orElseThrow().generation().equals(first.progress().orElseThrow().generation())||!f.connectionGeneration().equals(first.connectionGeneration())||!f.ticketSequence().equals(first.ticketSequence())||!f.pumpEpoch().equals(first.pumpEpoch())||f.threadId()!=first.threadId()))throw new IOException("Original CCC generation/owner changed");
+        }}
+        else if(original.firstClaim!=null)throw new IOException("Original CCC claim disappeared");
+        original.latest=f;
+        if(f.status()==CurrentCccActorTransitionResult.Status.TRANSITION_PENDING){var p=f.progress().orElseThrow();if(!original.query.frame.actorEpoch().equals(BigInteger.ZERO)||p.targetDateRaw()!=original.target||p.beforeActorId()!=((CoreFrame.Partial)q.before.frame).prefix().playedCharacterId())throw new IOException("Pending differs from original before-Song day");original.pending=true;original.pendingCustody=custody;}
+        if(f.status()==CurrentCccActorTransitionResult.Status.COMPLETED_DAY){
+            var p=f.progress().orElseThrow();
+            if(original==cccFirstDay||p.targetDateRaw()!=original.target||p.beforeActorId()!=p.afterActorId())throw new IOException("CCC completion must be a later exact same-official day");
+            if(!original.completed){if(original.unknown||knownCccDays!=q.frame.source().orElseThrow().completedNaturalDays())throw new IOException("CCC completion cannot reset UNKNOWN or skip the original day");knownCccDays=f.completedNaturalDays();lastCccCaseProof=custody;}
+            original.completed=!original.unknown;
+        }
+        if(f.status()==CurrentCccActorTransitionResult.Status.INDETERMINATE||!f.cleanupKnown()||f.progress().filter(CurrentCccActorTransitionResult.Progress::accessCleanupUnknown).isPresent())throw new IOException("Original CCC operation uncertain");
+    }
+    public synchronized CccEpochPrepared prepareCurrentCccEpoch(CccAdvancePrepared operation,CccRoleReceived after)throws IOException {
+        if(after!=null&&after.issuer==this&&after.confirmation!=null){if(after.confirmation.operation!=operation)throw new IOException("Original after-role is already prepared for another operation");return after.confirmation;}requireCccRole(after,after.until);
+        if(operation==null||operation.issuer!=this||operation!=preparedCccAdvance||!operation.pending||operation.unknown||operation.confirmed||operation.pendingCustody==null||!chronologyClock.instant().isBefore(operation.until)||after.until.isAfter(operation.until))throw new IOException("Original unexpired proved pending is required, never an old actorAbort/UNKNOWN");
+        var source=after.frame.source().orElseThrow();var p=operation.latest.progress().orElseThrow();var pending=source.pending().orElseThrow(()->new IOException("Independent recipient Source has no actual pending"));var core=((CoreFrame.Partial)after.before.frame).prefix();
+        var start=((CoreFrame.Partial)operation.query.before.frame).prefix();
+        var expectedAfter=new CoreFrame.Prefix(operation.target,start.speed(),start.paused(),start.localPlayerId(),start.mapReady(),start.hasPlayedCharacter(),p.afterActorId(),start.playedCharacterAlive());
+        if(operation!=cccFirstDay||source.completedNaturalDays()!=1||source.caseStartDateRaw()!=start.dateRaw()||!source.confirmAdmissible()||source.role()!=CurrentCccActorTransitionSource.Role.OFFICIAL||!source.actorEpoch().equals(BigInteger.ZERO)
+                ||!pending.operationId().equals(operation.operation)||!pending.claimSequence().equals(operation.firstClaim.claimSequence())||!pending.generation().equals(p.generation())||!pending.originalDeadlineUnixMs().equals(BigInteger.valueOf(operation.until.toEpochMilli()))
+                ||pending.beforeActorId()!=p.beforeActorId()||pending.afterActorId()!=p.afterActorId()||!core.equals(expectedAfter)
+                ||after.before.custody.writeEntered().order().compareTo(operation.pendingCustody.responseReceived().order())<=0)throw new IOException("Fresh independent actual after-Core/recipient proof does not match original pending");
+        if(!hello.capabilities().contains(CurrentCccActorTransition.Action.CONFIRM_EPOCH.capability()))throw new IOException("Actual CCC epoch capability absent");
+        String id="ccc-epoch-"+UUID.randomUUID().toString().replace("-","");return after.confirmation=new CccEpochPrepared(this,operation,after,id,cccPacket(id,CurrentCccActorTransition.Action.CONFIRM_EPOCH,after.before,operation.operation,after.frame.providerGeneration(),after.frame.querySequence(),BigInteger.ZERO,after.until));
+    }
+    public synchronized DispatchOutcome submitCurrentCccEpoch(CccEpochPrepared original)throws InterruptedException {
+        if(original==null||original.issuer!=this||original.query.confirmation!=original)return zero("ccc-foreign-epoch","Foreign CCC epoch preparation");
+        if(original.called)return original.outcome!=null?original.outcome:zero(original.id,"Original epoch call has no reusable authority");original.called=true;DispatchOutcome outcome=null;
+        try {var after=original.query;var op=original.operation;requireCccRole(after,after.until);
+            if(!op.pending||op.unknown||op.confirmed||!chronologyClock.instant().isBefore(op.until)||!after.frame.source().orElseThrow().confirmAdmissible()||sentRequestIds.size()>=maximumSubmissions)throw new IOException("Original CCC epoch no longer admissible");
+            if(!Arrays.equals(original.packet.value(),cccPacket(original.id,CurrentCccActorTransition.Action.CONFIRM_EPOCH,after.before,op.operation,after.frame.providerGeneration(),after.frame.querySequence(),BigInteger.ZERO,after.until)))throw new IOException("Original epoch packet/deadline changed");
+            outcome=dispatch(original.id,original.packet.value(),after.until,()->{requireBackgroundAtCoreWrite();try{requireCccRole(after,after.until);}catch(IOException e){throw new UncheckedIOException(e);}after.consumed=true;after.before.controlAttempted=true;});
+            if(outcome instanceof AckReceived ack){var f=CurrentCccActorTransitionResult.decodeOutcome(ack);requireCccFrame(f,CurrentCccActorTransition.Action.CONFIRM_EPOCH,original.id,op.operation,after.before);var custody=originalRequestChronology(original.id).orElseThrow();requireCccCustody(ack,custody);
+                if(!f.providerGeneration().equals(after.frame.providerGeneration())||!f.querySequence().equals(after.frame.querySequence())||!f.deadlineUnixMs().equals(BigInteger.valueOf(after.until.toEpochMilli()))||custody.writeEntered().order().compareTo(after.custody.responseReceived().order())<=0)throw new IOException("Epoch ACK changed original after-query lease/chronology");
+                original.latest=f;if(f.status()==CurrentCccActorTransitionResult.Status.EPOCH_CONFIRMED){if(!f.source().equals(after.frame.source())||!f.actorEpoch().equals(BigInteger.ONE)||f.effectAttempted()||f.nativeReturned())throw new IOException("Epoch confirmation changed immutable beforeSource or zero-Game-call frontier1");if(f.completedNaturalDays()!=1)throw new IOException("Original CCC confirmation retains exactly one natural day");op.confirmed=true;confirmedCccEpoch=original;knownCccDays=1;lastCccCaseProof=custody;}
+            }else if(outcome instanceof Unknown){op.unknown=true;unresolvedCoreControl=(Unknown)outcome;}return original.outcome=outcome;
+        }catch(IOException|RuntimeException invalid){return original.outcome=cccFailure(original.id,original.operation,outcome,invalid);}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(original.id))throw interrupted;Thread.currentThread().interrupt();return original.outcome=cccFailure(original.id,original.operation,outcome,interrupted);}
+    }
+    private DispatchOutcome cccFailure(String id,CccAdvancePrepared operation,DispatchOutcome outcome,Exception invalid) {
+        if(!sentRequestIds.contains(id)&&!(outcome instanceof Unknown))return zero(id,reason(invalid));
+        if(operation!=null)operation.unknown=true;if(outcome instanceof AckReceived ack)indeterminateCoreAcknowledgement=ack;
+        if(unresolvedCoreControl==null)unresolvedCoreControl=new Unknown(id,"Original CCC source/custody uncertain; no new-ID/deadline workaround: "+reason(invalid),retainedOutbound(id),outcome instanceof AckReceived ack?Optional.of(ack.originalFrame()):Optional.empty());return unresolvedCoreControl;
+    }
+
+    private void requireCccBusinessScope(CoreReceived before,Instant until)throws IOException {
+        requireCccScope(before,until);
+        if(preparedCccAdvance!=null&&preparedCccAdvance.called&&!preparedCccAdvance.completed&&!preparedCccAdvance.confirmed)
+            throw new IOException("Original CCC day/pending must resolve before independent business queries");
+    }
+    private void requireCccBusinessCustody(AckReceived ack,NativeRequestChronology custody,NativeRequestChronology predecessor,Instant until)throws IOException {
+        requireCccCustody(ack,custody);Instant now=chronologyClock.instant();
+        if(custody.writeEntered().order().compareTo(predecessor.responseReceived().order())<=0
+                ||custody.responseReceived().observedAt().isAfter(now)||custody.responseReceived().observedAt().isAfter(until))
+            throw new IOException("CCC business receipt escaped original chronology/deadline");
+    }
+
+    public sealed interface CccEventRead permits CccEventReceived,CccEventUnavailable { DispatchOutcome original(); }
+    public static final class CccEventReceived implements CccEventRead {
+        private final NativeGameTransport issuer;private final CoreReceived before;private final CurrentCccEventResult frame;
+        private final AckReceived original;private final NativeRequestChronology custody;private final Instant validUntil;
+        private boolean actionAttempted;private CccEventPrepared prepared;
+        private CccEventReceived(NativeGameTransport issuer,CoreReceived before,CurrentCccEventResult frame,AckReceived original,NativeRequestChronology custody,Instant until){this.issuer=issuer;this.before=before;this.frame=frame;this.original=original;this.custody=custody;validUntil=until;}
+        public CurrentCccEventResult frame(){return frame;}@Override public AckReceived original(){return original;}public Instant validUntil(){return validUntil;}
+        public void requireOriginal(NativeGameTransport actual,Instant until)throws IOException{Objects.requireNonNull(actual).requireCccEventOriginal(this,until);}
+    }
+    public record CccEventUnavailable(DispatchOutcome original,String reason)implements CccEventRead {public CccEventUnavailable{Objects.requireNonNull(original);StrictJson.text(reason);}}
+    public static final class CccEventPrepared {
+        private final NativeGameTransport issuer;private final CccEventReceived query;private final CurrentCccEvent.Action action;private final String id;private final NativeWire.Bytes packet;private final int instanceId;
+        private boolean called;private DispatchOutcome outcome;private CurrentCccEventResult latestFrame;
+        private CccEventPrepared(NativeGameTransport issuer,CccEventReceived query,CurrentCccEvent.Action action,String id,byte[] packet,int instanceId){this.issuer=issuer;this.query=query;this.action=action;this.id=id;this.packet=new NativeWire.Bytes(packet);this.instanceId=instanceId;}
+        public String requestId(){return id;}public NativeWire.Bytes originalPacket(){return packet;}public Instant deadline(){return query.validUntil;}public CurrentCccEvent.Action action(){return action;}public int instanceId(){return instanceId;}
+        public Optional<CurrentCccEventResult> latestFrame(){return Optional.ofNullable(latestFrame);}
+    }
+    private CccEventReceived latestCccEvent;
+    private CccEventUnavailable unresolvedCccEvent;
+    private final Set<Integer> attemptedCccEventInstances=new HashSet<>();
+    private byte[] cccEventPacket(String id,CurrentCccEvent.Action action,CoreReceived before,BigInteger provider,BigInteger sequence,Optional<Integer> selector,Instant until)throws IOException {
+        if(!(before.frame instanceof CoreFrame.Partial core))throw new IOException("Actual current267 CCC Core required");
+        var request=CurrentCccEvent.request(core,action,provider,sequence,selector);var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));
+        fields.put("core_control_deadline_unix_ms",BigInteger.valueOf(until.toEpochMilli()));return NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+    }
+    private void requireCccEventFrame(CurrentCccEventResult frame,CurrentCccEvent.Action action,CoreReceived before)throws IOException {
+        if(frame.action()!=action||frame.status()==CurrentCccEventResult.Status.INDETERMINATE||!frame.cleanupKnown())throw new IOException("CCC business action/cleanup uncertain");
+        if(frame.factsBefore().isPresent()&&!frame.factsBefore().orElseThrow().equals(((CoreFrame.Partial)before.frame).prefix()))throw new IOException("CCC business changed original Core");
+        if(frame.owner().isPresent()&&!frame.owner().orElseThrow().connectionGeneration().equals(hello.connectionGeneration()))throw new IOException("CCC business crossed actual held connection");
+        if(frame.source().isPresent()&&frame.source().orElseThrow().fixedInstanceId().isPresent()){
+            int fixed=frame.source().orElseThrow().fixedInstanceId().orElseThrow();int actor=((CoreFrame.Partial)before.frame).prefix().playedCharacterId();
+            if(frame.source().orElseThrow().eventCensus().events().stream().filter(e->e.instanceId()==fixed&&e.recipientCharacterId()==actor).count()!=1)throw new IOException("CCC actual event recipient differs from checked Core");
+        }
+    }
+    private void requireCccEventOriginal(CccEventReceived actual,Instant until)throws IOException {
+        if(actual==null||actual.issuer!=this||actual!=latestCccEvent||actual.actionAttempted||unresolvedCccEvent!=null)throw new IOException("Original unused private CCC business query required");
+        requireCccBusinessScope(actual.before,until);Instant now=chronologyClock.instant();
+        if(until.isAfter(actual.validUntil)||!now.isBefore(actual.validUntil))throw new IOException("CCC original query expired or extended");
+        requireCccBusinessCustody(actual.original,actual.custody,actual.before.custody,actual.validUntil);
+        var frame=CurrentCccEventResult.decodeOutcome(actual.original);requireCccEventFrame(frame,CurrentCccEvent.Action.QUERY,actual.before);
+        if(!actual.before.cccEventQueryAttempted||frame.status()!=CurrentCccEventResult.Status.AVAILABLE||!frame.equals(actual.frame)
+                ||!Arrays.equals(actual.original.outbound().orElseThrow().originalPacket(),cccEventPacket(actual.original.requestId(),CurrentCccEvent.Action.QUERY,actual.before,BigInteger.ZERO,BigInteger.ZERO,Optional.empty(),actual.validUntil)))
+            throw new IOException("CCC original query/body/Core/Source changed");
+    }
+    public synchronized CccEventRead readCurrentCccEvent(CoreReceived before,Instant deadline)throws InterruptedException {
+        if(unresolvedCccEvent!=null)return unresolvedCccEvent;
+        String id="ccc-event-query-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome outcome=null;
+        try {
+            requireCccBusinessScope(before,deadline);if(before.cccEventQueryAttempted)throw new IOException("Fresh Core required for this CCC query");
+            if(!hello.capabilities().contains(CurrentCccEvent.Action.QUERY.capability())||sentRequestIds.size()>=maximumSubmissions)throw new IOException("CCC actual query capability/retention unavailable");
+            Instant until=readDeadline(deadline);byte[] packet=cccEventPacket(id,CurrentCccEvent.Action.QUERY,before,BigInteger.ZERO,BigInteger.ZERO,Optional.empty(),until);
+            outcome=retainReadOutcome(dispatchRead(id,packet,until,()->{requireBackgroundAtCoreWrite();try{requireCccBusinessScope(before,until);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
+                if(before.cccEventQueryAttempted)throw new IllegalStateException("CCC Core query already consumed");before.cccEventQueryAttempted=true;latestCccEvent=null;}));
+            if(!(outcome instanceof AckReceived ack))return cccEventReadFailure(id,outcome,new IOException("Actual CCC query ACK unavailable"));
+            var frame=CurrentCccEventResult.decodeOutcome(ack);requireCccEventFrame(frame,CurrentCccEvent.Action.QUERY,before);
+            if(frame.status()!=CurrentCccEventResult.Status.AVAILABLE)return new CccEventUnavailable(ack,frame.unavailableReason().orElseThrow());
+            var custody=originalRequestChronology(id).orElseThrow(()->new IOException("Actual CCC query custody absent"));
+            var received=new CccEventReceived(this,before,frame,ack,custody,until);latestCccEvent=received;requireCccEventOriginal(received,until);return received;
+        }catch(IOException|RuntimeException invalid){latestCccEvent=null;return cccEventReadFailure(id,outcome,invalid);}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();return cccEventReadFailure(id,new Unknown(id,"Original CCC read interrupted after write",retainedOutbound(id),Optional.empty()),interrupted);}
+    }
+    private CccEventUnavailable cccEventReadFailure(String id,DispatchOutcome outcome,Exception invalid) {
+        if(!sentRequestIds.contains(id)||outcome instanceof RejectedBeforeDispatch)return new CccEventUnavailable(outcome!=null?outcome:zero(id,reason(invalid)),reason(invalid));
+        return unresolvedCccEvent=new CccEventUnavailable(cccFailure(id,null,outcome,invalid),reason(invalid));
+    }
+    public synchronized CccEventPrepared prepareCurrentCccTierFour(CccEventReceived query)throws IOException{return prepareCccEvent(query,CurrentCccEvent.Action.SELECT_TIER_FOUR);}
+    public synchronized CccEventPrepared prepareCurrentCccTemporaryCancel(CccEventReceived query)throws IOException{return prepareCccEvent(query,CurrentCccEvent.Action.SELECT_TEMPORARY_CANCEL);}
+    private CccEventPrepared prepareCccEvent(CccEventReceived query,CurrentCccEvent.Action action)throws IOException {
+        if(query!=null&&query.issuer==this&&query.prepared!=null){if(query.prepared.action!=action)throw new IOException("CCC original query already prepared for a different fixed choice");return query.prepared;}
+        requireCccEventOriginal(query,query.validUntil);requireCccCase(query.before);
+        int instance=query.frame.source().orElseThrow().fixedInstanceId().orElseThrow(()->new IOException("No actual fixed CCC instance"));
+        requireCccEventAdmission(query,action,instance);
+        if(!hello.capabilities().contains(action.capability()))throw new IOException("CCC actual fixed event capability absent");
+        String id="ccc-event-choice-"+UUID.randomUUID().toString().replace("-","");
+        return query.prepared=new CccEventPrepared(this,query,action,id,cccEventPacket(id,action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),Optional.of(instance),query.validUntil),instance);
+    }
+    private void requireCccEventAdmission(CccEventReceived query,CurrentCccEvent.Action action,int instance)throws IOException {
+        var s=query.frame.source().orElseThrow();if(!s.caseBound()||!s.fixedInstanceId().equals(Optional.of(instance))||attemptedCccEventInstances.contains(instance))throw new IOException("Actual original CCC event case/instance unavailable");
+        if(action==CurrentCccEvent.Action.SELECT_TIER_FOUR){if(knownCccDays<2||cccTierFourReceipt!=null||cccDecisionConfirmationReceipt!=null||!s.selectDAdmissible())throw new IOException("Original CCC D2 actual tier-four admission required");}
+        else if(action==CurrentCccEvent.Action.SELECT_TEMPORARY_CANCEL){if(cccDecisionConfirmationReceipt==null||cccCancelReceipt!=null||cccTierFourInstance==null||instance==cccTierFourInstance||!s.selectFAdmissible())throw new IOException("CCC cancel requires actual decision confirmation and a new independent instance");}
+        else throw new IOException("Only two fixed CCC event choices exist");
+    }
+    public synchronized DispatchOutcome submitCurrentCccEvent(CccEventPrepared prepared)throws InterruptedException {
+        if(prepared!=null&&prepared.issuer==this&&prepared.called&&prepared.outcome!=null)return prepared.outcome;
+        if(unresolvedCccEvent!=null)return unresolvedCccEvent.original();
+        String id=prepared==null?"ccc-event-invalid-"+UUID.randomUUID().toString().replace("-",""):prepared.id;DispatchOutcome outcome=null;
+        try {
+            if(prepared==null||prepared.issuer!=this||prepared.query.prepared!=prepared||prepared.called)throw new IOException("Original private unused CCC preparation required");
+            var query=prepared.query;requireCccEventOriginal(query,query.validUntil);requireCccCase(query.before);requireCccEventAdmission(query,prepared.action,prepared.instanceId);
+            if(!hello.capabilities().contains(prepared.action.capability())||sentRequestIds.size()>=maximumSubmissions)throw new IOException("CCC action capability/retention unavailable");
+            if(!Arrays.equals(prepared.packet.value(),cccEventPacket(id,prepared.action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),Optional.of(prepared.instanceId),query.validUntil)))throw new IOException("CCC original private action packet/deadline drift");
+            outcome=dispatch(id,prepared.packet.value(),query.validUntil,()->{requireBackgroundAtCoreWrite();try{requireCccEventOriginal(query,query.validUntil);requireCccCase(query.before);requireCccEventAdmission(query,prepared.action,prepared.instanceId);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
+                if(!attemptedCccEventInstances.add(prepared.instanceId))throw new IllegalStateException("CCC event instance already attempted");prepared.called=true;query.actionAttempted=true;query.before.controlAttempted=true;heldSnapshotInvalidated=true;latestCccEvent=null;});
+            if(outcome instanceof Unknown unknown){unresolvedCoreControl=unknown;unresolvedCccEvent=new CccEventUnavailable(unknown,"Original CCC business UNKNOWN");return prepared.outcome=unknown;}
+            if(outcome instanceof AckReceived ack){
+                var frame=CurrentCccEventResult.decodeOutcome(ack);requireCccEventFrame(frame,prepared.action,query.before);
+                var custody=originalRequestChronology(id).orElseThrow(()->new IOException("Actual CCC action custody absent"));requireCccBusinessCustody(ack,custody,query.custody,query.validUntil);
+                if(frame.source().isPresent()&&!frame.source().equals(query.frame.source())||frame.providerGeneration().signum()>0&&!frame.providerGeneration().equals(query.frame.providerGeneration())
+                        ||frame.querySequence().signum()>0&&!frame.querySequence().equals(query.frame.querySequence())||frame.instanceId().isPresent()&&!frame.instanceId().equals(Optional.of(prepared.instanceId)))throw new IOException("CCC ACK rebound original Source/lease/selector");
+                if(frame.successful()){
+                    if(!frame.source().equals(query.frame.source())||!frame.factsBefore().equals(query.frame.factsBefore())||!frame.providerGeneration().equals(query.frame.providerGeneration())
+                            ||!frame.querySequence().equals(query.frame.querySequence())||!(frame.instanceId().equals(Optional.of(prepared.instanceId))))throw new IOException("CCC callback must retain complete immutable beforeSource/Core/lease/selector");
+                    recordCccCaseEffect(ack);if(prepared.action==CurrentCccEvent.Action.SELECT_TIER_FOUR){cccTierFourReceipt=ack;cccTierFourInstance=prepared.instanceId;}else cccCancelReceipt=ack;
+                }
+                prepared.latestFrame=frame;
+            }
+            return prepared.outcome=outcome;
+        }catch(IOException|RuntimeException invalid){var failure=cccFailure(id,null,outcome,invalid);if(prepared!=null&&prepared.issuer==this)prepared.outcome=failure;return failure;}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();var failure=cccFailure(id,null,outcome,interrupted);if(prepared!=null&&prepared.issuer==this)prepared.outcome=failure;return failure;}
+    }
+
+    public sealed interface CccDecisionRead permits CccDecisionReceived,CccDecisionUnavailable { DispatchOutcome original(); }
+    public static final class CccDecisionReceived implements CccDecisionRead {
+        private final NativeGameTransport issuer;private final CoreReceived before;private final CurrentCccDecisionResult frame;
+        private final AckReceived original;private final NativeRequestChronology custody;private final Instant validUntil;
+        private boolean actionAttempted;private CccDecisionPrepared prepared;
+        private CccDecisionReceived(NativeGameTransport issuer,CoreReceived before,CurrentCccDecisionResult frame,AckReceived original,NativeRequestChronology custody,Instant until){this.issuer=issuer;this.before=before;this.frame=frame;this.original=original;this.custody=custody;validUntil=until;}
+        public CurrentCccDecisionResult frame(){return frame;}@Override public AckReceived original(){return original;}public Instant validUntil(){return validUntil;}
+        public void requireOriginal(NativeGameTransport actual,Instant until)throws IOException{Objects.requireNonNull(actual).requireCccDecisionOriginal(this,until);}
+    }
+    public record CccDecisionUnavailable(DispatchOutcome original,String reason)implements CccDecisionRead {public CccDecisionUnavailable{Objects.requireNonNull(original);StrictJson.text(reason);}}
+    public static final class CccDecisionPrepared {
+        private final NativeGameTransport issuer;private final CccDecisionReceived query;private final CurrentCccDecision.Action action;private final String id;private final NativeWire.Bytes packet;
+        private boolean called;private DispatchOutcome outcome;private CurrentCccDecisionResult latestFrame;
+        private CccDecisionPrepared(NativeGameTransport issuer,CccDecisionReceived query,CurrentCccDecision.Action action,String id,byte[] packet){this.issuer=issuer;this.query=query;this.action=action;this.id=id;this.packet=new NativeWire.Bytes(packet);}
+        public String requestId(){return id;}public NativeWire.Bytes originalPacket(){return packet;}public Instant deadline(){return query.validUntil;}public CurrentCccDecision.Action action(){return action;}
+        public Optional<CurrentCccDecisionResult> latestFrame(){return Optional.ofNullable(latestFrame);}
+    }
+    private CccDecisionReceived latestCccDecision;
+    private CccDecisionUnavailable unresolvedCccDecision;
+
+    private byte[] cccDecisionPacket(String id,CurrentCccDecision.Action action,CoreReceived before,BigInteger provider,BigInteger sequence,Optional<CurrentCccDecision.DecisionKey> selector,Instant until)throws IOException {
+        if(!(before.frame instanceof CoreFrame.Partial core))throw new IOException("Actual current267 CCC Core required");
+        var request=CurrentCccDecision.request(core,action,provider,sequence,selector);var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));
+        fields.put("core_control_deadline_unix_ms",BigInteger.valueOf(until.toEpochMilli()));return NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+    }
+    private void requireCccDecisionFrame(CurrentCccDecisionResult frame,CurrentCccDecision.Action action,CoreReceived before)throws IOException {
+        if(frame.action()!=action||frame.status()==CurrentCccDecisionResult.Status.INDETERMINATE||!frame.cleanupKnown())throw new IOException("CCC business action/cleanup uncertain");
+        if(frame.factsBefore().isPresent()&&!frame.factsBefore().orElseThrow().equals(((CoreFrame.Partial)before.frame).prefix()))throw new IOException("CCC business changed original Core");
+        if(frame.owner().isPresent()&&!frame.owner().orElseThrow().connectionGeneration().equals(hello.connectionGeneration()))throw new IOException("CCC business crossed actual held connection");
+
+    }
+    private void requireCccDecisionOriginal(CccDecisionReceived actual,Instant until)throws IOException {
+        if(actual==null||actual.issuer!=this||actual!=latestCccDecision||actual.actionAttempted||unresolvedCccDecision!=null)throw new IOException("Original unused private CCC business query required");
+        requireCccBusinessScope(actual.before,until);Instant now=chronologyClock.instant();
+        if(until.isAfter(actual.validUntil)||!now.isBefore(actual.validUntil))throw new IOException("CCC original query expired or extended");
+        requireCccBusinessCustody(actual.original,actual.custody,actual.before.custody,actual.validUntil);
+        var frame=CurrentCccDecisionResult.decodeOutcome(actual.original);requireCccDecisionFrame(frame,CurrentCccDecision.Action.QUERY,actual.before);
+        if(!actual.before.cccDecisionQueryAttempted||frame.status()!=CurrentCccDecisionResult.Status.AVAILABLE||!frame.equals(actual.frame)
+                ||!Arrays.equals(actual.original.outbound().orElseThrow().originalPacket(),cccDecisionPacket(actual.original.requestId(),CurrentCccDecision.Action.QUERY,actual.before,BigInteger.ZERO,BigInteger.ZERO,Optional.empty(),actual.validUntil)))
+            throw new IOException("CCC original query/body/Core/Source changed");
+    }
+    public synchronized CccDecisionRead readCurrentCccDecision(CoreReceived before,Instant deadline)throws InterruptedException {
+        if(unresolvedCccDecision!=null)return unresolvedCccDecision;
+        String id="ccc-decision-query-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome outcome=null;
+        try {
+            requireCccBusinessScope(before,deadline);if(before.cccDecisionQueryAttempted)throw new IOException("Fresh Core required for this CCC query");
+            if(!hello.capabilities().contains(CurrentCccDecision.Action.QUERY.capability())||sentRequestIds.size()>=maximumSubmissions)throw new IOException("CCC actual query capability/retention unavailable");
+            Instant until=readDeadline(deadline);byte[] packet=cccDecisionPacket(id,CurrentCccDecision.Action.QUERY,before,BigInteger.ZERO,BigInteger.ZERO,Optional.empty(),until);
+            outcome=retainReadOutcome(dispatchRead(id,packet,until,()->{requireBackgroundAtCoreWrite();try{requireCccBusinessScope(before,until);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
+                if(before.cccDecisionQueryAttempted)throw new IllegalStateException("CCC Core query already consumed");before.cccDecisionQueryAttempted=true;latestCccDecision=null;}));
+            if(!(outcome instanceof AckReceived ack))return cccDecisionReadFailure(id,outcome,new IOException("Actual CCC query ACK unavailable"));
+            var frame=CurrentCccDecisionResult.decodeOutcome(ack);requireCccDecisionFrame(frame,CurrentCccDecision.Action.QUERY,before);
+            if(frame.status()!=CurrentCccDecisionResult.Status.AVAILABLE)return new CccDecisionUnavailable(ack,frame.unavailableReason().orElseThrow());
+            var custody=originalRequestChronology(id).orElseThrow(()->new IOException("Actual CCC query custody absent"));
+            var received=new CccDecisionReceived(this,before,frame,ack,custody,until);latestCccDecision=received;requireCccDecisionOriginal(received,until);return received;
+        }catch(IOException|RuntimeException invalid){latestCccDecision=null;return cccDecisionReadFailure(id,outcome,invalid);}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();return cccDecisionReadFailure(id,new Unknown(id,"Original CCC read interrupted after write",retainedOutbound(id),Optional.empty()),interrupted);}
+    }
+    private CccDecisionUnavailable cccDecisionReadFailure(String id,DispatchOutcome outcome,Exception invalid) {
+        if(!sentRequestIds.contains(id)||outcome instanceof RejectedBeforeDispatch)return new CccDecisionUnavailable(outcome!=null?outcome:zero(id,reason(invalid)),reason(invalid));
+        return unresolvedCccDecision=new CccDecisionUnavailable(cccFailure(id,null,outcome,invalid),reason(invalid));
+    }
+    private Optional<CurrentCccDecision.DecisionKey> cccDecisionSelector(CurrentCccDecision.Action action){return action==CurrentCccDecision.Action.OPEN_DETAIL||action==CurrentCccDecision.Action.CONFIRM?Optional.of(CurrentCccDecision.DecisionKey.CORRUPTION_POLICY):Optional.empty();}
+    public synchronized CccDecisionPrepared prepareCurrentCccDecision(CccDecisionReceived query,CurrentCccDecision.Action action)throws IOException {
+        if(query!=null&&query.issuer==this&&query.prepared!=null){if(query.prepared.action!=action)throw new IOException("CCC query already prepared for a different fixed action");return query.prepared;}
+        requireCccDecisionOriginal(query,query.validUntil);requireCccCase(query.before);requireCccDecisionAdmission(query,action);
+        if(!hello.capabilities().contains(action.capability()))throw new IOException("CCC actual fixed decision capability absent");
+        String id="ccc-decision-action-"+UUID.randomUUID().toString().replace("-","");
+        return query.prepared=new CccDecisionPrepared(this,query,action,id,cccDecisionPacket(id,action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),cccDecisionSelector(action),query.validUntil));
+    }
+    private void requireCccDecisionAdmission(CccDecisionReceived query,CurrentCccDecision.Action action)throws IOException {
+        var s=query.frame.source().orElseThrow();if(!s.caseBound()||knownCccDays<3||cccTierFourReceipt==null||cccCancelReceipt!=null||cccDecisionConfirmationReceipt!=null)throw new IOException("Original CCC actual tier-four receipt and D3+ decision case required");
+        switch(action){
+            case OPEN_LIST -> {if(!s.openListAdmissible())throw new IOException("Actual hidden-list Toggle admission required");}
+            case OPEN_DETAIL -> {if(s.rows().stream().noneMatch(r->r.decisionKey()==CurrentCccDecision.DecisionKey.CORRUPTION_POLICY&&r.canOpenDetail()))throw new IOException("Actual fixed decision row admission required");}
+            case CONFIRM -> {if(cccDecisionConfirmationAttempted||!s.confirmAdmissible()||!s.fixtureTaxVariablePresent().orElse(false)||!s.fixtureTaxExactHalf().orElse(false)||!s.selectedDecisionKey().equals(Optional.of(CurrentCccDecision.DecisionKey.CORRUPTION_POLICY)))throw new IOException("Original once CCC confirm needs actual half-tax predicate and official Can");}
+            default -> throw new IOException("Query DATA cannot prepare a business action");
+        }
+    }
+    public synchronized DispatchOutcome submitCurrentCccDecision(CccDecisionPrepared prepared)throws InterruptedException {
+        if(prepared!=null&&prepared.issuer==this&&prepared.called&&prepared.outcome!=null)return prepared.outcome;
+        if(unresolvedCccDecision!=null)return unresolvedCccDecision.original();
+        String id=prepared==null?"ccc-decision-invalid-"+UUID.randomUUID().toString().replace("-",""):prepared.id;DispatchOutcome outcome=null;
+        try {
+            if(prepared==null||prepared.issuer!=this||prepared.query.prepared!=prepared||prepared.called)throw new IOException("Original private unused CCC preparation required");
+            var query=prepared.query;requireCccDecisionOriginal(query,query.validUntil);requireCccCase(query.before);requireCccDecisionAdmission(query,prepared.action);
+            if(!hello.capabilities().contains(prepared.action.capability())||sentRequestIds.size()>=maximumSubmissions)throw new IOException("CCC action capability/retention unavailable");
+            if(!Arrays.equals(prepared.packet.value(),cccDecisionPacket(id,prepared.action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),cccDecisionSelector(prepared.action),query.validUntil)))throw new IOException("CCC original private action packet/deadline drift");
+            outcome=dispatch(id,prepared.packet.value(),query.validUntil,()->{requireBackgroundAtCoreWrite();try{requireCccDecisionOriginal(query,query.validUntil);requireCccCase(query.before);requireCccDecisionAdmission(query,prepared.action);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
+                if(prepared.action==CurrentCccDecision.Action.CONFIRM)cccDecisionConfirmationAttempted=true;prepared.called=true;query.actionAttempted=true;query.before.controlAttempted=true;heldSnapshotInvalidated=true;latestCccDecision=null;});
+            if(outcome instanceof Unknown unknown){unresolvedCoreControl=unknown;unresolvedCccDecision=new CccDecisionUnavailable(unknown,"Original CCC business UNKNOWN");return prepared.outcome=unknown;}
+            if(outcome instanceof AckReceived ack){
+                var frame=CurrentCccDecisionResult.decodeOutcome(ack);requireCccDecisionFrame(frame,prepared.action,query.before);
+                var custody=originalRequestChronology(id).orElseThrow(()->new IOException("Actual CCC action custody absent"));requireCccBusinessCustody(ack,custody,query.custody,query.validUntil);
+                if(frame.source().isPresent()&&!frame.source().equals(query.frame.source())||frame.providerGeneration().signum()>0&&!frame.providerGeneration().equals(query.frame.providerGeneration())
+                        ||frame.querySequence().signum()>0&&!frame.querySequence().equals(query.frame.querySequence())||frame.decisionKey().isPresent()&&!frame.decisionKey().equals(cccDecisionSelector(prepared.action)))throw new IOException("CCC ACK rebound original Source/lease/selector");
+                if(frame.successful()){
+                    if(!frame.source().equals(query.frame.source())||!frame.factsBefore().equals(query.frame.factsBefore())||!frame.providerGeneration().equals(query.frame.providerGeneration())
+                            ||!frame.querySequence().equals(query.frame.querySequence())||!(frame.decisionKey().equals(cccDecisionSelector(prepared.action))))throw new IOException("CCC callback must retain complete immutable beforeSource/Core/lease/selector");
+                    recordCccCaseEffect(ack);if(prepared.action==CurrentCccDecision.Action.CONFIRM)cccDecisionConfirmationReceipt=ack;
+                }
+                prepared.latestFrame=frame;
+            }
+            return prepared.outcome=outcome;
+        }catch(IOException|RuntimeException invalid){var failure=cccFailure(id,null,outcome,invalid);if(prepared!=null&&prepared.issuer==this)prepared.outcome=failure;return failure;}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();var failure=cccFailure(id,null,outcome,interrupted);if(prepared!=null&&prepared.issuer==this)prepared.outcome=failure;return failure;}
     }
     public sealed interface LydRead permits LydReceived,LydUnavailable { DispatchOutcome original(); }
     public static final class LydReceived implements LydRead {

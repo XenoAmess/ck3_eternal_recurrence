@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.HexFormat;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import org.xar.ck3.control.application.action.NativeActionPort;
 import org.xar.ck3.control.application.action.NativeObservationPort;
@@ -66,6 +67,15 @@ import org.xar.ck3.control.platform.NativeLaunchPlan;
 import org.xar.ck3.control.nativebridge.CurrentCoreCheckpointSave;
 import org.xar.ck3.control.nativebridge.CurrentCoreCheckpointSaveResult;
 import org.xar.ck3.control.nativebridge.CurrentAubObserverFixtureResult;
+import org.xar.ck3.control.nativebridge.CurrentCccActorTransition;
+import org.xar.ck3.control.nativebridge.CurrentCccActorTransitionSource;
+import org.xar.ck3.control.nativebridge.CurrentCccActorTransitionResult;
+import org.xar.ck3.control.nativebridge.CurrentCccEvent;
+import org.xar.ck3.control.nativebridge.CurrentCccEventSource;
+import org.xar.ck3.control.nativebridge.CurrentCccEventResult;
+import org.xar.ck3.control.nativebridge.CurrentCccDecision;
+import org.xar.ck3.control.nativebridge.CurrentCccDecisionSource;
+import org.xar.ck3.control.nativebridge.CurrentCccDecisionResult;
 import org.xar.ck3.control.nativebridge.CurrentStockBookmark1070;
 import org.xar.ck3.control.nativebridge.CurrentStockBookmark1070Source;
 import org.xar.ck3.control.nativebridge.CurrentStockBookmark1070Result;
@@ -156,6 +166,8 @@ public final class NativeOwnerSnapshotMain268 {
         ObjectNode config = StrictJson.object(StrictJson.parse(configBytes, SMALL), Set.of("schema", "owner_descriptor",
                 "overall_timeout_seconds", "read_timeout_seconds", "maximum_frames_per_operation"), Set.of("core_prefix_only", "mode", "control_step", "maximum_status_polls", "status_poll_interval_ms", "window_name", "expected_source_rite_id", "checkpoint_archive_path", "maximum_checkpoint_bytes", "checkpoint_observation_attempts", "checkpoint_poll_interval_ms", "previous_checkpoint_source", "previous_checkpoint_archive", "navigation_action", "rite_action", "maximum_confirmation_polls", "target_character_id", "cb_key", "tuple_intent", "maximum_warning_polls", "warning_poll_interval_ms", "instance_id", "decision_key", "target_threshold", "product", "control", "setting", "catalog", "choice_key", "phase", "baseline_progress", "personal_key", "event_role", "status_poll_delay_ms", "maximum_core_polls", "core_poll_interval_ms", "confirmation_poll_interval_ms", "text"));
         ObservationMode observationMode=observationMode(config);
+        boolean currentCcc=observationMode==ObservationMode.CURRENT_CCC;
+        CccConfig cccConfig=currentCcc?currentCccConfig(config):null;
         boolean currentStockBookmark1070=observationMode==ObservationMode.CURRENT_STOCK_BOOKMARK1070;
         StockBookmark1070Config stockBookmark1070Config=currentStockBookmark1070?currentStockBookmark1070Config(config):null;
         boolean currentRiteCreationBlockers=observationMode==ObservationMode.CURRENT_RITE_CREATION_BLOCKERS;
@@ -323,6 +335,7 @@ public final class NativeOwnerSnapshotMain268 {
                 .put("machine_id",owner.machineId()).put("steam_build_id","26785313").put("target_character_id",declarationConfig.target().value()).put("cb_key",declarationConfig.casusBelli().wire())
                 .put("read_calls",0).put("native_getter_calls",0).put("query_available",false).put("cost_available",false).put("display_scale_verified",false)
                 .putNull("formatted_text").put("open_calls",0).put("select_calls",0).put("send_calls",0).put("accept_calls",0).put("payment_confirmed",false).put("physical_save_confirmed",false);
+        if(currentCcc)initializeCurrentCccResult(result,cccConfig,owner.machineId());
         if(currentStockBookmark1070)initializeCurrentStockBookmark1070Result(result,stockBookmark1070Config,owner.machineId());
         if(currentRiteCreationBlockers)initializeCurrentRiteCreationBlockersResult(result,riteCreationBlockersConfig,owner.machineId());
         if(currentRiteText)initializeCurrentRiteTextResult(result,riteTextConfig,owner.machineId(),StrictJson.text(config.get("mode")));
@@ -404,16 +417,18 @@ public final class NativeOwnerSnapshotMain268 {
         stage = "ATTACH";
         try (var supervisor = WindowsJobProcess.retainReadOnlyProcess(owner.supervisorIdentity().pid())) {
             requireSupervisor(supervisor, owner.supervisorIdentity());
-            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,currentStockBookmark1070?stockBookmark1070Config.submissions():currentRiteCreationBlockers?2:currentRiteText?riteTextConfig.submissions():currentRiteCreate?riteCreateConfig.submissions():currentDesInitGuard?2:currentStockSeed?stockSeedConfig.submissions():currentTed?tedConfig.submissions():currentLyd?lydConfig.mode().submissions():currentSupermanSavedBaseline?3:currentSupermanHealth?(healthConfig.mode()==SupermanHealthMode.QUERY?2:healthConfig.mode()==SupermanHealthMode.BASELINE_SAVE_AND_BEGIN?5:3):currentCourtierChoices?(choicesConfig.action()==CurrentCourtierChoices.Action.QUERY_CHOICES?2:3):currentCourtierConfiguration?(configurationConfig.action()==CurrentCourtierConfiguration.Action.QUERY_CONFIGURATION?2:3):currentDecisionsClose?(decisionsCloseAction==CurrentDecisionsClose.Action.QUERY_CLOSE?2:3):currentCourtierControls?(courtierConfig.action()==CurrentCourtierControls.Action.QUERY_CONTROL?2:3):currentXqolThreshold?(thresholdConfig.action()==CurrentXqolThreshold.Action.QUERY_THRESHOLD?2:3):currentXqolPrompt?(xqolPromptAction==CurrentXqolPrompt.Action.QUERY_PROMPT?2:3):currentCuratedDecision?(curatedConfig.action()==CurrentCuratedDecisions.Action.QUERY?2:3):currentFullscreenEvent?(acknowledgeKnownIntro?3:2):currentLetterSet?(letterSetReply?3:2):djcSelectedCost?(djcCostPreview?9:3):currentLetter?(knownLetterReply?3:2):djcUiMode?(djcUiSubmit?declarationConfig.maximumWarningPolls()+12:2):currentSuccession?(continueSuccession?2:1):currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||aubObserver||djcQuery||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
+            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,currentCcc?cccConfig.submissions():currentStockBookmark1070?stockBookmark1070Config.submissions():currentRiteCreationBlockers?2:currentRiteText?riteTextConfig.submissions():currentRiteCreate?riteCreateConfig.submissions():currentDesInitGuard?2:currentStockSeed?stockSeedConfig.submissions():currentTed?tedConfig.submissions():currentLyd?lydConfig.mode().submissions():currentSupermanSavedBaseline?3:currentSupermanHealth?(healthConfig.mode()==SupermanHealthMode.QUERY?2:healthConfig.mode()==SupermanHealthMode.BASELINE_SAVE_AND_BEGIN?5:3):currentCourtierChoices?(choicesConfig.action()==CurrentCourtierChoices.Action.QUERY_CHOICES?2:3):currentCourtierConfiguration?(configurationConfig.action()==CurrentCourtierConfiguration.Action.QUERY_CONFIGURATION?2:3):currentDecisionsClose?(decisionsCloseAction==CurrentDecisionsClose.Action.QUERY_CLOSE?2:3):currentCourtierControls?(courtierConfig.action()==CurrentCourtierControls.Action.QUERY_CONTROL?2:3):currentXqolThreshold?(thresholdConfig.action()==CurrentXqolThreshold.Action.QUERY_THRESHOLD?2:3):currentXqolPrompt?(xqolPromptAction==CurrentXqolPrompt.Action.QUERY_PROMPT?2:3):currentCuratedDecision?(curatedConfig.action()==CurrentCuratedDecisions.Action.QUERY?2:3):currentFullscreenEvent?(acknowledgeKnownIntro?3:2):currentLetterSet?(letterSetReply?3:2):djcSelectedCost?(djcCostPreview?9:3):currentLetter?(knownLetterReply?3:2):djcUiMode?(djcUiSubmit?declarationConfig.maximumWarningPolls()+12:2):currentSuccession?(continueSuccession?2:1):currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||aubObserver||djcQuery||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
             // This factory returns ATTACHED only. Its close releases communication and readonly handles, never a Job.
-            try (ManagedGameSession game = NativeGameAttachment.attach(request, (currentStockBookmark1070||currentRiteCreationBlockers||currentRiteText||currentRiteCreate||currentDesInitGuard||currentStockSeed||currentTed||currentLyd||currentSupermanSavedBaseline||currentSupermanHealth||currentCourtierChoices||currentCourtierConfiguration||currentDecisionsClose||currentCourtierControls||currentXqolThreshold||currentXqolPrompt||currentCuratedDecision||currentFullscreenEvent||currentLetterSet||djcSelectedCost||currentLetter||djcUiMode||currentFrontendMenu||currentSuccession||aubObserver||djcQuery||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
+            try (ManagedGameSession game = NativeGameAttachment.attach(request, (currentCcc||currentStockBookmark1070||currentRiteCreationBlockers||currentRiteText||currentRiteCreate||currentDesInitGuard||currentStockSeed||currentTed||currentLyd||currentSupermanSavedBaseline||currentSupermanHealth||currentCourtierChoices||currentCourtierConfiguration||currentDecisionsClose||currentCourtierControls||currentXqolThreshold||currentXqolPrompt||currentCuratedDecision||currentFullscreenEvent||currentLetterSet||djcSelectedCost||currentLetter||djcUiMode||currentFrontendMenu||currentSuccession||aubObserver||djcQuery||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
                 if (game.mode() != ManagedGameSession.Mode.ATTACHED) throw new IOException("actual attachment mode differs");
                 requireSupervisor(supervisor, owner.supervisorIdentity());
                 var transport = game.nativeTransport();
                 var hello = transport.diagnostics().originalHello().orElseThrow(() -> new IOException("actual received HELLO unavailable"));
                 originals.set("new_hello", write(output, "new-hello.bin", hello.original().packet().value()));
                 result.put("hello_observed_at_utc", hello.observedAt().toString());
-                if(currentStockBookmark1070) {
+                if(currentCcc) {
+                    runCurrentCcc(transport,owner,plan,cccConfig,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,Duration.ofSeconds(readSeconds),result,originals);
+                } else if(currentStockBookmark1070) {
                     runCurrentStockBookmark1070(transport,owner,plan,stockBookmark1070Config,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
                 } else if(currentRiteCreationBlockers) {
                     runCurrentRiteCreationBlockers(transport,owner,plan,riteCreationBlockersConfig,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
@@ -4031,6 +4046,312 @@ if(riteDraftCosts) {
         }
     }
 
+    enum CccMode { QUERY_ROLE, QUERY_EVENT, QUERY_DECISION, ORIGINAL_CASE_ONCE }
+    record CccConfig(CccMode mode,int maximumStatusPolls,long statusPollDelayMillis) {
+        boolean queryOnly(){return mode!=CccMode.ORIGINAL_CASE_ONCE;}
+        int submissions(){return queryOnly()?2:Math.addExact(81,Math.multiplyExact(13,maximumStatusPolls));}
+    }
+    static CccConfig currentCccConfig(ObjectNode config) {
+        StrictJson.require("xar.native-owner-snapshot-config/v45".equals(StrictJson.text(config.get("schema"))),"Explicit v45 CCC family required");
+        CccMode mode=switch(StrictJson.text(config.get("mode"))) {
+            case "current_ccc_query_role"->CccMode.QUERY_ROLE;
+            case "current_ccc_query_event"->CccMode.QUERY_EVENT;
+            case "current_ccc_query_decision"->CccMode.QUERY_DECISION;
+            case "current_ccc_original_case_once"->CccMode.ORIGINAL_CASE_ONCE;
+            default->throw new IllegalArgumentException("Only three readonly CCC queries or the fixed original CCC case");
+        };
+        var fields=new java.util.HashSet<>(Set.of("schema","mode","owner_descriptor","overall_timeout_seconds","read_timeout_seconds","maximum_frames_per_operation"));
+        if(mode==CccMode.ORIGINAL_CASE_ONCE){fields.add("maximum_status_polls");fields.add("status_poll_delay_ms");}
+        StrictJson.object(config,Set.copyOf(fields));
+        ExactRef.fromJson(config.get("owner_descriptor"));
+        StrictJson.integer(config.get("overall_timeout_seconds"),1,600);
+        StrictJson.integer(config.get("read_timeout_seconds"),1,60);
+        StrictJson.integer(config.get("maximum_frames_per_operation"),1,65536);
+        return new CccConfig(mode,mode==CccMode.ORIGINAL_CASE_ONCE?Math.toIntExact(StrictJson.integer(config.get("maximum_status_polls"),1,256)):0,
+                mode==CccMode.ORIGINAL_CASE_ONCE?StrictJson.integer(config.get("status_poll_delay_ms"),1,1000):0);
+    }
+
+    static void requireCurrentCccRole(CurrentCccActorTransitionResult frame,CoreFrame.Prefix prefix)throws IOException {
+        if(frame.action()!=CurrentCccActorTransition.Action.QUERY_ROLE||frame.status()!=CurrentCccActorTransitionResult.Status.AVAILABLE||!frame.ok()||frame.accepted()
+                ||!frame.operationId().isEmpty()||frame.claimSequence().signum()!=0||frame.effectAttempted()||frame.nativeReturned()||!frame.cleanupKnown()
+                ||frame.providerGeneration().signum()<=0||frame.querySequence().signum()<=0||frame.connectionGeneration().signum()<=0
+                ||frame.factsBefore().filter(prefix::equals).isEmpty()||frame.source().isEmpty()||frame.progress().isPresent())throw new IOException("Actual CCC role query lacks original Core/whole Source/private lease");
+    }
+    static CurrentCccActorTransitionSource requireCurrentCccPositiveRole(CurrentCccActorTransitionResult frame,CoreFrame.Prefix prefix,
+            CurrentCccActorTransitionSource.Role role,java.math.BigInteger epoch,int song,int recipient,boolean confirm,int days,int caseStart)throws IOException {
+        requireCurrentCccRole(frame,prefix);var source=frame.source().orElseThrow();
+        if(!source.definitionFound()||!source.nativeShown().orElse(false)||!source.runtimeReady()||!source.predecessorResolved()||source.role()!=role
+                ||!source.actorEpoch().equals(epoch)||!frame.actorEpoch().equals(epoch)||source.completedNaturalDays()!=days||frame.completedNaturalDays()!=days||source.maximumNaturalDays()!=13||source.caseStartDateRaw()!=caseStart||(long)caseStart+24L*days!=prefix.dateRaw()||source.songActorId().filter(id->id==song).isEmpty()
+                ||(role==CurrentCccActorTransitionSource.Role.SONG?prefix.playedCharacterId()!=song:prefix.playedCharacterId()!=recipient||source.officialActorId().filter(id->id==recipient).isEmpty())
+                ||(confirm?!source.confirmAdmissible():!source.advanceAdmissible()))throw new IOException("Actual shown CCC role/epoch/actor IDs do not admit this fixed next step");
+        return source;
+    }
+    static void requireCurrentCccDayTerminal(CurrentCccActorTransitionResult frame,CoreFrame.Prefix start,String operation,int target,boolean firstDay,int expectedDays)throws IOException {
+        var status=firstDay?CurrentCccActorTransitionResult.Status.TRANSITION_PENDING:CurrentCccActorTransitionResult.Status.COMPLETED_DAY;
+        if(frame.status()!=status||!frame.ok()||!frame.accepted()||!frame.operationId().equals(operation)||frame.factsBefore().filter(start::equals).isEmpty()
+                ||frame.claimSequence().signum()<=0||frame.completedNaturalDays()!=expectedDays||!frame.cleanupKnown()||!frame.effectAttempted()||!frame.nativeReturned()
+                ||!frame.actorEpoch().equals(firstDay?java.math.BigInteger.ZERO:java.math.BigInteger.ONE)||frame.progress().isEmpty())throw new IOException("CCC requires exact D1 pending or D2 completed, never generic actor-abort/refusal/UNKNOWN");
+        var p=frame.progress().orElseThrow();
+        if(p.generation().signum()<=0||p.startingDateRaw()!=start.dateRaw()||(long)start.dateRaw()+24!=target||p.targetDateRaw()!=target||p.lastObservedDateRaw()!=target
+                ||p.beforeActorId()!=start.playedCharacterId()||p.afterActorId()==-1||p.completedDailyTicks()!=1||p.failureFlags()!=0||p.overshootDays()!=0
+                ||!p.armAttempted()||!p.resumeAttempted()||!p.resumeSubmitted()||!p.exactDayConfirmed()||!p.shutdownSafe()||p.armed()||p.accessCleanupUnknown()
+                ||p.transitionPending()!=firstDay||(firstDay?p.afterActorId()==p.beforeActorId():p.afterActorId()!=p.beforeActorId()))throw new IOException("CCC terminal must contain one actual daily tick, exact24, correct actors and disarmed known cleanup");
+    }
+    static CoreFrame.Prefix currentCccAfter(CoreFrame.Prefix before,int date,int actor)throws IOException {
+        if(actor==-1||(long)before.dateRaw()+24!=date)throw new IOException("Exact one-day actual actor proof required");
+        return new CoreFrame.Prefix(date,before.speed(),before.paused(),before.localPlayerId(),before.mapReady(),before.hasPlayedCharacter(),actor,before.playedCharacterAlive());
+    }
+    private static NativeGameTransport.CoreReceived readCurrentCccCore(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeLaunchPlan plan,
+            Path output,String label,Instant deadline,ObjectNode result,ObjectNode originals,NativeObservationPort.TransportSession expectedSession,CoreFrame.Prefix expected)throws IOException,InterruptedException {
+        stage="FRESH_INDEPENDENT_CCC_CORE";result.put("read_calls",result.path("read_calls").intValue()+1);
+        var read=transport.readCoreFrameReceived(deadline);archiveCurrentLetterOutcome(transport,Files.createDirectory(output.resolve(label)),label,read.original(),originals);
+        if(!(read instanceof NativeGameTransport.CoreReceived before)||!(before.frame() instanceof CoreFrame.Partial core))throw new IOException("Actual CCC Core unavailable; stop without action/retry");
+        requireCurrentDjcAckOwner(transport,owner,before.original(),expectedSession);var p=core.prefix();
+        if(core.build()!=ExactCk3Build.CK3_121003_STEAM_26785313||!core.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())||!core.build().coreFrameAdapterId().equals(plan.adapterId())
+                ||!p.paused()||!p.mapReady()||!p.hasPlayedCharacter()||!p.playedCharacterAlive()||p.playedCharacterId()==-1||p.localPlayerId()<0||p.speed()<1||p.speed()>5||expected!=null&&!expected.equals(p))throw new IOException("Exact current paused living independent CCC Core differs");
+        before.requireOriginal(transport,before.validUntil().isBefore(deadline)?before.validUntil():deadline);return before;
+    }
+    private static NativeGameTransport.CccRoleReceived readCurrentCccRole(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeGameTransport.CoreReceived before,
+            NativeObservationPort.TransportSession session,Path output,String label,Instant deadline,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        Instant until=before.validUntil().isBefore(deadline)?before.validUntil():deadline;stage="ONE_READONLY_CCC_ROLE";result.put("read_calls",result.path("read_calls").intValue()+1);
+        var read=transport.readCurrentCccRole(before,until);Path queryOutput=Files.createDirectory(output.resolve(label));archiveCurrentLetterOutcome(transport,queryOutput,label,read.original(),originals);
+        if(!(read instanceof NativeGameTransport.CccRoleReceived query))throw new IOException("Actual CCC role refused/UNKNOWN; never substitute a caller role");
+        query.requireOriginal(transport,query.validUntil());var ack=query.original();requireCurrentDjcAckOwner(transport,owner,ack,session);var frame=CurrentCccActorTransitionResult.decodeOutcome(ack);
+        if(!frame.equals(query.frame())||query.validUntil().isAfter(until)||!frame.deadlineUnixMs().equals(java.math.BigInteger.valueOf(query.validUntil().toEpochMilli()))||!frame.connectionGeneration().equals(session.connectionGeneration()))throw new IOException("CCC private query changed this ACK/original deadline/connection");
+        requireCurrentCccRole(frame,((CoreFrame.Partial)before.frame()).prefix());originals.set(label+"_original_result",write(queryOutput,"original-result.json",ack.originalResultToken().orElseThrow().bytes()));
+        result.set(label,FullJsonTree.parse(frame.encode().bytes(),SMALL));return query;
+    }
+    private static void archiveCurrentCccIntent(Path output,String label,String requestId,String operation,Instant deadline,byte[] packet,ObjectNode originals)throws IOException {
+        Path action=Files.createDirectory(output.resolve(label));var intent=StrictJson.object().put("schema","xar.current-ccc-original-intent/v1").put("request_id",requestId).put("operation_id",operation)
+                .put("original_deadline_utc",deadline.toString()).put("independent_after_core_verified",false).put("physical_save_confirmed",false);
+        intent.set("original_outbound",write(action,"original-request.packet",packet));originals.set(label+"_intent",write(action,"original-intent.json",FullJsonTree.encode(intent,SMALL)));
+    }
+    private static CurrentCccActorTransitionResult archiveCurrentCccOperation(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeGameTransport.CccAdvancePrepared prepared,
+            NativeGameTransport.CccRoleReceived originalRole,NativeActionPort.DispatchOutcome outcome,NativeObservationPort.TransportSession session,Path output,String label,ObjectNode result,ObjectNode originals)throws IOException {
+        Path actual=Files.createDirectory(output.resolve(label));archiveCurrentLetterOutcome(transport,actual,label,outcome,originals);
+        if(!(outcome instanceof NativeActionPort.AckReceived ack))throw new IOException("Original CCC advance/status refused or UNKNOWN; do not retry/replay");
+        requireCurrentDjcAckOwner(transport,owner,ack,session);var f=CurrentCccActorTransitionResult.decodeOutcome(ack);
+        originals.set(label+"_original_result",write(actual,"original-result.json",ack.originalResultToken().orElseThrow().bytes()));result.set(label,FullJsonTree.parse(f.encode().bytes(),SMALL));
+        var q=originalRole.frame();
+        if(prepared.originalUnknown()||prepared.latestFrame().filter(f::equals).isEmpty()||!f.operationId().equals(prepared.operationId())||!f.deadlineUnixMs().equals(java.math.BigInteger.valueOf(prepared.deadline().toEpochMilli()))
+                ||!f.providerGeneration().equals(q.providerGeneration())||!f.querySequence().equals(q.querySequence())||!f.factsBefore().equals(q.factsBefore())||!f.connectionGeneration().equals(session.connectionGeneration())||!f.cleanupKnown()
+                ||f.action()!=CurrentCccActorTransition.Action.ADVANCE_DAY&&f.action()!=CurrentCccActorTransition.Action.QUERY_OPERATION
+                ||f.action()==CurrentCccActorTransition.Action.QUERY_OPERATION&&f.source().isPresent()
+                ||f.action()==CurrentCccActorTransition.Action.ADVANCE_DAY&&!f.source().equals(q.source()))throw new IOException("Original CCC operation lost this ACK/full source/Core/lease/ID/deadline or became UNKNOWN");
+        if(f.status()!=CurrentCccActorTransitionResult.Status.SUBMITTED&&f.status()!=CurrentCccActorTransitionResult.Status.RUNNING&&f.status()!=CurrentCccActorTransitionResult.Status.TRANSITION_PENDING&&f.status()!=CurrentCccActorTransitionResult.Status.COMPLETED_DAY)
+            throw new IOException("Actual CCC operation refused/unknown; no fresh-ID workaround");
+        return f;
+    }
+    private static CurrentCccActorTransitionResult runCurrentCccDay(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeGameTransport.CccRoleReceived role,
+            NativeGameTransport.CccAdvancePrepared prepared,CccConfig config,NativeObservationPort.TransportSession session,Path output,String label,Instant parentDeadline,Duration readTimeout,
+            ObjectNode result,ObjectNode originals,boolean firstDay)throws IOException,InterruptedException {
+        if(!prepared.deadline().equals(role.validUntil())||prepared.deadline().isAfter(parentDeadline)||prepared.targetDateRaw()!=Math.addExact(role.frame().factsBefore().orElseThrow().dateRaw(),24))throw new IOException("Original CCC day preparation changed source/deadline/24 target");
+        archiveCurrentCccIntent(output,label+"-intent",prepared.requestId(),prepared.operationId(),prepared.deadline(),prepared.originalPacket().value(),originals);
+        stage="ONCE_FIXED_CCC_ADVANCE";result.put("advance_calls",result.path("advance_calls").intValue()+1);
+        var outcome=transport.submitCurrentCccAdvance(prepared);
+        var frame=archiveCurrentCccOperation(transport,owner,prepared,role,outcome,session,output,label+"-submit",result,originals);
+        for(int i=0;frame.status()==CurrentCccActorTransitionResult.Status.SUBMITTED||frame.status()==CurrentCccActorTransitionResult.Status.RUNNING;i++) {
+            if(i>=config.maximumStatusPolls())throw new IOException("Bounded original CCC status observations exhausted; preserve original operation without retry");
+            if(!Instant.now().plusMillis(config.statusPollDelayMillis()).isBefore(parentDeadline))throw new IOException("Original parent deadline cannot be extended by CCC polling");
+            Thread.sleep(config.statusPollDelayMillis());Instant receive=Instant.now().plus(readTimeout);if(receive.isAfter(parentDeadline))receive=parentDeadline;
+            stage="READONLY_ORIGINAL_CCC_OPERATION_STATUS";result.put("status_queries",result.path("status_queries").intValue()+1);
+            var status=transport.queryCurrentCccOperation(prepared,receive);
+            frame=archiveCurrentCccOperation(transport,owner,prepared,role,status,session,output,label+"-status-"+String.format(java.util.Locale.ROOT,"%03d",i+1),result,originals);
+        }
+        requireCurrentCccDayTerminal(frame,role.frame().factsBefore().orElseThrow(),prepared.operationId(),prepared.targetDateRaw(),firstDay,role.frame().source().orElseThrow().completedNaturalDays()+1);return frame;
+    }
+    static CurrentCccEventSource requireCurrentCccEventQuery(CurrentCccEventResult f,CoreFrame.Prefix core,java.math.BigInteger connection)throws IOException {
+        if(f.action()!=CurrentCccEvent.Action.QUERY||f.status()!=CurrentCccEventResult.Status.AVAILABLE||!f.cleanupKnown()||f.effectAttempted()||f.nativeReturned()
+                ||f.claimSequence().signum()!=0||f.instanceId().isPresent()||f.source().isEmpty()||f.providerGeneration().signum()<=0||f.querySequence().signum()<=0
+                ||f.factsBefore().filter(core::equals).isEmpty()||f.owner().filter(o->o.connectionGeneration().equals(connection)).isEmpty())
+            throw new IOException("CCC readonly event ACK differs from original Core/connection/complete Source");
+        var s=f.source().orElseThrow();if(!s.sampledTwice()||!s.eventCensus().censusComplete()||s.eventCensus().namedRootCount()!=s.eventCensus().events().size())
+            throw new IOException("Actual complete CCC event census required; no empty fallback");
+        return s;
+    }
+    static void requireCurrentCccEventDispatch(CurrentCccEventResult f,CurrentCccEventResult q,CoreFrame.Prefix core,
+            java.math.BigInteger connection,CurrentCccEvent.Action action,int instance)throws IOException {
+        var s=requireCurrentCccEventQuery(q,core,connection);
+        if(f.action()!=action||f.status()!=CurrentCccEventResult.Status.SELECTION_DISPATCHED||!f.effectAttempted()||!f.nativeReturned()||!f.cleanupKnown()
+                ||f.claimSequence().signum()<=0||f.instanceId().filter(n->n==instance).isEmpty()||!f.source().equals(q.source())||!f.factsBefore().equals(q.factsBefore())
+                ||!f.providerGeneration().equals(q.providerGeneration())||!f.querySequence().equals(q.querySequence())
+                ||f.owner().filter(o->o.connectionGeneration().equals(connection)).isEmpty()||!s.caseBound()||s.fixedInstanceId().filter(n->n==instance).isEmpty()
+                ||(action==CurrentCccEvent.Action.SELECT_TIER_FOUR?!s.selectDAdmissible():action!=CurrentCccEvent.Action.SELECT_TEMPORARY_CANCEL||!s.selectFAdmissible()))
+            throw new IOException("CCC selection lost this original Source/Core/lease/fixed instance or actual dispatch");
+    }
+    static CurrentCccDecisionSource requireCurrentCccDecisionQuery(CurrentCccDecisionResult f,CoreFrame.Prefix core,java.math.BigInteger connection)throws IOException {
+        if(f.action()!=CurrentCccDecision.Action.QUERY||f.status()!=CurrentCccDecisionResult.Status.AVAILABLE||!f.cleanupKnown()||f.effectAttempted()||f.nativeReturned()||f.nativeHandled()
+                ||f.claimSequence().signum()!=0||f.decisionKey().isPresent()||f.source().isEmpty()||f.providerGeneration().signum()<=0||f.querySequence().signum()<=0
+                ||f.factsBefore().filter(core::equals).isEmpty()||f.owner().filter(o->o.connectionGeneration().equals(connection)).isEmpty())
+            throw new IOException("CCC readonly decision ACK differs from original Core/connection/complete Source");
+        return f.source().orElseThrow(); // falseCan, empty/NUL tooltip and null expiry remain actual DATA.
+    }
+    static void requireCurrentCccDecisionDispatch(CurrentCccDecisionResult f,CurrentCccDecisionResult q,CoreFrame.Prefix core,
+            java.math.BigInteger connection,CurrentCccDecision.Action action)throws IOException {
+        requireCurrentCccDecisionQuery(q,core,connection);
+        var status=switch(action){case OPEN_LIST->CurrentCccDecisionResult.Status.NAVIGATION_DISPATCHED;case OPEN_DETAIL->CurrentCccDecisionResult.Status.SELECTION_DISPATCHED;
+            case CONFIRM->CurrentCccDecisionResult.Status.CONFIRMATION_DISPATCHED;default->throw new IOException("No query-as-effect CCC action");};
+        if(f.action()!=action||f.status()!=status||!f.effectAttempted()||!f.nativeReturned()||!f.cleanupKnown()||f.claimSequence().signum()<=0
+                ||action!=CurrentCccDecision.Action.OPEN_LIST&&f.nativeHandled()||!f.source().equals(q.source())||!f.factsBefore().equals(q.factsBefore())
+                ||!f.providerGeneration().equals(q.providerGeneration())||!f.querySequence().equals(q.querySequence())
+                ||f.owner().filter(o->o.connectionGeneration().equals(connection)).isEmpty()
+                ||(action==CurrentCccDecision.Action.OPEN_LIST?f.decisionKey().isPresent():!f.decisionKey().equals(Optional.of(CurrentCccDecision.DecisionKey.CORRUPTION_POLICY))))
+            throw new IOException("CCC decision lost original Source/Core/lease/known dispatch; Toggle false is legitimate DATA");
+    }
+    static boolean currentCccInstanceAbsent(CurrentCccEventSource source,int instance)throws IOException {
+        if(!source.sampledTwice()||!source.eventCensus().censusComplete()||source.eventCensus().namedRootCount()!=source.eventCensus().events().size())
+            throw new IOException("Complete fresh census required to observe original instance absence");
+        return source.eventCensus().events().stream().noneMatch(e->e.instanceId()==instance);
+    }
+    private static Instant currentCccUntil(NativeGameTransport.CoreReceived before,Instant parent){return before.validUntil().isBefore(parent)?before.validUntil():parent;}
+    private static void requireCurrentCccAfterRequest(NativeGameTransport transport,NativeGameTransport.CoreReceived after,String requestId)throws IOException {
+        var prior=transport.originalRequestChronology(requestId).orElseThrow(()->new IOException("Actual prior CCC request chronology missing"));
+        if(after.original().custody().orElseThrow().writeEntered().order().compareTo(prior.responseReceived().order())<=0)
+            throw new IOException("Independent fresh CCC Core must be written after the actual prior ACK");
+    }
+    private static NativeGameTransport.CccEventReceived readCurrentCccEvent(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeGameTransport.CoreReceived before,
+            NativeObservationPort.TransportSession session,Path output,String label,Instant parent,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        Instant until=currentCccUntil(before,parent);stage="ONE_READONLY_CCC_EVENT";result.put("read_calls",result.path("read_calls").intValue()+1);
+        var read=transport.readCurrentCccEvent(before,until);Path out=Files.createDirectory(output.resolve(label));archiveCurrentLetterOutcome(transport,out,label,read.original(),originals);
+        if(!(read instanceof NativeGameTransport.CccEventReceived query))throw new IOException("Actual CCC event unavailable/UNKNOWN; original retained, no retry");
+        query.requireOriginal(transport,query.validUntil());var ack=query.original();requireCurrentDjcAckOwner(transport,owner,ack,session);var frame=CurrentCccEventResult.decodeOutcome(ack);
+        if(!frame.equals(query.frame())||query.validUntil().isAfter(until))throw new IOException("CCC private event query differs from THIS ACK/deadline");
+        requireCurrentCccEventQuery(frame,((CoreFrame.Partial)before.frame()).prefix(),session.connectionGeneration());
+        originals.set(label+"_original_result",write(out,"original-result.json",ack.originalResultToken().orElseThrow().bytes()));result.set(label,FullJsonTree.parse(frame.encode().bytes(),FullJsonTree.MAXIMUM_BYTES));return query;
+    }
+    private static NativeGameTransport.CccDecisionReceived readCurrentCccDecision(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeGameTransport.CoreReceived before,
+            NativeObservationPort.TransportSession session,Path output,String label,Instant parent,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        Instant until=currentCccUntil(before,parent);stage="ONE_READONLY_CCC_DECISION";result.put("read_calls",result.path("read_calls").intValue()+1);
+        var read=transport.readCurrentCccDecision(before,until);Path out=Files.createDirectory(output.resolve(label));archiveCurrentLetterOutcome(transport,out,label,read.original(),originals);
+        if(!(read instanceof NativeGameTransport.CccDecisionReceived query))throw new IOException("Actual CCC decision unavailable/UNKNOWN; no empty Source or retry");
+        query.requireOriginal(transport,query.validUntil());var ack=query.original();requireCurrentDjcAckOwner(transport,owner,ack,session);var frame=CurrentCccDecisionResult.decodeOutcome(ack);
+        if(!frame.equals(query.frame())||query.validUntil().isAfter(until))throw new IOException("CCC private decision query differs from THIS ACK/deadline");
+        requireCurrentCccDecisionQuery(frame,((CoreFrame.Partial)before.frame()).prefix(),session.connectionGeneration());
+        originals.set(label+"_original_result",write(out,"original-result.json",ack.originalResultToken().orElseThrow().bytes()));result.set(label,FullJsonTree.parse(frame.encode().bytes(),FullJsonTree.MAXIMUM_BYTES));return query;
+    }
+    private static CurrentCccEventResult submitCurrentCccEvent(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeGameTransport.CccEventReceived query,
+            NativeGameTransport.CccEventPrepared prepared,NativeObservationPort.TransportSession session,Path output,String label,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        if(!prepared.deadline().equals(query.validUntil()))throw new IOException("Original CCC event deadline changed before intent");
+        archiveCurrentCccIntent(output,label+"-intent",prepared.requestId(),"",prepared.deadline(),prepared.originalPacket().value(),originals);
+        stage="ONCE_FIXED_CCC_EVENT";result.put("event_select_calls",result.path("event_select_calls").intValue()+1);
+        var outcome=transport.submitCurrentCccEvent(prepared);Path out=Files.createDirectory(output.resolve(label+"-result"));archiveCurrentLetterOutcome(transport,out,label,outcome,originals);
+        if(!(outcome instanceof NativeActionPort.AckReceived ack))throw new IOException("Original CCC event effect refused/UNKNOWN; no resubmission");
+        requireCurrentDjcAckOwner(transport,owner,ack,session);var frame=CurrentCccEventResult.decodeOutcome(ack);
+        originals.set(label+"_original_result",write(out,"original-result.json",ack.originalResultToken().orElseThrow().bytes()));result.set(label,FullJsonTree.parse(frame.encode().bytes(),FullJsonTree.MAXIMUM_BYTES));
+        if(!ack.requestId().equals(prepared.requestId())||prepared.latestFrame().filter(frame::equals).isEmpty())throw new IOException("CCC THIS event ACK differs from prepared latest receipt");
+        requireCurrentCccEventDispatch(frame,query.frame(),query.frame().factsBefore().orElseThrow(),session.connectionGeneration(),prepared.action(),prepared.instanceId());return frame;
+    }
+    private static CurrentCccDecisionResult submitCurrentCccDecision(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeGameTransport.CccDecisionReceived query,
+            NativeGameTransport.CccDecisionPrepared prepared,NativeObservationPort.TransportSession session,Path output,String label,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        if(!prepared.deadline().equals(query.validUntil()))throw new IOException("Original CCC decision deadline changed before intent");
+        archiveCurrentCccIntent(output,label+"-intent",prepared.requestId(),"",prepared.deadline(),prepared.originalPacket().value(),originals);
+        stage="ONCE_FIXED_CCC_DECISION";result.put("decision_action_calls",result.path("decision_action_calls").intValue()+1);
+        var outcome=transport.submitCurrentCccDecision(prepared);Path out=Files.createDirectory(output.resolve(label+"-result"));archiveCurrentLetterOutcome(transport,out,label,outcome,originals);
+        if(!(outcome instanceof NativeActionPort.AckReceived ack))throw new IOException("Original CCC decision effect refused/UNKNOWN; no resubmission");
+        requireCurrentDjcAckOwner(transport,owner,ack,session);var frame=CurrentCccDecisionResult.decodeOutcome(ack);
+        originals.set(label+"_original_result",write(out,"original-result.json",ack.originalResultToken().orElseThrow().bytes()));result.set(label,FullJsonTree.parse(frame.encode().bytes(),FullJsonTree.MAXIMUM_BYTES));
+        if(!ack.requestId().equals(prepared.requestId())||prepared.latestFrame().filter(frame::equals).isEmpty())throw new IOException("CCC THIS decision ACK differs from prepared latest receipt");
+        requireCurrentCccDecisionDispatch(frame,query.frame(),query.frame().factsBefore().orElseThrow(),session.connectionGeneration(),prepared.action());return frame;
+    }
+    private static void initializeCurrentCccResult(ObjectNode result,CccConfig config,String machine){
+        result.put("schema","xar.native-owner-current-ccc-original-case/v1").put("mode",switch(config.mode()){case QUERY_ROLE->"current_ccc_query_role";case QUERY_EVENT->"current_ccc_query_event";case QUERY_DECISION->"current_ccc_query_decision";case ORIGINAL_CASE_ONCE->"current_ccc_original_case_once";})
+                .put("machine_id",machine).put("read_calls",0).put("advance_calls",0).put("status_queries",0).put("epoch_confirm_calls",0).put("event_select_calls",0).put("decision_action_calls",0)
+                .put("maximum_natural_days",13).put("natural_days_observed",0).put("original_case_channel_completed",false).put("epoch_confirmed",false)
+                .put("event_closed",false).put("decision_applied",false).put("cooldown_readback_complete",false).putNull("cooldown_expiry_date_raw")
+                .put("physical_save_confirmed",false).put("save_calls",0);
+    }
+    private static void runCurrentCcc(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeLaunchPlan plan,CccConfig config,Path output,
+            Instant deadline,Duration readTimeout,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        try {
+            if(!(plan.load() instanceof NativeLaunchPlan.SavedGame))throw new IOException("CCC requires its actual SavedGame owner");
+            var before=readCurrentCccCore(transport,owner,plan,output,"ccc-core-before",deadline,result,originals,null,null);var start=((CoreFrame.Partial)before.frame()).prefix();
+            var session=before.original().custody().orElseThrow().session();result.set("session",session(session));
+            if(config.mode()==CccMode.QUERY_EVENT){readCurrentCccEvent(transport,owner,before,session,output,"ccc-event-query",deadline,result,originals);result.put("query_available",true);return;}
+            if(config.mode()==CccMode.QUERY_DECISION){readCurrentCccDecision(transport,owner,before,session,output,"ccc-decision-query",deadline,result,originals);result.put("query_available",true);return;}
+            var role=readCurrentCccRole(transport,owner,before,session,output,"ccc-role-before",deadline,result,originals);result.put("query_available",true);
+            if(config.queryOnly())return;
+            requireCurrentCccPositiveRole(role.frame(),start,CurrentCccActorTransitionSource.Role.SONG,java.math.BigInteger.ZERO,start.playedCharacterId(),-1,false,0,start.dateRaw());
+            var day1=transport.prepareCurrentCccAdvance(role);var pending=runCurrentCccDay(transport,owner,role,day1,config,session,output,"ccc-day01",deadline,readTimeout,result,originals,true);
+            var p=pending.progress().orElseThrow();int official=p.afterActorId();var current=currentCccAfter(start,day1.targetDateRaw(),official);
+            var after=readCurrentCccCore(transport,owner,plan,output,"ccc-core-after-pending",day1.deadline(),result,originals,session,current);requireCurrentCccAfterRequest(transport,after,pending.requestId());
+            var recipient=readCurrentCccRole(transport,owner,after,session,output,"ccc-official-before-epoch",day1.deadline(),result,originals);
+            var source=requireCurrentCccPositiveRole(recipient.frame(),current,CurrentCccActorTransitionSource.Role.OFFICIAL,java.math.BigInteger.ZERO,start.playedCharacterId(),official,true,1,start.dateRaw());
+            var actual=source.pending().orElseThrow(()->new IOException("Independent CCC Official Source lacks actual pending proof"));
+            if(!actual.operationId().equals(day1.operationId())||!actual.claimSequence().equals(pending.claimSequence())||!actual.generation().equals(p.generation())
+                    ||!actual.originalDeadlineUnixMs().equals(java.math.BigInteger.valueOf(day1.deadline().toEpochMilli()))||actual.beforeActorId()!=start.playedCharacterId()||actual.afterActorId()!=official
+                    ||actual.startingDateRaw()!=start.dateRaw()||actual.targetDateRaw()!=day1.targetDateRaw())throw new IOException("Independent CCC pending proof differs from original D1 lease/claim/generation/actors");
+            var epoch=transport.prepareCurrentCccEpoch(day1,recipient);
+            if(!epoch.operationId().equals(day1.operationId())||!epoch.deadline().equals(recipient.validUntil())||epoch.deadline().isAfter(day1.deadline()))throw new IOException("CCC once epoch must preserve original operation and unextended deadline");
+            archiveCurrentCccIntent(output,"ccc-confirm-epoch-intent",epoch.requestId(),epoch.operationId(),epoch.deadline(),epoch.originalPacket().value(),originals);
+            stage="ONCE_PROVED_CCC_EPOCH_CONFIRMATION";result.put("epoch_confirm_calls",1);var epochOutcome=transport.submitCurrentCccEpoch(epoch);
+            Path epochOut=Files.createDirectory(output.resolve("ccc-confirm-epoch-result"));archiveCurrentLetterOutcome(transport,epochOut,"ccc_epoch",epochOutcome,originals);
+            if(!(epochOutcome instanceof NativeActionPort.AckReceived ack))throw new IOException("CCC original epoch refused/UNKNOWN; no re-confirmation");
+            requireCurrentDjcAckOwner(transport,owner,ack,session);var confirmed=CurrentCccActorTransitionResult.decodeOutcome(ack);
+            originals.set("ccc_epoch_original_result",write(epochOut,"original-result.json",ack.originalResultToken().orElseThrow().bytes()));result.set("epoch_confirmation",FullJsonTree.parse(confirmed.encode().bytes(),SMALL));
+            if(!ack.requestId().equals(epoch.requestId())||epoch.latestFrame().filter(confirmed::equals).isEmpty()||confirmed.status()!=CurrentCccActorTransitionResult.Status.EPOCH_CONFIRMED||confirmed.action()!=CurrentCccActorTransition.Action.CONFIRM_EPOCH
+                    ||!confirmed.operationId().equals(day1.operationId())||!confirmed.accepted()||confirmed.claimSequence().signum()<=0||!confirmed.actorEpoch().equals(java.math.BigInteger.ONE)||confirmed.completedNaturalDays()!=1
+                    ||confirmed.effectAttempted()||confirmed.nativeReturned()||!confirmed.cleanupKnown()||!confirmed.source().equals(recipient.frame().source())||!confirmed.factsBefore().equals(recipient.frame().factsBefore())
+                    ||!confirmed.providerGeneration().equals(recipient.frame().providerGeneration())||!confirmed.querySequence().equals(recipient.frame().querySequence())||!confirmed.deadlineUnixMs().equals(java.math.BigInteger.valueOf(epoch.deadline().toEpochMilli()))
+                    ||!confirmed.connectionGeneration().equals(session.connectionGeneration()))throw new IOException("CCC epoch1 ACK lost actual original proof, count1 or zero-Game-call frontier");
+            result.put("epoch_confirmed",true).put("natural_days_observed",1);
+            var before2=readCurrentCccCore(transport,owner,plan,output,"ccc-core-before-day02",deadline,result,originals,session,current);requireCurrentCccAfterRequest(transport,before2,epoch.requestId());
+            var role2=readCurrentCccRole(transport,owner,before2,session,output,"ccc-role-before-day02",deadline,result,originals);
+            requireCurrentCccPositiveRole(role2.frame(),current,CurrentCccActorTransitionSource.Role.OFFICIAL,java.math.BigInteger.ONE,start.playedCharacterId(),official,false,1,start.dateRaw());
+            var day2=transport.prepareCurrentCccAdvance(role2);if(day2.operationId().equals(day1.operationId())||day2.requestId().equals(day1.requestId()))throw new IOException("CCC D2 requires its own new private operation");
+            var completed2=runCurrentCccDay(transport,owner,role2,day2,config,session,output,"ccc-day02",deadline,readTimeout,result,originals,false);current=currentCccAfter(current,day2.targetDateRaw(),official);
+            var after2=readCurrentCccCore(transport,owner,plan,output,"ccc-core-after-day02",deadline,result,originals,session,current);requireCurrentCccAfterRequest(transport,after2,completed2.requestId());result.put("natural_days_observed",2);
+            var event=readCurrentCccEvent(transport,owner,after2,session,output,"ccc-tier-four-query",deadline,result,originals);
+            var tierFour=transport.prepareCurrentCccTierFour(event);submitCurrentCccEvent(transport,owner,event,tierFour,session,output,"ccc-tier-four-once",result,originals);
+            int originalInstance=tierFour.instanceId();NativeGameTransport.CccDecisionReceived decision=null;
+            for(int day=3;day<=13;day++) {
+                var core=readCurrentCccCore(transport,owner,plan,output,"ccc-core-before-day"+String.format(java.util.Locale.ROOT,"%02d",day),deadline,result,originals,session,current);
+                if(day==3)requireCurrentCccAfterRequest(transport,core,tierFour.requestId());
+                var dailyRole=readCurrentCccRole(transport,owner,core,session,output,"ccc-role-before-day"+String.format(java.util.Locale.ROOT,"%02d",day),deadline,result,originals);
+                requireCurrentCccPositiveRole(dailyRole.frame(),current,CurrentCccActorTransitionSource.Role.OFFICIAL,java.math.BigInteger.ONE,start.playedCharacterId(),official,false,day-1,start.dateRaw());
+                var next=transport.prepareCurrentCccAdvance(dailyRole);var done=runCurrentCccDay(transport,owner,dailyRole,next,config,session,output,"ccc-day"+String.format(java.util.Locale.ROOT,"%02d",day),deadline,readTimeout,result,originals,false);
+                current=currentCccAfter(current,next.targetDateRaw(),official);var observed=readCurrentCccCore(transport,owner,plan,output,"ccc-core-after-day"+String.format(java.util.Locale.ROOT,"%02d",day),deadline,result,originals,session,current);
+                requireCurrentCccAfterRequest(transport,observed,done.requestId());result.put("natural_days_observed",day);
+                decision=readCurrentCccDecision(transport,owner,observed,session,output,"ccc-half-predicate-day"+String.format(java.util.Locale.ROOT,"%02d",day),deadline,result,originals);
+                var ds=decision.frame().source().orElseThrow();if(ds.caseBound()&&ds.fixtureTaxVariablePresent().orElse(false)&&ds.fixtureTaxExactHalf().orElse(false)){result.put("actual_half_predicate_observed",true);break;}
+                decision=null;
+            }
+            if(decision==null)throw new IOException("Actual original half predicate was not observed within native13 days; no forced variable or extra day");
+            var ds=decision.frame().source().orElseThrow();
+            if(!ds.listVisible()){
+                var opened=transport.prepareCurrentCccDecision(decision,CurrentCccDecision.Action.OPEN_LIST);submitCurrentCccDecision(transport,owner,decision,opened,session,output,"ccc-open-list-once",result,originals);
+                var core=readCurrentCccCore(transport,owner,plan,output,"ccc-core-after-open-list",deadline,result,originals,session,current);requireCurrentCccAfterRequest(transport,core,opened.requestId());
+                decision=readCurrentCccDecision(transport,owner,core,session,output,"ccc-list-readback",deadline,result,originals);ds=decision.frame().source().orElseThrow();
+            }
+            if(!ds.detailVisible()||!ds.selectedDecisionKey().equals(Optional.of(CurrentCccDecision.DecisionKey.CORRUPTION_POLICY))){
+                var detailed=transport.prepareCurrentCccDecision(decision,CurrentCccDecision.Action.OPEN_DETAIL);submitCurrentCccDecision(transport,owner,decision,detailed,session,output,"ccc-open-detail-once",result,originals);
+                var core=readCurrentCccCore(transport,owner,plan,output,"ccc-core-after-open-detail",deadline,result,originals,session,current);requireCurrentCccAfterRequest(transport,core,detailed.requestId());
+                decision=readCurrentCccDecision(transport,owner,core,session,output,"ccc-detail-readback",deadline,result,originals);ds=decision.frame().source().orElseThrow();
+            }
+            result.put("actual_native_can_confirm",ds.nativeCanConfirm().orElse(false)).put("actual_confirm_tooltip_observed",ds.confirmTooltipObserved());
+            if(!ds.caseBound()||!ds.fixtureTaxVariablePresent().orElse(false)||!ds.fixtureTaxExactHalf().orElse(false)||!ds.nativeCanConfirm().orElse(false)||!ds.confirmAdmissible())
+                throw new IOException("Actual fixed CCC NativeCan/half predicate refused; real Source/why retained as DATA, no confirm or retry");
+            var confirmation=transport.prepareCurrentCccDecision(decision,CurrentCccDecision.Action.CONFIRM);submitCurrentCccDecision(transport,owner,decision,confirmation,session,output,"ccc-confirm-once",result,originals);
+            var core=readCurrentCccCore(transport,owner,plan,output,"ccc-core-after-confirm",deadline,result,originals,session,current);requireCurrentCccAfterRequest(transport,core,confirmation.requestId());
+            var temporary=readCurrentCccEvent(transport,owner,core,session,output,"ccc-temporary-cancel-query",deadline,result,originals);var cancel=transport.prepareCurrentCccTemporaryCancel(temporary);
+            if(cancel.instanceId()==originalInstance)throw new IOException("Temporary cancel needs its actual new instance, never the original tier-four instance");
+            submitCurrentCccEvent(transport,owner,temporary,cancel,session,output,"ccc-temporary-cancel-once",result,originals);
+            var finalCore=readCurrentCccCore(transport,owner,plan,output,"ccc-core-after-cancel",deadline,result,originals,session,current);requireCurrentCccAfterRequest(transport,finalCore,cancel.requestId());
+            var finalEvent=readCurrentCccEvent(transport,owner,finalCore,session,output,"ccc-independent-cancel-census",deadline,result,originals);
+            boolean absent=currentCccInstanceAbsent(finalEvent.frame().source().orElseThrow(),cancel.instanceId());result.put("cancel_instance_absent_observed",absent);
+            var finalDecisionCore=readCurrentCccCore(transport,owner,plan,output,"ccc-core-before-final-decision-read",deadline,result,originals,session,current);requireCurrentCccAfterRequest(transport,finalDecisionCore,cancel.requestId());
+            var finalDecision=readCurrentCccDecision(transport,owner,finalDecisionCore,session,output,"ccc-independent-traits-and-tooltip",deadline,result,originals);var fs=finalDecision.frame().source().orElseThrow();
+            boolean traitsAbsent=fs.corruptionTraits().filter(v->v.size()==4&&v.stream().noneMatch(Boolean::booleanValue)).isPresent();
+            result.put("four_corruption_traits_absent_observed",traitsAbsent).put("final_tooltip_observed",fs.confirmTooltipObserved()).put("final_native_can_observed",fs.nativeCanConfirm().isPresent());
+            if(fs.nativeCanConfirm().isPresent())result.put("final_native_can_confirm",fs.nativeCanConfirm().orElseThrow());
+            result.put("final_date_raw",current.dateRaw()).put("official_actor_id",official).put("independent_after_core_verified",true)
+                    .put("original_case_channel_completed",absent&&traitsAbsent).put("cooldown_readback_complete",false).putNull("cooldown_expiry_date_raw");
+            if(!absent||!traitsAbsent)throw new IOException("Actual complete post-cancel census/traits do not match original case; dispatch alone is not business completion");
+        } finally {
+            archiveNaturalDiagnostics(output,originals,transport.diagnostics());var progress=result.deepCopy();progress.set("originals",originals.deepCopy());
+            write(output,"current-ccc-original-case-progress.json",FullJsonTree.encode(progress,FullJsonTree.MAXIMUM_BYTES));
+        }
+    }
+
     record StockBookmark1070Config(boolean chooseC){int submissions(){return chooseC?5:2;}}
     static StockBookmark1070Config currentStockBookmark1070Config(ObjectNode config) {
         StrictJson.require("xar.native-owner-snapshot-config/v44".equals(StrictJson.text(config.get("schema"))),"Explicit v44 fixed stock bookmark family required");
@@ -4163,7 +4484,7 @@ if(riteDraftCosts) {
         }
     }
 
-    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE,CURRENT_DJC_TARGET_QUERY,CURRENT_SUCCESSION_QUERY,CURRENT_SUCCESSION_CONTINUE,CURRENT_DJC_DECLARATION_UI,CURRENT_DJC_DECLARATION_SUBMIT,CURRENT_LETTER_QUERY,CURRENT_LETTER_REPLY_KNOWN,CURRENT_DJC_SELECTED_COST,CURRENT_DJC_SELECTED_COST_PREVIEW,CURRENT_LETTER_SET_QUERY,CURRENT_LETTER_SET_REPLY_KNOWN_INSTANCE,CURRENT_FULLSCREEN_EVENT_QUERY,CURRENT_FULLSCREEN_EVENT_ACK_KNOWN_INTRO,CURRENT_CURATED_DECISIONS_QUERY,CURRENT_CURATED_DECISIONS_OPEN,CURRENT_CURATED_DECISION_DETAIL,CURRENT_CURATED_DECISION_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_QUERY,CURRENT_XQOL_CONVERSION_PROMPT_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_CANCEL,CURRENT_XQOL_CONVERSION_THRESHOLD_QUERY,CURRENT_XQOL_CONVERSION_THRESHOLD_SET,CURRENT_COURTIER_CREATOR_CONTROLS_QUERY,CURRENT_COURTIER_CREATOR_CONTROL_EXECUTE,CURRENT_DECISIONS_CLOSE_QUERY,CURRENT_DECISIONS_CLOSE,CURRENT_COURTIER_CONFIGURATION_QUERY,CURRENT_COURTIER_CONFIGURATION_EXECUTE,CURRENT_COURTIER_CHOICES_QUERY,CURRENT_COURTIER_CHOICE_SELECT,CURRENT_SUPERMAN_HEALTH_QUERY,CURRENT_SUPERMAN_HEALTH_BASELINE_SAVE_AND_BEGIN,CURRENT_SUPERMAN_HEALTH_COMPLETED_CLOSE,CURRENT_SUPERMAN_HEALTH_RESUME_SAVED_BASELINE_AND_BEGIN,CURRENT_LYD,CURRENT_TED,CURRENT_STOCK_NEWGAME_SEED,CURRENT_DES_SAVED_GAME_INIT_GUARD,CURRENT_RITE_CREATE,CURRENT_RITE_TEXT,CURRENT_RITE_CREATION_BLOCKERS,CURRENT_STOCK_BOOKMARK1070 }
+    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE,CURRENT_DJC_TARGET_QUERY,CURRENT_SUCCESSION_QUERY,CURRENT_SUCCESSION_CONTINUE,CURRENT_DJC_DECLARATION_UI,CURRENT_DJC_DECLARATION_SUBMIT,CURRENT_LETTER_QUERY,CURRENT_LETTER_REPLY_KNOWN,CURRENT_DJC_SELECTED_COST,CURRENT_DJC_SELECTED_COST_PREVIEW,CURRENT_LETTER_SET_QUERY,CURRENT_LETTER_SET_REPLY_KNOWN_INSTANCE,CURRENT_FULLSCREEN_EVENT_QUERY,CURRENT_FULLSCREEN_EVENT_ACK_KNOWN_INTRO,CURRENT_CURATED_DECISIONS_QUERY,CURRENT_CURATED_DECISIONS_OPEN,CURRENT_CURATED_DECISION_DETAIL,CURRENT_CURATED_DECISION_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_QUERY,CURRENT_XQOL_CONVERSION_PROMPT_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_CANCEL,CURRENT_XQOL_CONVERSION_THRESHOLD_QUERY,CURRENT_XQOL_CONVERSION_THRESHOLD_SET,CURRENT_COURTIER_CREATOR_CONTROLS_QUERY,CURRENT_COURTIER_CREATOR_CONTROL_EXECUTE,CURRENT_DECISIONS_CLOSE_QUERY,CURRENT_DECISIONS_CLOSE,CURRENT_COURTIER_CONFIGURATION_QUERY,CURRENT_COURTIER_CONFIGURATION_EXECUTE,CURRENT_COURTIER_CHOICES_QUERY,CURRENT_COURTIER_CHOICE_SELECT,CURRENT_SUPERMAN_HEALTH_QUERY,CURRENT_SUPERMAN_HEALTH_BASELINE_SAVE_AND_BEGIN,CURRENT_SUPERMAN_HEALTH_COMPLETED_CLOSE,CURRENT_SUPERMAN_HEALTH_RESUME_SAVED_BASELINE_AND_BEGIN,CURRENT_LYD,CURRENT_TED,CURRENT_STOCK_NEWGAME_SEED,CURRENT_DES_SAVED_GAME_INIT_GUARD,CURRENT_RITE_CREATE,CURRENT_RITE_TEXT,CURRENT_RITE_CREATION_BLOCKERS,CURRENT_STOCK_BOOKMARK1070,CURRENT_CCC }
     static void requireGuiRootIndexSelection(NativeLaunchPlan plan,GuiRootIndexFrame frame)throws IOException {
         Objects.requireNonNull(plan);Objects.requireNonNull(frame);
         if(!frame.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())
@@ -4195,6 +4516,7 @@ if(riteDraftCosts) {
     }
     static ObservationMode observationMode(ObjectNode config) {
         String schema=StrictJson.text(config.get("schema"));
+        if(schema.equals("xar.native-owner-snapshot-config/v45")) {currentCccConfig(config);return ObservationMode.CURRENT_CCC;}
         if(schema.equals("xar.native-owner-snapshot-config/v44")) {currentStockBookmark1070Config(config);return ObservationMode.CURRENT_STOCK_BOOKMARK1070;}
         if(schema.equals("xar.native-owner-snapshot-config/v43")) {currentRiteCreationBlockersConfig(config);return ObservationMode.CURRENT_RITE_CREATION_BLOCKERS;}
         if(schema.equals("xar.native-owner-snapshot-config/v42")) {currentRiteTextConfig(config);return ObservationMode.CURRENT_RITE_TEXT;}
