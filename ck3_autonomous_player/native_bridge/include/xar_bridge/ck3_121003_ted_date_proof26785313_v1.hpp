@@ -2,7 +2,7 @@
 // Internal finite TED binding only. Not a caller flag or old DateV1 extension.
 #include "xar_bridge/ck3_1210_date_sentinel_v1.hpp"
 namespace xar::ck3_1210 {
-enum class FixedDayFamily267V1 {ted,ccc};
+enum class FixedDayFamily267V1 {ted,ccc,rmtm};
 enum class TedFixedDayStage267V1 {song_transition,recipient_stable};
 struct TedFixedDayProof267V1 {
  bool captured=false,actor_changed=false;FixedDayFamily267V1 family=FixedDayFamily267V1::ted;

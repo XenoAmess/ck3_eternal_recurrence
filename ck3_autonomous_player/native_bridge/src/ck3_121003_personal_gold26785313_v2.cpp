@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_RMTM_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_V1
+#include "xar_bridge/ck3_121003_rmtm_all26785313_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_QUERY_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_QUERY_V1 && defined(XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_V1
 #include "xar_bridge/ck3_121003_rmtm_title_query26785313_owner_v1.hpp"
 #endif
@@ -338,9 +341,15 @@ const game::AdapterDescriptor &PersonalGoldAdapterDescriptorV2() noexcept {
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_QUERY_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_QUERY_V1 && defined(XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_V1
   static const auto rmtm_title_caps=[&]{std::vector<std::string_view>combined(rmtm_title_base_descriptor.capabilities.begin(),rmtm_title_base_descriptor.capabilities.end());combined.push_back(kRmtmTitleQueryCapability267V1);return combined;}();
-  static const game::AdapterDescriptor rmtm_title_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",rmtm_title_caps};return rmtm_title_descriptor;
+  static const game::AdapterDescriptor rmtm_title_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",rmtm_title_caps};const auto&rmtm_finite_base_descriptor=rmtm_title_descriptor;
 #else
-  return rmtm_title_base_descriptor;
+  const auto&rmtm_finite_base_descriptor=rmtm_title_base_descriptor;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_RMTM_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_V1
+  static const auto rmtm_caps=[&]{std::vector<std::string_view>combined(rmtm_finite_base_descriptor.capabilities.begin(),rmtm_finite_base_descriptor.capabilities.end());combined.insert(combined.end(),kRmtmTransitionCapabilities267V1.begin(),kRmtmTransitionCapabilities267V1.end());combined.insert(combined.end(),kRmtmEventCaps267V1.begin(),kRmtmEventCaps267V1.end());combined.insert(combined.end(),kRmtmDecisionCapabilities267V1.begin(),kRmtmDecisionCapabilities267V1.end());combined.insert(combined.end(),kRmtmObservationCaps267V1.begin(),kRmtmObservationCaps267V1.end());return combined;}();
+  static const game::AdapterDescriptor rmtm_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",rmtm_caps};return rmtm_descriptor;
+#else
+  return rmtm_finite_base_descriptor;
 #endif
 
 }

@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_RMTM_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_V1
+#include "xar_bridge/ck3_121003_rmtm_all26785313_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_QUERY_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_QUERY_V1 && defined(XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_V1
 #include "xar_bridge/ck3_121003_rmtm_title_query26785313_owner_v1.hpp"
 #endif
@@ -555,6 +558,12 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
   if(step==ck3_121003::build26785313::kRiteBlockersStep267V1)return ck3_121003::build26785313::RiteBlockersStepEnabled267V1(actual,step);
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_STOCK_BOOKMARK1070_V1) && XAR_CK3_ENABLE_121003_26785313_STOCK_BOOKMARK1070_V1
+#if defined(XAR_CK3_ENABLE_121003_26785313_RMTM_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_V1
+  if(std::find(ck3_121003::build26785313::kRmtmTransitionSteps267V1.begin(),ck3_121003::build26785313::kRmtmTransitionSteps267V1.end(),step)!=ck3_121003::build26785313::kRmtmTransitionSteps267V1.end())return ck3_121003::build26785313::RmtmTransitionStepEnabled267V1(actual,step);
+  if(std::find(ck3_121003::build26785313::kRmtmEventSteps267V1.begin(),ck3_121003::build26785313::kRmtmEventSteps267V1.end(),step)!=ck3_121003::build26785313::kRmtmEventSteps267V1.end())return ck3_121003::build26785313::RmtmEventStepEnabled267V1(actual,step);
+  if(std::find(ck3_121003::build26785313::kRmtmDecisionSteps267V1.begin(),ck3_121003::build26785313::kRmtmDecisionSteps267V1.end(),step)!=ck3_121003::build26785313::kRmtmDecisionSteps267V1.end())return ck3_121003::build26785313::RmtmDecisionStepEnabled267V1(actual,step);
+  if(std::find(ck3_121003::build26785313::kRmtmObservationSteps267V1.begin(),ck3_121003::build26785313::kRmtmObservationSteps267V1.end(),step)!=ck3_121003::build26785313::kRmtmObservationSteps267V1.end())return ck3_121003::build26785313::RmtmObservationStepEnabled267V1(actual,step);
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_CCC_V1) && XAR_CK3_ENABLE_121003_26785313_CCC_V1
   if(std::find(ck3_121003::build26785313::kCccTransitionSteps267V1.begin(),ck3_121003::build26785313::kCccTransitionSteps267V1.end(),step)!=ck3_121003::build26785313::kCccTransitionSteps267V1.end())return ck3_121003::build26785313::CccTransitionStepEnabled267V1(actual,step);
   if(std::find(ck3_121003::build26785313::kCccEventSteps267V1.begin(),ck3_121003::build26785313::kCccEventSteps267V1.end(),step)!=ck3_121003::build26785313::kCccEventSteps267V1.end())return ck3_121003::build26785313::CccEventStepEnabled267V1(actual,step);

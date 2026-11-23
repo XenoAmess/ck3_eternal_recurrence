@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_RMTM_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_V1
+#include "xar_bridge/ck3_121003_rmtm_all26785313_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_QUERY_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_QUERY_V1 && defined(XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_V1
 #include "xar_bridge/ck3_121003_rmtm_title_query26785313_owner_v1.hpp"
 #endif
@@ -226,6 +229,9 @@ bool OwnerInner(ReadonlyContext&q,const ck3_11906::MainThreadExecutionStampV1&s,
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_QUERY_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_QUERY_V1 && defined(XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_V1
     fixed_current_executor=fixed_current_executor||invocation.executor==&ExecuteRmtmTitleQueryOnOwner267V1;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_RMTM_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_V1
+    fixed_current_executor=fixed_current_executor||invocation.executor==&ExecuteRmtmOnOwner267V1;
 #endif
     if(!fixed_current_executor||!invocation.context)return false;
   }
@@ -613,6 +619,13 @@ bool ReadDjcTargetQueryCoreOnOwner267V1(const ReadonlyBindings&bindings,
 #include "ck3_121003_rite_creation_blockers26785313_reader_v1.inc"
 #include "ck3_121003_rmtm_title_query26785313_reader_v1.inc"
 #include "ck3_121003_decisions_close26785313_reader_v1.inc"
+#if defined(XAR_CK3_ENABLE_121003_26785313_RMTM_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_V1
+#include "ck3_121003_rmtm_actor_transition26785313_reader_v1.inc"
+#include "ck3_121003_rmtm_decision26785313_reader_v1.inc"
+#include "ck3_121003_rmtm_event26785313_reader_v1.inc"
+#include "ck3_121003_rmtm_observation26785313_reader_v1.inc"
+#endif
+
 #if defined(XAR_CK3_26785313_OFFLINE_FIXTURE)
 ReadonlyBindings NoGameBindings(std::uintptr_t image,ck3_1210::CoreBindings core) noexcept {
   auto out=BindReadonlyImage(image,kExecutableSha256);

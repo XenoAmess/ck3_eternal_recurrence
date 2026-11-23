@@ -59,7 +59,7 @@ std::uint64_t Wall() noexcept {
 // All changes originate under the actual retained old-session lock. The separate
 // lock only publishes cross-family unresolved/UNKNOWN state; it never reads or
 // edits old firstActor, old claims, old outcomes or deadlines.
-struct DateFamilyCustody267V1 {SRWLOCK lock=SRWLOCK_INIT;const DateAdvanceSession267V1*old_session=nullptr;const ck3_1210::DateSentinelStateV1*runtime=nullptr;bool old_open=false,ted_active=false,ccc_active=false,unknown=false;};
+struct DateFamilyCustody267V1 {SRWLOCK lock=SRWLOCK_INIT;const DateAdvanceSession267V1*old_session=nullptr;const ck3_1210::DateSentinelStateV1*runtime=nullptr;bool old_open=false,ted_active=false,ccc_active=false,rmtm_active=false,unknown=false;};
 DateFamilyCustody267V1 g_date_family;
 void PublishOldCustody(DateAdvanceSession267V1&s,bool open,bool unknown)noexcept {
  Lock lock(g_date_family.lock);if(g_date_family.old_session!=&s)return;
@@ -67,8 +67,8 @@ void PublishOldCustody(DateAdvanceSession267V1&s,bool open,bool unknown)noexcept
 }
 bool OldMayClaimCustody(DateAdvanceSession267V1&s)noexcept {
  Lock lock(g_date_family.lock);
-#if (defined(XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1) && XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1) || (defined(XAR_CK3_ENABLE_121003_26785313_CCC_TRANSITION_V1) && XAR_CK3_ENABLE_121003_26785313_CCC_TRANSITION_V1)
- if(g_date_family.old_session!=&s||g_date_family.ted_active||g_date_family.ccc_active||g_date_family.unknown)return false;g_date_family.old_open=true;return true;
+#if (defined(XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1) && XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1) || (defined(XAR_CK3_ENABLE_121003_26785313_CCC_TRANSITION_V1) && XAR_CK3_ENABLE_121003_26785313_CCC_TRANSITION_V1) || (defined(XAR_CK3_ENABLE_121003_26785313_RMTM_TRANSITION_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_TRANSITION_V1)
+ if(g_date_family.old_session!=&s||g_date_family.ted_active||g_date_family.ccc_active||g_date_family.rmtm_active||g_date_family.unknown)return false;g_date_family.old_open=true;return true;
 #else
  (void)s;return true;
 #endif
@@ -250,7 +250,7 @@ DateAdvanceResult267V1 QueryDateAdvance267V1(DateAdvanceSession267V1&s,const Dat
 bool TedDatePredecessorResolved267V1(const ck3_1210::DateSentinelStateV1&runtime)noexcept {
  Lock lock(g_date_family.lock);
 #if defined(XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1) && XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1
- return g_date_family.runtime==&runtime&&g_date_family.old_session&&!g_date_family.old_open&&!g_date_family.unknown&&!g_date_family.ccc_active;
+ return g_date_family.runtime==&runtime&&g_date_family.old_session&&!g_date_family.old_open&&!g_date_family.unknown&&!g_date_family.ccc_active&&!g_date_family.rmtm_active;
 #else
  (void)runtime;return false;
 #endif
@@ -258,7 +258,7 @@ bool TedDatePredecessorResolved267V1(const ck3_1210::DateSentinelStateV1&runtime
 bool ClaimTedDateCustody267V1(const ck3_1210::DateSentinelStateV1&runtime,bool continuation)noexcept {
  Lock lock(g_date_family.lock);
 #if defined(XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1) && XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1
- if(g_date_family.runtime!=&runtime||!g_date_family.old_session||g_date_family.old_open||g_date_family.unknown||g_date_family.ccc_active||g_date_family.ted_active!=continuation)return false;
+ if(g_date_family.runtime!=&runtime||!g_date_family.old_session||g_date_family.old_open||g_date_family.unknown||g_date_family.ccc_active||g_date_family.rmtm_active||g_date_family.ted_active!=continuation)return false;
  g_date_family.ted_active=true;return true;
 #else
  (void)runtime;(void)continuation;return false;
@@ -267,11 +267,11 @@ bool ClaimTedDateCustody267V1(const ck3_1210::DateSentinelStateV1&runtime,bool c
 void CompleteTedDateCustody267V1(const ck3_1210::DateSentinelStateV1&runtime)noexcept {Lock lock(g_date_family.lock);if(g_date_family.runtime==&runtime&&!g_date_family.unknown)g_date_family.ted_active=false;}
 void BlockTedDateCustodyUnknown267V1(const ck3_1210::DateSentinelStateV1&runtime)noexcept {Lock lock(g_date_family.lock);if(g_date_family.runtime==&runtime){g_date_family.unknown=true;g_date_family.ted_active=true;}}
 bool CccDatePredecessorResolved267V1(const ck3_1210::DateSentinelStateV1&r)noexcept{
- Lock lock(g_date_family.lock);return g_date_family.runtime==&r&&g_date_family.old_session&&!g_date_family.old_open&&!g_date_family.ted_active&&!g_date_family.unknown;
+ Lock lock(g_date_family.lock);return g_date_family.runtime==&r&&g_date_family.old_session&&!g_date_family.old_open&&!g_date_family.ted_active&&!g_date_family.rmtm_active&&!g_date_family.unknown;
 }
 bool ClaimCccDateCustody267V1(const ck3_1210::DateSentinelStateV1&r,bool continuation)noexcept{
 #if defined(XAR_CK3_ENABLE_121003_26785313_CCC_TRANSITION_V1) && XAR_CK3_ENABLE_121003_26785313_CCC_TRANSITION_V1
- Lock lock(g_date_family.lock);if(g_date_family.runtime!=&r||!g_date_family.old_session||g_date_family.old_open||g_date_family.ted_active||g_date_family.unknown||g_date_family.ccc_active!=continuation)return false;g_date_family.ccc_active=true;return true;
+ Lock lock(g_date_family.lock);if(g_date_family.runtime!=&r||!g_date_family.old_session||g_date_family.old_open||g_date_family.ted_active||g_date_family.rmtm_active||g_date_family.unknown||g_date_family.ccc_active!=continuation)return false;g_date_family.ccc_active=true;return true;
 #else
  (void)r;(void)continuation;return false;
 #endif
@@ -303,3 +303,16 @@ bool DateAdvanceRouteEnabled267V1([[maybe_unused]]const game::AdapterDescriptor&
 #endif
 }
 } // namespace
+
+namespace xar::ck3_121003::build26785313 {
+bool RmtmDatePredecessorResolved267V1(const ck3_1210::DateSentinelStateV1&r)noexcept {Lock lock(g_date_family.lock);return g_date_family.runtime==&r&&g_date_family.old_session&&!g_date_family.old_open&&!g_date_family.ted_active&&!g_date_family.ccc_active&&!g_date_family.unknown;}
+bool ClaimRmtmDateCustody267V1(const ck3_1210::DateSentinelStateV1&r,bool continuation)noexcept {
+#if defined(XAR_CK3_ENABLE_121003_26785313_RMTM_TRANSITION_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_TRANSITION_V1
+ Lock lock(g_date_family.lock);if(g_date_family.runtime!=&r||!g_date_family.old_session||g_date_family.old_open||g_date_family.ted_active||g_date_family.ccc_active||g_date_family.unknown||g_date_family.rmtm_active!=continuation)return false;g_date_family.rmtm_active=true;return true;
+#else
+ (void)r;(void)continuation;return false;
+#endif
+}
+void CompleteRmtmDateCustody267V1(const ck3_1210::DateSentinelStateV1&r)noexcept {Lock lock(g_date_family.lock);if(g_date_family.runtime==&r&&!g_date_family.unknown)g_date_family.rmtm_active=false;}
+void BlockRmtmDateCustodyUnknown267V1(const ck3_1210::DateSentinelStateV1&r)noexcept {Lock lock(g_date_family.lock);if(g_date_family.runtime==&r){g_date_family.unknown=true;g_date_family.rmtm_active=true;}}
+}
