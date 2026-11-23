@@ -1,0 +1,126 @@
+{
+  "schema": "xar.current267.ccc.actual-frozen-pair-finite-index.v1",
+  "at_utc": "2026-11-23T07:56:53.300579+00:00",
+  "status": "SOFTWARE45_AND_ACTUAL_FROZEN_PAIR_READY_LIVE_NOT_RUN",
+  "actual_six_pins": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ccc-source-a1128\\actual-six-pins.json",
+    "bytes": 1462,
+    "sha256": "b02c4750e86639714fa0088d87fbd871bfa0a51bbd820d29aab6f45848da0fad"
+  },
+  "actual_java_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ccc-source-a1128\\frozen-delivery-final.json",
+    "bytes": 5771,
+    "sha256": "caf2cdd0584daa8d517e2fa53b3cecc0d966045159c1634e300c768e6fea104f"
+  },
+  "actual_pair_binding": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ccc-source-a1128\\native-pair-binding-final.json",
+    "bytes": 3217,
+    "sha256": "35cf20b5bb5ffd862e84fbac78be48e57c9a5cee4a5d1fc54045eb15add73b49"
+  },
+  "actual_operator_templates": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ccc-source-a1128\\operator-templates.json",
+    "bytes": 11035,
+    "sha256": "42e4453bcaced646093a2df3034fdf781107e453c92e12b490807fd0d52c91fe"
+  },
+  "actual_runtime_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-ccc-a1134\\runtime-manifest.json",
+    "bytes": 167278,
+    "sha256": "7d202a366d106420fdaea3a0b11bfa375087be33d19eaf86b29f0d905941b08d"
+  },
+  "actual_classpath_argfile": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-ccc-a1134\\cli-classpath.args",
+    "bytes": 16365,
+    "sha256": "28bd5bb1ccce41c96c60880103ecad301afd875beb941baff5759a6488821882"
+  },
+  "actual_native_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-ccc-production-a1126\\frozen-delivery-final.json",
+    "bytes": 1676,
+    "sha256": "53855a146d34c3f3a9792e2b92d3fc7c0ecbef02f21016bdadab48037ff66057"
+  },
+  "actual_native_refs": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-ccc-production-a1126\\ordinary-native-artifact-refs.json",
+    "bytes": 14081,
+    "sha256": "a8ec39f1a5f3f7f80df36b0f5a1880b3aef29439f7ddf3eabb4c871f91ceb309"
+  },
+  "actual_java_source_normal_push": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ccc-source-a1128\\source-normal-rebase-push-result.json",
+    "bytes": 3874,
+    "sha256": "260d7e68c0d9cdf032c0f801c3b31daa627b5cd0dbc1e35e91fce03a6d7d059f"
+  },
+  "actual_native_source_normal_push": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ccc-source-a1128\\native-source-push-result.json",
+    "bytes": 714,
+    "sha256": "257328760049c7a652280e422c348a978a7e2f0a5a9bce1d22435cfc30fbbd46"
+  },
+  "actual_software45": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ccc-source-a1128\\affected-qualification-a02.json",
+    "bytes": 9815,
+    "sha256": "c443fcaf3243ef199e5f65c7dbbb845131d70814cf7974286c6f5559a6297484"
+  },
+  "actual_package": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ccc-source-a1128\\validation\\package-result.json",
+    "bytes": 854,
+    "sha256": "9d9d4f0bd0b2349d552dcda081e38a2181722c5461431cef0ffbbcb611827fd2"
+  },
+  "actual_metadata_END": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-ccc-source-a1128\\metadata-phase-closure.json",
+    "bytes": 3339,
+    "sha256": "2bd76659c5b0dc81ae3fc1980ad967fea164551a4e03a55f22259e190e720b42"
+  },
+  "actual_JARs": 158,
+  "actual_new_copied_JARs": 2,
+  "actual_reused_JARs_without_copy": 156,
+  "actual_new_frozen_JAR_allocated_bytes": 18980864,
+  "NativeTree": "d77d22ab4036e0aa661fa0a1c49c5106bc039e81",
+  "actual_native_graph": {
+    "total": 934,
+    "actual_CL": 23,
+    "qualified_reused_objects": 911
+  },
+  "source_contract": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc-current267-source-a1126\\source-contract-a03.json",
+    "bytes": 18702,
+    "sha256": "40336c427f71fbe8689c2baa593457f912dbdf36a1fc87f274fa7df845be0b38"
+  },
+  "qualified_fixture_opt_in": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc-current267-source-a1126\\fixture-qualified-source-manifest.json",
+    "bytes": 2491,
+    "sha256": "da727f0480bdfd21e6da9435fbac1b52a97844005ab41d44d47f52f8652396c3"
+  },
+  "new_purposes": {
+    "Native624": {
+      "admitted": true,
+      "all_phases_actual_END": true,
+      "future_bytes": 0
+    },
+    "Java328": {
+      "compiler128_actual_END": true,
+      "package160_actual_END": true,
+      "freeze20_actual_END": true,
+      "metadata20_actual_END": true,
+      "future_bytes": 0
+    },
+    "old_spent_held_refunded": false
+  },
+  "scope": "One sameReceiver original CCC<=13natural-day case with separate epoch0->1 then constant1/daycount. Actual D1 deferred and independent Official confirmation, actual .d receipt, D3+ real half predicate, once fixed decision confirmation, distinct new .f instance, independent complete census/four traits/why DATA. No caller actor/index/key/role/epoch/permission, imported proof, oldTED/v17 borrowing or UNKNOWN reset.",
+  "submission_bounds": {
+    "readonly_query": 2,
+    "original_case": "81+13*maximum_status_polls",
+    "default128": 1745,
+    "max256": 3409,
+    "per_operation_frame_limit": 1024
+  },
+  "not_granted": [
+    "Actual new Game/profile/fixture mounting",
+    "Actual CCC13day/business or product acceptance",
+    "Cooldown expiry: always null and incomplete",
+    "Applied/event closure/Save from callback",
+    "Unrelated NativeCreate/fullSDK/CPU/FPS/performance multiplier"
+  ],
+  "failures": "All actual first DATA fixture failures, Main Optional import failure, precommit whitespace refusal, normal nonFF push and Native historical failures remain in original receipts. No runtime or Frozen was hot-replaced.",
+  "distinct_products_uploaded": 12,
+  "distinct_products_strict_finite_complete": 9,
+  "distinct_product_total": 17,
+  "DES023_frozen_and_publication": "UNCHANGED",
+  "DES024": "Independent new HouseHead+Dynast continuity P0; source/candidate and later Root scene are separate, not covered by CCC45."
+}
