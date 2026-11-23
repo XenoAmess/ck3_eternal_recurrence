@@ -3,36 +3,60 @@
 让同一个礼仪的信徒，成为同一个宗族。
 
 [h2]预置教派[/h2]
-基督教大类下提供“繁育教派”和“白绮教派”，各有独立信仰、同名主礼仪、图标和纹章；两项主礼仪默认均为宗族化。0.2.1补齐867.1.1的信仰创建历史，保留既有教义与初始化保护。两项普通GUI自定义统治者开局均已有Native与独立存档证据；实际信仰列表也同时显示繁育及无信徒的白绮条目。
+“繁育教派”和“白绮教派”各有基督教信仰、同名主礼仪、图标和纹章，默认宗族化，保留867.1.1历史。0.2.3繁育信条为肉欲高扬、祖先崇拜、追逐权力，葬礼为制为木乃伊；白绮不变。
 
 [h2]宗族化礼仪[/h2]
-在原版创建、改革与编辑礼仪界面，新增“宗族化”教义组，可选择“宗族化”或“无”。原有礼仪默认保持“无”；普通查看与取消草案不会创建宗族。
+原版创建、改革、编辑礼仪界面新增“宗族化”教义组，可选“宗族化／无”。普通礼仪默认“无”；查看或取消草案不会建族。
 
-实际启用后，该礼仪创建一个对应的新宗族。创建者与全部信奉该礼仪的在世人物加入，包括AI、无地人物和儿童。此后改信者也会迁入。重复编辑同一礼仪会复用宗族，合法旁支家族继续保留。
+原生创建或首次改革启用时，现任宗族族长复用原宗族、家族及纹章；其他合格创建者走新建宗族路径。在世信徒加入对应宗族，包括AI、无地人物和儿童，后续改信者也会迁入；重复编辑复用同一绑定。
 
-如果创建者是现任家族族长，会优先将族长交给原家族中合格的在世人物，再创建新宗族。若没有可交接的人物或其他合法创始人，模组会生成并保留一名真实的同礼仪成年创始人物，以保证建族；这会增加一名人物并留下宗族历史记录。
+0.2.3禁止有效绑定宗族的AI通过已覆盖原版入口建支系，含异信仰成员；玩家保留原条件。年度将全部在世支系成员迁回固定宗家，包括玩家，不改死者谱系；旧档宗家不唯一或锚点失效不强迁。仅产品新建宗族的宗家家主跟随实际存活同礼仪领袖，年度集中校正。旧宗族、异礼仪共享教宗及原待处理流程不误改。同步家主；宗族族长仍由原版规则决定。
+
+新建宗族时，原家族族长优先向原家族合格在世成员交接；无可交接人物或其他合法创始人时，生成并保留一名真实同礼仪成年创始人，留下新增人物及建族历史。
 
 [h2]背离就是罪行[/h2]
-仍在对应宗族中，却不再奉行该礼仪的人，被视为“背离宗族礼仪”：
+仍属绑定宗族却不再奉行对应礼仪，视为“背离宗族礼仪”：
 [list]
-[*]该礼仪的其他信徒对其获得一项固定的-100好感修正。
-[*]这些信徒获得监禁、放逐与处决的罪行理由。
-[*]同一信仰中的另一个礼仪也算背离；其他宗族或不相关礼仪不会获得本模组的惩罚理由。
+[*]该礼仪信徒对其获得固定-100好感修正及监禁、放逐、处决理由。
+[*]同信仰的另一礼仪也算背离；无关宗族或礼仪不获得这些理由。
+[*]仍遵守原版管辖与交互条件，处决须先囚禁；模组不自动处罚。
 [/list]
+回归对应礼仪后撤销本来源状态。持续背离不会反复刷新已赦免或消耗的罪行理由。
 
-监禁仍遵守原版管辖与交互条件，处决仍要求先囚禁目标。模组不会替玩家自动执行处罚。重新回归对应礼仪后撤销本来源的背离状态；持续背离时不会通过后台重复施加意见来刷新原版已经赦免或消耗的理由。
+[h2]维护与存档[/h2]
+全世界周期兜底改为每年一次：集中维护、全员归宗及适用家主校正；不持续月度全扫或逐人物分散全年扫描。出生、人物生成后次日同步；创建、编辑、改礼仪、死亡仍事件处理。领袖获任头衔仅校正家主，不重扫整礼仪。批量关系更新合并重复工作，保留赦免与已消耗理由。
 
-[h2]开关与存档[/h2]
-关闭宗族化后，停止自动入族与背离处罚，保留已经存在的宗族、家族与人物身份。重新启用同一礼仪时复用原宗族。改信另一个宗族化礼仪时，人物迁入新礼仪的宗族。
+新局自动初始化；0.2.3兼容启用前旧档，加载后自动补齐，无需重开，手动决议保留。只有两选项皆缺的礼仪补“无”，不强制宗族化；已有选择、绑定、已初始化世界不重建。固定繁育礼仪完整旧三信条＋天葬仅迁移一次，自定义／后续编辑保留；新局神职校正不用于旧档。旧月度回调只清记录，不扫描续排。
 
-新局自动初始化。旧档如出现“启用宗族化密教”决议，请先执行一次；它只准备本模组的教义与知识，不会自动把原版礼仪改成宗族化。
+关闭宗族化后，自动入族、背离处罚和年度归宗停止，已有宗族、家族及人物身份保留；重启同礼仪复用原宗族。改信另一宗族化礼仪则迁入其宗族。
 
-[b]请留意宗族迁移的影响：[/b]人物加入新宗族，会离开原来的宗族与家族。这可能改变姓氏、族长、宗族声望、传承和继承资格；血缘关系保持原版记录。建议为启用前的战役单独保留存档。
+[b]建族／迁族会离开原宗族／家族，可影响姓氏、族长、声望、传承与继承；血缘记录不变，另留启用前存档。[/b]
 
-[h2]兼容范围[/h2]
-使用CK3 1.20的礼仪系统。原版创建、改革、编辑资格和费用继续适用。其他模组直接改变人物家族的路径由周期校正处理；没有通用原生变更钩子的路径可能延迟到下一次校正。
+[h2]兼容与历史[/h2]
+适配CK3 1.21 Florin／1.21.0.3；原版创建、改革、编辑资格与费用不变。绕过正常事件的第三方修改最长等一个年度周期，同文件覆盖可能冲突；支系保护只覆盖已核原版入口，非引擎通用拦截。
 
-多人尚未验收。此处不把单人多角色检查视为多人验证。
+0.2.2更新信仰窗口／详情，保留“无／宗族化”，同步世俗领袖资格及预置中立饮食／饮酒教义；新局原版初始化后一次校正预置世俗神职，保留后续编辑。
 
-[h2]当前测试状态[/h2]
-预置信仰的静态构建与相关回归已通过；两项Faith开局保留、列表可见及繁育默认宗族化已有本轮实际后态。白绮场公共包装因收尾预留超时返回2，不能称整场通过；繁育场公共run与独立verify均退出0，普通场次资格及正常资源闭场通过。该普通场次结果仍保留business_pass=false，不代表完整产品矩阵通过。长期计时、真实继承后的编辑、冷重载与旧档初始化仍在继续本地验证，不能由本次检查外推通过。
+宗教礼仪融合0.2.2-alpha使用新版默认教义应用回调；旧注册接口／条目保留，旧接口扩展须跟进新应用回调。RRF放本模组之后，两者同步更新。
+
+[h2]0.2.3 更新与范围[/h2]
+本轮在1.21.0.3确认跨年后全员归宗及实际所属礼仪领袖与宗家家主一致；不外推即时领袖变更、创建全路径或性能倍数。
+
+旧0.2.2在1.21.0.3有限首次改革由“无”启用宗族化，原族长的宗族／家族／完整纹章／同步名在随后两日独立存档保留。0.2.1开局／列表／存档只属CK3 1.20。旧失败保留，均非本次全功能、多人与长期／继承后编辑通过。
+
+[h2]English[/h2]
+Adds Dynastic / None to vanilla rite creation/reform/editing; view/cancel never founds a dynasty. On creation/first reform activation, dynasty heads reuse dynasty/house/arms; other eligible founders create one. Living followers (AI, landless, children, converts) join; edits reuse binding. New-dynasty founders heading old houses hand over to eligible living members; absent a handover/alternative, a retained same-rite adult adds a character and founding history.
+
+Bound members abandoning the rite receive -100 opinion and imprisonment/banishment/execution reasons from its followers. A different rite in the same faith counts; unrelated dynasties/rites do not. Vanilla jurisdiction applies; execution needs imprisonment, punishment is not automatic. Returning clears these penalties; pardoned/consumed reasons are not renewed.
+
+Procreation/Vivhite have separate Christian faiths, main rites, icons and arms, Dynastic defaults and 867 history. Procreation uses Carnal Exaltation, Ancestor Worship, Pursuit of Power and Mummification; Vivhite is unchanged. Only its intact legacy tenet/funeral bundle migrates once; custom/later edits remain.
+
+0.2.3 initializes pre-mod saves without restarting; manual fallback remains. Missing choices receive None, never forced Dynastic; existing choices/bindings stay, initialized worlds are not rebuilt. Clerical correction is new-game only. Disabling affiliation stops adoption, penalties and annual recovery, retaining identities; re-enabling reuses the dynasty. A different Dynastic rite changes membership. Moves affect names, heads, renown, legacies and inheritance, not bloodlines: keep a pre-enable save.
+
+Covered vanilla paths block AI cadets across the bound dynasty, including other faiths; players retain normal rules. Annual recovery returns all living cadets, including players, to the fixed main house; dead genealogies and ambiguous/invalid anchors stay untouched. Only mod-created dynasties follow the living same-rite leader as main-house head, with annual correction. Reused dynasties, foreign-rite shared Popes and pending operations are protected; House heads are synchronized; the Dynast follows vanilla rules.
+
+Yearly upkeep covers world maintenance, member recovery and applicable head correction. Births/new characters synchronize next day; creation/edits/rite changes/deaths remain event-driven. Title gains update only the relevant head. Old monthly callbacks drain without scanning/rescheduling; merged relationship work preserves pardons/consumed reasons. Third-party bypasses may wait one year; guards are not engine-wide and file overrides can conflict.
+
+Florin 1.21.0.3 keeps faith-window changes, temporal-head rules, neutral diet/alcohol and one-time new-game clergy fixes; later edits remain. RRF 0.2.2-alpha V2 defaults keep old registration/entries. Load RRF after this mod; update both. V1-only providers need the application bridge.
+
+Checked on 1.21.0.3: year-boundary member recovery and own-rite/main-house-head agreement, not instant head changes, all creation paths or speed-up. Earlier 0.2.2 first-reform/name/arms/two-save-day and 0.2.1 CK3 1.20 scopes remain. Failures stand; no whole-product/multiplayer/long-term/post-inheritance pass.

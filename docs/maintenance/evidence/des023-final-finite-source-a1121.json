@@ -1,0 +1,120 @@
+{
+  "schema": "xar.des023.final-finite-source-before-formal.v1",
+  "at_utc": "2026-11-23T05:41:04.294495+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status": "ROOT_ACCEPTED_FINAL_TEXT_AND_FINITE_RUNTIME71_SOURCE_FORMAL_NOT_YET_RUN",
+  "Root_final_cold_facts": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-oldsave-inspection-a942\\final-cold-business-facts-a1120.json",
+    "bytes": 4086,
+    "sha256": "77eed825cdf103e296c4aeb54716f7f309da449d4f95fb02402a678142e0b4e3"
+  },
+  "Root_actual_runtime71_projection": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\des023-Root-accepted-runtime71-a1122.json",
+    "bytes": 14028,
+    "sha256": "d8d1b1ace51df4a277d2488ac084b6d4471b9c99d6d186c67e9b9333115334b4"
+  },
+  "accepted_standard_candidate_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-des-annual-performance-source-a01\\candidate-release71\\mod_dynastic_esotericism.manifest.json",
+    "bytes": 12592,
+    "sha256": "ab2d8da1a20e5d63fd44523a8c3bd7c982d024b58980be49faa7f391f9e2af13"
+  },
+  "Root_projection_bytes_to_manifest_size_explicitly_normalized": true,
+  "accepted_final_metadata_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-023-release-draft-a856\\final-finite-a1120\\delivery-final.json",
+    "bytes": 1832,
+    "sha256": "849c82559d0faee0fcebb6aa9f668470000e1a06947b96e1e9f4ebd229e6f245"
+  },
+  "accepted_metadata_file_refs": {
+    "title.txt": {
+      "path": "D:/ck3-state/upgrade-20261118/des-023-release-draft-a856/final-finite-a1120/title.txt",
+      "bytes": 38,
+      "sha256": "c9b14d7358fb0c86461f759a3b8c8253a03da418a7fef9a8ab318f32278839fa"
+    },
+    "workshop-description.bbcode": {
+      "path": "D:/ck3-state/upgrade-20261118/des-023-release-draft-a856/final-finite-a1120/workshop-description.bbcode",
+      "bytes": 7595,
+      "sha256": "4992745026f18ca102de370160f3f76bd1f45afbfadf3c15d9ad0b70448241b8"
+    },
+    "change-notes.txt": {
+      "path": "D:/ck3-state/upgrade-20261118/des-023-release-draft-a856/final-finite-a1120/change-notes.txt",
+      "bytes": 6695,
+      "sha256": "3a65a77189ee126bd1bb716f2574da94b8e5451a6d536d87b3082ee55806fa44"
+    },
+    "0.2.3.md": {
+      "path": "D:/ck3-state/upgrade-20261118/des-023-release-draft-a856/final-finite-a1120/0.2.3.md",
+      "bytes": 6171,
+      "sha256": "10b8d9282e4a54019f3961dc9a838038b1703f3858b040563d41aa541a4ac639"
+    }
+  },
+  "tracked_adoptions": [
+    {
+      "repo_path": "workshop/dynastic_esotericism_description.bbcode",
+      "before": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\workshop\\dynastic_esotericism_description.bbcode",
+        "bytes": 3592,
+        "sha256": "3f62061ebcbde4f3ece5b989fecad2e6caf97b5c1d2a3a79eb54810b34fdd5fb"
+      },
+      "after": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\workshop\\dynastic_esotericism_description.bbcode",
+        "bytes": 7595,
+        "sha256": "4992745026f18ca102de370160f3f76bd1f45afbfadf3c15d9ad0b70448241b8"
+      },
+      "exact_accepted_source": {
+        "path": "D:/ck3-state/upgrade-20261118/des-023-release-draft-a856/final-finite-a1120/workshop-description.bbcode",
+        "bytes": 7595,
+        "sha256": "4992745026f18ca102de370160f3f76bd1f45afbfadf3c15d9ad0b70448241b8"
+      }
+    },
+    {
+      "repo_path": "workshop/dynastic_esotericism_change_notes_0.2.3.txt",
+      "before": null,
+      "after": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\workshop\\dynastic_esotericism_change_notes_0.2.3.txt",
+        "bytes": 6695,
+        "sha256": "3a65a77189ee126bd1bb716f2574da94b8e5451a6d536d87b3082ee55806fa44"
+      },
+      "exact_accepted_source": {
+        "path": "D:/ck3-state/upgrade-20261118/des-023-release-draft-a856/final-finite-a1120/change-notes.txt",
+        "bytes": 6695,
+        "sha256": "3a65a77189ee126bd1bb716f2574da94b8e5451a6d536d87b3082ee55806fa44"
+      }
+    },
+    {
+      "repo_path": "docs/release-changelogs/dynastic-esotericism/0.2.3.md",
+      "before": null,
+      "after": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\release-changelogs\\dynastic-esotericism\\0.2.3.md",
+        "bytes": 6171,
+        "sha256": "10b8d9282e4a54019f3961dc9a838038b1703f3858b040563d41aa541a4ac639"
+      },
+      "exact_accepted_source": {
+        "path": "D:/ck3-state/upgrade-20261118/des-023-release-draft-a856/final-finite-a1120/0.2.3.md",
+        "bytes": 6171,
+        "sha256": "10b8d9282e4a54019f3961dc9a838038b1703f3858b040563d41aa541a4ac639"
+      }
+    }
+  ],
+  "title_unchanged_source_only_not_descriptor_mutation": {
+    "path": "D:/ck3-state/upgrade-20261118/des-023-release-draft-a856/final-finite-a1120/title.txt",
+    "bytes": 38,
+    "sha256": "c9b14d7358fb0c86461f759a3b8c8253a03da418a7fef9a8ab318f32278839fa"
+  },
+  "runtime_file_count": 71,
+  "runtime_bytes": 2956896,
+  "runtime_payload_changes": 0,
+  "release_tool_qualification": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-des-annual-performance-source-a01\\candidate-release71\\new-qualified71-tool.json",
+    "bytes": 22043,
+    "sha256": "29e06a2742713182dd794b05091d0fb2f5cb57c6fee70077c2113518bf3d3cbc"
+  },
+  "Root_formal_new_purpose_admission": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\des-formal16-admission-a1121.json",
+    "bytes": 1396,
+    "sha256": "1d578019249d4e31a1f01fb4a50cfa25367ecfaee08dc6347ab8aa4dfafdbd67"
+  },
+  "tag_planned": "dynastic-esotericism-v0.2.3",
+  "tag_exists_at_previous_plan": false,
+  "new_Maven_or_tests": false,
+  "Steam_publication_or_SDK": false,
+  "scope": "Finite old-save initialization/intact legacy preset migration/monthly lease compatibility/annual whole-DY including player and cross-RiteAI recovery/actual own-Rite HouseHead alignment and cold persistence. Retain old negative/UNKNOWN evidence. No NativeCreate/instant-title/CPU-FPS-speedup/wholeproduct/fullSDK expansion."
+}

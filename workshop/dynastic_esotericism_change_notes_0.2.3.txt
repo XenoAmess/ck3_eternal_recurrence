@@ -1,0 +1,32 @@
+宗族化密教 0.2.3 / Dynastic Esotericism 0.2.3
+CK3 1.21 Florin — 1.21.0.3
+
+变更
+- 全世界周期维护改为每年一次：年度集中维护、将全部在世支系成员迁回固定宗家及适用的新建宗族家主校正。移除持续月度全量扫描和逐人物分散的全年扫描。
+- 出生与人物生成后的次日补同步；创建、编辑、改礼仪和死亡保留事件触发处理。领袖获任头衔只处理家主，不再重扫整礼仪。
+- 合并批量同步中的重复关系更新，保留已保存的双端关系索引；不重建或补发已赦免、已消耗的罪行理由。旧存档已排队的月度维护只清理旧记录，不再全量扫描或续排。第三方绕过正常事件的修改由年度兜底，最长等待一个年度周期。
+- 修复未启用本模组时创建的存档在启用并加载后没有自动初始化的问题；无需重开，原手动启用决议保留。只补缺少的教义与合资格在世角色知识，普通礼仪补“无”，不强制宗族化；已有选择与绑定不重建，新局专用神职校正不用于旧档。
+- 整个有效绑定宗族的AI，包括异信仰成员，不得通过已覆盖原版路径创建支系；玩家手动创建保留原条件。无需新建支系的商人路径及合法家主转交保持。
+- 年度归宗涵盖所有在世支系成员，包括玩家及异信仰成员，不改死者谱系。旧档宗家不唯一或锚点失效时不强迁；解除宗族化后停止。
+- 仅本产品真正新建的宗族，其稳定宗家家主跟随绑定礼仪实际存活的同礼仪领袖：创建、真实领袖变更及年度集中校正。复用旧宗族、非所属礼仪共享教宗及原待处理操作不误改。家主与引擎宗族族长分别读回，不把调用或入家当成两者已成功。
+- 繁育教派改为肉欲高扬、祖先崇拜、追逐权力及制为木乃伊。固定繁育礼仪仍为完整旧三信条加天葬时迁移一次；相关自定义和后续编辑保留。白绮不变，原版信条选择资格不放宽。
+- 宗族同步、背离处罚、RRF注册与默认教义接口保持，无新游戏规则。原版创建、改革、编辑资格与费用继续适用；原版入口保护不等于引擎或第三方原语通用拦截。
+
+Changes
+- Run world-wide periodic maintenance once yearly, with recovery of all living cadet members and applicable new-dynasty head correction. Remove recurring monthly full scans and scattered per-character yearly scans.
+- Keep next-day synchronization after births/character creation and event handling for rite creation, edits, rite changes and deaths. A religious leader gaining a title updates the relevant house head without rescanning the entire rite.
+- Consolidate repeated relationship work while preserving stored two-sided indexes and pardoned/consumed crime reasons. Old queued monthly callbacks only drain their old record, without scanning or rescheduling. Changes bypassing normal events are covered at the next annual cycle.
+- Fix automatic initialization for saves created before enabling this mod, without restarting the campaign; retain the manual fallback. Supply missing doctrines and eligible living-character knowledge, using None for ordinary rites. Preserve existing choices/bindings; the clerical correction stays new-game only.
+- Block AI cadet creation through covered vanilla paths throughout a validly bound dynasty, including other-faith members. Player creation, merchant paths not requiring a new cadet house and legitimate head transfers retain their conditions.
+- Annual recovery returns all living cadet members, including players and other faiths, to the fixed main house. Dead genealogies and ambiguous/invalid legacy anchors remain untouched; disabling affiliation stops recovery.
+- Only dynasties genuinely created by this mod follow the bound rite's actual living same-rite leader as main-house head, on creation, head changes and during annual upkeep. Reused dynasties, foreign-rite shared Popes and pending operations remain protected. House head and Dynast need separate actual observations.
+- Procreation uses Carnal Exaltation, Ancestor Worship and Pursuit of Power, with Mummification. Migrate only its intact legacy three-tenet/Sky Burial bundle once; preserve custom/later edits. Vivhite and vanilla tenet-picker restrictions remain unchanged.
+- Keep dynasty synchronization, apostasy penalties and RRF registration/default interfaces, without new game rules. Vanilla creation, reform, editing eligibility and costs still apply; covered guards are not an engine-wide or third-party primitive block.
+
+本轮验证范围 / Validation scope
+本轮在CK3 1.21.0.3自然跨年后的保存中，确认目标宗族56名在世成员全部回到固定宗家，包含玩家及不同礼仪的AI；宗家家主与实际所属礼仪领袖一致，对照宗族保持原状。结果在跨年后的自然日保存中确认，不声称元旦瞬时调度或即时头衔转交已完整验证。另一个31自然日窗口未见月度续排，不凭标记消失推定旧任务具体执行次数。创建界面全部路径及即时领袖变更不在本轮新增通过范围；不报告CPU、FPS或墙钟提速倍数。
+On CK3 1.21.0.3, a save after naturally crossing the year boundary confirmed all 56 living members of the tested dynasty in its fixed main house, including the player and an AI of another rite. Its main-house head matched its actual own-rite leader; the control dynasty was preserved. This does not establish an instant New Year callback or immediate title-transfer response. A separate 31-day window showed no monthly renewal, without inferring exact old-task execution counts from an absent marker. All creation-window paths and immediate head changes are outside this added pass; no CPU, FPS or wall-clock speed-up is claimed.
+独立重新载入后，在不推进日期的情况下再次保存，56名在世成员逐人仍在同一宗家，宗家家主、实际所属礼仪领袖及对照宗族状态保持。
+An independent reload followed by a save without advancing the date preserved the same 56 living members individually in the main house, the actual own-rite leader/main-house-head agreement and the control dynasty.
+0.2.2在CK3 1.21.0.3的有限首次改革及两个保存日、0.2.1在CK3 1.20的证据保留原范围。旧失败不改写；没有新增全产品、多人、长期计时或继承后编辑通过结论。
+Historical bounded 0.2.2 first-reform/two-save-day checks on CK3 1.21.0.3 and 0.2.1 CK3 1.20 evidence keep their scopes. Earlier failures remain; no new whole-product, multiplayer, long-term or post-inheritance pass is claimed.
