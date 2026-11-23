@@ -1,0 +1,175 @@
+{
+  "schema": "ck3-financial-markets-release-evidence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-11-23T16:50:01.807678+00:00",
+  "product": "financial-markets",
+  "version": "0.1.0-alpha.2",
+  "previous_public_version": "0.1.0-alpha.1",
+  "workshop_item_id": "3844765196",
+  "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3844765196",
+  "source_commit": "fbd00867a0a4f5d19b0b64a6bc038e22bb18ed26",
+  "source_tag": "financial-markets-v0.1.0-alpha.2",
+  "scope": "UI-only finite layout repair; all financial backend/save fields unchanged",
+  "offline_software": {
+    "tests": {
+      "tests": 716,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "suite_count": 57,
+    "runtime_and_test_source_unchanged": true,
+    "callbacks_vs_alpha1": {
+      "xfm_market_window.gui": {
+        "unchanged": true,
+        "count": 71
+      },
+      "xfm_market_spot_ticket.gui": {
+        "unchanged": true,
+        "count": 14
+      },
+      "xfm_market_futures.gui": {
+        "unchanged": true,
+        "count": 44
+      }
+    },
+    "report": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\ui-hotfix-full-verification.actual.json",
+      "bytes": 10377,
+      "sha256": "428a424db61cfab1180aab8813d848443a34fda63346ea8e8cf3f1f1f89cc0b4"
+    },
+    "original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-financial-ui-alpha2-full01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 913,
+      "sha256": "6de53d5143f88233501e29b35078f7b46710ea0099bf39bee62d8c755e0fb40b"
+    }
+  },
+  "staging": {
+    "manifest": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\ui-alpha2-publication01\\staging01\\manifest.json",
+      "bytes": 41814,
+      "sha256": "9e267b6390b85e266ce2fe3814f21393d9d5fe6202e272a1919785aaedfbbe0e"
+    },
+    "files": 236,
+    "bytes": 1088657,
+    "pure_runtime_no_fixture_or_tools": true
+  },
+  "actual_publication": {
+    "operation": "update",
+    "create_calls": 0,
+    "submit_calls": 1,
+    "steam_result": 1,
+    "submitted_at_utc": "2026-11-23T16:47:23.708647+00:00",
+    "payload_sha256": "b4b911ee2a2511a42bdf26586c8eca3f56ebee4001474b3925e0a28ab9462d9e",
+    "receipt": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\ui-alpha2-publication01\\UPDATE.receipt.json",
+      "bytes": 659,
+      "sha256": "6e37dbf77dd674ae8d63091602abe80d4edfded03a66c597d604bd77ccf61b60"
+    },
+    "original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PUBLISH-financial-ui-alpha2-update01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1361,
+      "sha256": "b3c76d105666fe4ef1c411e61ab1f6f4ad6798da1e731c7ca58c08c5dd68b358"
+    }
+  },
+  "actual_cache": {
+    "files_exact": 236,
+    "bytes": 1088657,
+    "copied_from_staging": false,
+    "Game_started_or_mounted": false,
+    "report": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\ui-alpha2-publication01\\actual-cache-exact236.actual.json",
+      "bytes": 83169,
+      "sha256": "9a7ff09cd06be81ba623e85cdf346867ff155eda1790467c755d69d58eb272f6"
+    },
+    "outer_descriptor_before": {
+      "path": "C:\\Users\\Administrator\\Documents\\Paradox Interactive\\Crusader Kings III\\mod\\ugc_3844765196.mod",
+      "bytes": 254,
+      "sha256": "f235859621ad600fb901e59c4095468eaf12fe690aa81ba0a1d952166e621008"
+    },
+    "outer_descriptor_after": {
+      "path": "C:\\Users\\Administrator\\Documents\\Paradox Interactive\\Crusader Kings III\\mod\\ugc_3844765196.mod",
+      "bytes": 254,
+      "sha256": "a5d38c0bed7d5bc6b8a185e647bcdb7edf58fc72ad109a45c3967d69e16459a2"
+    },
+    "playset_changed": false
+  },
+  "public_readback": {
+    "title": "NOT_OBSERVED",
+    "description": "NOT_OBSERVED",
+    "full_change_notes": "NOT_OBSERVED",
+    "result": "HTTP429_TOO_MANY_REQUESTS",
+    "content_mismatch_established": false,
+    "automatic_retry": false,
+    "endpoint_not_identified_by_existing_verifier": true,
+    "original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-financial-ui-alpha2-public01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1573,
+      "sha256": "10a0a7f30c0c62fb1755b9217e10866474521f7e781f8a79d84a6df83c1e28c3"
+    },
+    "stderr": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-financial-ui-alpha2-public01\\stderr.log",
+      "bytes": 77,
+      "sha256": "2fea4c6e3d03922dd50b7c3f7efaf8f3e44e10cc5fb1b311bf19c05174ba5cff"
+    }
+  },
+  "Steam_after": {
+    "status": "offline",
+    "proof": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\ui-alpha2-publication01\\steam-after-offline02-2.actual.json",
+      "bytes": 2433,
+      "sha256": "a0d9b432a9c07742a1117ab9e1188ea3e93daa4e806a56c1b5e817bab650e3da"
+    },
+    "method": "native_current_user_byte",
+    "steam": {
+      "pid": 3312,
+      "birth_filetime": "134399260615056596",
+      "exe": "C:\\Program Files (x86)\\Steam\\steam.exe",
+      "file_version": "11.23.65.88"
+    }
+  },
+  "earlier_failures_preserved": {
+    "initial_probe": "STEAM_INIT_FAILED immediately after restart; no upload had begun",
+    "first_offline_guard": "ActiveUser zero; refused before shutdown/write",
+    "first_sequence": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\ui-alpha2-publication01\\publication-sequence.actual.json",
+      "bytes": 445,
+      "sha256": "5d3494f8c965b4a98b4a12498f63751b50c52e481702f2799ab5d291b3f642f2"
+    },
+    "later_readonly_probe": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PROBE-financial-ui-alpha2-online02\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1122,
+      "sha256": "4bc02ad14d006d8813169987a35ae58df5e24d32a4a0614c382495bbb7aac1db"
+    },
+    "later_sequence": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\ui-alpha2-publication01\\publication-ready02.actual.json",
+      "bytes": 298,
+      "sha256": "ff2ee177120522902727795d7bad4dc4f5eed11f08b5894133608de0f4577891"
+    },
+    "upload_replayed": false,
+    "test_harness_failure": "ui-hotfix-affected01.log; regex did not handle nested size; fixed6 and full716 pass"
+  },
+  "qualification": {
+    "published_and_installed": true,
+    "strict_public_release_closed": false,
+    "engine_mouse_hit_test": "NOT_RUN",
+    "rendered_visual_acceptance": "NOT_RUN",
+    "full_product_acceptance": false,
+    "crisis20_complete_matrix": false,
+    "scale4096_and_long_performance": false
+  },
+  "storage_close": {
+    "free_bytes": 31145066496,
+    "new_Game_or_profile": false,
+    "build_and_publication_writers_complete": true,
+    "active_Steam_child_temp": "C:\\workspace\\ck3-market-task-20261118\\ui-alpha2-publication01\\tmp",
+    "active_temp_deleted": false,
+    "old_spent_upper_not_refunded": true,
+    "admission": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\ui-hotfix-storage.actual.json",
+      "bytes": 1252,
+      "sha256": "e6d4ec6c9c897ab0bb1063472dafb2c66046baa81f608773ba1512d819459b87"
+    }
+  },
+  "no_additional_HTTP_or_Game_scheduled": true
+}

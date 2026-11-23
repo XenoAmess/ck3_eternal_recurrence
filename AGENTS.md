@@ -1,5 +1,11 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-24 金融市场 Alpha.2 界面修复已上传并安装，公开429待核
+
+用户报告行情、排序／刷新／翻页不可点击及右侧详情过小，并明确“已经退出，可以发布修复更新”。`machine_id: 4-8e1c2f1861` 已在原 canonical `3844765196` 一次真实更新 `0.1.0-alpha.2`／ER1，SourceA `fbd00867a0a4f5d19b0b64a6bc038e22bb18ed26`／tag `financial-markets-v0.1.0-alpha.2` 保持；236 文件真实下载全精确，外层 descriptor 仅更新版本，未改播放集。新布局使用明确有限的两栏、市场页与命中区域，右侧滚动视口 460×728；表单提前，129 个启用／操作表达式及金融后端／存档字段不变。默认 Maven 3.10.0 全模块 716 项／57 suite 全通过，原测试辅助正则失败保留。
+
+公开全文验证唯一尝试 HTTP429，标题／说明／Notes 均保持 NOT_OBSERVED，不称严格 release closed，不重试上传或自动 HTTP。Steam 重启后的首 SDK 未就绪及首 offline guard 的写前拒绝保留，后继只读 SDK 就绪后才执行唯一 Submit，已独立证明恢复离线。本次没有新 Game，源码几何不冒鼠标命中／最终视觉实机通过；20 剧情／4096／长期性能／整产品仍待。完成记录后交还用户复测，不自行启动、关闭或注入用户 CK3。见[Alpha.2 实际记录](docs/release-evidence/financial-markets/0.1.0-alpha.2.json)。
+
 ## 2026-11-23 当前CCC1.0.2实际上传及缓存有限通过，Notes429待核
 
 `desktop-3fevhd2-1c74096080` 已对 canonical3804807463 完成一次真实SDK ER1更新，实际下载22文件精确，完整公开标题／正文、creator／AppIDs／原封面及唯一原图库条目保持。实际在线61.5169951秒，13:40:29.006844Z已确认恢复Steam离线。真实Ccanonical缓存直接挂载，退出后22全SHA仍精确，无formalcopy／fixture／warm，Robert36423／.15暂停地图存活；0Date／0Save、原821输入全SHA不变，一次Native quit ACK与独立Natural0／Job0／cleanup／creator0分别有据。早期加载OptionalCoreUnavailable及原PARTIAL／原生false／typedexpiry null保持，不授缓存新业务／全SDK／净县民望或性能。
