@@ -1,0 +1,27 @@
+{
+  "schema": "xar.current267.rmtm.preview-title-guard-source-fix.v1",
+  "status": "EXACT_SOURCE_AND_AFFECTED_CONTRACT_P_NEW_PRODUCT_LOAD_NOT_RUN",
+  "source_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rmtm-d1-missing-character-review-a1310\\delivery-final.json",
+    "bytes": 1060,
+    "sha256": "71f000382d1e0d4d4ae8a985efad116c629ae58fc7bf701050461d3b10f6f4cc"
+  },
+  "exact_adoption_and_ordered_AST": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rmtm-preview-title-guard-adoption-a1312\\product-guard-adoption.json",
+    "bytes": 1179,
+    "sha256": "c9767dd8736e5fb5c62c1e8121745e2cba3ab77b23c68e8954b7550483a6df92"
+  },
+  "affected_existing_test": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rmtm-preview-title-guard-adoption-a1312\\one-test-result.json",
+    "bytes": 827,
+    "sha256": "c34f48ccba791f5b2ee220a25a91379576bca771270a5bb209fc8216a3f41e1d"
+  },
+  "change": "Only guard dynamic scope:rmtm_restoration_hegemony_title existence from valid Character caller before entering the original law-if block. Existing destroy/primary transition/NOT-law/add-law and all other ordered AST definitions unchanged.",
+  "existing_test_update": "Original title-law/idempotent migration contract now asserts the Character-level existence wrapper before the same original title-law body; no added mirror test or removed business gate.",
+  "retained_boundary": "A real absent title remains unavailable/failed physical title/law AND. Preview guard does not generate a title, law, fallback, marker or qualification. Vanilla144 numeric-evaluation warning alone is not evidence of business corruption.",
+  "original_runtime_candidate36_prepared_Frozen_JAR_CPP_wire_not_modified": true,
+  "current_independent_threshold_scene": "Uses immutable old candidate and actual old Native delivery; cannot qualify this new Source guard.",
+  "Maven_Native_compile_JAR_package_product_builder_Game_HTTP": 0,
+  "old12_threeStrict_Java70_not_repeated": true,
+  "new_candidate_build_or_engine_qualification": "NOT_RUN"
+}

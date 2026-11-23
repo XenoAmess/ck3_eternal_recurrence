@@ -329,10 +329,13 @@ rmtm_finalize_restoration_hegemony_effect = {
 	set_primary_title_to = scope:rmtm_restoration_hegemony_title
 	# Keep the explicit Later-title law after the final primary-title transition.
 	# The creation helper still installs it after the initial grant resolves.
-	scope:rmtm_restoration_hegemony_title = {
-		if = {
-			limit = { NOT = { has_title_law = single_heir_succession_law } }
-			add_title_law = single_heir_succession_law
+	if = {
+		limit = { exists = scope:rmtm_restoration_hegemony_title }
+		scope:rmtm_restoration_hegemony_title = {
+			if = {
+				limit = { NOT = { has_title_law = single_heir_succession_law } }
+				add_title_law = single_heir_succession_law
+			}
 		}
 	}
 }

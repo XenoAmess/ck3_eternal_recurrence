@@ -584,9 +584,15 @@ class TestReclaimTheMotherlandContract(unittest.TestCase):
         )
         self.assertLess(
             primary_keys.index("set_primary_title_to"),
-            primary_keys.index("scope:rmtm_restoration_hegemony_title"),
+            primary_keys.index("if"),
         )
-        post_primary_title = direct_block(finalizer, "scope:rmtm_restoration_hegemony_title")
+        title_exists = direct_block(finalizer, "if")
+        self.assertEqual(
+            scalar_values(direct_block(title_exists, "limit"), "exists", recursive=False),
+            ["scope:rmtm_restoration_hegemony_title"],
+            "guard the dynamic title while still in the valid character caller scope",
+        )
+        post_primary_title = direct_block(title_exists, "scope:rmtm_restoration_hegemony_title")
         repair = direct_block(post_primary_title, "if")
         missing_law = direct_block(direct_block(repair, "limit"), "NOT")
         self.assertEqual(
