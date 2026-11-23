@@ -1376,6 +1376,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         private RiteDraftCostsReadUnavailable unresolvedRiteDraftCostsRead;
         private boolean riteCreateQueryAttempted;
         private boolean riteTextQueryAttempted;
+        private boolean stockBookmark1070QueryAttempted;
         private RiteCreateUnavailable unresolvedRiteCreateRead;
         private RiteTextUnavailable unresolvedRiteTextRead;
         private boolean riteDoctrineReadAttempted;
@@ -4569,6 +4570,145 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             return prepared.outcome=outcome;
         }catch(IOException|RuntimeException invalid){DispatchOutcome outcome;if(sentRequestIds.contains(id)){unresolvedCoreControl=new Unknown(id,"Create navigation failed after actual write; no replay: "+reason(invalid),retainedOutbound(id),Optional.empty());outcome=unresolvedCoreControl;}else outcome=zero(id,reason(invalid));if(prepared!=null)prepared.outcome=outcome;return outcome;
         }catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;unresolvedCoreControl=new Unknown(id,"Create navigation interrupted after actual write; no replay",retainedOutbound(id),Optional.empty());if(prepared!=null)prepared.outcome=unresolvedCoreControl;Thread.currentThread().interrupt();return unresolvedCoreControl;}
+    }
+
+    public sealed interface StockBookmark1070Read permits StockBookmark1070Received,StockBookmark1070Unavailable { DispatchOutcome original(); }
+    /** Only this receiver's complete actual query may authorize its fixed stock choice. */
+    public static final class StockBookmark1070Received implements StockBookmark1070Read {
+        private final NativeGameTransport issuer;private final CoreReceived before;private final CurrentStockBookmark1070Result frame;
+        private final AckReceived original;private final NativeRequestChronology custody;private final Instant validUntil;
+        private boolean actionAttempted;private StockBookmark1070Prepared prepared;
+        private StockBookmark1070Received(NativeGameTransport issuer,CoreReceived before,CurrentStockBookmark1070Result frame,AckReceived original,NativeRequestChronology custody,Instant until){this.issuer=issuer;this.before=before;this.frame=frame;this.original=original;this.custody=custody;validUntil=until;}
+        public CurrentStockBookmark1070Result frame(){return frame;}@Override public AckReceived original(){return original;}public Instant validUntil(){return validUntil;}
+        public void requireOriginal(NativeGameTransport actual,Instant until)throws IOException{Objects.requireNonNull(actual).requireStockBookmark1070Original(this,until);}
+    }
+    public record StockBookmark1070Unavailable(DispatchOutcome original,String reason)implements StockBookmark1070Read {public StockBookmark1070Unavailable{Objects.requireNonNull(original);StrictJson.text(reason);}}
+    public static final class StockBookmark1070Prepared {
+        private final NativeGameTransport issuer;private final StockBookmark1070Received query;private final int instanceId;private final String id;private final NativeWire.Bytes packet;
+        private boolean called;private DispatchOutcome outcome;private CurrentStockBookmark1070Result latestFrame;
+        private StockBookmark1070Prepared(NativeGameTransport issuer,StockBookmark1070Received query,int instanceId,String id,byte[] packet){this.issuer=issuer;this.query=query;this.instanceId=instanceId;this.id=id;this.packet=new NativeWire.Bytes(packet);}
+        public String requestId(){return id;}public NativeWire.Bytes originalPacket(){return packet;}public Instant deadline(){return query.validUntil;}public int instanceId(){return instanceId;}
+        public Optional<CurrentStockBookmark1070Result> latestFrame(){return Optional.ofNullable(latestFrame);}
+    }
+    private StockBookmark1070Received latestStockBookmark1070;
+    private StockBookmark1070Unavailable unresolvedStockBookmark1070;
+    private final Set<Integer> attemptedStockBookmark1070Instances=new HashSet<>();
+    private byte[] stockBookmark1070Packet(String id,CurrentStockBookmark1070.Action action,CoreReceived before,BigInteger provider,BigInteger sequence,Optional<Integer> instance,Instant until)throws IOException {
+        if(!(before.frame instanceof CoreFrame.Partial core))throw new IOException("Exact current267 stock bookmark Core required");
+        var request=CurrentStockBookmark1070.request(core,action,provider,sequence,instance);var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));
+        fields.put("core_control_deadline_unix_ms",BigInteger.valueOf(until.toEpochMilli()));return NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+    }
+    private void requireStockBookmark1070Scope(CoreReceived before,Instant until)throws IOException {
+        Objects.requireNonNull(before);Objects.requireNonNull(until);requireCoreOriginal(before,until);
+        if(closed||hello==null||terminalFailure!=null||applicationExitAttempted||before.controlAttempted||unresolvedCoreControl!=null||unresolvedFullClockControl!=null
+                ||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null||unresolvedStockBookmark1070!=null)
+            throw new IOException("Original healthy unused Core and resolved stock bookmark family required");
+        if(!(before.frame instanceof CoreFrame.Partial core)||core.build()!=ExactCk3Build.CK3_121003_STEAM_26785313)throw new IOException("Exact current267 Core required");
+        CurrentLetter.requirePrefix(core.prefix());
+    }
+    private void requireStockBookmark1070Custody(AckReceived ack,NativeRequestChronology custody,NativeRequestChronology predecessor,Instant until)throws IOException {
+        custody.verify(ack);Instant now=chronologyClock.instant();
+        if(!custody.session().equals(session())||!custody.custodyEpoch().equals(custodyEpoch)||originalRequestChronology(ack.requestId()).filter(custody::equals).isEmpty()
+                ||custody.writeEntered().order().compareTo(predecessor.responseReceived().order())<=0||custody.responseReceived().observedAt().isAfter(now)||custody.responseReceived().observedAt().isAfter(until))
+            throw new IOException("Stock bookmark receipt crossed original session/custody/chronology/deadline");
+    }
+    private void requireStockBookmark1070Frame(CurrentStockBookmark1070Result frame,CurrentStockBookmark1070.Action action,CoreReceived before)throws IOException {
+        if(frame.action()!=action||frame.status()==CurrentStockBookmark1070Result.Status.INDETERMINATE||!frame.cleanupKnown())throw new IOException("Stock bookmark action or cleanup uncertain");
+        var prefix=((CoreFrame.Partial)before.frame).prefix();
+        if(frame.factsBefore().isPresent()&&!frame.factsBefore().orElseThrow().equals(prefix))throw new IOException("Stock bookmark facts differ from original Core");
+        if(frame.owner().isPresent()&&!frame.owner().orElseThrow().connectionGeneration().equals(hello.connectionGeneration()))throw new IOException("Stock bookmark crossed actual connection");
+        if(frame.source().isPresent()){
+            var source=frame.source().orElseThrow();
+            if(source.fixedInstanceId().isPresent()){
+                var matches=source.eventCensus().events().stream().filter(e->e.instanceId()==source.fixedInstanceId().orElseThrow()&&e.recipientCharacterId()==prefix.playedCharacterId()).toList();
+                if(matches.size()!=1)throw new IOException("Fixed stock source recipient differs from actual Core");
+            }
+        }
+        if(frame.effectAttempted()&&frame.status()!=CurrentStockBookmark1070Result.Status.SELECTION_DISPATCHED)throw new IOException("Unqualified stock bookmark effect; preserve UNKNOWN");
+    }
+    private void requireStockBookmark1070Original(StockBookmark1070Received actual,Instant until)throws IOException {
+        Objects.requireNonNull(until);if(actual==null||actual.issuer!=this||actual!=latestStockBookmark1070||actual.actionAttempted)throw new IOException("Original private stock bookmark query absent or consumed");
+        requireStockBookmark1070Scope(actual.before,until);Instant now=chronologyClock.instant();
+        if(until.isAfter(actual.validUntil)||!now.isBefore(actual.validUntil))throw new IOException("Original stock bookmark deadline expired or extended");
+        requireStockBookmark1070Custody(actual.original,actual.custody,actual.before.custody,actual.validUntil);
+        var frame=CurrentStockBookmark1070Result.decodeOutcome(actual.original);requireStockBookmark1070Frame(frame,CurrentStockBookmark1070.Action.QUERY,actual.before);
+        if(!actual.before.stockBookmark1070QueryAttempted||frame.status()!=CurrentStockBookmark1070Result.Status.AVAILABLE||!frame.equals(actual.frame))throw new IOException("Actual stock query/source differs");
+        if(!Arrays.equals(actual.original.outbound().orElseThrow().originalPacket(),stockBookmark1070Packet(actual.original.requestId(),CurrentStockBookmark1070.Action.QUERY,actual.before,BigInteger.ZERO,BigInteger.ZERO,Optional.empty(),actual.validUntil)))throw new IOException("Original stock bookmark query packet/deadline changed");
+    }
+    public synchronized StockBookmark1070Read readCurrentStockBookmark1070(CoreReceived before,Instant deadline)throws InterruptedException {
+        if(unresolvedStockBookmark1070!=null)return unresolvedStockBookmark1070;
+        String id="stock-bookmark-query-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome outcome=null;
+        try {
+            requireStockBookmark1070Scope(before,deadline);
+            if(before.stockBookmark1070QueryAttempted)throw new IOException("Actual Core already queried this stock family; obtain a fresh Core");
+            if(!hello.capabilities().contains(CurrentStockBookmark1070.Action.QUERY.capability()))throw new IOException("Actual stock bookmark query capability absent");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native identity retention limit reached");
+            Instant until=readDeadline(deadline);byte[] packet=stockBookmark1070Packet(id,CurrentStockBookmark1070.Action.QUERY,before,BigInteger.ZERO,BigInteger.ZERO,Optional.empty(),until);
+            outcome=retainReadOutcome(dispatchRead(id,packet,until,()->{requireBackgroundAtCoreWrite();try{requireStockBookmark1070Scope(before,until);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
+                if(before.stockBookmark1070QueryAttempted)throw new IllegalStateException("Original Core stock query already consumed");before.stockBookmark1070QueryAttempted=true;latestStockBookmark1070=null;}));
+            if(!(outcome instanceof AckReceived ack))return stockBookmark1070ReadFailure(id,outcome,new IOException("Actual stock query has no qualified ACK"));
+            var frame=CurrentStockBookmark1070Result.decodeOutcome(ack);requireStockBookmark1070Frame(frame,CurrentStockBookmark1070.Action.QUERY,before);
+            if(frame.status()!=CurrentStockBookmark1070Result.Status.AVAILABLE)return new StockBookmark1070Unavailable(ack,frame.unavailableReason().orElseThrow());
+            var custody=originalRequestChronology(id).orElseThrow(()->new IOException("Actual stock query custody absent"));
+            var received=new StockBookmark1070Received(this,before,frame,ack,custody,until);latestStockBookmark1070=received;requireStockBookmark1070Original(received,until);return received;
+        }catch(IOException|RuntimeException invalid){latestStockBookmark1070=null;return stockBookmark1070ReadFailure(id,outcome,invalid);}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();return stockBookmark1070ReadFailure(id,new Unknown(id,"Original stock query interrupted after write; no replay",retainedOutbound(id),Optional.empty()),interrupted);}
+    }
+    private StockBookmark1070Unavailable stockBookmark1070ReadFailure(String id,DispatchOutcome outcome,Exception invalid) {
+        if(!sentRequestIds.contains(id))return new StockBookmark1070Unavailable(outcome!=null?outcome:zero(id,reason(invalid)),reason(invalid));
+        if(outcome instanceof RejectedBeforeDispatch)return new StockBookmark1070Unavailable(outcome,reason(invalid));
+        var unknown=outcome instanceof Unknown u?u:new Unknown(id,"Written stock query result unqualified; preserve family UNKNOWN: "+reason(invalid),retainedOutbound(id),outcome instanceof AckReceived a?Optional.of(a.originalFrame()):Optional.empty());
+        return unresolvedStockBookmark1070=new StockBookmark1070Unavailable(unknown,reason(invalid));
+    }
+    public synchronized StockBookmark1070Prepared prepareCurrentStockBookmark1070C(StockBookmark1070Received query)throws IOException {
+        Objects.requireNonNull(query);requireStockBookmark1070Original(query,query.validUntil);
+        if(!hello.capabilities().contains(CurrentStockBookmark1070.Action.SELECT_C.capability()))throw new IOException("Actual fixed stock C choice capability absent");
+        var source=query.frame.source().orElseThrow();
+        if(!source.selectCAdmissible()||source.fixedInstanceId().isEmpty())throw new IOException("Actual complete source does not admit fixed bookmark.1070.c");
+        int instance=source.fixedInstanceId().orElseThrow();
+        if(attemptedStockBookmark1070Instances.contains(instance))throw new IOException("This receiver already attempted that actual stock instance; no replay");
+        if(query.prepared!=null)return query.prepared;
+        String id="stock-bookmark-c-"+UUID.randomUUID().toString().replace("-","");
+        return query.prepared=new StockBookmark1070Prepared(this,query,instance,id,stockBookmark1070Packet(id,CurrentStockBookmark1070.Action.SELECT_C,query.before,query.frame.providerGeneration(),query.frame.querySequence(),Optional.of(instance),query.validUntil));
+    }
+    public synchronized DispatchOutcome submitCurrentStockBookmark1070C(StockBookmark1070Prepared prepared)throws InterruptedException {
+        if(prepared!=null&&prepared.issuer==this&&prepared.called&&prepared.outcome!=null)return prepared.outcome;
+        if(unresolvedStockBookmark1070!=null)return unresolvedStockBookmark1070.original();
+        if(unresolvedCoreControl!=null)return unresolvedCoreControl;if(unresolvedFullClockControl!=null)return unresolvedFullClockControl;
+        String id=prepared==null?"stock-bookmark-invalid-"+UUID.randomUUID().toString().replace("-",""):prepared.id;DispatchOutcome outcome=null;
+        try {
+            Objects.requireNonNull(prepared);var query=prepared.query;
+            if(prepared.issuer!=this||query.prepared!=prepared||prepared.called)throw new IOException("Original unused stock choice preparation required");
+            requireStockBookmark1070Original(query,query.validUntil);
+            if(!hello.capabilities().contains(CurrentStockBookmark1070.Action.SELECT_C.capability())||!query.frame.source().orElseThrow().selectCAdmissible()
+                    ||query.frame.source().orElseThrow().fixedInstanceId().filter(i->i==prepared.instanceId).isEmpty()||attemptedStockBookmark1070Instances.contains(prepared.instanceId))throw new IOException("Fixed original stock instance claim unavailable");
+            if(!Arrays.equals(prepared.packet.value(),stockBookmark1070Packet(id,CurrentStockBookmark1070.Action.SELECT_C,query.before,query.frame.providerGeneration(),query.frame.querySequence(),Optional.of(prepared.instanceId),query.validUntil)))throw new IOException("Original stock C packet/source/deadline changed");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native identity retention limit reached");
+            outcome=dispatch(id,prepared.packet.value(),query.validUntil,()->{requireBackgroundAtCoreWrite();try{requireStockBookmark1070Original(query,query.validUntil);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
+                if(prepared.called||!attemptedStockBookmark1070Instances.add(prepared.instanceId))throw new IllegalStateException("Original stock instance already attempted");prepared.called=true;query.actionAttempted=true;query.before.controlAttempted=true;heldSnapshotInvalidated=true;latestStockBookmark1070=null;});
+            if(outcome instanceof Unknown unknown){unresolvedCoreControl=unknown;unresolvedStockBookmark1070=new StockBookmark1070Unavailable(unknown,"Original stock choice UNKNOWN");return prepared.outcome=unknown;}
+            if(outcome instanceof AckReceived ack){
+                var frame=CurrentStockBookmark1070Result.decodeOutcome(ack);requireStockBookmark1070Frame(frame,CurrentStockBookmark1070.Action.SELECT_C,query.before);
+                var custody=originalRequestChronology(id).orElseThrow(()->new IOException("Actual stock choice custody absent"));requireStockBookmark1070Custody(ack,custody,query.custody,query.validUntil);
+                if(frame.source().isPresent()&&!frame.source().equals(query.frame.source())||frame.providerGeneration().signum()>0&&!frame.providerGeneration().equals(query.frame.providerGeneration())
+                        ||frame.querySequence().signum()>0&&!frame.querySequence().equals(query.frame.querySequence())||frame.instanceId().isPresent()&&!frame.instanceId().equals(Optional.of(prepared.instanceId)))throw new IOException("Stock ACK rebound original Source/lease/instance");
+                if(frame.status()==CurrentStockBookmark1070Result.Status.SELECTION_DISPATCHED&&(!frame.source().equals(query.frame.source())||!frame.factsBefore().equals(query.frame.factsBefore())
+                        ||!frame.providerGeneration().equals(query.frame.providerGeneration())||!frame.querySequence().equals(query.frame.querySequence())||!frame.instanceId().equals(Optional.of(prepared.instanceId))))throw new IOException("Stock callback did not return immutable beforeSource/Core/lease/instance");
+                prepared.latestFrame=frame;
+            }
+            return prepared.outcome=outcome;
+        }catch(IOException|RuntimeException invalid){
+            if(sentRequestIds.contains(id)){
+                if(outcome instanceof AckReceived ack)indeterminateCoreAcknowledgement=ack;
+                var unknown=new Unknown(id,"Written stock choice unqualified; preserve original UNKNOWN: "+reason(invalid),retainedOutbound(id),outcome instanceof AckReceived ack?Optional.of(ack.originalFrame()):Optional.empty());
+                unresolvedCoreControl=unknown;unresolvedStockBookmark1070=new StockBookmark1070Unavailable(unknown,reason(invalid));if(prepared!=null&&prepared.issuer==this)prepared.outcome=unknown;return unknown;
+            }
+            var rejected=zero(id,reason(invalid));if(prepared!=null&&prepared.issuer==this)prepared.outcome=rejected;return rejected;
+        }catch(InterruptedException interrupted){
+            if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();
+            var unknown=new Unknown(id,"Stock choice interrupted after write; original UNKNOWN, no replay",retainedOutbound(id),Optional.empty());unresolvedCoreControl=unknown;
+            unresolvedStockBookmark1070=new StockBookmark1070Unavailable(unknown,"Original stock choice interrupted");if(prepared!=null&&prepared.issuer==this)prepared.outcome=unknown;return unknown;
+        }
     }
 
     public sealed interface RiteCreationBlockersRead permits RiteCreationBlockersReceived,RiteCreationBlockersUnavailable { DispatchOutcome original(); }

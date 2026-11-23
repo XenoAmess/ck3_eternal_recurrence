@@ -1,0 +1,145 @@
+{
+  "schema": "xar.current267.stock-bookmark1070.actual-software-qualification.v1",
+  "at_utc": "2026-11-23T04:17:51.566708+00:00",
+  "all_required_exit0": true,
+  "actual_methods": 33,
+  "expected_distinct_methods": 33,
+  "wholeclasses": [
+    {
+      "wholeclass": "NativeOwnerCurrentStockBookmark1070SelectionTest",
+      "actual_methods": 10,
+      "actual_report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-bookmark1070-source-a01\\validation\\qualified33-reports\\TEST-org.xar.ck3.control.service.root.NativeOwnerCurrentStockBookmark1070SelectionTest.xml",
+        "bytes": 77682,
+        "sha256": "b9c408d0f59c07b9e683899385fca3c219e3b0f7025f0ae9e8a58d10bf1bfa4a"
+      }
+    },
+    {
+      "wholeclass": "NativeCurrentStockBookmark107026785313ProducerTest",
+      "actual_methods": 12,
+      "actual_report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-bookmark1070-source-a01\\validation\\qualified33-reports\\TEST-org.xar.ck3.control.nativebridge.NativeCurrentStockBookmark107026785313ProducerTest.xml",
+        "bytes": 18886,
+        "sha256": "642922a49b8389b2c30626642c78c85cd392b99e190eaf8b0aa5f3ad68836bc9"
+      }
+    },
+    {
+      "wholeclass": "NativeCurrentStockBookmark1070TransportTest",
+      "actual_methods": 11,
+      "actual_report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-bookmark1070-source-a01\\validation\\qualified33-reports\\TEST-org.xar.ck3.control.nativebridge.NativeCurrentStockBookmark1070TransportTest.xml",
+        "bytes": 18556,
+        "sha256": "908dec062826182e8d7400fcb0f415debe20b1cbba89d8cdd533a5e9afc8d6e7"
+      }
+    }
+  ],
+  "actual_compiler_result": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-bookmark1070-source-a01\\validation\\compiler-a01-result.json",
+    "bytes": 7581,
+    "sha256": "0c033bd92ce4b3e97cbc2affdc9758375eae13676ad937b76c322fd0507fc15a"
+  },
+  "actual_command": [
+    "mvn",
+    "-o",
+    "-B",
+    "-ntp",
+    "-s",
+    "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\machine-dependency-cache-settings.xml",
+    "-Dmaven.repo.local=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\maven-repository",
+    "-Dck3.build.root=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\target",
+    "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-current267-bookmark1070-source-a01\\validation\\scratch",
+    "-Djna.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-current267-bookmark1070-source-a01\\validation\\scratch",
+    "-Dxar.stock.bookmark1070.java.requests.output.directory=D:\\ck3-state\\upgrade-20261118\\java-current267-bookmark1070-source-a01\\validation\\compiler-a01-actual-java-requests",
+    "-Dtest=NativeOwnerCurrentStockBookmark1070SelectionTest,NativeCurrentStockBookmark107026785313ProducerTest,NativeCurrentStockBookmark1070TransportTest",
+    "-Dsurefire.failIfNoSpecifiedTests=false",
+    "-DargLine=-Xmx1024m",
+    "-pl",
+    ":native-transport,:ck3-control-local-service",
+    "-am",
+    "-T2",
+    "test"
+  ],
+  "actual_compilation_and_test_lines": [
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Nothing to compile - all classes are up to date.",
+    "[INFO] Compiling 558 source files with javac [debug parameters release 21] to ..\\..\\target\\native-transport\\classes",
+    "[INFO] Compiling 98 source files with javac [debug parameters release 21] to ..\\..\\target\\native-transport\\test-classes",
+    "[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.267 s -- in org.xar.ck3.control.nativebridge.NativeCurrentStockBookmark107026785313ProducerTest",
+    "[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.886 s -- in org.xar.ck3.control.nativebridge.NativeCurrentStockBookmark1070TransportTest",
+    "[INFO] Tests run: 23, Failures: 0, Errors: 0, Skipped: 0",
+    "[INFO] Compiling 653 source files with javac [debug parameters release 21] to ..\\..\\target\\ck3-control-local-service\\classes",
+    "[INFO] Compiling 48 source files with javac [debug parameters release 21] to ..\\..\\target\\ck3-control-local-service\\test-classes",
+    "[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.470 s -- in org.xar.ck3.control.service.root.NativeOwnerCurrentStockBookmark1070SelectionTest",
+    "[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0",
+    "[INFO] BUILD SUCCESS"
+  ],
+  "compilation_scope": "Same independent dev/M2/target, two changed modules plus cached necessary dependencies with -pl/-am/-T2. Listed reactor dependencies are not claimed recompiled. First single command passed33; early21-method plan was never executed. No old26/Text31/Create42/TED32/fullSDK test rerun.",
+  "actual_CPP_producer": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-stock-bookmark1070-source-a1070\\NoGame\\genuine-producer-receipt.json",
+    "bytes": 12835,
+    "sha256": "8d7bc6c9aba8906d2b82fa0eaa4d7a2000ff8b312fb4d5e297769b30dd85df4a"
+  },
+  "actual_CPP_to_Java": "Ten original responses and two original requests, portable12 bytes/SHA exact; typed roundtrip plus Java factory.NativeWire. Negative mutations/HELLO/Core/response-ID wrappers are explicitly Java DATA, never new Native genuine.",
+  "actual_Java_request_CPP_inverse": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-stock-bookmark1070-source-a1070\\NoGame\\actual-java-inverse-a01\\result.json",
+    "bytes": 20492,
+    "sha256": "484426e5e99cba5fa0866647f2beb85bffded277123104c906b26475d3b46518"
+  },
+  "source_input": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-bookmark1070-source-a01\\source-plan-qualified.json",
+    "bytes": 18604,
+    "sha256": "3857225eada07f12d87d713661807ff7f0ae84d1d31c19e5d1fa99e08d5ef560"
+  },
+  "configuration_schema": "xar.native-owner-snapshot-config/v44",
+  "configuration_modes": [
+    "current_stock_bookmark1070_query",
+    "current_stock_bookmark1070_choose_c"
+  ],
+  "configuration": "Exact common6 only, no event/key/option/index/text/role/actor/boolean/lease selectors.",
+  "maximum_submissions": {
+    "query": 2,
+    "choose": 5
+  },
+  "scope": "Fixed stock bookmark.1070.c only. Complete actual single bound event, current recipient, authored3 and unique0/1/2, only actual authored2 Can/text needed; retain all3 text/disabled/Can values and immutable full census. Private original Core/Source/session/connection/custody/lease/deadline, once per actual instance. Callback handled/event_closed/date/save remainfalse. Independent fresh Core and complete after-census compares actual original instance absence as KnownDATA; no time-gate or business credit from absence. No borrowed LYD role or old protocol extension.",
+  "UNKNOWN": "Original written query or selection UNKNOWN stays sticky in this family and original identity/deadline/body retained; no replay, no old cross-family UNKNOWN clearing.",
+  "Source_only_failures_preserved": [
+    "Initial send_message did not awaken completed DTO owner; corrected with followup_task before any compiler BEGIN.",
+    "A guessed query filename and three guessed manifest filenames failed read-only lookup before mutation; corrected using actual listed filenames/delivery pointers."
+  ],
+  "original_identity_Source": "STOPPED_UNUSED_NOT_INCLUDED",
+  "old_F5af5_Text_Create_LYD": "UNCHANGED_IMMUTABLE",
+  "warnings": "Original Maven/Quarkus/LogManager diagnostics retained; no zero-log-errors claim.",
+  "Game_Steam_HTTP_calls": 0,
+  "new_Native_owner_and_artifacts": "QUALIFIED_SOURCE_SEPARATE_PRODUCTION_PENDING"
+}
