@@ -89,7 +89,7 @@ class OwnedKeypaths(unittest.TestCase):
         for key in ("natural_game_day_limit", "fixture_recent_independence_override_days", "forbidden_markers", "post_start"):
             self.assertEqual(current[key], old[key])
         self.assertEqual(witness.byte_pin((SOURCE / witness.FIXTURE_RELATIVE).read_bytes())["sha256"],
-                         "b25240d58d3d160ed12e2a1cd876d63633ebc695776891de91c72fd62ba3f355")
+                         "f7b42c6e63a4142345909d072f5dccaac5bc96aed1a3b3463fed36a47794773e")
         self.assertFalse(adapter.validate_contract(self.context())["business_pass"])
         bad = self.context(); bad["case_inputs"][emitter.PHASE4_OPTION] = True
         with self.assertRaises(ValueError): adapter.validate_contract(bad)

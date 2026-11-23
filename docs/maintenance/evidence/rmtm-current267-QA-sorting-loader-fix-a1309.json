@@ -1,0 +1,44 @@
+{
+  "schema": "xar.current267.rmtm.QA-sorting-loader-fix.v1",
+  "status": "SOURCE_AND_TWO_AFFECTED_TESTS_P_NEW_GAME_LOADER_NOT_RUN",
+  "scope": "Four canonical QA ordering tokens only: development_level to prosperity_level. Actual projected core/threshold derivatives separately change six tokens across three copied leaves. Product36/Native/JAR/wire/start/role/three dumps/50-51 business logic unchanged.",
+  "official_and_actual_loader_source_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rmtm-threshold-ordering-current267-source-a01\\delivery-final-a02.json",
+    "bytes": 1374,
+    "sha256": "cc4ac85667e190626684d947a781eebf38a5722f7aa8090ee6c00a70d060fb0d"
+  },
+  "retained_actual_loader_error": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rmtm-threshold-ordering-current267-source-a01\\actual-loader-error-excerpt.json",
+    "bytes": 1522,
+    "sha256": "a32f90fa61a69b25e9e2c549171cf78fb6aaadccf0c716d88c3b35d8dc637688"
+  },
+  "canonical_exact_byte_and_AST_adoption": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rmtm-sorting-two-fixtures-source-a1309\\repo-QA-sorting-adoption.json",
+    "bytes": 2145,
+    "sha256": "64cdabfc0beae3143954cf70a16e7e2bbe10e38f8322713b0d74f755a31f2df0"
+  },
+  "strict_Source_SHA_consumers": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rmtm-sorting-two-fixtures-source-a1309\\affected-Source-pin-consumers.json",
+    "bytes": 911,
+    "sha256": "02f617786f51a3fea25c858ac7d1e0476c2ff2ccdfb3bd04f7e14f0ada11ed7d"
+  },
+  "strict_pin_update_reason": "The readback BASE_SHA and existing keypaths test must bind the exact newly accepted fixture SHA f7b42c6e63a4142345909d072f5dccaac5bc96aed1a3b3463fed36a47794773e; strict validation remains. Original34 marker contract and helper SHA unchanged.",
+  "actual_affected_two_methods": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rmtm-sorting-two-fixtures-source-a1309\\two-tests-result.json",
+    "bytes": 945,
+    "sha256": "1b12489d95beaf78a650c51f3f49527eaeb30f1bb63ae3a56b32db4f0cef9265"
+  },
+  "old12_threeStrict_Java70_not_repeated": true,
+  "derived_fixtures": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rmtm-sorting-two-fixtures-next-a1309\\delivery-final.json",
+    "bytes": 1910,
+    "sha256": "60481d4db74bb74e8d22bdbca9138454336f5ce595458e8ec282d5cb63cf482a"
+  },
+  "derivation_new1MiB_END": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rmtm-sorting-two-fixtures-execution-a1309\\phase-END.json",
+    "bytes": 1150,
+    "sha256": "5269680b110fef81e03f10f3aa92926df9feec74a99cc8d14b679080b42331cc"
+  },
+  "original_parents_and_failed_scene_preserved": true,
+  "no_live_business_or_loader_PASS": true
+}
