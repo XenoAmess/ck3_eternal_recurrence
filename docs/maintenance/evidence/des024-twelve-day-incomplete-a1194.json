@@ -1,0 +1,140 @@
+{
+  "schema": "xar.des024.actual-twelve-day-current-status-index.v1",
+  "at_utc": "2026-11-23T09:37:29.991704+00:00",
+  "status": "INCOMPLETE_NOT_A_FORMAL_RELEASE_DECISION",
+  "source_runtime_cut": "91c69b0a5b33a402edffc195ce65110ae83e93d5",
+  "actual_Root_finite_summary": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\des024-twelve-day-actual-finite-INCOMPLETE-a1194.json",
+    "bytes": 5836,
+    "sha256": "b211308447e672621c84bed539365c1c51073c06d6c2d2a9d79c3b9e1bff43bd"
+  },
+  "actual_normal_terminal": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des024-head-refresh-regression-current267-profile-a1172\\owner\\terminal.json",
+    "bytes": 1082,
+    "sha256": "66209d75a958c8e667825c3d74bd57186c5b62dd0afc1be67d95509756312467"
+  },
+  "actual_creator_END": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des024-head-refresh-regression-current267-profile-a1172\\creator-end.json",
+    "bytes": 619,
+    "sha256": "ccd7151fb4f1085b5ee1e10a446d05a127c8734faa2729eceb7bfd37ae76b0ca"
+  },
+  "actual_days": 12,
+  "actual_Date_submissions": 12,
+  "actual_explicit_Save_calls": 1,
+  "archive_retained_ref_only_no_Save_read": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des024-head-refresh-regression-current267-profile-a1172\\checkpoints\\des024-head-refresh-final.ck3",
+    "bytes": 169518490,
+    "sha256": "8336865d80b608f7818efad2a28822384ae3555b340659e49e5c3157e715c142"
+  },
+  "observed_finite_business": {
+    "initial_load_and_real_wrong77332_House_Dynast_callbacks": "Rite head/MainHouse head/Dynast all36423",
+    "actual_old_Rite_departure": "All three actual roles36971",
+    "cadet_input_while_roles_stayed_aligned": "Player cadet16793331 retained within intended annual policy; not a failure of an independently observed Dynast mismatch",
+    "strong_cadet_actual_Dynast_callback": "Only sameAI36971death tick; separated earlier strong mismatch case not established",
+    "final": "Actual own-Rite getter noHead; MainHouse head40738/Dynast36423/pending retained",
+    "force_refresh_invocation": "NOT_INDEPENDENTLY_WITNESSED"
+  },
+  "limits": "No eligible surviving Rite-head successor was guaranteed by this fixture (observed surviving77333 female/unlanded). Need a controlled eligible-successor fixture and independent actual Dynast competition before causally judging this path or formal release. Initial callback/old-Rite finite observations do not promote the whole candidate.",
+  "actual_reader_scope": [
+    {
+      "name": "actor-only",
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des024-head-refresh-regression-current267-profile-a1172\\readback-a1189\\actor-only\\inspection.report.json",
+        "bytes": 602339,
+        "sha256": "d0f4e9c04faadd9f4abb1914c2e33095f5a96b01349d0ed7860c35f7c914334b"
+      },
+      "exit": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des024-head-refresh-regression-current267-profile-a1172\\readback-a1189\\actor-only\\inspection.exit.json",
+        "bytes": 4052,
+        "sha256": "06deda02c5bf1beaf727b4cdd9beb6c6eab40f351568caecf03063ee84b47ea6"
+      },
+      "physical_source_identity_unchanged": true
+    },
+    {
+      "name": "roles-only",
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des024-head-refresh-regression-current267-profile-a1172\\readback-a1189\\roles-only\\inspection.report.json",
+        "bytes": 369188,
+        "sha256": "ef50aee5d51895160925d0f02cf149ee2219298f59f03b131c7f9acb23919be6"
+      },
+      "exit": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des024-head-refresh-regression-current267-profile-a1172\\readback-a1189\\roles-only\\inspection.exit.json",
+        "bytes": 4053,
+        "sha256": "4d2f13782395d91cc008b44bd2d5cc05fbbf00f849d7209019ed266a9aee6998"
+      },
+      "physical_source_identity_unchanged": true
+    },
+    {
+      "name": "globals-only",
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des024-head-refresh-regression-current267-profile-a1172\\readback-a1189\\globals-only\\inspection.report.json",
+        "bytes": 872018,
+        "sha256": "60461a5494fe5cd7fd80c7856e6dc87fe1b864631069865ac75005284988f24b"
+      },
+      "exit": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des024-head-refresh-regression-current267-profile-a1172\\readback-a1189\\globals-only\\inspection.exit.json",
+        "bytes": 4069,
+        "sha256": "3cb8c4f2b8102614998610026b85255e30b7a3a27bab431bfca9ce5f3536b81c"
+      },
+      "physical_source_identity_unchanged": true
+    },
+    {
+      "name": "eligibility-actors",
+      "report": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des024-head-refresh-regression-current267-profile-a1172\\readback-a1189\\eligibility-actors\\inspection.report.json",
+        "bytes": 559185,
+        "sha256": "56ebd6a71235b6b4203b9e2f2167e1991e01bdbc5e1a28239e410397831ad397"
+      },
+      "exit": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des024-head-refresh-regression-current267-profile-a1172\\readback-a1189\\eligibility-actors\\inspection.exit.json",
+        "bytes": 4117,
+        "sha256": "80856acec014da21f846ff49d46f03b706ae3d401b9f8c67a2beebfbff3b5291"
+      },
+      "physical_source_identity_unchanged": true
+    }
+  ],
+  "prior_nine_day_RED": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\des024-nine-day-actual-regression-RED-a1173.json",
+    "bytes": 6140,
+    "sha256": "fee4d203fc97fcf6f8c7e79dd559f5eabb663e0a022e0fbc6fe04dee5c08f3ef"
+  },
+  "prior_RED_actions_candidates_and_unknown": "Preserved; no rewrite or replay",
+  "actual_replica_retirement": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des024-second-case-replicas-reclamation-a1196\\actual-result.json",
+    "bytes": 2137,
+    "sha256": "95c9e332e133ccd224c2da3ed794e93ff04dafa4917b63f8476dda9a7edeca0f"
+  },
+  "allocated_removed_bytes": 676978688,
+  "retired_paths": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des024-head-refresh-regression-current267-profile-a1172\\profile-states\\gui-9c66384d248e462d9c0b6dce6cf87493\\profile\\last_save.ck3",
+      "availability": "RETIRED_PROFILE_INPUT_UNREADABLE",
+      "retained_archive": "D:\\ck3-state\\upgrade-20261118\\des024-head-refresh-regression-current267-profile-a1172\\checkpoints\\des024-head-refresh-final.ck3"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des024-head-refresh-regression-current267-profile-a1172\\profile-states\\gui-9c66384d248e462d9c0b6dce6cf87493\\profile\\save games\\autosave.ck3",
+      "availability": "RETIRED_PROFILE_INPUT_UNREADABLE",
+      "retained_archive": "D:\\ck3-state\\upgrade-20261118\\des024-head-refresh-regression-current267-profile-a1172\\checkpoints\\des024-head-refresh-final.ck3"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des024-head-refresh-regression-current267-profile-a1172\\profile-states\\gui-9c66384d248e462d9c0b6dce6cf87493\\profile\\save games\\xar_checkpoint.ck3",
+      "availability": "RETIRED_PROFILE_INPUT_UNREADABLE",
+      "retained_archive": "D:\\ck3-state\\upgrade-20261118\\des024-head-refresh-regression-current267-profile-a1172\\checkpoints\\des024-head-refresh-final.ck3"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des024-head-refresh-regression-current267-profile-a1172\\profile-states\\gui-9c66384d248e462d9c0b6dce6cf87493\\profile\\save games\\des-ordinary-dynasty-title.ck3",
+      "availability": "RETIRED_PROFILE_INPUT_UNREADABLE",
+      "retained_archive": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly55-current267-profile-a1055\\checkpoints\\des-ordinary-dynasty-title.ck3"
+    }
+  ],
+  "retired_paths_are_not_future_inputs": true,
+  "archives_unchanged": true,
+  "volume_free_delta_attributed": false,
+  "old_spent_or_held_refunded": false,
+  "Steam": "Still offline per Root; no new external call by this unit",
+  "no_new_runtime_patch_Maven_build_tag_publication_or_Game": true,
+  "current_public_DES": "0.2.3 canonical3826991345",
+  "distinct_products_uploaded": 12,
+  "distinct_products_strict_finite_complete": 9,
+  "distinct_product_total": 17
+}
