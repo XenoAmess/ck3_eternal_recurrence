@@ -113,6 +113,7 @@ template<class T>bool At(std::uintptr_t p,std::size_t off,T&v)noexcept{return p&
  value.open_admissible=!value.visible&&!blocked;value.cancel_admissible=value.visible&&value.enabled&&!blocked&&value.owner_id==f.core.played_character_id;out.source.budget=std::move(value);return true;
 }
 #include "ck3_121003_rmtm_offer_diagnostic26785313_v1.inc"
+#include "ck3_121003_rmtm_offer_origin26785313_v1.inc"
 #include "ck3_121003_rmtm_observation26785313_native_v1.inc"
 [[maybe_unused]]bool EmptyConfirmationTrigger([[maybe_unused]]std::uintptr_t image,std::uintptr_t definition,std::vector<std::byte>&proof){
  std::uint8_t subtype=255;std::int32_t count=-1;std::uintptr_t alternate=1;
@@ -202,17 +203,26 @@ static_assert(sizeof(OfferItemAny267V1)==40);
  OfferTraceSub267("offer_root_context_backrefs");if(!Root(f,"character_interaction_menu_window",menuRoot,menuNode,proof)||!Root(f,"character_interaction_confirmation_window",confirmRoot,confirmNode,proof)||!Window(b,f,menu,0x4BDB6B8,0,menuRoot,proof)||!Window(b,f,confirmation,0x4BAC188,0,confirmRoot,proof))return false;
  RmtmOfferData267V1 value;value.target=*q.offer_target;value.actor_id=f.core.played_character_id;value.recipient_id=std::bit_cast<std::int32_t>(full);value.found=true;value.visible=confirmNode.visible;value.enabled=confirmNode.enabled;value.blocked_by_visible_modal=blocked;value.sampled_twice=true;
  out.window=confirmation;out.root=confirmRoot;out.menu=menu;
- // This is the actual previously captured owned HUD widget, never a menu root
- // or a caller supplied address. Its binding and flags remain part of Source.
- for(const auto&n:f.witness)if(n.name=="hud_layer"){if(out.origin_widget)return false;out.origin_widget=n.widget;std::uintptr_t ctx=0,parent=0;if(!At(n.widget,0xD8,ctx)||ctx!=f.scene.context||!At(n.widget,0xE8,parent)||parent!=n.parent||!Add(proof,n.widget+0xD0,0x28))return false;}
- OfferTraceSub267("offer_owned_HUD_origin");if(!out.origin_widget||out.origin_widget==menuRoot)return false;
+ // The official opener toggles/no-ops when its origin equals the cached
+ // pointer even if the menu is hidden. Choose only an existing fixed owned
+ // anchor which differs; never clear the cache or pass a null fallback.
+ bool openerCan=false;
+ if(!menuNode.visible&&!confirmNode.visible){
+  OfferTraceSub267("offer_fixed_owned_origin");
+  if(!SelectOfferOrigin267V1(f,proof,menuRoot,out.origin_widget))return false;
+  bool scalar=false,collection=false;
+  OfferTraceSub267("offer_official_opener_guards");
+  if(!ReadOfferOpenerScalarGuards267V1(f,target,proof,scalar)||
+   !ReadOfferOpenerCollectionGate267V1(f,proof,collection))return false;
+  openerCan=out.origin_widget&&scalar&&collection;
+ }
  if(menuNode.visible){std::uint32_t selected=invalid;OfferTraceSub267("offer_menu_recipient_and_rows");if(!At(menu,0xD0,selected)||selected!=full||!Add(proof,menu+0xD0,4)||!OfferRows(b,f,menu,out))return false;}
  if(confirmNode.visible){
   std::uint32_t actor=invalid,recipient=invalid;std::uintptr_t definition=0;std::string key;
   OfferTraceSub267("offer_confirmation_actor_recipient_definition");if(!At(confirmation,0x3B4,recipient)||recipient!=full||!At(confirmation,0x3C4,actor)||actor!=static_cast<std::uint32_t>(f.core.played_character_id)||!At(confirmation,0xC8,definition)||!Typed(definition,b.module_base,0x5006388)||!String(definition+0x18,256,key,proof,true)||key!="offer_vassalization_interaction"||!Add(proof,confirmation+0xC8,0x310))return false;
   out.definition=definition;out.entered=true;bool cleanup=true;OfferTraceSub267("offer_confirmation_description");if(!Description(b.module_base,confirmation,value.description,proof,cleanup)){out.cleanup_known&=cleanup;return false;}
  }
- value.open_admissible=!menuNode.visible&&!confirmNode.visible&&!blocked;value.cancel_admissible=confirmNode.visible&&confirmNode.enabled&&!blocked;out.source.offer=std::move(value);return true;
+ value.open_admissible=!menuNode.visible&&!confirmNode.visible&&!blocked&&openerCan;value.cancel_admissible=confirmNode.visible&&confirmNode.enabled&&!blocked;out.source.offer=std::move(value);return true;
 }
 [[maybe_unused]]bool Take(const ReadonlyBindings&b,const RmtmObservationFrame267V1&f,const RmtmObservationRequest267V1&q,std::uint64_t mono,RmtmObservationRaw267V1&out,std::string&why){
  if(!Fresh(b,f,q,mono)){why="rmtm_observation_actual_Core_world_or_deadline_changed";return false;}
@@ -228,6 +238,7 @@ bool VerifyRmtmObservationImage267V1([[maybe_unused]]std::uintptr_t image)noexce
  using namespace rmtm_observation_native;
  if(!image||image!=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr))||!VerifyRmtmRoleImage267V1(image)||!VerifyRmtmDecisionImage267V1(image)||!VerifyRmtmTitleImage267V1(image))return false;
  for(const auto&p:rmtm_observation_pins::kPins){if(p.hex.empty()||p.hex.size()%2||p.hex.size()/2>kImageSize||p.rva>kImageSize-p.hex.size()/2)return false;for(std::size_t n=0;n<p.hex.size()/2;++n){const auto digit=[](char c){return static_cast<unsigned char>(c<='9'?c-'0':c-'a'+10);};const auto expected=static_cast<unsigned char>((digit(p.hex[n*2])<<4)|digit(p.hex[n*2+1]));unsigned char actual=0;if(!At(image+p.rva,n,actual)||actual!=expected)return false;}}
+ for(const auto&p:kOfferOriginPins267V1){if(p.hex.empty()||p.hex.size()%2||p.hex.size()/2>kImageSize||p.rva>kImageSize-p.hex.size()/2)return false;for(std::size_t n=0;n<p.hex.size()/2;++n){const auto digit=[](char c){return static_cast<unsigned char>(c<='9'?c-'0':c-'a'+10);};const auto expected=static_cast<unsigned char>((digit(p.hex[n*2])<<4)|digit(p.hex[n*2+1]));unsigned char actual=0;if(!At(image+p.rva,n,actual)||actual!=expected)return false;}}
  return true;
 #else
  return false;

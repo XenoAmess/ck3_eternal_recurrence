@@ -94,7 +94,11 @@ static_assert(sizeof(Any40)==40&&sizeof(ArgTable24)==24&&sizeof(ArgCursor16)==16
  // The original item callback owns a record on a 0x370-byte stack frame at+20.
  // Reserve more than that complete extent, invoke its official constructor,
  // and invoke its official destructor. No hand-built scripting context.
- alignas(16)std::array<std::byte,0x400>record{};bool made=false,makeEntered=false,good=false;clean=true;entered=false;
+ std::uintptr_t menu=0,menuManager=0,menuVtable=0,menuClose=0;
+ clean=true;entered=false;
+ if(!At(item,0,menu)||!Typed(menu,image,0x4BDB6B8)||!At(menu,0xA0,menuManager)||menuManager!=manager||
+  !At(menu,0,menuVtable)||!At(menuVtable,0x88,menuClose)||menuClose!=image+0x1441CF0)return false;
+ alignas(16)std::array<std::byte,0x400>record{};bool made=false,makeEntered=false,good=false;
  __try{
   makeEntered=true;OfferTraceMark267(OfferStage267V1::record_construct_enter);made=reinterpret_cast<void*(__fastcall*)(const void*,void*)>(XAR_RMTM_OBSERVATION_CALL_ADDRESS(image,0x1446C50))(reinterpret_cast<const void*>(item),record.data())==record.data();
   OfferTraceMark267(OfferStage267V1::record_construct_returned,true);OfferTraceMark267(made?OfferStage267V1::record_construct_output_matched:OfferStage267V1::record_construct_output_rejected);
@@ -108,12 +112,22 @@ static_assert(sizeof(Any40)==40&&sizeof(ArgTable24)==24&&sizeof(ArgCursor16)==16
      // CSendCharacterInteractionCommand are never called by this family.
      entered=true;OfferTraceMark267(OfferStage267V1::populate_enter);reinterpret_cast<void(__fastcall*)(void*,const void*)>(XAR_RMTM_OBSERVATION_CALL_ADDRESS(image,0x11BB3C0))(reinterpret_cast<void*>(window),record.data());OfferTraceMark267(OfferStage267V1::populate_returned,true);
      OfferTraceMark267(OfferStage267V1::activate_enter);reinterpret_cast<void(__fastcall*)(void*,std::uint32_t,bool)>(XAR_RMTM_OBSERVATION_CALL_ADDRESS(image,0xAF1110))(reinterpret_cast<void*>(manager),0xB,true);OfferTraceMark267(OfferStage267V1::activate_returned,true);
-     OfferTraceMark267(OfferStage267V1::refresh_enter);reinterpret_cast<void(__fastcall*)(void*)>(XAR_RMTM_OBSERVATION_CALL_ADDRESS(image,0x11BBC30))(reinterpret_cast<void*>(window));OfferTraceMark267(OfferStage267V1::refresh_returned,true);good=true;
+     OfferTraceMark267(OfferStage267V1::refresh_enter);reinterpret_cast<void(__fastcall*)(void*)>(XAR_RMTM_OBSERVATION_CALL_ADDRESS(image,0x11BBC30))(reinterpret_cast<void*>(window));OfferTraceMark267(OfferStage267V1::refresh_returned,true);
+     // Official ItemOnClick's UI-only suffix follows its display branch:
+     // specialized Menu.Close, then record destruction, then dirty=1.
+     // Never invoke OnClick or AF0050 (their other branch can Send).
+     std::uintptr_t currentMenu=0;
+     if(!At(item,0,currentMenu)||currentMenu!=menu)clean=false;
+     else {OfferTraceSub267("offer_specialized_menu_close");
+      reinterpret_cast<void(__fastcall*)(void*)>(XAR_RMTM_OBSERVATION_CALL_ADDRESS(image,0x1441CF0))(reinterpret_cast<void*>(menu));good=true;}
     }
    }
   }
  }__except(OfferTraceException267(GetExceptionInformation())){clean=false;}
  if(made){__try{OfferTraceMark267(OfferStage267V1::record_destroy_enter);reinterpret_cast<void(__fastcall*)(void*)>(XAR_RMTM_OBSERVATION_CALL_ADDRESS(image,0x3624460))(record.data());OfferTraceMark267(OfferStage267V1::record_destroy_returned,true);}__except(OfferTraceException267(GetExceptionInformation())){clean=false;}}
  else if(makeEntered)clean=false;
+ if(good&&clean){__try{OfferTraceSub267("offer_menu_dirty_after_record_cleanup");
+  *reinterpret_cast<volatile std::uint8_t*>(menu+0x220)=1;
+ }__except(OfferTraceException267(GetExceptionInformation())){clean=false;}}
  return good&&clean;
 }
