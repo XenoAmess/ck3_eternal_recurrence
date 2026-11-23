@@ -1,0 +1,125 @@
+{
+  "schema": "xar.des024.actual-publication-and-cache-Notes-pending.SourceC.v1",
+  "at_utc": "2026-11-23T11:46:31.041555+00:00",
+  "status": "ER1_SDK71_PUBLIC_TITLE_BODY_AND_CACHE_FINITE_PASS_NOTES_NOT_OBSERVED",
+  "actual_refs": {
+    "ER1_receipt": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des024-formal-release-a1222\\des024-v2-native-publish-receipt.json",
+      "bytes": 652,
+      "sha256": "7791af264ce4879f6d793c8ea20f05d047467801cabede4b950d3e85d9598fba"
+    },
+    "publication_result": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des024-publication-a1226\\operator-a1226-single-des024-v2-a01\\publication-result.json",
+      "bytes": 2232,
+      "sha256": "623d0093eec4a124c67fd1835eb063358306ed42c53333ca389cc6daf0f67518"
+    },
+    "SDK71_exact": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des024-publication-a1226\\operator-a1226-single-des024-v2-a01\\des024-download-exact.json",
+      "bytes": 754,
+      "sha256": "dcb9ab58f59dcd7c1fa8301173bc17df586d0dc7374959788c23061043387eac"
+    },
+    "gallery_preserved": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des024-publication-a1226\\operator-a1226-single-des024-v2-a01\\des024-gallery-preserved.json",
+      "bytes": 311,
+      "sha256": "dfd6c229bc4c94f8c1f155a5206a9259ba9634fb4114670e26ee1a1a1c52a0c7"
+    },
+    "restored_offline": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des024-publication-a1226\\operator-a1226-single-des024-v2-a01\\observed-offline-1795432785959369200.json",
+      "bytes": 1306,
+      "sha256": "c1bdb37fa9f63042a222ad71663ce98b3d59d28f80355fc408d8056df0be40df"
+    },
+    "API_full_verification": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des024-public-readback-a1226-v2\\actual-a01\\api-full-verification.json",
+      "bytes": 2462,
+      "sha256": "c17263dab69841bd2f3e792550b43a077b8ce25fb4543e92e8e11790ef1d79c9"
+    },
+    "API_delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des024-public-readback-a1226-v2\\actual-API-full-delivery.json",
+      "bytes": 1088,
+      "sha256": "362aa5db0be5195bda5ca51f29b3cf703d4a105e8dd23249f01bf32ed4fed6b6"
+    },
+    "Notes_first_HTTP429": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des024-public-readback-a1226-v2\\notes-a01\\http-refusal.json",
+      "bytes": 522,
+      "sha256": "dc9a9cd8d934fde7eb37704c0a49fbe556e7239ca00cd687d2d5aa5145ad1da7"
+    },
+    "Notes_second_HTTP429": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des024-public-readback-a1226-v2\\notes-a02\\http-refusal.json",
+      "bytes": 522,
+      "sha256": "401ababbaa9cdd8805eac0bd8fbf0dd8b3767806ae5d92f62b57a54731657bf8"
+    },
+    "metadata_v2": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des024-formal-release-a1222\\metadata-correction-a01\\formal-delivery-metadata-v2.json",
+      "bytes": 8577,
+      "sha256": "0f92b0472f96564aa2f2b0f2ef4005e726bda306d6ea561a79f6fe1f5cd9e3b9"
+    },
+    "SourceA_finite_R4": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\des024-separated-twelve-day-actual-finite-PASS-a1209.json",
+      "bytes": 8171,
+      "sha256": "9374e654fbb745a83fc08ab7e165c5a6774f66ccee856fa6918c03de980c7258"
+    },
+    "SourceA_purecold": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\des024-purecold-actual-finite-PASS-a1221.json",
+      "bytes": 7341,
+      "sha256": "7b80aba88659911c677b0effd35419cb627e6c2397299c13dbb1a3d5987b5334"
+    }
+  },
+  "actual_cache_finite_PASS": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\des024-actual-workshop-cache-finite-PASS-a1239.json",
+    "bytes": 7915,
+    "sha256": "35b67619f4765f7816c2fb2946d09f4537c12bfd921823de30de64ca90884ca2"
+  },
+  "actual_publication": {
+    "single_SDK_Submit_EResult": 1,
+    "canonical_item_id": "3826991345",
+    "version": "0.2.4",
+    "online_seconds": 67.7539792,
+    "restored_offline_UTC": "2026-11-23T11:19:45.555902Z",
+    "SDK_download_files": 71,
+    "SDK_download_byte_exact": true,
+    "gallery_before_after_exact": true,
+    "additional_gallery_count": 0,
+    "title_38_full_exact": true,
+    "body_source_bytes": 7899,
+    "public_normalized_body_bytes": 7898,
+    "normalization": "Full diff empty after the established normalization of final newline; no substring-only check.",
+    "creator_AppIDs_and_cover_fields_same": true
+  },
+  "actual_cache": {
+    "unique_SDK_cache_mounted_not_formal_copy": true,
+    "canonical_mount_debug_line": 95,
+    "actual71_after_byte_exact": true,
+    "played_character": 36423,
+    "date_raw": 53144328,
+    "paused_map_alive": true,
+    "Date_calls": 0,
+    "Save_calls": 0,
+    "fixture_files": 0,
+    "warm_overlay": false,
+    "quit_AckReceived_separate_terminal": true,
+    "Game_Natural0_Job0_cleanup_creator0": true,
+    "source_821_fullSHA_unchanged": true,
+    "loading_optional_CoreUnavailable_retained": true,
+    "new_Core8_or_GUI_gate_added": false
+  },
+  "Notes": {
+    "status": "NOT_OBSERVED",
+    "HTTP_requests": 2,
+    "both_HTTP_status": 429,
+    "text_mismatch": false,
+    "Retry_After": null,
+    "stop_retry_no_next_background_GET": true
+  },
+  "complete_release_closed": false,
+  "distinct_product_counts_unchanged": {
+    "uploaded": 12,
+    "strict_finite_complete": 9,
+    "total": 17
+  },
+  "immutable_runtime_SourceA": "257088aad4512be651bed1002fbfd7fe35225d1d",
+  "immutable_git_tag": "dynastic-esotericism-v0.2.4",
+  "immutable_tag_object": "74cda4d8872d4221f452aab62d582c1ec1ca1096",
+  "new_runtime_Game_HTTP_build_tag_Maven_or_tests": false,
+  "prior_RED_INCOMPLETE_UNKNOWN_and_reserved_false_preserved": true,
+  "scope": "Published update and actual SDK-cache load/normal exit. R4 and product-only cold retain their separate finite controlled-newDY business scope. No unrun reuse/legacy engine qualification, universal instant election, wholeproduct/fullSDK or CPU/FPS claim."
+}

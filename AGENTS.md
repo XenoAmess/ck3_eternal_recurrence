@@ -1,5 +1,9 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-23 当前DES0.2.4实际发布／缓存有限通过，Notes429待核
+
+DES0.2.4已对原canonical3826991345一次实际ER1更新，真实SDK下载71文件精确，完整公开标题／正文、creator／AppIDs／封面和原图库保持；Steam已恢复离线。真实C缓存直接挂载并正常Natural0／Job0／cleanup／creator0，0Date／0Save、无fixture／warm，源存档全SHA保持。Notes两次独立GET均429且无Retry-After，NOT_OBSERVED并停止重试；不称完整release closed。R4／纯冷载业务与本次缓存有限范围分列，旧RED／INCOMPLETE／UNKNOWN／原生false不改，不授全部绑定路径、所有原生换届即时或CPU／FPS提速。独立产品仍12／17上传、9／17严格有限，DES新版本不加一；长期CCC等剩余五项及LYD倒数第二／天朝361最后顺序保持。SourceA257088和0.2.4注释标签／正式71均冻结，后继文档另作SourceC。[实际发布与缓存、Notes待核索引](docs/maintenance/evidence/des024-publication-cache-Notes-pending-a1239.json)。
+
 ## 2026-11-23 DES0.2.4有限实机与纯冷载已完成，公开仍待独立收据
 
 R4分离强竞争／真实死亡后的双职位与56全员归宗、无夹具独立零日冷载再保存均有限通过，原RED／INCOMPLETE保留。当前源码适用于唯一有效双向绑定且稳定宗家可证的宗族，包含复用原生宗族和可证旧绑定；实机资格仍限受控newDY，不外推所有复用／旧绑定、全部即时原生换届或性能指标。正式SourceA／tag／包及工坊发表各按实际原件，当前独立产品计数仍12／17上传、9／17严格有限完成，长期剩余产品顺序不变。见[本次有限原件索引](docs/maintenance/evidence/des024-final-finite-source-a1222.json)。
