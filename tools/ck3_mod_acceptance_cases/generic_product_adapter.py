@@ -4873,7 +4873,12 @@ def _c20_inputs(context: JsonObject, *, allow_discovery_preflight: bool = False)
     if discovery:
         mode_entry=object_field(manifest_files,'_xfmc20_discovery_mode.json')
         actual_mode=pin(mode_path)
-        if actual_mode['bytes']>4096 or any(actual_mode[k]!=mode_entry.get(k)for k in ('bytes','sha256')) or read_json(mode_path)!={'schema': 'ck3-controlled-crisis20-discovery-v1', 'discovery_only': True, 'read_only_finance': True, 'private_namespace': 'xfmc20d_', 'maximum_registry_rows': 65536, 'maximum_candidates': 52, 'maximum_typed_references': 104, 'per_role_maximum': 2, 'context_count': 20, 'case_credit': False}:
+        expected_mode={'schema': 'ck3-controlled-crisis20-discovery-v1', 'discovery_only': True, 'read_only_finance': True, 'private_namespace': 'xfmc20d_', 'maximum_registry_rows': 65536, 'maximum_candidates': 52, 'maximum_typed_references': 104, 'per_role_maximum': 2, 'context_count': 20, 'case_credit': False}
+        successor_mode={**expected_mode,'schema':'ck3-controlled-crisis20-discovery-v2','private_namespace':'xfmc20e_','complete_role_mask_bits':26,'complete_positive_recorded':True}
+        actual_discovery_mode=read_json(mode_path)
+        if (actual_mode['bytes']>4096 or any(actual_mode[k]!=mode_entry.get(k)for k in ('bytes','sha256'))
+                or actual_discovery_mode not in (expected_mode,successor_mode)
+                or (actual_discovery_mode==successor_mode and any(type(actual_discovery_mode[k])is not type(v)for k,v in successor_mode.items()))):
             raise ValueError('Exact immutable discovery-only sidecar required; never infer mode from GUI enabled')
     elif '_xfmc20_discovery_mode.json' in manifest_files:
         raise ValueError('Discovery fixture cannot masquerade as a normal crisis20 terminal fixture')

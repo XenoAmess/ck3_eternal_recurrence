@@ -7,31 +7,101 @@ xfm_crisis_select_scene_effect = {
             set_variable = { name = xfm_news_scene value = 1 }
         }
         10 = {
-            trigger = { scope:xfm_crisis_actor.location = { OR = { terrain = plains terrain = farmlands terrain = floodplains } } }
+            trigger = {
+                trigger_if = {
+                    limit = { exists = scope:xfm_crisis_actor }
+                    trigger_if = {
+                        limit = { scope:xfm_crisis_actor = { exists = location } }
+                        scope:xfm_crisis_actor.location = { OR = { terrain = plains terrain = farmlands terrain = floodplains } }
+                    }
+                    trigger_else = { always = no }
+                }
+                trigger_else = { always = no }
+            }
             set_variable = { name = xfm_news_scene value = 2 }
         }
         10 = {
-            trigger = { scope:xfm_crisis_actor.location = { is_riverside_province = yes } }
+            trigger = {
+                trigger_if = {
+                    limit = { exists = scope:xfm_crisis_actor }
+                    trigger_if = {
+                        limit = { scope:xfm_crisis_actor = { exists = location } }
+                        scope:xfm_crisis_actor.location = { is_riverside_province = yes }
+                    }
+                    trigger_else = { always = no }
+                }
+                trigger_else = { always = no }
+            }
             set_variable = { name = xfm_news_scene value = 3 }
         }
         10 = {
-            trigger = { scope:xfm_crisis_actor.location = { is_coastal = yes } }
+            trigger = {
+                trigger_if = {
+                    limit = { exists = scope:xfm_crisis_actor }
+                    trigger_if = {
+                        limit = { scope:xfm_crisis_actor = { exists = location } }
+                        scope:xfm_crisis_actor.location = { is_coastal = yes }
+                    }
+                    trigger_else = { always = no }
+                }
+                trigger_else = { always = no }
+            }
             set_variable = { name = xfm_news_scene value = 4 }
         }
         10 = {
-            trigger = { scope:xfm_crisis_actor.location = { terrain = taiga } }
+            trigger = {
+                trigger_if = {
+                    limit = { exists = scope:xfm_crisis_actor }
+                    trigger_if = {
+                        limit = { scope:xfm_crisis_actor = { exists = location } }
+                        scope:xfm_crisis_actor.location = { terrain = taiga }
+                    }
+                    trigger_else = { always = no }
+                }
+                trigger_else = { always = no }
+            }
             set_variable = { name = xfm_news_scene value = 5 }
         }
         10 = {
-            trigger = { scope:xfm_crisis_actor.location = { OR = { terrain = mountains terrain = desert_mountains } } }
+            trigger = {
+                trigger_if = {
+                    limit = { exists = scope:xfm_crisis_actor }
+                    trigger_if = {
+                        limit = { scope:xfm_crisis_actor = { exists = location } }
+                        scope:xfm_crisis_actor.location = { OR = { terrain = mountains terrain = desert_mountains } }
+                    }
+                    trigger_else = { always = no }
+                }
+                trigger_else = { always = no }
+            }
             set_variable = { name = xfm_news_scene value = 6 }
         }
         10 = {
-            trigger = { scope:xfm_crisis_actor.location = { OR = { terrain = forest terrain = jungle } } }
+            trigger = {
+                trigger_if = {
+                    limit = { exists = scope:xfm_crisis_actor }
+                    trigger_if = {
+                        limit = { scope:xfm_crisis_actor = { exists = location } }
+                        scope:xfm_crisis_actor.location = { OR = { terrain = forest terrain = jungle } }
+                    }
+                    trigger_else = { always = no }
+                }
+                trigger_else = { always = no }
+            }
             set_variable = { name = xfm_news_scene value = 7 }
         }
         10 = {
-            trigger = { scope:xfm_crisis_actor.location = { OR = { terrain = desert terrain = drylands terrain = steppe } } }
+            trigger = {
+                trigger_if = {
+                    limit = { exists = scope:xfm_crisis_actor }
+                    trigger_if = {
+                        limit = { scope:xfm_crisis_actor = { exists = location } }
+                        scope:xfm_crisis_actor.location = { OR = { terrain = desert terrain = drylands terrain = steppe } }
+                    }
+                    trigger_else = { always = no }
+                }
+                trigger_else = { always = no }
+            }
             set_variable = { name = xfm_news_scene value = 8 }
         }
         10 = {

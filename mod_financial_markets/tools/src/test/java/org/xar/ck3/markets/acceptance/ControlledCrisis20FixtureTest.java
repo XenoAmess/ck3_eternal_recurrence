@@ -140,4 +140,27 @@ final class ControlledCrisis20FixtureTest {
         assertFalse(Files.exists(temporary.resolve("wrong-discover")));
     }
 
+    @Test void discoveryV2KeepsLegacyBytesAndEmitsItsOwnExplicitReadonlyMode() throws Exception {
+        Path repo=repository();String selector=Files.readString(repo.resolve("mod_financial_markets/common/scripted_effects/xfm_crisis_scenes.txt"));
+        String guards=Files.readString(repo.resolve("mod_financial_markets/common/scripted_triggers/xfm_crisis_triggers.txt"));
+        var legacy=ControlledCrisis20Fixture.renderDiscovery(request(),selector,guards);
+        var successor=ControlledCrisis20Fixture.renderDiscoveryV2(request(),selector,guards);
+        var legacyAfter=ControlledCrisis20Fixture.renderDiscovery(request(),selector,guards);
+        assertEquals(legacy.keySet(),legacyAfter.keySet());legacy.forEach((name,data)->assertArrayEquals(data,legacyAfter.get(name)));
+        assertFalse(successor.containsKey("common/scripted_effects/xfmc20d_discover.txt"));
+        assertTrue(successor.containsKey("common/scripted_effects/xfmc20e_discover.txt"));
+        for(var file:successor.entrySet())if(file.getKey().startsWith("common/")&&file.getKey().endsWith(".txt"))walk(Clausewitz.parse(new String(file.getValue(),StandardCharsets.UTF_8)),e->{
+            assertFalse(Set.of("create_story","set_global_variable","death","add_gold","remove_short_term_gold","add_stress","create_character","send_interface_toast","trigger_event","effect_group").contains(e.key()));
+            if(Set.of("set_variable","change_variable").contains(e.key()))assertTrue(((Clausewitz.Atom)((Clausewitz.Block)e.value()).named("name").getFirst().value()).token().startsWith("xfmc20e_"));
+        });
+        Path input=temporary.resolve("discovery-v2.json");Files.write(input,FixtureEmitter.JSON.writeValueAsBytes(request()));
+        assertEquals(0,new AcceptanceCommand().run("emit-crisis20-discovery-v2","--repo-root",repo.toString(),"--output",temporary.resolve("v2").toString(),"--machine-id","authored-discovery-v2","--inputs",input.toString()));
+        var manifest=FixtureEmitter.JSON.readTree(Files.readAllBytes(temporary.resolve("v2.fixture.json")));
+        assertEquals(12,manifest.path("producer_source_pins").size());assertFalse(manifest.path("receipt").path("fixture_contains_business_effects").booleanValue());
+        var mode=FixtureEmitter.JSON.readTree(Files.readAllBytes(temporary.resolve("v2/_xfmc20_discovery_mode.json")));
+        assertEquals("ck3-controlled-crisis20-discovery-v2",mode.path("schema").textValue());assertEquals("xfmc20e_",mode.path("private_namespace").textValue());
+        assertEquals(52,mode.path("maximum_candidates").intValue());assertEquals(2,mode.path("per_role_maximum").intValue());
+        assertEquals(26,mode.path("complete_role_mask_bits").intValue());assertTrue(mode.path("complete_positive_recorded").booleanValue());assertFalse(mode.path("case_credit").booleanValue());
+    }
+
 }

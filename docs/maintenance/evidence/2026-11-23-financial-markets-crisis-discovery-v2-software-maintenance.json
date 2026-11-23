@@ -1,0 +1,338 @@
+{
+  "schema": "xfm.crisis-discovery-v2-software-and-R80-alias-maintenance.v1",
+  "machine_id": "4-8e1c2f1861",
+  "record_date": "2026-11-23",
+  "source_head_at_full_window": "5a59af69c3eb1b57798786cf75622f1e8222c64d",
+  "complete_financial_verify": {
+    "report": {
+      "path": "C:/workspace/ck3-market-task-20261118/crisis20-discovery-v2-full-verify01/report.json",
+      "bytes": 180906,
+      "sha256": "c5d99f500c62385aad89df0efe5a9af12c6e03428976ec5e36135655930584b4"
+    },
+    "outer_original_execution": {
+      "receipt": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/VERIFY-crisis20-discovery-v2-full01/ORIGINAL-WAIT.actual.json",
+        "bytes": 1977,
+        "sha256": "a27ecc847390d503b32a41c3f3785d61180739949d8fd34b78dfda56ab2647ff"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 244.6288915000041,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-crisis20-discovery-v2-full01\\stdout.log",
+        "bytes": 720,
+        "sha256": "ac3d49e929ac7bf7f3de7b284f5b010b851f34916f37028372dd488509e63119"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-crisis20-discovery-v2-full01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "inner_original_Maven_wait": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\crisis20-discovery-v2-full-verify01\\MAVEN-ORIGINAL-WAIT.actual.json",
+      "bytes": 1112,
+      "sha256": "c9c863fb96fa196df3ff6de35f72036a6dae607b34b90aa36c30da8c0b46f555"
+    },
+    "inner_elapsed_seconds": 243.22348529999726,
+    "distinct_testcases": 713,
+    "totals": {
+      "pass": 713,
+      "error": 0,
+      "failure": 0,
+      "skipped": 0
+    },
+    "unfiltered_without_skip": true,
+    "retained_XML_in_original_report": 56,
+    "source_window": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\crisis20-discovery-v2-full-verify01\\SOURCE-WINDOW.actual.json",
+      "bytes": 248278,
+      "sha256": "4bc35d0b7a03e5c826f3d4e73c1b49c9cf78e73b1076a8980c2f26c39cb1e0ce"
+    },
+    "all_product_sources_before_after_unchanged": true,
+    "new_package_output_argument": [
+      "-Dquarkus.package.output-directory=C:/workspace/ck3-market-task-20261118/crisis20-discovery-v2-package01/quarkus-app"
+    ],
+    "protected_old_default_JARs": {
+      "before": {
+        "path": "C:/workspace/ck3-market-task-20261118/crisis20-discovery-v2-full-verify01/PROTECTED-OLD-DEFAULT-PACKAGE.BEFORE.actual.json",
+        "bytes": 23785,
+        "sha256": "86908992b9014b583a96b92d21074673813ba0c0760ba8eca675c18501d041ae"
+      },
+      "after": {
+        "path": "C:/workspace/ck3-market-task-20261118/crisis20-discovery-v2-full-verify01/PROTECTED-OLD-DEFAULT-PACKAGE.AFTER.actual.json",
+        "bytes": 23830,
+        "sha256": "01604904075654b964a849cad4bca917800afc8479519805dd544e13bbee3301"
+      },
+      "count": 50,
+      "file_identity_and_bytes_unchanged": true,
+      "payloads_not_rehashed_by_this_author": true
+    }
+  },
+  "focused_test_windows": {
+    "original_testCompile_failure": {
+      "report": {
+        "path": "C:/workspace/ck3-market-task-20261118/crisis20-discovery-v2-affected01/report.json",
+        "bytes": 979,
+        "sha256": "f97dab1aab66b58fe29a6fe90d4e6f5658c0380afd65225ec5ddadf0c49bfa97"
+      },
+      "original_execution": {
+        "receipt": {
+          "path": "C:/workspace/ck3-market-live-20261118/operations/TEST-crisis20-discovery-v2-affected01/ORIGINAL-WAIT.actual.json",
+          "bytes": 1065,
+          "sha256": "67c72ce6f6f84a53614c7d8751dba1f6b28a8f23967140c60f553a638c31bf93"
+        },
+        "returncode": 1,
+        "elapsed_seconds": 25.367045400023926,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-crisis20-discovery-v2-affected01\\stdout.log",
+          "bytes": 704,
+          "sha256": "1c52ac2fc817b34361f70c6f5b37f7bf9bf7867e84e16637ddb2a1efb7e95af7"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-crisis20-discovery-v2-affected01\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "actual_returncode": 1,
+      "distinct_JUnit_methods_run": 0,
+      "stage": "testCompile",
+      "retest_source_author_record": {
+        "path": "C:/workspace/ck3-market-task-20261118/crisis20-v2-actual-compile-failure-retest-author02.actual.json",
+        "bytes": 1895,
+        "sha256": "eed14e63131a93ba7ea9294e6323a16f0eaaae7c0a204604f55ac6757ae0096d"
+      },
+      "fix": "New test used Node.put(boolean),which has no such overload.Root changed it to existing vars.put(boolean).Original failure retained."
+    },
+    "affected_retest": {
+      "report": {
+        "path": "C:/workspace/ck3-market-task-20261118/crisis20-discovery-v2-affected02/report.json",
+        "bytes": 12139,
+        "sha256": "0ca4b029d950e2d8ead268c1ac03cc563abfabeb6fd08482534d7359223b1dbe"
+      },
+      "original_execution": {
+        "receipt": {
+          "path": "C:/workspace/ck3-market-live-20261118/operations/TEST-crisis20-discovery-v2-affected02/ORIGINAL-WAIT.actual.json",
+          "bytes": 1064,
+          "sha256": "d3f406ac2337159753e3884a21314067ee312cc99ed2012ec665d057075d99fe"
+        },
+        "returncode": 0,
+        "elapsed_seconds": 22.067074999999022,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-crisis20-discovery-v2-affected02\\stdout.log",
+          "bytes": 708,
+          "sha256": "12d5d167b59d704852ca837728eb1d4a305870565cc5558edf9e0c4217f297db"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-crisis20-discovery-v2-affected02\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "distinct_methods": 43,
+      "totals": {
+        "pass": 43,
+        "error": 0,
+        "failure": 0,
+        "skipped": 0
+      }
+    },
+    "Python_198": {
+      "original_execution": {
+        "receipt": {
+          "path": "C:/workspace/ck3-market-live-20261118/operations/TEST-crisis20-discovery-v2-Python-affected01/ORIGINAL-WAIT.actual.json",
+          "bytes": 1254,
+          "sha256": "776031d358f0c9410e10419d6ccca6f197718bec8776b7aec16ff8e7cf37b5e8"
+        },
+        "returncode": 0,
+        "elapsed_seconds": 141.2514877000067,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-crisis20-discovery-v2-Python-affected01\\stdout.log",
+          "bytes": 6892,
+          "sha256": "3c4e60f2d819cdad05d07d1d69974d6a0fa84e2eaa83ecdfaab9276a6d5c2f5d"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-crisis20-discovery-v2-Python-affected01\\stderr.log",
+          "bytes": 43488,
+          "sha256": "8bc5f559b3b000cab9aa69c6012af7b0844c310345d5dfddc59136064f53a499"
+        }
+      },
+      "tests": 198,
+      "framework_reported_seconds": 137.621,
+      "ResourceWarning_count": 9,
+      "original_warnings_preserved": true,
+      "provenance": "Existing adopted-source pins and original execution.No separate START manifest retrospectively authored."
+    },
+    "matcher10": {
+      "original_execution": {
+        "receipt": {
+          "path": "C:/workspace/ck3-market-live-20261118/operations/TEST-crisis20-discovery-v2-matcher10-01/ORIGINAL-WAIT.actual.json",
+          "bytes": 1145,
+          "sha256": "20945fdb75d062bc9bae47fac090f1d8deb012e69ca98805b4e4f20a14bb7bc0"
+        },
+        "returncode": 0,
+        "elapsed_seconds": 0.460056900017662,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-crisis20-discovery-v2-matcher10-01\\stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-crisis20-discovery-v2-matcher10-01\\stderr.log",
+          "bytes": 2172,
+          "sha256": "64576299b327afff9b02c1bb5ad72b429a4498fb1d86b45b6a63802a0caa1a32"
+        }
+      },
+      "tests": 10,
+      "framework_reported_seconds": 0.172,
+      "not_added_to_original14_or713": true
+    }
+  },
+  "required_shared_checks": {
+    "source_before": {
+      "path": "C:/workspace/ck3-market-task-20261118/crisis20-v2-required-shared-checks-SOURCE-BEFORE01.actual.json",
+      "bytes": 1325,
+      "sha256": "3e7115e7c4c8869e013a52fd0b58c207a56a612ab56734370c56d0ac363550b2"
+    },
+    "source_window": {
+      "path": "C:/workspace/ck3-market-task-20261118/crisis20-v2-required-shared-checks-SOURCE-WINDOW01.actual.json",
+      "bytes": 2050,
+      "sha256": "9e800715b87dd3c8dda2c22d80909af4b1492ff2522da43f76baea2d0dbb3047"
+    },
+    "scope": "Two pinned Generic/test sources for typing plus optimized C20 only;not retrospective198 START.",
+    "typing": {
+      "original_execution": {
+        "receipt": {
+          "path": "C:/workspace/ck3-market-live-20261118/operations/TYPE-crisis20-discovery-v2-generic01/ORIGINAL-WAIT.actual.json",
+          "bytes": 1103,
+          "sha256": "bac4ee458e08a090746dfa017a5694570a461d5e07a7ece44311a75478c3e926"
+        },
+        "returncode": 0,
+        "elapsed_seconds": 2.3524479000188876,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-crisis20-discovery-v2-generic01\\stdout.log",
+          "bytes": 997,
+          "sha256": "6ad2b893cfec957f933c71b31f948d917bbcf18d768f0fe55b5fbb554b9586d0"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-crisis20-discovery-v2-generic01\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "source_files": 1,
+      "errors": 0,
+      "existing_annotation_unchecked_notes": 5
+    },
+    "optimized_C20": {
+      "original_execution": {
+        "receipt": {
+          "path": "C:/workspace/ck3-market-live-20261118/operations/TEST-crisis20-discovery-v2-C20-optimized01/ORIGINAL-WAIT.actual.json",
+          "bytes": 1095,
+          "sha256": "fbb25275783282bea42e26c68ca0a673e08bed0554c89efcafad70e80ad35e4a"
+        },
+        "returncode": 0,
+        "elapsed_seconds": 12.604017100005876,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-crisis20-discovery-v2-C20-optimized01\\stdout.log",
+          "bytes": 990,
+          "sha256": "2f603248eaaee7c07d1a889d5a4b13b101b302694a519b99b994d13a8915b320"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-crisis20-discovery-v2-C20-optimized01\\stderr.log",
+          "bytes": 3948,
+          "sha256": "145c5c97fa0c61c467523d4fe88770b70324f956568b2f043652ba7f931e74d2"
+        }
+      },
+      "tests": 16,
+      "framework_reported_seconds": 7.024,
+      "included_in_198_not_added": true
+    },
+    "two_sources_before_after_unchanged": true
+  },
+  "R80_duplicate_alias_maintenance": {
+    "result": {
+      "path": "C:/workspace/ck3-market-task-20261118/closed-R80-six-alias-reclaim01/RESULT.actual.json",
+      "bytes": 10410,
+      "sha256": "1275e3927c31b87a7268e5ae894dbb00028a20d74607785b9ed266f176346e9e"
+    },
+    "original_execution": {
+      "receipt": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/APPLY-R80-five-verified-closed-aliases01/ORIGINAL-WAIT.actual.json",
+        "bytes": 1620,
+        "sha256": "336d287dd491d96c5a3810e8d25acce83eecd42af9105565e80f6dc4af5acbdc"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 6.6361934000160545,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-R80-five-verified-closed-aliases01\\stdout.log",
+        "bytes": 270,
+        "sha256": "1cfee2a9a832c268dd79b28f70d1f8edc8f98acc2adb3b294c11ebdb10387f53"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-R80-five-verified-closed-aliases01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "plan": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R80-six-alias-reclaim01\\PLAN.actual.json",
+      "bytes": 11667,
+      "sha256": "14e0698a58e3470518e30d9db74acb4e82d115f433331709f7423fc18d69ed03"
+    },
+    "Root_PLAN_review": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R80-six-alias-Root-plan-review01.actual.json",
+      "bytes": 4965,
+      "sha256": "24b6bd78c310ca5c80d6150b130636668ca0362bc60866d84888fb86c13e3da8"
+    },
+    "Root_apply_review": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R80-six-alias-Root-apply-review01.actual.json",
+      "bytes": 5460,
+      "sha256": "7de472e7143607bd453edcae9b6c7242910e35bd72246f074a90f6e3ce935321"
+    },
+    "retired_alias_count": 5,
+    "deleted_original_alias_paths": [
+      "C:\\workspace\\ck3-market-live-20261123g\\managed-states\\financial-risk54\\state\\profile\\last_save.ck3",
+      "C:\\workspace\\ck3-market-live-20261123g\\managed-states\\financial-risk54\\state\\profile\\save games\\xar_checkpoint.ck3",
+      "C:\\workspace\\ck3-market-live-20261123g\\managed-states\\financial-risk54\\state\\profile\\save games\\autosave.ck3",
+      "C:\\workspace\\ck3-market-live-20261123g\\managed-states\\financial-risk54\\state\\profile\\save games\\autosave_1.ck3",
+      "C:\\workspace\\ck3-market-live-20261123g\\managed-states\\financial-risk54\\state\\profile\\save games\\autosave_2.ck3"
+    ],
+    "deleted_alias_paths_are_not_readable": true,
+    "logical_bytes_retired": 736208538,
+    "allocation_before_for_retired_aliases_bytes": 736210944,
+    "restored_campaign_retained": {
+      "path": "C:\\workspace\\ck3-market-live-20261123g\\managed-states\\financial-risk54\\state\\profile\\save games\\restored_campaign.ck3",
+      "status": "SKIP",
+      "reason": "ValueError: No exact full-hash actual scene archive match; unique/unknown SAVE remains SKIP"
+    },
+    "external_canonical_archives_retained": 4,
+    "all_external_archives_retained": true,
+    "metadata_logs_sources_retained": true,
+    "free_before": 32405630976,
+    "free_after": 33143472128,
+    "free_delta_not_uniquely_attributed": 737841152,
+    "unique_canonical_retirement": false,
+    "upper_or_spent_refund": false,
+    "new_scene_or_saveday_credit": false
+  },
+  "historical_preservation": {
+    "R82_original_NOT_RUN": true,
+    "R82_original1572_error_blocks": true,
+    "R82_old_v2_untested_statement_keeps_its_earlier_cut": true,
+    "original_compile_failure_retained": true
+  },
+  "qualification_limits": {
+    "software_only": true,
+    "new_Game_or_twenty_scene_PASS": false,
+    "SYN4096_or_performance_PASS": false,
+    "Native_qualification_not_extended": true,
+    "whole_product_PASS": false,
+    "financial_product_Workshop_first_publication_count": 0,
+    "test_counts_713_43_198_16_10_old14_or_prior709_not_summed": true
+  },
+  "authoring_actions": {
+    "existing_small_metadata_only": true,
+    "formal_tree_Git_build_test_Game_OS_SAVE_DLL_or_JAR_payload_read": 0
+  }
+}

@@ -319,4 +319,27 @@ class ControlledCrisis20CaseTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'Literal true'):adapter._c20_inputs(context,allow_discovery_preflight=True)
 
 
+    def test_discovery_v2_real_prepare_requires_exact_full_role_capture_mode_and_still_cannot_grant_credit(self):
+        mode={'schema':'ck3-controlled-crisis20-discovery-v2','discovery_only':True,'read_only_finance':True,'private_namespace':'xfmc20e_',
+              'maximum_registry_rows':65536,'maximum_candidates':52,'maximum_typed_references':104,'per_role_maximum':2,'context_count':20,'case_credit':False,
+              'complete_role_mask_bits':26,'complete_positive_recorded':True}
+        p=self.fixture/'_xfmc20_discovery_mode.json';sequence=iter(range(8))
+        def bind(actual):
+            p.write_text(json.dumps(actual),encoding='utf-8')
+            self.manifest_value['files'][p.name]={k:v for k,v in adapter.pin(p).items()if k!='path'}
+            self.manifest=self.put('discovery-v2-'+str(next(sequence))+'.json',self.manifest_value)
+            self.context['case_inputs']['prebuilt_fixture_manifest']=self.manifest
+        self.manifest_value['receipt']['fixture_contains_business_effects']=False
+        for relative in ('common/scripted_triggers/xfm_crisis_triggers.txt','common/script_values/xfm_debt_values.txt'):
+            source=ROOT/'mod_financial_markets'/relative;target=Path(self.context['case_inputs']['product_dir'])/relative
+            target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(source.read_bytes());self.manifest_value['producer_source_pins'].append(adapter.pin(source))
+        self.context['case_inputs']['controlled_crisis20']['discovery_only']=True
+        bind(mode);self.prepare()
+        self.assertTrue(adapter._c20_inputs(self.context,allow_discovery_preflight=True)['discovery_only'])
+        with self.assertRaisesRegex(ValueError,'cannot grant normal'):adapter._c20_inputs(self.context)
+        for key,value in [('private_namespace','xfmc20d_'),('complete_role_mask_bits',25),('complete_positive_recorded',False),('complete_positive_recorded',1)]:
+            bad={**mode,key:value};bind(bad)
+            with self.assertRaisesRegex(ValueError,'immutable discovery'):adapter._c20_inputs(self.context,allow_discovery_preflight=True)
+
+
 if __name__=='__main__':unittest.main()

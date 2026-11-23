@@ -1912,7 +1912,13 @@ public final class FollowupObservationScripts {
     }
 
     public static Map<String,byte[]> renderControlledCrisis20Discovery(FollowupContracts.ControlledCrisis20Request request, String selectorSource, String guardSource) {
-        Map<String,byte[]> files=new LinkedHashMap<>(ControlledCrisis20Fixture.renderDiscovery(request,selectorSource,guardSource));
+        return renderControlledCrisis20DiscoveryVersion(request,selectorSource,guardSource,false);
+    }
+    public static Map<String,byte[]> renderControlledCrisis20DiscoveryV2(FollowupContracts.ControlledCrisis20Request request, String selectorSource, String guardSource) {
+        return renderControlledCrisis20DiscoveryVersion(request,selectorSource,guardSource,true);
+    }
+    private static Map<String,byte[]> renderControlledCrisis20DiscoveryVersion(FollowupContracts.ControlledCrisis20Request request, String selectorSource, String guardSource, boolean successor) {
+        Map<String,byte[]> files=new LinkedHashMap<>(successor ? ControlledCrisis20Fixture.renderDiscoveryV2(request,selectorSource,guardSource) : ControlledCrisis20Fixture.renderDiscovery(request,selectorSource,guardSource));
         files.put("common/story_cycles/xfmc20_retained_observers.txt",("\ufeff"+passiveCompatibilityStories("none")
             +"xfma_market_evolution_e6_observer = { visible = no }\n"
             +"xfma_market_evolution_e7_observer = { visible = no }\n"

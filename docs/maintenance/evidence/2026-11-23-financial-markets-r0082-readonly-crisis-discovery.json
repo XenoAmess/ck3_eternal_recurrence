@@ -1,0 +1,218 @@
+{
+  "schema": "xfm.r0082-readonly-crisis-discovery-evidence.v1",
+  "machine_id": "4-8e1c2f1861",
+  "record_date": "2026-11-23",
+  "formal_doc_base_head_owner_reported": "5a59af69c",
+  "run_id": "4-8e1c2f1861--financial-markets--R0082",
+  "game_build_scope": {
+    "version": "1.21.0",
+    "steam_build": "26622941",
+    "exact_family": "2F2B"
+  },
+  "scope": "Independent discovery_only D0 preflight;not the controlled26-role/20-terminal business case.",
+  "Root_negative_D0_review": {
+    "path": "C:/workspace/ck3-market-task-20261118/R0082-readonly-discovery-negative-D0-Root-reviewed01.json",
+    "bytes": 5752,
+    "sha256": "cfcd90ce11e4e11bab026cf219a54e2811aea66b83dc6ba474ea249a15544fc4"
+  },
+  "Root_original_assertions": {
+    "actual_independent_controlled_namespace_source_and27_actual_account_roles_bound_once_without_fake_AI_age_traits_or_context": false,
+    "actual26_original_uninsured_API_claims_and_declared_maturity_pressure_seeds_have_no_cash_price_asset_or_clock_setter": false,
+    "actual_first_SAVE_audit_exact_Raw_whole_pin_all_roles_original_contexts_assets_claim_sources_and_expected_inheritance": false,
+    "actual_normal_GUI_paid_aid_and_authorized_restructure_remain_effective_and_terminal_controls_are_rejected": false
+  },
+  "Root_original_phase_published": true,
+  "request_and_saved_scope": {
+    "new_natural_days": 0,
+    "native_SAVE_requests": 1,
+    "date_raw": 53153760,
+    "financial_day": 389,
+    "formal_setup_claim_aid_restructure_terminal_controls_submitted": false,
+    "bootstrap27_IDs_are_transport_not_eligible_role_proof": true,
+    "pipeline": {
+      "path": "C:/workspace/ck3-market-task-20261118/crisis20-discovery-discovery01-PIPELINE.actual.json",
+      "bytes": 13085,
+      "sha256": "22d3330bafd38a1bf5b4f928d48cd3d5a1c2cf3610e486a7bed6d769a75df9bd"
+    },
+    "original_pipeline_execution": {
+      "receipt": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/PIPELINE-crisis20-discovery-discovery01/ORIGINAL-WAIT.actual.json",
+        "bytes": 2376,
+        "sha256": "141c48e09514eeac4a108a97dfccb1300a08e46777123dc7c338b40494f46c20"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 122.52555950000533,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PIPELINE-crisis20-discovery-discovery01\\stdout.log",
+        "bytes": 293,
+        "sha256": "71dc3115e65e34043c105300772a8e3f93f5e5130a39d651dcadb8ee139e90d8"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PIPELINE-crisis20-discovery-discovery01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "complete_EOF_passes": 6,
+    "original_reader_wait_count": 4,
+    "parser_pass_breakdown": {
+      "Audit": 2,
+      "Whole": 2,
+      "PairA_Raw03_human": 1,
+      "PairB_Raw03_human": 1
+    }
+  },
+  "whole_graph": {
+    "comparison": {
+      "path": "C:/workspace/ck3-market-task-20261118/crisis20-discovery-discovery01-whole-comparison.json",
+      "bytes": 1860,
+      "sha256": "a42303d68f243256224c74466a4b540e4281ddfe5455414171d977850201ed59"
+    },
+    "before_records": 25571,
+    "after_records": 25571,
+    "exact_whole_selected_records_equal": true,
+    "scope": "25571 complete financial/news canonical records against original R78D35;actor/globals/observer and whole-world Gold are separate."
+  },
+  "discovery_and_matching": {
+    "report": {
+      "path": "C:/workspace/ck3-market-task-20261118/crisis20-discovery-R0082-match01/MATCH.actual.json",
+      "bytes": 244311,
+      "sha256": "aabfac25f2c0267db505cc6366f08095fcd93f71a53e4009b103494bfbdab7f0"
+    },
+    "source_registry_visited": 8180,
+    "returned_candidate_slots": 22,
+    "primary_slots": 18,
+    "spare_slots": 4,
+    "required_role_slots": 26,
+    "maximum_verified_returned_matching_size": 18,
+    "unmatched_role_slots": 8,
+    "matcher_status": "NO_MATCH_IN_RETURNED_SET",
+    "global_qualified_role_absence_proven": false,
+    "capacity_reached_original_field": {
+      "field": "xfmc20d_capacity_reached",
+      "present": false,
+      "rawTypedData_AST": null,
+      "status": "UNKNOWN",
+      "reason": "ABSENT_NOT_ZERO"
+    },
+    "scope": "Original two returned role indices only;no cross-role bitmap expansion.No18scenePASS or eligible27role claim."
+  },
+  "v1_fixture_errors": {
+    "excerpt": {
+      "path": "C:/workspace/ck3-market-task-20261118/R0082-discovery-engine-error-excerpt01.actual.json",
+      "bytes": 13846,
+      "sha256": "58e69cda26ed543e071f3cda66d203cc52b5f42717b614b124eaed464037a83e"
+    },
+    "original_log_observed_cut_pin_not_reread": {
+      "path": "C:\\workspace\\ck3-market-live-20261123i\\managed-states\\financial-crisis20-discovery\\state\\profile\\logs\\error.log",
+      "bytes": 1337836,
+      "sha256": "c4a5cc3881a541aada3942a835d131a1cdf202202e844b1ba1920e02df873894",
+      "file_id": 844424930423999,
+      "mtime_ns": 1795438926711163000
+    },
+    "matching_error_blocks": 1572,
+    "first_blocks_retained": 30,
+    "all_matches_in_excerpt": false,
+    "known_defects": "Missing existence guards for PRIMARY variable and location; child discovery adds a PRIMARY requirement beyond normal bound; holder deduplication drops subsequent role indices.",
+    "v2_compiled_or_tested_at_this_cut": false,
+    "original_v1_errors_preserved": true
+  },
+  "original_public_result": {
+    "run": {
+      "receipt": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/crisis20-discovery-start01-run/ORIGINAL-WAIT.actual.json",
+        "bytes": 1575,
+        "sha256": "2de13f543e15092c097504a7750c66dacdc9e825da5e6b7b7ffeb10f060fa208"
+      },
+      "returncode": 2,
+      "elapsed_seconds": 1577.2739438000135,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\crisis20-discovery-start01-run\\stdout.log",
+        "bytes": 90137,
+        "sha256": "81d0a0bc4f6be34a2f03b1f1091a3dd407fd9b6c9d8430e9f58c7bfba8a9c2b1"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\crisis20-discovery-start01-run\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "verify": {
+      "receipt": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/crisis20-discovery-start01-verify/ORIGINAL-WAIT.actual.json",
+        "bytes": 1580,
+        "sha256": "757c31c03210fdddcd676c3fbfbf9b1a0882fcbd11704700a9fcfbbd5070caf8"
+      },
+      "returncode": 2,
+      "elapsed_seconds": 0.5504431000154,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\crisis20-discovery-start01-verify\\stdout.log",
+        "bytes": 9450,
+        "sha256": "e14ca47196473920f6202b90c7b2822f50104234f6667a22a36bd50a79cc4081"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\crisis20-discovery-start01-verify\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "status": "NOT_RUN",
+    "case_acceptance_pass": false,
+    "qualified_boundary_pass": false,
+    "business_pass": false,
+    "whole_product_release_pass": false
+  },
+  "normal_resource_closure": {
+    "before_release": {
+      "path": "C:/workspace/ck3-market-task-20261118/R0082-closure-before-release.actual.json",
+      "bytes": 11684,
+      "sha256": "0783036366e5786a72d5acea5dca1bac18ed0edc5550ec5b9253c5e0e5f3b65a"
+    },
+    "released": {
+      "path": "C:/workspace/ck3-market-task-20261118/R0082-closure-released.actual.json",
+      "bytes": 1315,
+      "sha256": "144d906d307694f4d6adfb06bb08fa94c11dc9a6240e101f0afa388a6bae4839"
+    },
+    "Game_pid": 6220,
+    "Game_birth": 1795437524.6421192,
+    "Game_retained_OS_exit": 0,
+    "Host_exit": 0,
+    "Job_final": 0,
+    "cleanup_proven": true,
+    "normal_close_qualified": true,
+    "keeper_exit": 0,
+    "original_allocator_exit": 0,
+    "CAS_before": 16437,
+    "CAS_after": 16438,
+    "state": "done",
+    "resources": [],
+    "normal_exit_is_not_business_PASS": true
+  },
+  "next_selected_physical_input": {
+    "archive_receipt": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0082\\crisis20-discovery-discovery01\\ARCHIVE.actual.json",
+      "bytes": 8095,
+      "sha256": "7c07d19e4e21def9d5372ca2a2d42ce9d777968d2fe92bef18cbeb5f5c73e32f"
+    },
+    "SAVE_original_pin_not_rehashed": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0082\\crisis20-discovery-discovery01\\xar_checkpoint.ck3",
+      "bytes": 237288322,
+      "sha256": "dd59f381f070299605698e92841651e365e6290a3c279c4f7e1f7ee73b4c3fbe"
+    },
+    "new_saved_day_credit": 0
+  },
+  "limits": {
+    "financialCertified": false,
+    "prior_financial709_and_Native_qualification_kept_in_original_scopes_not_summed": true,
+    "eighteen_matched_roles_not_eighteen_terminal_outcomes": true,
+    "twenty_crisis_scenes_PASS": false,
+    "SYN4096_or_performance_PASS": false,
+    "all_human_toast_PASS": false,
+    "whole_product_PASS": false,
+    "financial_product_Workshop_first_publication_count": 0
+  },
+  "authoring_actions": {
+    "existing_small_metadata_only": true,
+    "formal_tree_Git_Game_OS_queries_build_test_SAVE_DLL_or_original_log_payload_reads": 0
+  }
+}

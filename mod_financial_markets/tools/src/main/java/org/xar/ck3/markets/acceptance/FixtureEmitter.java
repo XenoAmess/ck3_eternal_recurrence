@@ -52,7 +52,14 @@ public final class FixtureEmitter {
         return emit(repository,output,machineId,input,true);
     }
 
+    public static AcceptanceContracts.Emission emitCrisis20DiscoveryV2(Path repository, Path output, String machineId, FollowupContracts.Input input) throws IOException {
+        if(!(input instanceof FollowupContracts.ControlledCrisis20Request))throw new IllegalArgumentException("discovery-v2 requires the exact controlled crisis20 request");
+        return emit(repository,output,machineId,input,true,true);
+    }
     private static AcceptanceContracts.Emission emit(Path repository, Path output, String machineId, FollowupContracts.Input input, boolean discoveryOnly) throws IOException {
+        return emit(repository,output,machineId,input,discoveryOnly,false);
+    }
+    private static AcceptanceContracts.Emission emit(Path repository, Path output, String machineId, FollowupContracts.Input input, boolean discoveryOnly, boolean successor) throws IOException {
 
         java.util.Objects.requireNonNull(input, "fixture input");
         AcceptanceContracts.require(machineId != null && machineId.matches("[A-Za-z0-9][A-Za-z0-9_-]{1,99}"), "explicit machine identity required");
@@ -132,13 +139,18 @@ public final class FixtureEmitter {
                 Path values=repo.resolve("mod_financial_markets/common/script_values/xfm_debt_values.txt").toRealPath();
                 for(Path actual:List.of(guards,values))if(!actual.startsWith(repo)||Files.size(actual)>65536)throw new IOException("bounded discovery predicate source required");
                 Pin guardPin=pin(guards),valuePin=pin(values);
-                payloads=new LinkedHashMap<>(FollowupObservationScripts.renderControlledCrisis20Discovery(crisis,Files.readString(selector),Files.readString(guards)));
+                payloads=new LinkedHashMap<>(successor ? FollowupObservationScripts.renderControlledCrisis20DiscoveryV2(crisis,Files.readString(selector),Files.readString(guards)) : FollowupObservationScripts.renderControlledCrisis20Discovery(crisis,Files.readString(selector),Files.readString(guards)));
                 if(!guardPin.equals(pin(guards))||!valuePin.equals(pin(values)))throw new IOException("discovery predicates changed during emission");
                 producerPins.add(guardPin);producerPins.add(valuePin);
                 payloads.put("_xfmc20_discovery_mode.json",JSON.writeValueAsBytes(Map.ofEntries(
-                    Map.entry("schema","ck3-controlled-crisis20-discovery-v1"),Map.entry("discovery_only",true),Map.entry("read_only_finance",true),
-                    Map.entry("private_namespace","xfmc20d_"),Map.entry("maximum_registry_rows",65536),Map.entry("maximum_candidates",52),
+                    Map.entry("schema",successor ? "ck3-controlled-crisis20-discovery-v2" : "ck3-controlled-crisis20-discovery-v1"),Map.entry("discovery_only",true),Map.entry("read_only_finance",true),
+                    Map.entry("private_namespace",successor ? "xfmc20e_" : "xfmc20d_"),Map.entry("maximum_registry_rows",65536),Map.entry("maximum_candidates",52),
                     Map.entry("maximum_typed_references",104),Map.entry("per_role_maximum",2),Map.entry("context_count",20),Map.entry("case_credit",false))));
+                if(successor) {
+                    var mode=JSON.readTree(payloads.get("_xfmc20_discovery_mode.json"));
+                    ((com.fasterxml.jackson.databind.node.ObjectNode)mode).put("complete_role_mask_bits",26).put("complete_positive_recorded",true);
+                    payloads.put("_xfmc20_discovery_mode.json",JSON.writeValueAsBytes(mode));
+                }
             } else payloads=new LinkedHashMap<>(FollowupObservationScripts.renderControlledCrisis20(crisis,Files.readString(selector)));
             if(!selected.equals(pin(selector)) || !completed.equals(pin(terminal))) throw new IOException("crisis production source changed during rendering");
             producerPins.add(selected); producerPins.add(completed);

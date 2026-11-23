@@ -518,17 +518,58 @@ final class CrisisAssetsScriptTest {
         }
     }
 
-    private static Scene discoveryScene() throws IOException {
+    @Test void discoveryV2ConditionalScopeGatesPreventTheActualLegacyMissingPrimaryAndLocationReads() throws IOException {
+        Scene old=discoveryScene();Node oldAccount=old.v.registry.getFirst(),oldActor=oldAccount.refHolder();old.v.strictMissingScopeDiagnostics=true;
+        oldActor.vars.remove("xfm_account");
+        assertThrows(IllegalArgumentException.class,()->old.v.test(old.v.definition("xfmc20d_primary_trigger"),new Frame(oldAccount,null)));
+        oldActor.vars.remove("location");old.v.scopes.put("xfm_crisis_actor",oldActor);
+        assertFalse(old.v.test(old.v.definition("xfmc20_context_02_trigger"),new Frame(oldAccount,null)),"The shared production selector now also gates its missing location");
+        Scene fresh=discoveryScene(true);Node account=fresh.v.registry.getFirst(),actor=account.refHolder();fresh.v.strictMissingScopeDiagnostics=true;
+        actor.vars.remove("xfm_account");assertFalse(fresh.v.test(fresh.v.definition("xfmc20e_primary_trigger"),new Frame(account,null)));
+        actor.vars.remove("location");fresh.v.scopes.put("xfm_crisis_actor",actor);
+        for(int i=2;i<=8;i++)assertFalse(fresh.v.test(fresh.v.definition("xfmc20_context_"+String.format(java.util.Locale.ROOT,"%02d",i)+"_trigger"),new Frame(account,null)));
+        fresh.v.scopes.remove("xfm_crisis_actor");assertFalse(fresh.v.test(fresh.v.definition("xfmc20_context_01_trigger"),new Frame(account,null)));
+    }
+    @Test void discoveryV2ReturnsRealMinorEstateWithoutPrimaryAndKeepsOldAttemptAndFinanceUnchanged() throws IOException {
+        Scene s=discoveryScene(true);Node owner=s.v.rootActor;s.v.strictMissingScopeDiagnostics=true;
+        Node child=s.v.registry.get(22);child.refHolder().vars.remove("xfm_account");child.put("xfm_inheritance_state",1);
+        owner.put("xfmc20d_attempted",1);owner.put("xfmc20d_candidate_count",22);
+        Map<Node,Map<String,Object>> before=new LinkedHashMap<>();for(Node account:s.v.registry)before.put(account,new LinkedHashMap<>(account.vars));
+        Map<String,Object> exchange=new LinkedHashMap<>(s.v.exchange.vars);s.v.run("xfmc20e_discover_effect",owner);
+        int index=(int)owner.integer("xfmc20e_child_index_1");assertTrue(index>0);assertSame(child,owner.vars.get("xfmc20e_entry_"+index+"_account"));
+        assertEquals(0,owner.integer("xfmc20e_entry_"+index+"_positive"));
+        long mask=owner.integer("xfmc20e_entry_"+index+"_role_mask");assertTrue((mask&(1L<<20))!=0);assertTrue((mask&(1L<<21))!=0);
+        assertEquals(1,owner.integer("xfmc20d_attempted"));assertEquals(22,owner.integer("xfmc20d_candidate_count"));
+        before.forEach((account,vars)->assertEquals(vars,account.vars));assertEquals(exchange,s.v.exchange.vars);
+        Map<String,Object> once=new LinkedHashMap<>(owner.vars);s.v.run("xfmc20e_discover_effect",owner);assertEquals(once,owner.vars);
+        assertEquals(0,s.v.deathCalls);assertEquals(0,s.v.newsCalls);
+    }
+    @Test void discoveryV2PersistsAllFullGuardRoleMatchesEvenWhenOneEarlierRoleOwnsTheIndex() throws IOException {
+        Scene s=discoveryScene(true);Node candidate=s.v.registry.getFirst(),actor=candidate.refHolder(),owner=s.v.rootActor;
+        actor.put("stewardship",12);actor.vars.put("is_knight",true);actor.traits.add("shy");s.v.strictMissingScopeDiagnostics=true;
+        s.v.run("xfmc20e_discover_effect",owner);
+        int slot=0;for(int i=1;i<=owner.integer("xfmc20e_candidate_count");i++)if(owner.vars.get("xfmc20e_entry_"+i+"_account")==candidate)slot=i;
+        assertTrue(slot>0);assertEquals(1,owner.integer("xfmc20e_entry_"+slot+"_positive"));
+        long mask=owner.integer("xfmc20e_entry_"+slot+"_role_mask");for(int i:List.of(1,9,12,13))assertTrue((mask&(1L<<(i-1)))!=0);
+        assertTrue(owner.integer("xfmc20e_candidate_count")<=52);
+        for(String role:List.of("s01","s09","s12","s13","child","estate","asset","aid","restructure","creditor"))assertTrue(owner.integer("xfmc20e_"+role+"_count")<=2);
+    }
+
+    private static Scene discoveryScene() throws IOException { return discoveryScene(false); }
+    private static Scene discoveryScene(boolean successor) throws IOException {
         Scene s=controlledFixtureScene();s.v.controlledOwner=null;s.v.exchange.put("xfm_next_account_id",27);
         List<org.xar.ck3.markets.acceptance.FollowupContracts.CrisisSceneRole> roles=new ArrayList<>();
         for(int i=1;i<=20;i++)roles.add(new org.xar.ck3.markets.acceptance.FollowupContracts.CrisisSceneRole(i,Integer.toString(i)));
         var request=new org.xar.ck3.markets.acceptance.FollowupContracts.ControlledCrisis20Request(3,"crisis-scenes20-engine-fixture",true,"21","22",roles,
             new org.xar.ck3.markets.acceptance.FollowupContracts.CrisisControls("23","24","25","26","27"));
-        var files=org.xar.ck3.markets.acceptance.ControlledCrisis20Fixture.renderDiscovery(request,
+        var files=successor ? org.xar.ck3.markets.acceptance.ControlledCrisis20Fixture.renderDiscoveryV2(request,
+            Files.readString(SOURCE.resolve("common/scripted_effects/xfm_crisis_scenes.txt")),Files.readString(SOURCE.resolve("common/scripted_triggers/xfm_crisis_triggers.txt")))
+            : org.xar.ck3.markets.acceptance.ControlledCrisis20Fixture.renderDiscovery(request,
             Files.readString(SOURCE.resolve("common/scripted_effects/xfm_crisis_scenes.txt")),Files.readString(SOURCE.resolve("common/scripted_triggers/xfm_crisis_triggers.txt")));
         for(var file:files.entrySet())if(file.getKey().startsWith("common/"))for(Entry entry:Clausewitz.parse(new String(file.getValue(),java.nio.charset.StandardCharsets.UTF_8)).entries()) {
             if(!(entry.value()instanceof Block block))throw new IllegalArgumentException("fixture block");
-            Block old=s.v.definitions.putIfAbsent(entry.key(),block);if(old!=null)assertEquals(old,block,"Only identical source-derived context definitions may already exist");
+            if(successor&&file.getKey().equals("common/scripted_triggers/xfmc20_contexts.txt"))s.v.definitions.put(entry.key(),block);
+            else {Block old=s.v.definitions.putIfAbsent(entry.key(),block);if(old!=null)assertEquals(old,block,"Only identical source-derived context definitions may already exist");}
         }
         return s;
     }
@@ -617,6 +658,7 @@ final class CrisisAssetsScriptTest {
         // Opt-in engine primitive ports for the three new component tests only.
         // They do not implement CK3 succession, real death, journal allocation or delivery.
         boolean allowTerminalEnginePorts; int deathCalls, newsCalls;
+        boolean strictMissingScopeDiagnostics; // Opt-in diagnostic witness only; existing tests keep false.
         final List<String> terminalTrace = new ArrayList<>();
         final ArrayDeque<Integer> randomDraws = new ArrayDeque<>();
         final List<Long> sceneWrites = new ArrayList<>(); int randomChoices;
@@ -663,10 +705,22 @@ final class CrisisAssetsScriptTest {
             }
             return n;
         }
-        boolean test(Block b, Frame f) { boolean all = true; for (Entry e : b.entries()) all &= check(e, f); return all; }
+        boolean test(Block b, Frame f) {
+            boolean all=true,chain=false,taken=false;
+            for(Entry e:b.entries()) {
+                if(e.key().equals("trigger_if")) {
+                    chain=true;Block c=(Block)e.value();taken=test(c.block("limit"),f);
+                    if(taken)all &= test(without(c,"limit"),f);
+                } else if(e.key().equals("trigger_else")) {
+                    if(!chain)throw new IllegalArgumentException("orphan trigger_else");if(!taken)all &= test((Block)e.value(),f);chain=false;
+                } else {chain=false;all &= check(e,f);}
+            }
+            return all;
+        }
         boolean check(Entry e, Frame f) {
             String k = e.key();
             if (k.equals("AND")) return test((Block)e.value(), f);
+            if (k.equals("always")) return atom(e.value()).equals("yes");
             if (k.equals("OR") || k.equals("NOT")) { boolean any = false; for (Entry child : ((Block)e.value()).entries()) any |= check(child, f); return k.equals("OR") ? any : !any; }
             if (k.equals("trigger_if")) { Block b = (Block)e.value(); return !test(b.block("limit"), f) || test(without(b, "limit"), f); }
             if (k.equals("exists")) {
@@ -689,11 +743,18 @@ final class CrisisAssetsScriptTest {
             if (k.equals("xfm_config_crisis_narratives_trigger")) return rule;
             if (k.equals("any_in_list")) { Block b = (Block)e.value(); boolean any = false; for (Node n : f.here().lists.getOrDefault(atom(field(b, "variable")), List.of())) any |= test(without(b, "variable"), f.enter(n)); return any; }
             if (k.endsWith("_trigger")) return test(definition(k), f);
-            if (e.value() instanceof Block b) { Object scope = resolve(k, f); return scope instanceof Node n && test(b, f.enter(n)); }
+            if (e.value() instanceof Block b) {
+                Object scope=resolve(k,f);if(strictMissingScopeDiagnostics&&!(scope instanceof Node))throw new IllegalArgumentException("missing trigger scope "+k);
+                return scope instanceof Node n&&test(b,f.enter(n));
+            }
             Object left = resolve(k, f), right = evaluate(e.value(), f);
             // Missing ordinary comparison inputs fail closed; new optional checks
             // are staged through trigger_if. No missing number is silently zero.
-            if (left == null || right == null) return false;
+            if (left == null || right == null) {
+                if(strictMissingScopeDiagnostics&&(k.startsWith("var:")||k.startsWith("scope:")||atom(e.value()).startsWith("var:")||atom(e.value()).startsWith("scope:")))
+                    throw new IllegalArgumentException("missing trigger comparison scope "+k);
+                return false;
+            }
             if (left instanceof String text && text.equals(k)) throw new IllegalArgumentException("unsupported trigger field " + k);
             if (left instanceof BigDecimal a && right instanceof BigDecimal b) {
                 int cmp = a.compareTo(b); return switch (e.operator()) { case "=" -> cmp == 0; case "!=" -> cmp != 0;

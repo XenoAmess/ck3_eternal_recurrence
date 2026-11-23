@@ -339,8 +339,15 @@ public final class ControlledFuturesRiskFixture {
         return out.append("clear_saved_scope = xfmr_actual_county\n}\n").toString();
     }
     private static String capture(String scope,String field,String name) {
-        return "set_variable = { name = "+name+"_present value = 0 }\nif = { limit = { "+scope+" = { has_variable = "+field+" } }\n"
+        String body = "set_variable = { name = "+name+"_present value = 0 }\nif = { limit = { "+scope+" = { has_variable = "+field+" } }\n"
             +"set_variable = { name = "+name+"_present value = 1 } set_variable = { name = "+name+" value = "+scope+".var:"+field+" } }\n";
+        if (scope.equals("var:xfm_debt_receipt_1") || scope.equals("var:xfm_debt_receipt_3")) {
+            // A same-limit AND does not establish an engine scope. Enter it only in a nested effect.
+            // No optional claim means observed presence0, not a numeric claim value0.
+            return "if = { limit = { exists = "+scope+" }\n"+body
+                +"} else = { set_variable = { name = "+name+"_present value = 0 } }\n";
+        }
+        return body;
     }
     private static String observationScripts() {
         StringBuilder out=new StringBuilder("xfmr_position_capture_effect = { if = { limit = { NOT = { has_variable = xfmr_$PHASE$_version } }\n");

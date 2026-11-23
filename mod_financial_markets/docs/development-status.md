@@ -2,6 +2,18 @@
 
 2026-11-23，machine_id: 4-8e1c2f1861。
 
+## 当前补记：发现v2完整软件713项通过，新实机仍待
+
+v2与optionalclaim后完整金融verify实际713distinct全P／0FES／来源不变，外层244.6288915秒、内层Maven243.2234853秒；独立新package输出，旧50JAR身份／字节保持。原testCompile1保留，修后受影响43项P；Python198、新matcher10、Generic typing及optimized16分别有原结果，16包含在198内，不与旧14／709或完整713相加，ResourceWarnings和annotation notes不抹去。
+
+另R80五个已匹配本地alias副本原路径已不可读；未匹配restored_campaign和四canonical／metadata／logs／source保留，不退款或独占归因卷free。见[后继软件与维护原件](risk-and-controlled-crisis-software.md)。R82原NOT_RUN／1572和旧“v2未编测”按当时切点保持；本次不授新Game／20场景／4096／性能／整产品，金融首发仍0。
+
+## 当前补记：R82只读发现未满足正式危机场景条件
+
+R82实际0自然日／1SAVE／6EOF／4reader wait，25571条Whole与R78 D35精确相等。扫描8180、返回22候选槽，原matcher仅匹配18／26角色槽，不是18个scene PASS；v1有1572个匹配fixture错误块，前30块摘录保留，v2未编测。原D0四项false、run2／verify2／NOT_RUN及business false不改；正常Game／Host／Job／keeper／allocator0与CAS16438资源空只授资源闭合。
+
+后继真实输入选R82本次237288322字节归档，见[R82原事实及薄索引](r0082-readonly-crisis-discovery.md)。709／Native旧资格不加总，20剧情／4096／性能／整产品仍待，本金融产品首发0；下方历史有限通过及原失败均保各自范围。
+
 ## 当前补记：R81冷载与同日重试有限PASS，资源已闭合
 
 R81从R80 S4冷载，loaded365条Whole精确相等，0自然日／2次原生SAVE／16次EOF／12个reader wait。Root原协议6／6、4／4字面true已实际发表，607组合法重试前后capture已知且一致；原run0／verify0，case及qualified boundary真，公共business／product聚合仍false。verify无status字段，不补造PASS status。

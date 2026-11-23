@@ -200,6 +200,13 @@ public final class ControlledCrisis20Fixture {
     }
     /** Explicit readonly diagnostic rendering. Default render above is unchanged. */
     public static Map<String,byte[]> renderDiscovery(ControlledCrisis20Request request, String selectorSource, String guardSource) {
+        return renderDiscoveryVersion(request,selectorSource,guardSource,false);
+    }
+    /** Explicit successor diagnostic; never resets or consumes the retained xfmc20d_ attempt. */
+    public static Map<String,byte[]> renderDiscoveryV2(ControlledCrisis20Request request, String selectorSource, String guardSource) {
+        return renderDiscoveryVersion(request,selectorSource,guardSource,true);
+    }
+    private static Map<String,byte[]> renderDiscoveryVersion(ControlledCrisis20Request request, String selectorSource, String guardSource, boolean successor) {
         java.util.Objects.requireNonNull(request);
         var original=org.xar.ck3.save.Clausewitz.parse(guardSource).block("xfm_crisis_terminal_review_trigger");
         var wallets=original.named("var:xfm_holder").stream()
@@ -209,7 +216,9 @@ public final class ControlledCrisis20Fixture {
                 || !wallet.entries().getLast().key().equals("NOT"))throw new IllegalArgumentException("original complete holder-wallet guard required");
         Map<String,byte[]> result=new LinkedHashMap<>();
         var contexts=CrisisSceneBranchFixture.render(selectorSource);
-        result.put("common/scripted_triggers/xfmc20_contexts.txt",contexts.get("common/scripted_triggers/xfmc20_contexts.txt"));
+        result.put("common/scripted_triggers/xfmc20_contexts.txt",successor
+                ? guardedDiscoveryContexts(contexts.get("common/scripted_triggers/xfmc20_contexts.txt"))
+                : contexts.get("common/scripted_triggers/xfmc20_contexts.txt"));
         String[] roles=new String[26];
         for(int i=0;i<20;i++)roles[i]="s"+suffix(i+1);
         System.arraycopy(new String[]{"child","estate","asset","aid","restructure","creditor"},0,roles,20,6);
@@ -308,12 +317,19 @@ public final class ControlledCrisis20Fixture {
                 .append(role).append(" value = 1 } } } }\n");
         }
         String aiPrimary="xfmc20d_primary_trigger = yes var:xfm_holder = { is_ai = yes is_adult = yes }";
-        String[] controlPredicates={"xfmc20d_primary_trigger = yes var:xfm_holder = { is_ai = yes is_adult = no }",
+        String[] controlPredicates={successor ? "var:xfm_holder = { is_ai = yes is_adult = no }"
+                : "xfmc20d_primary_trigger = yes var:xfm_holder = { is_ai = yes is_adult = no }",
             "OR = { var:xfm_inheritance_state = 1 var:xfm_inheritance_state = 2 }",
             aiPrimary+" xfmc20d_direct_asset_trigger = yes",
             "root.var:xfmc20d_current_positive = 1","root.var:xfmc20d_current_positive = 1",aiPrimary};
         for(int i=0;i<6;i++)effect.append("root = { set_variable = { name = xfmc20d_match_").append(roles[i+20]).append(" value = 0 } }\nif = { limit = { ")
             .append(controlPredicates[i]).append(" } root = { set_variable = { name = xfmc20d_match_").append(roles[i+20]).append(" value = 1 } } }\n");
+        if(successor) {
+            effect.append("root = { set_variable = { name = xfmc20d_current_role_mask value = 0 }\n");
+            for(int i=0;i<roles.length;i++)effect.append("if = { limit = { var:xfmc20d_match_").append(roles[i])
+                .append(" = 1 } change_variable = { name = xfmc20d_current_role_mask add = ").append(1L<<i).append(" } }\n");
+            effect.append("}\n");
+        }
         effect.append("root = {\n");
         // One reserved primary and one spare per role. Common early candidates
         // cannot consume any rare role's reserved primary or spare slot.
@@ -347,6 +363,9 @@ public final class ControlledCrisis20Fixture {
              set_variable = { name = xfmc20d_entry_$ENTRY$_predicates value = var:xfmc20d_current_predicates }
              set_variable = { name = xfmc20d_entry_$ENTRY$_contexts value = var:xfmc20d_current_contexts }
              set_variable = { name = xfmc20d_entry_$ENTRY$_checked value = var:xfmc20d_current_checked }
+            """);
+        if(successor)effect.append("set_variable = { name = xfmc20d_entry_$ENTRY$_role_mask value = var:xfmc20d_current_role_mask }\nset_variable = { name = xfmc20d_entry_$ENTRY$_positive value = var:xfmc20d_current_positive }\n");
+        effect.append("""
              set_variable = { name = xfmc20d_current_slot value = $ENTRY$ }
              set_variable = { name = xfmc20d_candidate_count value = $ENTRY$ }
             }
@@ -368,7 +387,35 @@ public final class ControlledCrisis20Fixture {
         discoveryPut(result,"gui/scripted_widgets/xfmc20d_widget.txt","gui/xfmc20d_widget.gui = xfmc20d_widget\n");
         discoveryPut(result,"gui/xfmc20d_widget.gui","widget = { name = xfmc20d_widget parentanchor = bottom|right position = { -310 100 } size = { 300 50 } layer = middle\n button_standard = { name = \"xfmc20d_discover\" size = { 300 38 } text = \"xfmc20d_discover_label\" enabled = \"[GetScriptedGui( 'xfmc20d_discover_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]\" onclick = \"[GetScriptedGui( 'xfmc20d_discover_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]\" } }\n");
         for(String language:new String[]{"english","simp_chinese"})discoveryPut(result,"localization/"+language+"/xfmc20d_l_"+language+".yml","l_"+language+":\n xfmc20d_discover_label:0 \"Crisis20: readonly discovery\"\n");
+        if(successor) {
+            String guardPath="common/scripted_triggers/xfmc20d_guards.txt";
+            String guarded=new String(result.get(guardPath),StandardCharsets.UTF_8);
+            String unsafe="var:xfm_holder = { var:xfm_account = prev }";
+            if(guarded.indexOf(unsafe)<0 || guarded.indexOf(unsafe)!=guarded.lastIndexOf(unsafe))throw new IllegalStateException("one original PRIMARY comparison required");
+            guarded=guarded.replace(unsafe,"trigger_if = { limit = { exists = var:xfm_holder } var:xfm_holder = { trigger_if = { limit = { exists = var:xfm_account } var:xfm_account = prev } trigger_else = { always = no } } } trigger_else = { always = no }");
+            result.put(guardPath,guarded.getBytes(StandardCharsets.UTF_8));
+            Map<String,byte[]> successorFiles=new LinkedHashMap<>();
+            result.forEach((path,bytes)->successorFiles.put(path.replace("xfmc20d_","xfmc20e_"),
+                    new String(bytes,StandardCharsets.UTF_8).replace("xfmc20d_","xfmc20e_").getBytes(StandardCharsets.UTF_8)));
+            return Map.copyOf(successorFiles);
+        }
         return Map.copyOf(result);
+    }
+    /** Source-derived contexts behind conditional existence gates; no eager sibling AND guard. */
+    private static byte[] guardedDiscoveryContexts(byte[] source) {
+        var parsed=org.xar.ck3.save.Clausewitz.parse(new String(source,StandardCharsets.UTF_8));
+        StringBuilder output=new StringBuilder("\ufeff");
+        for(var entry:parsed.entries()) {
+            if(!(entry.value() instanceof org.xar.ck3.save.Clausewitz.Block block))throw new IllegalArgumentException("context block");
+            boolean location=block.entries().stream().anyMatch(e->e.key().equals("scope:xfm_crisis_actor.location"));
+            String body=block.render();body=body.substring(1,body.length()-1);
+            output.append(entry.key()).append(" = { trigger_if = { limit = { exists = scope:xfm_crisis_actor }\n");
+            if(location)output.append("trigger_if = { limit = { scope:xfm_crisis_actor = { exists = location } }\n");
+            output.append(body).append('\n');
+            if(location)output.append("} trigger_else = { always = no }\n");
+            output.append("} trigger_else = { always = no } }\n");
+        }
+        return output.toString().getBytes(StandardCharsets.UTF_8);
     }
     private static void discoveryPut(Map<String,byte[]> files,String name,String value) {
         files.put(name,("\ufeff"+value).getBytes(StandardCharsets.UTF_8));
