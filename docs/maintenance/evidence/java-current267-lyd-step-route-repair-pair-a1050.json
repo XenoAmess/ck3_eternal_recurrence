@@ -1,0 +1,149 @@
+{
+  "schema": "xar.current267.lyd-step-route-repair.frozen-pair-maintenance-index.v1",
+  "at_utc": "2026-11-23T03:20:30.361520+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status": "ACTUAL_UNCHANGED_JAVA_NEW_NATIVE_PAIR_READY_NEW_LIVE_NOT_RUN",
+  "actual_sixpins": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-lyd-route-repair-pair-a1050\\actual-six-pins.json",
+    "bytes": 1540,
+    "sha256": "45445c3db9ed7ce5c7a8cff23b275bc6cdc6cd49dd31c128a0062fc10503b868"
+  },
+  "Java_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-lyd-route-repair-pair-a1050\\frozen-delivery-final.json",
+    "bytes": 5513,
+    "sha256": "2c03571ddd8ea6f78acfc746f20e9de9c71d5d02db5d105fe55d78142242b843"
+  },
+  "pair_binding": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-lyd-route-repair-pair-a1050\\native-pair-binding-final.json",
+    "bytes": 2918,
+    "sha256": "d1e84df5cdddcb5725be325ce8e1326c9fe03d6cb8e75150ffd550e9a49362fb"
+  },
+  "operator_templates": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-lyd-route-repair-pair-a1050\\operator-templates.json",
+    "bytes": 7504,
+    "sha256": "ade3edbd85ab351d319566eb8bb999eeefb099f5b8f14afd5f41167c74aa7bde"
+  },
+  "operator_template_pointer": "/query_config",
+  "configuration_schema": "xar.native-owner-snapshot-config/v37",
+  "configuration_mode": "current_lyd_query_events",
+  "prior_blockers_template_pointer": "/blockers_query_config",
+  "runtime_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-rite-creation-blockers-a1021\\runtime-manifest.json",
+    "bytes": 167116,
+    "sha256": "5af5c15519c7c0066a2a516ba2b95924af7faec5403dd8aad772e34ed8bd1e91"
+  },
+  "classpath_argfile": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-rite-creation-blockers-a1021\\cli-classpath.args",
+    "bytes": 16403,
+    "sha256": "d2f2639a6b5bb314f816981ffb7ee55ee8e047822028e6408de16d2b62c9b9b4"
+  },
+  "this_pair_phase": {
+    "new_JAR_copies": 0,
+    "existing_JARs_identity_reused": 158,
+    "changed_JAR_indices": [],
+    "Maven_tests_package_JAR_CRC_or_body_hash": 0,
+    "runtime_manifest_copy_or_mutation": 0,
+    "original_runtime_qualification_copy_history": {
+      "new_copied_JARs": 2,
+      "reused_without_copy": 156,
+      "total": 158
+    }
+  },
+  "original_26_software_qualification": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-creation-blockers-source-a1021\\affected-qualification.json",
+    "bytes": 8965,
+    "sha256": "811019627eb7956429aa9b8f7ac8e4dd059bc4d90d06ca5293284e8cac6c56b1"
+  },
+  "all158_unchanged_identity_qualification": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-lyd-route-repair-pair-a1050\\runtime158-identity-reuse.json",
+    "bytes": 3262,
+    "sha256": "31fca9c2c027c68123467e5d5cc5dafa74a7ad34e1409ec761f7bcafeeb3cadf"
+  },
+  "Native": {
+    "delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-lyd-step-fix-production-a1050\\frozen-delivery-final.json",
+      "bytes": 1719,
+      "sha256": "75b2c95df489dbaa5bc2124812f00a2530e581ee926144a55e4ae7d5d821427b"
+    },
+    "refs": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-lyd-step-fix-production-a1050\\ordinary-native-artifact-refs.json",
+      "bytes": 13239,
+      "sha256": "09724c75a0e5b08d95b80c23ca5dec59728904859bc63398ba97ce86af1dcc5a"
+    },
+    "NativeTree": "245074aad5075eec13b0e0908f40550d59ffadfd",
+    "actual_source_adoption_HEAD": "89754815acf41c6036e9cf6d73767b3f1a7629f8",
+    "qualified_source_manifest": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-lyd-step-fix-source-a1050\\qualified-source-manifest.json",
+      "bytes": 5763,
+      "sha256": "d770d6030d3610e199670af426d3330b812d9587b787e3ed01b1e36e0adfe6ca"
+    },
+    "NoGame_closure": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-lyd-step-fix-source-a1050\\NoGame\\final-closure.json",
+      "bytes": 9763,
+      "sha256": "312efb5ea282b56dcf191677574f4e68bfa35a883e68d87bcb68753a4a68dfbe"
+    },
+    "actual_total_TUs": 917,
+    "actual_CL": 1,
+    "actual_reused_objects": 916,
+    "DLL": {
+      "kind": "bridge_dll",
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-lyd-step-fix-production-a1050\\new-artifacts\\xar_ck3_bridge.dll",
+      "sha256": "1552bd9ec19cd06eca6f2bdf34e17f06ad2458fb1cab43a1a52104b60542ed7f",
+      "metadata": {
+        "bytes": 14594048,
+        "allocated": 14594048,
+        "file_id": "281474981919990",
+        "volume": "882653518",
+        "creation_filetime": "134398769833763841",
+        "write_filetime": "134398769855666976",
+        "attributes": 32
+      }
+    },
+    "actual_NoGame": "Three real whole-StepEnabled profiles, 65 assertions each: LYD-only ON, OFF, HEALTH-only negative; 195 passed. No fake StepEnabled function.",
+    "Identity_registration_and_COFF": "Actual production Identity and registration0, Raw/Owner/Step ON bodies nonconstantfalse; source/reuse/protected drift[].",
+    "scope": "Correct LydStepEnabled preprocessor guard from unrelated SUPERMAN_HEALTH to own LYD flag. Actual linked entire method passed LYD-only ON, OFF, HEALTH-only negative:13 steps/65 assertions each. Existing public13steps/caps/schema/parser/semantic allowlist unchanged. No bookmark.1070 select permission added. Original efcf constant-false object and actual a1050 known refusal preserved, no hot swap/replay/UNKNOWN reset. New Runtime ordinary query live NOT_RUN."
+  },
+  "normal_source_integration": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-lyd-route-repair-pair-a1050\\native-source-remote-integration.json",
+    "bytes": 2265,
+    "sha256": "dc0a12e1dd8dd7ccd7de26b66f887483b7b765ffa5167d544bae54fcaad4aefc"
+  },
+  "original_nonFF_failure_retained": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-lyd-route-repair-pair-a1050\\native-source-push-result.json",
+    "bytes": 646,
+    "sha256": "2a9ae598b6f587ef385e443757b8cd7a376c533ba4c197e6ef0734ef68659168"
+  },
+  "remote_integration_detail": "Original ff92 commit archived; normal rebase preserved incoming financial/shared-Python commits and identical NativeTree. Rebase changed two raw EOL forms; restored qualified CRLF bytes before production and refreshed index with empty staged diff. One seal attempt stopped on stale Git status, then exact3/clean verified; no NoGame rerun.",
+  "original_known_refusals_retained": {
+    "actual_v37_packet_source_review": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-event-query-source-review-a1050\\actual-packet-source-review.json",
+      "bytes": 3265,
+      "sha256": "d29571ea94b09aeda28a002ee53b16281c9a149aca861295d25dccfb559aee62"
+    },
+    "actual_compiled_dispatch_diagnostic": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-date-prearm-review-a1033\\lyd-actual-dispatch-rejection-a1050.json",
+      "bytes": 8154,
+      "sha256": "741fe694682c1f101b44aed539c4d3123ef3b45cb8fb7359fa9918b1cfd11344"
+    },
+    "Date23": "Known preclaim/preARM RuntimeEventTimeGate blocked; not 64-claim capacity. No retry or Date authorization inferred.",
+    "v27": "Original fullscreen_actual_splash_controller_missing, no effect; unrelated actual splash-only path.",
+    "v37": "Original lyd_request_or_profile_unavailable, no facts/owner/source/effect. Actual request shape was correct; efcf reused LydStepEnabled object was constantfalse from wrong HEALTH macro.",
+    "Native_prewrite": "One raw-target refusal during rebase occurred before output/configure/CL. Original evidence retained by Native.",
+    "Native_delivery_metadata_refusal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-lyd-step-fix-production-a1050\\delivery-a01-metadata-refusal.json",
+      "bytes": 511,
+      "sha256": "57bac6ecfa8ba33e60040db6b77ae20eb3094f2324a0bdae5106d346814b6906"
+    }
+  },
+  "semantic_boundary": "Existing query may expose unknown ordinary character-event definitions and null-role options as DATA. No caller event/option/ordinal selector, new bookmark choice permission, Create/Date/Save credit, old UNKNOWN reset, hot swap or old request replay. New live query and event identity remain unproven at this handoff.",
+  "all_phases_END": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-lyd-route-repair-pair-a1050\\all-phases-END.json",
+    "bytes": 1384,
+    "sha256": "70e9954955fa6e9c8d54eefd2be061f1a9e24f6c2f402cbe4811096a99795d9f"
+  },
+  "source_publication_scope": "Normal Native source adoption and small metadata/docs only; no Java/Maven/package/CRC/JAR-body hashing or product SourceA/tag/version/Workshop operation.",
+  "Workshop_published_count": 12,
+  "strict_closed_count": 9,
+  "denominator": 17,
+  "DES_published": false
+}
