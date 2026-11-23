@@ -1,0 +1,336 @@
+{
+  "schema": "xar.des.final-cold-persistence-and-retired-inputs.maintenance-index.v1",
+  "at_utc": "2026-11-23T05:36:01.589428+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "assessment": "FINITE_PASS_COLD_PERSISTENCE_OF_ANNUAL_RECOVERY_AND_ACTUAL_HOUSE_HEAD",
+  "Root_final_cold_facts": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-oldsave-inspection-a942\\final-cold-business-facts-a1120.json",
+    "bytes": 4086,
+    "sha256": "77eed825cdf103e296c4aeb54716f7f309da449d4f95fb02402a678142e0b4e3"
+  },
+  "actual_scene": {
+    "pure_runtime_files": 71,
+    "fixture_files": 0,
+    "Core": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-jan3-cold-current267-profile-a1113\\operations\\loaded-jan3-cold-a1117\\result\\summary.json",
+      "bytes": 10034,
+      "sha256": "d0c4cfbc4ba4cbd80c4b238a13c9a7c6de482aac08ad001840a83a864d05a3f8"
+    },
+    "natural_days": 0,
+    "Save_calls": 1,
+    "new_actual_archive": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-jan3-cold-current267-profile-a1113\\checkpoints\\des-ordinary-dynasty-cold-reload.ck3",
+      "bytes": 172720163,
+      "sha256": "92e47a86eaefbbeadcfc0da6afe2e3797f54afd739f6fb74a5383df15c2c2941"
+    },
+    "original_f7d_archive_unchanged": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-jan1-boundary-probe-current267-profile-a1098\\checkpoints\\des-annual-boundary-day2.ck3",
+      "bytes": 172719005,
+      "sha256": "f7d1797e4c427dbae5bf11371bd5dffae89ad7fd4abe7d4b025f5a49d8f691e0"
+    },
+    "save_summary": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-jan3-cold-current267-profile-a1113\\operations\\checkpoint-cold\\result\\summary.json",
+      "bytes": 16037,
+      "sha256": "a1bdaa73dce04f001fe654c2fd5a8619418ea32936e8145e913a5d9400c671a6"
+    },
+    "changed_material_observed": true,
+    "archive_is_copy_not_second_SAVE": true,
+    "Native_physical_save_confirmed": false,
+    "reserved_native_exit_flag": "Unchanged false, actual terminal recorded independently",
+    "terminal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-jan3-cold-current267-profile-a1113\\owner\\terminal.json",
+      "bytes": 1055,
+      "sha256": "f9ac982b5cb8292d2b71482746c306263e4323448847d88de8be825f7ffa9ca2"
+    },
+    "creator_end": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-jan3-cold-current267-profile-a1113\\creator-end.json",
+      "bytes": 599,
+      "sha256": "7d23e02dea2fb3fa312bce61ad716a92328aa9f29cb98d275daabbdb596967c1"
+    },
+    "Game_PID": 21376,
+    "creator_PID": 10792,
+    "actual_terminal": "NATURAL_EXIT",
+    "Game_creator_exit": 0,
+    "Jobactive": 0,
+    "cleanup_proven": true
+  },
+  "actual_Saved_readback": {
+    "whole_dynasty": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-oldsave-inspection-a942\\whole-dynasty-cold-Jan3-a1119\\inspection.report.json",
+      "bytes": 23943,
+      "sha256": "2da05a12d905eef6849b5898f57c119eaded9385fb15499c1e68a7688caf53a4"
+    },
+    "typed_roles": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-oldsave-inspection-a942\\cold-Jan3-actual-member-head-roles-a1119\\inspection.report.json",
+      "bytes": 918616,
+      "sha256": "9e1534da323a05f590954aafa7a9ccfd47870165fce7cae91be854bf686e8dbc"
+    },
+    "both_actual_reader_exit0_fullEOF_pins_stable": true,
+    "members": 56,
+    "same_ID_set_as_Jan3": true,
+    "all_members_MainHouse16113": true,
+    "actual_MainHouse_head": 36423,
+    "actual_Rite150_head": 36423,
+    "actual_control_and_role_fields": {
+      "HOUSE:16111": {
+        "dynasty": "15399",
+        "head_of_house": "77329"
+      },
+      "HOUSE:16112": {
+        "dynasty": "15399",
+        "head_of_house": "77330"
+      },
+      "HOUSE:16113": {
+        "dynasty": "15400",
+        "head_of_house": "36423"
+      },
+      "ACTOR:36423": {
+        "dynasty_house": "16113",
+        "rite": "150"
+      },
+      "ACTOR:77330": {
+        "dynasty_house": "16112",
+        "rite": "0"
+      },
+      "ACTOR:77331": {
+        "dynasty_house": "16113",
+        "rite": "6"
+      },
+      "ACTOR:77332": {
+        "dynasty_house": "16113",
+        "rite": "6"
+      },
+      "ACTOR:77333": {
+        "dynasty_house": "16113",
+        "rite": "150"
+      },
+      "RITE:150": {
+        "faith": "32",
+        "head_of_rite": "36423"
+      },
+      "FAITH:32": {
+        "main_rite": "150"
+      },
+      "DYNASTY:15399": {
+        "dynasty_head": "77329"
+      },
+      "DYNASTY:15400": {
+        "dynasty_head": "36423"
+      }
+    }
+  },
+  "previous_cutoffs_preserved": {
+    "Jan1": "NOT_OBSERVED_AT_JAN1 remains actual earlier fact",
+    "Jan3": "FINITE_PASS after two genuine natural days; no unique callback timestamp or sibling-order guarantee",
+    "required_old_pruned_House_reader_exit1": "Preserved, subsequent optional request still separately asserted surviving Main/control Houses"
+  },
+  "current_availability": {
+    "retirements": [
+      {
+        "receipt": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\des-a1098-save-duplicates-reclamation-a01\\actual-result.json",
+          "bytes": 5189,
+          "sha256": "937bd763a4dd8398b3cd428f3a14ae9b5ad3409540463c05bfa8c5859fb5c1ee"
+        },
+        "originals_now_unreadable": [
+          {
+            "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-jan1-boundary-probe-current267-profile-a1098\\profile-states\\gui-76b4c9a90e2a4d849ebc19602a92ee54\\profile\\last_save.ck3",
+            "original_fullSHA": "f7d1797e4c427dbae5bf11371bd5dffae89ad7fd4abe7d4b025f5a49d8f691e0",
+            "original_Win32_identity": {
+              "allocated_bytes": 172720128,
+              "attributes": 32,
+              "creation_filetime": "134398845513117847",
+              "delete_pending": false,
+              "directory": false,
+              "file_id128": "dbae4f00000001000000000000000000",
+              "links": 1,
+              "logical_bytes": 172719005,
+              "mtime_ns": 1795410951539508700,
+              "volume_serial": "7220568048185129294"
+            },
+            "availability": "DELETED_ORIGINAL_REPLICA_UNREADABLE"
+          },
+          {
+            "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-jan1-boundary-probe-current267-profile-a1098\\profile-states\\gui-76b4c9a90e2a4d849ebc19602a92ee54\\profile\\save games\\autosave.ck3",
+            "original_fullSHA": "f7d1797e4c427dbae5bf11371bd5dffae89ad7fd4abe7d4b025f5a49d8f691e0",
+            "original_Win32_identity": {
+              "allocated_bytes": 172720128,
+              "attributes": 32,
+              "creation_filetime": "134398845491079518",
+              "delete_pending": false,
+              "directory": false,
+              "file_id128": "d9ae4f00000001000000000000000000",
+              "links": 1,
+              "logical_bytes": 172719005,
+              "mtime_ns": 1795410950922995600,
+              "volume_serial": "7220568048185129294"
+            },
+            "availability": "DELETED_ORIGINAL_REPLICA_UNREADABLE"
+          },
+          {
+            "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-jan1-boundary-probe-current267-profile-a1098\\profile-states\\gui-76b4c9a90e2a4d849ebc19602a92ee54\\profile\\save games\\xar_checkpoint.ck3",
+            "original_fullSHA": "f7d1797e4c427dbae5bf11371bd5dffae89ad7fd4abe7d4b025f5a49d8f691e0",
+            "original_Win32_identity": {
+              "allocated_bytes": 172720128,
+              "attributes": 32,
+              "creation_filetime": "134398845538868478",
+              "delete_pending": false,
+              "directory": false,
+              "file_id128": "dcae4f00000001000000000000000000",
+              "links": 1,
+              "logical_bytes": 172719005,
+              "mtime_ns": 1795410954300091900,
+              "volume_serial": "7220568048185129294"
+            },
+            "availability": "DELETED_ORIGINAL_REPLICA_UNREADABLE"
+          }
+        ],
+        "allocated_removed_bytes": 518160384,
+        "logical_removed_bytes": 518157015,
+        "retained_independent_archive": {
+          "bytes": 172719005,
+          "metadata": {
+            "allocated_bytes": 172720128,
+            "attributes": 32,
+            "creation_filetime": "134398845600787357",
+            "delete_pending": false,
+            "directory": false,
+            "file_id128": "ddae4f00000001000000000000000000",
+            "links": 1,
+            "logical_bytes": 172719005,
+            "mtime_ns": 1795410954300091900,
+            "volume_serial": "7220568048185129294"
+          },
+          "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-jan1-boundary-probe-current267-profile-a1098\\checkpoints\\des-annual-boundary-day2.ck3",
+          "sha256": "f7d1797e4c427dbae5bf11371bd5dffae89ad7fd4abe7d4b025f5a49d8f691e0"
+        }
+      },
+      {
+        "receipt": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\des-a1075-initial-input-reclamation-a01\\actual-result.json",
+          "bytes": 2720,
+          "sha256": "d268bd7a81656523b0a5705202b6ddda325f8075b5d76c7dc8916efd60937b9f"
+        },
+        "originals_now_unreadable": [
+          {
+            "path": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly55-bookmark-current267-profile-a1075\\profile-states\\gui-df68000d34564459b9c2e2e53178d17f\\profile\\save games\\des-ordinary-dynasty-title.ck3",
+            "original_fullSHA": "da628e498e3c08f6223965eaeda20878fd53554831039eb1988d91346694a8c9",
+            "original_Win32_identity": {
+              "allocated_bytes": 168415232,
+              "attributes": 32,
+              "creation_filetime": "134398823665331534",
+              "delete_pending": false,
+              "directory": false,
+              "file_id128": "65684f00000002000000000000000000",
+              "links": 1,
+              "logical_bytes": 168412493,
+              "mtime_ns": 1795408766683968700,
+              "volume_serial": "7220568048185129294"
+            },
+            "availability": "DELETED_ORIGINAL_REPLICA_UNREADABLE"
+          }
+        ],
+        "allocated_removed_bytes": 168415232,
+        "logical_removed_bytes": 168412493,
+        "retained_independent_archive": {
+          "bytes": 168412493,
+          "metadata": {
+            "allocated_bytes": 168415232,
+            "attributes": 32,
+            "creation_filetime": "134398785741200302",
+            "delete_pending": false,
+            "directory": false,
+            "file_id128": "ff8e4f00000001000000000000000000",
+            "links": 1,
+            "logical_bytes": 168412493,
+            "mtime_ns": 1795404968641652500,
+            "volume_serial": "7220568048185129294"
+          },
+          "path": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly55-current267-profile-a1055\\checkpoints\\des-ordinary-dynasty-title.ck3",
+          "sha256": "da628e498e3c08f6223965eaeda20878fd53554831039eb1988d91346694a8c9"
+        }
+      },
+      {
+        "receipt": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\des-a1098-initial-input-reclamation-a01\\actual-result.json",
+          "bytes": 2727,
+          "sha256": "dd933572caed8273430b608ea397f5b1f10f2e59cc103b78fe48c98729b53721"
+        },
+        "originals_now_unreadable": [
+          {
+            "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-jan1-boundary-probe-current267-profile-a1098\\profile-states\\gui-76b4c9a90e2a4d849ebc19602a92ee54\\profile\\save games\\des-ordinary-dynasty-jan1.ck3",
+            "original_fullSHA": "0c407fb7f8a0a0874758e2a6152674870ce8499edc969edd75314ad3999ab4fd",
+            "original_Win32_identity": {
+              "allocated_bytes": 172027904,
+              "attributes": 32,
+              "creation_filetime": "134398841613151171",
+              "delete_pending": false,
+              "directory": false,
+              "file_id128": "1bad4f00000001000000000000000000",
+              "links": 1,
+              "logical_bytes": 172026479,
+              "mtime_ns": 1795410561467695100,
+              "volume_serial": "7220568048185129294"
+            },
+            "availability": "DELETED_ORIGINAL_REPLICA_UNREADABLE"
+          }
+        ],
+        "allocated_removed_bytes": 172027904,
+        "logical_removed_bytes": 172026479,
+        "retained_independent_archive": {
+          "bytes": 172026479,
+          "metadata": {
+            "allocated_bytes": 172027904,
+            "attributes": 32,
+            "creation_filetime": "134398831707683819",
+            "delete_pending": false,
+            "directory": false,
+            "file_id128": "c59b4f00000001000000000000000000",
+            "links": 1,
+            "logical_bytes": 172026479,
+            "mtime_ns": 1795409564498529100,
+            "volume_serial": "7220568048185129294"
+          },
+          "path": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly55-bookmark-current267-profile-a1075\\checkpoints\\des-ordinary-dynasty-jan1.ck3",
+          "sha256": "0c407fb7f8a0a0874758e2a6152674870ce8499edc969edd75314ad3999ab4fd"
+        }
+      }
+    ],
+    "generated_outputs_deleted": 3,
+    "old_initial_copies_deleted": 2,
+    "allocated_removed_total_bytes": 858603520,
+    "logical_removed_total_bytes": 858595987,
+    "old_a1075_a1098_prepared_input_paths": "Explicitly retired/unreadable; do not rerun old wrappers or reference these as active inputs. Historical reports not rewritten.",
+    "independent_f7d_0c_Da_archives": "Retained distinct identities",
+    "other_logs_Source_shaders_UNKNOWN": "Unchanged",
+    "volume_free_attribution": false,
+    "old_spent_or_held_refund": false
+  },
+  "documentation_update": {
+    "performance_document": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\docs\\performance-annual-0.2.3.md",
+      "bytes": 2821,
+      "sha256": "2b2336126a12de21bb060fb6803ffc9e4af1690b73a092eb323c81d162e7ba05"
+    },
+    "old_not_yet_live_sentence": "Replaced by actual finite old-save/migration/monthly-drain/annual-recovery/HouseHead/cold facts and explicit remaining performance/publication limits",
+    "sibling_order_wording": "No strict engine-child completion guarantee",
+    "performance_doc_in_runtime71": false,
+    "70_non_descriptor_runtime_payloads_verified_unchanged_against_candidate_MF": true,
+    "descriptor_unchanged_canonical_builder_transform": true,
+    "runtime_changes": 0
+  },
+  "not_qualified": [
+    "NativeCreate",
+    "instant_title_callback",
+    "wholeproduct",
+    "fullSDK",
+    "measured_CPU_FPS_speedup",
+    "Workshop_release"
+  ],
+  "publication_counts": {
+    "uploaded": "12/17",
+    "strict": "9/17",
+    "DES_published": false
+  },
+  "this_unit": "Existing small JSON and source bytes plus docs-only update; no real Save/OS/Game/SDK access or new tests/Maven/package/build/tag/publication."
+}
