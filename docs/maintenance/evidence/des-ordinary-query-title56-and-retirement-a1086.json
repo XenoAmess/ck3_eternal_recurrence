@@ -1,0 +1,270 @@
+{
+  "schema": "xar.des.ordinary-query-title56-and-selected-retirement.finite-maintenance-index.v1",
+  "at_utc": "2026-11-23T04:43:31.507173+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "actual_macro_repaired_query": {
+    "status": "ACTUAL_ORDINARY_QUERY_PASS_ONLY",
+    "actual_summary": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly55-current267-profile-a1055\\operations\\real-events-after-macro-fix-a1069\\result\\summary.json",
+      "bytes": 18510,
+      "sha256": "21b7cbd85026671e2fbe342a974e4180aa0563f3fb999b91e3403cfd8db0a4f0"
+    },
+    "original_source": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly55-current267-profile-a1055\\operations\\real-events-after-macro-fix-a1069\\result\\lyd-query\\read-result-token.json",
+      "bytes": 2645,
+      "sha256": "42d3c9ec668773bc2f6e6b7dbab52c7248d9040feb9be43f50cd8cf645759c2a"
+    },
+    "Native_DLL_prefix": "1552bd9e",
+    "actual_complete_census": {
+      "named_roots": 1,
+      "instance_id": 1,
+      "definition": "bookmark.1070",
+      "recipient": 36423,
+      "authored_options": 3,
+      "all3_NativeCan": true,
+      "named_bound_visible_enabled": true
+    },
+    "effect_attempted": false,
+    "native_returned": false,
+    "claim_sequence": "0",
+    "choose_calls": 0,
+    "Date_calls": 0,
+    "selection_permission": "Not provided by existing LYD roles; original query remains readonly DATA."
+  },
+  "actual_title_checkpoint": {
+    "status": "TITLE_TRANSACTION_AND_CANDIDATE_PARTIAL",
+    "actual_facts": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-oldsave-inspection-a942\\ordinary-title-actual-facts-a1073.json",
+      "bytes": 5768,
+      "sha256": "902817d678ed830f2a084a7a10440525e69be941476c4aae037bd2bab67b2a40"
+    },
+    "actual_Rite150_head": 36423,
+    "actual_Dynasty15400_dynast": 36423,
+    "actual_MainHouse16113_head": 77331,
+    "head_following": "NOT_PROVEN; Dynast and HouseHead are distinct fields, do not infer HouseHead from Dynast.",
+    "zero_new_days": true,
+    "save_calls": 1,
+    "independent_archive": {
+      "bytes": 168412493,
+      "metadata": {
+        "allocated_bytes": 168415232,
+        "attributes": 32,
+        "creation_filetime": "134398785741200302",
+        "delete_pending": false,
+        "directory": false,
+        "file_id128": "ff8e4f00000001000000000000000000",
+        "links": 1,
+        "logical_bytes": 168412493,
+        "mtime_ns": 1795404968641652500,
+        "volume_serial": "7220568048185129294"
+      },
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly55-current267-profile-a1055\\checkpoints\\des-ordinary-dynasty-title.ck3",
+      "sha256": "da628e498e3c08f6223965eaeda20878fd53554831039eb1988d91346694a8c9"
+    },
+    "source_profile_outputs": "The three generated outputs are now retired/unreadable below; do not reuse their historical paths."
+  },
+  "actual_whole_dynasty_baseline": {
+    "status": "BEFORE_JAN1_BASELINE_ONLY_NOT_ANNUAL_PASS",
+    "baseline_facts": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-oldsave-inspection-a942\\beforeJan1-full-dynasty-facts-a1085.json",
+      "bytes": 4625,
+      "sha256": "72f24432d0c8e5e3313ef71f4708dd121cf2ae271edbac2eb78c692f8c02f0de"
+    },
+    "actual_report": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-oldsave-inspection-a942\\whole-dynasty-before-Jan1-win32-a1083\\inspection.report.json",
+      "bytes": 23986,
+      "sha256": "ea8d63936461bf96ad5e6d6dc6120985a60620c1744771f7debab8437993c945"
+    },
+    "actual_execution": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-oldsave-inspection-a942\\whole-dynasty-before-Jan1-win32-a1083\\inspection.exit.json",
+      "bytes": 4979,
+      "sha256": "b7c5ec1e55600c8df858ae578d20b0379b05253d3e6d7e69330456004fce4632"
+    },
+    "dynasty": 15400,
+    "main_house": 16113,
+    "complete_living_member_count": 56,
+    "complete_house_ids": [
+      "16113",
+      "16114",
+      "16115"
+    ],
+    "nonmain_living_members": [
+      {
+        "actorId": "36423",
+        "houseId": "16115"
+      },
+      {
+        "actorId": "77332",
+        "houseId": "16114"
+      }
+    ],
+    "unresolved_house_relations": 0,
+    "two_full_EOF": true,
+    "two_decoder_exits": [
+      0,
+      0
+    ],
+    "stream_SHA256": "da628e498e3c08f6223965eaeda20878fd53554831039eb1988d91346694a8c9",
+    "stream_bytes": "168412493",
+    "native_material_identity_before_after": {
+      "realPath": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly55-current267-profile-a1055\\checkpoints\\des-ordinary-dynasty-title.ck3",
+      "bytes": 168412493,
+      "volumeSerialDecimal": "7220568048185129294",
+      "fileId128Decimal": "281474981924607",
+      "fileId128LittleEndianHex": "ff8e4f00000001000000000000000000",
+      "creationFiletimeDecimal": "134398785741200302",
+      "lastWriteFiletimeDecimal": "134398785686416525",
+      "changeFiletimeDecimal": "134398785817837998",
+      "allocatedBytes": 168415232,
+      "linkCount": 1
+    },
+    "two_pass_native_material_unchanged": true,
+    "original_a1079_fileKey_NULL_failure_preserved": true,
+    "qualification": "Complete typed membership baseline before Jan1 only. Not an annual recovery or head-following result."
+  },
+  "actual_normal_scene_end": {
+    "terminal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly55-current267-profile-a1055\\owner\\terminal.json",
+      "bytes": 1068,
+      "sha256": "c65e7d3e263be316bd56f6c16f504f738191f79ac8d80e17ab99857d8343028e"
+    },
+    "creator_end": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly55-current267-profile-a1055\\creator-end.json",
+      "bytes": 617,
+      "sha256": "826b953379fb5fc854982aca97ef9b76eeaf02e48f39d685abc6a143cbcfd64f"
+    },
+    "Game": {
+      "creation_filetime": "134398780974836147",
+      "executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "pid": 816
+    },
+    "CreatorPID": 21408,
+    "Game_exit_code": 0,
+    "creator_exit_code": 0,
+    "terminal_kind": "NATURAL_EXIT",
+    "Job_active_processes": 0,
+    "cleanup_proven": true,
+    "observed_at_utc": "2026-11-23T03:37:19.403681400Z"
+  },
+  "actual_a1055_output_retirement": {
+    "actual_result": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-a1055-save-duplicates-reclamation-a01\\actual-result.json",
+      "bytes": 5190,
+      "sha256": "6ff34cf5307ed5d40d35dce8ebdb9438f7478d50a0c12e5f512a734d9f912263"
+    },
+    "deleted_originals": [
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly55-current267-profile-a1055\\profile-states\\gui-d0ea3bf7fdb44055ba6ea50b3d267e84\\profile\\last_save.ck3",
+        "FileID128": "fd8e4f00000001000000000000000000",
+        "sha256": "da628e498e3c08f6223965eaeda20878fd53554831039eb1988d91346694a8c9",
+        "availability": "DELETED_ORIGINAL_REPLICA_UNREADABLE"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly55-current267-profile-a1055\\profile-states\\gui-d0ea3bf7fdb44055ba6ea50b3d267e84\\profile\\save games\\autosave.ck3",
+        "FileID128": "fb8e4f00000001000000000000000000",
+        "sha256": "da628e498e3c08f6223965eaeda20878fd53554831039eb1988d91346694a8c9",
+        "availability": "DELETED_ORIGINAL_REPLICA_UNREADABLE"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly55-current267-profile-a1055\\profile-states\\gui-d0ea3bf7fdb44055ba6ea50b3d267e84\\profile\\save games\\xar_checkpoint.ck3",
+        "FileID128": "fe8e4f00000001000000000000000000",
+        "sha256": "da628e498e3c08f6223965eaeda20878fd53554831039eb1988d91346694a8c9",
+        "availability": "DELETED_ORIGINAL_REPLICA_UNREADABLE"
+      }
+    ],
+    "actual_removed_allocated_bytes": 505245696,
+    "actual_removed_logical_bytes": 505237479,
+    "retained_independent_archive": {
+      "bytes": 168412493,
+      "metadata": {
+        "allocated_bytes": 168415232,
+        "attributes": 32,
+        "creation_filetime": "134398785741200302",
+        "delete_pending": false,
+        "directory": false,
+        "file_id128": "ff8e4f00000001000000000000000000",
+        "links": 1,
+        "logical_bytes": 168412493,
+        "mtime_ns": 1795404968641652500,
+        "volume_serial": "7220568048185129294"
+      },
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly55-current267-profile-a1055\\checkpoints\\des-ordinary-dynasty-title.ck3",
+      "sha256": "da628e498e3c08f6223965eaeda20878fd53554831039eb1988d91346694a8c9"
+    },
+    "scope": "Only three completed-scene generated Save replicas. Original identities deleted and unreadable; other inputs retained. Not video7day scope, no new cleanup in this docs unit."
+  },
+  "selected_shader_retirement": {
+    "actual_aggregate_index": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\closed-shader-selected-six-batches-END-a1086.json",
+      "bytes": 2026,
+      "sha256": "d5bbddf4cd7a5da88c46bca84f893a875e0889aeadce76b265d81d6394899e59"
+    },
+    "actual_batch_result_refs": [
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-closed-shader-reclamation-a1078-v2\\batches\\des-shader-a962-b1-a1078\\actual-result.json",
+        "bytes": 141783,
+        "sha256": "385289fb4ddd7f4330c788a29846c1e4a60cb926a18a043e5c413053eadc0aed"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-closed-shader-reclamation-a1078-v2\\batches\\des-shader-a991-b1-a1078\\actual-result.json",
+        "bytes": 141780,
+        "sha256": "510201214858455259c0587153543200162e8002af6b93950b5f996620c64d3b"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-closed-shader-reclamation-a1078-v2\\batches\\des-shader-a981-b1-a1078\\actual-result.json",
+        "bytes": 141778,
+        "sha256": "9a0024321c3cbe08e6c13c455594d422c64a08b82e245512b7dba3a588b3d3b5"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-closed-shader-reclamation-a1078-v2\\batches\\des-shader-a1026-b1-a1078\\actual-result.json",
+        "bytes": 141787,
+        "sha256": "fc33c72855a753c4c3ed8879673a6936c167b4738d695a50d31277a4444153b0"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-closed-shader-reclamation-a1078-v2\\batches\\des-shader-a1033-b1-a1078\\actual-result.json",
+        "bytes": 141787,
+        "sha256": "16245915bc944d2edd1417a77fbc0c43db1e844d8b5544198e6b42905e30a4f2"
+      },
+      {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-closed-shader-reclamation-a1078-v2\\batches\\des-shader-a1055-b1-a1078\\actual-result.json",
+        "bytes": 141789,
+        "sha256": "5d286ed7a32277025e88f99488e926d010e0f4d36eca6f5dcb117a40b8ce00cb"
+      }
+    ],
+    "batches": 6,
+    "selected_files_per_batch": 1000,
+    "selected_files_retired_unreadable": 6000,
+    "allocated_removed_bytes": 812531712,
+    "logical_removed_bytes": 799376118,
+    "original_master_a940": "RETAINED_UNCHANGED",
+    "unselected_candidates": "NOT_DELETED_NOT_SCHEDULED",
+    "original_v1_attempt": "Root-reported pure-inventory600s timeout with0deletions remains preserved; not rewritten as successful cleanup.",
+    "whole_inventory_not_imported_into_Git": true,
+    "no_volume_free_delta_attribution": true,
+    "held_spent_not_refunded": true,
+    "new_writer_future_bytes": 0
+  },
+  "new_v44_pair_at_handoff": {
+    "actual_sixpins": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-bookmark1070-source-a01\\actual-six-pins.json",
+      "bytes": 1536,
+      "sha256": "4eac61c1cb7066f7de6799e5e4cdae28518b092db88e79a592761b1e4c4054d7"
+    },
+    "runtime_manifest_SHA256": "178b05cd8cf2cc3d6aa5653042f4c67e3ec035bd7908a5fc1051e901e6140403",
+    "Native_DLL_SHA256": "d1e80d549b38cac5406a9c94f3f151e226a3391666b81dc62ac5dad295f2eeef",
+    "fixed_choice_live": "NOT_RUN_AT_THIS_EVIDENCE_CUT",
+    "Scene": "Root independently preparing fresh a1075; docs is not a launch gate."
+  },
+  "not_granted": [
+    "Jan1 annual recovery",
+    "HouseHead following",
+    "NativeCreate/Accept",
+    "whole product or whole SDK",
+    "formal publication"
+  ],
+  "this_docs_unit": "Small existing JSON originals only; no Save body, OS/process/Game/SDK/Steam/HTTP/JVM/test/build/cleanup calls. Previously ended SDK purposes remain closed.",
+  "Workshop_published_count": 12,
+  "strict_closed_count": 9,
+  "denominator": 17,
+  "DES_published": false
+}
