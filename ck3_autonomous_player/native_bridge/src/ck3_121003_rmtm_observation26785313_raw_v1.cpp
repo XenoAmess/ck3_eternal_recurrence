@@ -114,11 +114,49 @@ template<class T>bool At(std::uintptr_t p,std::size_t off,T&v)noexcept{return p&
  std::uint8_t subtype=255;std::int32_t count=-1;std::uintptr_t alternate=1;
  return Typed(definition,image,0x5006388)&&Typed(definition+0xB48,image,0x4AFA8E8)&&At(definition,0x1B61,subtype)&&subtype==0&&At(definition,0xB6C,count)&&count==0&&At(definition,0xBA8,alternate)&&!alternate&&Add(proof,definition+0xB48,0x68)&&Add(proof,definition+0x1B61,1);
 }
-[[maybe_unused]]bool ItemCan([[maybe_unused]]std::uintptr_t image,std::uintptr_t item,bool&can)noexcept{
- __try{can=reinterpret_cast<bool(__fastcall*)(const void*)>(XAR_RMTM_OBSERVATION_CALL_ADDRESS(image,0xD3E460))(reinterpret_cast<const void*>(item));return true;}__except(EXCEPTION_EXECUTE_HANDLER){return false;}
+struct OfferItemAny267V1 {std::uintptr_t type=0;std::array<std::byte,32>storage{};};
+static_assert(sizeof(OfferItemAny267V1)==40);
+[[maybe_unused]]bool ItemCan([[maybe_unused]]std::uintptr_t image,std::uintptr_t item,bool&can,bool&cleanup)noexcept{
+ // D3E460 is typed IsValid(item RCX, owned Any40* RDX); AL is handled,
+ // not the Boolean payload. Missing RDX is an ABI violation, not false DATA.
+ can=false;cleanup=true;
+ struct Guarded {std::array<std::uint64_t,2>before{0x9315ABCDEF267001ULL,0xF010203040506070ULL};
+  OfferItemAny267V1 any{};std::array<std::uint64_t,2>after{0xAB35133726785001ULL,0xABCDEF9876543210ULL};}owned;
+ const auto front=owned.before,back=owned.after;
+ std::uintptr_t empty=0,boolean=0;bool initialized=false,valid=false;
+ std::array<std::byte,0x28>before{},after{};
+ __try{
+  using Factory=std::uintptr_t(__fastcall*)();
+  empty=reinterpret_cast<Factory>(XAR_RMTM_OBSERVATION_CALL_ADDRESS(image,0x8B2EF0))();
+  boolean=reinterpret_cast<Factory>(XAR_RMTM_OBSERVATION_CALL_ADDRESS(image,0x8C2930))();
+  owned.any.type=empty;initialized=true;
+  if(empty&&boolean&&item&&Copy(item,before.data(),before.size())){
+   const bool handled=reinterpret_cast<bool(__fastcall*)(const void*,OfferItemAny267V1*)>(XAR_RMTM_OBSERVATION_CALL_ADDRESS(image,0xD3E460))(
+      reinterpret_cast<const void*>(item),&owned.any);
+   const auto value=std::to_integer<unsigned char>(owned.any.storage[0]);
+   const auto physical=std::to_integer<unsigned char>(before[0x1C]);
+   valid=handled&&owned.any.type==boolean&&value<=1&&physical<=1&&value==physical&&
+    Copy(item,after.data(),after.size())&&before==after&&owned.before==front&&owned.after==back;
+   if(valid)can=value!=0;
+  }
+ }__except(EXCEPTION_EXECUTE_HANDLER){cleanup=false;}
+ if(owned.before!=front||owned.after!=back)cleanup=false;
+ if(initialized){
+  __try{
+   if(!owned.any.type||(owned.any.type!=empty&&owned.any.type!=boolean))cleanup=false;
+   else{
+    const auto vt=*reinterpret_cast<const std::uintptr_t*>(owned.any.type);
+    const auto dtor=*reinterpret_cast<const std::uintptr_t*>(vt+0x18);
+    if(dtor<image||dtor-image>=kImageSize)cleanup=false;
+    else reinterpret_cast<void(__fastcall*)(void*,void*)>(XAR_RMTM_OBSERVATION_CALL_ADDRESS(image,dtor-image))(
+      reinterpret_cast<void*>(owned.any.type),owned.any.storage.data());
+   }
+  }__except(EXCEPTION_EXECUTE_HANDLER){cleanup=false;}
+ }
+ if(!valid||!cleanup)can=false;return valid&&cleanup;
 }
 [[maybe_unused]]bool OfferRows(const ReadonlyBindings&b,const RmtmObservationFrame267V1&f,std::uintptr_t menu,RmtmObservationRaw267V1&out){
- auto&proof=out.fingerprint;std::uintptr_t categories=0,more=0;std::int32_t categoryCount=0,moreCount=0;std::size_t total=0;std::unordered_set<std::uintptr_t>visited;
+ auto&proof=out.fingerprint;std::uintptr_t categories=0,more=0,matched=0;std::int32_t categoryCount=0,moreCount=0;std::size_t total=0;std::unordered_set<std::uintptr_t>visited;
  const auto items=[&](std::uintptr_t header){
   std::uintptr_t rows=0;std::int32_t count=0;if(!Array(header,4096,rows,count,proof)||total+static_cast<std::size_t>(count)>4096)return false;total+=static_cast<std::size_t>(count);
   for(std::int32_t n=0;n<count;++n){std::uintptr_t item=0,owner=0,definition=0;std::uint32_t tag=99;
@@ -128,9 +166,14 @@ template<class T>bool At(std::uintptr_t p,std::size_t off,T&v)noexcept{return p&
    if(!visited.insert(item).second||tag!=0)continue;
    if(!At(item,8,definition)||!Typed(definition,b.module_base,0x5006388))return false;std::string key;std::uint32_t magic=0;
    if(!At(definition,0x38,magic)||magic!=0x4744624FU||!String(definition+0x18,256,key,proof,true))return false;
-   if(key!="offer_vassalization_interaction")continue;if(out.item)return false;
-   if(!EmptyConfirmationTrigger(b.module_base,definition,proof))return false;bool can=false;out.entered=true;if(!ItemCan(b.module_base,item,can)){out.cleanup_known=false;return false;}
-   std::uint8_t admitted=0;if(!At(item,0x1C,admitted)||!can||!admitted)return false;out.item=item;out.definition=definition;
+   if(key!="offer_vassalization_interaction")continue;if(matched)return false;matched=item;
+   if(!EmptyConfirmationTrigger(b.module_base,definition,proof))return false;bool can=false,clean=true;out.entered=true;
+   const bool read=ItemCan(b.module_base,item,can,clean);out.cleanup_known&=clean;if(!read)return false;
+   const auto value=static_cast<unsigned char>(can);proof.push_back(static_cast<std::byte>(value));
+   std::uint8_t admitted=0;if(!At(item,0x1C,admitted)||admitted>1)return false;
+   // A known false Boolean is readable DATA, not a malformed source. It never
+   // supplies an actionable fixed item or permission to populate the dialog.
+   if(!can||!admitted)continue;out.item=item;out.definition=definition;
   }return true;
  };
  if(!Array(menu+0x118,256,categories,categoryCount,proof))return false;
