@@ -1,0 +1,26 @@
+{
+  "schema": "xar.ccc.popular-opinion-four-key-source.v1",
+  "status": "EXACT_SOURCE_ADOPTED_NEW_CANDIDATE_AND_ENGINE_LOAD_PENDING",
+  "source_delivery": {
+    "path": "D:/ck3-state/upgrade-20261118/ccc-current267-popular-opinion-source-fix-a01/delivery-final.json",
+    "bytes": 1482,
+    "sha256": "d2ddf05d03ce8cfac889036758192980ed14c1e4ee19019727c1d434e24f27d3"
+  },
+  "official_current_modifier_and_trait_sources": {
+    "path": "D:/ck3-state/upgrade-20261118/ccc-current267-popular-opinion-source-fix-a01/official-source-evidence.json",
+    "bytes": 7063,
+    "sha256": "0a6651d7b80ed2fa7527f62e2afda747e8f2425d3890b92c8359d47cf121a334"
+  },
+  "runtime_leaf": "mod_celestial_commerce_corruption/common/traits/xccc_corruption_traits.txt",
+  "base": {"bytes": 1993, "sha256": "98007f87a367eb5488ed3a44fb3b119082260d8260c0de121758c069aee84aeb"},
+  "target": {"bytes": 1997, "sha256": "ba66a4c1bddf560f0e79bf6b0a31cf4a3cdc7fc8cbf1f9d81b7f7dbbb3d1d5c0"},
+  "change": "Only four trait-level county_opinion_add keys become the officially supported popular_opinion_add. Penalties -10/-30/-50/-80 and all other bytes are preserved by exact inverse readback.",
+  "Root_reported_loader_problem": "Current engine rejected four county_opinion_add entries in the old22 product. Active a1254 remains that old payload and validates only the new Java post-cancel readback path.",
+  "runtime_files_unchanged_count": 22,
+  "candidate_version_unchanged": "1.0.2",
+  "canonical_workshop_item_id": "3804807463",
+  "old_scene_candidate_fixture_Saved_JavaNative_unchanged": true,
+  "new_Maven_software_test_tag_or_publication": false,
+  "new_loader_no_four_errors_and_affected_finite_business": "NOT_RUN_PENDING_SEPARATE_NEW_CANDIDATE_AND_ROOT_SCENE",
+  "numeric_popular_opinion_or_net_county_business_PASS": false
+}
