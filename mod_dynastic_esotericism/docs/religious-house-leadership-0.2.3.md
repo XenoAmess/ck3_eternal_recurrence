@@ -26,10 +26,10 @@ House head和Dynast是不同状态。已核原版提供House的 `set_house_head`
 1. 原创建、Native首绑/编辑claim及普通成员同步保持。`des_sync_rite_effect` 最后
    调用新同步：实际宗教领袖走原有信徒入族路径，然后只在同一绑定宗族内进入宗家。
 2. 对原版 `on_title_gain` 的真实新holder增加一条子action。仅新holder正是该绑定
-   Rite的实际head时调用原完整同步路径，支持宗教领袖头衔继承/转交后的及时同步。
+   Rite的实际head时只做家主同步，支持宗教领袖头衔继承/转交后的及时同步。
    不把任意得头衔者当领袖，也不覆盖原版on_title_gain的effects/events。
 3. 原 `on_rite_updated` / 创建流已经走 `des_sync_rite_effect`，因此使用相同逻辑。
-   既有30日维护也只多做这项固定head检查，不增加全世界逐日扫描。
+   全量维护改由年度链调度；旧存档遗留的月度回调仅清理旧lease，不再同步家主或重新排期。
 4. `yearly_global_pulse` 的顺序保留 watchdog，再做原cadet全体在世成员（含玩家）
    回宗家，最后做新家主同步。原cadet effect、稳定锚点和不改死者谱系的规则不变。
 

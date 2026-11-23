@@ -18,7 +18,7 @@
 
 ## 年度处理边界
 
-原 `yearly_global_pulse` 链保留 `des_annual_watchdog`，追加一次 `des_annual_cadet_recovery`。新增 action 同步遍历已登记且双向有效的宗族化 Rite，不另起每日、月度或 delayed queue。只在年度 effect 内先收集该 Dynasty 的非宗家成员，再逐个核对仍属于同一 Dynasty 后 `set_house`，最后清理临时成员列表。月度 binding repair 仅能补登记缺失锚点，不迁人。
+原 `yearly_global_pulse` 链保留 `des_annual_watchdog`，追加一次 `des_annual_cadet_recovery`。新增 action 同步遍历已登记且双向有效的宗族化 Rite，不另起每日、月度或 delayed queue。只在年度 effect 内先收集该 Dynasty 的非宗家成员，再逐个核对仍属于同一 Dynasty 后 `set_house`，最后清理临时成员列表。旧存档遗留的月度回调只清理旧维护 lease，不再做 binding repair、成员迁移或重新排期。
 
 代码明确以 `is_alive = yes` 处理所有存活支系成员，包含玩家、AI、不同 Faith 和不同 Rite；已在宗家的成员保持不变。不依赖 `every_dynasty_member` 对死者的默认枚举语义，也不改写死者历史谱系。软件回归证明同一 effect 重复执行后无新增迁移；真正每年一次的调度仍由实际年度 hook 提供，不能把手动调该 effect 冒称已经自然过一年。
 
