@@ -143,6 +143,7 @@ des_initialize_loaded_game_effect = {
             is_alive = yes
             OR = {
                 NOT = { has_global_variable = des_initialized }
+                NOT = { has_global_variable = des_leadership_024_checked }
                 AND = {
                     exists = rite:des_procreation_rite
                     NOT = { has_global_variable = des_procreation_preset_023_checked }
@@ -155,6 +156,7 @@ des_initialize_loaded_game_effect = {
             des_maintenance_effect = yes
         }
         des_reconcile_procreation_preset_023_effect = yes
+        des_reconcile_loaded_leadership_024_effect = yes
     }
 }
 

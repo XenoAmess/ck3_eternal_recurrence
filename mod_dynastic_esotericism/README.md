@@ -1,6 +1,8 @@
 # 宗族化密教 / Dynastic Esotericism
 
-0.2.3 修复候选：在未启用本 Mod 时创建的旧存档中，加载后自动执行一次缺省初始化；保留原手动兼容决议。源码／离线回归与后续实际旧档验收、发布分别记录，尚未宣称公开。见 [旧档初始化修复](docs/old-save-bootstrap-2026-11-23.md)。
+0.2.4 当前为离线修复候选：产品真正新建的绑定宗族以所属礼仪的实际领袖同时担任宗家家主和宗族族长为目标；只有两个真实职位均对齐才完成。族长错位且有在世支系时，限定该绑定宗族归并到稳定宗家后重算，不改复用的原生宗族。加载旧档、领袖相关生命周期和年度兜底分别处理，已对齐的局部路径不扫人物。源码／软件、候选构建、实际双职位与头衔副作用、再保存及发布分开记录；尚未宣称0.2.4实机或公开。见[本次双职位规则](docs/leadership-continuity-0.2.4.md)及[永久候选更改说明](../docs/release-changelogs/dynastic-esotericism/0.2.4.md)。
+
+0.2.3 已在同一 Workshop3826991345实际更新，71文件下载精确、公开标题／正文／Notes完整回读及独立缓存冷载／正常退出有限闭环已完成；旧档自动初始化、完整旧繁育配置迁移和跨年后全员回宗家／宗家家主的各自有限证据保持，不外推0.2.4双职位修复。见[0.2.3永久记录](../docs/release-changelogs/dynastic-esotericism/0.2.3.md)及[有限交付记录](../docs/maintenance/evidence/des023-finite-publication-and-cache-complete-a1132.json)。
 
 可选默认教义 V2 的兼容范围及 DES→RRF 发布顺序见[中英说明](docs/optional-defaults-v2-2026-11-20.md)。 / See the [V2 compatibility and publication order](docs/optional-defaults-v2-2026-11-20.md).
 

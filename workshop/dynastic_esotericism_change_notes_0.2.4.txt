@@ -1,0 +1,7 @@
+0.2.4 未发布候选 / Unreleased candidate
+
+宗族化产品新建的绑定宗族以实际所属礼仪领袖同时担任宗家家主与宗族族长为目标。实际两项均对齐才完成；族长错位且有在世支系时，仅归并该绑定宗族到稳定宗家后重算。增加已初始化旧档的一次兼容入口与领袖相关生命周期有界重读，保留年度兜底；已对齐局部路径不扫描全员。复用原生宗族、来源不明旧绑定、原生pending及外礼仪共享教宗不误改。
+
+目前只有离线源码／软件资格与候选构建计划，双职位、头衔副作用、保存／冷载和公开发布待独立实机；不授CPU／FPS提速或即时通用同步。0.2.3原71文件发布、旧证据与媒体保持。
+
+Targets both actual House Head and Dynasty Head for genuinely mod-created bound dynasties, following the living head of their own rite. Only an observed mismatch with living cadets uses single-dynasty consolidation and vanilla recalculation. Adds one-time initialized-save compatibility and bounded leader-lifecycle re-observation, retaining yearly fallback and protected reused/uncertain legacy dynasties. Engine positions, title side effects, persistence and publication are pending; no speed claim is made.

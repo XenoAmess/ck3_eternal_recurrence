@@ -1,73 +1,259 @@
-﻿# Rite scope. This marker is a diagnosis, never permission or a success receipt.
+﻿# Rite scope. This marker is a diagnosis, not permission or a success receipt.
 des_mark_house_leadership_pending_effect = {
     if = {
         limit = { NOT = { has_variable = des_house_leadership_pending } }
         set_variable = { name = des_house_leadership_pending value = yes }
-        debug_log = "DES: created Dynasty House leadership awaits a valid own-Rite head and observed original-House membership"
+        debug_log = "DES: bound Dynasty House head and Dynast await the actual own-Rite head"
     }
 }
 
-# Rite scope. Follow the actual own-Rite religious head, never the current Dynast.
-# All existing creation/edit claims finish before des_sync_rite_effect reaches us.
-des_sync_created_dynasty_leadership_effect = {
+# Rite scope. Recover only facts proven by the existing reciprocal binding.
+# A legacy reciprocal tag never asserts that a historical Dynasty was newly made.
+# Do not replay a native create/edit claim, rename it or modify its CoA here.
+des_reconcile_leadership_binding_metadata_effect = {
+    if = {
+        limit = {
+            exists = var:des_bound_dynasty
+            exists = var:des_join_house
+            NOT = { has_variable = des_binding_in_progress }
+            NOT = { has_variable = des_native_head_claim_pending }
+        }
+        if = {
+            limit = { des_has_active_binding_trigger = yes }
+            var:des_bound_dynasty = { des_capture_cadet_main_house_effect = yes }
+            if = {
+                limit = { NOT = { has_variable = des_binding_mode } }
+                if = {
+                    limit = {
+                        has_variable = des_native_source_was_dynast
+                        exists = var:des_native_source_dynasty
+                        exists = var:des_native_source_house
+                        var:des_native_source_dynasty = var:des_bound_dynasty
+                        var:des_native_source_house = var:des_join_house
+                    }
+                    set_variable = { name = des_binding_mode value = flag:native_dynast_reuse }
+                }
+                else = { set_variable = { name = des_binding_mode value = flag:legacy_reciprocal_binding } }
+            }
+            # The stable original Main is already a proven House of this DY.
+            # Normalize future ordinary member joins too, so they cannot recreate
+            # the very cadet topology this user policy intentionally removes.
+            if = {
+                limit = { var:des_bound_dynasty = { exists = var:des_cadet_main_house } }
+                if = {
+                    limit = { var:des_bound_dynasty.var:des_cadet_main_house.house_dynasty = var:des_bound_dynasty }
+                    if = {
+                        limit = { NOT = { var:des_join_house = var:des_bound_dynasty.var:des_cadet_main_house } }
+                        set_variable = { name = des_join_house value = var:des_bound_dynasty.var:des_cadet_main_house }
+                    }
+                }
+            }
+        }
+    }
+}
+
+# Rite scope. At most one queued recheck, never a self-renewing daily/monthly loop.
+des_queue_house_leadership_recheck_effect = {
     if = {
         limit = {
             des_created_dynasty_leadership_target_trigger = yes
-            NOT = { has_variable = des_leadership_sync_in_progress }
+            NOT = { has_variable = des_leadership_recheck_queued }
         }
-        save_scope_as = des_leadership_rite
-        var:des_bound_dynasty.var:des_cadet_main_house = { save_scope_as = des_leadership_main_house }
-        des_mark_house_leadership_pending_effect = yes
+        set_variable = { name = des_leadership_recheck_queued value = yes }
+        trigger_event = { on_action = des_local_house_leadership_recheck days = 1 }
+    }
+}
+
+# Rite scope. Existing entry name is retained for old callers/saved callbacks.
+# Normal aligned changes are local O(1). Only a real Dynast mismatch with living
+# cadets takes the already authorized one-Dynasty all-living recovery path.
+des_sync_created_dynasty_leadership_effect = {
+    if = {
+        limit = { NOT = { has_variable = des_leadership_sync_in_progress } }
+        des_reconcile_leadership_binding_metadata_effect = yes
         if = {
-            limit = { des_has_own_living_religious_head_trigger = yes }
-            set_variable = { name = des_leadership_sync_in_progress value = yes }
-            head_of_rite = {
-                save_scope_as = des_leadership_actual_head
-                # The existing product path admits actual followers; it does not
-                # delete their former Dynasty or invent a religious-head identity.
-                des_join_rite_dynasty_effect = yes
-            }
+            limit = { des_created_dynasty_leadership_target_trigger = yes }
+            save_scope_as = des_leadership_rite
+            var:des_bound_dynasty.var:des_cadet_main_house = { save_scope_as = des_leadership_main_house }
+            des_mark_house_leadership_pending_effect = yes
             if = {
-                limit = {
-                    des_created_dynasty_leadership_target_trigger = yes
-                    des_has_own_living_religious_head_trigger = yes
-                    head_of_rite = scope:des_leadership_actual_head
-                    var:des_bound_dynasty.var:des_cadet_main_house = scope:des_leadership_main_house
-                    scope:des_leadership_actual_head = {
-                        is_alive = yes
-                        rite = scope:des_leadership_rite
-                        faith = scope:des_leadership_rite.faith
-                        dynasty = scope:des_leadership_rite.var:des_bound_dynasty
+                limit = { des_has_own_living_religious_head_trigger = yes }
+                set_variable = { name = des_leadership_sync_in_progress value = yes }
+                head_of_rite = {
+                    save_scope_as = des_leadership_actual_head
+                    # A last observed actual leader is a witness only, even if
+                    # House/Dynast convergence is still pending. Not a success flag.
+                    scope:des_leadership_rite = {
+                        if = {
+                            limit = { NOT = { exists = var:des_last_observed_religious_head } }
+                            set_variable = { name = des_last_observed_religious_head value = scope:des_leadership_actual_head }
+                        }
+                        else_if = {
+                            limit = { NOT = { var:des_last_observed_religious_head = scope:des_leadership_actual_head } }
+                            set_variable = { name = des_last_observed_religious_head value = scope:des_leadership_actual_head }
+                        }
                     }
-                }
-                scope:des_leadership_actual_head = {
-                    if = {
-                        limit = { NOT = { house = scope:des_leadership_main_house } }
-                        set_house = scope:des_leadership_main_house
-                    }
+                    des_join_rite_dynasty_effect = yes
                 }
                 if = {
                     limit = {
+                        des_created_dynasty_leadership_target_trigger = yes
+                        des_has_own_living_religious_head_trigger = yes
+                        head_of_rite = scope:des_leadership_actual_head
+                        var:des_bound_dynasty.var:des_cadet_main_house = scope:des_leadership_main_house
                         scope:des_leadership_actual_head = {
-                            house = scope:des_leadership_main_house
+                            is_alive = yes
+                            rite = scope:des_leadership_rite
+                            faith = scope:des_leadership_rite.faith
                             dynasty = scope:des_leadership_rite.var:des_bound_dynasty
                         }
                     }
-                    scope:des_leadership_main_house = {
+                    scope:des_leadership_actual_head = {
                         if = {
-                            limit = { NOT = { house_head = scope:des_leadership_actual_head } }
-                            set_house_head = scope:des_leadership_actual_head
+                            limit = { NOT = { house = scope:des_leadership_main_house } }
+                            set_house = scope:des_leadership_main_house
                         }
                     }
-                    # Inspect the actual field after the effect, not just membership.
+                    # Two explicit nested gates keep the aligned path out of
+                    # any_dynasty_member and the all-living snapshot entirely.
                     if = {
-                        limit = { scope:des_leadership_main_house = { house_head = scope:des_leadership_actual_head } }
-                        remove_variable = des_house_leadership_pending
-                        set_variable = { name = des_last_religious_house_head value = scope:des_leadership_actual_head }
+                        limit = { NOT = { var:des_bound_dynasty.dynast = scope:des_leadership_actual_head } }
+                        if = {
+                            limit = {
+                                var:des_bound_dynasty = {
+                                    any_dynasty_member = {
+                                        is_alive = yes
+                                        NOT = { house = scope:des_leadership_main_house }
+                                    }
+                                }
+                            }
+                            # Same real recovery as Jan1: includes player and
+                            # cross-Rite members, snapshots before set_house.
+                            des_annual_cadet_recovery_effect = yes
+                        }
+                    }
+                    if = {
+                        limit = {
+                            des_created_dynasty_leadership_target_trigger = yes
+                            des_has_own_living_religious_head_trigger = yes
+                            head_of_rite = scope:des_leadership_actual_head
+                            scope:des_leadership_actual_head = {
+                                house = scope:des_leadership_main_house
+                                dynasty = scope:des_leadership_rite.var:des_bound_dynasty
+                            }
+                        }
+                        # This real stock primitive can transfer a noble-family
+                        # title and then reselect Dynast. Same-head is an engine
+                        # no-op: never issue it merely to request a refresh.
+                        if = {
+                            limit = {
+                                NOT = { scope:des_leadership_main_house = { house_head = scope:des_leadership_actual_head } }
+                            }
+                            scope:des_leadership_main_house = { set_house_head = scope:des_leadership_actual_head }
+                        }
+                        if = {
+                            limit = {
+                                scope:des_leadership_main_house = { house_head = scope:des_leadership_actual_head }
+                                var:des_bound_dynasty.dynast = scope:des_leadership_actual_head
+                            }
+                            remove_variable = des_house_leadership_pending
+                            set_variable = { name = des_last_religious_house_head value = scope:des_leadership_actual_head }
+                            set_variable = { name = des_last_religious_dynast value = scope:des_leadership_actual_head }
+                        }
+                    }
+                }
+                remove_variable = des_leadership_sync_in_progress
+            }
+            if = {
+                limit = { has_variable = des_house_leadership_pending }
+                des_queue_house_leadership_recheck_effect = yes
+            }
+        }
+    }
+}
+
+# Any scope. Once per software migration, independent of the already-consumed
+# preset023 marker. Discover existing bindings only: no member/faith-character
+# sweep, no fresh adoption, no native first-binding claim or new-game clergy token.
+des_reconcile_loaded_leadership_024_effect = {
+    if = {
+        limit = {
+            has_global_variable = des_initialized
+            NOT = { has_global_variable = des_leadership_024_checked }
+        }
+        # Consume before setters can reenter through engine head-change hooks.
+        set_global_variable = { name = des_leadership_024_checked value = yes }
+        every_religion_global = {
+            every_faith = {
+                every_faith_rite = {
+                    if = {
+                        limit = { OR = { has_variable = des_bound_dynasty has_variable = des_join_house } }
+                        des_repair_rite_binding_effect = yes
+                        des_sync_created_dynasty_leadership_effect = yes
                     }
                 }
             }
-            remove_variable = des_leadership_sync_in_progress
         }
+    }
+}
+
+
+# Rite scope. Guarded reference checks avoid treating a missing saved head
+# as a match. All may try to queue, but the single per-Rite marker deduplicates.
+des_queue_matching_religious_head_recheck_effect = {
+    if = {
+        limit = { exists = head_of_rite }
+        if = {
+            limit = { head_of_rite = scope:des_leadership_changed_head }
+            des_queue_house_leadership_recheck_effect = yes
+        }
+    }
+    if = {
+        limit = { exists = var:des_last_observed_religious_head }
+        if = {
+            limit = { var:des_last_observed_religious_head = scope:des_leadership_changed_head }
+            des_queue_house_leadership_recheck_effect = yes
+        }
+    }
+    if = {
+        limit = { exists = var:des_last_religious_house_head }
+        if = {
+            limit = { var:des_last_religious_house_head = scope:des_leadership_changed_head }
+            des_queue_house_leadership_recheck_effect = yes
+        }
+    }
+    if = {
+        limit = { exists = var:des_last_religious_dynast }
+        if = {
+            limit = { var:des_last_religious_dynast = scope:des_leadership_changed_head }
+            des_queue_house_leadership_recheck_effect = yes
+        }
+    }
+}
+
+# Character scope, called from the real before-death hook. No immediate election
+# or member sweep: the one next-day callback reads the actual successor instead.
+des_queue_religious_head_death_recheck_effect = {
+    save_scope_as = des_leadership_changed_head
+    if = {
+        limit = { exists = dynasty.var:des_bound_rite }
+        dynasty = {
+            save_scope_as = des_leadership_death_dynasty
+            var:des_bound_rite = {
+                if = {
+                    limit = {
+                        exists = var:des_bound_dynasty
+                        var:des_bound_dynasty = scope:des_leadership_death_dynasty
+                    }
+                    des_queue_matching_religious_head_recheck_effect = yes
+                }
+            }
+        }
+    }
+    # A genuine current Rite head can still be outside the bound Dynasty before
+    # normal product adoption. This route never uses a shared Faith's Pope.
+    if = {
+        limit = { exists = rite }
+        rite = { des_queue_matching_religious_head_recheck_effect = yes }
     }
 }

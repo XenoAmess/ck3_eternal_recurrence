@@ -1,0 +1,111 @@
+{
+  "schema": "xar.des024.actual-source-adoption.v1",
+  "at_utc": "2026-11-23T07:58:50.807440+00:00",
+  "status": "SOURCE_AND_ACTUAL_SCOPED_SOFTWARE_READY_ENGINE_NOT_GRANTED",
+  "version": "0.2.4",
+  "runtime_total": 71,
+  "runtime_changed": 7,
+  "new_runtime_files": 0,
+  "source_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des024-leadership-continuity-source-a01\\source-manifest-a04.json",
+    "bytes": 6257,
+    "sha256": "5700d9237d21af50a552cfd1effed41432d741e6f2ca8c4b7ee268b14077b496"
+  },
+  "test_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des024-leadership-test-source-a01\\final-delivery-a01\\source-manifest-final.json",
+    "bytes": 8504,
+    "sha256": "6c283f7a8c84762112ce9d105cd96913ed32282703abd0c963fc0c6050d691a4"
+  },
+  "actual_first19": {
+    "path": "D:/ck3-state/upgrade-20261118/des024-leadership-test-source-a01/checks-a01/execution.json",
+    "bytes": 3642,
+    "sha256": "9a570cf676f21b5d7e1b5f00841eea269ca166916aadd530d4b4fdd99a340461"
+  },
+  "actual_targeted7": {
+    "path": "D:/ck3-state/upgrade-20261118/des024-leadership-test-source-a01/checks-a02-lifecycle/execution.json",
+    "bytes": 4192,
+    "sha256": "4fe43c14e772c08d790c206c89c124f3eec2843ae22c58133110144cd957028c"
+  },
+  "actual_wholeclass_final24_rerun": false,
+  "tools_Java_changed": false,
+  "version_source": "StaticValidation reads descriptor; tool app artifact0.2.2 is not product version",
+  "formal_tag": "NOT_CREATED",
+  "engine_Save_cold_publication": "NOT_RUN",
+  "targets": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\scripted_triggers\\des_leadership_triggers.txt",
+      "bytes": 1287,
+      "sha256": "0e88bc1eda9b288e3e0288c79d18c513c72db6c1ee7e4a9f3aad34c3c2178dae"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\scripted_effects\\des_leadership_effects.txt",
+      "bytes": 12536,
+      "sha256": "5bacb39a6919d28b0795c6d2c97c39a2af306e31481004b526aebec0ba440f31"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\on_action\\des_on_actions.txt",
+      "bytes": 11550,
+      "sha256": "ea369b96da2ae57f1b3237a401da7cd0f0586acdc301bdf2c16766773b35e32e"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\scripted_effects\\des_initialization_effects.txt",
+      "bytes": 7265,
+      "sha256": "74254413b3c1a050d27d5d192edd671f07865bed7484616a1297a3575a8377fc"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\scripted_guis\\des_saved_game_initialization.txt",
+      "bytes": 587,
+      "sha256": "18bcdc2225f10822481479b3f2a0ac400b9041f683e962bc7d7ef085960ff65f"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\scripted_effects\\des_cadet_effects.txt",
+      "bytes": 3924,
+      "sha256": "dfabca4ad9c7d574b2117f0bbe191eb8a03d35c94799a9c2ebe2749e155e443f"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_des_religious_house_leadership.py",
+      "bytes": 30300,
+      "sha256": "6af6785ebbf574558735c17ca4de4a1d9dbd04412fc8ebfae9026c103de379bf"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_des_cadet_policy.py",
+      "bytes": 18651,
+      "sha256": "947c9831f9ec2e7f92ac3f0541fd4bb0b9a8834fc646307744e63d2374523228"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\descriptor.mod",
+      "bytes": 146,
+      "sha256": "2d7c5e035af8c1be0fde6acd27ea33e97fe5a95fed16e40e22cfd8cc832b52ae"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\README.md",
+      "bytes": 5074,
+      "sha256": "ffe06f3dc9cbf5e7f1e8e39fbd6478a9df326a8302d029f7a50c52e232d20db4"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\docs\\requirements.md",
+      "bytes": 17224,
+      "sha256": "87e66897b9cc3aa75defc6fb72d8a26a79d6b7a1508cfef3ef0a64a8ea29f208"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\workshop\\dynastic_esotericism_description.bbcode",
+      "bytes": 7973,
+      "sha256": "0b0c9a67defd06db80d848006e8366653252ea79cdd86ccc9431b8a5121b1359"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\docs\\leadership-continuity-0.2.4.md",
+      "bytes": 1982,
+      "sha256": "bc2f03f399058235f6fb3f38f944d786553cffbc1c4d23d475d9810172fb4d4a"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\release-changelogs\\dynastic-esotericism\\0.2.4.md",
+      "bytes": 1694,
+      "sha256": "ad391e69b87460f6bcb5dd3f297723bfcabb9315188ef93e59562e60df0bf8ae"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\workshop\\dynastic_esotericism_change_notes_0.2.4.txt",
+      "bytes": 1273,
+      "sha256": "fcbafe31d9b93c1f138d75b42dd7ff10d00b597a0d6bf42f62987c82e39f9ec8"
+    }
+  ]
+}

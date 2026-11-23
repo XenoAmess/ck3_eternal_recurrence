@@ -10,7 +10,7 @@
 
 原生创建或首次改革启用时，现任宗族族长复用原宗族、家族及纹章；其他合格创建者走新建宗族路径。在世信徒加入对应宗族，包括AI、无地人物和儿童，后续改信者也会迁入；重复编辑复用同一绑定。
 
-0.2.3禁止有效绑定宗族的AI通过已覆盖原版入口建支系，含异信仰成员；玩家保留原条件。年度将全部在世支系成员迁回固定宗家，包括玩家，不改死者谱系；旧档宗家不唯一或锚点失效不强迁。仅产品新建宗族的宗家家主跟随实际存活同礼仪领袖，年度集中校正。旧宗族、异礼仪共享教宗及原待处理流程不误改。同步家主；宗族族长仍由原版规则决定。
+0.2.3禁止有效绑定宗族的AI通过已覆盖原版入口建支系，含异信仰成员；玩家保留原条件。年度将全部在世支系成员迁回固定宗家，包括玩家，不改死者谱系；旧档宗家不唯一或锚点失效不强迁。0.2.4候选将产品新建绑定宗族的宗家家主与宗族族长同时跟随实际存活同礼仪领袖；族长因在世支系错位时，仅把该绑定宗族成员归并到稳定宗家后按原版规则重算。复用的原生宗族、异礼仪共享教宗及待处理原生流程不强制改头。两个实际职位未对齐时保留待处理；本候选仍待实机验证。
 
 新建宗族时，原家族族长优先向原家族合格在世成员交接；无可交接人物或其他合法创始人时，生成并保留一名真实同礼仪成年创始人，留下新增人物及建族历史。
 
@@ -53,7 +53,7 @@ Procreation/Vivhite have separate Christian faiths, main rites, icons and arms, 
 
 0.2.3 initializes pre-mod saves without restarting; manual fallback remains. Missing choices receive None, never forced Dynastic; existing choices/bindings stay, initialized worlds are not rebuilt. Clerical correction is new-game only. Disabling affiliation stops adoption, penalties and annual recovery, retaining identities; re-enabling reuses the dynasty. A different Dynastic rite changes membership. Moves affect names, heads, renown, legacies and inheritance, not bloodlines: keep a pre-enable save.
 
-Covered vanilla paths block AI cadets across the bound dynasty, including other faiths; players retain normal rules. Annual recovery returns all living cadets, including players, to the fixed main house; dead genealogies and ambiguous/invalid anchors stay untouched. Only mod-created dynasties follow the living same-rite leader as main-house head, with annual correction. Reused dynasties, foreign-rite shared Popes and pending operations are protected; House heads are synchronized; the Dynast follows vanilla rules.
+Covered vanilla paths block AI cadets across the bound dynasty, including other faiths; players retain normal rules. Annual recovery returns all living cadets, including players, to the fixed main house; dead genealogies and ambiguous/invalid anchors stay untouched. The 0.2.4 candidate targets both main-house Head and Dynasty Head for mod-created bound dynasties, following the actual living same-rite leader. If living cadets leave the Dynast mismatched, only that bound dynasty is consolidated into its stable main house before vanilla recalculation. Reused dynasties, foreign-rite shared Popes and pending native operations remain protected. Both actual positions must agree; live validation of this candidate is pending.
 
 Yearly upkeep covers world maintenance, member recovery and applicable head correction. Births/new characters synchronize next day; creation/edits/rite changes/deaths remain event-driven. Title gains update only the relevant head. Old monthly callbacks drain without scanning/rescheduling; merged relationship work preserves pardons/consumed reasons. Third-party bypasses may wait one year; guards are not engine-wide and file overrides can conflict.
 

@@ -1,47 +1,28 @@
-﻿# Rite scope. Only a DES-created Dynasty, with its original stable main House.
-# Native reuse of a player's old Dynasty deliberately does not grant this policy.
+﻿# Rite scope. The user's leadership policy applies to the one active reciprocal
+# binding, including native reuse and legacy bindings. Mode is provenance, not
+# permission. A different/stale Rite cannot share the Dynasty's single backlink.
 des_created_dynasty_leadership_target_trigger = {
     exists = var:des_bound_dynasty
     exists = var:des_join_house
-    has_variable = des_binding_mode
     NOT = { has_variable = des_binding_in_progress }
     NOT = { has_variable = des_native_head_claim_pending }
     trigger_if = {
-        limit = {
-            exists = var:des_bound_dynasty
-            exists = var:des_join_house
-            has_variable = des_binding_mode
-        }
-        var:des_binding_mode = flag:new_dynasty
-        exists = var:des_join_house.house_dynasty
-        var:des_bound_dynasty = {
-            exists = var:des_bound_rite
-            exists = var:des_cadet_main_house
-        }
+        limit = { exists = var:des_bound_dynasty exists = var:des_join_house }
+        des_has_active_binding_trigger = yes
+        var:des_bound_dynasty = { exists = var:des_cadet_main_house }
         trigger_if = {
-            limit = {
-                exists = var:des_join_house.house_dynasty
-                var:des_bound_dynasty = {
-                    exists = var:des_bound_rite
-                    exists = var:des_cadet_main_house
-                }
-            }
-            des_has_active_binding_trigger = yes
+            limit = { var:des_bound_dynasty = { exists = var:des_cadet_main_house } }
             var:des_bound_dynasty.var:des_cadet_main_house.house_dynasty = var:des_bound_dynasty
             var:des_bound_dynasty.var:des_cadet_main_house = var:des_join_house
         }
     }
 }
 
-# Rite scope. A shared Faith head belonging to a different Rite is not ours to move.
+# A shared Faith Pope belonging to a different Rite is never moved by this policy.
 des_has_own_living_religious_head_trigger = {
     exists = head_of_rite
     trigger_if = {
         limit = { exists = head_of_rite }
-        head_of_rite = {
-            is_alive = yes
-            rite = prev
-            faith = prev.faith
-        }
+        head_of_rite = { is_alive = yes rite = prev faith = prev.faith }
     }
 }

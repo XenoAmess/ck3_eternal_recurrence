@@ -10,6 +10,8 @@ on_character_created = { on_actions = { des_on_character_finalization } }
 yearly_global_pulse = { on_actions = { des_annual_watchdog des_annual_cadet_recovery des_annual_house_leadership_recovery } }
 on_death = { on_actions = { des_on_death } }
 on_title_gain = { on_actions = { des_on_religious_head_title_gain } }
+on_became_house_head = { on_actions = { des_on_bound_house_head_changed } }
+on_became_dynasty_head = { on_actions = { des_on_bound_dynast_changed } }
 
 # Neutral creation contract. Consumers may broadcast this before creating a Rite
 # even when a paused old save predates the persisted defaults registry.
@@ -34,6 +36,8 @@ des_new_game_initialize = {
 		# Only a new game grants the one-shot post-lobby preset correction.
 		set_global_variable = { name = des_new_game_preset_clergy_pending value = yes }
 		des_initialize_world_effect = yes
+		# A fresh world is not a legacy leadership migration. Normal binding sync applies.
+		set_global_variable = { name = des_leadership_024_checked value = yes }
 	}
 }
 
@@ -111,6 +115,10 @@ des_on_rite_change = {
 	effect = {
 		if = {
 			limit = { has_global_variable = des_initialized is_alive = yes }
+            # Stock old_rite is the real departed Rite. Capture the actor before
+            # normal new-Rite synchronization can migrate its Dynasty/House.
+            save_scope_as = des_leadership_changed_head
+            scope:old_rite ?= { des_queue_matching_religious_head_recheck_effect = yes }
 			des_sync_character_effect = yes
 		}
 	}
@@ -215,40 +223,39 @@ des_on_death = {
 			clear_variable_list = des_relationship_snapshot
 			# Do not retain a dead target and all incoming pairs until next year.
 			des_clear_apostasy_effect = yes
+			# on_death is before death: defer only a real current/recorded leader.
+			des_queue_religious_head_death_recheck_effect = yes
 		}
 	}
 }
 
 
 # Character root is the actual new title holder (stock on_title_gain contract).
-# Only the bound Rite's actual head enters; an ordinary title/Pope does not suffice.
+# A title is never proof of a new Rite head. Only local actual-Rite re-reads run.
 des_on_religious_head_title_gain = {
     effect = {
         if = {
             limit = { has_global_variable = des_initialized is_alive = yes exists = rite }
-            # Becoming playable on a later title gain must still teach the two
-            # options, without restoring the all-world per-character watchdog.
             des_teach_doctrines_effect = yes
-            save_scope_as = des_leadership_title_recipient
             rite = {
+                des_reconcile_leadership_binding_metadata_effect = yes
                 if = {
                     limit = {
                         des_created_dynasty_leadership_target_trigger = yes
-                        exists = head_of_rite
                         NOT = { has_variable = des_leadership_sync_in_progress }
                     }
-                    if = {
-                        limit = { head_of_rite = scope:des_leadership_title_recipient }
-                        # An ordinary title gain by a religious head is local work.
-                        des_sync_created_dynasty_leadership_effect = yes
-                    }
+                    # Read this actor's actual bound Rite, never its Faith's
+                    # main religious title. Source may settle after title_gain.
+                    des_sync_created_dynasty_leadership_effect = yes
+                    des_queue_house_leadership_recheck_effect = yes
                 }
             }
         }
     }
 }
 
-# Runs after the existing all-living cadet recovery in yearly_global_pulse.
+# Annual fallback and local lifecycle repair share real postconditions.
+# The declared yearly sibling list alone is not an engine completion-order proof.
 des_annual_house_leadership_recovery = {
     effect = {
         if = {
@@ -257,6 +264,70 @@ des_annual_house_leadership_recovery = {
                 variable = des_bound_rites
                 des_sync_created_dynasty_leadership_effect = yes
             }
+        }
+    }
+}
+
+
+# Stock root is the new head; saved scope:house is the affected House. Never
+# route through the new head's Rite, since the new head can be cross-Rite.
+des_on_bound_house_head_changed = {
+    effect = {
+        if = {
+            limit = { has_global_variable = des_initialized }
+            scope:house ?= {
+                house_dynasty = {
+                    save_scope_as = des_leadership_changed_dynasty
+                    if = {
+                        limit = { exists = var:des_bound_rite }
+                        var:des_bound_rite = {
+                            if = {
+                                limit = {
+                                    exists = var:des_bound_dynasty
+                                    var:des_bound_dynasty = scope:des_leadership_changed_dynasty
+                                }
+                                des_sync_created_dynasty_leadership_effect = yes
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+# Stock root is the new Dynast; saved scope:dynasty is the affected Dynasty.
+des_on_bound_dynast_changed = {
+    effect = {
+        if = {
+            limit = { has_global_variable = des_initialized }
+            scope:dynasty ?= {
+                save_scope_as = des_leadership_changed_dynasty
+                if = {
+                    limit = { exists = var:des_bound_rite }
+                    var:des_bound_rite = {
+                        if = {
+                            limit = {
+                                exists = var:des_bound_dynasty
+                                var:des_bound_dynasty = scope:des_leadership_changed_dynasty
+                            }
+                            des_sync_created_dynasty_leadership_effect = yes
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+# Keep the queued marker throughout the callback: an unresolved repair cannot
+# renew itself. A later genuine lifecycle event or annual fallback may try again.
+des_local_house_leadership_recheck = {
+    effect = {
+        if = {
+            limit = { has_global_variable = des_initialized has_variable = des_leadership_recheck_queued }
+            des_sync_created_dynasty_leadership_effect = yes
+            remove_variable = des_leadership_recheck_queued
         }
     }
 }

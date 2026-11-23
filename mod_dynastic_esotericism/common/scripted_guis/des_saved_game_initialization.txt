@@ -6,6 +6,7 @@ des_saved_game_initialize_gui = {
         is_alive = yes
         OR = {
             NOT = { has_global_variable = des_initialized }
+            NOT = { has_global_variable = des_leadership_024_checked }
             AND = {
                 exists = rite:des_procreation_rite
                 NOT = { has_global_variable = des_procreation_preset_023_checked }

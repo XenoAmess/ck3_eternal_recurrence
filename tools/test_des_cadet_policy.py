@@ -269,7 +269,7 @@ class CadetPolicyTest(unittest.TestCase):
         self.assertEqual(['set_variable','des_capture_cadet_main_house_effect'],[r['key'] for r in dynasty])
         self.assertEqual('des_bound_rite',body(body(dynasty,'set_variable'),'name'))
         self.assertEqual('yes',body(dynasty,'des_capture_cadet_main_house_effect'))
-    def test_only_yearly_hook_calls_member_sweep_and_fresh_anchor_is_recorded(self):
+    def test_yearly_hook_and_guarded_leadership_exception_bound_the_member_snapshot(self):
         hook=ast(read(MOD+'common/on_action/des_cadet_on_actions.txt'))
         self.assertEqual(['des_annual_cadet_recovery'],[r['key'] for r in hook])
         original=ast(read(MOD+'common/on_action/des_on_actions.txt'))
@@ -280,5 +280,18 @@ class CadetPolicyTest(unittest.TestCase):
         self.assertIn('name = des_cadet_main_house value = scope:des_created_house',binding)
         self.assertNotIn('des_annual_cadet_recovery_effect',binding)
         self.assertNotIn('des_annual_cadet_recovery_effect',read(MOD+'common/scripted_effects/des_maintenance_effects.txt'))
+        # The explicit0.2.4 exception is not monthly maintenance: actual Dynast
+        # mismatch AND a living cadet must precede the same one-Dynasty snapshot.
+        rows=definition('common/scripted_effects/des_leadership_effects.txt','des_sync_created_dynasty_leadership_effect')
+        paths=[]
+        def walk(nodes,path):
+            for row in nodes:
+                if row['key']=='des_annual_cadet_recovery_effect':paths.append(path+[row])
+                if isinstance(row['value'],list):walk(row['value'],path+[row])
+        walk(rows,[]);self.assertEqual(1,len(paths))
+        limits=[body(row['value'],'limit') for row in paths[0] if row['key']=='if']
+        self.assertIn(ast('NOT = { var:des_bound_dynasty.dynast = scope:des_leadership_actual_head }'),limits)
+        self.assertIn(ast('var:des_bound_dynasty = { any_dynasty_member = { is_alive = yes NOT = { house = scope:des_leadership_main_house } } }'),limits)
+
 
 if __name__=='__main__':unittest.main()

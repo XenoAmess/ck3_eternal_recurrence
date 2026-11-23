@@ -36,8 +36,10 @@ des_capture_cadet_main_house_effect = {
     }
 }
 
-# Rite scope. Called only by the real global yearly pulse. Includes players and
-# every enumerated Dynasty member, across Faiths. Never run on monthly repair.
+# Rite scope. Real annual fallback and exceptional leadership repair share this
+# exact snapshot. The latter requires an actual Dynast mismatch plus living
+# cadets; aligned lifecycle events never enter it. Includes players/across Faiths.
+# No monthly/daily maintenance loop calls it.
 des_annual_cadet_recovery_effect = {
     if = {
         limit = { exists = var:des_bound_dynasty exists = var:des_join_house }
