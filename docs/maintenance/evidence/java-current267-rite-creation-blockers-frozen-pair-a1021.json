@@ -1,0 +1,110 @@
+{
+  "schema": "xar.current267.rite-creation-blockers.frozen-pair-maintenance-index.v1",
+  "at_utc": "2026-11-23T02:10:57.571580+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status": "ACTUAL_FROZEN_PAIR_READY_NEW_READONLY_LIVE_NOT_RUN",
+  "actual_sixpins": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-creation-blockers-source-a1021\\actual-six-pins.json",
+    "bytes": 1576,
+    "sha256": "1a4cfe2d4a0611d1d57ef828f46f8cd71e9f8ccd7ff6d1227c58c01bfeb96bf8"
+  },
+  "Java_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-creation-blockers-source-a1021\\frozen-delivery-final.json",
+    "bytes": 5160,
+    "sha256": "c3744f6a2218f22d50d765e7b29cf1d8455ba02619fa1f1925647220f88a5735"
+  },
+  "actual_pair_binding": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-creation-blockers-source-a1021\\native-pair-binding-final.json",
+    "bytes": 2741,
+    "sha256": "6153ea3767e2f7dc3e4b499b597af0fd04934d41917ec866f498c58d743992bf"
+  },
+  "operator_templates": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-creation-blockers-source-a1021\\operator-templates.json",
+    "bytes": 6706,
+    "sha256": "724e18878702dd1f79db63abe50c8a20193743c8d243287dcf3ed838765478ff"
+  },
+  "configuration_schema": "xar.native-owner-snapshot-config/v43",
+  "configuration_modes": [
+    "current_rite_creation_blockers"
+  ],
+  "blockers_template_pointer": "/query_config",
+  "prior_v42_template_pointers": [
+    "/text_query_config",
+    "/set_name_config",
+    "/set_description_config"
+  ],
+  "prior_v41_template_pointers": [
+    "/create_query_config",
+    "/create_and_accept_config",
+    "/navigation_config"
+  ],
+  "sourceRite_guard": "Mandatory actual observed uint32 exceptFFFFFFFF; 0 valid, no default. Public read DATA is never action permission.",
+  "actual_Java_software": {
+    "methods_P": 26,
+    "groups": {
+      "Main_selection": 10,
+      "original_CPP_producer": 10,
+      "private_Transport": 6
+    },
+    "qualification": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-creation-blockers-source-a1021\\affected-qualification.json",
+      "bytes": 8965,
+      "sha256": "811019627eb7956429aa9b8f7ac8e4dd059bc4d90d06ca5293284e8cac6c56b1"
+    },
+    "normal_source_commit": "2fe3d87873cf724f303bf4a43f62779de9604c1f",
+    "actual_qualified_source_context": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-creation-blockers-source-a1021\\source-adoption.json",
+      "bytes": 848,
+      "sha256": "5d6a69acd0727b900f1a924f162bdbfe00d59e155738aec2b0e7b48ba68eb9a6"
+    },
+    "normal_remote_integration": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-creation-blockers-source-a1021\\source-remote-integration.json",
+      "bytes": 7112,
+      "sha256": "f4690e304d8ac2c5d90c0f8892ddcd7b197cc4db22aa9cc06173be4d2cd60916"
+    },
+    "original_11_CPP_frames_and_one_Java_inverse": "All original bytes/IDs/MAXdeadline preserved. Negative Java mutations and exchange wrappers are labelled DATA."
+  },
+  "actual_Native": {
+    "delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-creation-blockers-production-a1021\\frozen-delivery-final.json",
+      "bytes": 1742,
+      "sha256": "e564547a1c8675916f1a5c63925db70c72cd48c45a43661ccc45621e07aad785"
+    },
+    "refs": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-creation-blockers-production-a1021\\ordinary-native-artifact-refs.json",
+      "bytes": 12678,
+      "sha256": "92cae48fea3f07fe6830827c286461bf9fda4cadc521d77b9e7345513633d714"
+    },
+    "NativeTree": "cdcaf9056f87430e856d8f55b3ecca822e68abd5",
+    "actual_source_adoption_HEAD": "39b3cb0113917add262194b55629f44aa2165f5d",
+    "qualified_source_manifest": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-creation-blockers-source-a1021\\qualified-source-manifest.json",
+      "bytes": 28227,
+      "sha256": "5f66b041b61bdeab46f2c3e163d2827c1130ad0db418e93c17830fac6dc2f39d"
+    },
+    "total_TUs": 917,
+    "actual_CL": 9,
+    "reused_objects": 908,
+    "new_DLL_SHA256": "efcfaa25e3959ea7d173188cc260b048edded1391267c548d2183dd17fc411b5",
+    "Identity_and_registration": "Actual verified; 3 actual ON bodies nonconstantfalse and source/reuse/protected drift[] per immutable Native refs.",
+    "old_Text_Create_Frozens": "Preserved; no hot replacement or old unknown replay."
+  },
+  "runtime_reuse": {
+    "JARs": 158,
+    "new_copies": 2,
+    "new_allocation_bytes": 18833408,
+    "dependencies_reused_by_immutable_identity_without_copy_body_hash_or_CRC": 156
+  },
+  "semantic_boundary": "Official readonly GetCreationBlockers/CanCreate/IsCreating complete two-sample DATA, validUTF8 <=16384 bytes including empty/NUL/control/richtext, no truncation. False Can/IsCreating, hidden/disabled or empty why remain available DATA. Informational sequences are not action leases. No Create/Accept/mutation/Date/Save/rendered-tooltip or business credit. UNKNOWN remains original and sticky for this family without replacing old other-family UNKNOWN.",
+  "stopped_identity_Source": "Unused/unqualified/not adopted; actual Root observation of nonempty extra names/icons is not reinterpreted as a missing-input fix.",
+  "all_phases_END": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rite-creation-blockers-source-a1021\\all-phases-END.json",
+    "bytes": 1492,
+    "sha256": "a5755aed680f6bca9feb183acb235f10a5c67de7888eeed554e61c546ae6abe2"
+  },
+  "source_publication_scope": "Normal Java and Native source commits plus small final metadata index; no product SourceA/tag/version/Workshop operation.",
+  "Workshop_published_count": 12,
+  "strict_closed_count": 9,
+  "denominator": 17,
+  "DES_published": false
+}
