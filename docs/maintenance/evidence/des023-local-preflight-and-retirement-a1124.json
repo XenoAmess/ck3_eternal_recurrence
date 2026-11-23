@@ -1,0 +1,142 @@
+{
+  "schema": "xar.des023.local-publisher-preflight-and-save-retirement.maintenance-index.v1",
+  "at_utc": "2026-11-23T06:03:09.115237+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status_at_evidence_cut": "LOCAL_PREFLIGHT_PASS_PUBLICATION_PENDING_OTHER_ACCOUNT_WINDOW",
+  "actual_local_preflight": {
+    "production_plan_ready": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des023-formal-release-a1121\\production-plan-ready-a1122.json",
+      "bytes": 982,
+      "sha256": "65c66c5b2ec58b649b8c218cafac08346cda65cece4f015dcfcb3badb31b6bc9"
+    },
+    "production_plan": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des023-formal-release-a1121\\des023-native-publish-plan.json",
+      "bytes": 14889,
+      "sha256": "c75685b4ac9ed5cb0ffcb758cd06b4969aa94f955ec691b626b19bcafa055cc3"
+    },
+    "freeze": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des023-formal-release-a1121\\prepublish-freeze.json",
+      "bytes": 7989,
+      "sha256": "fa2032dd86e007d592f5322cccab096040bb50c34f8dda3e3ee6bb3546dd0e64"
+    },
+    "execution": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des023-publication-a1122\\binding-a01\\check-only-execution.json",
+      "bytes": 1883,
+      "sha256": "dd31479a2119f86f4fae70b4bac53510c062e00ad0575a5945bc7ef2d67c3768"
+    },
+    "stdout": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des023-publication-a1122\\binding-a01\\check-only.stdout",
+      "bytes": 1042,
+      "sha256": "3dba2ac342f0b7f5063f5e40663d09324981091c033869ef0f42e92c25c79bec"
+    },
+    "exit_code": 0,
+    "elapsed_seconds": 0.8722692999872379,
+    "operation_id": "des-023-canonical3826991345-a1122",
+    "payload_sha256": "39f1ae47f03739d9317d12c3d94c14d33697919e2ae9464ba9c262c99beeb7bc",
+    "compared": "Formal71/unique single-root ZIP/SourceA and annotated tag/full three metadata refs/Root actual loaded71 and finite cold evidence.",
+    "early_return_external_SDK_Steam_HTTP_Game_Git_calls": 0,
+    "original_plan_unchanged": true,
+    "Root_release_decision": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\des023-finite-release-decision-a1122.json",
+      "bytes": 2292,
+      "sha256": "3ed33a8f0b8cf35a9b50df569a568c53b54539921136ad9d4b59458c75fc7537"
+    }
+  },
+  "actual_anonymous_API_before": {
+    "transport": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-public-preflight-a1122\\transport.json",
+      "bytes": 784,
+      "sha256": "3081b93e3b4787af68e9fd2daf0398469e2d8b549d10818e10577f054ac9fff2"
+    },
+    "raw_response": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-public-preflight-a1122\\public-item-api.raw.json",
+      "bytes": 7199,
+      "sha256": "29af628d322b104add7196b35ddea3a774f358a9692fb4d174acdb540fd6359d"
+    },
+    "current_public_fields": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-public-preflight-a1122\\current-public-fields.json",
+      "bytes": 1411,
+      "sha256": "47520ec5ebcde94eebcec57bd021ad9bbd7a80d9c31e31a8a763095b8b621110"
+    },
+    "HTTP_status": 200,
+    "actual_POST_calls": 1,
+    "purpose": "Pre-update baseline only: actual full title CAS, creator/AppIDs and cover identity. This is not post-publication0.2.3 public readback.",
+    "gallery_not_inferred": true,
+    "Steam_online_or_Submit": false
+  },
+  "current_generated_Save_availability": {
+    "actual_retirement": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-a1113-save-duplicates-reclamation-a01\\actual-result.json",
+      "bytes": 5151,
+      "sha256": "daad58076655c8a6aef9640bcb2d43809fb6044d8e4526ac97e2457b110d4795"
+    },
+    "retired_original_paths": [
+      "D:\\ck3-state\\upgrade-20261118\\des-annual-jan3-cold-current267-profile-a1113\\profile-states\\gui-37b97b9812124fac855522d30ee8bd66\\profile\\last_save.ck3",
+      "D:\\ck3-state\\upgrade-20261118\\des-annual-jan3-cold-current267-profile-a1113\\profile-states\\gui-37b97b9812124fac855522d30ee8bd66\\profile\\save games\\autosave.ck3",
+      "D:\\ck3-state\\upgrade-20261118\\des-annual-jan3-cold-current267-profile-a1113\\profile-states\\gui-37b97b9812124fac855522d30ee8bd66\\profile\\save games\\xar_checkpoint.ck3"
+    ],
+    "original_FileID128s": [
+      "0ec14f00000001000000000000000000",
+      "0cc14f00000001000000000000000000",
+      "13c14f00000001000000000000000000"
+    ],
+    "fullSHA_common": "92e47a86eaefbbeadcfc0da6afe2e3797f54afd739f6fb74a5383df15c2c2941",
+    "availability": "Three original identities DELETED_UNREADABLE; old checkpoint-source paths in historical reports are no longer active inputs.",
+    "allocated_removed_bytes": 518172672,
+    "logical_removed_bytes": 518160489,
+    "retained_independent_archive": {
+      "bytes": 172720163,
+      "metadata": {
+        "allocated_bytes": 172724224,
+        "attributes": 32,
+        "creation_filetime": "134398854586139643",
+        "delete_pending": false,
+        "directory": false,
+        "file_id128": "14c14f00000001000000000000000000",
+        "links": 1,
+        "logical_bytes": 172720163,
+        "mtime_ns": 1795411850857247200,
+        "volume_serial": "7220568048185129294"
+      },
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-jan3-cold-current267-profile-a1113\\checkpoints\\des-ordinary-dynasty-cold-reload.ck3",
+      "sha256": "92e47a86eaefbbeadcfc0da6afe2e3797f54afd739f6fb74a5383df15c2c2941"
+    },
+    "initial_f7d_and_shaders": "Unchanged/protected",
+    "old_UNKNOWN_reserved_flags_and_historical_reports": "Unchanged; do not rewrite historical material paths",
+    "volume_free_delta_attribution": false,
+    "old_held_or_spent_refund": false
+  },
+  "actual_new_purpose_admission": {
+    "admission": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\des023-publication-admission-a1124.json",
+      "bytes": 1613,
+      "sha256": "939c4535588ed7dfc8b67ac5fc5f7ad70dbaf54fb6644a8301ed5341c4387552"
+    },
+    "quota_review": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\same-quota-des-publication-cache-review-a1124.json",
+      "bytes": 12184,
+      "sha256": "0212c6c53bfdfe9ba898dde7356f80f7fd122bdc931f2f0205ed7003c349a1c3"
+    },
+    "publication_upper_bytes": 67108864,
+    "cache_upper_bytes": 1073741824,
+    "additional_Steam_child_TMP_upper_bytes": 134217728,
+    "added_explicitly_outside_existing_other_future_bytes": 17179869184,
+    "max_project_bytes": 478615171072,
+    "review_expiry_unchanged": "2026-11-23T06:23:55.230823+00:00",
+    "old_closed_software_purposes_reopened": false
+  },
+  "publication_and_qualification_boundary": {
+    "actual_upload_Submit_EResult1": false,
+    "Steam_online_for_this_update": false,
+    "account_pause_reply": "Pending at Root evidence cut; no online action inferred.",
+    "counts_unchanged": {
+      "uploaded": "12/17",
+      "strict": "9/17",
+      "DES_uploaded": false
+    },
+    "independent_CCC_analysis_and_cache_Source": "Source preparation only; no business qualification"
+  },
+  "frozen_inputs_and_runtime_changes_by_this_unit": 0,
+  "new_tests_Maven_Game_Save_Steam_SDK_HTTP_or_cleanup_by_this_unit": 0,
+  "normal_Git_only": "Small evidence index and existing maintenance paragraph, no F writes; immutable SourceA/tag/formal artifacts remain."
+}
