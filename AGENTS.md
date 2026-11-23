@@ -1,4 +1,12 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
+## 2026-11-24 当前 RMTM v47 软件70P，Java 已冻结，新 Native 配对待闭
+
+`desktop-3fevhd2-1c74096080` 已正常采用独立 RMTM 四族薄消费者，增量取得70个不同方法通过（DATA19、Main10、原CppProducer32、私有JavaDATA守卫9），20份实际Java请求由四个原Cpp解析器各一次逆核0；不重复旧Title32、CCC或全SDK矩阵。最终仅选定两模块package一次，复制2个新JAR（19,177,472 allocated bytes）、按身份复用156个旧JAR，原158不重做CRC遍历。Compiler128/package160/freeze20已END；metadata20仍预留，等实际新Native FD，不误称整个Java328已END，不以c9daf/54a1冒新能力。首冒号测试假设及大写测试machineId的两次失败保留，只修测试，生产语义和旧共享LYD不放宽。
+
+新v47保留同Receiver零日capture、独立14日计数、原D5 pending/epoch、五固定决议、两固定事件、三phase物理own-law与独立realm/scriptown、九席和普通预算/代表性Offer取消的私有原包/Core/ACK/期限/once/UNKNOWN；不接callerTitleID或任意selector，不把querySequence当旧native_revision。postdeath未来heir可null，predeath读取仍不替D5执行时三dump。原26/log/执行身份另行AND；Raw缺失或未知仍PARTIAL，不从missingcontroller虚造empty，不授live、业务、全SDK或性能。
+
+当前36产品候选、原Saved18桥及独立Saved threshold22仅已完成原producer文件生成，原四UI叶与36字节核对、各新8/1MiB用途END/future0；不授真实Saved规则/AI membership或50/51业务。新七个只读role/law定义仍是另一个未emit的Source addon。独立迁移计数仍13/17上传、9/17严格；CCC/DES Notes429及全部SourceA/tag/Frozen/工坊事实不变。详见[本次软件与Java冻结索引](docs/maintenance/evidence/java-current267-rmtm-v47-software70-Java-ready-a1300.json)。
+
 
 ## 2026-11-24 金融市场 Alpha.2 界面修复已上传并安装，公开429待核
 

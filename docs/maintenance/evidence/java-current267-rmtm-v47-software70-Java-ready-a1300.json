@@ -1,0 +1,165 @@
+{
+  "schema": "xar.current267.rmtm-v47.actual-software70-Java-ready.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-23T16:50:38.480490+00:00",
+  "status": "JAVA_SOFTWARE_AND_RUNTIME_READY_NATIVE_PAIR_PENDING_NOT_LIVE",
+  "source_base_commit": "6756a977fda3bc48095d21ffa252d1652b1c167c",
+  "qualified_source_plan": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-remaining-build-a1300\\source-plan-qualified.json",
+    "bytes": 16025,
+    "sha256": "3b55aafcab21c0191719f0f4c778c55a932709e5f9410ef1d347e7384a0936cd"
+  },
+  "actual70_software_and20parser_inverse": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-remaining-build-a1300\\affected-qualification-final.json",
+    "bytes": 15485,
+    "sha256": "e4328528a5d414f9c580350f3195a0c4a91b9dd4d3a9bee8b0379a158fd76d88"
+  },
+  "actual_new_S0_Cpp_originals": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rmtm-current267-remaining-nogame-a01\\validation\\actual-S0-cpp-originals-receipt-a01.json",
+    "bytes": 15249,
+    "sha256": "ef344de4040be3fc6acc157870a6eed93c4748b0b1010a9d2a3314c170948bf7"
+  },
+  "actual_java20_index": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-remaining-build-a1300\\actual-java20-request-index.json",
+    "bytes": 15326,
+    "sha256": "5c877ee655a690dbb0a83c94fcdd063dc1181ccaa934f3ff2e2897ffc67908a8"
+  },
+  "actual_cpp20_inverse": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rmtm-current267-remaining-nogame-a01\\validation\\actual-Java20-inverse-receipt-a01.json",
+    "bytes": 34871,
+    "sha256": "db96c9cb577f74b41597984194ccc037a7279230a69b3beb4141a99a79b215e0"
+  },
+  "methods": {
+    "DATA": 19,
+    "Main": 10,
+    "producer_wholeclasses": 32,
+    "private_Java_DATA_guard": 9,
+    "distinct_final_total": 70,
+    "all70_repeated_together": false
+  },
+  "actual_package": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-remaining-build-a1300\\validation\\package-result.json",
+    "bytes": 873,
+    "sha256": "0b64149143028af6647ce00f4c9fc7fe11089279ded38a59fd384f5db059bd27"
+  },
+  "actual_package_metrics": {
+    "exit_code": 0,
+    "elapsed_seconds": 99.02547049999703,
+    "Job_peak_commit": 1157033984,
+    "command": [
+      "mvn",
+      "-o",
+      "-B",
+      "-ntp",
+      "-s",
+      "D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\machine-dependency-cache-settings.xml",
+      "-Dmaven.repo.local=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\maven-repository",
+      "-Dck3.build.root=D:\\ck3-state\\upgrade-20261118\\java-26785313-build-a01\\target",
+      "-Djava.io.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-remaining-build-a1300\\validation\\scratch",
+      "-Djna.tmpdir=D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-remaining-build-a1300\\validation\\scratch",
+      "-DskipTests",
+      "-Dquarkus.build.skip=true",
+      "-pl",
+      ":native-transport,:ck3-control-local-service",
+      "-am",
+      "-T2",
+      "package"
+    ]
+  },
+  "Java_runtime_ready": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-remaining-build-a1300\\java-runtime-ready-before-native.json",
+    "bytes": 1304,
+    "sha256": "a8240cccf02a214e6c8566536f05f571cb8c3d15f14013bf605ad63c66f3d9e0"
+  },
+  "runtime_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-rmtm-remaining-a1300\\runtime-manifest.json",
+    "bytes": 167130,
+    "sha256": "a708f33b58ea91ce725a213ab4859bddf3d0e7d14af4fd85c25428b2253f845d"
+  },
+  "classpath_argfile": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-rmtm-remaining-a1300\\cli-classpath.args",
+    "bytes": 16387,
+    "sha256": "3348aa40da4275cc2d5d1adb950eabb8a7d97a44b488122a229c7e0b44cb183c"
+  },
+  "changed_JARs_copied": 2,
+  "new_JAR_allocation_bytes": 19177472,
+  "unchanged_JARs_identity_reused_without_copy": 156,
+  "old158_CRC_traversal": false,
+  "phase_state": {
+    "compiler128": "END",
+    "package160": "END",
+    "freeze20": "END",
+    "metadata20": "RESERVED_PENDING_ACTUAL_NEW_NATIVE_FD"
+  },
+  "failures_preserved": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-remaining-build-a1300\\validation\\first29-result.json",
+      "bytes": 6102,
+      "sha256": "3c72e2413659ccdd9cb5dbbf084d2488c451346616846d753ed766e9ff70acc8"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-remaining-build-a1300\\validation\\first29-DATA19-original.xml",
+      "bytes": 20280,
+      "sha256": "8fa5f437702ebf556a74dbf6c2dfbd6fcbeb06a0cdd03b4e54ce7a23d8fd4ad9"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-remaining-build-a1300\\validation\\guards9-a03-result.json",
+      "bytes": 17073,
+      "sha256": "9e746209ca887e3196701f090d0a1c2235190c29265be19ed564f040c72d39a3"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-remaining-build-a1300\\validation\\guards9-a03-original.xml",
+      "bytes": 24876,
+      "sha256": "23c00bb46218b8f4a544bba56c716456ab3764fd6cc3cf6be6b62a377b7ecac7"
+    }
+  ],
+  "failure_scope": "First DATA test invented a colon key outside the reused Java/C++ Lyd shape intersection; only test key/name changed to hyphen. Guard port used an uppercase machineId rejected before port creation; only test machine label changed. Production semantics/ABI/oldsharedLyd/nativeoriginals unchanged. Original Source regex/rawpin/assembly refusals and the postdeath-heir Source correction remain in original Source manifests.",
+  "capability_scope": [
+    "Independent RMTM transition14days; own zero-day role capture permits independent threshold UI, no imported CCC epoch. D1-4 Song/D5 originalpending+fresh successor/onceepoch1. Original ARM flags/IDs/deadlines/UNKNOWN retained.",
+    "Five fixed decisions/private purpose fences; actual falseCan/fulltooltip at50 before51 and one real restoration Confirm. Two fixed event channels, once per case plus independent actual same-channel census absence only.",
+    "Typed complete physical ownlaws+independent scriptown/realm atD3/pre/post. Postdeath futureheir may be null; predeath reading is not D5 execution evidence. Full uint32 zero/highbits, signed int32 dates/actors, original owner/Core/custody retained.",
+    "Nine canonical task seats with actual nullable incumbents; ordinary MyRealmGetPlayer.Self budget Open/Cancel and representative OfferA display/Cancel. NoEnact/Send or arbitrary TitleID/selector. NativeHandled false is valid; only actual budget/decision Toggle bool may be true.",
+    "Original D8 typed chain is separate from Root original26/script/three-dump AND. MissingRaw/UNKNOWN remainsPARTIAL; completeempty is never inferred from absent controller."
+  ],
+  "new_Game_Date_Save_Steam_HTTP_calls": 0,
+  "no_credit": [
+    "No newNativeFrozenpair yet; existing c9daf/54a1 not relabelled.",
+    "No live/RMTM26/physical-runtime/execute-time heir/realm/effective-law/expiry/fullSDK/performance/publication PASS.",
+    "Genuine original response/request IDs are independent; generated Java DATA port is not a C++ exchange."
+  ],
+  "completed_independent_file_producers": {
+    "current267_product36": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rmtm-current267-product36-candidate-next\\candidate-delivery-final.json",
+      "bytes": 3901,
+      "sha256": "bfcfb634bc79d90af9b29e311534cfaf778070a8f620da58d5e586958cd21d69"
+    },
+    "original_Saved18_fixture": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rmtm-current267-product36-candidate-next\\fixture-manifest.json",
+      "bytes": 3729,
+      "sha256": "f63b0319034be979ea975e9f16d559f3da7343f61623d58b7bbf7ea637c5dee4"
+    },
+    "independent_Saved_threshold22": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rmtm-current267-threshold-ui-next-a1296\\delivery-final.json",
+      "bytes": 1552,
+      "sha256": "0532f05450cb83695b8d3a24be254d0813080a58eb24aa181a8f5c5bd02af45d"
+    },
+    "original8_purpose_END": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rmtm-current267-product36-candidate-next\\product8-phase-END.json",
+      "bytes": 753,
+      "sha256": "0407b6490b59c11c10a0932769b62bed16550faa554282fe711ddb9a65fc9391"
+    },
+    "independent1_purpose_END": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rmtm-current267-threshold-ui-next-a1296\\phase-END.json",
+      "bytes": 638,
+      "sha256": "ca3b51eb917aee64b699a1213b540065346824c1dade669533c36fe11cfb0fe0"
+    },
+    "not_Saved_eligibility_or_engine_PASS": true,
+    "new_role7_definition_addon_is_separate_Source_NOT_EMITTED": true
+  },
+  "migration_distinct_counts": {
+    "uploaded": 13,
+    "strict": 9,
+    "denominator": 17
+  },
+  "CCC_DES_Notes429_and_all_frozen_release_artifacts_unchanged": true
+}

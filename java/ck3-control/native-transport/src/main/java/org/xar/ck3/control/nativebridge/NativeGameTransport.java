@@ -2996,6 +2996,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     public synchronized CurrentDatePrepared prepareCurrentDateAdvance(CoreReceived before,Instant deadline)throws IOException {
         Objects.requireNonNull(before);Objects.requireNonNull(deadline);requireCoreOriginal(before,deadline);
         if(cccFirstDay!=null&&cccFirstDay.called)throw new IOException("Original CCC case cannot borrow old v17 Date authority");
+        if(rmtmCapturedRole!=null)throw new IOException("Actual RMTM case cannot borrow old v17 Date authority");
         if(unresolvedCoreControl!=null||unresolvedFullClockControl!=null)throw new IOException("Unresolved original control forbids another date action");
         if(activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null||applicationExitAttempted||before.controlAttempted)
             throw new IOException("Current date action requires an unused actual Core outside business/recovery/exit scopes");
@@ -3852,6 +3853,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         if(!(before.frame instanceof CoreFrame.Partial p)||p.build()!=ExactCk3Build.CK3_121003_STEAM_26785313)throw new IOException("Exact current267 Core required");
         CurrentTedActorTransition.requireCore(p.prefix());
         if(cccFirstDay!=null&&cccFirstDay.called)throw new IOException("Original CCC case cannot borrow TED Date authority");
+        if(rmtmCapturedRole!=null)throw new IOException("Actual RMTM case cannot borrow TED Date authority");
         if(before.controlAttempted||applicationExitAttempted||unresolvedCoreControl!=null||unresolvedFullClockControl!=null||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
             throw new IOException("Unused actual Core and resolved owner required; no old UNKNOWN/claim reset");
         if(preparedCurrentDate!=null&&(!preparedCurrentDate.completed||preparedCurrentDate.unknown))throw new IOException("Original v17 Date remains unresolved");
@@ -3988,6 +3990,605 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         if(operation!=null)operation.unknown=true;if(outcome instanceof AckReceived ack)indeterminateCoreAcknowledgement=ack;
         if(unresolvedCoreControl==null)unresolvedCoreControl=new Unknown(id,"Original TED source/custody uncertain; no new-ID/deadline workaround: "+reason(invalid),retainedOutbound(id),outcome instanceof AckReceived ack?Optional.of(ack.originalFrame()):Optional.empty());return unresolvedCoreControl;
     }
+    // Independent RMTM original-case custody. Caller-created DATA cannot grant an epoch or business lease.
+    public sealed interface RmtmRoleRead permits RmtmRoleReceived,RmtmRoleUnavailable { DispatchOutcome original(); }
+    public static final class RmtmRoleReceived implements RmtmRoleRead {
+        private final NativeGameTransport issuer;private final CoreReceived before;
+        private final CurrentRmtmActorTransitionResult frame;private final AckReceived original;
+        private final NativeRequestChronology custody;private final Instant until;private boolean consumed;
+        private RmtmAdvancePrepared advance;private RmtmEpochPrepared confirmation;
+        private RmtmRoleReceived(NativeGameTransport issuer,CoreReceived before,CurrentRmtmActorTransitionResult frame,AckReceived original,NativeRequestChronology custody,Instant until){this.issuer=issuer;this.before=before;this.frame=frame;this.original=original;this.custody=custody;this.until=until;}
+        public CurrentRmtmActorTransitionResult frame(){return frame;}public AckReceived original(){return original;}public Instant validUntil(){return until;}
+        public void requireOriginal(NativeGameTransport actual,Instant deadline)throws IOException{actual.requireRmtmRole(this,deadline);}
+    }
+    public record RmtmRoleUnavailable(DispatchOutcome original,String reason)implements RmtmRoleRead {public RmtmRoleUnavailable{Objects.requireNonNull(original);StrictJson.text(reason);}}
+    public static final class RmtmAdvancePrepared {
+        private final NativeGameTransport issuer;private final RmtmRoleReceived query;private final String id,operation;
+        private final Instant until;private final NativeWire.Bytes packet;private final int target;
+        private boolean called,unknown,pending,confirmed,completed;private DispatchOutcome outcome;
+        private CurrentRmtmActorTransitionResult latest,firstClaim;private NativeRequestChronology pendingCustody;
+        private RmtmAdvancePrepared(NativeGameTransport issuer,RmtmRoleReceived query,String id,String operation,byte[] packet,int target){this.issuer=issuer;this.query=query;this.id=id;this.operation=operation;this.until=query.until;this.packet=new NativeWire.Bytes(packet);this.target=target;}
+        public String requestId(){return id;}public String operationId(){return operation;}public Instant deadline(){return until;}public NativeWire.Bytes originalPacket(){return packet;}
+        public int targetDateRaw(){return target;}public Optional<CurrentRmtmActorTransitionResult> latestFrame(){return Optional.ofNullable(latest);}public boolean originalUnknown(){return unknown;}
+    }
+    public static final class RmtmEpochPrepared {
+        private final NativeGameTransport issuer;private final RmtmAdvancePrepared operation;private final RmtmRoleReceived query;
+        private final String id;private final NativeWire.Bytes packet;private boolean called;private DispatchOutcome outcome;private CurrentRmtmActorTransitionResult latest;
+        private RmtmEpochPrepared(NativeGameTransport issuer,RmtmAdvancePrepared operation,RmtmRoleReceived query,String id,byte[] packet){this.issuer=issuer;this.operation=operation;this.query=query;this.id=id;this.packet=new NativeWire.Bytes(packet);}
+        public String requestId(){return id;}public String operationId(){return operation.operation;}public Instant deadline(){return query.until;}public NativeWire.Bytes originalPacket(){return packet;}
+        public Optional<CurrentRmtmActorTransitionResult> latestFrame(){return Optional.ofNullable(latest);}
+    }
+    private final Set<CoreReceived> rmtmRoleQueries=java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<>());
+    private RmtmRoleReceived latestRmtmRole;private RmtmAdvancePrepared preparedRmtmAdvance;private RmtmEpochPrepared confirmedRmtmEpoch;
+    private final java.util.Map<String,RmtmAdvancePrepared> retainedRmtmOperations=new java.util.LinkedHashMap<>();
+    private RmtmRoleReceived rmtmCapturedRole;
+    private RmtmAdvancePrepared rmtmFirstDay;
+    private int knownRmtmDays;
+    private NativeRequestChronology lastRmtmCaseProof;
+    
+    /** Own original same-Receiver case; natural days and epoch are separate. No D5 business inference. */
+    private void requireRmtmCase(CoreReceived before)throws IOException {
+        if(rmtmCapturedRole==null||lastRmtmCaseProof==null||knownRmtmDays<0||knownRmtmDays>14||rmtmFirstDay!=null&&rmtmFirstDay.unknown)
+            throw new IOException("Actual original RMTM day custody is required");
+        var captured=rmtmCapturedRole;requireRmtmCustody(captured.original,captured.custody);
+        var original=CurrentRmtmActorTransitionResult.decodeOutcome(captured.original);
+        if(!original.equals(captured.frame)||original.source().filter(s->s.caseStartCaptured()&&s.completedNaturalDays()==0&&s.actorEpoch().signum()==0).isEmpty())throw new IOException("Original actual captured zero-day query changed");
+        var start=((CoreFrame.Partial)captured.before.frame).prefix();int actor=start.playedCharacterId();
+        if(confirmedRmtmEpoch!=null){
+            var epoch=confirmedRmtmEpoch;var op=epoch.operation;
+            if(!op.confirmed||op.unknown||!(epoch.outcome instanceof AckReceived ack)||epoch.latest==null)throw new IOException("Original epoch uncertain");
+            var c=originalRequestChronology(ack.requestId()).orElseThrow();requireRmtmCustody(ack,c);
+            var f=CurrentRmtmActorTransitionResult.decodeOutcome(ack);
+            if(!f.equals(epoch.latest)||f.status()!=CurrentRmtmActorTransitionResult.Status.EPOCH_CONFIRMED||!f.source().equals(epoch.query.frame.source())
+                    ||!f.actorEpoch().equals(BigInteger.ONE)||f.completedNaturalDays()!=epoch.query.frame.source().orElseThrow().completedNaturalDays())
+                throw new IOException("Actual original epoch Source/counter changed");
+            actor=f.factsBefore().orElseThrow().playedCharacterId();
+        }
+        var expected=new CoreFrame.Prefix(Math.addExact(start.dateRaw(),Math.multiplyExact(knownRmtmDays,24)),start.speed(),start.paused(),start.localPlayerId(),start.mapReady(),start.hasPlayedCharacter(),actor,start.playedCharacterAlive());
+        if(!((CoreFrame.Partial)before.frame).prefix().equals(expected)||before.custody.writeEntered().order().compareTo(lastRmtmCaseProof.responseReceived().order())<=0)
+            throw new IOException("Fresh actual same-case Core after last original receipt required");
+        if(preparedRmtmAdvance!=null&&preparedRmtmAdvance.called&&!preparedRmtmAdvance.completed&&!preparedRmtmAdvance.confirmed)
+            throw new IOException("Original day/pending remains unresolved");
+    }
+    private void recordRmtmCaseEffect(AckReceived ack)throws IOException {
+        var c=originalRequestChronology(ack.requestId()).orElseThrow(()->new IOException("Actual RMTM business custody absent"));requireRmtmCustody(ack,c);lastRmtmCaseProof=c;
+    }
+    private byte[] rmtmPacket(String id,CurrentRmtmActorTransition.Action action,CoreReceived before,String operation,BigInteger provider,BigInteger query,BigInteger epoch,Instant until)throws IOException {
+        if(!(before.frame instanceof CoreFrame.Partial partial))throw new IOException("Actual partial current RMTM Core required");
+        var request=CurrentRmtmActorTransition.request(partial,action,operation,provider,query,epoch);
+        var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));fields.put("core_control_deadline_unix_ms",until.toEpochMilli());
+        return NativeWire.execute(id,action.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+    }
+    private void requireRmtmScope(CoreReceived before,Instant until)throws IOException {
+        requireCoreOriginal(before,until);
+        if(!(before.frame instanceof CoreFrame.Partial p)||p.build()!=ExactCk3Build.CK3_121003_STEAM_26785313)throw new IOException("Exact current267 Core required");
+        CurrentRmtmActorTransition.requireCore(p.prefix());
+        if(before.controlAttempted||applicationExitAttempted||unresolvedCoreControl!=null||unresolvedFullClockControl!=null||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
+            throw new IOException("Unused actual Core and resolved owner required; no old UNKNOWN/claim reset");
+        if(preparedCurrentDate!=null&&(!preparedCurrentDate.completed||preparedCurrentDate.unknown))throw new IOException("Original v17 Date remains unresolved");
+        if(preparedTedAdvance!=null&&(!preparedTedAdvance.completed&&!preparedTedAdvance.confirmed||preparedTedAdvance.unknown))throw new IOException("Original TED Date remains unresolved");
+        if(preparedRmtmAdvance!=null&&preparedRmtmAdvance.unknown)throw new IOException("Original RMTM date remains UNKNOWN");
+        if(cccFirstDay!=null&&cccFirstDay.called)throw new IOException("RMTM cannot borrow existing CCC case authority");
+    }
+    private void requireRmtmCustody(AckReceived ack,NativeRequestChronology custody)throws IOException {
+        if(!custody.session().equals(session())||!custody.custodyEpoch().equals(custodyEpoch)||originalRequestChronology(ack.requestId()).filter(custody::equals).isEmpty())throw new IOException("RMTM crossed actual held session/custody");custody.verify(ack);
+    }
+    private void requireRmtmFrame(CurrentRmtmActorTransitionResult f,CurrentRmtmActorTransition.Action action,String id,String operation,CoreReceived before)throws IOException {
+        if(f.action()!=action||!f.requestId().equals(id)||!f.operationId().equals(operation)||!f.cleanupKnown()||f.status()==CurrentRmtmActorTransitionResult.Status.INDETERMINATE)throw new IOException("RMTM action/identity/cleanup uncertain");
+        if(f.factsBefore().isPresent()&&!f.factsBefore().orElseThrow().equals(((CoreFrame.Partial)before.frame).prefix()))throw new IOException("RMTM changed the original checked Core");
+        if(f.factsBefore().isPresent()&&!f.connectionGeneration().equals(hello.connectionGeneration()))throw new IOException("RMTM changed original owner connection");
+    }
+    public synchronized RmtmRoleRead readCurrentRmtmRole(CoreReceived before,Instant deadline)throws InterruptedException {
+        String id="rmtm-role-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome outcome=null;
+        try {
+            requireRmtmScope(before,deadline);if(rmtmRoleQueries.contains(before))throw new IOException("Fresh Core required for RMTM role query");if(preparedRmtmAdvance!=null&&preparedRmtmAdvance.called&&!preparedRmtmAdvance.completed&&!preparedRmtmAdvance.confirmed&&!preparedRmtmAdvance.pending)throw new IOException("Running RMTM operation permits only original status reads");
+            if(!hello.capabilities().contains(CurrentRmtmActorTransition.Action.QUERY_ROLE.capability()))throw new IOException("Actual RMTM role capability absent");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native identity retention limit reached");Instant until=readDeadline(deadline);
+            byte[] packet=rmtmPacket(id,CurrentRmtmActorTransition.Action.QUERY_ROLE,before,"",BigInteger.ZERO,BigInteger.ZERO,BigInteger.ZERO,until);
+            outcome=retainReadOutcome(dispatchRead(id,packet,until,()->{requireBackgroundAtCoreWrite();try{requireRmtmScope(before,until);}catch(IOException e){throw new UncheckedIOException(e);}if(rmtmRoleQueries.contains(before))throw new IllegalStateException("RMTM role Core already queried");rmtmRoleQueries.add(before);latestRmtmRole=null;}));
+            if(!(outcome instanceof AckReceived ack)){if(outcome instanceof Unknown u)unresolvedCoreControl=u;return new RmtmRoleUnavailable(outcome,"Actual RMTM role ACK unavailable");}
+            var frame=CurrentRmtmActorTransitionResult.decodeOutcome(ack);requireRmtmFrame(frame,CurrentRmtmActorTransition.Action.QUERY_ROLE,id,"",before);
+            if(!frame.deadlineUnixMs().equals(BigInteger.valueOf(until.toEpochMilli())))throw new IOException("Original RMTM query deadline changed");
+            if(frame.status()!=CurrentRmtmActorTransitionResult.Status.AVAILABLE)return new RmtmRoleUnavailable(ack,frame.unavailableReason().orElseThrow());
+            var custody=originalRequestChronology(id).orElseThrow();var actual=new RmtmRoleReceived(this,before,frame,ack,custody,until);latestRmtmRole=actual;requireRmtmRole(actual,until);
+            var source=frame.source().orElseThrow();
+            if(rmtmCapturedRole==null&&source.definitionFound()&&source.nativeShown().orElse(false)&&source.caseStartCaptured()&&source.caseStartDateRaw()==((CoreFrame.Partial)before.frame).prefix().dateRaw()&&source.completedNaturalDays()==0&&source.actorEpoch().signum()==0&&source.role()==CurrentRmtmActorTransitionSource.Role.SONG
+                    &&source.songActorId().equals(Optional.of(((CoreFrame.Partial)before.frame).prefix().playedCharacterId()))){rmtmCapturedRole=actual;lastRmtmCaseProof=custody;}
+            return actual;
+        }catch(IOException|RuntimeException invalid){latestRmtmRole=null;return new RmtmRoleUnavailable(rmtmFailure(id,null,outcome,invalid),reason(invalid));}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();latestRmtmRole=null;unresolvedCoreControl=new Unknown(id,"Original RMTM role read interrupted; preserve, no action replay",retainedOutbound(id),Optional.empty());return new RmtmRoleUnavailable(unresolvedCoreControl,"Interrupted original role query");}
+    }
+    private void requireRmtmRole(RmtmRoleReceived query,Instant until)throws IOException {
+        if(query==null||query.issuer!=this||query!=latestRmtmRole||query.consumed)throw new IOException("Actual unused private RMTM role query required");
+        requireRmtmScope(query.before,until);Instant now=chronologyClock.instant();
+        if(until.isAfter(query.until)||!now.isBefore(query.until)||query.custody.responseReceived().observedAt().isAfter(now)||query.custody.responseReceived().observedAt().isAfter(query.until)
+                ||query.custody.writeEntered().order().compareTo(query.before.custody.responseReceived().order())<=0)throw new IOException("RMTM role escaped original Core/query window");
+        requireRmtmCustody(query.original,query.custody);var frame=CurrentRmtmActorTransitionResult.decodeOutcome(query.original);
+        if(!rmtmRoleQueries.contains(query.before)||!frame.equals(query.frame)||frame.status()!=CurrentRmtmActorTransitionResult.Status.AVAILABLE||!Arrays.equals(query.original.outbound().orElseThrow().originalPacket(),rmtmPacket(query.original.requestId(),CurrentRmtmActorTransition.Action.QUERY_ROLE,query.before,"",BigInteger.ZERO,BigInteger.ZERO,BigInteger.ZERO,query.until)))throw new IOException("Original RMTM role frame/body changed");
+    }
+    public synchronized RmtmAdvancePrepared prepareCurrentRmtmAdvance(RmtmRoleReceived query)throws IOException {
+        if(query!=null&&query.issuer==this&&query.advance!=null)return query.advance;requireRmtmRole(query,query.until);
+        var source=query.frame.source().orElseThrow();if(!source.advanceAdmissible()||source.pending().isPresent()||source.actorEpoch().compareTo(BigInteger.ONE)>0)throw new IOException("Actual role source does not admit the next single RMTM day");
+        if(rmtmFirstDay==null){
+            if(!source.caseStartCaptured()||source.completedNaturalDays()!=0||source.caseStartDateRaw()!=((CoreFrame.Partial)query.before.frame).prefix().dateRaw()
+                    ||source.actorEpoch().signum()!=0||source.role()!=CurrentRmtmActorTransitionSource.Role.SONG)
+                throw new IOException("Original actual captured zero-day Song source required");
+        }else{
+            requireRmtmCase(query.before);var first=rmtmFirstDay.query.frame.source().orElseThrow();
+            if(!source.caseStartCaptured()||source.completedNaturalDays()!=knownRmtmDays||source.caseStartDateRaw()!=first.caseStartDateRaw()||!source.songActorId().equals(first.songActorId()))
+                throw new IOException("Original actual RMTM start/counter/Song changed");
+            if(confirmedRmtmEpoch==null){if(source.actorEpoch().signum()!=0||source.role()!=CurrentRmtmActorTransitionSource.Role.SONG||source.successorActorId().isPresent())throw new IOException("Epoch0 days retain Song");}
+            else if(!source.actorEpoch().equals(BigInteger.ONE)||!source.successorActorId().equals(confirmedRmtmEpoch.latest.source().orElseThrow().successorActorId()))throw new IOException("Confirmed successor custody differs");
+        }
+        if(preparedRmtmAdvance!=null&&preparedRmtmAdvance.called&&!preparedRmtmAdvance.completed&&!preparedRmtmAdvance.confirmed)throw new IOException("Prior RMTM date requires its own known confirmation, never a new ID workaround");
+        if(!hello.capabilities().contains(CurrentRmtmActorTransition.Action.ADVANCE_DAY.capability()))throw new IOException("Actual RMTM advance capability absent");
+        String id="rmtm-advance-"+UUID.randomUUID().toString().replace("-","");String operation="rmtm-op-"+UUID.randomUUID().toString().replace("-","");
+        int target=Math.addExact(((CoreFrame.Partial)query.before.frame).prefix().dateRaw(),24);
+        if(retainedRmtmOperations.size()>=14)throw new IOException("Original RMTM case retains at most fourteen actual days");
+        var prepared=new RmtmAdvancePrepared(this,query,id,operation,rmtmPacket(id,CurrentRmtmActorTransition.Action.ADVANCE_DAY,query.before,operation,query.frame.providerGeneration(),query.frame.querySequence(),source.actorEpoch(),query.until),target);
+        retainedRmtmOperations.put(operation,prepared);if(rmtmFirstDay==null)rmtmFirstDay=prepared;return preparedRmtmAdvance=query.advance=prepared;
+    }
+    public synchronized DispatchOutcome submitCurrentRmtmAdvance(RmtmAdvancePrepared original)throws InterruptedException {
+        if(original==null||original.issuer!=this||original!=preparedRmtmAdvance)return zero("rmtm-foreign","Foreign RMTM advance preparation");
+        if(original.called)return original.outcome!=null?original.outcome:zero(original.id,"Original RMTM call has no reusable write authority");original.called=true;DispatchOutcome outcome=null;
+        try {requireRmtmRole(original.query,original.until);var q=original.query;var source=q.frame.source().orElseThrow();
+            if(!source.advanceAdmissible()||!hello.capabilities().contains(CurrentRmtmActorTransition.Action.ADVANCE_DAY.capability())||sentRequestIds.size()>=maximumSubmissions)throw new IOException("Original RMTM advance no longer admissible");
+            if(!Arrays.equals(original.packet.value(),rmtmPacket(original.id,CurrentRmtmActorTransition.Action.ADVANCE_DAY,q.before,original.operation,q.frame.providerGeneration(),q.frame.querySequence(),source.actorEpoch(),original.until)))throw new IOException("Original RMTM advance body/deadline drift");
+            outcome=dispatch(original.id,original.packet.value(),original.until,()->{requireBackgroundAtCoreWrite();try{requireRmtmRole(q,original.until);}catch(IOException e){throw new UncheckedIOException(e);}q.consumed=true;q.before.controlAttempted=true;heldSnapshotInvalidated=true;});
+            if(outcome instanceof AckReceived ack)retainRmtmOperation(original,ack,CurrentRmtmActorTransition.Action.ADVANCE_DAY,original.id);else if(outcome instanceof Unknown){original.unknown=true;unresolvedCoreControl=(Unknown)outcome;}
+            return original.outcome=outcome;
+        }catch(IOException|RuntimeException invalid){return original.outcome=rmtmFailure(original.id,original,outcome,invalid);}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(original.id))throw interrupted;Thread.currentThread().interrupt();return original.outcome=rmtmFailure(original.id,original,outcome,interrupted);}
+    }
+    public synchronized DispatchOutcome queryCurrentRmtmOperation(RmtmAdvancePrepared original,Instant receiveDeadline)throws InterruptedException {
+        String id="rmtm-status-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome outcome=null;
+        try {
+            if(original==null||original.issuer!=this||retainedRmtmOperations.get(original.operation)!=original||!original.called||!sentRequestIds.contains(original.id))throw new IOException("Original entered RMTM advance required for status");
+            verifyHeld(receiveDeadline);var q=original.query;requireRmtmCustody(q.original,q.custody);
+            if(!hello.capabilities().contains(CurrentRmtmActorTransition.Action.QUERY_OPERATION.capability())||sentRequestIds.size()>=maximumSubmissions)throw new IOException("Actual bounded RMTM status capability required");
+            // The wire keeps the original absolute deadline/Core/epoch/lease. Only this READ wait gets a new bounded receive interval.
+            byte[] packet=rmtmPacket(id,CurrentRmtmActorTransition.Action.QUERY_OPERATION,q.before,original.operation,q.frame.providerGeneration(),q.frame.querySequence(),q.frame.source().orElseThrow().actorEpoch(),original.until);
+            outcome=retainReadOutcome(dispatchRead(id,packet,readDeadline(receiveDeadline),()->{}));
+            if(outcome instanceof AckReceived ack)retainRmtmOperation(original,ack,CurrentRmtmActorTransition.Action.QUERY_OPERATION,id);else if(outcome instanceof Unknown)rmtmFailure(original.id,original,outcome,new IOException("Original RMTM operation status unavailable"));return outcome;
+        }catch(IOException|RuntimeException invalid){return rmtmFailure(id,original,outcome,invalid);}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();return rmtmFailure(id,original,outcome,interrupted);}
+    }
+    private void retainRmtmOperation(RmtmAdvancePrepared original,AckReceived ack,CurrentRmtmActorTransition.Action action,String id)throws IOException {
+        var f=CurrentRmtmActorTransitionResult.decodeOutcome(ack);requireRmtmFrame(f,action,id,original.operation,original.query.before);var custody=originalRequestChronology(id).orElseThrow();requireRmtmCustody(ack,custody);
+        var q=original.query;
+        if(!f.ok()&&f.claimSequence().signum()==0&&!f.effectAttempted()&&!f.nativeReturned()&&original.firstClaim==null
+                &&f.progress().filter(p->p.armAttempted()||p.resumeAttempted()||p.armed()||p.accessCleanupUnknown()).isEmpty()){
+            if(!f.deadlineUnixMs().equals(BigInteger.valueOf(original.until.toEpochMilli())))throw new IOException("Original known RMTM refusal changed its deadline");original.latest=f;return;
+        }
+        if(!f.providerGeneration().equals(q.frame.providerGeneration())||!f.querySequence().equals(q.frame.querySequence())||!f.deadlineUnixMs().equals(BigInteger.valueOf(original.until.toEpochMilli())))throw new IOException("RMTM operation changed original private lease/deadline");
+        if(custody.writeEntered().order().compareTo(q.custody.responseReceived().order())<=0)throw new IOException("RMTM advance/status predates original source ACK");
+        if(action==CurrentRmtmActorTransition.Action.ADVANCE_DAY&&f.ok()&&!f.source().equals(q.frame.source()))throw new IOException("Successful advance changed immutable beforeSource");
+        if(!f.actorEpoch().equals(q.frame.actorEpoch()))throw new IOException("RMTM confirmed frontier is one; natural days are a separate counter");
+        int expectedDays=q.frame.source().orElseThrow().completedNaturalDays()+(f.progress().filter(CurrentRmtmActorTransitionResult.Progress::exactDayConfirmed).isPresent()?1:0);
+        if(f.completedNaturalDays()!=expectedDays)throw new IOException("RMTM result changed the original natural-day counter");
+        if(f.claimSequence().signum()>0){if(original.firstClaim==null)original.firstClaim=f;else {
+            var first=original.firstClaim;
+            if(!f.claimSequence().equals(first.claimSequence())||f.progress().isPresent()!=first.progress().isPresent())throw new IOException("Original RMTM claim/progress presence changed");
+            if(first.progress().isPresent()&&(!f.progress().orElseThrow().generation().equals(first.progress().orElseThrow().generation())||!f.connectionGeneration().equals(first.connectionGeneration())||!f.ticketSequence().equals(first.ticketSequence())||!f.pumpEpoch().equals(first.pumpEpoch())||f.threadId()!=first.threadId()))throw new IOException("Original RMTM generation/owner changed");
+        }}
+        else if(original.firstClaim!=null)throw new IOException("Original RMTM claim disappeared");
+        original.latest=f;
+        if(f.status()==CurrentRmtmActorTransitionResult.Status.TRANSITION_PENDING){var p=f.progress().orElseThrow();if(!original.query.frame.actorEpoch().equals(BigInteger.ZERO)||p.targetDateRaw()!=original.target||p.beforeActorId()!=((CoreFrame.Partial)q.before.frame).prefix().playedCharacterId())throw new IOException("Pending differs from original before-Song day");original.pending=true;original.pendingCustody=custody;}
+        if(f.status()==CurrentRmtmActorTransitionResult.Status.COMPLETED_DAY){
+            var p=f.progress().orElseThrow();
+            if(p.targetDateRaw()!=original.target||p.beforeActorId()!=p.afterActorId())throw new IOException("RMTM completion must be a later exact same-successor day");
+            if(!original.completed){if(original.unknown||knownRmtmDays!=q.frame.source().orElseThrow().completedNaturalDays())throw new IOException("RMTM completion cannot reset UNKNOWN or skip the original day");knownRmtmDays=f.completedNaturalDays();lastRmtmCaseProof=custody;}
+            original.completed=!original.unknown;
+        }
+        if(f.status()==CurrentRmtmActorTransitionResult.Status.INDETERMINATE||!f.cleanupKnown()||f.progress().filter(CurrentRmtmActorTransitionResult.Progress::accessCleanupUnknown).isPresent())throw new IOException("Original RMTM operation uncertain");
+    }
+    public synchronized RmtmEpochPrepared prepareCurrentRmtmEpoch(RmtmAdvancePrepared operation,RmtmRoleReceived after)throws IOException {
+        if(after!=null&&after.issuer==this&&after.confirmation!=null){if(after.confirmation.operation!=operation)throw new IOException("Original after-role is already prepared for another operation");return after.confirmation;}requireRmtmRole(after,after.until);
+        if(operation==null||operation.issuer!=this||operation!=preparedRmtmAdvance||!operation.pending||operation.unknown||operation.confirmed||operation.pendingCustody==null||!chronologyClock.instant().isBefore(operation.until)||after.until.isAfter(operation.until))throw new IOException("Original unexpired proved pending is required, never an old actorAbort/UNKNOWN");
+        var source=after.frame.source().orElseThrow();var p=operation.latest.progress().orElseThrow();var pending=source.pending().orElseThrow(()->new IOException("Independent recipient Source has no actual pending"));var core=((CoreFrame.Partial)after.before.frame).prefix();
+        var start=((CoreFrame.Partial)operation.query.before.frame).prefix();
+        var expectedAfter=new CoreFrame.Prefix(operation.target,start.speed(),start.paused(),start.localPlayerId(),start.mapReady(),start.hasPlayedCharacter(),p.afterActorId(),start.playedCharacterAlive());
+        if(confirmedRmtmEpoch!=null||!source.caseStartCaptured()||source.completedNaturalDays()!=knownRmtmDays+1||source.caseStartDateRaw()!=rmtmFirstDay.query.frame.source().orElseThrow().caseStartDateRaw()||!source.confirmAdmissible()||source.role()!=CurrentRmtmActorTransitionSource.Role.SUCCESSOR||!source.actorEpoch().equals(BigInteger.ZERO)
+                ||!pending.operationId().equals(operation.operation)||!pending.claimSequence().equals(operation.firstClaim.claimSequence())||!pending.generation().equals(p.generation())||!pending.originalDeadlineUnixMs().equals(BigInteger.valueOf(operation.until.toEpochMilli()))
+                ||pending.beforeActorId()!=p.beforeActorId()||pending.afterActorId()!=p.afterActorId()||!core.equals(expectedAfter)
+                ||after.before.custody.writeEntered().order().compareTo(operation.pendingCustody.responseReceived().order())<=0)throw new IOException("Fresh independent actual after-Core/recipient proof does not match original pending");
+        if(!hello.capabilities().contains(CurrentRmtmActorTransition.Action.CONFIRM_EPOCH.capability()))throw new IOException("Actual RMTM epoch capability absent");
+        String id="rmtm-epoch-"+UUID.randomUUID().toString().replace("-","");return after.confirmation=new RmtmEpochPrepared(this,operation,after,id,rmtmPacket(id,CurrentRmtmActorTransition.Action.CONFIRM_EPOCH,after.before,operation.operation,after.frame.providerGeneration(),after.frame.querySequence(),BigInteger.ZERO,after.until));
+    }
+    public synchronized DispatchOutcome submitCurrentRmtmEpoch(RmtmEpochPrepared original)throws InterruptedException {
+        if(original==null||original.issuer!=this||original.query.confirmation!=original)return zero("rmtm-foreign-epoch","Foreign RMTM epoch preparation");
+        if(original.called)return original.outcome!=null?original.outcome:zero(original.id,"Original epoch call has no reusable authority");original.called=true;DispatchOutcome outcome=null;
+        try {var after=original.query;var op=original.operation;requireRmtmRole(after,after.until);
+            if(!op.pending||op.unknown||op.confirmed||!chronologyClock.instant().isBefore(op.until)||!after.frame.source().orElseThrow().confirmAdmissible()||sentRequestIds.size()>=maximumSubmissions)throw new IOException("Original RMTM epoch no longer admissible");
+            if(!Arrays.equals(original.packet.value(),rmtmPacket(original.id,CurrentRmtmActorTransition.Action.CONFIRM_EPOCH,after.before,op.operation,after.frame.providerGeneration(),after.frame.querySequence(),BigInteger.ZERO,after.until)))throw new IOException("Original epoch packet/deadline changed");
+            outcome=dispatch(original.id,original.packet.value(),after.until,()->{requireBackgroundAtCoreWrite();try{requireRmtmRole(after,after.until);}catch(IOException e){throw new UncheckedIOException(e);}after.consumed=true;after.before.controlAttempted=true;});
+            if(outcome instanceof AckReceived ack){var f=CurrentRmtmActorTransitionResult.decodeOutcome(ack);requireRmtmFrame(f,CurrentRmtmActorTransition.Action.CONFIRM_EPOCH,original.id,op.operation,after.before);var custody=originalRequestChronology(original.id).orElseThrow();requireRmtmCustody(ack,custody);
+                if(!f.providerGeneration().equals(after.frame.providerGeneration())||!f.querySequence().equals(after.frame.querySequence())||!f.deadlineUnixMs().equals(BigInteger.valueOf(after.until.toEpochMilli()))||custody.writeEntered().order().compareTo(after.custody.responseReceived().order())<=0)throw new IOException("Epoch ACK changed original after-query lease/chronology");
+                original.latest=f;if(f.status()==CurrentRmtmActorTransitionResult.Status.EPOCH_CONFIRMED){if(!f.source().equals(after.frame.source())||!f.actorEpoch().equals(BigInteger.ONE)||f.effectAttempted()||f.nativeReturned())throw new IOException("Epoch confirmation changed immutable beforeSource or zero-Game-call frontier1");if(f.completedNaturalDays()!=after.frame.source().orElseThrow().completedNaturalDays()||f.completedNaturalDays()!=knownRmtmDays+1)throw new IOException("Original RMTM pending counter differs");op.confirmed=true;confirmedRmtmEpoch=original;knownRmtmDays=f.completedNaturalDays();lastRmtmCaseProof=custody;}
+            }else if(outcome instanceof Unknown){op.unknown=true;unresolvedCoreControl=(Unknown)outcome;}return original.outcome=outcome;
+        }catch(IOException|RuntimeException invalid){return original.outcome=rmtmFailure(original.id,original.operation,outcome,invalid);}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(original.id))throw interrupted;Thread.currentThread().interrupt();return original.outcome=rmtmFailure(original.id,original.operation,outcome,interrupted);}
+    }
+    private DispatchOutcome rmtmFailure(String id,RmtmAdvancePrepared operation,DispatchOutcome outcome,Exception invalid) {
+        if(!sentRequestIds.contains(id)&&!(outcome instanceof Unknown))return zero(id,reason(invalid));
+        if(operation!=null)operation.unknown=true;if(outcome instanceof AckReceived ack)indeterminateCoreAcknowledgement=ack;
+        if(unresolvedCoreControl==null)unresolvedCoreControl=new Unknown(id,"Original RMTM source/custody uncertain; no new-ID/deadline workaround: "+reason(invalid),retainedOutbound(id),outcome instanceof AckReceived ack?Optional.of(ack.originalFrame()):Optional.empty());return unresolvedCoreControl;
+    }
+
+
+    private void requireRmtmBusinessScope(CoreReceived before,Instant until)throws IOException {
+        requireRmtmScope(before,until);
+        if(preparedRmtmAdvance!=null&&preparedRmtmAdvance.called&&!preparedRmtmAdvance.completed&&!preparedRmtmAdvance.confirmed)throw new IOException("Original day must resolve before business query");
+    }
+    private void requireRmtmBusinessCustody(AckReceived ack,NativeRequestChronology c,NativeRequestChronology prior,Instant until)throws IOException {
+        requireRmtmCustody(ack,c);Instant now=chronologyClock.instant();
+        if(c.writeEntered().order().compareTo(prior.responseReceived().order())<=0||c.responseReceived().observedAt().isAfter(now)||c.responseReceived().observedAt().isAfter(until))throw new IOException("Actual business receipt escaped Core/source chronology");
+    }
+    public sealed interface RmtmDecisionRead permits RmtmDecisionReceived,RmtmDecisionUnavailable { DispatchOutcome original(); }
+    public static final class RmtmDecisionReceived implements RmtmDecisionRead {
+        private final NativeGameTransport issuer;private final CoreReceived before;private final CurrentRmtmDecisionResult frame;
+        private final AckReceived original;private final NativeRequestChronology custody;private final Instant validUntil;
+        private boolean actionAttempted;private RmtmDecisionPrepared prepared;
+        private RmtmDecisionReceived(NativeGameTransport issuer,CoreReceived before,CurrentRmtmDecisionResult frame,AckReceived original,NativeRequestChronology custody,Instant until){this.issuer=issuer;this.before=before;this.frame=frame;this.original=original;this.custody=custody;validUntil=until;}
+        public CurrentRmtmDecisionResult frame(){return frame;}@Override public AckReceived original(){return original;}public Instant validUntil(){return validUntil;}
+        public void requireOriginal(NativeGameTransport actual,Instant until)throws IOException{Objects.requireNonNull(actual).requireRmtmDecisionOriginal(this,until);}
+    }
+    public record RmtmDecisionUnavailable(DispatchOutcome original,String reason)implements RmtmDecisionRead {public RmtmDecisionUnavailable{Objects.requireNonNull(original);StrictJson.text(reason);}}
+    public static final class RmtmDecisionPrepared {
+        private final NativeGameTransport issuer;private final RmtmDecisionReceived query;private final CurrentRmtmDecision.Action action;private final RmtmDecisionPurpose purpose;private final String id;private final NativeWire.Bytes packet;
+        private boolean called;private DispatchOutcome outcome;private CurrentRmtmDecisionResult latestFrame;
+        private RmtmDecisionPrepared(NativeGameTransport issuer,RmtmDecisionReceived query,CurrentRmtmDecision.Action action,RmtmDecisionPurpose purpose,String id,byte[] packet){this.issuer=issuer;this.query=query;this.action=action;this.purpose=purpose;this.id=id;this.packet=new NativeWire.Bytes(packet);}
+        public String requestId(){return id;}public NativeWire.Bytes originalPacket(){return packet;}public Instant deadline(){return query.validUntil;}public CurrentRmtmDecision.Action action(){return action;}
+        public Optional<CurrentRmtmDecisionResult> latestFrame(){return Optional.ofNullable(latestFrame);}
+    }
+    public enum RmtmDecisionPurpose {
+        CONTINUE(CurrentRmtmDecision.DecisionKey.CONTINUE_CORE),
+        PREPARE_FIFTY(CurrentRmtmDecision.DecisionKey.PREPARE_FIFTY),
+        INSPECT_FIFTY(CurrentRmtmDecision.DecisionKey.RESTORE),
+        PREPARE_FIFTYONE(CurrentRmtmDecision.DecisionKey.PREPARE_FIFTYONE),
+        RESTORE_FIFTYONE(CurrentRmtmDecision.DecisionKey.RESTORE),
+        VERIFY_RESTORE(CurrentRmtmDecision.DecisionKey.VERIFY_RESTORE);
+        private final CurrentRmtmDecision.DecisionKey key;
+        RmtmDecisionPurpose(CurrentRmtmDecision.DecisionKey key){this.key=key;}
+    }
+    private final Set<CoreReceived> rmtmDecisionQueries=java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<>());
+    private final java.util.EnumMap<RmtmDecisionPurpose,Set<CurrentRmtmDecision.Action>> rmtmDecisionAttempts=new java.util.EnumMap<>(RmtmDecisionPurpose.class);
+    private final java.util.EnumMap<RmtmDecisionPurpose,AckReceived> rmtmDecisionConfirms=new java.util.EnumMap<>(RmtmDecisionPurpose.class);
+    private RmtmDecisionReceived rmtmObservedFifty;
+    private RmtmDecisionReceived latestRmtmDecision;
+    private RmtmDecisionUnavailable unresolvedRmtmDecision;
+
+    private byte[] rmtmDecisionPacket(String id,CurrentRmtmDecision.Action action,CoreReceived before,BigInteger provider,BigInteger sequence,Optional<CurrentRmtmDecision.DecisionKey> selector,Instant until)throws IOException {
+        if(!(before.frame instanceof CoreFrame.Partial core))throw new IOException("Actual current267 RMTM Core required");
+        var request=CurrentRmtmDecision.request(core,action,provider,sequence,selector);var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));
+        fields.put("core_control_deadline_unix_ms",BigInteger.valueOf(until.toEpochMilli()));return NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+    }
+    private void requireRmtmDecisionFrame(CurrentRmtmDecisionResult frame,CurrentRmtmDecision.Action action,CoreReceived before)throws IOException {
+        if(frame.action()!=action||frame.status()==CurrentRmtmDecisionResult.Status.INDETERMINATE||!frame.cleanupKnown())throw new IOException("RMTM business action/cleanup uncertain");
+        if(frame.factsBefore().isPresent()&&!frame.factsBefore().orElseThrow().equals(((CoreFrame.Partial)before.frame).prefix()))throw new IOException("RMTM business changed original Core");
+        if(frame.owner().isPresent()&&!frame.owner().orElseThrow().connectionGeneration().equals(hello.connectionGeneration()))throw new IOException("RMTM business crossed actual held connection");
+
+    }
+    private void requireRmtmDecisionOriginal(RmtmDecisionReceived actual,Instant until)throws IOException {
+        if(actual==null||actual.issuer!=this||actual!=latestRmtmDecision||actual.actionAttempted||unresolvedRmtmDecision!=null)throw new IOException("Original unused private RMTM business query required");
+        requireRmtmBusinessScope(actual.before,until);Instant now=chronologyClock.instant();
+        if(until.isAfter(actual.validUntil)||!now.isBefore(actual.validUntil))throw new IOException("RMTM original query expired or extended");
+        requireRmtmBusinessCustody(actual.original,actual.custody,actual.before.custody,actual.validUntil);
+        var frame=CurrentRmtmDecisionResult.decodeOutcome(actual.original);requireRmtmDecisionFrame(frame,CurrentRmtmDecision.Action.QUERY,actual.before);
+        if(!rmtmDecisionQueries.contains(actual.before)||frame.status()!=CurrentRmtmDecisionResult.Status.AVAILABLE||!frame.equals(actual.frame)
+                ||!Arrays.equals(actual.original.outbound().orElseThrow().originalPacket(),rmtmDecisionPacket(actual.original.requestId(),CurrentRmtmDecision.Action.QUERY,actual.before,BigInteger.ZERO,BigInteger.ZERO,Optional.empty(),actual.validUntil)))
+            throw new IOException("RMTM original query/body/Core/Source changed");
+    }
+    public synchronized RmtmDecisionRead readCurrentRmtmDecision(CoreReceived before,Instant deadline)throws InterruptedException {
+        if(unresolvedRmtmDecision!=null)return unresolvedRmtmDecision;
+        String id="rmtm-decision-query-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome outcome=null;
+        try {
+            requireRmtmBusinessScope(before,deadline);if(rmtmDecisionQueries.contains(before))throw new IOException("Fresh Core required for this RMTM query");
+            if(!hello.capabilities().contains(CurrentRmtmDecision.Action.QUERY.capability())||sentRequestIds.size()>=maximumSubmissions)throw new IOException("RMTM actual query capability/retention unavailable");
+            Instant until=readDeadline(deadline);byte[] packet=rmtmDecisionPacket(id,CurrentRmtmDecision.Action.QUERY,before,BigInteger.ZERO,BigInteger.ZERO,Optional.empty(),until);
+            outcome=retainReadOutcome(dispatchRead(id,packet,until,()->{requireBackgroundAtCoreWrite();try{requireRmtmBusinessScope(before,until);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
+                if(rmtmDecisionQueries.contains(before))throw new IllegalStateException("RMTM Core query already consumed");rmtmDecisionQueries.add(before);latestRmtmDecision=null;}));
+            if(!(outcome instanceof AckReceived ack))return rmtmDecisionReadFailure(id,outcome,new IOException("Actual RMTM query ACK unavailable"));
+            var frame=CurrentRmtmDecisionResult.decodeOutcome(ack);requireRmtmDecisionFrame(frame,CurrentRmtmDecision.Action.QUERY,before);
+            if(frame.status()!=CurrentRmtmDecisionResult.Status.AVAILABLE)return new RmtmDecisionUnavailable(ack,frame.unavailableReason().orElseThrow());
+            var custody=originalRequestChronology(id).orElseThrow(()->new IOException("Actual RMTM query custody absent"));
+            var received=new RmtmDecisionReceived(this,before,frame,ack,custody,until);latestRmtmDecision=received;requireRmtmDecisionOriginal(received,until);return received;
+        }catch(IOException|RuntimeException invalid){latestRmtmDecision=null;return rmtmDecisionReadFailure(id,outcome,invalid);}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();return rmtmDecisionReadFailure(id,new Unknown(id,"Original RMTM read interrupted after write",retainedOutbound(id),Optional.empty()),interrupted);}
+    }
+    private RmtmDecisionUnavailable rmtmDecisionReadFailure(String id,DispatchOutcome outcome,Exception invalid) {
+        if(!sentRequestIds.contains(id)||outcome instanceof RejectedBeforeDispatch)return new RmtmDecisionUnavailable(outcome!=null?outcome:zero(id,reason(invalid)),reason(invalid));
+        return unresolvedRmtmDecision=new RmtmDecisionUnavailable(rmtmFailure(id,null,outcome,invalid),reason(invalid));
+    }
+    private Optional<CurrentRmtmDecision.DecisionKey> rmtmDecisionSelector(CurrentRmtmDecision.Action action,RmtmDecisionPurpose purpose){return action==CurrentRmtmDecision.Action.OPEN_DETAIL||action==CurrentRmtmDecision.Action.CONFIRM?Optional.of(purpose.key):Optional.empty();}
+    public synchronized RmtmDecisionPrepared prepareCurrentRmtmDecision(RmtmDecisionReceived query,CurrentRmtmDecision.Action action,RmtmDecisionPurpose purpose)throws IOException {
+        Objects.requireNonNull(purpose);
+        if(query!=null&&query.issuer==this&&query.prepared!=null){if(query.prepared.action!=action||query.prepared.purpose!=purpose)throw new IOException("Original query already prepared for another fixed purpose");return query.prepared;}
+        requireRmtmDecisionOriginal(query,query.validUntil);requireRmtmCase(query.before);requireRmtmDecisionAdmission(query,action,purpose);
+        if(!hello.capabilities().contains(action.capability()))throw new IOException("Actual fixed decision capability absent");
+        String id="rmtm-decision-action-"+UUID.randomUUID().toString().replace("-","");
+        return query.prepared=new RmtmDecisionPrepared(this,query,action,purpose,id,rmtmDecisionPacket(id,action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),rmtmDecisionSelector(action,purpose),query.validUntil));
+    }
+    private void requireRmtmDecisionAdmission(RmtmDecisionReceived query,CurrentRmtmDecision.Action action,RmtmDecisionPurpose purpose)throws IOException {
+        var s=query.frame.source().orElseThrow();if(!s.caseBound())throw new IOException("Native's own actual RMTM case required");
+        if(rmtmDecisionAttempts.getOrDefault(purpose,Set.of()).contains(action))throw new IOException("Original fixed-purpose navigation/confirm already attempted; no new-ID replay");
+        if(purpose==RmtmDecisionPurpose.PREPARE_FIFTYONE||purpose==RmtmDecisionPurpose.RESTORE_FIFTYONE||purpose==RmtmDecisionPurpose.VERIFY_RESTORE)requireRmtmFiftyEvidence(query.before);
+        if(purpose==RmtmDecisionPurpose.RESTORE_FIFTYONE&&!rmtmDecisionConfirms.containsKey(RmtmDecisionPurpose.PREPARE_FIFTYONE))throw new IOException("Original51 setup ACK required");
+        if(purpose==RmtmDecisionPurpose.VERIFY_RESTORE&&!rmtmDecisionConfirms.containsKey(RmtmDecisionPurpose.RESTORE_FIFTYONE))throw new IOException("Original real production restoration ACK required");
+        if(purpose==RmtmDecisionPurpose.INSPECT_FIFTY&&!rmtmDecisionConfirms.containsKey(RmtmDecisionPurpose.PREPARE_FIFTY))throw new IOException("Original50 setup ACK required");
+        switch(action){
+            case OPEN_LIST -> {if(!s.openListAdmissible())throw new IOException("Actual hidden-list Toggle admission required");}
+            case OPEN_DETAIL -> {if(s.rows().stream().noneMatch(r->r.decisionKey()==purpose.key&&r.canOpenDetail()))throw new IOException("Actual fixed row admission required");}
+            case CONFIRM -> {if(purpose==RmtmDecisionPurpose.INSPECT_FIFTY||rmtmDecisionConfirms.containsKey(purpose)||!s.confirmAdmissible()||!s.selectedDecisionKey().equals(Optional.of(purpose.key))||!s.nativeCanConfirm().orElse(false))throw new IOException("Actual fixed selected Can and unspent once purpose required");}
+            default -> throw new IOException("Query does not prepare a business write");
+        }
+    }
+    /** Retains original false-Can DATA without consuming its spent setup claim or minting a revision. */
+    public synchronized void retainCurrentRmtmFifty(RmtmDecisionReceived query)throws IOException {
+        requireRmtmDecisionOriginal(query,query.validUntil);requireRmtmCase(query.before);
+        if(rmtmObservedFifty!=null)throw new IOException("Original50 observation cannot be replaced");
+        var s=query.frame.source().orElseThrow();var ack=rmtmDecisionConfirms.get(RmtmDecisionPurpose.PREPARE_FIFTY);
+        if(ack==null||!s.caseBound()||!s.detailVisible()||!s.selectedDecisionKey().equals(Optional.of(CurrentRmtmDecision.DecisionKey.RESTORE))
+                ||s.nativeCanConfirm().isEmpty()||s.nativeCanConfirm().orElseThrow()||s.confirmAdmissible()||!s.confirmTooltipObserved())throw new IOException("Independent actual50 nativeCanfalse/full tooltip required");
+        var c=originalRequestChronology(ack.requestId()).orElseThrow();requireRmtmCustody(ack,c);
+        if(query.before.custody.writeEntered().order().compareTo(c.responseReceived().order())<=0)throw new IOException("50 query precedes original setup ACK");
+        rmtmObservedFifty=query;
+    }
+    private void requireRmtmFiftyEvidence(CoreReceived before)throws IOException {
+        var q=rmtmObservedFifty;if(q==null||q.issuer!=this)throw new IOException("This Receiver's original50 typed observation absent");
+        requireRmtmCustody(q.original,q.custody);var f=CurrentRmtmDecisionResult.decodeOutcome(q.original);
+        if(!f.equals(q.frame)||f.source().orElseThrow().nativeCanConfirm().orElse(true)||before.custody.writeEntered().order().compareTo(q.custody.responseReceived().order())<=0)
+            throw new IOException("Original actual50 Source/custody/chronology changed");
+    }
+    public synchronized DispatchOutcome submitCurrentRmtmDecision(RmtmDecisionPrepared prepared)throws InterruptedException {
+        if(prepared!=null&&prepared.issuer==this&&prepared.called&&prepared.outcome!=null)return prepared.outcome;
+        if(unresolvedRmtmDecision!=null)return unresolvedRmtmDecision.original();
+        String id=prepared==null?"rmtm-decision-invalid-"+UUID.randomUUID().toString().replace("-",""):prepared.id;DispatchOutcome outcome=null;
+        try {
+            if(prepared==null||prepared.issuer!=this||prepared.query.prepared!=prepared||prepared.called)throw new IOException("Original private unused RMTM preparation required");
+            var query=prepared.query;requireRmtmDecisionOriginal(query,query.validUntil);requireRmtmCase(query.before);requireRmtmDecisionAdmission(query,prepared.action,prepared.purpose);
+            if(!hello.capabilities().contains(prepared.action.capability())||sentRequestIds.size()>=maximumSubmissions)throw new IOException("RMTM action capability/retention unavailable");
+            if(!Arrays.equals(prepared.packet.value(),rmtmDecisionPacket(id,prepared.action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),rmtmDecisionSelector(prepared.action,prepared.purpose),query.validUntil)))throw new IOException("RMTM original private action packet/deadline drift");
+            outcome=dispatch(id,prepared.packet.value(),query.validUntil,()->{requireBackgroundAtCoreWrite();try{requireRmtmDecisionOriginal(query,query.validUntil);requireRmtmCase(query.before);requireRmtmDecisionAdmission(query,prepared.action,prepared.purpose);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
+                rmtmDecisionAttempts.computeIfAbsent(prepared.purpose,k->java.util.EnumSet.noneOf(CurrentRmtmDecision.Action.class)).add(prepared.action);
+                prepared.called=true;query.actionAttempted=true;query.before.controlAttempted=true;heldSnapshotInvalidated=true;latestRmtmDecision=null;});
+            if(outcome instanceof Unknown unknown){unresolvedCoreControl=unknown;unresolvedRmtmDecision=new RmtmDecisionUnavailable(unknown,"Original RMTM business UNKNOWN");return prepared.outcome=unknown;}
+            if(outcome instanceof AckReceived ack){
+                var frame=CurrentRmtmDecisionResult.decodeOutcome(ack);requireRmtmDecisionFrame(frame,prepared.action,query.before);
+                var custody=originalRequestChronology(id).orElseThrow(()->new IOException("Actual RMTM action custody absent"));requireRmtmBusinessCustody(ack,custody,query.custody,query.validUntil);
+                if(frame.source().isPresent()&&!frame.source().equals(query.frame.source())||frame.providerGeneration().signum()>0&&!frame.providerGeneration().equals(query.frame.providerGeneration())
+                        ||frame.querySequence().signum()>0&&!frame.querySequence().equals(query.frame.querySequence())||frame.decisionKey().isPresent()&&!frame.decisionKey().equals(rmtmDecisionSelector(prepared.action,prepared.purpose)))throw new IOException("RMTM ACK rebound original Source/lease/selector");
+                if(frame.successful()){
+                    if(!frame.source().equals(query.frame.source())||!frame.factsBefore().equals(query.frame.factsBefore())||!frame.providerGeneration().equals(query.frame.providerGeneration())
+                            ||!frame.querySequence().equals(query.frame.querySequence())||!(frame.decisionKey().equals(rmtmDecisionSelector(prepared.action,prepared.purpose))))throw new IOException("RMTM callback must retain complete immutable beforeSource/Core/lease/selector");
+                    recordRmtmCaseEffect(ack);if(prepared.action==CurrentRmtmDecision.Action.CONFIRM)rmtmDecisionConfirms.put(prepared.purpose,ack);
+                }
+                prepared.latestFrame=frame;
+            }
+            return prepared.outcome=outcome;
+        }catch(IOException|RuntimeException invalid){var failure=rmtmFailure(id,null,outcome,invalid);if(prepared!=null&&prepared.issuer==this)prepared.outcome=failure;return failure;}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();var failure=rmtmFailure(id,null,outcome,interrupted);if(prepared!=null&&prepared.issuer==this)prepared.outcome=failure;return failure;}
+    }
+
+    public sealed interface RmtmEventRead permits RmtmEventReceived,RmtmEventUnavailable { DispatchOutcome original(); }
+    public static final class RmtmEventReceived implements RmtmEventRead {
+        private final NativeGameTransport issuer;private final CoreReceived before;private final CurrentRmtmEventResult frame;
+        private final AckReceived original;private final NativeRequestChronology custody;private final Instant validUntil;
+        private boolean actionAttempted;private RmtmEventPrepared prepared;
+        private RmtmEventReceived(NativeGameTransport issuer,CoreReceived before,CurrentRmtmEventResult frame,AckReceived original,NativeRequestChronology custody,Instant until){this.issuer=issuer;this.before=before;this.frame=frame;this.original=original;this.custody=custody;validUntil=until;}
+        public CurrentRmtmEventResult frame(){return frame;}@Override public AckReceived original(){return original;}public Instant validUntil(){return validUntil;}
+        public void requireOriginal(NativeGameTransport actual,Instant until)throws IOException{Objects.requireNonNull(actual).requireRmtmEventOriginal(this,until);}
+    }
+    public record RmtmEventUnavailable(DispatchOutcome original,String reason)implements RmtmEventRead {public RmtmEventUnavailable{Objects.requireNonNull(original);StrictJson.text(reason);}}
+    public static final class RmtmEventPrepared {
+        private final NativeGameTransport issuer;private final RmtmEventReceived query;private final CurrentRmtmEvent.Action action;private final String id;private final NativeWire.Bytes packet;private final int instanceId;
+        private boolean called;private DispatchOutcome outcome;private CurrentRmtmEventResult latestFrame;
+        private RmtmEventPrepared(NativeGameTransport issuer,RmtmEventReceived query,CurrentRmtmEvent.Action action,String id,byte[] packet,int instanceId){this.issuer=issuer;this.query=query;this.action=action;this.id=id;this.packet=new NativeWire.Bytes(packet);this.instanceId=instanceId;}
+        public String requestId(){return id;}public NativeWire.Bytes originalPacket(){return packet;}public Instant deadline(){return query.validUntil;}public CurrentRmtmEvent.Action action(){return action;}public int instanceId(){return instanceId;}
+        public Optional<CurrentRmtmEventResult> latestFrame(){return Optional.ofNullable(latestFrame);}
+    }
+    private RmtmEventReceived latestRmtmEvent;
+    private RmtmEventUnavailable unresolvedRmtmEvent;
+    private final Set<Integer> attemptedRmtmEventInstances=new HashSet<>();
+    private final Set<CurrentRmtmEvent.Action> attemptedRmtmEventChannels=java.util.EnumSet.noneOf(CurrentRmtmEvent.Action.class);
+    private final java.util.Map<CurrentRmtmEvent.Action,AckReceived> rmtmEventReceipts=new java.util.EnumMap<>(CurrentRmtmEvent.Action.class);
+    private final java.util.Map<CoreReceived,Set<CurrentRmtmEvent.Action>> rmtmEventQueries=new java.util.IdentityHashMap<>();
+    private byte[] rmtmEventPacket(String id,CurrentRmtmEvent.Action action,CoreReceived before,BigInteger provider,BigInteger sequence,Optional<Integer> selector,Instant until)throws IOException {
+        if(!(before.frame instanceof CoreFrame.Partial core))throw new IOException("Actual current267 RMTM Core required");
+        var request=CurrentRmtmEvent.request(core,action,provider,sequence,selector);var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));
+        fields.put("core_control_deadline_unix_ms",BigInteger.valueOf(until.toEpochMilli()));return NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+    }
+    private void requireRmtmEventFrame(CurrentRmtmEventResult frame,CurrentRmtmEvent.Action action,CoreReceived before)throws IOException {
+        if(frame.action()!=action||frame.status()==CurrentRmtmEventResult.Status.INDETERMINATE||!frame.cleanupKnown())throw new IOException("RMTM business action/cleanup uncertain");
+        if(frame.factsBefore().isPresent()&&!frame.factsBefore().orElseThrow().equals(((CoreFrame.Partial)before.frame).prefix()))throw new IOException("RMTM business changed original Core");
+        if(frame.owner().isPresent()&&!frame.owner().orElseThrow().connectionGeneration().equals(hello.connectionGeneration()))throw new IOException("RMTM business crossed actual held connection");
+        if(frame.source().isPresent()&&frame.source().orElseThrow().fixedInstanceId().isPresent()){
+            int fixed=frame.source().orElseThrow().fixedInstanceId().orElseThrow();int actor=((CoreFrame.Partial)before.frame).prefix().playedCharacterId();
+            if(frame.source().orElseThrow().eventCensus().events().stream().filter(e->e.instanceId()==fixed&&e.recipientCharacterId()==actor).count()!=1)throw new IOException("RMTM actual event recipient differs from checked Core");
+        }
+    }
+    private void requireRmtmEventOriginal(RmtmEventReceived actual,Instant until)throws IOException {
+        if(actual==null||actual.issuer!=this||actual!=latestRmtmEvent||actual.actionAttempted||unresolvedRmtmEvent!=null)throw new IOException("Original unused private RMTM business query required");
+        requireRmtmBusinessScope(actual.before,until);Instant now=chronologyClock.instant();
+        if(until.isAfter(actual.validUntil)||!now.isBefore(actual.validUntil))throw new IOException("RMTM original query expired or extended");
+        requireRmtmBusinessCustody(actual.original,actual.custody,actual.before.custody,actual.validUntil);
+        var frame=CurrentRmtmEventResult.decodeOutcome(actual.original);requireRmtmEventFrame(frame,actual.frame.action(),actual.before);
+        if(!rmtmEventQueries.getOrDefault(actual.before,Set.of()).contains(actual.frame.action())||!actual.frame.action().queryOnly()||frame.status()!=CurrentRmtmEventResult.Status.AVAILABLE||!frame.equals(actual.frame)
+                ||!Arrays.equals(actual.original.outbound().orElseThrow().originalPacket(),rmtmEventPacket(actual.original.requestId(),actual.frame.action(),actual.before,BigInteger.ZERO,BigInteger.ZERO,Optional.empty(),actual.validUntil)))
+            throw new IOException("RMTM original query/body/Core/Source changed");
+    }
+    public synchronized RmtmEventRead readCurrentRmtmEvent(CoreReceived before,CurrentRmtmEvent.Action queryAction,Instant deadline)throws InterruptedException {
+        if(unresolvedRmtmEvent!=null)return unresolvedRmtmEvent;
+        String id="rmtm-event-query-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome outcome=null;
+        try {
+            requireRmtmBusinessScope(before,deadline);if(queryAction==null||!queryAction.queryOnly())throw new IOException("Only fixed readonly summary/Chaos query here");if(rmtmEventQueries.getOrDefault(before,Set.of()).contains(queryAction))throw new IOException("Fresh Core required for this RMTM query");
+            if(!hello.capabilities().contains(queryAction.capability())||sentRequestIds.size()>=maximumSubmissions)throw new IOException("RMTM actual query capability/retention unavailable");
+            Instant until=readDeadline(deadline);byte[] packet=rmtmEventPacket(id,queryAction,before,BigInteger.ZERO,BigInteger.ZERO,Optional.empty(),until);
+            outcome=retainReadOutcome(dispatchRead(id,packet,until,()->{requireBackgroundAtCoreWrite();try{requireRmtmBusinessScope(before,until);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
+                if(!rmtmEventQueries.computeIfAbsent(before,k->java.util.EnumSet.noneOf(CurrentRmtmEvent.Action.class)).add(queryAction))throw new IllegalStateException("Original channel/Core query already entered");latestRmtmEvent=null;}));
+            if(!(outcome instanceof AckReceived ack))return rmtmEventReadFailure(id,outcome,new IOException("Actual RMTM query ACK unavailable"));
+            var frame=CurrentRmtmEventResult.decodeOutcome(ack);requireRmtmEventFrame(frame,queryAction,before);
+            if(frame.status()!=CurrentRmtmEventResult.Status.AVAILABLE)return new RmtmEventUnavailable(ack,frame.unavailableReason().orElseThrow());
+            var custody=originalRequestChronology(id).orElseThrow(()->new IOException("Actual RMTM query custody absent"));
+            var received=new RmtmEventReceived(this,before,frame,ack,custody,until);latestRmtmEvent=received;requireRmtmEventOriginal(received,until);return received;
+        }catch(IOException|RuntimeException invalid){latestRmtmEvent=null;return rmtmEventReadFailure(id,outcome,invalid);}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();return rmtmEventReadFailure(id,new Unknown(id,"Original RMTM read interrupted after write",retainedOutbound(id),Optional.empty()),interrupted);}
+    }
+    private RmtmEventUnavailable rmtmEventReadFailure(String id,DispatchOutcome outcome,Exception invalid) {
+        if(!sentRequestIds.contains(id)||outcome instanceof RejectedBeforeDispatch)return new RmtmEventUnavailable(outcome!=null?outcome:zero(id,reason(invalid)),reason(invalid));
+        return unresolvedRmtmEvent=new RmtmEventUnavailable(rmtmFailure(id,null,outcome,invalid),reason(invalid));
+    }
+    public synchronized RmtmEventPrepared prepareCurrentRmtmEventAck(RmtmEventReceived query)throws IOException {
+        if(query==null)throw new IOException("Actual private query required");
+        return prepareRmtmEvent(query,query.frame.action().ackAction());
+    }
+    private RmtmEventPrepared prepareRmtmEvent(RmtmEventReceived query,CurrentRmtmEvent.Action action)throws IOException {
+        if(query!=null&&query.issuer==this&&query.prepared!=null){if(query.prepared.action!=action)throw new IOException("RMTM original query already prepared for a different fixed choice");return query.prepared;}
+        requireRmtmEventOriginal(query,query.validUntil);requireRmtmCase(query.before);
+        int instance=query.frame.source().orElseThrow().fixedInstanceId().orElseThrow(()->new IOException("No actual fixed RMTM instance"));
+        requireRmtmEventAdmission(query,action,instance);
+        if(!hello.capabilities().contains(action.capability()))throw new IOException("RMTM actual fixed event capability absent");
+        String id="rmtm-event-choice-"+UUID.randomUUID().toString().replace("-","");
+        return query.prepared=new RmtmEventPrepared(this,query,action,id,rmtmEventPacket(id,action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),Optional.of(instance),query.validUntil),instance);
+    }
+    private void requireRmtmEventAdmission(RmtmEventReceived query,CurrentRmtmEvent.Action action,int instance)throws IOException {
+        var s=query.frame.source().orElseThrow();
+        if(action.queryOnly()||action!=query.frame.action().ackAction()||!s.caseBound()||!s.ackAdmissible()||!s.fixedInstanceId().equals(Optional.of(instance))
+                ||attemptedRmtmEventInstances.contains(instance)||attemptedRmtmEventChannels.contains(action))throw new IOException("Original same-channel once-per-case event authority unavailable");
+        var row=s.eventCensus().events().get(0);
+        if(!row.definitionKey().equals(action.definition())||row.authoredOptionCount()!=1||row.options().size()!=1||row.options().get(0).authoredOptionIndex()!=0
+                ||!row.options().get(0).nativeCanSelect())throw new IOException("Actual fixed0 material/nativeCan required; no LYD role/key borrow");
+    }
+    public synchronized boolean currentRmtmEventAbsent(RmtmEventPrepared original,RmtmEventReceived after)throws IOException {
+        if(original==null||original.issuer!=this||!(original.outcome instanceof AckReceived ack)||original.latestFrame==null||!original.latestFrame.successful())throw new IOException("Original known actual once ACK required");
+        requireRmtmEventOriginal(after,after.validUntil);requireRmtmCase(after.before);
+        var c=originalRequestChronology(ack.requestId()).orElseThrow();requireRmtmCustody(ack,c);
+        if(after.frame.action()!=original.action.queryAction()||after.before.custody.writeEntered().order().compareTo(c.responseReceived().order())<=0
+                ||!after.frame.factsBefore().equals(original.query.frame.factsBefore()))throw new IOException("Independent same-channel after-Core/census required");
+        return after.frame.source().orElseThrow().eventCensus().events().stream().noneMatch(e->e.instanceId()==original.instanceId);
+        // This is only actual target-instance absence, never event_closed or date/time gate permission.
+    }
+    public synchronized DispatchOutcome submitCurrentRmtmEvent(RmtmEventPrepared prepared)throws InterruptedException {
+        if(prepared!=null&&prepared.issuer==this&&prepared.called&&prepared.outcome!=null)return prepared.outcome;
+        if(unresolvedRmtmEvent!=null)return unresolvedRmtmEvent.original();
+        String id=prepared==null?"rmtm-event-invalid-"+UUID.randomUUID().toString().replace("-",""):prepared.id;DispatchOutcome outcome=null;
+        try {
+            if(prepared==null||prepared.issuer!=this||prepared.query.prepared!=prepared||prepared.called)throw new IOException("Original private unused RMTM preparation required");
+            var query=prepared.query;requireRmtmEventOriginal(query,query.validUntil);requireRmtmCase(query.before);requireRmtmEventAdmission(query,prepared.action,prepared.instanceId);
+            if(!hello.capabilities().contains(prepared.action.capability())||sentRequestIds.size()>=maximumSubmissions)throw new IOException("RMTM action capability/retention unavailable");
+            if(!Arrays.equals(prepared.packet.value(),rmtmEventPacket(id,prepared.action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),Optional.of(prepared.instanceId),query.validUntil)))throw new IOException("RMTM original private action packet/deadline drift");
+            outcome=dispatch(id,prepared.packet.value(),query.validUntil,()->{requireBackgroundAtCoreWrite();try{requireRmtmEventOriginal(query,query.validUntil);requireRmtmCase(query.before);requireRmtmEventAdmission(query,prepared.action,prepared.instanceId);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
+                if(!attemptedRmtmEventChannels.add(prepared.action)||!attemptedRmtmEventInstances.add(prepared.instanceId))throw new IllegalStateException("Original fixed channel/instance already attempted");prepared.called=true;query.actionAttempted=true;query.before.controlAttempted=true;heldSnapshotInvalidated=true;latestRmtmEvent=null;});
+            if(outcome instanceof Unknown unknown){unresolvedCoreControl=unknown;unresolvedRmtmEvent=new RmtmEventUnavailable(unknown,"Original RMTM business UNKNOWN");return prepared.outcome=unknown;}
+            if(outcome instanceof AckReceived ack){
+                var frame=CurrentRmtmEventResult.decodeOutcome(ack);requireRmtmEventFrame(frame,prepared.action,query.before);
+                var custody=originalRequestChronology(id).orElseThrow(()->new IOException("Actual RMTM action custody absent"));requireRmtmBusinessCustody(ack,custody,query.custody,query.validUntil);
+                if(frame.source().isPresent()&&!frame.source().equals(query.frame.source())||frame.providerGeneration().signum()>0&&!frame.providerGeneration().equals(query.frame.providerGeneration())
+                        ||frame.querySequence().signum()>0&&!frame.querySequence().equals(query.frame.querySequence())||frame.instanceId().isPresent()&&!frame.instanceId().equals(Optional.of(prepared.instanceId)))throw new IOException("RMTM ACK rebound original Source/lease/selector");
+                if(frame.successful()){
+                    if(!frame.source().equals(query.frame.source())||!frame.factsBefore().equals(query.frame.factsBefore())||!frame.providerGeneration().equals(query.frame.providerGeneration())
+                            ||!frame.querySequence().equals(query.frame.querySequence())||!(frame.instanceId().equals(Optional.of(prepared.instanceId))))throw new IOException("RMTM callback must retain complete immutable beforeSource/Core/lease/selector");
+                    recordRmtmCaseEffect(ack);rmtmEventReceipts.put(prepared.action,ack);
+                }
+                prepared.latestFrame=frame;
+            }
+            return prepared.outcome=outcome;
+        }catch(IOException|RuntimeException invalid){var failure=rmtmFailure(id,null,outcome,invalid);if(prepared!=null&&prepared.issuer==this)prepared.outcome=failure;return failure;}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();var failure=rmtmFailure(id,null,outcome,interrupted);if(prepared!=null&&prepared.issuer==this)prepared.outcome=failure;return failure;}
+    }
+
+
+    public sealed interface RmtmObservationRead permits RmtmObservationReceived,RmtmObservationUnavailable {DispatchOutcome original();}
+    public static final class RmtmObservationReceived implements RmtmObservationRead {
+        private final NativeGameTransport issuer;private final CoreReceived before;private final CurrentRmtmObservationResult frame;
+        private final Optional<CurrentRmtmObservation.Phase> phase;private final Optional<CurrentRmtmObservation.OfferTarget> target;
+        private final AckReceived original;private final NativeRequestChronology custody;private final Instant until;
+        private boolean attempted;private RmtmObservationPrepared prepared;
+        private RmtmObservationReceived(NativeGameTransport i,CoreReceived b,CurrentRmtmObservationResult f,Optional<CurrentRmtmObservation.Phase> p,Optional<CurrentRmtmObservation.OfferTarget> t,AckReceived a,NativeRequestChronology c,Instant u){issuer=i;before=b;frame=f;phase=p;target=t;original=a;custody=c;until=u;}
+        public CurrentRmtmObservationResult frame(){return frame;}public AckReceived original(){return original;}public Instant validUntil(){return until;}
+        public void requireOriginal(NativeGameTransport actual,Instant deadline)throws IOException{actual.requireRmtmObservationOriginal(this,deadline);}
+    }
+    public record RmtmObservationUnavailable(DispatchOutcome original,String reason)implements RmtmObservationRead{public RmtmObservationUnavailable{Objects.requireNonNull(original);StrictJson.text(reason);}}
+    public static final class RmtmObservationPrepared {
+        private final NativeGameTransport issuer;private final RmtmObservationReceived query;private final CurrentRmtmObservation.Action action;
+        private final String id;private final NativeWire.Bytes packet;private boolean called;private DispatchOutcome outcome;private CurrentRmtmObservationResult latest;
+        private RmtmObservationPrepared(NativeGameTransport i,RmtmObservationReceived q,CurrentRmtmObservation.Action a,String n,byte[] p){issuer=i;query=q;action=a;id=n;packet=new NativeWire.Bytes(p);}
+        public String requestId(){return id;}public Instant deadline(){return query.until;}public NativeWire.Bytes originalPacket(){return packet;}
+        public CurrentRmtmObservation.Action action(){return action;}public Optional<CurrentRmtmObservationResult> latestFrame(){return Optional.ofNullable(latest);}
+    }
+    private RmtmObservationReceived latestRmtmObservation;private RmtmObservationUnavailable unresolvedRmtmObservation;
+    private final Set<CoreReceived> rmtmObservationCores=java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<>());
+    private final Set<String> attemptedRmtmObservationStages=new HashSet<>();
+    private byte[] rmtmObservationPacket(String id,CurrentRmtmObservation.Action a,CoreReceived before,BigInteger gen,BigInteger seq,Optional<CurrentRmtmObservation.Phase> phase,Optional<CurrentRmtmObservation.OfferTarget> target,Instant until)throws IOException {
+        if(!(before.frame instanceof CoreFrame.Partial p))throw new IOException("Actual current267 Core required");
+        var request=CurrentRmtmObservation.request(p,a,gen,seq,phase,target);var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));fields.put("core_control_deadline_unix_ms",BigInteger.valueOf(until.toEpochMilli()));return NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+    }
+    private void requireRmtmObservationFrame(CurrentRmtmObservationResult f,CurrentRmtmObservation.Action a,CoreReceived before,Optional<CurrentRmtmObservation.Phase> phase,Optional<CurrentRmtmObservation.OfferTarget> target)throws IOException {
+        if(f.action()!=a||!f.cleanupKnown()||f.status()==CurrentRmtmObservationResult.Status.INDETERMINATE)throw new IOException("Actual observation action/cleanup uncertain");
+        if(f.factsBefore().isPresent()&&!f.factsBefore().orElseThrow().equals(((CoreFrame.Partial)before.frame).prefix())||f.owner().isPresent()&&!f.owner().orElseThrow().connectionGeneration().equals(hello.connectionGeneration()))throw new IOException("Observation crossed original Core/connection");
+        if(f.source().isPresent()){
+            var s=f.source().orElseThrow();if(s.kind()!=a.kind()||s.titlePhase().isPresent()&&!phase.equals(Optional.of(s.titlePhase().orElseThrow().phase()))||s.offer().isPresent()&&!target.equals(Optional.of(s.offer().orElseThrow().target())))throw new IOException("Actual typed phase/Offer target differs from fixed request guard");
+        }
+    }
+    private void requireRmtmObservationOriginal(RmtmObservationReceived q,Instant until)throws IOException {
+        if(q==null||q.issuer!=this||q!=latestRmtmObservation||q.attempted||unresolvedRmtmObservation!=null)throw new IOException("Original unused private observation required");
+        requireRmtmBusinessScope(q.before,until);if(until.isAfter(q.until)||!chronologyClock.instant().isBefore(q.until))throw new IOException("Original observation expired/extended");
+        requireRmtmBusinessCustody(q.original,q.custody,q.before.custody,q.until);var f=CurrentRmtmObservationResult.decodeOutcome(q.original);requireRmtmObservationFrame(f,q.frame.action(),q.before,q.phase,q.target);
+        if(!rmtmObservationCores.contains(q.before)||!f.equals(q.frame)||f.status()!=CurrentRmtmObservationResult.Status.AVAILABLE
+                ||!Arrays.equals(q.original.outbound().orElseThrow().originalPacket(),rmtmObservationPacket(q.original.requestId(),q.frame.action(),q.before,BigInteger.ZERO,BigInteger.ZERO,q.phase,q.target,q.until)))throw new IOException("Actual original observation packet/Source/custody changed");
+    }
+    public synchronized RmtmObservationRead readCurrentRmtmObservation(CoreReceived before,CurrentRmtmObservation.Action action,
+            Optional<CurrentRmtmObservation.Phase> phase,Optional<CurrentRmtmObservation.OfferTarget> target,Instant deadline)throws InterruptedException {
+        if(unresolvedRmtmObservation!=null)return unresolvedRmtmObservation;String id="rmtm-observation-query-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome out=null;
+        try{
+            requireRmtmBusinessScope(before,deadline);if(action==null||!action.queryOnly()||rmtmObservationCores.contains(before)||!hello.capabilities().contains(action.capability())||sentRequestIds.size()>=maximumSubmissions)throw new IOException("Fresh actual Core/fixed query capability required");
+            Instant until=readDeadline(deadline);byte[] packet=rmtmObservationPacket(id,action,before,BigInteger.ZERO,BigInteger.ZERO,phase,target,until);
+            out=retainReadOutcome(dispatchRead(id,packet,until,()->{requireBackgroundAtCoreWrite();try{requireRmtmBusinessScope(before,until);}catch(IOException e){throw new UncheckedIOException(e);}if(!rmtmObservationCores.add(before))throw new IllegalStateException("Observation Core already consumed");latestRmtmObservation=null;}));
+            if(!(out instanceof AckReceived ack))return rmtmObservationFailure(id,out,new IOException("Actual original observation ACK unavailable"));
+            var f=CurrentRmtmObservationResult.decodeOutcome(ack);requireRmtmObservationFrame(f,action,before,phase,target);
+            if(f.status()!=CurrentRmtmObservationResult.Status.AVAILABLE)return new RmtmObservationUnavailable(ack,f.unavailableReason().orElseThrow());
+            var q=new RmtmObservationReceived(this,before,f,phase,target,ack,originalRequestChronology(id).orElseThrow(),until);latestRmtmObservation=q;requireRmtmObservationOriginal(q,until);return q;
+        }catch(IOException|RuntimeException e){return rmtmObservationFailure(id,out,e);}
+        catch(InterruptedException e){if(!sentRequestIds.contains(id))throw e;Thread.currentThread().interrupt();return rmtmObservationFailure(id,new Unknown(id,"Original observation read interrupted after write",retainedOutbound(id),Optional.empty()),e);}
+    }
+    private RmtmObservationUnavailable rmtmObservationFailure(String id,DispatchOutcome out,Exception e){
+        if(!sentRequestIds.contains(id)||out instanceof RejectedBeforeDispatch)return new RmtmObservationUnavailable(out!=null?out:zero(id,reason(e)),reason(e));
+        return unresolvedRmtmObservation=new RmtmObservationUnavailable(rmtmFailure(id,null,out,e),reason(e));
+    }
+    private String rmtmObservationStage(CurrentRmtmObservation.Action a,Optional<CurrentRmtmObservation.OfferTarget> target){return a.wire()+":"+target.map(CurrentRmtmObservation.OfferTarget::wire).orElse("budget");}
+    private void requireRmtmObservationAdmission(RmtmObservationReceived q,CurrentRmtmObservation.Action a)throws IOException {
+        var s=q.frame.source().orElseThrow();if(!s.caseBound()||a.queryOnly()||a.kind()!=q.frame.action().kind()||a.queryAction()!=q.frame.action()||attemptedRmtmObservationStages.contains(rmtmObservationStage(a,q.target)))throw new IOException("Actual same-kind once-per-case observation admission required");
+        boolean allow=switch(a){case OPEN_BUDGET->s.budget().orElseThrow().openAdmissible();case CANCEL_BUDGET->s.budget().orElseThrow().cancelAdmissible();case OPEN_OFFER->s.offer().orElseThrow().openAdmissible();case CANCEL_OFFER->s.offer().orElseThrow().cancelAdmissible();default->false;};
+        if(!allow)throw new IOException("Actual independent model does not admit this fixed Open/Cancel");
+    }
+    public synchronized RmtmObservationPrepared prepareCurrentRmtmObservation(RmtmObservationReceived q,CurrentRmtmObservation.Action action)throws IOException {
+        if(q!=null&&q.issuer==this&&q.prepared!=null){if(q.prepared.action!=action)throw new IOException("Original query already prepared for another fixed action");return q.prepared;}
+        requireRmtmObservationOriginal(q,q.until);requireRmtmCase(q.before);requireRmtmObservationAdmission(q,action);
+        if(!hello.capabilities().contains(action.capability()))throw new IOException("Actual fixed UI capability absent");String id="rmtm-observation-ui-"+UUID.randomUUID().toString().replace("-","");
+        return q.prepared=new RmtmObservationPrepared(this,q,action,id,rmtmObservationPacket(id,action,q.before,q.frame.providerGeneration(),q.frame.querySequence(),q.phase,q.target,q.until));
+    }
+    public synchronized DispatchOutcome submitCurrentRmtmObservation(RmtmObservationPrepared p)throws InterruptedException {
+        if(p!=null&&p.issuer==this&&p.called&&p.outcome!=null)return p.outcome;if(unresolvedRmtmObservation!=null)return unresolvedRmtmObservation.original();String id=p==null?"rmtm-observation-invalid":p.id;DispatchOutcome out=null;
+        try{
+            if(p==null||p.issuer!=this||p.called||p.query.prepared!=p)throw new IOException("Original unused private UI preparation required");var q=p.query;requireRmtmObservationOriginal(q,q.until);requireRmtmCase(q.before);requireRmtmObservationAdmission(q,p.action);
+            if(!hello.capabilities().contains(p.action.capability())||sentRequestIds.size()>=maximumSubmissions||!Arrays.equals(p.packet.value(),rmtmObservationPacket(id,p.action,q.before,q.frame.providerGeneration(),q.frame.querySequence(),q.phase,q.target,q.until)))throw new IOException("Original UI body/capability/deadline drift");
+            out=dispatch(id,p.packet.value(),q.until,()->{requireBackgroundAtCoreWrite();try{requireRmtmObservationOriginal(q,q.until);requireRmtmCase(q.before);requireRmtmObservationAdmission(q,p.action);}catch(IOException e){throw new UncheckedIOException(e);}if(!attemptedRmtmObservationStages.add(rmtmObservationStage(p.action,q.target)))throw new IllegalStateException("Original stage already attempted");p.called=true;q.attempted=true;q.before.controlAttempted=true;heldSnapshotInvalidated=true;latestRmtmObservation=null;});
+            if(out instanceof Unknown u){unresolvedCoreControl=u;unresolvedRmtmObservation=new RmtmObservationUnavailable(u,"Original UI UNKNOWN");return p.outcome=u;}
+            if(out instanceof AckReceived ack){var f=CurrentRmtmObservationResult.decodeOutcome(ack);requireRmtmObservationFrame(f,p.action,q.before,q.phase,q.target);requireRmtmBusinessCustody(ack,originalRequestChronology(id).orElseThrow(),q.custody,q.until);
+                if(f.source().isPresent()&&!f.source().equals(q.frame.source())||f.providerGeneration().signum()>0&&!f.providerGeneration().equals(q.frame.providerGeneration())||f.querySequence().signum()>0&&!f.querySequence().equals(q.frame.querySequence()))throw new IOException("ACK changed immutable actual beforeSource/lease");
+                if(f.successful()){if(!f.source().equals(q.frame.source())||!f.factsBefore().equals(q.frame.factsBefore())||!f.providerGeneration().equals(q.frame.providerGeneration())||!f.querySequence().equals(q.frame.querySequence()))throw new IOException("UI ACK lost original actual full Source/Core/lease");recordRmtmCaseEffect(ack);}p.latest=f;
+            }return p.outcome=out;
+        }catch(IOException|RuntimeException e){var failure=rmtmFailure(id,null,out,e);if(p!=null&&p.issuer==this)p.outcome=failure;return failure;}
+        catch(InterruptedException e){if(!sentRequestIds.contains(id))throw e;Thread.currentThread().interrupt();var failure=rmtmFailure(id,null,out,e);if(p!=null&&p.issuer==this)p.outcome=failure;return failure;}
+    }
+    public synchronized boolean currentRmtmObservationHidden(RmtmObservationPrepared p,RmtmObservationReceived after)throws IOException {
+        if(p==null||p.issuer!=this||p.action!=CurrentRmtmObservation.Action.CANCEL_BUDGET&&p.action!=CurrentRmtmObservation.Action.CANCEL_OFFER||!(p.outcome instanceof AckReceived ack)||p.latest==null||!p.latest.successful())throw new IOException("Original known actual ordinary Cancel ACK required");
+        requireRmtmObservationOriginal(after,after.until);requireRmtmCase(after.before);var c=originalRequestChronology(ack.requestId()).orElseThrow();requireRmtmCustody(ack,c);
+        if(after.frame.action()!=p.action.queryAction()||!after.target.equals(p.query.target)||after.before.custody.writeEntered().order().compareTo(c.responseReceived().order())<=0||!after.frame.factsBefore().equals(p.query.frame.factsBefore()))throw new IOException("Independent same-subject actual after-Core/query required");
+        var s=after.frame.source().orElseThrow();return p.action==CurrentRmtmObservation.Action.CANCEL_BUDGET?!s.budget().orElseThrow().visible():!s.offer().orElseThrow().visible();
+        // Known hidden DATA only. No Enact/Send, opened/closed business flag or date gate is manufactured.
+    }
+
     // Independent CCC original-case custody. Caller-created DATA cannot grant an epoch or business lease.
     public sealed interface CccRoleRead permits CccRoleReceived,CccRoleUnavailable { DispatchOutcome original(); }
     public static final class CccRoleReceived implements CccRoleRead {
@@ -4060,6 +4661,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         if(preparedCurrentDate!=null&&(!preparedCurrentDate.completed||preparedCurrentDate.unknown))throw new IOException("Original v17 Date remains unresolved");
         if(preparedTedAdvance!=null&&(!preparedTedAdvance.completed&&!preparedTedAdvance.confirmed||preparedTedAdvance.unknown))throw new IOException("Original TED Date remains unresolved");
         if(preparedCccAdvance!=null&&preparedCccAdvance.unknown)throw new IOException("Original CCC date remains UNKNOWN");
+        if(rmtmCapturedRole!=null)throw new IOException("CCC cannot borrow the actual RMTM case or reset its custody");
     }
     private void requireCccCustody(AckReceived ack,NativeRequestChronology custody)throws IOException {
         if(!custody.session().equals(session())||!custody.custodyEpoch().equals(custodyEpoch)||originalRequestChronology(ack.requestId()).filter(custody::equals).isEmpty())throw new IOException("CCC crossed actual held session/custody");custody.verify(ack);
