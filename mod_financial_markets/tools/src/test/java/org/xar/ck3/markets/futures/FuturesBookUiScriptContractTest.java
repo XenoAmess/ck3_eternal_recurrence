@@ -562,6 +562,92 @@ final class FuturesBookUiScriptContractTest {
         d.put("xfm_creditor_account", creditor); d.put("xfm_outstanding_cents", outstanding); d.put("xfm_state", 1);
         debtor.list("xfm_debts").add(d); creditor.list("xfm_claims").add(d); return d;
     }
+    @Test void debtsTabCallbackRefreshesTheCurrentPagesBeforeShowingTheTab() throws IOException {
+        String line = Files.readAllLines(SOURCE.resolve("gui/xfm_market_window.gui")).stream()
+            .filter(text -> text.contains("name = \"xfm_tab_debts\"")).findFirst().orElseThrow();
+        String valid = "[GetScriptedGui( 'xfm_market_debts_tab_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]";
+        String refresh = "[GetScriptedGui( 'xfm_market_debts_tab_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]";
+        String show = "[GetVariableSystem.Set( 'xfm_market_tab', 'debts' )]";
+        assertTrue(line.contains("enabled = \"" + valid + "\""));
+        assertTrue(line.contains("onclick = \"" + refresh + "\""));
+        assertTrue(line.indexOf(refresh) < line.indexOf(show));
+        assertFalse(line.contains("xfm_market_refresh_gui"));
+    }
+    @Test void enteringDebtsTabMakesANewClaimSelectableWithoutMarketRefreshOrBusinessWrites() throws IOException {
+        Market m = market(); Node own = m.actor.ref("xfm_active_account"); m.actor.flags.add("xfm_market_open");
+        m.vm.runGui("xfm_market_debts_tab_gui", m.actor); // Empty pages when the normal window was first opened.
+        Node other = m.vm.account("tab-counterparty", m.vm.node("tab-counterparty-holder", ""), 900);
+        Node owed = debt(m.vm, "tab-owed", 11, own, other, 200);
+        Node claim = debt(m.vm, "tab-new-claim", 12, other, own, 300);
+        m.actor.put("xfm_selected_debt", owed); row(m.vm, 12, 0, 1);
+        assertFalse(m.vm.validGui("xfm_market_select_claim_gui", m.actor), "The new claim is not in the stale page");
+        Map<Node, Map<String, Datum>> before = new HashMap<>();
+        for (Node node : m.vm.nodes.values()) before.put(node, Map.copyOf(node.vars));
+        BigDecimal cash = m.vm.cashStock(); int nodes = m.vm.nodes.size(); m.vm.effectCalls.clear();
+        m.vm.runGui("xfm_market_debts_tab_gui", m.actor);
+        assertEquals(List.of(owed), m.actor.list("xfm_ui_debts_page"));
+        assertEquals(List.of(claim), m.actor.list("xfm_ui_claims_page"));
+        assertSame(own, m.actor.ref("xfm_ui_debt_page_account"));
+        assertSame(owed, m.actor.ref("xfm_selected_debt"), "Entering the tab does not select or consent to a claim");
+        assertEquals(Map.of("xfm_market_ui_debt_pages_effect", 1), m.vm.effectCalls);
+        for (Node node : m.vm.nodes.values()) if (node != m.actor) assertEquals(before.get(node), node.vars, node.id);
+        for (var entry : before.get(m.actor).entrySet()) assertEquals(entry.getValue(), m.actor.vars.get(entry.getKey()), entry.getKey());
+        assertEquals(nodes, m.vm.nodes.size()); assertEquals(cash, m.vm.cashStock());
+        assertFalse(m.vm.scopes.containsKey("xfm_ui_debt_page_actor")); assertFalse(m.vm.scopes.containsKey("xfm_ui_debt_page_item"));
+        assertTrue(m.vm.validGui("xfm_market_select_claim_gui", m.actor));
+        m.vm.runGui("xfm_market_select_claim_gui", m.actor); assertSame(claim, m.actor.ref("xfm_selected_debt"));
+        assertEquals(300, claim.integer("xfm_outstanding_cents")); assertEquals(cash, m.vm.cashStock());
+    }
+    @Test void debtsTabKeepsTheExistingSixteenRowOffsetsAndRebindsAnotherOwnedAccount() throws IOException {
+        Market m = market(); Node own = m.actor.ref("xfm_active_account"); m.actor.flags.add("xfm_market_open");
+        Node other = m.vm.account("tab-page-debtor", m.vm.node("tab-page-debtor-holder", ""), 500);
+        List<Node> all = new ArrayList<>();
+        for (int i = 1; i <= 17; i++) all.add(debt(m.vm, "tab-page-claim-" + i, i, other, own, 100));
+        m.actor.put("xfm_ui_claims_offset", 16); BigDecimal cash = m.vm.cashStock();
+        m.vm.runGui("xfm_market_debts_tab_gui", m.actor);
+        assertEquals(List.of(all.get(16)), m.actor.list("xfm_ui_claims_page")); assertEquals(16, m.actor.integer("xfm_ui_claims_page_offset"));
+        row(m.vm, 17, 0, 1); assertTrue(m.vm.validGui("xfm_market_select_claim_gui", m.actor));
+        row(m.vm, 1, 0, 1); assertFalse(m.vm.validGui("xfm_market_select_claim_gui", m.actor));
+        m.vm.runGui("xfm_market_claims_previous_gui", m.actor); assertEquals(all.subList(0, 16), m.actor.list("xfm_ui_claims_page"));
+        Node second = m.vm.account("tab-second-owned", m.actor, 700);
+        Node secondClaim = debt(m.vm, "tab-second-claim", 18, other, second, 250);
+        m.actor.put("xfm_active_account", second);
+        assertFalse(m.vm.validGui("xfm_market_select_claim_gui", m.actor), "Old-account page is not a valid new-account row");
+        m.vm.runGui("xfm_market_debts_tab_gui", m.actor);
+        assertEquals(List.of(secondClaim), m.actor.list("xfm_ui_claims_page")); assertSame(second, m.actor.ref("xfm_ui_debt_page_account"));
+        row(m.vm, 18, 0, 1); assertTrue(m.vm.validGui("xfm_market_select_claim_gui", m.actor));
+        row(m.vm, 1, 0, 1); assertFalse(m.vm.validGui("xfm_market_select_claim_gui", m.actor));
+        assertEquals(cash.add(BigDecimal.valueOf(700)).stripTrailingZeros(), m.vm.cashStock());
+        for (Node claim : all) assertEquals(100, claim.integer("xfm_outstanding_cents"));
+        assertEquals(250, secondClaim.integer("xfm_outstanding_cents"));
+    }
+    @Test void debtsTabRejectsAIClosedMissingWrongTypeAndForeignAccountsBeforeAnyPageWrite() throws IOException {
+        for (String mode : List.of("AI", "closed", "missing", "wrong-type", "foreign")) {
+            Market m = market(); Node own = m.actor.ref("xfm_active_account"); m.actor.flags.add("xfm_market_open");
+            Node other = m.vm.account("tab-invalid-other", m.vm.node("tab-invalid-holder", ""), 500);
+            Node claim = debt(m.vm, "tab-invalid-claim", 21, other, own, 300);
+            m.vm.runGui("xfm_market_debts_tab_gui", m.actor);
+            switch (mode) {
+                case "AI" -> m.actor.ai = true;
+                case "closed" -> m.actor.flags.remove("xfm_market_open");
+                case "missing" -> m.actor.vars.remove("xfm_active_account");
+                case "wrong-type" -> m.actor.put("xfm_active_account", m.asset);
+                case "foreign" -> m.actor.put("xfm_active_account", other);
+                default -> throw new AssertionError(mode);
+            }
+            Map<String, Datum> before = Map.copyOf(m.actor.vars);
+            List<Node> debtsBefore = List.copyOf(m.actor.list("xfm_ui_debts_page")), claimsBefore = List.copyOf(m.actor.list("xfm_ui_claims_page"));
+            BigDecimal cash = m.vm.cashStock(); m.vm.effectCalls.clear();
+            assertFalse(m.vm.validGui("xfm_market_debts_tab_gui", m.actor), mode);
+            assertThrows(IllegalArgumentException.class, () -> m.vm.runGui("xfm_market_debts_tab_gui", m.actor), mode);
+            // Revalidate even a direct scripted-GUI effect call; it must not clear a previously populated page.
+            m.vm.execute(m.vm.definition("xfm_market_debts_tab_gui").block("effect"), new Frame(m.actor, null, m.actor));
+            assertEquals(before, m.actor.vars, mode); assertEquals(debtsBefore, m.actor.list("xfm_ui_debts_page"), mode);
+            assertEquals(claimsBefore, m.actor.list("xfm_ui_claims_page"), mode); assertEquals(Map.of(), m.vm.effectCalls, mode);
+            assertEquals(300, claim.integer("xfm_outstanding_cents"), mode); assertEquals(cash, m.vm.cashStock(), mode);
+            assertFalse(m.vm.scopes.containsKey("xfm_ui_debt_page_actor"), mode);
+        }
+    }
     @Test void typedDebtAndClaimIdsSelectOnlyTheCurrentLegalAccountPageAndNeverPay() throws IOException {
         Market m = market(); Node own = m.actor.ref("xfm_active_account"), other = m.vm.account("social-other", m.vm.node("social-other-holder", ""), 0);
         Node owed = debt(m.vm, "social-owed", 1, own, other, 200);
@@ -1002,6 +1088,7 @@ final class FuturesBookUiScriptContractTest {
         final String id, type;
         final Map<String, Datum> vars = new LinkedHashMap<>();
         final Map<String, List<Node>> lists = new HashMap<>();
+        final Set<String> flags = new HashSet<>(); // Explicit engine-owned window flag input, not a finance/business effect.
         final Set<String> traits = new HashSet<>(); final Map<String, Node> links = new HashMap<>();
         BigDecimal gold = BigDecimal.ZERO; Node owner; boolean ai = true, alive = true, adult = true, ended;
         Node(String id, String type) { this.id = id; this.type = type; }
@@ -1124,6 +1211,7 @@ final class FuturesBookUiScriptContractTest {
             if (k.equals("exists")) return resolve(atom(e.value()), f) != null;
             if (k.equals("has_variable")) return f.here().vars.containsKey(atom(e.value()));
             if (k.equals("trigger_if")) { Block child = (Block)e.value(); return !test(child.block("limit"), f) || test(without(child, "limit"), f); }
+            if (k.equals("has_character_flag")) return f.here().flags.contains(atom(e.value()));
             if (k.equals("is_ai")) return f.here().ai == atom(e.value()).equals("yes");
             if (k.equals("is_alive")) return f.here().alive == atom(e.value()).equals("yes");
             if (k.equals("is_adult")) return f.here().adult == atom(e.value()).equals("yes");

@@ -1,0 +1,562 @@
+{
+  "schema": "ck3-financial-R0076-debt-help-retry-evidence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "source_commit": "451f6301b8d15158624c2c8714dd63fe9f68cbce",
+  "report_commit_parent": "31a7ef8e1cfa56f9b794c899c1e13000894739d6",
+  "game": {
+    "version": "1.21.0",
+    "build": 26622941,
+    "sha256": "2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC"
+  },
+  "scope": "controlled API liabilities; ordinary GUI aid and creditor consent; original-operation funded retry; independent saved monetary readback",
+  "outcome": "PARTIAL",
+  "natural_days": 0,
+  "actual_saved_checkpoints": 2,
+  "original_phase1_literals": [
+    true,
+    true,
+    false,
+    false,
+    true,
+    false
+  ],
+  "strict_initial_claims_row_sequence_satisfied": false,
+  "narrow_saved_facts": {
+    "schema": "ck3-debt76-S2-original-metadata-facts-v1",
+    "stage": "same-day S2 aid/consent/declared controlled API retry",
+    "inputs": [
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\debt76-D0-independent-facts01.json",
+        "bytes": 24458,
+        "sha256": "3c2c6e06ab094163d17ea4e53f95f354f0174598f165ca64a4c66c47cd1e9a84"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\debt76-baseline01-audit\\report.json",
+        "bytes": 611421,
+        "sha256": "856502fa371764e26bed7a442ccddd67d988f659d00f04365885a1a16b03066c"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\debt76-post-help01-audit\\report.json",
+        "bytes": 611430,
+        "sha256": "2418cd7de98bf6345cc0e955a839b95c37bd7a02050f39f8381b8192d67b9bb9"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\debt76-baseline01-actor-raw\\report.json",
+        "bytes": 312610,
+        "sha256": "56fad616ed4e7e13c0d8e2723a5f6285fe235abb4a948b5ed55fce62c2b5e4b9"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\debt76-post-help01-actor-raw\\report.json",
+        "bytes": 414412,
+        "sha256": "06096f1a9a3fde532fe4455c4cb44d50554154a64bfa6dd488a230dd25638afe"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\debt76-baseline01-whole-digest\\report.json",
+        "bytes": 199133,
+        "sha256": "d6b16f1480596e29f0ffdc69a085b01b672ef7f4fe34f679423b4b0dfd5b26a7"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\debt76-post-help01-whole-digest\\report.json",
+        "bytes": 199679,
+        "sha256": "ff21f2ff39aeca6ddac5aa96fc3b3a027944d3b1f2b0f8d7b59144a165954794"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\debt76-post-help01-actor-raw\\PREPARATION.json",
+        "bytes": 2008,
+        "sha256": "0a608642ae9db156cad1e59ac437fff5318cbc63d95556bdb34ef40a8eaa9a96"
+      }
+    ],
+    "claims": {
+      "a": {
+        "native": "16777939",
+        "xfm_original_cents": 2000,
+        "xfm_outstanding_cents": 1000,
+        "xfm_repaid_cents": 1000,
+        "xfm_written_off_cents": 0,
+        "xfm_fund_paid_cents": 0,
+        "xfm_fund_recourse_cents": 0,
+        "xfm_due_day": 2,
+        "xfm_news_fact_counter": 2,
+        "xfm_news_kind": 2
+      },
+      "b": {
+        "native": "729",
+        "xfm_original_cents": 1000,
+        "xfm_outstanding_cents": 900,
+        "xfm_repaid_cents": 0,
+        "xfm_written_off_cents": 100,
+        "xfm_fund_paid_cents": 0,
+        "xfm_fund_recourse_cents": 0,
+        "xfm_due_day": 32,
+        "xfm_news_fact_counter": 2,
+        "xfm_news_kind": 3
+      }
+    },
+    "all274_account_cash_deltas": {
+      "57": {
+        "free_delta_cents": 1000,
+        "reserved_delta_cents": 0
+      },
+      "16777937": {
+        "free_delta_cents": -1000,
+        "reserved_delta_cents": 0
+      }
+    },
+    "all274_reserved_balances_unchanged": true,
+    "ledger_cash_stock_before_after_cents": "616461",
+    "debtor_total_before_after": [
+      3000,
+      1900
+    ],
+    "relief_until": 32,
+    "B_due_day": 32,
+    "actual_same_operation_rejection": {
+      "xfm_request_operation": 1,
+      "xfm_request_cents": 1000,
+      "xfm_result": 0,
+      "xfm_payment_actual_cents": 1000,
+      "xfmd_retry_result": 0,
+      "payer_native": "16777937",
+      "payer_last_operation": 1,
+      "payer_current_free": 1000
+    },
+    "original_immutable_fixture_captures": {
+      "16777939": {
+        "baseline": {
+          "version": 1,
+          "day": 2,
+          "debt_id": 1,
+          "original": 2000,
+          "outstanding": 2000,
+          "repaid": 0,
+          "written_off": 0,
+          "due_day": 2,
+          "debtor_id": 2,
+          "creditor_id": 3,
+          "debtor_free": 98630,
+          "debtor_reserved": 0,
+          "creditor_free": 101214,
+          "creditor_reserved": 0,
+          "payer_free": 2000,
+          "payer_reserved": 0
+        },
+        "help": {
+          "version": 1,
+          "day": 2,
+          "debt_id": 1,
+          "original": 2000,
+          "outstanding": 1000,
+          "repaid": 1000,
+          "written_off": 0,
+          "due_day": 2,
+          "debtor_id": 2,
+          "creditor_id": 3,
+          "debtor_free": 98630,
+          "debtor_reserved": 0,
+          "creditor_free": 102214,
+          "creditor_reserved": 0,
+          "payer_free": 1000,
+          "payer_reserved": 0
+        },
+        "retry": {
+          "version": 1,
+          "day": 2,
+          "debt_id": 1,
+          "original": 2000,
+          "outstanding": 1000,
+          "repaid": 1000,
+          "written_off": 0,
+          "due_day": 2,
+          "debtor_id": 2,
+          "creditor_id": 3,
+          "debtor_free": 98630,
+          "debtor_reserved": 0,
+          "creditor_free": 102214,
+          "creditor_reserved": 0,
+          "payer_free": 1000,
+          "payer_reserved": 0
+        }
+      },
+      "729": {
+        "baseline": {
+          "version": 1,
+          "day": 2,
+          "debt_id": 2,
+          "original": 1000,
+          "outstanding": 1000,
+          "repaid": 0,
+          "written_off": 0,
+          "due_day": 2,
+          "debtor_id": 2,
+          "creditor_id": 274,
+          "debtor_free": 98630,
+          "debtor_reserved": 0,
+          "creditor_free": 2000,
+          "creditor_reserved": 0,
+          "payer_free": 2000,
+          "payer_reserved": 0
+        },
+        "consent": {
+          "version": 1,
+          "day": 2,
+          "debt_id": 2,
+          "original": 1000,
+          "outstanding": 900,
+          "repaid": 0,
+          "written_off": 100,
+          "due_day": 32,
+          "debtor_id": 2,
+          "creditor_id": 274,
+          "debtor_free": 98630,
+          "debtor_reserved": 0,
+          "creditor_free": 1000,
+          "creditor_reserved": 0,
+          "payer_free": 1000,
+          "payer_reserved": 0
+        },
+        "consent_retry": {
+          "version": 1,
+          "day": 2,
+          "debt_id": 2,
+          "original": 1000,
+          "outstanding": 900,
+          "repaid": 0,
+          "written_off": 100,
+          "due_day": 32,
+          "debtor_id": 2,
+          "creditor_id": 274,
+          "debtor_free": 98630,
+          "debtor_reserved": 0,
+          "creditor_free": 1000,
+          "creditor_reserved": 0,
+          "payer_free": 1000,
+          "payer_reserved": 0
+        }
+      }
+    },
+    "thank_lists": {
+      "xfm_aid_thanked_helpers": [
+        {
+          "type": "char",
+          "identity": "31254"
+        }
+      ],
+      "xfm_restructure_thanked_creditors": [
+        {
+          "type": "char",
+          "identity": "31254"
+        }
+      ]
+    },
+    "exact_two_new_news_records": [
+      {
+        "nativeId": "731",
+        "type": "xfm_news_entry",
+        "permanentIdPresent": true,
+        "permanentId": "4",
+        "canonicalTokenSha256": "d30fc3924f8452eaf0f03240968a3894ac02d35224bfb405925fb115e58f2521",
+        "canonicalTokenBytes": 639
+      },
+      {
+        "nativeId": "732",
+        "type": "xfm_news_entry",
+        "permanentIdPresent": true,
+        "permanentId": "5",
+        "canonicalTokenSha256": "d1575f610f63e7d4c02b3eddc170e0f2089126eee3650edb5ed652902f576e1d",
+        "canonicalTokenBytes": 570
+      }
+    ],
+    "original_audit_issues_preserved": [
+      {
+        "severity": "UNQUALIFIED",
+        "identity": "save",
+        "field": "layout",
+        "detail": "External candidate only; no financial 1.21 source-layout qualification or live funds certification."
+      },
+      {
+        "severity": "INCOMPLETE",
+        "identity": "DEBT:1",
+        "field": "xfm_source",
+        "detail": "Active financial reference is unresolved in the complete selected story table."
+      },
+      {
+        "severity": "INCOMPLETE",
+        "identity": "DEBT:2",
+        "field": "xfm_source",
+        "detail": "Active financial reference is unresolved in the complete selected story table."
+      }
+    ],
+    "relationship_boundary": "Single original thanked-helper/creditor list entries and original repayment/extension guard paths show once-only relationship calls in this declared retry. No standalone Native opinion amount/expiry DTO or full saved opinion table was decoded; that display is not independently granted.",
+    "claims_path_gap": {
+      "status": "NOT_SATISFIED_ORIGINAL_REQUIREMENT",
+      "actual_first_consent_route": "Root reports selected B via news aid row and creditor enabled predicate, not player claims row.",
+      "later_claims_row": "Root reports normal Refresh then actual claims row707 visible/enabled selected once02:09:28 AFTER S2. This proves later row reachability only, not the original first-consent sequence."
+    },
+    "source_cache_explanation": "Claims GUI reads actor xfm_ui_claims_page. Setup appends account xfm_claims without refreshing that preopened cache; normal refresh rebuilds it from current ACTIVE. The empty cache was not missing creditor entitlement; S1/S2 actual human xfm_claims includes B.",
+    "source_safe_refresh": "xfm_market_refresh_gui invokes ui_refresh and debt_pages rebuild; the debt pagination helper itself creates/pays no debt. Outer ordinary refresh retains original bounded finance maintenance. No action is run by this report.",
+    "Root_phase_publication": false,
+    "Root_assertions_filled": false,
+    "business_pass": false,
+    "financialCertified": false,
+    "toast_delivery_proved": false
+  },
+  "narrow_saved_facts_source": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\debt76-S2-independent-source01\\FACTS.actual-metadata.json",
+    "bytes": 8947,
+    "sha256": "76fc1ed677436233b7cc711effc1c1f2a11c2983ea93806dcfba54fc9015e883"
+  },
+  "closure": {
+    "run_id": "4-8e1c2f1861--financial-markets--R0076",
+    "closure": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0076-closure-before-release.actual.json",
+      "bytes": 11856,
+      "sha256": "6df959b1b652b3946885acfe2afeb0a5b57633eead26d2d5c60688e23ac94173"
+    },
+    "release_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-R0076-normal01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1342,
+      "sha256": "8a7d5ddaa368bde87787cceec7cab37b0c3e911fc2e22047378329561150c77f"
+    },
+    "release": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-R0076-normal01\\stdout.log",
+      "bytes": 1234,
+      "sha256": "7689ad9691c03b689a6ca4db64817ee881087114cfe92a38fbd0eedcb1f3f960"
+    },
+    "actual_public_closed_lease": true,
+    "actual_state": "done",
+    "actual_sequence": 16319,
+    "actual_resources": [],
+    "normal_close_qualified": true,
+    "job_active_processes_final": 0,
+    "case_acceptance_pass": false,
+    "qualified_boundary_pass": false,
+    "whole_product_release_pass": false,
+    "public_case_outcome": "PARTIAL",
+    "public_run_actual_exit_code": 2,
+    "public_verify_actual_exit_code": 2,
+    "allocation_executed": false
+  },
+  "evidence": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\debt76-S1-Root-review01.actual.json",
+      "bytes": 6247,
+      "sha256": "9ed063462ca96a44d67441de742a7ce550eb47fc5dffb6c3b41c069c6553383e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\debt76-S2-Root-partial-review01.actual.json",
+      "bytes": 5653,
+      "sha256": "b672cd516bc71ada80983d12992a4198262df260bf157c5d6e759a57f10ad600"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\debt76-S2-independent-source01\\SOURCE_READY.json",
+      "bytes": 4461,
+      "sha256": "773f0ae81707f0a0b96e5d99ab0fe83dc404a707fab13e00f9498bcf2fdd5711"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\debt76-S2-independent-source02\\SOURCE_READY.json",
+      "bytes": 3634,
+      "sha256": "4e94400df35e5c1a61883113dae4487fb6ce3bd95a0deee71b6fe10972bf38e6"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\debt76-S2-independent-source02\\LATE-FACTS-AND-ORIGINAL-PARTIAL-NOTE.txt",
+      "bytes": 1844,
+      "sha256": "5d6bbeb732e6ea21bdf038074253a32f7092cdd1bd1b0400ef92850a56e5d329"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\debt76-baseline01-retained-completed-report.actual.json",
+      "bytes": 4292,
+      "sha256": "b552fac582d12c8fd18c520d7de3ede2ebf98e12e5305019fcc517c3f85c172e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\debt76-post-help01-retained-completed-report.actual.json",
+      "bytes": 4472,
+      "sha256": "5518b9f1898aafde6d07e219232ab2d16446196336dfcd8b51d41cb6d241c123"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0076\\debt76-baseline01\\ARCHIVE.actual.json",
+      "bytes": 7476,
+      "sha256": "b2fedbd8e67b6feb68ff666aefdc6f8add26a5cee80f30ee90f1a1f82963edda"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0076\\debt76-post-help01\\ARCHIVE.actual.json",
+      "bytes": 7493,
+      "sha256": "9243a5fd711ab50774a78faaf232786a6e1ba2c2d153f93d6ce5795b8c1085e8"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\debt76-S1-owned-window-policy01.actual.json",
+      "bytes": 879,
+      "sha256": "85806645164e2b2337cf529b8ca50b357d9917b88677b13dd2496265230e0a86"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\debt23c-R0076-aid-confirm01-completed.json",
+      "bytes": 20875,
+      "sha256": "fcacc3aadd2a5eac01c4f4882f73d5a0a4cae2adaf4cea004853cd21c0f6e7b7"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\debt23c-R0076-consent-confirm01-completed.json",
+      "bytes": 20887,
+      "sha256": "51eec2433835ee560787dc877debebca5ee709c33ff9f20ce96a2977ae1a4f0f"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\debt23c-R0076-review01-completed.json",
+      "bytes": 20606,
+      "sha256": "42807f085a7c41c28a284fb1a211943a01d4a7d5cba49f975db8b2fdfbb67862"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\debt23c-R0076-claims-visible02-completed.json",
+      "bytes": 667234,
+      "sha256": "3d424439059bd3e7215765f055c64f873b69500f9cff39ce58f2ab7749968227"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\debt23c-R0076-current-human-claim01-completed.json",
+      "bytes": 20651,
+      "sha256": "8a492904277b7a773ef24b02f78b4b3e2ed5a0caf06e8e3a048b2d30ba68e448"
+    }
+  ],
+  "original_waits": [
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\debt76-start01-run\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1537,
+        "sha256": "d1bae80937187b208d65d85e6a78b6ec29f94e17518f2b5c0762eb109e2dfacc"
+      },
+      "returncode": 2,
+      "elapsed_seconds": 3526.6039777999977
+    },
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\debt76-start01-verify\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1545,
+        "sha256": "72fcba2a6ce8efbdd747dd3f70ab0e3dc3a7ac63d3d321ad89402885c06378f2"
+      },
+      "returncode": 2,
+      "elapsed_seconds": 0.46633310001925565
+    },
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\ALLOCATE-debt76-start01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1848,
+        "sha256": "f7e249acedd41f1014d87241a1df61b15b2ecb6b10e241547ed0d9f9d99ecba0"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 3837.9040401999955
+    },
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\RELEASE-R0076-normal01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1342,
+        "sha256": "8a7d5ddaa368bde87787cceec7cab37b0c3e911fc2e22047378329561150c77f"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 0.9331553999800235
+    },
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUDIT-debt76-baseline01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1196,
+        "sha256": "5cb711a520d78e8a5a015cd3a9b14da8d516c2091e29516933030de260dcc0fd"
+      },
+      "returncode": 2,
+      "elapsed_seconds": 19.278926800005138
+    },
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUDIT-debt76-post-help01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1199,
+        "sha256": "173e467f19c5b98078281f5a2e8ec9a08a6de224c02b50434d9be0d951c17b89"
+      },
+      "returncode": 2,
+      "elapsed_seconds": 18.41257190000033
+    },
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-debt76-baseline01-raw01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1808,
+        "sha256": "514c5669c0655a50a3f40b5495a0fb587413d2c38100745beead1f312a8d89bc"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 7.807866899995133
+    },
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-debt76-baseline01-whole01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2043,
+        "sha256": "7032da73a20f24b2212df50dfc23ef05b5dbba79ce783542faad7107d388058c"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 15.558913099986967
+    },
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-debt76-post-help01-raw01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1813,
+        "sha256": "7caea1faaacb2d517dfdc0c834683ecf672edfee1856a3576dcaba59ff90c7c8"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 8.638200399989728
+    },
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-debt76-post-help01-whole01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 2047,
+        "sha256": "8d08a9778bbb06947a949c37e4310b0ed1c34ee7cf24147c913765c7f8b2d485"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 16.26809180001146
+    },
+    {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\QUERY-debt23c-R0076-aid-confirm-event01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1327,
+        "sha256": "cdc9a9fa8cd4fd6aabe9d9231193b621f57a00b8de893f488996a01fa41f077a"
+      },
+      "returncode": 2,
+      "elapsed_seconds": 1.3898294999962673
+    }
+  ],
+  "business_case_PASS": false,
+  "toast_delivery_observed": false,
+  "financialCertified": false,
+  "whole_product_release_PASS": false,
+  "post_scene_debt_tab_fix_software": {
+    "full_verify": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\debt77-integrated-full-verify01\\report.json",
+      "bytes": 173029,
+      "sha256": "3c20a89349a199c42eac9eae609ad9e95ce853cb2498825ce08961adf586871b"
+    },
+    "source_window": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\debt77-integrated-full-verify01\\SOURCE-WINDOW.actual.json",
+      "bytes": 236016,
+      "sha256": "7beea75fde2713c8c97cc9e5dcb5c654634a11b6463bb54ab7e14f0b827d53c9"
+    },
+    "original_Maven_wait": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\debt77-integrated-full-verify01\\MAVEN-ORIGINAL-WAIT.actual.json",
+      "bytes": 980,
+      "sha256": "7dcd06bbb5870d86c203f4d3833cb27b2dd73243c69a50121330c97dcf590b11"
+    },
+    "totals": {
+      "pass": 683,
+      "error": 0,
+      "failure": 0,
+      "skipped": 0
+    },
+    "focused_whole_BookUI_class_tests": 51,
+    "focused_original_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-debt-tab-bookui01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 991,
+      "sha256": "a93067d00ecb817d3a5eaf5bea3f60fdf6a8e212fd26ec1e4f5ba000a1b5a4e0"
+    },
+    "candidate_source_ready": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\debt-tab-refresh-candidate01\\SOURCE_READY.json",
+      "bytes": 6249,
+      "sha256": "ce04e94ac349f878f13b701f65143c4a55ae6c28580272537a24b45084cb0079"
+    },
+    "changed_product_runtime_files": [
+      "mod_financial_markets/gui/xfm_market_window.gui",
+      "mod_financial_markets/common/scripted_guis/xfm_market_navigation.txt"
+    ],
+    "new_regressions": 4,
+    "actual_Game_retest": false,
+    "original_R76_PARTIAL_unchanged": true
+  }
+}

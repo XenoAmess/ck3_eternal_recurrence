@@ -17,6 +17,18 @@ xfm_market_refresh_gui = {
     is_valid = { is_ai = no has_character_flag = xfm_market_open }
     effect = { xfm_market_ui_refresh_effect = yes xfm_registry_lookup_history_effect = yes }
 }
+# Entering the debts tab rebuilds only the current legal account's UI pages.
+# No finance sync, payment, consent, allocation or clock advance is performed here.
+xfm_market_debts_tab_gui = {
+    scope = character
+    is_valid = { is_ai = no has_character_flag = xfm_market_open xfm_market_row_owned_account_trigger = yes }
+    effect = {
+        if = {
+            limit = { is_ai = no has_character_flag = xfm_market_open xfm_market_row_owned_account_trigger = yes }
+            xfm_market_ui_debt_pages_effect = yes
+        }
+    }
+}
 xfm_market_next_gui = {
     scope = character
     is_valid = { is_ai = no var:xfm_ui_has_next = 1 }
