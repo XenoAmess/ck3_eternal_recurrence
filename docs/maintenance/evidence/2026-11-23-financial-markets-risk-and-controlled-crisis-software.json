@@ -1,0 +1,387 @@
+{
+  "schema": "xfm.risk-and-controlled-crisis-software-evidence.v1",
+  "machine_id": "4-8e1c2f1861",
+  "record_date": "2026-11-23",
+  "source_commit_abbreviation_reported_by_owner": "a1b66b91",
+  "adoption_records": [
+    {
+      "path": "C:/workspace/ck3-market-task-20261118/risk-opening-two-production-leaves-Root-adoption01.actual.json",
+      "bytes": 2151,
+      "sha256": "da7f5f95b59629614c61fba86faf855ade58ab772c066b32167b04492bf5c506"
+    },
+    {
+      "path": "C:/workspace/ck3-market-task-20261118/crisis-risk-public-Root-adoption01.actual.json",
+      "bytes": 35187,
+      "sha256": "bffd506168037581894fe44ef9849dd1d2342e9c8996825d7bfe81e8725ef338"
+    },
+    {
+      "path": "C:/workspace/ck3-market-task-20261118/crisis06-and-static-narrowing-Root-adoption01.actual.json",
+      "bytes": 3375,
+      "sha256": "64b7bac4fe42f0572ebdece6630d1389c3e0e40cd2895b0da2c390f18b5ecf27"
+    }
+  ],
+  "test_groups": [
+    {
+      "label": "original-before-counterexample",
+      "report": {
+        "path": "C:/workspace/ck3-market-task-20261118/risk-opening-original-before01/WITNESS.actual.json",
+        "bytes": 2149,
+        "sha256": "74102e0f338808c10ed13c2c8140edcc064e25c61cb79e54c719a45c2652288a"
+      },
+      "execution": {
+        "receipt": {
+          "path": "C:/workspace/ck3-market-live-20261118/operations/TEST-risk-opening-original-before01/ORIGINAL-WAIT.actual.json",
+          "bytes": 1142,
+          "sha256": "b778d48b73d578961e05e1d0195248f438eaa27026313b92d84bddd2047bd308"
+        },
+        "returncode": 1,
+        "elapsed_seconds": 29.009966700017685,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-risk-opening-original-before01\\stdout.log",
+          "bytes": 5177,
+          "sha256": "2dfca04e9cae3789575a1d6797911c47e3c71d9a504dda3643958fff70b25d99"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-risk-opening-original-before01\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "result": "Original real-production-script VM path failed safety assertion after actual withdrawal/next-mark/6c fund-and-recourse assertions passed; not Game loss."
+    },
+    {
+      "label": "risk-focused-after",
+      "report": {
+        "path": "C:/workspace/ck3-market-task-20261118/risk-focused-after01/REPORT.actual.json",
+        "bytes": 3518,
+        "sha256": "9ad1026567d3f3c3a81990ef668857e2b617a756eff28eea087a4760321fe5c0"
+      },
+      "execution": {
+        "receipt": {
+          "path": "C:/workspace/ck3-market-live-20261118/operations/TEST-risk-focused-after01/ORIGINAL-WAIT.actual.json",
+          "bytes": 1356,
+          "sha256": "0d701988b15ea5788ffa7f062a0f195cbb92bcdb262c0dde250c3b8a7770bcc9"
+        },
+        "returncode": 0,
+        "elapsed_seconds": 8.029720099992119,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-risk-focused-after01\\stdout.log",
+          "bytes": 3177,
+          "sha256": "ebb04bb06b203a38b6b56ce92ae15885b53744cff7f1b24789d39946ebae795d"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-risk-focused-after01\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "pass": 8,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0
+    },
+    {
+      "label": "fullbook-affected",
+      "report": {
+        "path": "C:/workspace/ck3-market-task-20261118/risk-fullbook-affected01/REPORT.actual.json",
+        "bytes": 4957,
+        "sha256": "405ed8dad156d46e37b87f18b07c354c7ab5495d70382e0e7bb01a4752d0149a"
+      },
+      "execution": {
+        "receipt": {
+          "path": "C:/workspace/ck3-market-live-20261118/operations/TEST-risk-fullbook-affected01/ORIGINAL-WAIT.actual.json",
+          "bytes": 1045,
+          "sha256": "fac32c0fa2a1b47525e277a88e5da887c948f915245d000ca324c5b638ef72a4"
+        },
+        "returncode": 0,
+        "elapsed_seconds": 49.75828119998914,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-risk-fullbook-affected01\\stdout.log",
+          "bytes": 2950,
+          "sha256": "7019237e9b0ed6e18fbb994219dec8ae35eae4bdb891b1f9159c2e8b5866c5c1"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-risk-fullbook-affected01\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "pass": 48,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0
+    },
+    {
+      "label": "shared-first-red-preserved",
+      "report": {
+        "path": "C:/workspace/ck3-market-task-20261118/crisis-risk-shared-first-red01/REPORT.actual.json",
+        "bytes": 24030,
+        "sha256": "67cf6c5d3c189629ca75e1b79d956de0c9fc220616643f02d434999f4ebc8315"
+      },
+      "execution": {
+        "receipt": {
+          "path": "C:/workspace/ck3-market-live-20261118/operations/TEST-crisis-risk-shared-affected01/ORIGINAL-WAIT.actual.json",
+          "bytes": 1234,
+          "sha256": "d42bbfc258d805af42874486d7d8951ed5561986fee138aa83511860be3cc492"
+        },
+        "returncode": 1,
+        "elapsed_seconds": 32.14850480001769,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-crisis-risk-shared-affected01\\stdout.log",
+          "bytes": 14041,
+          "sha256": "56e5223296580172aa93b3a9b85ba87258c54b95ba1a9f80534276a4e876f53a"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-crisis-risk-shared-affected01\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "pass": 75,
+      "failure": 0,
+      "error": 4,
+      "skipped": 0
+    },
+    {
+      "label": "crisis06-two-classes",
+      "execution": {
+        "receipt": {
+          "path": "C:/workspace/ck3-market-live-20261118/operations/TEST-crisis06-two-affected01/ORIGINAL-WAIT.actual.json",
+          "bytes": 1063,
+          "sha256": "44bd3b28cb9dab3fdfb5eacfcae217f78c02afa4493437ca3326005c94888adb"
+        },
+        "returncode": 0,
+        "elapsed_seconds": 17.490906299994094,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-crisis06-two-affected01\\stdout.log",
+          "bytes": 3326,
+          "sha256": "db58b97feb6547b00f2ad217c8cbf1acfb695dce75758343acb4aba20a623354"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-crisis06-two-affected01\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "pass": 21,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0
+    },
+    {
+      "label": "NoGame-affected",
+      "execution": {
+        "receipt": {
+          "path": "C:/workspace/ck3-market-live-20261118/operations/TEST-crisis-risk-Python-affected01/ORIGINAL-WAIT.actual.json",
+          "bytes": 1233,
+          "sha256": "08158028f26ae562ff5831f65e8cb9c00ce506e475bed875d88645da414b474e"
+        },
+        "returncode": 0,
+        "elapsed_seconds": 139.004339600011,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-crisis-risk-Python-affected01\\stdout.log",
+          "bytes": 6758,
+          "sha256": "05cfd7eb16082796d62804250c9109d766dc4fff1bc90900441670c2f01f67f0"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-crisis-risk-Python-affected01\\stderr.log",
+          "bytes": 42762,
+          "sha256": "bbb03cba8e63f0b8bbed04f8a4bde8e95dc253aafa14390d3e0224e6e1f3db5e"
+        }
+      },
+      "pass": 195,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0
+    },
+    {
+      "label": "Python-optimized",
+      "execution": {
+        "receipt": {
+          "path": "C:/workspace/ck3-market-live-20261118/operations/TEST-crisis20-Python-optimized01/ORIGINAL-WAIT.actual.json",
+          "bytes": 1075,
+          "sha256": "ca0c982196c25edef8423322d53b1f5bbbd7a046ac5b50001998ec5109305a77"
+        },
+        "returncode": 0,
+        "elapsed_seconds": 11.672982199990656,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-crisis20-Python-optimized01\\stdout.log",
+          "bytes": 856,
+          "sha256": "b3016e5a3b82af7ab0996dee4b3d58333409aba1b9841d53a96e345c16e3008f"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-crisis20-Python-optimized01\\stderr.log",
+          "bytes": 3222,
+          "sha256": "c27871509f0a55d3118bd524813d3f245756d84a762bdfa84dcf879025413dcc"
+        }
+      },
+      "pass": 13,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0
+    },
+    {
+      "label": "final-NoGame-affected",
+      "execution": {
+        "receipt": {
+          "path": "C:/workspace/ck3-market-live-20261118/operations/TEST-crisis-final-python-affected02/ORIGINAL-WAIT.actual.json",
+          "bytes": 1158,
+          "sha256": "aed73a5ed5597ef052c1d9e616c81c026ba3df464ab6f6065cee676efc85532d"
+        },
+        "returncode": 0,
+        "elapsed_seconds": 19.30729500000598,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-crisis-final-python-affected02\\stdout.log",
+          "bytes": 1787,
+          "sha256": "87a88de7ebe10500a1db318fa734b22d347ab0c61f0c117a9b232c7cc3d08609"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-crisis-final-python-affected02\\stderr.log",
+          "bytes": 8387,
+          "sha256": "e74b0f10799176ff8c536fba4f15817cbff65e4583c404ce3fbfb779892217da"
+        }
+      },
+      "pass": 41,
+      "failure": 0,
+      "error": 0,
+      "skipped": 0
+    }
+  ],
+  "type_check_original_operations": [
+    {
+      "receipt": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/TYPE-crisis-risk-current03/ORIGINAL-WAIT.actual.json",
+        "bytes": 1264,
+        "sha256": "35a79ca6d0aa2dd5238a6785b68680cd6b4aee0e5eaf2cb5e29ffc2d4a0a5d78"
+      },
+      "returncode": 1,
+      "elapsed_seconds": 3.5896290999953635,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-crisis-risk-current03\\stdout.log",
+        "bytes": 3231,
+        "sha256": "09c7b5253c7774008473d66d48fa40f19d860d2718b40996a1ec90a4c83d0da9"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-crisis-risk-current03\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "receipt": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/TYPE-crisis-risk-current04/ORIGINAL-WAIT.actual.json",
+        "bytes": 1263,
+        "sha256": "81c7e6d8801fdd2e3cdf71b0c220b2fd923dc904f09ff49a4d48a594f6ea5f8b"
+      },
+      "returncode": 1,
+      "elapsed_seconds": 3.309585100010736,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-crisis-risk-current04\\stdout.log",
+        "bytes": 2637,
+        "sha256": "5a466eb440bbdd34eedbd2ebbb9fda03c006edfea2d4f906b24698ad45eb2a71"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-crisis-risk-current04\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "receipt": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/TYPE-crisis-risk-current05/ORIGINAL-WAIT.actual.json",
+        "bytes": 1264,
+        "sha256": "73bd1b32f188cf236b99255afe16887fed26df39c256e3174e361ff9520fad27"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 3.7032314999960363,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-crisis-risk-current05\\stdout.log",
+        "bytes": 1501,
+        "sha256": "41732614bc3698e0574326725b0469ef07266b801a2b6f2461bde43ed52293a4"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TYPE-crisis-risk-current05\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "full_financial_verify": {
+    "status": "ACTUAL_COMPLETE_VERIFY_PASS",
+    "report": {
+      "path": "C:/workspace/ck3-market-task-20261118/crisis-risk-integrated-full-verify01/report.json",
+      "bytes": 178523,
+      "sha256": "34c7cdf853fb95423f340becf5c2ff0ece491dbaa681716a49f93f8179bc666c"
+    },
+    "outer_original_execution": {
+      "receipt": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/VERIFY-crisis-risk-integrated-full01/ORIGINAL-WAIT.actual.json",
+        "bytes": 1551,
+        "sha256": "4d0fd8fa9584c50a9a5874013580ba5499969f309f20378c928a5288ba44ea19"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 256.3898330999946,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-crisis-risk-integrated-full01\\stdout.log",
+        "bytes": 723,
+        "sha256": "6b9170b1d200404e792c301894dc01cb564615f3f28cc8f2756b0ce2ebb6c9b8"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-crisis-risk-integrated-full01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "inner_Maven_original_wait": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\crisis-risk-integrated-full-verify01\\MAVEN-ORIGINAL-WAIT.actual.json",
+      "bytes": 990,
+      "sha256": "f6074f789e7bb9e5ddd811f9d50082ea2beffb8aa7e7ccd3a287cb9613cbde21"
+    },
+    "inner_Maven_elapsed_seconds": 255.15511530000367,
+    "source_window": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\crisis-risk-integrated-full-verify01\\SOURCE-WINDOW.actual.json",
+      "bytes": 245423,
+      "sha256": "87c19398b508b6c08373aa15a6cb6e0374bc277a227f5d79245c0a6e7714bbbf"
+    },
+    "source_head_at_start": "a1b66b91b66ea02c0b50016c8bf795afcefd5d13",
+    "source_before_after_unchanged": true,
+    "distinct_testcases": 701,
+    "totals": {
+      "pass": 701,
+      "error": 0,
+      "failure": 0,
+      "skipped": 0
+    },
+    "retained_Surefire_XML_count": 56,
+    "unfiltered_verify_without_skip": true,
+    "Game_started_or_queried": false,
+    "financialCertified": false,
+    "whole_product_acceptance_pass": false
+  },
+  "source_change_scope": {
+    "prospective_opening_guard": "Both new counterparties must meet existing60percent maintenance using current live-mark equity before ordinary opening fill; original margin/fee arithmetic and reduce/forced-exit paths retained.",
+    "controlled_crisis03_04_05_06": "Controlled20-branch fixture, public risk/crisis request routing and passive failure preservation;06 closes contextChecks producer brace and supplies explicit0 actual-income fixture for known heir.",
+    "type_only_narrowing": "Two local typing narrowings; original type failures03/04 preserved and05 actual0 in3 source files."
+  },
+  "historical_failures_preserved": [
+    "original risk safety assertion failure",
+    "shared79 first75P4ERROR0F",
+    "type03 and04 original exit1",
+    "R74/E7 missing337/final GAP",
+    "all prior original Game/software failures"
+  ],
+  "qualification_limits": {
+    "new_Game_risk_or_twenty_crisis_scenes_executed": false,
+    "controlled_synthetic_2048_to_4096_Game_executed": false,
+    "Core53_built": false,
+    "new_Native_or_Core_qualification_inferred": false,
+    "E8_prior35day_credit_is_only_its_original_source_window": true,
+    "full_product_or_Workshop_release_pass": false
+  },
+  "authoring_actions": {
+    "metadata_only": true,
+    "Game_OS_or_Java_test_actions": 0,
+    "SAVE_DLL_payload_reads_or_hashes": 0,
+    "formal_repository_writes_or_Git": 0
+  }
+}

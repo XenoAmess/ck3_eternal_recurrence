@@ -113,6 +113,12 @@ xfm_futures_execute_pair_effect = {
     scope:xfm_fut_sell.var:xfm_reservation.var:xfm_remaining_cents >= scope:xfm_fut_fill.var:xfm_short_margin_cents
     NOT = { exists = scope:xfm_fut_buy.var:xfm_close_position }
     NOT = { exists = scope:xfm_fut_sell.var:xfm_close_position }
+    # New opening risk must already cover its live-mark variation and existing maintenance.
+    # Reductions/forced exits retain their separate prepared-slice collateral path below.
+    scope:xfm_fut_fill = {
+     xfm_futures_open_long_equity_value >= xfm_futures_open_long_maintenance_value
+     xfm_futures_open_short_equity_value >= xfm_futures_open_short_maintenance_value
+    }
     scope:xfm_fut_buy.var:xfm_account.var:xfm_open_positions_count < xfm_futures_account_position_capacity_value
     scope:xfm_fut_sell.var:xfm_account.var:xfm_open_positions_count < xfm_futures_account_position_capacity_value
     global_var:xfm_exchange.var:xfm_futures_open_positions_count < xfm_futures_global_position_capacity_value

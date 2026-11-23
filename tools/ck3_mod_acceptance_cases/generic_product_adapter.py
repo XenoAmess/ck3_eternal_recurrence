@@ -354,6 +354,9 @@ def _prepare_fixture_case(context):
     news_delivery_daily = _news_delivery_daily_enabled(json_object(context))
     if news_delivery_daily:
         _ndd_inputs(json_object(context))
+    crisis20 = _crisis20_enabled(json_object(context))
+    if crisis20:
+        _c20_inputs(json_object(context))
     continuation21 = _market_evolution_continuation_enabled(json_object(context))
     if continuation21:
         _mec_inputs(json_object(context))
@@ -595,7 +598,7 @@ def _advance_fixture_day(client: FixtureDayClient, config: object,
     if pending_policy == "observe_unanswered_inbox":
         require(not actor_change and not transitions,
                 'Inbox observation does not enter a succession or legacy transition route')
-    if policy.get('case_id') in (ISSUER_REFUND_TOAST_CASE, 'debt-aid-news-engine-fixture'):
+    if policy.get('case_id') in (ISSUER_REFUND_TOAST_CASE, 'debt-aid-news-engine-fixture', CRISIS20_CASE):
         return json_object(client.advance_day(days=1, timeout=timeout, allow_event_boundary=True,
                            allow_actor_change=False, current_toast_queries=True))
     if sequence in transitions:
@@ -2411,6 +2414,9 @@ def _run_fixture_case(context, client):
         return _run_news_delivery_daily(context, client)
     compiled, binding = compiled_contract(context)
     config = compiled['config']
+    crisis20 = _crisis20_enabled(json_object(context))
+    if crisis20:
+        _c20_inputs(json_object(context))
     continuation21 = _market_evolution_continuation_enabled(json_object(context))
     if continuation21:
         _mec_inputs(json_object(context))
@@ -2420,7 +2426,7 @@ def _run_fixture_case(context, client):
     independent_seed = _independent_financial_seed_enabled(json_object(context))
     coin_campaign = _coin_campaign_enabled(json_object(context))
     issuer_refund_toast = _issuer_refund_toast_enabled(json_object(context))
-    if futures_gui or redemption_gui or redemption_existing or independent_seed or coin_campaign or issuer_refund_toast or continuation21:
+    if futures_gui or redemption_gui or redemption_existing or independent_seed or coin_campaign or issuer_refund_toast or continuation21 or crisis20:
         context = resolve_post_start(context)
         require(config == context['case_contract'], 'Prepared selected GUI config differs')
     pending_policy = _fixture_pending_interaction_policy(config)
@@ -2430,6 +2436,8 @@ def _run_fixture_case(context, client):
     initial_date = frame.get('date_raw')
     require(type(initial_date) is int, 'Actual initial native calendar is required')
     phases = {}
+    crisis20_captures = []
+    crisis20_windows = []
     refund_toast_stop = False; refund_toast_day_attempted = False; refund_toast_capture = None
     static_load_only = config['acceptance_scope'] == 'static_and_basicload'
     profile = Path(context['state_dir']) / 'profile'
@@ -2472,6 +2480,8 @@ def _run_fixture_case(context, client):
                     ready = True  # A real boundary is retained, never followed by a second day attempt.
                 if ready:
                     phases[phase['id']] = root_phase(client, context, phase['id'], phase['requirements'], frame, compiled)
+                    if crisis20:
+                        _c20_checkpoint(json_object(context),json_object(phases),next(i for i,p in enumerate(CRISIS20_PHASES) if p[0]==phase['id']),initial_date,frame['date_raw'])
                     if continuation21:
                         require(day == phase['at_day'], 'Continuation milestone was not observed on its exact local day')
                         _mec_checkpoint(json_object(context), json_object(phases[phase['id']]), phase['at_day'])
@@ -2525,6 +2535,9 @@ def _run_fixture_case(context, client):
                 refund_toast_day_attempted = True  # Consume before dispatch; UNKNOWN must not submit another day.
             row = _advance_fixture_day(client, config, sequence, context['case_spec']['budgets']['command_timeout'])
             value = row['result']
+            if crisis20:
+                crisis20_captures.append(row.get('current_toast_capture'))
+                crisis20_windows.append(_c20_sample_day(client,context,row.get('current_toast_capture')))
             if issuer_refund_toast:
                 refund_toast_capture = row.get('current_toast_capture')
             if pending_policy == 'observe_unanswered_inbox':
@@ -2585,6 +2598,10 @@ def _run_fixture_case(context, client):
             initial_date, frame['date_raw'], refund_toast_capture))
     if coin_campaign:
         facts.update(_coin_campaign_review(json_object(context), json_object(compiled), json_object(phases), initial_date))
+    if crisis20:
+        facts['crisis20_day_captures'] = crisis20_captures
+        facts['crisis20_passive_windows'] = crisis20_windows
+        facts.update(_c20_review(json_object(context), json_object(compiled), json_object(phases), initial_date, frame['date_raw'], crisis20_captures, crisis20_windows))
     if continuation21:
         facts.update(_mec_review(json_object(context), json_object(phases), initial_date, frame['date_raw']))
     client.checkpoint('generic-product-case-result', facts)
@@ -2688,6 +2705,17 @@ def _verify_fixture_case(context):
         require(all(facts.get(k) == v for k, v in review.items()), 'Original campaign credit changed')
         require(all(json_object(json_object(row)['snapshot']).get('date_raw') == date for row in frames),
                 'Campaign GUI must remain on the original native date')
+    if _crisis20_enabled(json_object(context)):
+        frames = facts.get('actual_native_frames')
+        if not isinstance(frames,list) or not frames:raise ValueError('Actual crisis20 frames required')
+        dates: list[int] = []
+        for item in frames:
+            day=json_object(json_object(item)['snapshot']).get('date_raw')
+            if type(day) is not int or not isinstance(day,int):raise ValueError('Actual ordered integer dates required')
+            dates.append(day)
+        require(dates==sorted(dates),'Crisis20 calendar moved backwards')
+        review=_c20_review(json_object(context),json_object(compiled),json_object(facts['root_phases']),dates[0],dates[-1],facts.get('crisis20_day_captures'),facts.get('crisis20_passive_windows'))
+        require(all(facts.get(key)==value for key,value in review.items()),'Crisis20 original result credit changed')
     result = copy.deepcopy(facts)
     result.update(business_pass=False, product_release_pass=False,
                   verification_scope=compiled['config']['acceptance_scope'])
@@ -4185,6 +4213,13 @@ def _ndd_capture(context: JsonObject, reference: object, phase: JsonObject) -> J
 
 def _ndd_toast(context: JsonObject, phase: JsonObject, capture: JsonObject,
                terminal_save: FilePin, terminal_date: int) -> bool:
+    return _source_joined_local_toast(context,phase,capture,terminal_save,terminal_date,
+                                     object_field(_ndd_inputs(context),'source_archive'))
+
+
+def _source_joined_local_toast(context: JsonObject, phase: JsonObject, capture: JsonObject,
+                               terminal_save: FilePin, terminal_date: int, source_archive: JsonObject,
+                               passive_pair: bool = False) -> bool:
     cell = _irt_cell(phase.get('toast'), phase)
     if cell['status'] == 'NOT_OBSERVED':
         return False
@@ -4203,7 +4238,6 @@ def _ndd_toast(context: JsonObject, phase: JsonObject, capture: JsonObject,
         report_keys = {'schema', 'machineId', 'request', 'producers', 'newsScriptSources', 'toast',
                        'assessment', 'reason', 'entries', 'sources', 'passes', 'sourceJoinMatched',
                        'deliveryConfirmed', 'allHumanDeliveryConfirmed', 'gameStarted', 'financialCertified'}
-        source_archive = object_field(_ndd_inputs(context), 'source_archive')
         machine = read_json(file_pin(source_archive)['path']).get('machine_id')
         if (set(report) != report_keys
                 or set(request) != {'schemaVersion', 'machineId', 'repository', 'toast', 'save', 'decoder'}
@@ -4251,9 +4285,14 @@ def _ndd_toast(context: JsonObject, phase: JsonObject, capture: JsonObject,
     if type(pid) is not int or not isinstance(pid, int) or pid <= 0 or a.get('gamePid') != pid:
         raise ValueError('Native toast must belong to this retained Game process')
     original_rows = json_object(read_json(file_pin(capture['actual_results'])['path'])).get('rows')
-    if not isinstance(original_rows, list) or len(original_rows) != 3:
-        raise ValueError('Original day and two query result rows required')
-    for identity, row in zip((a, b), original_rows[1:]):
+    if passive_pair:
+        if not _crisis20_enabled(context) or capture.get('schema')!='ck3-controlled-crisis20-passive-pair-v1' or not isinstance(original_rows,list) or len(original_rows)!=2:raise ValueError('Actual new-case readonly pair required')
+        query_rows=original_rows
+    else:
+        if not isinstance(original_rows, list) or len(original_rows) != 3:
+            raise ValueError('Original day and two query result rows required')
+        query_rows=original_rows[1:]
+    for identity, row in zip((a, b), query_rows):
         full = object_field(json_object(row), 'after_snapshot')
         diagnostics = object_field(full, 'diagnostics'); played = object_field(full, 'played_character')
         if (full.get('paused') is not True or full.get('date_raw') != identity.get('dateRaw')
@@ -4741,3 +4780,524 @@ def _mec_review(context: JsonObject, phases: JsonObject, initial_date: int,
         'result_boundary': 'RETAINED_OBSERVER_35_DAY_WINDOW_ONLY_NOT_ORIGINAL_CASE_OR_PRODUCT_PASS',
         'business_pass': False, 'product_release_pass': False,
         'financial_daily_coverage_verified': False, 'capacity_or_performance_pass': False})
+
+
+# Appended to the actual generic adapter by the source-only assembly; never run here.
+CRISIS20_CASE = 'crisis-scenes20-engine-fixture'
+CRISIS20_CONFIG: JsonObject = json_object({'schema': 'ck3-mod-acceptance-product-case-v1', 'execution_purpose': 'product_acceptance', 'product': 'financial-markets', 'case_id': 'crisis-scenes20-engine-fixture', 'acceptance_scope': 'controlled_twenty_contextual_terminal_branches_estate_rights_and_separate_local_notification_observation', 'fixture_source': {'kind': 'prebuilt_manifest'}, 'startup_mode': 'saved_campaign', 'maximum_natural_days': 14, 'allow_actor_change': False, 'pending_interaction_policy': 'stop_at_boundary', 'failure_prefixes': ['XFMAT: TEST FAIL'], 'required_startup': [], 'forbidden_startup': ['XFMAT: TEST FAIL'], 'post_start': {'government_key': None, 'primary_title_tier_key': None, 'independent': None}, 'source_save_requirements': ['Independent controlled fixture branch only; actual owner PRIMARY and27 distinct original account IDs. Current source/grant/qualification required; never install into E8 or call it a natural market loss.', 'Twenty distinct actual adult AI PRIMARY holders with zero known assets/private gold, no terminal or existing debt, and actual original scene contexts. The fixture never creates context, title, imprisonment, war, traits or characters. Any role absent or protected is NOT_OBSERVED, never a replacement actor.', 'Actual child, estate and positive-asset controls plus two separate adult AI aid/restructure controls. Human has real funds for normal1000c aid, creditor authority and ordinary GUI; no seed cash. Source financial day>=30 and permanent-account counter<=65536 for one finite registry pass.', 'Three physical SAVEs at most256MiB, bounded14 natural days and fresh actual storage admission, normal close180 seconds. Preserve all original outcomes, unknowns and partial failed setup; never rerun a consumed action.'], 'gui_phases': [{'id': 'bind-controlled-crisis20', 'at_day': 0, 'requirements': ['actual_independent_controlled_namespace_source_and27_actual_account_roles_bound_once_without_fake_AI_age_traits_or_context', 'actual26_original_uninsured_API_claims_and_declared_maturity_pressure_seeds_have_no_cash_price_asset_or_clock_setter', 'actual_first_SAVE_audit_exact_Raw_whole_pin_all_roles_original_contexts_assets_claim_sources_and_expected_inheritance', 'actual_normal_GUI_paid_aid_and_authorized_restructure_remain_effective_and_terminal_controls_are_rejected']}, {'id': 'controlled-terminal20-and-protection', 'at_day': 0, 'requirements': ['actual_each_source_derived_context_and_original_full_terminal_guard_is_rechecked_before_shared_production_death_custody_rights_and_news', 'actual_twenty_rows_report_OBSERVED_or_NOT_OBSERVED_with_original_actor_account_claim_news_and_inheritance_evidence_without_fabrication', 'actual_human_child_estate_asset_aid_and_restructure_controls_survive_original_rejected_calls_and_reentry_has_no_second_death_or_cash', 'actual_second_SAVE_independently_reconciles_principal_splits_unchanged_creditor_rights_and_unique_kind5_journal_revisions']}, {'id': 'retained-rights-and-local-scene-toasts', 'at_day': 14, 'requirements': ['actual_each_original_single_day_two_queries_and_bounded_spaced_passive_pairs_retain_all_empty_pending_visible_and_failed_results', 'actual_twenty_journal_rows_and_optional_local_visible_rows_are_separately_statused_with_completed_frame_original_DTO_and_same_source_join', 'actual_allhuman_delivery_natural_probability_performance_and_wholeproduct_credit_remain_false', 'actual_third_SAVE_preserves_real_inheritance_claims_backlog_and_natural_changes_without_replaying_any_terminal']}], 'source_contracts': ['mod_financial_markets/docs/controlled-crisis20-engine-acceptance.md', 'mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/CrisisSceneBranchFixture.java', 'mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/ControlledCrisis20Fixture.java', 'mod_financial_markets/common/scripted_effects/xfm_crisis_progression.txt'], 'controlled_fixture_contract': {'schema': 'ck3-controlled-crisis20-contract-v1', 'request_schema_version': 3, 'source_role_references_maximum': 27, 'positive_scenes': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20], 'control_roles': ['player', 'child', 'estate', 'asset', 'aid', 'restructure'], 'controlled_API_principal_cents': 1000000, 'controlled_maturity_days': 14, 'controlled_overdue_days': 30, 'adult_AI_stress_seed': 400, 'new_actors': 0, 'new_seed_gold': 0, 'fund_eligible': False, 'physical_save_maximum': 3, 'physical_save_max_bytes': 268435456, 'readonly_toast_queries_per_day': 2, 'passive_window_seconds': 45, 'maximum_passive_pairs_per_day': 15, 'passive_pair_interval_seconds': 3, 'maximum_natural_days': 14, 'normal_close_reserve_seconds': 180, 'natural_probability_credit': False, 'all_human_delivery_credit': False, 'whole_product_release_pass': False}, 'business_contract_applicable': True, 'whole_product_release_pass': False, 'calendar_bound_provenance': 'Independent declared API debt/maturity/pressure fixture, not natural losses or frequencies. Branch/estate/journal, actual local visible joins and actual multi-human coverage stay separate. Missing rows are PARTIAL; no queue resets, new timers, clock repair or foreign events.'})
+CRISIS20_PHASES = (('bind-controlled-crisis20', 0, ('actual_independent_controlled_namespace_source_and27_actual_account_roles_bound_once_without_fake_AI_age_traits_or_context', 'actual26_original_uninsured_API_claims_and_declared_maturity_pressure_seeds_have_no_cash_price_asset_or_clock_setter', 'actual_first_SAVE_audit_exact_Raw_whole_pin_all_roles_original_contexts_assets_claim_sources_and_expected_inheritance', 'actual_normal_GUI_paid_aid_and_authorized_restructure_remain_effective_and_terminal_controls_are_rejected')), ('controlled-terminal20-and-protection', 0, ('actual_each_source_derived_context_and_original_full_terminal_guard_is_rechecked_before_shared_production_death_custody_rights_and_news', 'actual_twenty_rows_report_OBSERVED_or_NOT_OBSERVED_with_original_actor_account_claim_news_and_inheritance_evidence_without_fabrication', 'actual_human_child_estate_asset_aid_and_restructure_controls_survive_original_rejected_calls_and_reentry_has_no_second_death_or_cash', 'actual_second_SAVE_independently_reconciles_principal_splits_unchanged_creditor_rights_and_unique_kind5_journal_revisions')), ('retained-rights-and-local-scene-toasts', 14, ('actual_each_original_single_day_two_queries_and_bounded_spaced_passive_pairs_retain_all_empty_pending_visible_and_failed_results', 'actual_twenty_journal_rows_and_optional_local_visible_rows_are_separately_statused_with_completed_frame_original_DTO_and_same_source_join', 'actual_allhuman_delivery_natural_probability_performance_and_wholeproduct_credit_remain_false', 'actual_third_SAVE_preserves_real_inheritance_claims_backlog_and_natural_changes_without_replaying_any_terminal')))
+
+
+def _crisis20_enabled(context: JsonObject) -> bool:
+    config = object_field(context, 'case_contract')
+    declared = config.get('controlled_fixture_contract')
+    schema = declared.get('schema') if isinstance(declared, dict) else None
+    if context.get('case') != CRISIS20_CASE and schema != 'ck3-controlled-crisis20-contract-v1':
+        return False
+    expected = copy.deepcopy(CRISIS20_CONFIG)
+    post = object_field(config, 'post_start')
+    if (set(post) != {'government_key','primary_title_tier_key','independent'}
+            or any(post[k] is not None and (not isinstance(post[k],str) or not post[k]) for k in ('government_key','primary_title_tier_key'))
+            or post['independent'] is not None and type(post['independent']) is not bool):
+        raise ValueError('Crisis20 actual selected bookmark post_start required')
+    expected['post_start'] = post
+    if (context.get('product') != 'financial-markets' or context.get('case') != CRISIS20_CASE
+            or json.dumps(config,sort_keys=True,allow_nan=False) != json.dumps(expected,sort_keys=True,allow_nan=False)):
+        raise ValueError('Exact independent crisis20 contract required; natural cases unchanged')
+    return True
+
+
+def _c20_json(value: object, maximum: int = 2 * 1024 * 1024) -> tuple[JsonObject, FilePin]:
+    reference = checked_capture_pin(value)
+    if Path(reference['path']).suffix.lower() != '.json' or reference['bytes'] > maximum:
+        raise ValueError('Bounded JSON metadata only; never SAVE payload')
+    def unique(pairs: list[tuple[str, object]]) -> dict[str, object]:
+        output: dict[str, object] = {}
+        for key,item in pairs:
+            if key in output:raise ValueError('Duplicate controlled metadata key')
+            output[key]=item
+        return output
+    return json_object(json.loads(Path(reference['path']).read_text(encoding='utf-8-sig'),object_pairs_hook=unique)), reference
+
+
+def _c20_request(value: object) -> JsonObject:
+    row = json_object(value)
+    if (set(row) != {'schemaVersion','caseId','controlledFixtureOnly','playerAccountId','aidCreditorAccountId','scenes','controls'}
+            or type(row.get('schemaVersion')) is not int or row['schemaVersion'] != 3
+            or row.get('caseId') != CRISIS20_CASE or row.get('controlledFixtureOnly') is not True):
+        raise ValueError('Closed controlled crisis20 request required; no actor/context assertions')
+    accounts = [_coin_campaign_uint(row['playerAccountId']), _coin_campaign_uint(row['aidCreditorAccountId'])]
+    scenes = row.get('scenes')
+    if not isinstance(scenes,list) or len(scenes) != 20:
+        raise ValueError('Exactly twenty ordered real scene roles required')
+    for index,item in enumerate(scenes,1):
+        scene = json_object(item)
+        if set(scene) != {'sceneId','accountId'} or type(scene.get('sceneId')) is not int or scene['sceneId'] != index:
+            raise ValueError('Scene ID order1..20 only; no fabricated trait/context')
+        accounts.append(_coin_campaign_uint(scene['accountId']))
+    controls = object_field(row,'controls')
+    if set(controls) != {'childAccountId','inheritedAccountId','assetAccountId','aidAccountId','restructureAccountId'}:
+        raise ValueError('Five actual independent control account IDs required')
+    accounts.extend(_coin_campaign_uint(v) for v in controls.values())
+    if len(set(accounts)) != 27 or any(int(account)>1000000000 for account in accounts):
+        raise ValueError('Twenty-seven distinct supported permanent account IDs required')
+    return row
+
+
+def _c20_inputs(context: JsonObject) -> JsonObject:
+    if not _crisis20_enabled(context):
+        raise ValueError('Crisis20 inputs are exclusive to their exact case')
+    values = object_field(object_field(context,'case_inputs'),'controlled_crisis20')
+    if set(values) != {'schema','request','source_archive'} or values.get('schema') != 'ck3-controlled-crisis20-input-v1':
+        raise ValueError('Closed source archive and actual controlled request binding required')
+    request, request_pin = _c20_json(values['request'],128*1024)
+    _c20_request(request)
+    runtime, _ = _c20_json(context['runtime_manifest'])
+    archive = _mec_archive(values['source_archive'], text_field(runtime,'machine_id'))
+    saved = object_field(context,'saved_campaign')
+    payload = object_field(archive,'archive')
+    if (Path(text_field(payload,'path')).resolve() != Path(text_field(saved,'save')).resolve()
+            or any(payload.get(a) != saved.get(b) for a,b in [('bytes','bytes'),('sha256','sha256')])):
+        raise ValueError('Crisis20 must cold-load this independently retained exact savedPair')
+    manifest, _ = _c20_json(object_field(context,'case_inputs')['prebuilt_fixture_manifest'])
+    if (manifest.get('case_id') != CRISIS20_CASE or manifest.get('product') != 'financial-markets'
+            or manifest.get('machine_id') != runtime.get('machine_id')
+            or object_field(manifest,'receipt').get('fixture_contains_business_effects') is not True):
+        raise ValueError('Actual newly emitted controlled fixture manifest required')
+    original = object_field(object_field(manifest,'files'),'_xfma_request.json')
+    root = Path(text_field(manifest,'fixture_root')).resolve()
+    request_path = root / '_xfma_request.json'
+    if pin(request_path) != {'path':str(request_path),'bytes':original.get('bytes'),'sha256':original.get('sha256')} or read_json(request_path) != request:
+        raise ValueError('Case request differs from exact emitted request')
+    if request_pin['bytes'] <= 0:
+        raise ValueError('Nonempty actual request pin required')
+    # The shared materializer verifies every producer pin; additionally bind the two
+    # runtime scripts to actual formal staging, preventing an old product mount.
+    sources = manifest.get('producer_source_pins')
+    if not isinstance(sources,list):
+        raise ValueError('Actual producer closure required')
+    for name in ('xfm_crisis_scenes.txt','xfm_crisis_progression.txt'):
+        source_path = Path(text_field(context,'repo_root')).resolve() / ('mod_financial_markets/common/scripted_effects/'+name)
+        found = [file_pin(p) for p in sources if Path(file_pin(p)['path']).resolve() == source_path]
+        staged = pin(Path(text_field(object_field(context,'case_inputs'),'product_dir')) / ('common/scripted_effects/'+name))
+        if len(found) != 1 or any(pin(source_path)[k] != found[0][k] or staged[k] != found[0][k] for k in ('bytes','sha256')):
+            raise ValueError('Selected runtime terminal/selector differ from source-bound emission')
+    return json_object({'request':request,'source_archive':values['source_archive']})
+
+
+def crisis20_plan_matches(context: object, steps: object, name: object, timeout: object) -> bool:
+    if not _crisis20_enabled(json_object(context)):
+        return False
+    if _one_day_two_readonly_toast_rows_match(steps,name,timeout):
+        return True
+    return (isinstance(name,str) and re.fullmatch(r'case-natural-day-[0-9]{4,}-passive-pair(0[1-9]|1[0-5])',name) is not None
+        and type(timeout) is int and timeout == 3 and steps == [
+            {'id':name+'-toast0'+str(i),'kind':'tool','tool':'ck3_query_current_interface_toast_v1','args':{}}
+            for i in (1,2)])
+
+
+def _c20_sample_day(client: CaseClient, context: JsonObject, reference: object) -> FilePin:
+    """Only this new case: bounded passive observations through the original queue.
+
+    The 45s/15-pair/3s policy is not a toast lifetime or a rotation guarantee.
+    No timer, date, head, cursor, priority or notification-pop operation is sent.
+    """
+    import time
+    if not _crisis20_enabled(context):raise ValueError('Exact controlled case required')
+    day_pin=checked_capture_pin(reference)
+    capture=_c20_capture(context,day_pin,json_object({'evidence':[day_pin]}))
+    day_name=text_field(capture,'name');output=Path(text_field(context,'output')).resolve()
+    queries=capture.get('queries')
+    if not isinstance(queries,list) or len(queries)!=2:raise ValueError('Original daily pair required')
+    date=json_object(read_json(file_pin(json_object(queries[0])['dto'])['path'])).get('date_raw')
+    started=time.monotonic();pairs: list[FilePin]=[];known: set[str]=set();reason='BOUNDED_WINDOW_COMPLETE'
+    failure: JsonObject | None=None;failure_retention: JsonObject | None=None;attempted: list[str]=[];submitted_at: list[float]=[]
+    def guard() -> JsonObject:
+        if client.remaining()<=183:raise ValueError('Original180s Quit reserve plus one query wait required')
+        report=json_object(client.guard(180));rows=report.get('steps')
+        if not isinstance(rows,list) or report.get('control_inflight'):raise ValueError('Original controls still pending')
+        ids=[];saves=[]
+        for value in rows:
+            row=json_object(value);identity=text_field(row,'id');ids.append(identity)
+            if (row.get('ok') is not True or not row.get('finished_at') or row.get('error')
+                    or object_field(row,'result').get('result_unknown') is True):
+                raise ValueError('Original failure/pending/UNKNOWN stops further submissions')
+            if object_field(row,'plan').get('tool')=='ck3_save_checkpoint':saves.append(row)
+        if len(set(ids))!=len(ids) or len(saves)!=2:raise ValueError('Exactly S1/S2 completed; no S3 submission allowed')
+        if known and not set(ids)<=known:raise ValueError('Another control writer appeared; stop without retry')
+        for index in (0,1):
+            name,_,requirements=CRISIS20_PHASES[index]
+            accepted=json_object(read_json(output/(name+'-accepted.json')))
+            _coin_campaign_phase(context,accepted,requirements)
+        final=CRISIS20_PHASES[2][0]
+        if any((output/(final+suffix)).exists() for suffix in ('-root-result.json','-accepted.json')):
+            raise ValueError('Original final phase already consumed; no further queries')
+        return report
+    try:
+        initial=guard();known={text_field(json_object(row),'id') for row in initial['steps']}
+        for number in range(1,16):
+            target=max(started+(number-1)*3,started+submitted_at[-1]+3 if submitted_at else started)
+            while time.monotonic()<target:
+                guard();time.sleep(max(0.0,min(.1,target-time.monotonic())))
+            if time.monotonic()-started>42:reason='BOUNDED_WINDOW_COMPLETE_NO_NEW_PAIR';break
+            guard();name=day_name+'-passive-pair'+str(number).zfill(2)
+            steps=[{'id':name+'-toast0'+str(i),'kind':'tool','tool':'ck3_query_current_interface_toast_v1','args':{}}for i in (1,2)]
+            ids=[step['id']for step in steps]
+            if any(identity in known for identity in ids):raise ValueError('Original query IDs consumed; never replay')
+            attempted.extend(ids);known.update(ids);submitted_at.append(time.monotonic()-started)
+            # Existing execute_plan consumes IDs, retains queue publication and whole
+            # selected actual rows, then awaits once. An exception is not retried.
+            rows=client.execute_plan(steps,name,timeout=3,reserve=180)
+            retained=[]
+            for row in rows:
+                identity=text_field(json_object(row),'id')
+                dto_path=client.checkpoint(identity+'-dto',object_field(row,'result'))
+                retained.append({'id':identity,'dto':pin(dto_path)})
+            pair_path=client.checkpoint(name+'-capture',json_object({
+                'schema':'ck3-controlled-crisis20-passive-pair-v1','run_id':context['run_id'],
+                'product':'financial-markets','case':CRISIS20_CASE,'name':name,'date_raw':date,
+                'retained_process':copy.deepcopy(client._process),
+                'plan':pin(output/'plans'/(name+'.json')),'actual_results':pin(output/(name+'.actual-results.json')),
+                'queries':retained}))
+            pair_pin=pin(pair_path);pairs.append(pair_pin)
+            _c20_pair(context,pair_pin,json_object({'evidence':[pair_pin]}),date)
+            guard()
+            dtos=[json_object(read_json(file_pin(json_object(item)['dto'])['path'])) for item in retained]
+            if all(dto.get('status')=='available' and dto.get('stage')=='empty' and dto.get('queue_count')==0 for dto in dtos):
+                reason='TWO_ACTUAL_EMPTY_OBSERVATIONS';break
+            reason='MAXIMUM_PAIRS_COMPLETE'
+    except Exception as error:
+        reason='STOPPED_ORIGINAL_FAILURE_OR_PENDING_NO_RETRY'
+        failure=json_object({'type':type(error).__name__,'message':str(error)})
+        if attempted:
+            # await_steps may throw before execute_plan writes actual-results.
+            # Read only the existing report once; do not await, retry or submit.
+            # Pending rows and absent/null result fields remain exactly as parsed.
+            try:
+                validated=client.read_report(allow_error=True)
+                report_path=client.live/'native-report.json'
+                with report_path.open('rb')as stream:raw=stream.read(64*1024*1024+1)
+                if len(raw)>64*1024*1024:raise ValueError('Original Host report exceeds existing64MiB metadata bound')
+                original=json_object(json.loads(raw));rows=original.get('steps')
+                if not isinstance(rows,list):raise ValueError('Original Host step array unavailable')
+                selected=[copy.deepcopy(row)for row in rows if isinstance(row,dict)and row.get('id')in attempted[-2:]]
+                packet=json_object({'schema':'ck3-crisis20-stopped-selected-original-v1','run_id':context['run_id'],
+                    'source_report_observation':{'path':str(report_path.resolve()),'bytes':len(raw),
+                        'sha256':hashlib.sha256(raw).hexdigest(),'observation_only_not_immutable_FilePin':True,
+                        'whole_report_retained_under_this_artifact_pin':False},
+                    'same_as_immediately_validated_report':original==validated,'attempted_ids':attempted[-2:],
+                    'selected_step_fields_complete_as_parsed':True,'steps':selected,
+                    'failure_or_pending_is_not_reclassified':True})
+                if len(json.dumps(packet,ensure_ascii=False).encode('utf-8'))>2*1024*1024:
+                    raise ValueError('Selected original two rows exceed2MiB; original pending/failure remains')
+                selected_path=client.checkpoint(day_name+'-stopped-selected-original',packet)
+                dtos=[]
+                for number,row in enumerate(selected,1):
+                    if 'result'in row:
+                        # Even null stays null. Never manufacture a successful DTO.
+                        dto_path=client.checkpoint(day_name+'-stopped-original-result'+str(number),row['result'])
+                        dtos.append({'id':row.get('id'),'original_result':pin(dto_path)})
+                failure_retention=json_object({'selected_original':pin(selected_path),'original_results':dtos,
+                    'report_observation_only':True,'new_query_or_await_or_retry':False})
+            except Exception as retain_error:
+                failure_retention=json_object({'retention_error':{'type':type(retain_error).__name__,'message':str(retain_error)},
+                    'original_pending_or_failure_unchanged':True,'new_query_or_await_or_retry':False})
+    window=client.checkpoint(day_name+'-passive-window',json_object({
+        'schema':'ck3-controlled-crisis20-passive-window-v1','case':CRISIS20_CASE,'run_id':context['run_id'],
+        'day_capture':day_pin,'date_raw':date,'maximum_seconds':45,'maximum_pairs':15,'interval_seconds':3,
+        'submission_offsets_seconds':submitted_at,'elapsed_seconds':time.monotonic()-started,
+        'attempted_ids':attempted,'pairs':pairs,'reason':reason,'failure':failure,'failure_retention':failure_retention,
+        'rotation_guaranteed':False,'delivery_confirmed':False}))
+    if failure is not None:raise ValueError('Passive observation stopped; original pending/failure retained without retry: '+str(failure))
+    return pin(window)
+
+
+def _c20_pair(context: JsonObject, reference: object, phase: JsonObject, date: object) -> JsonObject:
+    ref=_futures_gui_evidence(reference,phase);output=Path(text_field(context,'output')).resolve()
+    if Path(ref['path']).resolve().parent!=output or ref['bytes']>1024*1024:raise ValueError('Same-client bounded pair required')
+    capture=json_object(read_json(ref['path']))
+    if (set(capture)!={'schema','run_id','product','case','name','date_raw','retained_process','plan','actual_results','queries'}
+            or capture.get('schema')!='ck3-controlled-crisis20-passive-pair-v1' or capture.get('run_id')!=context['run_id']
+            or capture.get('product')!='financial-markets' or capture.get('case')!=CRISIS20_CASE or capture.get('date_raw')!=date):
+        raise ValueError('Original actual passive pair identity/date required')
+    plan_pin=checked_capture_pin(capture.get('plan'));rows_pin=checked_capture_pin(capture.get('actual_results'))
+    if Path(plan_pin['path']).resolve().parent!=output/'plans' or Path(rows_pin['path']).resolve().parent!=output:
+        raise ValueError('Original same-client plan/selected result paths required')
+    plan=json_object(read_json(plan_pin['path']));rows=json_object(read_json(rows_pin['path'])).get('rows');queries=capture.get('queries')
+    if not crisis20_plan_matches(context,plan.get('steps'),capture.get('name'),3) or not isinstance(rows,list) or len(rows)!=2 or not isinstance(queries,list) or len(queries)!=2:
+        raise ValueError('Exactly two original readonly rows required')
+    pid=object_field(capture,'retained_process').get('pid');identities=[]
+    if type(pid)is not int or not isinstance(pid,int) or pid<=0:raise ValueError('Original retained Game identity required')
+    for value,step,item in zip(rows,plan['steps'],queries):
+        row=json_object(value);query=json_object(item);dto=checked_capture_pin(query.get('dto'));result=object_field(row,'result')
+        if (row.get('id')!=json_object(step)['id'] or row.get('plan')!=step or row.get('ok')is not True
+                or not row.get('finished_at') or row.get('error') or result.get('result_unknown')is True
+                or set(query)!={'id','dto'} or query['id']!=row['id'] or Path(dto['path']).resolve().parent!=output
+                or dto['bytes']>256*1024 or read_json(dto['path'])!=result):
+            raise ValueError('Complete original readonly rows/DTOs required; no ACK/pending/UNKNOWN')
+        if (result.get('schema')!='ck3_1210_current_interface_toast_result_v1' or result.get('step')!='query-current-interface-toast-v1'
+                or result.get('game_version')!='1.21.0' or result.get('executable_sha256')!='2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC'
+                or result.get('read_only')is not True or result.get('effect_attempted')is not False or result.get('status')!='available'
+                or result.get('date_raw')!=date or result.get('viewer_played_character_id')!=object_field(context,'saved_campaign')['player_id']
+                or result.get('delivery_confirmed')is not False):
+            raise ValueError('Exact current readonly DTO/actor/date required; no delivery flag promotion')
+        full=object_field(row,'after_snapshot');diagnostics=object_field(full,'diagnostics')
+        if (result.get('game_pid')!=pid or full.get('paused')is not True or full.get('date_raw')!=date
+                or diagnostics.get('bridge_pid')!=pid or str(diagnostics.get('connection_generation'))!=result.get('connection_generation')
+                or object_field(full,'played_character').get('character_id')!=result.get('viewer_played_character_id')
+                or any(result.get(k)is not True for k in ('accepted','application_main_observed','full_snapshot_before_verified','full_snapshot_after_verified','source_abi_pins_verified'))):
+            raise ValueError('Actual same retained process/generation/current paused Full and qualified readonly DTO required')
+        if type(result.get('owner_thread_id'))is not int or not isinstance(result.get('owner_thread_id'),int) or result['owner_thread_id']<=0:
+            raise ValueError('Actual positive Native thread ID required')
+        _irt_number(result.get('query_sequence'),positive=True)
+        _irt_number(result.get('completed_application_frame'),positive=True)
+        identities.append(result)
+    if any(identities[0].get(k)!=identities[1].get(k)for k in ('game_pid','connection_generation','owner_thread_id','viewer_played_character_id','date_raw')):
+        raise ValueError('Original passive pair owner/date changed')
+    if _irt_number(identities[1]['query_sequence'],positive=True)<=_irt_number(identities[0]['query_sequence'],positive=True):
+        raise ValueError('Distinct original query sequences required; equal message head is retained without extra credit')
+    return capture
+
+
+def _c20_window(context: JsonObject, reference: object, phase: JsonObject, day_pin: object, date: int) -> list[FilePin]:
+    ref=_futures_gui_evidence(reference,phase)
+    if Path(ref['path']).resolve().parent!=Path(text_field(context,'output')).resolve() or ref['bytes']>1024*1024:
+        raise ValueError('Same-client bounded passive window required')
+    row=json_object(read_json(ref['path']));pairs=row.get('pairs');offsets=row.get('submission_offsets_seconds')
+    if (set(row)!={'schema','case','run_id','day_capture','date_raw','maximum_seconds','maximum_pairs','interval_seconds',
+                  'submission_offsets_seconds','elapsed_seconds','attempted_ids','pairs','reason','failure','failure_retention','rotation_guaranteed','delivery_confirmed'}
+            or row.get('schema')!='ck3-controlled-crisis20-passive-window-v1' or row.get('case')!=CRISIS20_CASE
+            or row.get('run_id')!=context['run_id'] or row.get('day_capture')!=day_pin or row.get('date_raw')!=date
+            or [row.get(k)for k in ('maximum_seconds','maximum_pairs','interval_seconds')]!=[45,15,3]
+            or row.get('failure')is not None or row.get('failure_retention')is not None or row.get('rotation_guaranteed')is not False or row.get('delivery_confirmed')is not False
+            or row.get('reason')not in ('BOUNDED_WINDOW_COMPLETE_NO_NEW_PAIR','TWO_ACTUAL_EMPTY_OBSERVATIONS','MAXIMUM_PAIRS_COMPLETE')
+            or not isinstance(pairs,list) or not 1<=len(pairs)<=15 or not isinstance(offsets,list) or len(offsets)!=len(pairs)):
+        raise ValueError('Original successful bounded observation window required; no rotation or delivery inference')
+    if any(type(v)not in (int,float) or not isinstance(v,(int,float)) or not math.isfinite(v) or v<0 or v>42.1 for v in offsets):
+        raise ValueError('Actual finite within-window submission times required')
+    if any(b-a<2.99 for a,b in zip(offsets,offsets[1:])):raise ValueError('Actual pair submissions must remain spaced')
+    elapsed=row.get('elapsed_seconds')
+    if type(elapsed)not in (int,float) or not isinstance(elapsed,(int,float)) or not math.isfinite(elapsed) or not offsets[-1]<=elapsed<=45.1:
+        raise ValueError('Original bounded wall-clock window required')
+    accepted: list[FilePin] = []; ids: list[object] = []
+    for item in pairs:
+        p=checked_capture_pin(item);capture=_c20_pair(context,p,json_object({'evidence':[p]}),date)
+        accepted.append(p);ids.extend(json_object(v)['id']for v in capture['queries'])
+    if len({p['path']for p in accepted})!=len(accepted) or row.get('attempted_ids')!=ids or len(set(ids))!=len(ids):
+        raise ValueError('Complete unique original query union required; never replay or omit attempts')
+    return accepted
+
+
+def _c20_phase(context: JsonObject, phases: JsonObject, index: int) -> tuple[JsonObject, JsonObject]:
+    name,_,requirements = CRISIS20_PHASES[index]
+    phase = object_field(phases,name)
+    _coin_campaign_phase(context,phase,requirements)
+    return phase,object_field(phase,'crisis20')
+
+
+def _c20_checkpoint(context: JsonObject, phases: JsonObject, index: int,
+                     initial_date: int, current_date: int) -> JsonObject:
+    phase,stage=_c20_phase(context,phases,index)
+    expected=[{'schema','archive','audit','raw','whole','role_bindings'},
+              {'schema','archive','audit','raw','whole','scenes','controls'},
+              {'schema','archive','audit','raw','whole','journal','local_visible'}][index]
+    schema=['ck3-crisis20-baseline-v1','ck3-crisis20-terminal-v1','ck3-crisis20-retained-v1'][index]
+    date=initial_date if index<2 else initial_date+14*24
+    if current_date!=date or set(stage)!=expected or stage.get('schema')!=schema:
+        raise ValueError('Exact crisis20 milestone and stage shape required before continuing')
+    runtime,_=_c20_json(context['runtime_manifest'])
+    _mec_archive(stage['archive'],text_field(runtime,'machine_id'))
+    _futures_gui_archive(stage['archive'],phase,date)
+    for key in ('audit','raw','whole'):_futures_gui_evidence(stage[key],phase)
+    if index==0:
+        request=object_field(_c20_inputs(context),'request');roles=stage.get('role_bindings');requested=request.get('scenes')
+        if not isinstance(roles,list) or len(roles)!=27 or not isinstance(requested,list):raise ValueError('Actual27 role bindings required before dispatch')
+        expected_ids={request['playerAccountId'],request['aidCreditorAccountId']}|{json_object(v)['accountId']for v in requested}|set(object_field(request,'controls').values())
+        if {_coin_campaign_uint(json_object(v).get('account_id'))for v in roles}!=expected_ids:raise ValueError('Bound roles crossed actual request')
+        for value in roles:
+            role=json_object(value)
+            if set(role)!={'account_id','actor_id','evidence'}:raise ValueError('Exact actual role identity proof required')
+            actor=_irt_character(role['actor_id']);_futures_gui_evidence(role['evidence'],phase)
+            if role['account_id']==request['playerAccountId'] and actor!=_irt_character(str(object_field(context,'saved_campaign')['player_id'])):raise ValueError('Actual owner PRIMARY must belong to selected human')
+    return stage
+
+
+def _c20_capture(context: JsonObject, reference: object, phase: JsonObject) -> JsonObject:
+    # Same actual day+two-query producer and DTO guards as the original news case;
+    # exact discriminator remains separate. No transport or retry is added here.
+    ref = _futures_gui_evidence(reference,phase)
+    output = Path(text_field(context,'output')).resolve()
+    if Path(ref['path']).resolve().parent != output or ref['bytes'] > 1024*1024:
+        raise ValueError('Only this client bounded crisis20 capture allowed')
+    capture = json_object(read_json(ref['path']))
+    if (capture.get('schema') != 'ck3-controlled-crisis20-day-capture-v1'
+            or capture.get('run_id') != context['run_id'] or capture.get('case') != CRISIS20_CASE
+            or capture.get('product') != 'financial-markets'):
+        raise ValueError('Actual capture crossed case/run')
+    plan_pin=checked_capture_pin(capture.get('plan')); rows_pin=checked_capture_pin(capture.get('actual_results'))
+    if any(Path(p['path']).resolve().parent not in (output,output/'plans') for p in (plan_pin,rows_pin)):
+        raise ValueError('Actual same-client original plan/results required')
+    plan=json_object(read_json(plan_pin['path'])); rows=json_object(read_json(rows_pin['path'])).get('rows'); queries=capture.get('queries'); steps=plan.get('steps')
+    if (not crisis20_plan_matches(context,plan.get('steps'),capture.get('name'),300)
+            or not isinstance(rows,list) or len(rows)!=3 or not isinstance(queries,list) or len(queries)!=2 or not isinstance(steps,list)):
+        raise ValueError('One original day plus two readonly query rows required')
+    for index,(value,step) in enumerate(zip(rows,steps)):
+        row=json_object(value)
+        if row.get('plan')!=step or row.get('id')!=json_object(step)['id'] or row.get('ok') is not True or not row.get('finished_at') or row.get('error') or object_field(row,'result').get('result_unknown')is True:
+            raise ValueError('Original completed rows required, not ACK')
+        if index:
+            item=json_object(queries[index-1]); dto=checked_capture_pin(item.get('dto'))
+            if (set(item)!={'id','dto'} or item.get('id')!=row['id'] or Path(dto['path']).resolve().parent!=output
+                    or dto['bytes']>256*1024 or read_json(dto['path'])!=row.get('result')):
+                raise ValueError('DTO must equal its actual retained Native row')
+            original=json_object(read_json(dto['path']))
+            if (original.get('schema')!='ck3_1210_current_interface_toast_result_v1'
+                    or original.get('game_version')!='1.21.0' or original.get('step')!='query-current-interface-toast-v1'
+                    or original.get('executable_sha256')!='2F2B236A16223891C2DA8B167F5F3738D2AE3E6D69DE1B4FBE190A5402998ACC'
+                     or original.get('read_only') is not True or original.get('effect_attempted') is not False
+                     or original.get('status')!='available' or original.get('result_unknown')is True):
+                raise ValueError('Unchanged exact Native readonly DTO required')
+    day=object_field(json_object(rows[0]),'result')
+    before=object_field(day,'before');after=object_field(day,'after')
+    if (day.get('requested_days')!=1 or day.get('requested_interval_complete') is not True
+            or type(before.get('date_raw')) is not int or type(after.get('date_raw')) is not int
+            or after['date_raw']!=before['date_raw']+24):
+        raise ValueError('Actual exact one-day completion required; no event-boundary interpolation')
+    for item in queries:
+        if json_object(read_json(file_pin(json_object(item)['dto'])['path'])).get('date_raw')!=after['date_raw']:
+            raise ValueError('Readonly queries must be the same actual completed day')
+    return capture
+
+
+def _c20_review(context: JsonObject, compiled: JsonObject, phases: JsonObject,
+                initial_date: int, terminal_date: int, captures: object, windows: object) -> JsonObject:
+    actual=dict(context); actual['case_contract']=object_field(compiled,'config')
+    if resolve_post_start(actual)['case_contract'] != resolve_post_start(context)['case_contract']:
+        raise ValueError('Prepared crisis20 config changed')
+    inputs=_c20_inputs(context); request=object_field(inputs,'request')
+    if not initial_date <= terminal_date <= initial_date+14*24:
+        raise ValueError('Original crisis20 fourteen-day bound changed')
+    base_phase,base=_c20_phase(context,phases,0)
+    body_phase,body=_c20_phase(context,phases,1)
+    final_phase,final=_c20_phase(context,phases,2)
+    for index,date in enumerate((initial_date,initial_date,terminal_date)):
+        _c20_checkpoint(context,phases,index,initial_date,date)
+    if (set(base)!={'schema','archive','audit','raw','whole','role_bindings'} or base.get('schema')!='ck3-crisis20-baseline-v1'
+            or set(body)!={'schema','archive','audit','raw','whole','scenes','controls'} or body.get('schema')!='ck3-crisis20-terminal-v1'
+            or set(final)!={'schema','archive','audit','raw','whole','journal','local_visible'} or final.get('schema')!='ck3-crisis20-retained-v1'):
+        raise ValueError('Exact actual three-stage crisis20 readback required')
+    archives=[]
+    for phase,stage,date in ((base_phase,base,initial_date),(body_phase,body,initial_date),(final_phase,final,terminal_date)):
+        archives.append(_futures_gui_archive(stage['archive'],phase,date))
+        for key in ('audit','raw','whole'):_futures_gui_evidence(stage[key],phase)
+    if len({p['path'] for p in archives})!=3:
+        raise ValueError('Three distinct actual physical checkpoint archives required')
+    bindings=base.get('role_bindings'); scenes=body.get('scenes'); controls=body.get('controls'); journal=final.get('journal'); visible=final.get('local_visible')
+    if not isinstance(bindings,list) or len(bindings)!=27:
+        raise ValueError('All27 actual bound roles and no invented context required')
+    requested_scenes=request.get('scenes')
+    if not isinstance(requested_scenes,list):raise ValueError('Actual twenty-role request required')
+    expected_accounts={request['playerAccountId'],request['aidCreditorAccountId']}|{json_object(v)['accountId'] for v in requested_scenes}|set(object_field(request,'controls').values())
+    if ({_coin_campaign_uint(json_object(v)['account_id']) for v in bindings}!=expected_accounts
+            or any(set(json_object(v))!={'account_id','actor_id','evidence'} for v in bindings)):
+        raise ValueError('Actual role accounts crossed the emitted request')
+    for value in bindings:
+        binding=json_object(value);_irt_character(binding['actor_id']);_futures_gui_evidence(binding['evidence'],base_phase)
+    if not all(isinstance(v,list) and len(v)==20 for v in (scenes,journal,visible)) or not isinstance(controls,list) or len(controls)!=6:
+        raise ValueError('Twenty distinct scene/journal/local columns and six controls required')
+    branch_count=journal_count=visible_count=0
+    actor_map={_coin_campaign_uint(json_object(v)['account_id']):_irt_character(json_object(v)['actor_id']) for v in bindings}
+    if actor_map[_coin_campaign_uint(request['playerAccountId'])] != _irt_character(str(object_field(context,'saved_campaign')['player_id'])):
+        raise ValueError('Actual owner PRIMARY holder must be this selected human')
+    original_actors=[actor_map[_coin_campaign_uint(json_object(v)['accountId'])] for v in requested_scenes]
+    if len(set(original_actors))!=20 or actor_map[_coin_campaign_uint(request['playerAccountId'])] in original_actors:
+        raise ValueError('Twenty independent actual AI principals; no player identity alias')
+    if terminal_date!=initial_date+14*24 or not isinstance(captures,list) or len(captures)!=14 or not isinstance(windows,list) or len(windows)!=14:
+        raise ValueError('Fourteen actual day pairs and bounded passive windows required')
+    if len({file_pin(p)['path']for p in captures})!=14 or len({file_pin(p)['path']for p in windows})!=14:
+        raise ValueError('Distinct original days/windows required, not repeated records')
+    passive=[]
+    for day,(reference,window) in enumerate(zip(captures,windows),1):
+        captured=_c20_capture(context,reference,final_phase);query_rows=captured.get('queries')
+        if not isinstance(query_rows,list) or len(query_rows)!=2:raise ValueError('Actual paired captures required')
+        dto=json_object(read_json(file_pin(json_object(query_rows[0])['dto'])['path']))
+        date=initial_date+24*day
+        if dto.get('date_raw')!=date:raise ValueError('Each actual day must be retained without interpolation')
+        passive.extend(_c20_window(context,window,final_phase,reference,date))
+    all_captures=captures+passive
+    claim_ids=[];news_ids=[]
+    for index,(value,jvalue,lvalue) in enumerate(zip(scenes,journal,visible),1):
+        row=json_object(value);j=json_object(jvalue);local=json_object(lvalue)
+        account_id=_coin_campaign_uint(row.get('account_id'))
+        if (set(row)!={'scene_id','status','account_id','actor_id','claim_native_id','news_native_id','inheritance','evidence'}
+                or type(row.get('scene_id')) is not int or row['scene_id']!=index
+                or row.get('account_id')!=json_object(requested_scenes[index-1])['accountId']
+                or row.get('actor_id')!=actor_map[account_id]
+                or row.get('status') not in ('OBSERVED','NOT_OBSERVED')
+                or row.get('inheritance') not in ('ADULT_HEIR','MINOR_HEIR_FROZEN','NO_HEIR_FROZEN','UNKNOWN')):
+            raise ValueError('Exact actual scene identity/status/inheritance required')
+        _futures_gui_evidence(row['evidence'],body_phase)
+        if not 0<int(_coin_campaign_uint(row['claim_native_id']))<4294967295:
+            raise ValueError('Original seed claim identity must be retained even when terminal is not observed')
+        claim_ids.append(row['claim_native_id'])
+        if row['status']=='OBSERVED':
+            if not 0<int(_coin_campaign_uint(row['news_native_id']))<4294967295:raise ValueError('Actual Story identity required')
+            if row['inheritance']=='UNKNOWN':raise ValueError('Observed terminal needs actual custody result')
+            news_ids.append(row['news_native_id'])
+            branch_count+=1
+        elif row['news_native_id'] is not None:
+            raise ValueError('Unobserved terminal must retain its original claim but cannot invent kind5 news')
+        if set(j)!={'scene_id','status','news_native_id','evidence'} or type(j.get('scene_id')) is not int or j['scene_id']!=index or j.get('status') not in ('OBSERVED','NOT_OBSERVED'):
+            raise ValueError('Separate actual journal row required')
+        _futures_gui_evidence(j['evidence'],final_phase)
+        if j['status']=='OBSERVED':
+            if row['status']!='OBSERVED' or j['news_native_id']!=row['news_native_id']:raise ValueError('Journal must be this actual terminal source')
+            journal_count+=1
+        elif j['news_native_id'] is not None:raise ValueError('Unobserved journal identity is unknown')
+        if set(local)!={'scene_id','status','capture','joins','localization_sources'} or type(local.get('scene_id')) is not int or local['scene_id']!=index or local.get('status') not in ('OBSERVED','NOT_OBSERVED'):
+            raise ValueError('Separate local visibility row required')
+        if local['status']=='OBSERVED':
+            if row['status']!='OBSERVED' or j['status']!='OBSERVED' or local['capture'] not in all_captures:
+                raise ValueError('Local observation must come from this retained actual day')
+            candidate=json_object(read_json(file_pin(local['capture'])['path']))
+            passive_pair=candidate.get('schema')=='ck3-controlled-crisis20-passive-pair-v1'
+            capture=(_c20_pair(context,local['capture'],json_object({'evidence':[local['capture']]}),candidate.get('date_raw'))
+                if passive_pair else _c20_capture(context,local['capture'],final_phase))
+            toast_phase=dict(final_phase);toast_phase['toast']={k:local[k] for k in ('status','capture','joins','localization_sources')}
+            items=capture.get('queries');joins=local.get('joins')
+            if not isinstance(items,list) or len(items)!=2 or not isinstance(joins,list) or len(joins)!=2:raise ValueError('Actual paired query and join lists required')
+            dto=json_object(read_json(file_pin(json_object(items[1])['dto'])['path']))
+            observed_date=dto.get('date_raw')
+            if type(observed_date) is not int or not initial_date<=observed_date<=terminal_date:raise ValueError('Actual local message date required')
+            if not _source_joined_local_toast(context,json_object(toast_phase),capture,archives[2],observed_date,object_field(inputs,'source_archive'),passive_pair):
+                raise ValueError('Real complete Native/source/rendered join required')
+            report=json_object(read_json(file_pin(joins[1])['path']));entries=report.get('entries')
+            if not isinstance(entries,list) or len(entries)!=1:raise ValueError('Actual single joined news source required')
+            entry=json_object(entries[0])
+            if (entry.get('kind')!=5 or entry.get('scene')!=index or entry.get('storyId')!=row['news_native_id']
+                    or _irt_character(str(entry.get('actorCharacterId')))!=row['actor_id']
+                    or any(token in str(dto.get('title'))+str(dto.get('description')) for token in ('ERROR','[scope:','GetTitledFirstName'))):
+                raise ValueError('This actual scene and original actor must render without ERROR/accessor literals')
+            visible_count+=1
+        elif local['capture'] is not None or local['joins']!=[] or local['localization_sources']!=[]:
+            raise ValueError('Missing visibility cannot borrow a capture or source join')
+    if len(set(claim_ids))!=20 or len(set(news_ids))!=len(news_ids):
+        raise ValueError('Distinct original debts and actual terminal news required; no repeated source credit')
+    if [json_object(v).get('role') for v in controls]!=['player','child','estate','asset','aid','restructure']:
+        raise ValueError('Six original protective control rows required')
+    protected=0
+    for value in controls:
+        row=json_object(value)
+        if set(row)!={'role','status','evidence'} or row.get('status') not in ('OBSERVED','NOT_OBSERVED'):raise ValueError('Actual control status required')
+        _futures_gui_evidence(row['evidence'],body_phase)
+        protected+=row['status']=='OBSERVED'
+    backend=branch_count==20 and journal_count==20 and protected==6
+    qualified=backend and visible_count==20
+    return json_object({'crisis20_terminal_scenes_observed':branch_count,'crisis20_journal_scenes_observed':journal_count,
+        'crisis20_local_visible_scenes_observed':visible_count,'crisis20_controls_observed':protected,
+        'crisis20_backend_qualified':backend,
+        'case_contract_qualified':qualified,'gui_contract_qualified':qualified and visible_count==20,
+        'local_twenty_scene_delivery_observed':visible_count==20,'all_human_delivery_pass':False,
+        'natural_probability_credit':False,'financial_daily_coverage_verified':False,
+        'result_boundary':'CONTROLLED_CRISIS20_OBSERVED' if qualified else 'PARTIAL',
+        'business_pass':False,'product_release_pass':False})

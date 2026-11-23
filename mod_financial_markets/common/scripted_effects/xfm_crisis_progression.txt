@@ -1,4 +1,4 @@
-﻿# 5 effects. A crisis offers actual help before rare terminal review, never a player suicide option.
+﻿# 6 effects. A crisis offers actual help before rare terminal review, never a player suicide option.
 xfm_crisis_begin_effect = {
     set_variable = { name = xfm_crisis_state value = 1 }
     set_variable = { name = xfm_crisis_actor value = var:xfm_holder }
@@ -110,13 +110,19 @@ xfm_crisis_protected_life_effect = {
     # Protection changes risk and support, never cash or the creditors' claims.
 }
 
+# Natural callers retain the original selector. This internal template always rechecks
+# the complete original terminal guard; a selector parameter never grants eligibility.
 xfm_crisis_terminal_effect = {
+    xfm_crisis_terminal_with_selector_effect = { SELECTOR = xfm_crisis_select_scene_effect }
+}
+
+xfm_crisis_terminal_with_selector_effect = {
     if = {
         limit = { xfm_crisis_terminal_review_trigger = yes }
         set_variable = { name = xfm_crisis_terminal value = 1 }
         set_variable = { name = xfm_crisis_state value = 3 }
         var:xfm_holder = { save_scope_as = xfm_crisis_actor }
-        xfm_crisis_select_scene_effect = yes
+        $SELECTOR$ = yes
         set_variable = { name = xfm_news_actor value = scope:xfm_crisis_actor }
         set_variable = { name = xfm_news_kind value = 5 }
         # Mark first; on_death may change this account's holder through inheritance.

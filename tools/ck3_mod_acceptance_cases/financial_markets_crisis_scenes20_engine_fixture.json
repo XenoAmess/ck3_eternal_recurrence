@@ -1,0 +1,126 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "execution_purpose": "product_acceptance",
+  "product": "financial-markets",
+  "case_id": "crisis-scenes20-engine-fixture",
+  "acceptance_scope": "controlled_twenty_contextual_terminal_branches_estate_rights_and_separate_local_notification_observation",
+  "fixture_source": {
+    "kind": "prebuilt_manifest"
+  },
+  "startup_mode": "saved_campaign",
+  "maximum_natural_days": 14,
+  "allow_actor_change": false,
+  "pending_interaction_policy": "stop_at_boundary",
+  "failure_prefixes": [
+    "XFMAT: TEST FAIL"
+  ],
+  "required_startup": [],
+  "forbidden_startup": [
+    "XFMAT: TEST FAIL"
+  ],
+  "post_start": {
+    "government_key": null,
+    "primary_title_tier_key": null,
+    "independent": null
+  },
+  "source_save_requirements": [
+    "Independent controlled fixture branch only; actual owner PRIMARY and27 distinct original account IDs. Current source/grant/qualification required; never install into E8 or call it a natural market loss.",
+    "Twenty distinct actual adult AI PRIMARY holders with zero known assets/private gold, no terminal or existing debt, and actual original scene contexts. The fixture never creates context, title, imprisonment, war, traits or characters. Any role absent or protected is NOT_OBSERVED, never a replacement actor.",
+    "Actual child, estate and positive-asset controls plus two separate adult AI aid/restructure controls. Human has real funds for normal1000c aid, creditor authority and ordinary GUI; no seed cash. Source financial day>=30 and permanent-account counter<=65536 for one finite registry pass.",
+    "Three physical SAVEs at most256MiB, bounded14 natural days and fresh actual storage admission, normal close180 seconds. Preserve all original outcomes, unknowns and partial failed setup; never rerun a consumed action."
+  ],
+  "gui_phases": [
+    {
+      "id": "bind-controlled-crisis20",
+      "at_day": 0,
+      "requirements": [
+        "actual_independent_controlled_namespace_source_and27_actual_account_roles_bound_once_without_fake_AI_age_traits_or_context",
+        "actual26_original_uninsured_API_claims_and_declared_maturity_pressure_seeds_have_no_cash_price_asset_or_clock_setter",
+        "actual_first_SAVE_audit_exact_Raw_whole_pin_all_roles_original_contexts_assets_claim_sources_and_expected_inheritance",
+        "actual_normal_GUI_paid_aid_and_authorized_restructure_remain_effective_and_terminal_controls_are_rejected"
+      ]
+    },
+    {
+      "id": "controlled-terminal20-and-protection",
+      "at_day": 0,
+      "requirements": [
+        "actual_each_source_derived_context_and_original_full_terminal_guard_is_rechecked_before_shared_production_death_custody_rights_and_news",
+        "actual_twenty_rows_report_OBSERVED_or_NOT_OBSERVED_with_original_actor_account_claim_news_and_inheritance_evidence_without_fabrication",
+        "actual_human_child_estate_asset_aid_and_restructure_controls_survive_original_rejected_calls_and_reentry_has_no_second_death_or_cash",
+        "actual_second_SAVE_independently_reconciles_principal_splits_unchanged_creditor_rights_and_unique_kind5_journal_revisions"
+      ]
+    },
+    {
+      "id": "retained-rights-and-local-scene-toasts",
+      "at_day": 14,
+      "requirements": [
+        "actual_each_original_single_day_two_queries_and_bounded_spaced_passive_pairs_retain_all_empty_pending_visible_and_failed_results",
+        "actual_twenty_journal_rows_and_optional_local_visible_rows_are_separately_statused_with_completed_frame_original_DTO_and_same_source_join",
+        "actual_allhuman_delivery_natural_probability_performance_and_wholeproduct_credit_remain_false",
+        "actual_third_SAVE_preserves_real_inheritance_claims_backlog_and_natural_changes_without_replaying_any_terminal"
+      ]
+    }
+  ],
+  "source_contracts": [
+    "mod_financial_markets/docs/controlled-crisis20-engine-acceptance.md",
+    "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/CrisisSceneBranchFixture.java",
+    "mod_financial_markets/tools/src/main/java/org/xar/ck3/markets/acceptance/ControlledCrisis20Fixture.java",
+    "mod_financial_markets/common/scripted_effects/xfm_crisis_progression.txt"
+  ],
+  "controlled_fixture_contract": {
+    "schema": "ck3-controlled-crisis20-contract-v1",
+    "request_schema_version": 3,
+    "source_role_references_maximum": 27,
+    "positive_scenes": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "control_roles": [
+      "player",
+      "child",
+      "estate",
+      "asset",
+      "aid",
+      "restructure"
+    ],
+    "controlled_API_principal_cents": 1000000,
+    "controlled_maturity_days": 14,
+    "controlled_overdue_days": 30,
+    "adult_AI_stress_seed": 400,
+    "new_actors": 0,
+    "new_seed_gold": 0,
+    "fund_eligible": false,
+    "physical_save_maximum": 3,
+    "physical_save_max_bytes": 268435456,
+    "readonly_toast_queries_per_day": 2,
+    "passive_window_seconds": 45,
+    "maximum_passive_pairs_per_day": 15,
+    "passive_pair_interval_seconds": 3,
+    "maximum_natural_days": 14,
+    "normal_close_reserve_seconds": 180,
+    "natural_probability_credit": false,
+    "all_human_delivery_credit": false,
+    "whole_product_release_pass": false
+  },
+  "business_contract_applicable": true,
+  "whole_product_release_pass": false,
+  "calendar_bound_provenance": "Independent declared API debt/maturity/pressure fixture, not natural losses or frequencies. Branch/estate/journal, actual local visible joins and actual multi-human coverage stay separate. Missing rows are PARTIAL; no queue resets, new timers, clock repair or foreign events."
+}

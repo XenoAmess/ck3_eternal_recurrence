@@ -18,8 +18,9 @@ def main() -> int:
     parser.add_argument('--controlled-funding-fixture', action='store_true')
     parser.add_argument('--controlled-debt-aid-fixture', action='store_true')
     parser.add_argument('--controlled-load-fixture', action='store_true')
+    parser.add_argument('--controlled-crisis20-fixture', action='store_true')
     args = parser.parse_args()
-    if sum((args.controlled_debt_aid_fixture, args.controlled_funding_fixture, args.controlled_load_fixture)) > 1:
+    if sum((args.controlled_debt_aid_fixture, args.controlled_funding_fixture, args.controlled_load_fixture, args.controlled_crisis20_fixture)) > 1:
         raise ValueError('Exactly one controlled fixture test flag may be selected')
     repository = args.repo_root.resolve()
     shared = args.shared_source.resolve()
@@ -40,7 +41,12 @@ def main() -> int:
         'product': 'financial-markets', 'case': row['case_id'], 'repo_root': str(repository),
         'runtime_manifest': pin(runtime), 'case_inputs': {'prebuilt_fixture_manifest': manifest}}),
         manifest, scratch / 'imported-fixture')
-    if args.controlled_load_fixture:
+    if args.controlled_crisis20_fixture:
+        from ck3_mod_acceptance_cases.generic_product_adapter import _c20_request
+        request = _c20_request(json.loads((fixture / '_xfma_request.json').read_bytes()))
+        if row['case_id'] != request['caseId'] or receipt['fixture_contains_business_effects'] is not True:
+            raise ValueError('Exact new controlled crisis20 import only')
+    elif args.controlled_load_fixture:
         request = json.loads((fixture / '_xfma_request.json').read_bytes())
         if (request != {'schemaVersion': 3, 'caseId': 'synthetic-controlled-load',
                         'controlledFixtureOnly': True, 'loadCoins': [2048, 4096]}

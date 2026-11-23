@@ -1210,6 +1210,109 @@
           "case_scope": "SYNTHETIC_2048_then4096_same_standard_rules16days4SAVEs_no_futures_or_debt",
           "whole_product_acceptance_credit": false,
           "budget_provenance": "Independent synthetic source, eight declared Genesis actors, real financial APIs,32coins per GUI action,64 initial hot books; identical standard rules,16 natural days,4 explicit SAVEs<=256MiB, shared normalclose180. Source/reader/storage finite gates and actual wall/query/IO measurements required; no new grant is implied."
+        },
+        {
+          "id": "crisis-scenes20-engine-fixture",
+          "status": "ready",
+          "implementation_credit": "Controlled source-only twenty-scene fixture definition. Actual roles, terminal/estate/journal and optional local delivery need original evidence; no natural probability or whole-product credit.",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/financial_markets_crisis_scenes20_engine_fixture.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "saved_campaign",
+            "state_dir": "{run_dir}/state",
+            "saved_campaign": {
+              "save": null,
+              "bytes": null,
+              "sha256": null,
+              "player_id": null,
+              "date_raw": null,
+              "product_inventory": null
+            }
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 1800,
+            "timeout": 10800,
+            "hold_seconds": 7200,
+            "poll_interval": 0.5
+          },
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_take_fresh_full_snapshot_v1",
+            "ck3_execute_step",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_query_scripted_widget_controls_v1",
+            "ck3_activate_scripted_widget_control_v1",
+            "ck3_save_checkpoint",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1",
+            "ck3_query_current_interface_toast_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 180,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "controlled_twenty_contextual_terminal_branches_estate_rights_and_separate_local_notification_observation",
+          "whole_product_acceptance_credit": false,
+          "budget_provenance": "Prospective3SAVEs<=256MiB/14natural days plus at most14 bounded45second passive windows (maximum630s, at most15 spaced readonly pairs/window). Explicit7200s hold and180s close reserve, current independent source/space/Host qualification required. No live extension or authority from registration."
+        },
+        {
+          "id": "futures-risk-engine-fixture",
+          "status": "ready",
+          "implementation_credit": "Source candidate only; controlled county-input engine route, NOT_RUN.",
+          "adapter": {
+            "path": "{repo_root}/tools/ck3_mod_acceptance_cases/generic_product_adapter.py",
+            "config": "{repo_root}/tools/ck3_mod_acceptance_cases/financial_markets_futures_risk_engine_fixture.json"
+          },
+          "initial_plan": "{run_dir}/prepared/initial-plan.json",
+          "startup": {
+            "mode": "saved_campaign",
+            "state_dir": "{run_dir}/state",
+            "saved_campaign": {
+              "save": null,
+              "bytes": null,
+              "sha256": null,
+              "player_id": null,
+              "date_raw": null,
+              "product_inventory": null
+            }
+          },
+          "budgets": {
+            "command_timeout": 300,
+            "readiness_timeout": 1800,
+            "timeout": 7200,
+            "hold_seconds": 3600,
+            "poll_interval": 0.5
+          },
+          "required_mcp_tools": [
+            "ck3_take_snapshot",
+            "ck3_take_fresh_full_snapshot_v1",
+            "ck3_execute_step",
+            "ck3_query_current_event_window_context_v1",
+            "ck3_select_event_option",
+            "ck3_query_scripted_widget_controls_v1",
+            "ck3_activate_scripted_widget_control_v1",
+            "ck3_save_checkpoint",
+            "ck3_query_normal_exit_context_v1",
+            "ck3_request_normal_exit_v1",
+            "ck3_observe_normal_exit_v1"
+          ],
+          "normal_close": {
+            "owner": "shared entry/CaseClient",
+            "reserve_seconds": 180,
+            "actual_retained_OS0_and_original_native0_required": true
+          },
+          "business_contract_applicable": true,
+          "case_scope": "controlled_county_inputs_original_oracle_stop_liquidation_default_rights_only_not_natural_market",
+          "whole_product_acceptance_credit": false,
+          "budget_provenance": "New isolated source, maximum4 SAVE/2 natural days; original180second close reserve. Fresh Root admission required."
         }
       ]
     },

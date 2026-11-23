@@ -895,13 +895,14 @@ class CaseClient:
         controlled_debt_aid_news_interval = False
         if (type(reserve) is int and reserve == 180 and not natural14_interval
                 and not issuer_refund_toast_interval and not news_delivery_daily_interval):
-            from ck3_mod_acceptance_cases.generic_product_adapter import controlled_debt_aid_news_plan_matches
+            from ck3_mod_acceptance_cases.generic_product_adapter import controlled_debt_aid_news_plan_matches, crisis20_plan_matches
             close = obj(self.selection.case.get('normal_close'), 'controlled debt normal close')
             controlled_debt_aid_news_interval = (
-                self.selection.case.get('id') == 'debt-aid-news-engine-fixture'
+                self.selection.case.get('id') in ('debt-aid-news-engine-fixture','crisis-scenes20-engine-fixture')
+                and self.selection.adapter_context().get('case') == self.selection.case.get('id')
                 and type(close.get('reserve_seconds')) is int and close['reserve_seconds'] == 180
                 and obj(self.manifest.get('game'), 'actual controlled debt game').get('version') == '1.21.0'
-                and controlled_debt_aid_news_plan_matches(self.selection.adapter_context(), steps, name, timeout))
+                and (controlled_debt_aid_news_plan_matches(self.selection.adapter_context(), steps, name, timeout) or crisis20_plan_matches(self.selection.adapter_context(), steps, name, timeout)))
         require(reserve == 90 or natural14_interval or issuer_refund_toast_interval or news_delivery_daily_interval or controlled_debt_aid_news_interval or reserve == 0 and (typed_exit or len(steps) == 1 and steps[0].get('kind') == 'finish_hold'),
                 'Only proved native0 lifecycle completion can use the original Quit reserve')
         failure_shutdown = len(steps) == 1 and steps[0].get('failure_shutdown') is True
@@ -978,16 +979,16 @@ class CaseClient:
 
     def validate_frame(self, frame: object, allow_actor_change: bool = False,
                        require_event_free: bool = True, require_paused: bool = True) -> dict[str, object]:
-        frame = obj(frame, 'actual full native snapshot')
+        actual_frame = obj(frame, 'actual full native snapshot')
         for key, expected in {'source':'injected-dll-named-pipe', 'backend_id':'native-headless',
                               'map_ready':True,
                               'episode_projection':'native_campaign'}.items():
-            require(frame.get(key) == expected and (expected is not True or frame.get(key) is True),
+            require(actual_frame.get(key) == expected and (expected is not True or actual_frame.get(key) is True),
                     'Actual full snapshot guard failed: ' + key)
-        require(not require_paused or frame.get('paused') is True, 'Actual full paused snapshot required')
-        require(not require_event_free or frame.get('active_event') is None, 'Actual event boundary requires the original case branch')
-        actor = obj(frame.get('played_character'), 'actual native actor')
-        diagnostics = obj(frame.get('diagnostics'), 'actual native diagnostics')
+        require(not require_paused or actual_frame.get('paused') is True, 'Actual full paused snapshot required')
+        require(not require_event_free or actual_frame.get('active_event') is None, 'Actual event boundary requires the original case branch')
+        actor = obj(actual_frame.get('played_character'), 'actual native actor')
+        diagnostics = obj(actual_frame.get('diagnostics'), 'actual native diagnostics')
         hello = obj(diagnostics.get('hello'), 'actual native hello')
         require(actor.get('alive') is True and actor.get('source') == 'native', 'Actual native actor must be alive')
         pid = integer(diagnostics.get('bridge_pid'), 'actual native PID')
@@ -1004,11 +1005,11 @@ class CaseClient:
         if game['version'] == '1.21.0':
             from xar_autoplayer.bridge.version_identity import CK3_1210, require_exact_native_build
             require(require_exact_native_build(hello.get('expected_ck3_version'), hello.get('expected_ck3_sha256')) == CK3_1210 and
-                    require_exact_native_build(frame.get('game_version'), frame.get('executable_sha256')) == CK3_1210 and
-                    frame.get('schema') == 'ck3_1210_full_state_v1' and
+                    require_exact_native_build(actual_frame.get('game_version'), actual_frame.get('executable_sha256')) == CK3_1210 and
+                    actual_frame.get('schema') == 'ck3_1210_full_state_v1' and
                     hello.get('game_adapter_id') == 'ck3-1.21.0-msvc-x64' and
-                    frame.get('adapter_id') == 'ck3-1.21.0-msvc-x64' and
-                    frame.get('backend') == 'ck3-1.21.0-native-headless-main-thread',
+                    actual_frame.get('adapter_id') == 'ck3-1.21.0-msvc-x64' and
+                    actual_frame.get('backend') == 'ck3-1.21.0-native-headless-main-thread',
                     'Actual Florin Full source differs from shared exact build')
             # Full CharacterID contains signed generation bits; it is not a Saved compact ID.
             require(-(2**31) <= character < 2**31 and character != -1, 'Actual Florin full character ID invalid')
@@ -1022,7 +1023,7 @@ class CaseClient:
             require(binding[:2] == self._binding[:2] and (allow_actor_change or binding[2] == self._binding[2]),
                     'Actual native owner/actor changed')
         self._binding = binding
-        return frame
+        return actual_frame
 
     def snapshot(self, allow_actor_change=False, require_event_free=True):
         self._seq += 1
@@ -1102,9 +1103,9 @@ class CaseClient:
                  'Inbox observation must be explicitly declared by the current selected Florin financial case')
         need(type(current_toast_queries) is bool, 'Original optional toast flag must be bool')
         if current_toast_queries:
-            from ck3_mod_acceptance_cases.generic_product_adapter import _issuer_refund_toast_enabled, _news_delivery_daily_enabled, _controlled_debt_aid_news_toast_enabled
+            from ck3_mod_acceptance_cases.generic_product_adapter import _issuer_refund_toast_enabled, _news_delivery_daily_enabled, _controlled_debt_aid_news_toast_enabled, _crisis20_enabled
             toast_selected = json_object(self.selection.adapter_context())
-            need((_issuer_refund_toast_enabled(toast_selected) or _news_delivery_daily_enabled(toast_selected) or _controlled_debt_aid_news_toast_enabled(toast_selected)) and allow_event_boundary and not allow_actor_change
+            need((_issuer_refund_toast_enabled(toast_selected) or _news_delivery_daily_enabled(toast_selected) or _controlled_debt_aid_news_toast_enabled(toast_selected) or _crisis20_enabled(toast_selected)) and allow_event_boundary and not allow_actor_change
                  and policy == 'stop_at_boundary'
                  and obj(self.manifest.get('game'), 'actual selected game').get('version') == '1.21.0',
                  'Day/toast composition is only available to its exact independent Florin case')
@@ -1172,15 +1173,16 @@ class CaseClient:
                 dto_path = self.checkpoint(name + '-toast0' + str(index) + '-dto', query['result'])
                 queries.append({'id': query['id'], 'dto': pin(dto_path)})
             is_daily_news = self.selection.case.get('id') == 'news-delivery-daily'
+            is_crisis20 = self.selection.case.get('id') == 'crisis-scenes20-engine-fixture'
             is_controlled_debt = self.selection.case.get('id') == 'debt-aid-news-engine-fixture'
             news_capture_extra = {}
-            if is_daily_news or is_controlled_debt:
+            if is_daily_news or is_controlled_debt or is_crisis20:
                 projection_suffix = '-daily-news-day-projection' if is_daily_news else '-controlled-debt-day-projection'
                 news_projection = self.checkpoint(name + projection_suffix, row)
                 news_capture_extra['day_projection'] = pin(news_projection)
             capture_path = self.checkpoint(name + '-current-toast-capture', {
-                'schema': ('ck3-controlled-debt-aid-news-day-capture-v1' if is_controlled_debt else 'ck3-news-delivery-daily-capture-v1' if is_daily_news else 'ck3-issuer-refund-toast-day-capture-v1'), 'run_id': self.frozen['run_id'],
-                'product': 'financial-markets', 'case': ('debt-aid-news-engine-fixture' if is_controlled_debt else 'news-delivery-daily' if is_daily_news else 'issuer-refund-toast'), 'name': name,
+                'schema': ('ck3-controlled-crisis20-day-capture-v1' if is_crisis20 else 'ck3-controlled-debt-aid-news-day-capture-v1' if is_controlled_debt else 'ck3-news-delivery-daily-capture-v1' if is_daily_news else 'ck3-issuer-refund-toast-day-capture-v1'), 'run_id': self.frozen['run_id'],
+                'product': 'financial-markets', 'case': ('crisis-scenes20-engine-fixture' if is_crisis20 else 'debt-aid-news-engine-fixture' if is_controlled_debt else 'news-delivery-daily' if is_daily_news else 'issuer-refund-toast'), 'name': name,
                 'plan': pin(self.output / 'plans' / (name + '.json')),
                 'actual_results': pin(self.output / (name + '.actual-results.json')),
                 'retained_process': dict(self._process), 'queries': queries,

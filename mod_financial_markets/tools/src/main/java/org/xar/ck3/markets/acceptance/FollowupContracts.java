@@ -8,7 +8,12 @@ import java.util.Objects;
 /** Strict observation inputs. Business IDs bind real objects; expected values never seed them. */
 public final class FollowupContracts {
     private FollowupContracts() { }
-    public sealed interface Input permits LegacyInput, Request, ControlledFundingRequest, ControlledDebtAidNewsRequest, ControlledLoadRequest { }
+    public sealed interface Input permits LegacyInput, Request, ControlledFundingRequest, ControlledDebtAidNewsRequest, ControlledLoadRequest, ControlledCrisis20Request, ControlledFuturesRiskRequest { }
+    /** Explicit isolated county-input fixture; not natural-market or funding qualification. */
+    public record ControlledFuturesRiskRequest(int schemaVersion,String caseId,boolean controlledFixtureOnly) implements Input {
+        public ControlledFuturesRiskRequest { new ControlledFuturesRiskFixture.Request(schemaVersion,caseId,controlledFixtureOnly); }
+        public List<String> markers() { return ControlledFuturesRiskFixture.markers(); }
+    }
     public record LegacyInput(AcceptanceContracts.Request request) implements Input {
         public LegacyInput { Objects.requireNonNull(request, "core request"); }
     }
@@ -64,6 +69,30 @@ public final class FollowupContracts {
                     "XFMAT: TEST PASS synthetic_load_4096_built",
                     "XFMAT: TEST PASS synthetic_load_4096_window_recorded");
         }
+    }
+    /** Independent controlled scene test: IDs only, never caller assertions about identity or context. */
+    public record CrisisSceneRole(int sceneId, String accountId) {
+        public CrisisSceneRole { require(sceneId >= 1 && sceneId <= 20, "scene ID1..20"); require(accountId != null, "actual account ID"); id(accountId); }
+    }
+    public record CrisisControls(String childAccountId, String inheritedAccountId, String assetAccountId,
+                                 String aidAccountId, String restructureAccountId) {
+        public CrisisControls { for (String value : new String[]{childAccountId,inheritedAccountId,assetAccountId,aidAccountId,restructureAccountId}) { require(value != null,"actual control account ID"); id(value); } }
+    }
+    public record ControlledCrisis20Request(int schemaVersion, String caseId, boolean controlledFixtureOnly,
+            String playerAccountId, String aidCreditorAccountId, List<CrisisSceneRole> scenes,
+            CrisisControls controls) implements Input {
+        public ControlledCrisis20Request {
+            require(schemaVersion == 3 && "crisis-scenes20-engine-fixture".equals(caseId) && controlledFixtureOnly,
+                    "exact independent controlled crisis20 opt-in required");
+            require(playerAccountId != null && aidCreditorAccountId != null,"actual owner/creditor IDs"); id(playerAccountId); id(aidCreditorAccountId);
+            Objects.requireNonNull(scenes); Objects.requireNonNull(controls); scenes=List.copyOf(scenes);
+            require(scenes.size()==20,"exact ordered twenty actual roles required");
+            java.util.Set<String> accounts=new java.util.HashSet<>(); accounts.add(playerAccountId); accounts.add(aidCreditorAccountId);
+            for(int index=0;index<20;index++) { require(scenes.get(index).sceneId()==index+1,"scene order1..20 required"); accounts.add(scenes.get(index).accountId()); }
+            accounts.addAll(List.of(controls.childAccountId(),controls.inheritedAccountId(),controls.assetAccountId(),controls.aidAccountId(),controls.restructureAccountId()));
+            require(accounts.size()==27,"twenty-seven distinct actual account IDs required");
+        }
+        public List<String> markers() { return List.of("XFMAT: TEST PASS controlled_crisis20_setup_recorded", "XFMAT: TEST PASS controlled_crisis20_dispatch_recorded", "XFMAT: TEST PASS controlled_crisis20_reentry_recorded"); }
     }
     public enum Profile {
         SPOT("spot"), DERIVATIVES("derivatives"), LIFECYCLE("lifecycle"), INHERITANCE("inheritance"),

@@ -1415,6 +1415,13 @@ public final class FollowupObservationScripts {
     private static String fields(String... fields) { return String.join("\n", List.of(fields).stream().map(field -> "has_variable = " + field).toList()) + "\n"; }
     private static String eq(String field, long value) { return "has_variable = " + field + " var:" + field + " = " + value + "\n"; }
 
+    /** Risk component owns no host, financial override or actual engine credit. */
+    public static Map<String,byte[]> renderControlledFuturesRisk(FollowupContracts.ControlledFuturesRiskRequest request) {
+        java.util.Objects.requireNonNull(request,"explicit controlled risk request");
+        return ControlledFuturesRiskFixture.render(new ControlledFuturesRiskFixture.Request(
+            request.schemaVersion(),request.caseId(),request.controlledFixtureOnly()));
+    }
+
     /** Explicit schema3 controlled engine fixture; schema1/2 remain read-only. */
     public static Map<String, byte[]> renderControlledFunding(FollowupContracts.ControlledFundingRequest request) {
         java.util.Objects.requireNonNull(request, "explicit controlled funding request");
@@ -1895,6 +1902,15 @@ public final class FollowupObservationScripts {
     }
 
     /** Controlled obligations only; no synthetic cash, artificial crisis maturity or death calls. */
+    public static Map<String, byte[]> renderControlledCrisis20(FollowupContracts.ControlledCrisis20Request request, String selectorSource) {
+        Map<String,byte[]> files=new LinkedHashMap<>(ControlledCrisis20Fixture.render(request,selectorSource));
+        files.put("common/story_cycles/xfmc20_retained_observers.txt",("\ufeff"+passiveCompatibilityStories("none")
+                +"xfma_market_evolution_e6_observer = { visible = no }\n"
+                +"xfma_market_evolution_e7_observer = { visible = no }\n"
+                +"xfma_market_evolution_e8_observer = { visible = no }\n").getBytes(StandardCharsets.UTF_8));
+        return Map.copyOf(files);
+    }
+
     public static Map<String, byte[]> renderControlledDebtAidNews(FollowupContracts.ControlledDebtAidNewsRequest request) {
         java.util.Objects.requireNonNull(request, "explicit controlled debt request");
         Map<String, String> scripts = new LinkedHashMap<>();

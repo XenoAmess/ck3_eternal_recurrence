@@ -1,0 +1,108 @@
+{
+  "schema": "ck3-mod-acceptance-product-case-v1",
+  "execution_purpose": "product_acceptance",
+  "product": "financial-markets",
+  "case_id": "futures-risk-engine-fixture",
+  "acceptance_scope": "controlled_county_inputs_original_oracle_stop_liquidation_default_rights_only_not_natural_market",
+  "fixture_source": {
+    "kind": "prebuilt_manifest"
+  },
+  "startup_mode": "saved_campaign",
+  "maximum_natural_days": 2,
+  "allow_actor_change": false,
+  "pending_interaction_policy": "stop_at_boundary",
+  "failure_prefixes": [
+    "XFMAT: TEST FAIL"
+  ],
+  "required_startup": [],
+  "forbidden_startup": [
+    "XFMAT: TEST FAIL"
+  ],
+  "post_start": {
+    "government_key": null,
+    "primary_title_tier_key": null,
+    "independent": null
+  },
+  "business_contract_applicable": true,
+  "whole_product_release_pass": false,
+  "gui_phases": [
+    {
+      "id": "bind-isolated-risk-county-and-cash-baseline",
+      "requirements": [
+        "actual_new_isolated_day0_source_no_old_futures_or_debts_and_setup_consumed_once",
+        "actual_original_basket_count8to32_identity_war_and_stock_control_prosperity_before_after_readback_produce_original_oracle150",
+        "actual_first_SAVE_three_distinct_new_PRIMARY_actors_seed_gold_and_original_deposits_and_donation100_separated_from_earned_fee_fund",
+        "actual_four_SAVE_new_admission_two_days_and_original180_exit_reserve_valid"
+      ],
+      "at_day": 0
+    },
+    {
+      "id": "real-normal-entry-stop-and-first-world-shock",
+      "requirements": [
+        "actual_once_original_ensure_submit_match_three_dated_pairs_at_live150_with_original_guards_fees_P1_and_both_margins",
+        "actual_original_stop135_authorizes_exit_not_guaranteed135_execution",
+        "actual_stock_control_effect_and_original_oracle150to120_exact_twenty_percent",
+        "actual_second_SAVE_original_independent_BUY110_and_BUY120_on_distinct_contracts_or_unfilled_rights_not_fake_fills"
+      ],
+      "at_day": 0
+    },
+    {
+      "id": "day1-real-exits-and-second-world-input",
+      "requirements": [
+        "actual_third_SAVE_original_natural_day1_stop_fill110_and_liquidation_fill120_P1_slice_counterpart_cash_margins_fees",
+        "actual_gap_contract_unfilled_zero_margin_remains_real_exposure_not_default_or_refund_by_flag",
+        "actual_once_stock_prosperity_minus25_and_original_oracle_actual100_no_financial_setter"
+      ],
+      "when_markers": [
+        "XFMAT: TEST PASS controlled_risk_day1_capture"
+      ]
+    },
+    {
+      "id": "day2-default-finite-fund-rights-and-original-retry",
+      "requirements": [
+        "actual_next_natural_day_original_MTM_source_day_kind_debtor_creditor_and_amount_join_no_fabricated_recovery_prices",
+        "actual_fourth_SAVE_fund_donation_and_earned_fee_capitalization_separate_actual_paid_unpaid_recourse_conservation",
+        "actual_same_source_operation_retry_preserves_all_cash_fees_claims_and_old_P1_without_second_payment",
+        "actual_full_audit_Whole_and_two_independent_Raw_passes_preserve_foreign_activity_and_missing_Unknown_no_natural_AI_coldreload_or_wholeproduct_credit"
+      ],
+      "when_markers": [
+        "XFMAT: TEST PASS controlled_risk_day2_capture"
+      ]
+    }
+  ],
+  "source_contracts": [
+    "mod_financial_markets/docs/controlled-futures-risk-engine-acceptance.md",
+    "mod_financial_markets/common/scripted_effects/xfm_oracle_indexes.txt",
+    "mod_financial_markets/common/script_values/xfm_oracle_index_values.txt",
+    "mod_financial_markets/common/scripted_effects/xfm_futures_match.txt",
+    "mod_financial_markets/common/scripted_effects/xfm_futures_settlement.txt",
+    "mod_financial_markets/common/scripted_effects/xfm_futures_reduce.txt",
+    "mod_financial_markets/common/scripted_effects/xfm_debt_cover.txt"
+  ],
+  "calendar_bound_provenance": "New isolated synthetic world. Stock county inputs feed original Oracle. Three new declared20000gold actors use original100000c deposits and real100c donation. Four physical SAVEs/two natural days. No financial price/day/margin/debt setter; no natural war/AI, coin certificate or coldreload credit. Missing/wrong actual outcomes remain NOT_OBSERVED. Root literals and normalclose180 remain independent.",
+  "controlled_fixture_contract": {
+    "schema": "ck3-controlled-futures-risk-fixture-v1",
+    "request_schema_version": 3,
+    "actors": 3,
+    "synthetic_gold_per_new_actor": 20000,
+    "production_deposit_cents_per_actor": 100000,
+    "fund_donation_cents": 100,
+    "stock_county_input_changes": true,
+    "financial_price_or_day_setters": false,
+    "actual_model_index_id": 3,
+    "dated_expiry_offsets": [
+      30,
+      31,
+      32
+    ],
+    "stop_trigger_cents": 135,
+    "physical_save_maximum": 4,
+    "physical_save_max_bytes": 268435456,
+    "maximum_natural_days": 2,
+    "normal_close_reserve_seconds": 180,
+    "cold_reload_credit": false,
+    "financial_daily_coverage_verified": false,
+    "whole_product_release_pass": false,
+    "missing_required_cell_forces_partial": true
+  }
+}

@@ -1089,6 +1089,203 @@ final class FuturesFullBookScriptContractTest {
         v.exchange.put("xfm_active_coin_count",count);v.exchange.put("xfm_resident_coin_count",count);v.exchange.put("xfm_pending_coin_count",0);
     }
 
+    @Test void originalCountyInputsProduceTheActualTwentyPercentMarkWithoutAQuoteSetter() throws IOException {
+        for(int wars=0;wars<=4;wars++) {
+            Vm v=riskVm(wars);Node owner=v.custodian;
+            long before=v.nodes.get("risk-county-0").integer("xfmr_test_control");
+            assertEquals(43,before);v.run("xfmr_prepare_world_inputs_effect",owner);
+            Node asset=(Node)v.globalVars.get("xfm_trade_index");
+            assertEquals(150,asset.integer("xfm_mark_cents"));assertEquals(150,asset.integer("xfm_index_cents"));
+            assertEquals(8,owner.integer("xfmr_prepared_county_count"));
+            assertEquals(wars*1250,owner.integer("xfmr_prepared_xfm_oracle_war_bps"));
+            for(int i=1;i<=8;i++) {
+                assertSame(v.nodes.get("risk-county-"+(i-1)),owner.ref("xfmr_prepared_county"+i));
+                assertEquals(100,owner.integer("xfmr_prepared_control"+i));
+                assertEquals(owner.integer("xfmr_target_prosperity"),owner.integer("xfmr_prepared_prosperity"+i));
+                assertEquals(i<=wars?1:0,owner.integer("xfmr_prepared_war"+i));
+            }
+            riskWorldAction(v,"xfmr_first_world_shock_effect");
+            assertEquals(120,asset.integer("xfm_mark_cents"));assertEquals(30,150-asset.integer("xfm_mark_cents"));
+            riskWorldAction(v,"xfmr_second_world_shock_effect");assertEquals(100,asset.integer("xfm_mark_cents"));
+            // Same owner cannot re-prepare the world after consuming its original one-shot input.
+            v.run("xfmr_prepare_world_inputs_effect",owner);assertEquals(100,asset.integer("xfm_mark_cents"));
+        }
+        Vm tooMuchWar=riskVm(5);tooMuchWar.run("xfmr_prepare_world_inputs_effect",tooMuchWar.custodian);
+        assertFalse(tooMuchWar.custodian.vars.containsKey("xfmr_world_prepare_attempted"));
+        Vm changed=riskVm(0);changed.run("xfmr_prepare_world_inputs_effect",changed.custodian);
+        changed.nodes.get("risk-county-holder-0").atWar=true;
+        riskWorldAction(changed,"xfmr_first_world_shock_effect");
+        Node actual=(Node)changed.globalVars.get("xfm_trade_index");assertNotEquals(120,actual.integer("xfm_mark_cents"));
+        assertFalse(changed.test(Clausewitz.parse("xfmr_mark_trigger = { MARK = 120 }"),new Frame(changed.custodian,null,changed.custodian)));
+        assertThrows(IllegalArgumentException.class,()->changed.execute(Clausewitz.parse("change_unknown_risk_input = 1"),new Frame(changed.custodian,null,changed.custodian)));
+    }
+
+    @Test void openingEquityBelowLiveMaintenanceCannotExportItsInitialBasisLossAfterFreeWithdrawal() throws IOException {
+        for(int price:List.of(120,139,167,180)) {
+            Vm v=riskVm(0);v.run("xfmr_prepare_world_inputs_effect",v.custodian);Node asset=(Node)v.globalVars.get("xfm_trade_index");
+            Node c=riskContract(v,"basis-"+price,asset,30),la=receiptActor(v,"basis-long",10000),sa=receiptActor(v,"basis-short",10000);
+            Node donor=receiptActor(v,"basis-donor",1000);riskDonate(v,donor,100);BigDecimal stock=v.cashStock();
+            Node buy=riskSubmit(v,la,c,1,1,5,price),sell=riskSubmit(v,sa,c,2,1,5,price);
+            List<Node> actual=List.copyOf(c.list("xfm_positions"));
+            if(!actual.isEmpty()) {
+                // This branch is an intentional pre-fix regression witness. It runs the original complete
+                // withdrawal/MTM/fund/claim path before failing the new-opening invariant below.
+                Node position=actual.getFirst();assertFillReceipt(position,buy,sell,1,price);
+                assertEquals(2,v.exchange.integer("xfm_fee_cents"));
+                for(Node actor:List.of(la,sa)) {
+                    long free=actor.ref("xfm_account").integer("xfm_free_cents");actor.put("xfm_request_cents",free);
+                    v.run("xfm_finance_withdraw_effect",actor);assertEquals(1,actor.integer("xfm_result"));
+                    assertEquals(0,actor.ref("xfm_account").integer("xfm_free_cents"));
+                }
+                v.exchange.put("xfm_day",2);v.run("xfm_oracle_index_daily_effect",v.exchange);
+                v.run("xfm_futures_position_daily_effect",position);
+                assertEquals(stock,v.cashStock());assertBalanced(v);
+                if(price==120) {
+                    Node claim=position.ref("xfm_debt_receipt_1");assertNotNull(claim);
+                    assertEquals(6,claim.integer("xfm_original_cents"));assertEquals(6,claim.integer("xfm_fund_paid_cents"));
+                    assertEquals(0,claim.integer("xfm_winner_unpaid_cents"));assertEquals(6,claim.integer("xfm_fund_recourse_cents"));
+                    assertSame(sa.ref("xfm_account"),claim.ref("xfm_debtor_account"));
+                    assertSame(la.ref("xfm_account"),claim.ref("xfm_creditor_account"));
+                    assertEquals(94,v.exchange.ref("xfm_default_fund_account").integer("xfm_free_cents"));
+                }
+            }
+            assertTrue(actual.isEmpty(),"Unsafe new fill at "+price+" existed before actual free withdrawal / next-mark waterfall");
+            assertEquals(0,buy.integer("xfm_filled_gross_cents"));assertEquals(0,sell.integer("xfm_filled_gross_cents"));
+            assertEquals(0,v.exchange.integer("xfm_fee_cents"));assertEquals(0,v.created("xfm_debt_claim"));
+            assertEquals(100,v.exchange.ref("xfm_default_fund_account").integer("xfm_free_cents"));
+            assertEquals(0,v.exchange.integer("xfm_next_futures_position_id"));
+            for(Node actor:List.of(la,sa)) {
+                assertEquals(37,actor.ref("xfm_account").integer("xfm_reserved_cents"));
+                actor.put("xfm_request_cents",actor.ref("xfm_account").integer("xfm_free_cents"));
+                v.run("xfm_finance_withdraw_effect",actor);assertEquals(1,actor.integer("xfm_result"));
+            }
+            assertEquals(stock,v.cashStock());assertBalanced(v);
+        }
+    }
+
+    @Test void exactMaintenanceBoundaryAndOrdinaryAtMarkFillsStillUseOriginalMarginFeesAndReceipts() throws IOException {
+        for(int price:List.of(140,150,166)) {
+            Vm v=riskVm(0);v.run("xfmr_prepare_world_inputs_effect",v.custodian);
+            Node c=riskContract(v,"safe-"+price,(Node)v.globalVars.get("xfm_trade_index"),30);
+            Node la=receiptActor(v,"safe-long",10000),sa=receiptActor(v,"safe-short",10000);BigDecimal stock=v.cashStock();
+            Node buy=riskSubmit(v,la,c,1,1,5,price),sell=riskSubmit(v,sa,c,2,1,5,price);
+            assertEquals(1,c.list("xfm_positions").size());Node p=c.list("xfm_positions").getFirst();
+            assertFillReceipt(p,buy,sell,1,price);assertEquals((price+4)/5,p.ref("xfm_long_reservation").integer("xfm_remaining_cents"));
+            assertEquals((price+4)/5,p.ref("xfm_short_reservation").integer("xfm_remaining_cents"));
+            assertEquals(2,v.exchange.integer("xfm_fee_cents"));assertEquals(stock,v.cashStock());assertBalanced(v);
+        }
+    }
+
+    @Test void actualCountyShockRunsStopAt110LiquidationAt120AndAnUnfilledGapWithoutFictitiousPayment() throws IOException {
+        Vm v=riskVm(0);v.run("xfmr_prepare_world_inputs_effect",v.custodian);Node asset=(Node)v.globalVars.get("xfm_trade_index");
+        Node la=receiptActor(v,"risk-long",100000),sa=receiptActor(v,"risk-short",100000),maker=receiptActor(v,"risk-maker",100000);
+        riskDonate(v,maker,100);BigDecimal stock=v.cashStock();
+        Node stop=riskOpenPair(v,asset,la,sa,"stop",30,1,1),liquidate=riskOpenPair(v,asset,la,sa,"liquidate",31,1,5),gap=riskOpenPair(v,asset,la,sa,"gap",32,100,5);
+        la.put("xfm_futures_selected_position",stop);la.put("xfm_futures_stop_cents",135);la.put("xfm_futures_take_profit_cents",0);
+        v.run("xfm_futures_set_stops_effect",la);assertEquals(1,la.integer("xfm_futures_result"));
+        riskWorldAction(v,"xfmr_first_world_shock_effect");assertEquals(120,asset.integer("xfm_mark_cents"));
+        Node stopBid=riskSubmit(v,maker,stop.ref("xfm_contract"),1,1,1,110),liqBid=riskSubmit(v,maker,liquidate.ref("xfm_contract"),1,1,1,120);
+        assertEquals(0,stopBid.integer("xfm_filled_gross_cents"));assertEquals(0,liqBid.integer("xfm_filled_gross_cents"));
+        v.exchange.put("xfm_day",2);v.run("xfm_oracle_index_daily_effect",v.exchange);
+        v.run("xfm_finance_capitalize_default_fund_effect",v.exchange);
+        for(Node p:List.of(stop,liquidate,gap))v.run("xfm_futures_position_daily_effect",p);
+        assertEquals(2,stop.integer("xfm_status"));assertEquals(2,liquidate.integer("xfm_status"));
+        assertEquals(110,stopBid.integer("xfm_filled_gross_cents"));assertEquals(120,liqBid.integer("xfm_filled_gross_cents"));
+        Node stopSlice=riskSlice(v,stop),liqSlice=riskSlice(v,liquidate);
+        assertEquals(110,stopSlice.integer("xfm_fill_mark_cents"));assertEquals(120,liqSlice.integer("xfm_fill_mark_cents"));
+        assertEquals(2,stopSlice.integer("xfm_fill_sell_intent"));assertEquals(2,liqSlice.integer("xfm_fill_sell_intent"));
+        assertEquals(stop.integer("xfm_position_id"),stopSlice.integer("xfm_fill_sell_close_source_id"));
+        assertEquals(liquidate.integer("xfm_position_id"),liqSlice.integer("xfm_fill_slice_source_position_id"));
+        assertEquals(maker.ref("xfm_account").integer("xfm_account_id"),stopSlice.integer("xfm_fill_buy_account_id"));
+        assertEquals(0,gap.integer("xfm_status"));assertEquals(120,gap.integer("xfm_mark_cents"));
+        assertEquals(0,gap.ref("xfm_long_reservation").integer("xfm_remaining_cents"));assertEquals(1,gap.integer("xfm_long_exit_requested"));
+        assertFalse(gap.vars.containsKey("xfm_defaulted"));assertEquals(0,v.created("xfm_debt_claim"));
+        assertEquals(98,v.exchange.integer("xfm_fee_cents")+v.exchange.integer("xfm_default_fund_allocated_cents"));assertEquals(stock,v.cashStock());assertBalanced(v);assertActiveMarginsResolve(v);
+        Map<String,Datum> oldStop=primitiveReceipt(stop),oldLiq=primitiveReceipt(liquidate);
+        long earned=v.exchange.integer("xfm_default_fund_allocated_cents"),fund=v.exchange.ref("xfm_default_fund_account").integer("xfm_free_cents");
+        assertEquals(9,earned);assertEquals(100+earned,fund);
+        riskWorldAction(v,"xfmr_second_world_shock_effect");assertEquals(100,asset.integer("xfm_mark_cents"));
+        v.exchange.put("xfm_day",3);v.run("xfm_oracle_index_daily_effect",v.exchange);
+        v.run("xfm_finance_capitalize_default_fund_effect",v.exchange);
+        for(Node p:List.copyOf(v.nodes.values()))if(p.type.equals("xfm_futures_position")&&p.integer("xfm_status")==0&&p.integer("xfm_lots")>0)
+            v.run("xfm_futures_position_daily_effect",p);
+        Node claim=gap.ref("xfm_debt_receipt_1");assertNotNull(claim);assertEquals(3,gap.integer("xfm_status"));
+        assertEquals(2000,claim.integer("xfm_original_cents"));assertEquals(fund,claim.integer("xfm_fund_paid_cents"));
+        assertEquals(2000-fund,claim.integer("xfm_winner_unpaid_cents"));assertEquals(fund,claim.integer("xfm_fund_recourse_cents"));
+        assertEquals(2000,claim.integer("xfm_outstanding_cents"));assertEquals(0,v.exchange.ref("xfm_default_fund_account").integer("xfm_free_cents"));
+        assertSame(gap,claim.ref("xfm_source"));assertSame(la.ref("xfm_account"),claim.ref("xfm_debtor_account"));
+        assertSame(sa.ref("xfm_account"),claim.ref("xfm_creditor_account"));
+        assertEquals(oldStop,primitiveReceipt(stop));assertEquals(oldLiq,primitiveReceipt(liquidate));assertEquals(stock,v.cashStock());assertBalanced(v);
+        // The real day chain next services an AI debtor, at most500c/day. Do not confuse the
+        // initial fund clearing with the after-finance snapshot or freeze its original unpaid amount.
+        la.ai=true;v.run("xfm_debt_auto_service_effect",claim);
+        assertEquals(500,claim.integer("xfm_repaid_cents"));assertEquals(1500,claim.integer("xfm_outstanding_cents"));
+        assertEquals(1500-fund,claim.integer("xfm_winner_unpaid_cents"));assertEquals(fund,claim.integer("xfm_fund_recourse_cents"));
+        assertEquals(0,la.ref("xfm_account").integer("xfm_debt_service_budget_cents"));assertEquals(stock,v.cashStock());
+        Map<String,Datum> before=Map.copyOf(claim.vars);Map<String,Datum> position=Map.copyOf(gap.vars);
+        long fee=v.exchange.integer("xfm_fee_cents"),claims=v.created("xfm_debt_claim");
+        for(Node p:List.of(stop,liquidate,gap))v.run("xfm_futures_position_daily_effect",p);
+        v.run("xfm_debt_cover_shortfall_effect",gap);assertEquals(1,gap.integer("xfm_result"));
+        v.run("xfm_debt_auto_service_effect",claim);
+        assertEquals(before,claim.vars);assertEquals(position,gap.vars);assertEquals(claims,v.created("xfm_debt_claim"));
+        assertEquals(fee,v.exchange.integer("xfm_fee_cents"));assertEquals(stock,v.cashStock());assertBalanced(v);
+    }
+
+    private static Vm riskVm(int wars) throws IOException {
+        Vm v=vm();v.riskWorldBoundaryPorts=true;v.debtBoundaryPorts=true;v.custodian.ai=false;
+        for(String input:List.of("scripted_effects/xfm_oracle_indexes.txt","script_values/xfm_oracle_index_values.txt",
+            "scripted_effects/xfm_debt_cover.txt","scripted_effects/xfm_debt_fund.txt","scripted_effects/xfm_debt_closure.txt",
+            "scripted_effects/xfm_debt_service.txt","scripted_effects/xfm_debt_repayment.txt",
+            "scripted_triggers/xfm_debt_triggers.txt","script_values/xfm_debt_values.txt"))
+            addDebtDefinitions(v,Clausewitz.parse(Files.readString(SOURCE.resolve("common").resolve(input))));
+        var generated=org.xar.ck3.markets.acceptance.ControlledFuturesRiskFixture.render(
+            new org.xar.ck3.markets.acceptance.ControlledFuturesRiskFixture.Request(3,"futures-risk-engine-fixture",true));
+        for(String path:List.of("common/script_values/xfmr_values.txt","common/scripted_triggers/xfmr_guards.txt",
+            "common/scripted_effects/xfmr_world.txt","common/scripted_effects/xfmr_book.txt","common/scripted_effects/xfmr_observe.txt"))
+            addDebtDefinitions(v,Clausewitz.parse(new String(generated.get(path),java.nio.charset.StandardCharsets.UTF_8)));
+        v.globalVars.put("xfmr_fixture_owner",v.custodian);
+        for(int i=0;i<8;i++) {
+            Node county=v.node("risk-county-"+i,"county"),holder=v.node("risk-county-holder-"+i,"");holder.atWar=i<wars;
+            county.links.put("holder",holder);county.countyControl=BigDecimal.valueOf(43);county.prosperity=BigDecimal.valueOf(17);
+            county.put("xfmr_test_control",43);v.exchange.list("xfm_oracle_counties").add(county);
+        }
+        for(String id:List.of("grain","military","trade")) {
+            Node a=v.asset("risk-"+id);a.put("xfm_index_id",id.equals("grain")?1:id.equals("military")?2:3);a.put("xfm_model_quote_divisor",100);
+            v.globalVars.put("xfm_"+id+"_index",a);v.globalLists.computeIfAbsent("xfm_index_registry",ignored->new ArrayList<>()).add(a);
+        }
+        Node fund=v.account("risk-fund",v.custodian,0);fund.put("xfm_system_account",1);v.exchange.put("xfm_default_fund_account",fund);
+        v.run("xfm_oracle_index_daily_effect",v.exchange);return v;
+    }
+    private static Node riskContract(Vm v,String name,Node asset,int expiry) {
+        Node c=v.contract(name,asset,0,expiry);c.put("xfm_contract_id",v.nodes.size());c.put("xfm_execution_day",-1);
+        c.put("xfm_execution_volume_cents",0);c.put("xfm_execution_lots",0);return c;
+    }
+    private static Node riskSubmit(Vm v,Node actor,Node contract,int side,int lots,int leverage,int price) {
+        actor.put("xfm_selected_coin",contract.ref("xfm_coin"));actor.put("xfm_futures_contract",contract);
+        actor.put("xfm_futures_side",side);actor.put("xfm_futures_lots",lots);actor.put("xfm_futures_leverage",leverage);
+        actor.put("xfm_futures_limit_cents",price);v.run("xfm_futures_submit_effect",actor);
+        assertEquals(1,actor.integer("xfm_futures_result"));Node order=(Node)v.scopes.get("xfm_fut_incoming");assertNotNull(order);return order;
+    }
+    private static Node riskOpenPair(Vm v,Node asset,Node la,Node sa,String name,int expiry,int lots,int leverage) {
+        Node c=riskContract(v,name,asset,expiry),buy=riskSubmit(v,la,c,1,lots,leverage,150),sell=riskSubmit(v,sa,c,2,lots,leverage,150);
+        assertEquals(1,c.list("xfm_positions").size());Node p=c.list("xfm_positions").getFirst();assertFillReceipt(p,buy,sell,lots,150);return p;
+    }
+    private static void riskDonate(Vm v,Node donor,int cents) {
+        donor.put("xfm_ui_fund_donation_cents",cents);v.run("xfm_debt_donate_fund_effect",donor);
+        assertEquals(1,donor.integer("xfm_result"));assertEquals(cents,donor.integer("xfm_last_fund_donation_cents"));
+    }
+    /** Execute the actual rendered county-input block; no authored financial quote/mark mutation. */
+    private static void riskWorldAction(Vm v,String effect) {
+        Block guarded=(Block)v.definition(effect).named("if").getFirst().value();
+        Entry action=guarded.named("global_var:xfm_exchange").getFirst();
+        v.execute(new Block(List.of(action)),new Frame(v.custodian,null,v.custodian));
+    }
+    private static Node riskSlice(Vm v,Node source) {
+        List<Node> slices=v.nodes.values().stream().filter(n->n.type.equals("xfm_futures_position")&&!n.ended
+            &&n.ref("xfm_source_position")==source&&n.integer("xfm_fill_receipt_version")==1).toList();
+        assertEquals(1,slices.size());return slices.getFirst();
+    }
+
     private static Vm vm() throws IOException {
         Map<String,Block> program=new LinkedHashMap<>();
         for(String input:INPUTS)for(Entry e:Clausewitz.parse(Files.readString(SOURCE.resolve("common").resolve(input))).entries()) {
@@ -1136,6 +1333,8 @@ final class FuturesFullBookScriptContractTest {
         final Map<String, List<Node>> lists = new HashMap<>();
         final Set<String> traits = new HashSet<>(); final Map<String, Node> links = new HashMap<>();
         BigDecimal gold = BigDecimal.ZERO; Node owner; boolean ai = true, alive = true, adult = true, ended;
+        // Explicit engine county boundary for controlled world-input tests, never a financial primitive.
+        BigDecimal countyControl=BigDecimal.ZERO,prosperity=BigDecimal.ZERO;boolean atWar;
         Node(String id, String type) { this.id = id; this.type = type; }
         void put(String name, long value) { vars.put(name, new NumberDatum(BigDecimal.valueOf(value))); }
         void put(String name, Node value) { vars.put(name, value); }
@@ -1151,7 +1350,7 @@ final class FuturesFullBookScriptContractTest {
         final Map<String, List<Node>> globalLists = new HashMap<>();
         final Map<String, Datum> globalVars = new HashMap<>();
         final List<Long> debtNewsKinds = new ArrayList<>();
-        boolean debtBoundaryPorts; int debtRelationshipCalls;
+        boolean debtBoundaryPorts; int debtRelationshipCalls; boolean riskWorldBoundaryPorts;
         boolean loadBoundaryPorts; long scriptDate; final List<String> loadLogs=new ArrayList<>(); String loadFirstFailure="";
         final Node exchange, custodian;
         final List<String> trace = new ArrayList<>(); String failType = ""; boolean open = true, randomEnabled = true; int sequence, matchCalls, historyVisits, maxDiscoveryEntries;
@@ -1216,6 +1415,8 @@ final class FuturesFullBookScriptContractTest {
             if (text.startsWith("var:")) return f.here().vars.get(text.substring(4));
             if (text.equals("gold")) return new NumberDatum(f.here().gold);
             if (text.equals("current_date")) return new NumberDatum(BigDecimal.valueOf(scriptDate));
+            if(riskWorldBoundaryPorts&&text.equals("county_control")&&f.here().type.equals("county"))return new NumberDatum(f.here().countyControl);
+            if(riskWorldBoundaryPorts&&text.equals("prosperity_level")&&f.here().type.equals("county"))return new NumberDatum(f.here().prosperity);
             if (f.here().links.containsKey(text)) return f.here().links.get(text);
             if (program.containsKey(text)) return new NumberDatum(value(definition(text), f, BigDecimal.ZERO));
             if (Set.of("xfm_config_player_order_capacity_value", "xfm_config_coin_order_capacity_value", "xfm_config_global_order_capacity_value", "xfm_config_futures_position_capacity_value").contains(text)) return new NumberDatum(BigDecimal.valueOf(4096));
@@ -1279,6 +1480,7 @@ final class FuturesFullBookScriptContractTest {
             if (k.equals("is_ai")) return f.here().ai == atom(e.value()).equals("yes");
             if (k.equals("is_alive")) return f.here().alive == atom(e.value()).equals("yes");
             if (k.equals("is_adult")) return f.here().adult == atom(e.value()).equals("yes");
+            if(riskWorldBoundaryPorts&&k.equals("is_at_war"))return f.here().atWar==atom(e.value()).equals("yes");
             if (k.equals("story_type")) return f.here().type.equals(atom(e.value()));
             if (k.equals("has_trait")) return f.here().traits.contains(atom(e.value()));
             if (k.equals("has_game_rule")) return rules.contains(atom(e.value())); // Engine rule selection only.
@@ -1319,6 +1521,16 @@ final class FuturesFullBookScriptContractTest {
                 }
                 if (k.equals("else")) { if (!chain) execute((Block)e.value(), f); chain = false; continue; }
                 if (k.equals("save_scope_as")) { scopes.put(atom(e.value()), f.here()); continue; }
+                if(riskWorldBoundaryPorts&&Set.of("change_county_control","change_prosperity_level").contains(k)) {
+                    if(!f.here().type.equals("county"))throw new IllegalArgumentException("county scope required");
+                    BigDecimal delta=number(evaluate(e.value(),f));
+                    BigDecimal old=k.equals("change_county_control")?f.here().countyControl:f.here().prosperity;
+                    BigDecimal next=old.add(delta);
+                    // This narrow port certifies only in-range stock county inputs used by this fixture.
+                    if(next.signum()<0||next.compareTo(BigDecimal.valueOf(100))>0)throw new IllegalArgumentException("unsupported out-of-range county input");
+                    if(k.equals("change_county_control"))f.here().countyControl=next;else f.here().prosperity=next;
+                    continue;
+                }
                 if (k.equals("clear_saved_scope")) { scopes.remove(atom(e.value())); continue; }
                 if (k.equals("remove_variable")) { f.here().vars.remove(atom(e.value())); continue; }
                 if (k.equals("clear_variable_list")) { f.here().list(atom(e.value())).clear(); continue; }
@@ -1390,11 +1602,11 @@ final class FuturesFullBookScriptContractTest {
                     if (name.equals("xfm_orders") && f.here().type.equals("xfm_futures_contract")) { maxFuturesBookEntries = Math.max(maxFuturesBookEntries, list.size()); if (list.size() > 128) throw new IllegalArgumentException("futures book exceeds every supported preset"); }
                     continue;
                 }
-                if (k.equals("every_in_list") || k.equals("random_in_list") || k.equals("random_in_global_list")) {
+                if (k.equals("every_in_list") || k.equals("every_in_global_list") || k.equals("random_in_list") || k.equals("random_in_global_list")) {
                     Block a = (Block)e.value(); String name = atom(field(a, "variable"));
-                    List<Node> list = k.equals("random_in_global_list") ? List.copyOf(globalLists.getOrDefault(name, List.of())) : list(f.here(), name);
+                    List<Node> list = k.equals("random_in_global_list") || k.equals("every_in_global_list") ? List.copyOf(globalLists.getOrDefault(name, List.of())) : list(f.here(), name);
                     for (Node n : list) if (test(a.block("limit"), f.enter(n))) {
-                        execute(without(without(a, "variable"), "limit"), f.enter(n)); if (!k.equals("every_in_list")) break;
+                        execute(without(without(a, "variable"), "limit"), f.enter(n)); if (!k.equals("every_in_list") && !k.equals("every_in_global_list")) break;
                     }
                     continue;
                 }

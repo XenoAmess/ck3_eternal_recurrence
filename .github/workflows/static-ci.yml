@@ -776,8 +776,10 @@ jobs:
           python -B -O -X utf8 tools/test_generic_product_day_boundary.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 tools/test_market_evolution_continuation21_case.py
+          python -B -X utf8 tools/test_controlled_crisis20_case.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -O -X utf8 tools/test_market_evolution_continuation21_case.py
+          python -B -O -X utf8 tools/test_controlled_crisis20_case.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -m mypy --strict --follow-imports=skip --no-incremental --cache-dir nul tools/test_generic_product_day_boundary.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%

@@ -2,6 +2,12 @@
 
 2026-11-23，machine_id: 4-8e1c2f1861。
 
+## 当前补记：金融701项完整verify通过；新实机场待验
+
+已保留原生产脚本VM风险反例exit1；修后8项、受影响盘口48项、crisis06两类21项、NoGame195项及optimized13项分别原0。共享首轮75P／4ERROR／0F及typing03／04原失败不改写，不能将各组相加冒称distinct总数。完整金融verify实际 **701个distinct方法全部PASS／0FES**，来源before／after保持一致；外层原wait **0／256.3898331秒**，内层原Maven wait **0／255.1551153秒**，两层耗时分开记录。默认完整verify无测试过滤或skip，保留56份原Surefire XML；不将本篇增量组另加为distinct总数。详见[本轮分层软件证据](risk-and-controlled-crisis-software.md)。
+
+最终NoGame41项原0及三源typing05原0另记，不与完整701相加。Core53未build，新的20剧情实机场和受控2048→4096场尚未RUN；Q55旧Native资格保持原域。软件修订不继承R78原来源以外的Game资格，完整产品与首发仍未通过。存储另追加5份已不可读独立原件，累计61份；R78副本／cache退役与R77／R78无损NTFS压缩分开记，不退款或合计唯一卷收益。下方R78有限35日PASS和全部历史失败保持各自范围。
+
 ## 当前补记：金融683项；R78／E8真实35日连续窗口有限PASS
 
 前序金融软件683项通过保持原软件范围；新[R78／E8](r0078-e8-continuous35.md)已在本机1.21.0／26622941、Core52／Q55、来源34d788上完成35个真实Native自然日、四份SAVE／32次完整独立解析。基线加35日共36条记录无缺日，原run0／verify0，四阶段5／3／3／5项全true，公共case及qualified boundary为true；business／financialCertified／整产品／发布仍为false。

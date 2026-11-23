@@ -2,8 +2,8 @@
   "schema": "xfm.closed-independent-save-retirement-availability.v1",
   "machine_id": "4-8e1c2f1861",
   "record_date": "2026-11-23",
-  "retired_independent_canonical_count": 56,
-  "meaning": "56 superseded independent canonical SAVE originals were retired, not classified as duplicates; their old literal paths are not readable.",
+  "retired_independent_canonical_count": 61,
+  "meaning": "61 superseded independent canonical SAVE originals were retired,not duplicates;all61 old literal paths are not readable.The previous56 remain unchanged,plus residual5.",
   "batches": [
     {
       "batch": "old8",
@@ -1012,6 +1012,131 @@
           }
         }
       ]
+    },
+    {
+      "batch": "residual5",
+      "result": {
+        "path": "C:/workspace/ck3-market-task-20261118/obsolete-unique-residual-five-checkpoints-actual01/RESULT.actual.json",
+        "bytes": 6460,
+        "sha256": "2beeda123cbece4dfcee783db0091b3ebbd2ab934eda6a23a3aed53579bc63fe"
+      },
+      "original_execution": {
+        "receipt": {
+          "path": "C:/workspace/ck3-market-live-20261118/operations/APPLY-obsolete-residual5-01/ORIGINAL-WAIT.actual.json",
+          "bytes": 1793,
+          "sha256": "bcac3da53874376de29ade89d2541b52ae9a025f85172d22814f85987830b2f5"
+        },
+        "returncode": 2,
+        "elapsed_seconds": 5.138832099997671,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-obsolete-residual5-01\\stdout.log",
+          "bytes": 303,
+          "sha256": "e92cec0e8a0eecaf408fe1d69a76d9298a8149cf94341e1a28ea4a4b9d330112"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-obsolete-residual5-01\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "Root_review": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\residual5-Root-postPLAN-review01.actual.json",
+        "bytes": 9111,
+        "sha256": "48ee489b4751436022f5c5d27ae44521f47742ce375d0f84a2399c8f661dcd10"
+      },
+      "plan": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\obsolete-unique-residual-five-checkpoints-actual01\\PLAN.actual.json",
+        "bytes": 4893,
+        "sha256": "32f6d943cb14ab49a04cee741a3e024dc456050994cee240bbbf208db4ea6ac8"
+      },
+      "retired_independent_canonical_count": 5,
+      "failure": null,
+      "target_reached": false,
+      "window_observations_not_unique_volume_attribution": {
+        "free_before": 33758597120,
+        "free_after": 34029367296,
+        "free_delta_not_uniquely_attributed": 270770176,
+        "allocation_before_for_retired_not_pure_volume_credit": 270794752,
+        "logical_bytes_retired_not_volume_credit": 875769578,
+        "stop_free_bytes": 34527510528
+      },
+      "originals": [
+        {
+          "result_row": 0,
+          "original": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0033\\delisting33-baseline01\\xar_checkpoint.ck3",
+            "bytes": 150151312,
+            "sha256": "40593d32a37c7225c6eaacefc9fec36cf8071a8d024382584f2643dd8204b1ca"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0033\\delisting33-baseline01\\ARCHIVE.actual.json",
+            "bytes": 7600,
+            "sha256": "b57383c085331efd95b73c07210ee342c5b1dbf035d88228917f750ae55c5ba7"
+          }
+        },
+        {
+          "result_row": 1,
+          "original": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0033\\delisting33-day4-01\\xar_checkpoint.ck3",
+            "bytes": 159422793,
+            "sha256": "5fee7ba56be582f91d80298931cd88de0430def5514a7ffefc48eca36c57a33a"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0033\\delisting33-day4-01\\ARCHIVE.actual.json",
+            "bytes": 7606,
+            "sha256": "e1a966bdef37311e7fffd2ff1f6c42932d58e7ee6dbeafc40f7f87b2a188bb38"
+          }
+        },
+        {
+          "result_row": 2,
+          "original": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-cold01\\cold-next-baseline01\\xar_checkpoint.ck3",
+            "bytes": 164315118,
+            "sha256": "def5ef61b87a8b134e79714938d2cc727e34755a0c375b9407b2d3981933e920"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-cold01\\cold-next-baseline01\\ARCHIVE.actual.json",
+            "bytes": 7529,
+            "sha256": "21d270a25850ff908f746ae82e74fd6e7d01c49a8f9e49ee917b7d03ed3907b9"
+          }
+        },
+        {
+          "result_row": 3,
+          "original": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-redemption-existing01\\redemption-existing01-terminal01\\xar_checkpoint.ck3",
+            "bytes": 195644413,
+            "sha256": "2e6483fa055f38034d3e7a998a27652dba97c2a7cdd2bdf281e7d93a1071e6f9"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-redemption-existing01\\redemption-existing01-terminal01\\ARCHIVE.actual.json",
+            "bytes": 7676,
+            "sha256": "08cc73ea4d34be199c78e0daf5a032721ce95d5959e65ce330b76cfdc3fa0d17"
+          }
+        },
+        {
+          "result_row": 4,
+          "original": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-independent-seed19\\seed19-baseline01\\xar_checkpoint.ck3",
+            "bytes": 206235942,
+            "sha256": "fa3cef9e258e476319b6ae76fb6f48ac61534cdf9b4754b71d4c89761aabd0bf"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-independent-seed19\\seed19-baseline01\\ARCHIVE.actual.json",
+            "bytes": 7591,
+            "sha256": "bc4f51ccd2cfb9320bf460d522c11bdada521accf527fc3f4eedd19f82a0e9ea"
+          }
+        }
+      ]
     }
   ],
   "operation_guard_provenance": "Original PLAN/Root review/APPLY and per-row before/after metadata record full SHA, exclusive-handle retirement and short CAS. This documentary author did not rerun those guards.",
@@ -1136,5 +1261,136 @@
     "payload_hash_or_read": 0,
     "delete_or_compress": 0,
     "formal_repository_write": 0
+  },
+  "subsequent_R78_maintenance": {
+    "private_aliases": {
+      "result": {
+        "path": "C:/workspace/ck3-market-task-20261118/closed-R78-six-alias-reclaim01/RESULT.actual.json",
+        "bytes": 11362,
+        "sha256": "09f544e35f7efe57bde4e0b6cef192d0ea0611630cd2c8a485d63de8993ccf7c"
+      },
+      "execution": {
+        "receipt": {
+          "path": "C:/workspace/ck3-market-live-20261118/operations/APPLY-R78-private602/ORIGINAL-WAIT.actual.json",
+          "bytes": 1368,
+          "sha256": "ab5ced355d5b893f7366a100e632b593c1ae3ddd9161470c5a6451a9e58d47ca"
+        },
+        "returncode": 0,
+        "elapsed_seconds": 12.672368800005643,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-R78-private602\\stdout.log",
+          "bytes": 270,
+          "sha256": "9480491924f06c87a9cce7fa34e4c3406771dc1b7d434c9b6a5312c06c889823"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-R78-private602\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "files_deleted": 6,
+      "logical_bytes_retired": 1423561148,
+      "all_external_archives_retained": true
+    },
+    "generated_cache": {
+      "result": {
+        "path": "C:/workspace/ck3-market-task-20261118/closed-R0078-cache-result01.actual.json",
+        "bytes": 4341694,
+        "sha256": "bb404e662f08ef01d14cc174953761898396a0429f595e087a2ab670e96680e7"
+      },
+      "execution": {
+        "receipt": {
+          "path": "C:/workspace/ck3-market-live-20261118/operations/APPLY-R78-shadercache02/ORIGINAL-WAIT.actual.json",
+          "bytes": 1791,
+          "sha256": "e2dadb27f29e0d2a206464a7f42b51c0880cc842f85bd343273c100f98d3522d"
+        },
+        "returncode": 0,
+        "elapsed_seconds": 51.856122800003504,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-R78-shadercache02\\stdout.log",
+          "bytes": 292,
+          "sha256": "3a0ececa5a7a441ff7b30a8e6d4f1d58372191f63fc77482384e8a37b68f458e"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-R78-shadercache02\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "files_deleted": 4352,
+      "logical_bytes_deleted": 193909657,
+      "unique_SAVE_deletions": 0
+    },
+    "R77_R78_canonical_NTFS_compaction": [
+      {
+        "result": {
+          "path": "C:/workspace/ck3-market-task-20261118/closed-R77-three-archive-compaction01/actual/COMPRESSION.actual.json",
+          "bytes": 9528,
+          "sha256": "c1aad01480172d95a17ab5a4b063530f4a398a28a3e2646b788b4e4fcdf9ba5b"
+        },
+        "returncode": 2,
+        "target_reached": false,
+        "SAVE_files_compacted": 3,
+        "all_logical_bytes_and_ID_mtime_birthtime_preserved": true,
+        "all_original_metadata_pins_unchanged": true,
+        "volume_free_before": 32767074304,
+        "volume_free_after": 33082597376,
+        "allocation_reduction_not_unique_volume_credit": 315625472
+      },
+      {
+        "result": {
+          "path": "C:/workspace/ck3-market-task-20261118/closed-R78-four-archive-compaction01/actual/COMPRESSION.actual.json",
+          "bytes": 11976,
+          "sha256": "33ca5c4076cbb863530a500db10afae150f4f6986660e54fbc5fa33ad5b29680"
+        },
+        "returncode": 2,
+        "target_reached": false,
+        "SAVE_files_compacted": 4,
+        "all_logical_bytes_and_ID_mtime_birthtime_preserved": true,
+        "all_original_metadata_pins_unchanged": true,
+        "volume_free_before": 33082408960,
+        "volume_free_after": 33740918784,
+        "allocation_reduction_not_unique_volume_credit": 658542592
+      }
+    ],
+    "new_grants_not_spent_refunds": [
+      {
+        "grant": {
+          "path": "C:/workspace/ck3-market-task-20261118/R78-maintenance-Root-admission01.actual.json",
+          "bytes": 8875,
+          "sha256": "124638b054483e4a8a2dd3f0f8e279482b8c9673894bb6d2ee331e09045a6abb"
+        },
+        "new_peak_bytes": 402653184,
+        "owner_ceiling_bytes": 386099203074,
+        "spent_or_unused_budget_refund": false
+      },
+      {
+        "grant": {
+          "path": "C:/workspace/ck3-market-task-20261118/risk-crisis-software-Root-admission01.actual.json",
+          "bytes": 1404,
+          "sha256": "973dd7ca1fdd73ae8925eea932477f9a666be38f2b55381ed4c58676dc557dad"
+        },
+        "new_peak_bytes": 268435456,
+        "owner_ceiling_bytes": 386367638530,
+        "spent_or_unused_budget_refund": false
+      },
+      {
+        "grant": {
+          "path": "C:/workspace/ck3-market-task-20261118/residual5-Root-admission01.actual.json",
+          "bytes": 2056,
+          "sha256": "95a7ea6fd66e6037ccf6ca1c1b1fbcda12b661f73bc6a3ef5e7ab4161202478f"
+        },
+        "new_peak_bytes": 67108864,
+        "owner_ceiling_bytes": 386434747394,
+        "spent_or_unused_budget_refund": false
+      }
+    ],
+    "latest_owner_ceiling_bytes": 386434747394,
+    "not_granted": [
+      "single attributed volume recovery total",
+      "spent refund",
+      "new Game scene admission",
+      "financial business PASS"
+    ]
   }
 }

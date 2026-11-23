@@ -60,3 +60,23 @@ xfm_futures_funding_amount_value = {
  if = { limit = { var:xfm_funding_rate < 0 } multiply = -1 }
  multiply = var:xfm_coin.var:xfm_index_cents multiply = var:xfm_lots floor = yes
 }
+
+# Prospective new fill scope. Original entry margin/fee formula is unchanged.
+# Equity is collateral plus the immediately owed variation at the real live asset mark.
+# Require the existing 60% maintenance, evaluated at that same mark; no free/gold/fund bailout.
+xfm_futures_open_long_equity_value = {
+ value = var:xfm_long_margin_cents
+ add = { value = var:xfm_coin.var:xfm_mark_cents subtract = var:xfm_mark_cents multiply = var:xfm_lots floor = yes }
+}
+xfm_futures_open_short_equity_value = {
+ value = var:xfm_short_margin_cents
+ subtract = { value = var:xfm_coin.var:xfm_mark_cents subtract = var:xfm_mark_cents multiply = var:xfm_lots floor = yes }
+}
+xfm_futures_open_long_maintenance_value = {
+ value = var:xfm_coin.var:xfm_mark_cents multiply = var:xfm_lots multiply = 0.6
+ divide = scope:xfm_fut_buy.var:xfm_leverage ceiling = yes
+}
+xfm_futures_open_short_maintenance_value = {
+ value = var:xfm_coin.var:xfm_mark_cents multiply = var:xfm_lots multiply = 0.6
+ divide = scope:xfm_fut_sell.var:xfm_leverage ceiling = yes
+}

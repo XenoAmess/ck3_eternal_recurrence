@@ -9,3 +9,17 @@
 另列的R77维护属于不同对象：6个已闭场profile别名副本删除原返回0，4168个生成shader文件删除原返回0；两项均不增加上述56份独立canonical的计数。R75 wallet source及R77 baseline、post-help、terminal四个canonical外部归档保留，具体原件pin在同一索引中。
 
 各操作的free before／after、原AllocationSize及逻辑退役字节分别保留，不合并宣称唯一卷收益。不据本记录退还历史spent，不授后继场准入、新保存日或金融业务通过。后继恢复须使用保留的实际基线，不能重试打开已退役路径。
+
+## 后继补记：另5份独立原件退役，累计61份
+
+residual5原APPLY返回 **2／5.1388321秒**，5份均已退役，`failure=null`、空间目标未达到；不能改成操作成功返回0或追认新场准入。以下五个原路径已不可读，原完整SHA、before／after及保留的ARCHIVE／Raw／Audit／Whole／日志索引见同一可用性JSON新增批次；前四批56条未改。
+
+- `C:/workspace/ck3-market-task-20261118/financial-physical-saves-R0033/delisting33-baseline01/xar_checkpoint.ck3`
+- `C:/workspace/ck3-market-task-20261118/financial-physical-saves-R0033/delisting33-day4-01/xar_checkpoint.ck3`
+- `C:/workspace/ck3-market-task-20261118/financial-physical-saves-cold01/cold-next-baseline01/xar_checkpoint.ck3`
+- `C:/workspace/ck3-market-task-20261118/financial-physical-saves-redemption-existing01/redemption-existing01-terminal01/xar_checkpoint.ck3`
+- `C:/workspace/ck3-market-task-20261118/financial-physical-saves-independent-seed19/seed19-baseline01/xar_checkpoint.ck3`
+
+另有R78六个profile别名副本和4352个生成cache文件实际删除原返回0；R77三份及R78四份canonical归档仅原地无损NTFS压缩，内容SHA、FileID、mtime／birthtime和原元数据pin保持，仍可读。两份压缩结果均原return2／targetfalse，未改写为目标达成。这些副本／cache与压缩不计入61份独立原件退役。
+
+本轮384MiB维护、256MiB软件及64MiB residual三项实际新准入保留，最新owner上限386434747394字节；历史spent／upper不退款。各操作free窗口及AllocationSize分别保留，不合计成唯一卷回收，也不以该维护记录授后继Game或业务资格。

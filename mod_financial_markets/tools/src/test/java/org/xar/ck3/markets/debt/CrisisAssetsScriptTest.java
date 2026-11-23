@@ -28,7 +28,8 @@ import org.xar.ck3.save.Clausewitz.Value;
  * Static positive random-list weights use explicit authored engine-RNG samples; no default draw.
  * Real context properties are fixture observations; missing fields/scopes never become zero.
  * All unknown commands fail. Test assets are fixtures, never written into a Game.
- * No death or news-dispatch primitive is supplied or executed by these software tests.
+ * Original twelve methods supply no death/news primitive. Three component methods opt in to
+ * explicit death/on_death-custody and news-call ports; they grant no actual engine or delivery credit.
  */
 final class CrisisAssetsScriptTest {
     private static final Path SOURCE = Path.of(System.getProperty("xfm.source", ".."));
@@ -298,6 +299,197 @@ final class CrisisAssetsScriptTest {
         }
     }
 
+    @Test void controlledTwentyBranchesExecuteOriginalGuardCustodyAndOutstandingRights() throws IOException {
+        for (int expected = 1; expected <= 20; expected++) {
+            Scene s = controlledContext(expected); installControlledBranches(s);
+            s.v.allowTerminalEnginePorts = true;
+            Node creditor = s.v.account("creditor", s.v.node("creditor-holder", "character"));
+            Node debt = s.v.claim("original-debt", creditor, 3000, creditor, 0);
+            debt.put("xfm_outstanding_cents", 3000); debt.put("xfm_original_cents", 3000);
+            debt.put("xfm_repaid_cents", 0); debt.put("xfm_written_off_cents", 0);
+            s.primary.list("xfm_debts").add(debt);
+            Node heir = s.v.node("known-heir", "character");
+            heir.put("monthly_character_income_minus_expenses", 0); // Actual character property, also read after custody on rejected reentry.
+            if (expected == 1 || expected == 10) s.actor.put("primary_heir", heir);
+            Map<String, Object> debtBefore = Map.copyOf(debt.vars), creditorBefore = Map.copyOf(creditor.vars);
+            s.v.run(String.format(java.util.Locale.ROOT, "xfmc20_attempt_%02d_effect", expected), s.primary);
+            assertFalse(s.actor.alive); assertEquals(1, s.v.deathCalls); assertEquals(1, s.v.newsCalls);
+            assertEquals(0, s.v.randomChoices, "Controlled branch execution grants no natural random-selection credit");
+            assertEquals(expected, s.primary.integer("xfm_news_scene"));
+            assertEquals(List.of("death-enter", "production-custody", "dead", "news-port"), s.v.terminalTrace);
+            assertSame(s.actor, s.primary.vars.get("xfm_news_actor"), "News retains the original actor after holder inheritance");
+            assertEquals(3, s.primary.integer("xfm_crisis_state")); assertEquals(1, s.primary.integer("xfm_crisis_terminal"));
+            assertEquals(3000, s.primary.integer("xfm_total_debt_cents")); assertEquals(4, debt.integer("xfm_state"));
+            Map<String, Object> after = new LinkedHashMap<>(debt.vars); after.remove("xfm_state");
+            assertEquals(debtBefore, after, "No claim principal, paid part or identity is rewritten");
+            assertEquals(creditorBefore, creditor.vars);
+            for (String asset : ASSETS) assertEquals(0, s.primary.integer(asset));
+            if (expected == 1 || expected == 10) {
+                assertSame(heir, s.primary.vars.get("xfm_holder")); assertEquals(1, s.primary.integer("xfm_inheritance_state"));
+                assertEquals(0, s.primary.integer("xfm_account_frozen")); assertTrue(heir.list("xfm_inherited_accounts").contains(s.primary));
+            } else {
+                assertSame(s.actor, s.primary.vars.get("xfm_holder")); assertEquals(2, s.primary.integer("xfm_inheritance_state"));
+                assertEquals(1, s.primary.integer("xfm_account_frozen"));
+            }
+            Map<String, Object> ended = Map.copyOf(s.primary.vars);
+            s.v.run(String.format(java.util.Locale.ROOT, "xfmc20_attempt_%02d_effect", expected), s.primary);
+            assertEquals(ended, s.primary.vars); assertEquals(1, s.v.deathCalls); assertEquals(1, s.v.newsCalls);
+        }
+    }
+
+    @Test void naturalTerminalKeepsOriginalWeightedSelectionAndProtectedControlledAttemptsNeverCommit() throws IOException {
+        Scene natural = controlledContext(10); natural.v.allowTerminalEnginePorts = true; natural.v.randomDraws.add(10);
+        natural.v.run("xfm_crisis_terminal_effect", natural.primary);
+        assertEquals(10, natural.primary.integer("xfm_news_scene")); assertEquals(1, natural.v.randomChoices);
+        assertEquals(1, natural.v.deathCalls); assertEquals(1, natural.v.newsCalls);
+        for (String defect : List.of("player", "child", "relief", "asset", "inherited", "missing", "different-context")) {
+            Scene s = controlledContext(1); installControlledBranches(s);
+            switch (defect) {
+                case "player" -> s.actor.ai = false;
+                case "child" -> s.actor.adult = false;
+                case "relief" -> s.primary.put("xfm_crisis_relief_until", 61);
+                case "asset" -> s.primary.put("xfm_free_cents", 1);
+                case "inherited" -> s.primary.put("xfm_inheritance_state", 1);
+                case "missing" -> s.primary.vars.remove("xfm_reserved_cents");
+                case "different-context" -> s.actor.vars.put("is_landed", false);
+                default -> throw new AssertionError(defect);
+            }
+            Map<String, Object> before = Map.copyOf(s.primary.vars);
+            s.v.run("xfmc20_attempt_01_effect", s.primary);
+            assertEquals(before, s.primary.vars, defect); assertTrue(s.actor.alive, defect);
+            assertEquals(0, s.v.deathCalls); assertEquals(0, s.v.newsCalls); assertTrue(s.v.sceneWrites.isEmpty());
+        }
+    }
+
+    @Test void sourceDerivedBranchComponentRejectsChangedShapeAndRetainsAllOriginalPredicateAST() throws IOException {
+        String source = Files.readString(SOURCE.resolve("common/scripted_effects/xfm_crisis_scenes.txt"));
+        var files = org.xar.ck3.markets.acceptance.CrisisSceneBranchFixture.render(source);
+        assertEquals(3, files.size());
+        Block original = Clausewitz.parse(source).block("xfm_crisis_select_scene_effect").block("random_list");
+        Block contexts = Clausewitz.parse(new String(files.get("common/scripted_triggers/xfmc20_contexts.txt"), java.nio.charset.StandardCharsets.UTF_8));
+        Block selectors = Clausewitz.parse(new String(files.get("common/scripted_effects/xfmc20_selectors.txt"), java.nio.charset.StandardCharsets.UTF_8));
+        for (int index = 0; index < 20; index++) {
+            Block branch = (Block) original.entries().get(index).value();
+            Block predicate = branch.named("trigger").isEmpty() ? new Block(List.of()) : branch.block("trigger");
+            String suffix = String.format(java.util.Locale.ROOT, "%02d", index + 1);
+            assertEquals(predicate, contexts.block("xfmc20_context_" + suffix + "_trigger"));
+            Block selected = selectors.block("xfmc20_select_" + suffix + "_effect");
+            assertEquals(without(branch, "trigger").entries(), selected.entries().subList(1, selected.entries().size()));
+        }
+        for (String invalid : List.of(source + "another_definition = { }", source.replaceFirst("10 =", "0 ="),
+                source.replace("name = xfm_news_scene value = 1 }", "name = unauthorized value = 1 }"),
+                source.replace("100 = {", "99 = {")))
+            assertThrows(IllegalArgumentException.class, () -> org.xar.ck3.markets.acceptance.CrisisSceneBranchFixture.render(invalid));
+    }
+
+    private static void installControlledBranches(Scene s) throws IOException {
+        var files = org.xar.ck3.markets.acceptance.CrisisSceneBranchFixture.render(Files.readString(SOURCE.resolve("common/scripted_effects/xfm_crisis_scenes.txt")));
+        for (byte[] bytes : files.values()) for (Entry entry : Clausewitz.parse(new String(bytes, java.nio.charset.StandardCharsets.UTF_8)).entries())
+            if (!(entry.value() instanceof Block block) || s.v.definitions.putIfAbsent(entry.key(), block) != null)
+                throw new IllegalArgumentException("invalid or duplicate controlled component");
+    }
+    private static Scene controlledContext(int scene) throws IOException {
+        Scene s = narrativeScene(); Node location = (Node) s.actor.vars.get("location");
+        switch (scene) {
+            case 1 -> s.actor.vars.put("is_landed", true);
+            case 2 -> location.vars.put("terrain", "plains");
+            case 3 -> location.vars.put("is_riverside_province", true);
+            case 4 -> location.vars.put("is_coastal", true);
+            case 5 -> location.vars.put("terrain", "taiga");
+            case 6 -> location.vars.put("terrain", "mountains");
+            case 7 -> location.vars.put("terrain", "forest");
+            case 8 -> location.vars.put("terrain", "desert");
+            case 9 -> s.actor.put("stewardship", 12);
+            case 10 -> { s.actor.vars.put("is_landed", true); s.actor.put("dynasty", s.v.node("dynasty", "dynasty")); }
+            case 11 -> s.actor.traits.add("gregarious");
+            case 12 -> s.actor.traits.add("shy");
+            case 13 -> s.actor.vars.put("is_knight", true);
+            case 14 -> s.actor.put("learning", 12);
+            case 15 -> s.actor.traits.add("devoted");
+            case 16 -> s.actor.vars.put("is_imprisoned", true);
+            case 17 -> { s.actor.vars.put("is_at_war", true); s.actor.put("martial", 8); }
+            case 18 -> s.actor.traits.add("lifestyle_blademaster");
+            case 19 -> s.actor.put("dynasty", s.v.node("dynasty", "dynasty"));
+            case 20 -> { }
+            default -> throw new IllegalArgumentException("scene");
+        }
+        return s;
+    }
+
+    @Test void emittedRegistryBinderUsesActualContextPrimaryAndBoundedExplicitIDs() throws IOException {
+        Scene s = controlledFixtureScene(); Node owner = s.v.rootActor;
+        s.v.run("xfmc20_bind_accounts_effect", owner);
+        assertEquals(27, owner.integer("xfmc20_bound_count"));
+        assertTrue(s.v.test(s.v.definition("xfmc20_bound_trigger"),new Frame(owner,null)));
+        assertSame(s.v.registry.getFirst(),owner.vars.get("xfmc20_s01"));
+        assertFalse(owner.vars.containsKey("xfmc20_seeded"));
+        assertEquals(0,s.v.deathCalls);assertEquals(0,s.v.newsCalls);
+        Scene missing = controlledFixtureScene();missing.v.registry.removeFirst();
+        missing.v.run("xfmc20_bind_accounts_effect",missing.v.rootActor);
+        assertEquals(26,missing.v.rootActor.integer("xfmc20_bound_count"));
+        assertFalse(missing.v.test(missing.v.definition("xfmc20_bound_trigger"),new Frame(missing.v.rootActor,null)));
+        Scene wrong = controlledFixtureScene();
+        Node first=wrong.v.registry.getFirst();first.refHolder().put("xfm_account",wrong.v.registry.get(1));
+        wrong.v.run("xfmc20_bind_accounts_effect",wrong.v.rootActor);
+        assertFalse(wrong.v.test(wrong.v.definition("xfmc20_bound_trigger"),new Frame(wrong.v.rootActor,null)));
+        Scene context = controlledFixtureScene();context.v.registry.get(10).refHolder().traits.remove("gregarious");
+        context.v.run("xfmc20_bind_accounts_effect",context.v.rootActor);
+        assertFalse(context.v.test(context.v.definition("xfmc20_bound_trigger"),new Frame(context.v.rootActor,null)));
+    }
+
+    @Test void emittedOneShotDispatchAndReentryRunSharedTerminalAndKeepSixProtectedControlsAlive() throws IOException {
+        Scene s=controlledFixtureScene();Node owner=s.v.rootActor;s.v.allowTerminalEnginePorts=true;
+        s.v.run("xfmc20_bind_accounts_effect",owner);
+        owner.put("xfmc20_seeded",1);owner.put("xfmc20_seed_day",60);
+        // Authored observed paid/consented state for dispatcher gating only. No finance API is ported.
+        // Actual transfers/seed cover are covered by their existing real-AST tests and require engine readback.
+        Node payer=(Node)owner.vars.get("xfmc20_player");
+        Node aid=(Node)owner.vars.get("xfmc20_aid"),restructure=(Node)owner.vars.get("xfmc20_restructure");
+        aid.put("xfm_crisis_relief_until",90);restructure.put("xfm_crisis_relief_until",90);
+        Node aidClaim=s.v.node("observed-aid-input","xfm_debt_claim");aidClaim.put("xfm_repaid_cents",1000);aidClaim.put("xfm_request_payer",payer);
+        Node consent=s.v.node("observed-consent-input","xfm_debt_claim");consent.put("xfm_creditor_haircut_done",1);consent.put("xfm_extension_granted",1);consent.put("xfm_written_off_cents",100);consent.put("xfm_creditor_account",payer);
+        owner.put("xfmc20_aid_claim",aidClaim);owner.put("xfmc20_restructure_claim",consent);
+        for(int i=0;i<20;i++)s.v.registry.get(i).put("xfm_total_debt_cents",3000);
+        List<List<Object>> cash=s.v.registry.stream().map(n->List.of(n.vars.get("xfm_free_cents"),n.vars.get("xfm_reserved_cents"))).toList();
+        s.v.run("xfmc20_execute_effect",owner);
+        assertEquals(20,s.v.deathCalls);assertEquals(20,s.v.newsCalls);assertEquals(1,owner.integer("xfmc20_dispatch_attempted"));
+        for(String role:List.of("player","child","estate","asset","aid","restructure")) {
+            Node account=(Node)owner.vars.get("xfmc20_"+role);assertTrue(account.refHolder().alive,role);
+            assertEquals(1,account.integer("xfmc20_rejected_call_recorded"),role);
+        }
+        s.v.run("xfmc20_execute_effect",owner);s.v.run("xfmc20_retry_effect",owner);s.v.run("xfmc20_retry_effect",owner);
+        assertEquals(20,s.v.deathCalls);assertEquals(20,s.v.newsCalls);assertEquals(1,owner.integer("xfmc20_retry_attempted"));
+        assertEquals(cash,s.v.registry.stream().map(n->List.of(n.vars.get("xfm_free_cents"),n.vars.get("xfm_reserved_cents"))).toList());
+    }
+
+    private static Scene controlledFixtureScene() throws IOException {
+        Scene s=scene();s.v.registry.clear();
+        for(int i=1;i<=20;i++) {
+            Scene context=controlledContext(i);context.primary.put("xfm_account_id",i);context.primary.vars.remove("xfm_total_debt_cents");
+            s.v.registry.add(context.primary);
+        }
+        Node owner=s.v.node("controlled-owner","character");owner.ai=false;
+        owner.put("gold",0);owner.put("stress_level",3);owner.put("monthly_character_income_minus_expenses",0);
+        s.v.rootActor=owner;s.v.controlledOwner=owner;owner.put("xfmc20_bound_count",0);
+        for(int i=21;i<=27;i++) {
+            Node actor=i==21?owner:s.v.node("control-"+i,"character");
+            actor.put("gold",0);actor.put("stress_level",3);actor.put("monthly_character_income_minus_expenses",0);
+            Node account=s.v.account("control-account-"+i,actor);account.put("xfm_account_id",i);actor.put("xfm_account",account);
+            if(i==23)actor.adult=false;if(i==24)account.put("xfm_inheritance_state",1);if(i==25)account.put("xfm_free_cents",1);
+            s.v.registry.add(account);
+        }
+        List<org.xar.ck3.markets.acceptance.FollowupContracts.CrisisSceneRole> roles=new ArrayList<>();
+        for(int i=1;i<=20;i++)roles.add(new org.xar.ck3.markets.acceptance.FollowupContracts.CrisisSceneRole(i,Integer.toString(i)));
+        var request=new org.xar.ck3.markets.acceptance.FollowupContracts.ControlledCrisis20Request(3,"crisis-scenes20-engine-fixture",true,"21","22",roles,
+                new org.xar.ck3.markets.acceptance.FollowupContracts.CrisisControls("23","24","25","26","27"));
+        var files=org.xar.ck3.markets.acceptance.ControlledCrisis20Fixture.render(request,Files.readString(SOURCE.resolve("common/scripted_effects/xfm_crisis_scenes.txt")));
+        for(var file:files.entrySet())if(file.getKey().startsWith("common/")) {
+            for(Entry entry:Clausewitz.parse(new String(file.getValue(),java.nio.charset.StandardCharsets.UTF_8)).entries())
+                if(!(entry.value() instanceof Block block)||s.v.definitions.putIfAbsent(entry.key(),block)!=null)throw new IllegalArgumentException("duplicate fixture definition");
+        }
+        return s;
+    }
+
     private static Scene narrativeScene() throws IOException {
         Scene s = scene();
         for (String property : List.of("is_landed", "is_knight", "is_at_war", "is_imprisoned")) s.actor.vars.put(property, false);
@@ -338,6 +530,7 @@ final class CrisisAssetsScriptTest {
         void put(String key, long value) { vars.put(key, BigDecimal.valueOf(value)); }
         void put(String key, Node value) { vars.put(key, value); }
         long integer(String key) { return ((BigDecimal)vars.get(key)).longValueExact(); }
+        Node refHolder() { return (Node) vars.get("xfm_holder"); }
         List<Node> list(String key) { return lists.computeIfAbsent(key, ignored -> new ArrayList<>()); }
     }
     private record Frame(Node here, Node previous) { Frame enter(Node n) { return new Frame(n, here); } }
@@ -347,7 +540,12 @@ final class CrisisAssetsScriptTest {
     private static final class Vm {
         final Map<String, Block> definitions; final Map<String, Node> scopes = new HashMap<>();
         final Map<String, List<Node>> temporary = new HashMap<>(); final Node exchange;
+        Node rootActor, controlledOwner; final List<Node> registry=new ArrayList<>();
         boolean rule = true; int accountSequence;
+        // Opt-in engine primitive ports for the three new component tests only.
+        // They do not implement CK3 succession, real death, journal allocation or delivery.
+        boolean allowTerminalEnginePorts; int deathCalls, newsCalls;
+        final List<String> terminalTrace = new ArrayList<>();
         final ArrayDeque<Integer> randomDraws = new ArrayDeque<>();
         final List<Long> sceneWrites = new ArrayList<>(); int randomChoices;
         Vm(Map<String, Block> definitions) { this.definitions = definitions; exchange = node("exchange", "xfm_finance_exchange"); exchange.put("xfm_day", 60); }
@@ -368,6 +566,8 @@ final class CrisisAssetsScriptTest {
         Object resolve(String token, Frame f) {
             try { return new BigDecimal(token); } catch (NumberFormatException ignored) { }
             int dot = token.indexOf('.'); if (dot > 0) { Object base = resolve(token.substring(0, dot), f); return base instanceof Node n ? resolve(token.substring(dot + 1), f.enter(n)) : null; }
+            if (token.equals("root")) return rootActor;
+            if (token.equals("global_var:xfmc20_owner")) return controlledOwner;
             if (token.equals("this")) return f.here(); if (token.equals("prev")) return f.previous();
             if (Set.of("primary_heir", "location", "dynasty").contains(token)) return f.here().vars.get(token);
             if (token.equals("global_var:xfm_exchange")) return exchange;
@@ -456,6 +656,40 @@ final class CrisisAssetsScriptTest {
             boolean chain = false;
             for (Entry e : b.entries()) {
                 String k = e.key();
+                if (allowTerminalEnginePorts && k.equals("death")) {
+                    assertEquals("death_suicide", atom(field((Block) e.value(), "death_reason")));
+                    terminalTrace.add("death-enter"); deathCalls++;
+                    // The documented engine hook is ABOUT TO die; execute actual custody while alive.
+                    execute(definition("xfm_finance_holder_death_effect"), f); terminalTrace.add("production-custody");
+                    f.here().alive = false; terminalTrace.add("dead"); continue;
+                }
+                if (allowTerminalEnginePorts && k.equals("xfm_news_record_effect")) {
+                    newsCalls++; terminalTrace.add("news-port"); continue;
+                }
+                if (definitions.containsKey(k) && k.endsWith("_effect")) {
+                    String body = definition(k).render();
+                    if (e.value() instanceof Block parameters) {
+                        for (Entry parameter : parameters.entries()) {
+                            String value = atom(parameter.value());
+                            if (!parameter.operator().equals("=") || !parameter.key().matches("[A-Z_]+")
+                                    || !value.matches("[a-z][a-z0-9_]*")) throw new IllegalArgumentException("closed effect parameter");
+                            body = body.replace("$" + parameter.key() + "$", value);
+                        }
+                    } else if (!atom(e.value()).equals("yes")) throw new IllegalArgumentException("effect yes or parameters required");
+                    if (body.contains("$")) throw new IllegalArgumentException("unbound effect parameter");
+                    execute(Clausewitz.parse("body = " + body).block("body"), f); continue;
+                }
+                if (k.equals("every_in_global_list")) {
+                    Block c=(Block)e.value();
+                    if(!atom(field(c,"variable")).equals("xfm_account_registry"))throw new IllegalArgumentException("unsupported global list");
+                    for(Node n:List.copyOf(registry))if(c.named("limit").isEmpty()||test(c.block("limit"),f.enter(n)))execute(without(c,"variable","limit"),f.enter(n));
+                    continue;
+                }
+                if(k.equals("change_variable")) {
+                    Block c=(Block)e.value();String name=atom(field(c,"name"));
+                    f.here().vars.put(name,number(f.here().vars.get(name)).add(number(evaluate(field(c,"add"),f))));continue;
+                }
+                if(k.equals("debug_log")) { atom(e.value());continue; }
                 if (k.equals("random_list")) { randomList((Block) e.value(), f); continue; }
                 if (k.equals("if")) { Block c = (Block)e.value(); chain = test(c.block("limit"), f); if (chain) execute(without(c, "limit"), f); continue; }
                 if (k.equals("else")) { if (!chain) execute((Block)e.value(), f); chain = false; continue; }
