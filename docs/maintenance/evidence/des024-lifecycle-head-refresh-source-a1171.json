@@ -1,0 +1,75 @@
+{
+  "schema": "xar.des024.lifecycle-head-refresh.exact-source-adoption.v1",
+  "at_utc": "2026-11-23T09:02:47.573251+00:00",
+  "scope": "Only actual matched death/old-Rite departure may request scoped refresh. Once callback consumes request first, keeps queue through official effect and actual re-read, refreshes only absent valid own-living head; actual House/Dynast mismatch stays pending. No ordinary title request or self-renewing loop.",
+  "Source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des024-lifecycle-head-refresh-source-a1171\\delivery-final.json",
+    "bytes": 2087,
+    "sha256": "4a5f2183ef973b7656dfdd0a7288ff155758c34a3966bc9ca4fab35878a0a383"
+  },
+  "source_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des024-lifecycle-head-refresh-source-a1171\\source-manifest.json",
+    "bytes": 3324,
+    "sha256": "3bce81dca89a16329b249d4dbf28ad0dbe5edd3c47c3910f82ac01f07d71c0b5"
+  },
+  "actual_new5_software": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des024-leadership-refresh-test-source-a01\\delivery-final.json",
+    "bytes": 1374,
+    "sha256": "cf82848a77e7b3972f6afb030fc4c79ec712802d24879a0679ccba742b01c5a8"
+  },
+  "exact_test_delta": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des024-leadership-refresh-test-source-a01\\actual-a01\\test-leadership.exact-edits.json",
+    "bytes": 7441,
+    "sha256": "abb0a246202027e3f133f5531de3c33330cbad12c540704c73507158e62943e2"
+  },
+  "actual_before_9day_RED": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des024-leadership-regression-current267-profile-a1140\\readback-a1166\\actual-nested-witnesses-a1170.json",
+    "bytes": 5644,
+    "sha256": "321ea5ae873b577dcef9a1461fe50d217a5a27701b3fe88177f62e8e3cdb3b73"
+  },
+  "strict_loader_four_blocks": [
+    {
+      "definition": "des_new_game_initialize",
+      "AST_equal_qualified_a1147": true,
+      "ast_sha256": "d59904ec61afcd2780866e716afa287ed20beb863dd37ca4ac4f399834f2031b"
+    },
+    {
+      "definition": "des_initialize_loaded_game_effect",
+      "AST_equal_qualified_a1147": true,
+      "ast_sha256": "508d4e0081fc88f03d878fb11e0a25678d44cc0127f20d4c8d27e7c71a427a44"
+    },
+    {
+      "definition": "des_saved_game_initialize_gui",
+      "AST_equal_qualified_a1147": true,
+      "ast_sha256": "fecbee6f1d75f99de2a6245889ec61f8c38f68905739f0fda2f074aa6345a790"
+    },
+    {
+      "definition": "des_reconcile_loaded_leadership_024_effect",
+      "AST_equal_qualified_a1147": true,
+      "ast_sha256": "e3fc5f238340b42548838513bd4b95d9f436fef9e9bc79151205fcde3f19320d"
+    }
+  ],
+  "new_Maven_or_Tools23_rerun": false,
+  "product_version": "0.2.4",
+  "new_runtime_files": 0,
+  "runtime_total": 71,
+  "new_engine_or_Save_credit": false,
+  "old_frozen_candidate_or_failure_overwritten": false,
+  "targets": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\scripted_effects\\des_leadership_effects.txt",
+      "bytes": 13134,
+      "sha256": "3552ec61fc44b754331b87ae881340978bdfd19a5bb24f9b7e3b40d44ceda3fc"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_dynastic_esotericism\\common\\on_action\\des_on_actions.txt",
+      "bytes": 12508,
+      "sha256": "e011cd15b9e1b16539640bab4f2242f1256822633e9558b2da571c0c9a991e6c"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_des_religious_house_leadership.py",
+      "bytes": 36774,
+      "sha256": "5ec046289fa93afdcbbfeff6a111131f6802f9f315802a9bb22bba79e46598f4"
+    }
+  ]
+}

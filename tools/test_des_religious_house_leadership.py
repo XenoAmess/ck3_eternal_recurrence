@@ -38,6 +38,7 @@ class LeadershipPolicy(b.Policy):
         self.head_writes=[];self.boundaries=[];self.events=[];self.stats=Counter();self.calls=Counter()
         self.after_adoption=None;self.before_head_set=None;self.after_head_set_observation=None
         self.suppress_head_set=False
+        self.refresh_witnesses=[];self.force_refresh_observation=None
     def ref(self,text,current,prev=None):
         if text.startswith('flag:'):return sys.intern(text)
         if text.startswith('rite:'):return self.fixed_rites.get(text[5:])
@@ -138,6 +139,10 @@ class LeadershipPolicy(b.Policy):
                 # Independent TEST observation only, never a default setter side
                 # effect. Real engine Dynast recomputation remains unqualified.
                 if self.after_head_set_observation:self.after_head_set_observation(current,target)
+            elif key=='force_refresh_head_of_rite':
+                # Explicit engine boundary: requests do not invent a head.
+                self.refresh_witnesses.append(current)
+                if self.force_refresh_observation:self.force_refresh_observation(current)
             elif key=='trigger_event':self.events.append((current,b.body(value,'on_action'),b.body(value,'days')))
             elif key=='des_snapshot_relationships_effect':
                 # Explicit existing relationship boundary, using this fixture's
@@ -368,5 +373,95 @@ class ReligiousHouseLeadershipTest(unittest.TestCase):
         self.assertTrue(h.house_head is head and d.dynast is old)
         self.assertIn('des_house_leadership_pending',r.variables)
         self.assertNotIn('des_last_religious_house_head',r.variables);self.assertNotIn('des_last_religious_dynast',r.variables)
+
+    def _lost_lifecycle_head_for_refresh_test(self, cause):
+        d,r,h,c,head,ai,p,old=world()
+        h.house_head=d.dynast=head;head.house=h
+        r.variables.update(des_last_observed_religious_head=head,des_last_religious_house_head=head,des_last_religious_dynast=head)
+        policy=LeadershipPolicy()
+        if cause=='death':
+            policy.action('des_on_death',head)
+            head.alive=False
+        elif cause=='departure':
+            other=b.Obj('rite','departed to ordinary rite',doctrines={'des_doctrine_none'});other.faith=b.Obj('faith','new ordinary faith');other.head_of_rite=None
+            head.rite=other;head.faith=other.faith;policy.scopes['old_rite']=r
+            policy.action('des_on_rite_change',head)
+        else:raise ValueError('No caller-invented lifecycle cause')
+        # Independent engine observation after the lifecycle input, before its
+        # delayed callback. The script does not invent a successor here.
+        r.head_of_rite=None
+        return d,r,h,c,head,ai,p,old,policy
+
+    def test_matched_missing_lifecycle_head_refreshes_once_then_reads_actual_successor(self):
+        for cause in ('death','departure'):
+            with self.subTest(cause=cause):
+                d,r,h,c,head,ai,p,successor,policy=self._lost_lifecycle_head_for_refresh_test(cause)
+                self.assertEqual([],policy.refresh_witnesses)
+                policy.force_refresh_observation=lambda rite:setattr(rite,'head_of_rite',successor)
+                observe_both(policy,d)
+                policy.action('des_local_house_leadership_recheck',r)
+                self.assertEqual([r],policy.refresh_witnesses)
+                self.assertTrue(r.head_of_rite is successor and h.house_head is successor and d.dynast is successor)
+                self.assertNotIn('des_house_leadership_pending',r.variables)
+                self.assertEqual(1,len(policy.events));self.assertNotIn('des_leadership_recheck_queued',r.variables)
+
+    def test_valid_owned_living_successor_never_refreshes_or_changes_the_election(self):
+        for cause in ('death','departure'):
+            with self.subTest(cause=cause):
+                d,r,h,c,head,ai,p,successor,policy=self._lost_lifecycle_head_for_refresh_test(cause)
+                r.head_of_rite=successor
+                def forbidden(rite):raise AssertionError('Valid own living successor must not be re-elected')
+                policy.force_refresh_observation=forbidden;observe_both(policy,d)
+                policy.action('des_local_house_leadership_recheck',r)
+                self.assertEqual([],policy.refresh_witnesses)
+                self.assertTrue(r.head_of_rite is successor and h.house_head is successor and d.dynast is successor)
+
+    def test_ordinary_title_and_unmatched_lifecycle_never_authorize_a_head_refresh(self):
+        for cause in ('title','nonleader-death','nonleader-departure'):
+            with self.subTest(cause=cause):
+                d,r,h,c,head,ai,p,old=world();r.head_of_rite=None
+                policy=LeadershipPolicy()
+                if cause=='title':
+                    policy.scopes['title']=b.Obj('title','ordinary secular title')
+                    policy.action('des_on_religious_head_title_gain',ai)
+                elif cause=='nonleader-death':policy.action('des_on_death',ai)
+                else:
+                    other=b.Obj('rite','unbound destination',doctrines={'des_doctrine_none'});other.faith=b.Obj('faith','other faith');other.head_of_rite=None
+                    ai.rite=other;ai.faith=other.faith;policy.scopes['old_rite']=r
+                    policy.action('des_on_rite_change',ai)
+                policy.action('des_local_house_leadership_recheck',r)
+                self.assertEqual([],policy.refresh_witnesses)
+                self.assertIsNone(r.head_of_rite);self.assertEqual([],policy.head_writes)
+
+    def test_lifecycle_refresh_intent_deduplicates_and_callback_cannot_self_renew(self):
+        d,r,h,c,head,ai,p,old,policy=self._lost_lifecycle_head_for_refresh_test('death')
+        for _ in range(4):policy.run('des_queue_matching_religious_head_recheck_effect',r)
+        self.assertEqual(1,len(policy.events))
+        policy.action('des_local_house_leadership_recheck',r)
+        policy.action('des_local_house_leadership_recheck',r)
+        self.assertEqual([r],policy.refresh_witnesses)
+        self.assertEqual(1,len(policy.events));self.assertNotIn('des_leadership_recheck_queued',r.variables)
+        self.assertIn('des_house_leadership_pending',r.variables)
+
+    def test_failed_or_foreign_refresh_never_claims_dual_position_success(self):
+        for observed in ('none','dead','foreign-rite','foreign-faith','own-but-dynast-unconfirmed'):
+            with self.subTest(observed=observed):
+                d,r,h,c,head,ai,p,successor,policy=self._lost_lifecycle_head_for_refresh_test('death')
+                if observed!='none':
+                    if observed=='dead':successor.alive=False
+                    elif observed=='foreign-rite':successor.rite=b.Obj('rite','shared foreign Pope rite')
+                    elif observed=='foreign-faith':successor.faith=b.Obj('faith','shared foreign Pope faith')
+                    policy.force_refresh_observation=lambda rite:setattr(rite,'head_of_rite',successor)
+                # No independent Dynast observation is installed. A house-head
+                # setter or refresh request alone never proves the second field.
+                policy.action('des_local_house_leadership_recheck',r)
+                self.assertEqual([r],policy.refresh_witnesses)
+                self.assertTrue(d.dynast is head);self.assertIn('des_house_leadership_pending',r.variables)
+                self.assertTrue(r.variables['des_last_religious_house_head'] is head)
+                self.assertTrue(r.variables['des_last_religious_dynast'] is head)
+                if observed=='own-but-dynast-unconfirmed':self.assertTrue(h.house_head is successor)
+                else:self.assertEqual([],policy.head_writes)
+                self.assertEqual(1,len(policy.events));self.assertNotIn('des_leadership_recheck_queued',r.variables)
+
 
 if __name__=='__main__':unittest.main()

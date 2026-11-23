@@ -205,28 +205,28 @@ des_queue_matching_religious_head_recheck_effect = {
         limit = { exists = head_of_rite }
         if = {
             limit = { head_of_rite = scope:des_leadership_changed_head }
-            des_queue_house_leadership_recheck_effect = yes
+            des_request_lifecycle_head_refresh_effect = yes
         }
     }
     if = {
         limit = { exists = var:des_last_observed_religious_head }
         if = {
             limit = { var:des_last_observed_religious_head = scope:des_leadership_changed_head }
-            des_queue_house_leadership_recheck_effect = yes
+            des_request_lifecycle_head_refresh_effect = yes
         }
     }
     if = {
         limit = { exists = var:des_last_religious_house_head }
         if = {
             limit = { var:des_last_religious_house_head = scope:des_leadership_changed_head }
-            des_queue_house_leadership_recheck_effect = yes
+            des_request_lifecycle_head_refresh_effect = yes
         }
     }
     if = {
         limit = { exists = var:des_last_religious_dynast }
         if = {
             limit = { var:des_last_religious_dynast = scope:des_leadership_changed_head }
-            des_queue_house_leadership_recheck_effect = yes
+            des_request_lifecycle_head_refresh_effect = yes
         }
     }
 }
@@ -255,5 +255,18 @@ des_queue_religious_head_death_recheck_effect = {
     if = {
         limit = { exists = rite }
         rite = { des_queue_matching_religious_head_recheck_effect = yes }
+    }
+}
+
+
+# Rite scope. Only a current/recorded head matched by the real death or old-Rite
+# departure routes may request this. An ordinary title/head recheck never does.
+des_request_lifecycle_head_refresh_effect = {
+    if = {
+        limit = { des_created_dynasty_leadership_target_trigger = yes }
+        # Upgrade an already queued one-shot if the two lifecycle inputs collide.
+        # This marker requests a conditional election; it is not a success flag.
+        set_variable = { name = des_leadership_refresh_requested value = yes }
+        des_queue_house_leadership_recheck_effect = yes
     }
 }

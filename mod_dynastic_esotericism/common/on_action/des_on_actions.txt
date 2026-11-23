@@ -326,6 +326,23 @@ des_local_house_leadership_recheck = {
     effect = {
         if = {
             limit = { has_global_variable = des_initialized has_variable = des_leadership_recheck_queued }
+            if = {
+                limit = { has_variable = des_leadership_refresh_requested }
+                # Consume before the official election can trigger callbacks.
+                # Keep queued until the end so this callback cannot renew itself.
+                remove_variable = des_leadership_refresh_requested
+                if = {
+                    limit = {
+                        des_created_dynasty_leadership_target_trigger = yes
+                        NOT = { des_has_own_living_religious_head_trigger = yes }
+                    }
+                    # Current stock: force-recalculate the best Head of this Rite.
+                    # Existing valid successors are never reselected here.
+                    force_refresh_head_of_rite = yes
+                }
+            }
+            # Re-read the actual getter after refresh. A still-missing head or
+            # either wrong House/Dynast field remains pending, never inferred P.
             des_sync_created_dynasty_leadership_effect = yes
             remove_variable = des_leadership_recheck_queued
         }
