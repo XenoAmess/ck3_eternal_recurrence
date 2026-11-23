@@ -1,0 +1,156 @@
+{
+  "schema": "xar.current267.rmtm-title-query.actual-frozen-pair-index.v1",
+  "at_utc": "2026-11-23T15:03:15.761515+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status": "SOFTWARE32_AND_NEW_NATIVE_PAIR_READY_LIVE_NOT_RUN",
+  "actual_frozen_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-title-query-build-a1290\\frozen-delivery-final.json",
+    "bytes": 6356,
+    "sha256": "ec8959b5c7629ef550c561c32974afb18d1d0e92bb1f98f914275190b7401949"
+  },
+  "actual_six_pins": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-title-query-build-a1290\\actual-six-pins.json",
+    "bytes": 1534,
+    "sha256": "0f603fd2b0b77fc7d5dfef5d6a9291043c14b32572773b641193c288e4b8aacd"
+  },
+  "operator_templates": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-title-query-build-a1290\\operator-templates.json",
+    "bytes": 4094,
+    "sha256": "f1ceb47594096097c6369238f8c82beeb41d109c073fe762954c2ea62fee8f2f"
+  },
+  "configuration_schema": "xar.native-owner-snapshot-config/v46",
+  "mode": "current_rmtm_primary_title_query",
+  "template_JSON_pointer": "/rmtm_primary_title_query_config",
+  "strict_common6_no_caller_Title_phase_or_CCCepoch": true,
+  "submissions": 2,
+  "Saved_owner_gate_retained": true,
+  "actual_Java_qualification": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-title-query-build-a1290\\affected-qualification.json",
+    "bytes": 9476,
+    "sha256": "da4f1dcdbfff5a75b3bfc08bde4c3d39a53ba73ba002c195ca66574111b3ba07"
+  },
+  "actual_distinct_methods": 32,
+  "qualification_composition": {
+    "DATA": 10,
+    "original_CppProducer": 6,
+    "private_Transport": 8,
+    "Main": 8
+  },
+  "qualification_not_all32_repeated_together": true,
+  "original_Cpp10_and_actual_Java709B_inverse0": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rmtm-title-query-production-a01\\actual-java-query-inverse-final.json",
+    "bytes": 5598,
+    "sha256": "9b2f52298d87366f7f0ce7b630c4135bc377b94e92e371b22767ed4197fb806e"
+  },
+  "actual_Native_NoGame9_END": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\rmtm-current267-title-query-nogame-a01\\delivery-final.json",
+    "bytes": 2041,
+    "sha256": "cc17e117cbb9f8af329dc23700ca58be4d47abc7058871a454de174fc483a41d"
+  },
+  "actual_Native_production": {
+    "delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rmtm-title-query-production-a01\\frozen-delivery-final.json",
+      "bytes": 2677,
+      "sha256": "1f83b2573d7c5172dc579ec98e3500b30e0dd8b3e92872054c39d012a56110ef"
+    },
+    "refs": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rmtm-title-query-production-a01\\ordinary-native-artifact-refs.json",
+      "bytes": 13494,
+      "sha256": "13b17f97e0aff6d74bc516b8f768cb7888efe4801dbfe1b5109c3a7707aa27a1"
+    },
+    "NativeTree": "2bfa022f0d7588ba1e310e96d81cb809623cda63",
+    "actual_BEGIN_HEAD": "927ec3d6cf019cb3d5bb1bd8c952245a604fa237",
+    "total_TUs": 939,
+    "actual_CL": 12,
+    "actual_reuse": 927,
+    "identity_and_registration_verified": true,
+    "original_selector_COFF_script_false_rejection": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rmtm-title-query-production-a01\\delivery-qualification-first-failure-a01.json",
+      "bytes": 774,
+      "sha256": "632ba1414b9b1328e838869df29190eea193956e2996ebe273e25682bcbba365"
+    },
+    "narrow_verifier_only_fix_no_CPP_or_DLL_change": true
+  },
+  "actual_Java_source_normal_push": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-title-query-build-a1290\\source-normal-push-final-a02.json",
+    "bytes": 964,
+    "sha256": "17ee3d14cdb7ae721e9549e3e970fd43d149986c9c3cb025211e0c868bbe7ec3"
+  },
+  "Java_software_source_HEAD": "39cf96f1bff2c5fe2a4b6006f0afd2086c47604d",
+  "actual_package": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-title-query-build-a1290\\validation\\package-result.json",
+    "bytes": 878,
+    "sha256": "e5c7a3a84b5c20abfa58cac600683f01951d011f8f424475ee779d70158309b2"
+  },
+  "actual_runtime": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-title-query-build-a1290\\java-runtime-ready-before-native.json",
+    "bytes": 1308,
+    "sha256": "b0fceb6dc9f3792129cc10a866869c79e9e297d96089ee58349b5a27d49ff997"
+  },
+  "actual_new_JAR_count": 2,
+  "actual_new_JAR_allocation_bytes": 19009536,
+  "actual_old_JAR_identity_reuse_no_copy": 156,
+  "all_phases_END": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-title-query-build-a1290\\all-phases-END.json",
+    "bytes": 1647,
+    "sha256": "8d9b02f4af3f70423e9d39cea1bc6c6fe888637adc908d74f1a9bef5c407aad0"
+  },
+  "remaining_future_each_and_total": 0,
+  "old_spent_held_not_refunded": true,
+  "prior_three_test_failures_and_guard_refusal": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-title-query-build-a1290\\validation\\first32-result.json",
+      "bytes": 7225,
+      "sha256": "124edf32226d87f3252fdbd6bcd03c81dc64829e3291876aa71c80153eed46f3"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-title-query-build-a1290\\validation\\first32-a02-result.json",
+      "bytes": 7226,
+      "sha256": "787a364c51ea03ef4b7701b201f436934a8372330484f480027e6e73ca0a0613"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-title-query-build-a1290\\validation\\affected16-a03-result.json",
+      "bytes": 7042,
+      "sha256": "054fd8115032b8078b48c372d72192245a4a0019bbf14c3d41a228828445512d"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-title-query-build-a1290\\validation\\affected9-a04-preBEGIN-capacity-refusal.json",
+      "bytes": 576,
+      "sha256": "e73144f5712d46481a2a0d673c69253aae6b058700887dc2afacda7a977bd80b"
+    }
+  ],
+  "test_failure_scope": "Checked IOException declaration and lowercase own fixture machine label; then correction of an invented identical-freshCore invalidation assumption. Original informative DATA survives to deadline, newer private Title query replaces it. Production Java/public contract unchanged for all failures.",
+  "old_F644_54a1_and_all_old_Frozen_unchanged": true,
+  "source_nonFF_and_merge_rule_refusals_preserved_normal_linear_rebase": true,
+  "Root_AUB_closed_cache_retirement": {
+    "Root_actual_result_ref": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\AUB-closed-cache-duplicate-reclamation-a1293\\actual-result.json",
+      "bytes": 1889119,
+      "sha256": "c188a5540d3867cc13bf2e36e13873ae56cb4458008b770479a93a15f587f0f2"
+    },
+    "Root_review": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\same-quota-AUB-cleaned-DJC-XQOL-clean32-review-a1294.json",
+      "bytes": 35995,
+      "sha256": "6dc666dc893aae2a1328635b17cfe5906f28bad9593be2ded604f8ccecf25c0b"
+    },
+    "Root_actual_deleted_files": 4153,
+    "Root_actual_allocated_retired_bytes": 203529616,
+    "Root_metadata_allocation_held_bytes": 12230752,
+    "logs_original_f488_and940master_preserved": true,
+    "DJC_XQOL_inventory_not_claimed_as_deleted": true,
+    "this_docs_unit_did_not_execute_or_read_large_cleanup_inventory": true
+  },
+  "next_product36_quote_only": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-title-query-build-a1290\\next-product36-candidate8-quote.NOT-ADMITTED.json",
+    "bytes": 9614,
+    "sha256": "6fa7af8ca4ced08287d8cce7bcacac2551fdd79780e95a925bd877201bc28a76"
+  },
+  "scope": "Fixed readonly actual played actor primary Title; Native privately captures full TitleID then independently double-samples complete physical ordered own-laws/holder/current engine heir. No callerTitleID, phase, role, law selector, lease or CCC epoch. UInt32 generation bits/zero and signed int32 dates retained. Known EMPTY is DATA, SourceNull unavailable; a dead current heir is notD5 execute-time evidence. Original Core/ACK/packet/connection/deadline/custody retained; family cleanupUNKNOWN sticky. All mutation/returned/handled/Date/Save flagsfalse, claim0. No realm/effective law, loaded rules, RMTM26 or live qualification; old Frozen/UNKNOWN remain.",
+  "no_live_D3_D5_effective_realm_or_RMTM26_qualification": true,
+  "new_Game_Steam_SDK_HTTP_or_cleanup_in_this_docs_unit": 0,
+  "migration_SKU_counts_unchanged": {
+    "uploaded": 13,
+    "strict_complete": 9,
+    "total": 17
+  }
+}

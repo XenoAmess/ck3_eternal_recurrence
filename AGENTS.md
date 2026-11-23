@@ -6,7 +6,7 @@
 
 CCC公开Notes唯一GET为HTTP429且无Retry-After，NOT_OBSERVED并停止重试，不是内容不符，也不表示未上传；不称完整release closed。DES0.2.4后继长退避第三次Notes仍429，旧两次及SourceC当时事实保留，不新增自动请求。当前独立SKU为 **13/17已上传（76.5%）**、**9/17严格有限完成（52.9%）**；CCC Notes待核，DES版本更新不再加一。剩余顺序为收复故土、活体圣物、LYD、天朝361，LYD倒数第二／天朝361最后不变。SourceA7724／注释1.0.2标签／正式22／全部F冻结，SourceC只记录后继事实。[实际发布、缓存和Notes待核索引](docs/maintenance/evidence/ccc102-published-cache-Notes-pending-a1287.json)。
 
-RMTM仅外置只读主头衔query Source已封，3DTO／Main与Transport精确delta／18方法测试草稿均未采用、未编测、无genuine；旧F644／54a1不具该新cap。Java328与Native432仅后继估算，须按真实producer和新用途准入推进，不重开旧spent／held；不得借查询DATA授effective／realm／D5执行时heir或26项业务。[外置Source交付](D:/ck3-state/upgrade-20261118/java-current267-rmtm-title-query-source-a1267/delivery-final.json)。
+RMTM后继固定只读主头衔query已正常采用Native23及Java薄消费者，实际32个独立软件方法通过、Native9个NoGame target／10个原producer文件和Java请求一次C++逆核通过；生产939总／12CL／927reuse完成，实际新v46 Java／Native配对已冻结。最终仅两个新JAR复制、156个旧JAR按身份复用，原Java328四阶段及Native336 writer均END／future0，旧spent／held不退。三次测试源码／假设失败、容量preBEGIN拒绝和Native合法5B尾跳被COFF脚本误拒均保原；未为这些改动公共合同或生产Java语义。新mode仅common6／Saved owner／两次只读提交，无callerTitleID／phase／CCCepoch；完整物理own-law／holder／current-heir是DATA，knownEMPTY不同于SourceNull，死heir不授D5执行见证。尚无live查询、D3／D5／三phase物理AND、effective／realm或26项业务资格；旧F644／54a1不冒该新cap。[实际新配对与失败边界](docs/maintenance/evidence/java-current267-rmtm-title-query-actual-frozen-pair-a1290.json)。产品新36候选／原Saved桥仅报价待独立准入，不重原12affected／3strict，也不把旧266的五header重标成267。
 
 ## 2026-11-23 CCC 新 22 文件有限实机通过，正式化尚未发表（SourceA／SourceB时点）
 

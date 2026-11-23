@@ -1,7 +1,7 @@
 {
   "schema": "xar.current267.rmtm-title-query.qualified-source-index.v1",
   "machine_id": "desktop-3fevhd2-1c74096080",
-  "status": "SOURCE_SOFTWARE32_PASS_NEW_NATIVE_READY_PACKAGE_PENDING_LIVE_NOT_RUN",
+  "status": "SOURCE_SOFTWARE32_PASS_NEW_PAIR_READY_LIVE_NOT_RUN",
   "source_plan": {
     "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-title-query-build-a1290\\source-plan-qualified.json",
     "bytes": 6439,
@@ -43,7 +43,27 @@
   "mode": "current_rmtm_primary_title_query",
   "strict_common6_no_caller_Title_or_phase_or_CCCepoch": true,
   "submissions": 2,
-  "scope": "Fixed read-only actual primary fullTitle owner capture. Complete ordered own-laws/holder/current_heir DATA, uint32 fullgeneration incl0/highbits and signed int32 dates/actors. KnownEMPTY differs from SourceNull; dead currentheir is notD5 execution witness. Original Core/ACK/packet/connection/deadline/custody retained, postwriteUNKNOWN sticky. No action/realm/effective law/loadedrules/phase3/RMTM26/Date/Save/live permission. Native production12CL927reuse/source239 prefix separately qualified; old54a1/F644/CCC13-SKU counters unchanged.",
+  "scope": "Fixed read-only actual primary fullTitle owner capture. Complete ordered own-laws/holder/current_heir DATA, uint32 fullgeneration incl0/highbits and signed int32 dates/actors. KnownEMPTY differs from SourceNull; dead currentheir is notD5 execution witness. Original Core/ACK/packet/connection/deadline/custody retained, postwriteUNKNOWN sticky. No action/realm/effective law/loadedrules/phase3/RMTM26/Date/Save/live permission. Native production939total/12CL/927reuse and qualified23Source separately recorded; old54a1/F644/CCC13-SKU counters unchanged.",
   "original_failures_retained": true,
-  "package_freeze_new_pair_live_not_yet_granted": true
+  "package_freeze_new_pair_live_not_yet_granted": false,
+  "historical_Source_qualification_index": {
+    "before": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\evidence\\java-current267-rmtm-title-query-qualified-source-a1290.json",
+      "bytes": 2957,
+      "sha256": "8677d62cf4bbbffd38f5915f7108df6573906cd6cc31040f4635a13a6a5e0b0e"
+    },
+    "software_source_commit": "39cf96f1bff2c5fe2a4b6006f0afd2086c47604d",
+    "original_package_pending_cutpoint_preserved_in_Git": true
+  },
+  "actual_new_pair": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\evidence\\java-current267-rmtm-title-query-actual-frozen-pair-a1290.json",
+    "bytes": 8529,
+    "sha256": "d5cece0f2e95a7070db1a36ec1d562b2cca24c8a7a5348f00759c538d5d6c997"
+  },
+  "actual_package": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-title-query-build-a1290\\validation\\package-result.json",
+    "bytes": 878,
+    "sha256": "e5c7a3a84b5c20abfa58cac600683f01951d011f8f424475ee779d70158309b2"
+  },
+  "live_qualification": "NOT_RUN_NOT_GRANTED"
 }
