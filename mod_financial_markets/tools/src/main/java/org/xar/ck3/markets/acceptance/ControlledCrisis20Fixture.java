@@ -198,6 +198,182 @@ public final class ControlledCrisis20Fixture {
         text.forEach((name,value)->result.put(name,("\ufeff"+value.replace("${PLAYER}",request.playerAccountId())).getBytes(StandardCharsets.UTF_8)));
         return Map.copyOf(result);
     }
+    /** Explicit readonly diagnostic rendering. Default render above is unchanged. */
+    public static Map<String,byte[]> renderDiscovery(ControlledCrisis20Request request, String selectorSource, String guardSource) {
+        java.util.Objects.requireNonNull(request);
+        var original=org.xar.ck3.save.Clausewitz.parse(guardSource).block("xfm_crisis_terminal_review_trigger");
+        var wallets=original.named("var:xfm_holder").stream()
+            .filter(e->e.value() instanceof org.xar.ck3.save.Clausewitz.Block b && !b.named("any_in_list").isEmpty()).toList();
+        if(wallets.size()!=1 || !(wallets.getFirst().value() instanceof org.xar.ck3.save.Clausewitz.Block wallet)
+                || wallet.entries().size()!=2 || !wallet.entries().getFirst().key().equals("any_in_list")
+                || !wallet.entries().getLast().key().equals("NOT"))throw new IllegalArgumentException("original complete holder-wallet guard required");
+        Map<String,byte[]> result=new LinkedHashMap<>();
+        var contexts=CrisisSceneBranchFixture.render(selectorSource);
+        result.put("common/scripted_triggers/xfmc20_contexts.txt",contexts.get("common/scripted_triggers/xfmc20_contexts.txt"));
+        String[] roles=new String[26];
+        for(int i=0;i<20;i++)roles[i]="s"+suffix(i+1);
+        System.arraycopy(new String[]{"child","estate","asset","aid","restructure","creditor"},0,roles,20,6);
+        StringBuilder guards=new StringBuilder("""
+            xfmc20d_start_trigger = {
+             is_alive = yes is_adult = yes is_ai = no
+             NOT = { has_variable = xfmc20d_attempted }
+             NOT = { has_variable = xfmc20_setup_attempted }
+             NOT = { exists = global_var:xfmc20_owner }
+             exists = global_var:xfm_exchange exists = var:xfm_account
+             trigger_if = { limit = { exists = global_var:xfm_exchange }
+              global_var:xfm_exchange = { has_variable = xfm_day has_variable = xfm_next_account_id var:xfm_next_account_id >= 0 var:xfm_next_account_id <= 65536 }
+             }
+             trigger_if = { limit = { exists = var:xfm_account }
+              var:xfm_account = { story_type = xfm_finance_account var:xfm_holder = root var:xfm_account_id = ${PLAYER} var:xfm_system_account = 0 }
+             }
+            }
+            xfmc20d_account_trigger = {
+             story_type = xfm_finance_account has_variable = xfm_account_id
+             var:xfm_account_id > 0 var:xfm_account_id <= 1000000000
+             var:xfm_system_account = 0 exists = var:xfm_holder
+             var:xfm_holder = { is_alive = yes }
+            }
+            xfmc20d_primary_trigger = {
+             var:xfm_holder = { var:xfm_account = prev }
+            }
+            xfmc20d_all_wallets_empty_trigger = {
+             xfm_crisis_account_known_empty_trigger = yes
+            """);
+        // Exact source-derived holder/any_in_list/NOT block retains both prev levels.
+        guards.append(wallets.getFirst().key()).append(" = ").append(wallet.render()).append("\n}\n");
+        guards.append("""
+            xfmc20d_positive_trigger = {
+             xfmc20d_primary_trigger = yes var:xfm_inheritance_state = 0 var:xfm_account_frozen = 0
+             var:xfm_holder = { is_ai = yes is_adult = yes gold <= 0 }
+             NOT = { has_variable = xfm_crisis_terminal }
+             trigger_if = { limit = { has_variable = xfm_total_debt_cents } var:xfm_total_debt_cents = 0 }
+             xfm_debt_income_threshold_value < 1000000
+             root.var:xfmc20d_current_wallets_empty = 1
+            }
+            xfmc20d_direct_asset_trigger = { OR = {
+            """);
+        for(String field:new String[]{"xfm_free_cents","xfm_reserved_cents","xfm_holdings_count","xfm_open_orders_count","xfm_open_positions_count"})
+            guards.append("AND = { has_variable = ").append(field).append(" trigger_if = { limit = { has_variable = ")
+                .append(field).append(" } var:").append(field).append(" > 0 } }\n");
+        guards.append("} }\n");
+        StringBuilder effect=new StringBuilder("""
+            xfmc20d_discover_effect = {
+             if = { limit = { xfmc20d_start_trigger = yes }
+              set_variable = { name = xfmc20d_attempted value = 1 }
+              set_variable = { name = xfmc20d_source_financial_day value = global_var:xfm_exchange.var:xfm_day }
+              set_variable = { name = xfmc20d_source_script_date value = current_date }
+              set_variable = { name = xfmc20d_source_account_counter value = global_var:xfm_exchange.var:xfm_next_account_id }
+              set_variable = { name = xfmc20d_visited value = 0 }
+              set_variable = { name = xfmc20d_candidate_count value = 0 }
+              set_variable = { name = xfmc20d_primary_count value = 0 }
+              set_variable = { name = xfmc20d_spare_count value = 0 }
+            """);
+        for(String role:roles)effect.append("set_variable = { name = xfmc20d_").append(role).append("_count value = 0 }\nset_variable = { name = xfmc20d_").append(role)
+            .append("_index_1 value = 0 }\nset_variable = { name = xfmc20d_").append(role).append("_index_2 value = 0 }\n");
+        effect.append("""
+              every_in_global_list = { variable = xfm_account_registry
+               root = { change_variable = { name = xfmc20d_visited add = 1 } }
+               if = { limit = { root.var:xfmc20d_visited <= 65536 xfmc20d_account_trigger = yes }
+                save_scope_as = xfmc20d_account
+                var:xfm_holder = { save_scope_as = xfm_crisis_actor }
+                root = {
+                 set_variable = { name = xfmc20d_current_slot value = 0 }
+                 set_variable = { name = xfmc20d_current_predicates value = 0 }
+                 set_variable = { name = xfmc20d_current_contexts value = 0 }
+                 set_variable = { name = xfmc20d_current_positive value = 0 }
+                 set_variable = { name = xfmc20d_current_wallets_empty value = 0 }
+                 set_variable = { name = xfmc20d_current_checked value = 447 }
+                 set_variable = { name = xfmc20d_current_pick_role value = 0 }
+                 set_variable = { name = xfmc20d_current_pick_kind value = 0 }
+                 set_variable = { name = xfmc20d_current_duplicate_actor value = 0 }
+                }
+            """);
+        // Predicate bitmap is only the exact true/false return of these engine
+        // checks. A false all-wallet trigger does not establish nonzero wealth.
+        String[] predicates={"xfmc20d_primary_trigger = yes","var:xfm_holder = { is_ai = yes }",
+            "var:xfm_holder = { is_adult = yes }","var:xfm_holder = { gold <= 0 }",
+            "NOT = { has_variable = xfm_crisis_terminal }",
+            "trigger_if = { limit = { has_variable = xfm_total_debt_cents } var:xfm_total_debt_cents = 0 }",
+            "xfmc20d_primary_trigger = yes xfmc20d_all_wallets_empty_trigger = yes","xfmc20d_direct_asset_trigger = yes",
+            "OR = { var:xfm_inheritance_state = 1 var:xfm_inheritance_state = 2 }"};
+        effect.append("if = { limit = { xfmc20d_primary_trigger = yes } root = { change_variable = { name = xfmc20d_current_checked add = 64 } } if = { limit = { xfmc20d_all_wallets_empty_trigger = yes } root = { set_variable = { name = xfmc20d_current_wallets_empty value = 1 } change_variable = { name = xfmc20d_current_predicates add = 64 } } } }\n");
+        for(int i=0;i<predicates.length;i++)if(i!=6)effect.append("if = { limit = { ").append(predicates[i])
+            .append(" } root = { change_variable = { name = xfmc20d_current_predicates add = ").append(1<<i).append(" } } }\n");
+        effect.append("if = { limit = { xfmc20d_positive_trigger = yes } root = { set_variable = { name = xfmc20d_current_positive value = 1 } } }\n");
+        for(int i=1;i<=20;i++) {
+            String role="s"+suffix(i);
+            effect.append("root = { set_variable = { name = xfmc20d_match_").append(role).append(" value = 0 } }\n")
+                .append("if = { limit = { xfmc20_context_").append(suffix(i)).append("_trigger = yes } root = { change_variable = { name = xfmc20d_current_contexts add = ")
+                .append(1<<(i-1)).append(" } if = { limit = { var:xfmc20d_current_positive = 1 } set_variable = { name = xfmc20d_match_")
+                .append(role).append(" value = 1 } } } }\n");
+        }
+        String aiPrimary="xfmc20d_primary_trigger = yes var:xfm_holder = { is_ai = yes is_adult = yes }";
+        String[] controlPredicates={"xfmc20d_primary_trigger = yes var:xfm_holder = { is_ai = yes is_adult = no }",
+            "OR = { var:xfm_inheritance_state = 1 var:xfm_inheritance_state = 2 }",
+            aiPrimary+" xfmc20d_direct_asset_trigger = yes",
+            "root.var:xfmc20d_current_positive = 1","root.var:xfmc20d_current_positive = 1",aiPrimary};
+        for(int i=0;i<6;i++)effect.append("root = { set_variable = { name = xfmc20d_match_").append(roles[i+20]).append(" value = 0 } }\nif = { limit = { ")
+            .append(controlPredicates[i]).append(" } root = { set_variable = { name = xfmc20d_match_").append(roles[i+20]).append(" value = 1 } } }\n");
+        effect.append("root = {\n");
+        // One reserved primary and one spare per role. Common early candidates
+        // cannot consume any rare role's reserved primary or spare slot.
+        for(int i=0;i<roles.length;i++)effect.append("if = { limit = { var:xfmc20d_current_pick_role = 0 var:xfmc20d_match_").append(roles[i])
+            .append(" = 1 var:xfmc20d_").append(roles[i]).append("_index_1 = 0 } set_variable = { name = xfmc20d_current_pick_role value = ")
+            .append(i+1).append(" } set_variable = { name = xfmc20d_current_pick_kind value = 1 } }\n");
+        for(int i=0;i<roles.length;i++)effect.append("if = { limit = { var:xfmc20d_current_pick_role = 0 var:xfmc20d_match_").append(roles[i])
+            .append(" = 1 var:xfmc20d_").append(roles[i]).append("_index_2 = 0 } set_variable = { name = xfmc20d_current_pick_role value = ")
+            .append(i+1).append(" } set_variable = { name = xfmc20d_current_pick_kind value = 2 } }\n");
+        effect.append("if = { limit = { var:xfmc20d_current_pick_role > 0 } xfmc20d_capture_candidate_effect = yes }\n");
+        for(int i=0;i<roles.length;i++)effect.append("if = { limit = { var:xfmc20d_current_slot > 0 var:xfmc20d_current_pick_role = ")
+            .append(i+1).append(" } xfmc20d_add_role_effect = { ROLE = ").append(roles[i]).append(" } }\n");
+        effect.append("""
+                }
+               }
+              }
+              if = { limit = {
+               var:xfmc20d_visited <= 65536
+               var:xfmc20d_source_financial_day = global_var:xfm_exchange.var:xfm_day
+               var:xfmc20d_source_script_date = current_date
+               var:xfmc20d_source_account_counter = global_var:xfm_exchange.var:xfm_next_account_id
+              } set_variable = { name = xfmc20d_scan_completed value = 1 } }
+              clear_saved_scope = xfmc20d_account clear_saved_scope = xfm_crisis_actor
+              debug_log = "XFMAT: OBSERVE controlled_crisis20_discovery_recorded"
+             }
+            }
+            xfmc20d_record_entry_effect = {
+             set_variable = { name = xfmc20d_entry_$ENTRY$_account value = scope:xfmc20d_account }
+             set_variable = { name = xfmc20d_entry_$ENTRY$_actor value = scope:xfm_crisis_actor }
+             set_variable = { name = xfmc20d_entry_$ENTRY$_account_id value = scope:xfmc20d_account.var:xfm_account_id }
+             set_variable = { name = xfmc20d_entry_$ENTRY$_predicates value = var:xfmc20d_current_predicates }
+             set_variable = { name = xfmc20d_entry_$ENTRY$_contexts value = var:xfmc20d_current_contexts }
+             set_variable = { name = xfmc20d_entry_$ENTRY$_checked value = var:xfmc20d_current_checked }
+             set_variable = { name = xfmc20d_current_slot value = $ENTRY$ }
+             set_variable = { name = xfmc20d_candidate_count value = $ENTRY$ }
+            }
+            xfmc20d_capture_candidate_effect = {
+            """);
+        for(int i=1;i<=52;i++)effect.append("if = { limit = { has_variable = xfmc20d_entry_").append(i).append("_actor trigger_if = { limit = { has_variable = xfmc20d_entry_")
+            .append(i).append("_actor } var:xfmc20d_entry_").append(i).append("_actor = scope:xfm_crisis_actor } } set_variable = { name = xfmc20d_current_duplicate_actor value = 1 } }\n");
+        for(int i=1;i<=52;i++)effect.append("if = { limit = { var:xfmc20d_current_duplicate_actor = 0 var:xfmc20d_current_slot = 0 var:xfmc20d_candidate_count = ").append(i-1)
+            .append(" } xfmc20d_record_entry_effect = { ENTRY = ").append(i).append(" } }\n");
+        effect.append("if = { limit = { var:xfmc20d_current_duplicate_actor = 0 var:xfmc20d_current_slot = 0 } set_variable = { name = xfmc20d_capacity_reached value = 1 } }\n}\nxfmc20d_add_role_effect = {\n");
+        for(int i=1;i<=2;i++)effect.append(i==1?"if":"else_if").append(" = { limit = { var:xfmc20d_current_pick_kind = ").append(i)
+            .append(" } set_variable = { name = xfmc20d_$ROLE$_index_").append(i).append(" value = var:xfmc20d_current_slot } change_variable = { name = xfmc20d_$ROLE$_count add = 1 } change_variable = { name = xfmc20d_")
+            .append(i==1?"primary":"spare").append("_count add = 1 } }\n");
+        effect.append("}\n");
+        discoveryPut(result,"descriptor.mod","name=\"Crisis20 readonly discovery only\"\nversion=\"1\"\nsupported_version=\"1.21.*\"\n");
+        discoveryPut(result,"common/scripted_triggers/xfmc20d_guards.txt",guards.toString().replace("${PLAYER}",request.playerAccountId()));
+        discoveryPut(result,"common/scripted_effects/xfmc20d_discover.txt",effect.toString());
+        discoveryPut(result,"common/scripted_guis/xfmc20d_gui.txt","xfmc20d_discover_gui = { scope = character is_valid = { xfmc20d_start_trigger = yes } effect = { xfmc20d_discover_effect = yes } }\n");
+        discoveryPut(result,"gui/scripted_widgets/xfmc20d_widget.txt","gui/xfmc20d_widget.gui = xfmc20d_widget\n");
+        discoveryPut(result,"gui/xfmc20d_widget.gui","widget = { name = xfmc20d_widget parentanchor = bottom|right position = { -310 100 } size = { 300 50 } layer = middle\n button_standard = { name = \"xfmc20d_discover\" size = { 300 38 } text = \"xfmc20d_discover_label\" enabled = \"[GetScriptedGui( 'xfmc20d_discover_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]\" onclick = \"[GetScriptedGui( 'xfmc20d_discover_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]\" } }\n");
+        for(String language:new String[]{"english","simp_chinese"})discoveryPut(result,"localization/"+language+"/xfmc20d_l_"+language+".yml","l_"+language+":\n xfmc20d_discover_label:0 \"Crisis20: readonly discovery\"\n");
+        return Map.copyOf(result);
+    }
+    private static void discoveryPut(Map<String,byte[]> files,String name,String value) {
+        files.put(name,("\ufeff"+value).getBytes(StandardCharsets.UTF_8));
+    }
+
     private static void bind(StringBuilder out,String role,String id) {
         out.append("if = { limit = { var:xfm_account_id = ").append(id).append(" } root = { set_variable = { name = xfmc20_").append(role)
             .append(" value = prev } change_variable = { name = xfmc20_bound_count add = 1 } } }\n");

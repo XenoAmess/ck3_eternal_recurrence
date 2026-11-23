@@ -462,6 +462,77 @@ final class CrisisAssetsScriptTest {
         assertEquals(cash,s.v.registry.stream().map(n->List.of(n.vars.get("xfm_free_cents"),n.vars.get("xfm_reserved_cents"))).toList());
     }
 
+    @Test void readonlyDiscoveryExecutesOriginalContextsAndAllWalletGuardWithoutFinancialWrites() throws IOException {
+        Scene s=discoveryScene();Node owner=s.v.rootActor;
+        Map<Node,Map<String,Object>> accounts=new LinkedHashMap<>();
+        for(Node account:s.v.registry)accounts.put(account,new LinkedHashMap<>(account.vars));
+        Map<String,Object> exchange=new LinkedHashMap<>(s.v.exchange.vars);
+        s.v.run("xfmc20d_discover_effect",owner);
+        assertEquals(1,owner.integer("xfmc20d_attempted"));assertEquals(1,owner.integer("xfmc20d_scan_completed"));
+        assertEquals(60,owner.integer("xfmc20d_source_financial_day"));assertEquals(389640,owner.integer("xfmc20d_source_script_date"));
+        assertEquals(s.v.registry.size(),owner.integer("xfmc20d_visited"));
+        assertFalse(owner.vars.containsKey("xfmc20_setup_attempted"));assertNull(s.v.controlledOwner);
+        assertEquals(exchange,s.v.exchange.vars);accounts.forEach((account,before)->assertEquals(before,account.vars));
+        int count=(int)owner.integer("xfmc20d_candidate_count");assertTrue(count>0&&count<=52);
+        Set<Node> actors=new HashSet<>();int references=0;
+        for(int i=1;i<=count;i++) {
+            Node account=(Node)owner.vars.get("xfmc20d_entry_"+i+"_account");
+            Node actor=(Node)owner.vars.get("xfmc20d_entry_"+i+"_actor");
+            assertSame(account.refHolder(),actor);assertTrue(actors.add(actor));references+=2;
+            assertEquals(account.integer("xfm_account_id"),owner.integer("xfmc20d_entry_"+i+"_account_id"));
+        }
+        assertTrue(references<=104);assertEquals(0,s.v.deathCalls);assertEquals(0,s.v.newsCalls);
+        Map<String,Object> once=new LinkedHashMap<>(owner.vars);s.v.run("xfmc20d_discover_effect",owner);assertEquals(once,owner.vars);
+    }
+
+    @Test void discoveryRejectsOtherWalletAssetsAndUnknownsAndReservesLateRareContextSlots() throws IOException {
+        Scene blocked=discoveryScene();Node candidate=blocked.v.registry.getFirst(),actor=candidate.refHolder();
+        Node shadow=blocked.v.account("actual-other-legal-wallet",actor);shadow.put("xfm_free_cents",1);
+        blocked.v.run("xfmc20d_discover_effect",blocked.v.rootActor);
+        assertFalse(blocked.v.test(blocked.v.definition("xfmc20d_all_wallets_empty_trigger"),new Frame(candidate,null)));
+        shadow.vars.remove("xfm_free_cents");
+        assertFalse(blocked.v.test(blocked.v.definition("xfmc20d_all_wallets_empty_trigger"),new Frame(candidate,null)),"Missing asset proof must not become zero");
+        Node owner=blocked.v.rootActor;
+        for(int i=1;i<=owner.integer("xfmc20d_candidate_count");i++)if(owner.vars.get("xfmc20d_entry_"+i+"_actor")==actor)
+            assertEquals(0,owner.integer("xfmc20d_entry_"+i+"_predicates")&64L);
+        Scene late=discoveryScene();Node rare=late.v.registry.getFirst();
+        List<Node> ordinary=new ArrayList<>();
+        for(int i=0;i<80;i++) {
+            Scene plain=controlledContext(20);plain.primary.vars.remove("xfm_total_debt_cents");plain.primary.put("xfm_account_id",100+i);ordinary.add(plain.primary);
+        }
+        late.v.registry.addAll(0,ordinary);late.v.exchange.put("xfm_next_account_id",180);
+        late.v.run("xfmc20d_discover_effect",late.v.rootActor);
+        int index=(int)late.v.rootActor.integer("xfmc20d_s01_index_1");assertTrue(index>0);
+        assertSame(rare.refHolder(),late.v.rootActor.vars.get("xfmc20d_entry_"+index+"_actor"),"Common early rows cannot consume an unseen context's reserved primary");
+        assertTrue(late.v.rootActor.integer("xfmc20d_candidate_count")<=52);
+    }
+
+    @Test void discoveryMissingOwnerPrimaryOrOversizedRegistryCounterMakesNoWrite() throws IOException {
+        for(String defect:List.of("primary","counter","setup")) {
+            Scene s=discoveryScene();Node owner=s.v.rootActor;
+            if(defect.equals("primary"))owner.vars.remove("xfm_account");
+            if(defect.equals("counter"))s.v.exchange.put("xfm_next_account_id",65537);
+            if(defect.equals("setup"))owner.put("xfmc20_setup_attempted",1);
+            Map<String,Object> before=new LinkedHashMap<>(owner.vars);
+            s.v.run("xfmc20d_discover_effect",owner);assertEquals(before,owner.vars);assertEquals(0,s.v.deathCalls);
+        }
+    }
+
+    private static Scene discoveryScene() throws IOException {
+        Scene s=controlledFixtureScene();s.v.controlledOwner=null;s.v.exchange.put("xfm_next_account_id",27);
+        List<org.xar.ck3.markets.acceptance.FollowupContracts.CrisisSceneRole> roles=new ArrayList<>();
+        for(int i=1;i<=20;i++)roles.add(new org.xar.ck3.markets.acceptance.FollowupContracts.CrisisSceneRole(i,Integer.toString(i)));
+        var request=new org.xar.ck3.markets.acceptance.FollowupContracts.ControlledCrisis20Request(3,"crisis-scenes20-engine-fixture",true,"21","22",roles,
+            new org.xar.ck3.markets.acceptance.FollowupContracts.CrisisControls("23","24","25","26","27"));
+        var files=org.xar.ck3.markets.acceptance.ControlledCrisis20Fixture.renderDiscovery(request,
+            Files.readString(SOURCE.resolve("common/scripted_effects/xfm_crisis_scenes.txt")),Files.readString(SOURCE.resolve("common/scripted_triggers/xfm_crisis_triggers.txt")));
+        for(var file:files.entrySet())if(file.getKey().startsWith("common/"))for(Entry entry:Clausewitz.parse(new String(file.getValue(),java.nio.charset.StandardCharsets.UTF_8)).entries()) {
+            if(!(entry.value()instanceof Block block))throw new IllegalArgumentException("fixture block");
+            Block old=s.v.definitions.putIfAbsent(entry.key(),block);if(old!=null)assertEquals(old,block,"Only identical source-derived context definitions may already exist");
+        }
+        return s;
+    }
+
     private static Scene controlledFixtureScene() throws IOException {
         Scene s=scene();s.v.registry.clear();
         for(int i=1;i<=20;i++) {
@@ -541,6 +612,7 @@ final class CrisisAssetsScriptTest {
         final Map<String, Block> definitions; final Map<String, Node> scopes = new HashMap<>();
         final Map<String, List<Node>> temporary = new HashMap<>(); final Node exchange;
         Node rootActor, controlledOwner; final List<Node> registry=new ArrayList<>();
+        final BigDecimal scriptDate=BigDecimal.valueOf(389640);
         boolean rule = true; int accountSequence;
         // Opt-in engine primitive ports for the three new component tests only.
         // They do not implement CK3 succession, real death, journal allocation or delivery.
@@ -566,6 +638,7 @@ final class CrisisAssetsScriptTest {
         Object resolve(String token, Frame f) {
             try { return new BigDecimal(token); } catch (NumberFormatException ignored) { }
             int dot = token.indexOf('.'); if (dot > 0) { Object base = resolve(token.substring(0, dot), f); return base instanceof Node n ? resolve(token.substring(dot + 1), f.enter(n)) : null; }
+            if (token.equals("current_date")) return scriptDate;
             if (token.equals("root")) return rootActor;
             if (token.equals("global_var:xfmc20_owner")) return controlledOwner;
             if (token.equals("this")) return f.here(); if (token.equals("prev")) return f.previous();
@@ -672,7 +745,7 @@ final class CrisisAssetsScriptTest {
                         for (Entry parameter : parameters.entries()) {
                             String value = atom(parameter.value());
                             if (!parameter.operator().equals("=") || !parameter.key().matches("[A-Z_]+")
-                                    || !value.matches("[a-z][a-z0-9_]*")) throw new IllegalArgumentException("closed effect parameter");
+                                    || !value.matches("(?:[a-z][a-z0-9_]*|0|[1-9][0-9]{0,8})")) throw new IllegalArgumentException("closed effect parameter");
                             body = body.replace("$" + parameter.key() + "$", value);
                         }
                     } else if (!atom(e.value()).equals("yes")) throw new IllegalArgumentException("effect yes or parameters required");

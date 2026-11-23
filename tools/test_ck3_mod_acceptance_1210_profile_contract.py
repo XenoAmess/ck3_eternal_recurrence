@@ -3921,5 +3921,102 @@ class FlorinClosedStockBookmark1070ProfileConsumer(unittest.TestCase):
             sources[:] = original
 
 
+class FlorinClosedCccDefaultOffProfileConsumer(unittest.TestCase):
+    """Actual Q55 before; original266 permissions only, no CCC ON/business credit."""
+    CONTRACT_ID = "ck3-1210-financial-markets-native-profile-v33"
+    NEW_FLAGS = ("XAR_CK3_ENABLE_121003_26785313_CCC_V1",)
+    NEW_MACROS = ('XAR_CK3_ENABLE_121003_26785313_CCC_V1', 'XAR_CK3_ENABLE_121003_26785313_CCC_TRANSITION_V1', 'XAR_CK3_ENABLE_121003_26785313_CCC_EVENT_V1', 'XAR_CK3_ENABLE_121003_26785313_CCC_DECISION_V1')
+    NEW_RUNTIME_SOURCES = ('src/ck3_121003_ccc_actor_transition26785313_raw_v1.cpp', 'src/ck3_121003_ccc_actor_transition26785313_wire_v1.cpp', 'src/ck3_121003_ccc_actor_transition26785313_owner_v1.cpp', 'src/ck3_121003_ccc_actor_transition26785313_dispatch_v1.cpp', 'src/ck3_121003_ccc_event26785313_raw_v1.cpp', 'src/ck3_121003_ccc_event26785313_wire_v1.cpp', 'src/ck3_121003_ccc_event26785313_owner_v1.cpp', 'src/ck3_121003_ccc_event26785313_dispatch_v1.cpp', 'src/ck3_121003_ccc_decision26785313_raw_v1.cpp', 'src/ck3_121003_ccc_decision26785313_wire_v1.cpp', 'src/ck3_121003_ccc_decision26785313_owner_v1.cpp', 'src/ck3_121003_ccc_decision26785313_dispatch_v1.cpp', 'src/ck3_121003_ccc_owner26785313_v1.cpp')
+    setUpClass = classmethod(FlorinClosedCoreRouteProfileConsumer.setUpClass.__func__)
+    setUp = FlorinProfileContractConsumer.setUp
+    target = FlorinProfileContractConsumer.target
+    consume = FlorinProfileContractConsumer.consume
+    source_defines = FlorinProfileContractConsumer.source_defines
+    consume_profile_receipt = FlorinSixClosedOptionsProfileConsumer.consume_profile_receipt
+
+    def test_actual_q55_only_adds_ccc_off_and_thirteen_real_runtime_sources(self) -> None:
+        prior = builder.select_profile_expansion_contract(self.registry, "ck3-1210-financial-markets-native-profile-v32")
+        expected_before = dict(prior["before_flags"], **{k:v["after"] for k,v in prior["flag_changes"].items()})
+        self.assertEqual(self.contract["before_flags"], expected_before)
+        self.assertEqual(len(expected_before), 252)
+        self.assertEqual(self.contract["flag_changes"], {self.NEW_FLAGS[0]: {"before": None, "after": "OFF"}})
+        self.assertEqual(self.contract["production_TUs"], {"xar_ck3_bridge":268,"xar_ck3_12002_runtime":657,"xar_bridge_protocol":1})
+        for target,sources in prior["production_source_lists"].items():
+            extra = list(self.NEW_RUNTIME_SOURCES) if target == "xar_ck3_12002_runtime" else []
+            self.assertEqual(self.contract["production_source_lists"][target], sources + extra)
+        for key in ("fixture_sources", "fixture_included_bodies"):
+            self.assertEqual(self.contract[key], prior[key])
+        self.assertEqual(len(self.fixtures), 22)
+        text = (NATIVE / "cmake/current267_ccc_v1.cmake").read_text(encoding="utf-8-sig")
+        self.assertRegex(text, r"option\(" + self.NEW_FLAGS[0] + r'\s+"[^"\n]*"\s+OFF\)')
+        for source in self.NEW_RUNTIME_SOURCES:
+            self.assertIn('"' + source + '"', text)
+        self.assertIn('target_sources(xar_ck3_12002_runtime PRIVATE "${_ccc_root}/${u}")', text)
+        self.assertIn('add_executable(xar_ck3_ccc_step_off_test EXCLUDE_FROM_ALL', text)
+        self.assertIn('src/ck3_121003_ccc_step_enabled_v1_test.cpp', text)
+        for source in ("actor_transition", "event", "decision"):
+            self.assertIn('src/ck3_121003_ccc_' + source + '26785313_dispatch_v1.cpp', text)
+        self.assertNotIn("xar_ck3_ccc_step_off_test", self.contract["fixture_sources"])
+        for row,old in zip(self.contract["production_macro_contracts"][:-13],prior["production_macro_contracts"],strict=True):
+            restored = copy.deepcopy(row)
+            self.assertEqual(restored["absent"][-4:], list(self.NEW_MACROS))
+            del restored["absent"][-4:]
+            self.assertEqual(restored,old)
+        for row,old in zip(self.contract["fixture_contracts"],prior["fixture_contracts"],strict=True):
+            restored = copy.deepcopy(row)
+            self.assertEqual(restored["forbidden_defines"][-12:],[m+s for m in self.NEW_MACROS for s in ("","=0","=1")])
+            del restored["forbidden_defines"][-12:]
+            self.assertEqual(restored,old)
+        self.assertEqual(builder.select_profile_expansion_contract(self.registry)["contract_id"],"ck3-12004-five-gate-native-profile-v1")
+        self.consume()
+
+    def test_all_ccc_macro_spellings_reject_selected_and_original_fixture_sources(self) -> None:
+        selected = [("xar_ck3_12002_runtime",p) for p in self.NEW_RUNTIME_SOURCES]
+        selected += [("xar_ck3_12002_runtime",p) for p in ("src/ck3_1210_date_sentinel_v1.cpp","src/ck3_121003_date_advance26785313_v1.cpp")]
+        selected += [("xar_ck3_bridge",p) for p in ("src/bridge.cpp","src/game_adapter.cpp")]
+        selected += [(name,sources[0]) for name,sources in self.contract["fixture_sources"].items()]
+        for target,source in selected:
+            definitions = self.source_defines(target,source)
+            message = "fixture compile definitions differ" if target in self.contract["fixture_sources"] else "per-TU present/absent macros differ"
+            for macro in self.NEW_MACROS:
+                for spelling in (macro,macro+"=0",macro+"=1"):
+                    definitions.append({"define":spelling})
+                    try:
+                        with self.subTest(target=target,source=source,spelling=spelling),self.assertRaisesRegex(ValueError,message):
+                            self.consume()
+                    finally:
+                        definitions.pop()
+
+    def test_receipt_requires_actual_q55_before_exact_off_and_current_source_graph(self) -> None:
+        expected = dict(self.contract["before_flags"],**{k:v["after"] for k,v in self.contract["flag_changes"].items()})
+        self.assertEqual(len(expected),253)
+        self.assertEqual(self.consume_profile_receipt(actual_flags=expected)["contract"]["contract_id"],self.CONTRACT_ID)
+        for mode in ("ON","missing","unknown"):
+            flags = dict(expected)
+            if mode == "missing":
+                del flags[self.NEW_FLAGS[0]]
+            else:
+                flags[self.NEW_FLAGS[0] if mode == "ON" else self.NEW_FLAGS[0]+"_UNKNOWN"] = "ON"
+            with self.subTest(mode=mode),self.assertRaisesRegex(ValueError,"outside the reviewed exact delta"):
+                self.consume_profile_receipt(actual_flags=flags)
+        stale = builder.select_profile_expansion_contract(self.registry,"ck3-1210-financial-markets-native-profile-v32")
+        with self.assertRaisesRegex(ValueError,"prior profile differs"):
+            self.consume_profile_receipt(old_flags=stale["before_flags"],actual_flags=expected)
+        sources = self.targets["xar_ck3_12002_runtime"]["sources"]
+        original = copy.deepcopy(sources)
+        sources.pop()
+        try:
+            with self.assertRaisesRegex(ValueError,"production TU counts differ"):
+                self.consume()
+        finally:
+            sources[:] = copy.deepcopy(original)
+        sources[-1]["path"] = "src/ck3_1210_core.cpp"
+        try:
+            with self.assertRaisesRegex(ValueError,"production source bodies differ"):
+                self.consume()
+        finally:
+            sources[:] = original
+
+
 if __name__ == "__main__":
     unittest.main()

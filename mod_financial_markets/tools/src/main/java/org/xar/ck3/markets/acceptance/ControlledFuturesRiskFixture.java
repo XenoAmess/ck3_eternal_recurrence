@@ -30,6 +30,10 @@ public final class ControlledFuturesRiskFixture {
         Map<String,String> scripts = new LinkedHashMap<>();
         scripts.put("descriptor.mod", "name=\"Controlled county-input futures risk fixture\"\nversion=\"1\"\nsupported_version=\"1.21.*\"\n");
         scripts.put("common/script_values/xfmr_values.txt", """
+            # Date-comparison RHS must be a named scalar ScriptValue in the actual engine.
+            # Explicit global owner avoids binding root/current to an exchange/on_action caller.
+            xfmr_book_day1_value = { value = global_var:xfmr_fixture_owner.var:xfmr_book_day add = 1 }
+            xfmr_book_day2_value = { value = global_var:xfmr_fixture_owner.var:xfmr_book_day add = 2 }
             # These are county input deltas, never a financial mark setter.
             xfmr_target_prosperity_value = {
              value = global_var:xfm_exchange.var:xfm_oracle_war_bps multiply = 0.5
@@ -109,7 +113,7 @@ public final class ControlledFuturesRiskFixture {
             xfmr_second_trigger = {
              xfmr_owner_trigger = yes has_variable = xfmr_day1_version
              has_variable = xfmr_shock1_qualified NOT = { has_variable = xfmr_second_attempted }
-             global_var:xfm_exchange.var:xfm_day = { value = var:xfmr_book_day add = 1 }
+             global_var:xfm_exchange.var:xfm_day = xfmr_book_day1_value
              xfmr_mark_trigger = { MARK = 120 }
              exists = var:xfmr_gap_position
              var:xfmr_gap_position = { story_type = xfm_futures_position
@@ -379,13 +383,13 @@ public final class ControlledFuturesRiskFixture {
              if = { limit = { exists = global_var:xfmr_fixture_owner }
               global_var:xfmr_fixture_owner = {
                if = { limit = { has_variable = xfmr_shock1_qualified
-                global_var:xfm_exchange.var:xfm_day = { value = var:xfmr_book_day add = 1 }
+                global_var:xfm_exchange.var:xfm_day = xfmr_book_day1_value
                 NOT = { has_variable = xfmr_day1_version } }
                 xfmr_capture_all_effect = { PHASE = day1 }
                 debug_log = "XFMAT: TEST PASS controlled_risk_day1_capture"
                }
                if = { limit = { has_variable = xfmr_shock2_qualified
-                global_var:xfm_exchange.var:xfm_day = { value = var:xfmr_book_day add = 2 }
+                global_var:xfm_exchange.var:xfm_day = xfmr_book_day2_value
                 NOT = { has_variable = xfmr_day2_version } }
                 xfmr_capture_all_effect = { PHASE = day2 }
                 debug_log = "XFMAT: TEST PASS controlled_risk_day2_capture"
@@ -409,7 +413,7 @@ public final class ControlledFuturesRiskFixture {
             xfmr_retry_effect = {
              if = { limit = { xfmr_owner_trigger = yes has_variable = xfmr_day2_version
               NOT = { has_variable = xfmr_retry_attempted }
-              global_var:xfm_exchange.var:xfm_day = { value = var:xfmr_book_day add = 2 } }
+              global_var:xfm_exchange.var:xfm_day = xfmr_book_day2_value }
               set_variable = { name = xfmr_retry_attempted value = 1 }
               xfmr_capture_all_effect = { PHASE = retry_before }
               var:xfmr_stop_position = { xfm_futures_position_daily_effect = yes }

@@ -36,5 +36,21 @@ if(WIN32 AND TARGET xar_ck3_bridge AND XAR_CK3_ENABLE_121003_26785313_CCC_V1)
   set_property(SOURCE "${_ccc_root}/src/bridge.cpp" "${_ccc_root}/src/game_adapter.cpp" APPEND PROPERTY COMPILE_DEFINITIONS "$<$<STREQUAL:$<TARGET_PROPERTY:NAME>,xar_ck3_bridge>:XAR_CK3_ENABLE_121003_26785313_${flag}=1>")
  endforeach()
 endif()
-# No test target is claimed here. Necessary new NoGame sources/targets are a
-# separately quoted future phase and must use actual whole StepEnabled code.
+
+# Financial selected266 qualification needs only the actual linked CCC OFF
+# StepEnabled negatives. This supplemental target never enables CCC or calls
+# any owner/ABI/body transport; trap-only unused dependencies are in its source.
+if(BUILD_TESTING AND WIN32)
+ add_executable(xar_ck3_ccc_step_off_test EXCLUDE_FROM_ALL
+  "${_ccc_root}/src/ck3_121003_ccc_step_enabled_v1_test.cpp"
+  "${_ccc_root}/src/ck3_121003_ccc_actor_transition26785313_dispatch_v1.cpp"
+  "${_ccc_root}/src/ck3_121003_ccc_event26785313_dispatch_v1.cpp"
+  "${_ccc_root}/src/ck3_121003_ccc_decision26785313_dispatch_v1.cpp")
+ target_include_directories(xar_ck3_ccc_step_off_test PRIVATE "${_ccc_root}/include")
+ target_compile_features(xar_ck3_ccc_step_off_test PRIVATE cxx_std_20)
+ target_compile_definitions(xar_ck3_ccc_step_off_test PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
+ if(MSVC)
+  target_compile_options(xar_ck3_ccc_step_off_test PRIVATE /W4 /WX /permissive- /EHsc)
+ endif()
+ add_test(NAME xar_ck3_ccc_step_off_test COMMAND xar_ck3_ccc_step_off_test)
+endif()

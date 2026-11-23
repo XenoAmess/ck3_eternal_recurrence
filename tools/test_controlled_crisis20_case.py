@@ -294,4 +294,29 @@ class ControlledCrisis20CaseTests(unittest.TestCase):
         self.assertEqual(adapter.read_json(retained['selected_original']['path']),frozen)
 
 
+    def test_discovery_mode_prepares_only_with_explicit_exact_sidecar_and_cannot_enter_normal_credit(self):
+        mode={'schema': 'ck3-controlled-crisis20-discovery-v1', 'discovery_only': True, 'read_only_finance': True, 'private_namespace': 'xfmc20d_', 'maximum_registry_rows': 65536, 'maximum_candidates': 52, 'maximum_typed_references': 104, 'per_role_maximum': 2, 'context_count': 20, 'case_credit': False}
+        p=self.fixture/'_xfmc20_discovery_mode.json';p.write_text(json.dumps(mode),encoding='utf-8')
+        self.manifest_value['files'][p.name]={k:v for k,v in adapter.pin(p).items()if k!='path'}
+        self.manifest_value['receipt']['fixture_contains_business_effects']=False
+        for relative in ('common/scripted_triggers/xfm_crisis_triggers.txt','common/script_values/xfm_debt_values.txt'):
+            source=ROOT/'mod_financial_markets'/relative;target=Path(self.context['case_inputs']['product_dir'])/relative
+            target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(source.read_bytes());self.manifest_value['producer_source_pins'].append(adapter.pin(source))
+        self.manifest=self.put('discovery-fixture.json',self.manifest_value)
+        self.context['case_inputs']['prebuilt_fixture_manifest']=self.manifest
+        self.context['case_inputs']['controlled_crisis20']['discovery_only']=True
+        self.prepare()
+        self.assertTrue(adapter._c20_inputs(self.context,allow_discovery_preflight=True)['discovery_only'])
+        with self.assertRaisesRegex(ValueError,'cannot grant normal'):adapter._c20_inputs(self.context)
+        port=Crisis20RunPort(self,self.context,self.responses,self.day_port())
+        with self.assertRaisesRegex(ValueError,'cannot grant normal'):adapter.run_case(self.context,port)
+        self.assertEqual(port.day_calls,[]);self.assertEqual(port.pair_calls,[])
+
+    def test_discovery_receipt_or_flag_without_the_exact_mode_cannot_prepare(self):
+        context=copy.deepcopy(self.context);context['case_inputs']['controlled_crisis20']['discovery_only']=True
+        with self.assertRaises(ValueError):adapter._c20_inputs(context,allow_discovery_preflight=True)
+        context['case_inputs']['controlled_crisis20']['discovery_only']=1
+        with self.assertRaisesRegex(ValueError,'Literal true'):adapter._c20_inputs(context,allow_discovery_preflight=True)
+
+
 if __name__=='__main__':unittest.main()

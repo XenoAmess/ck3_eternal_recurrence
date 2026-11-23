@@ -21,6 +21,26 @@ final class ControlledFuturesRiskFixtureTest {
     private static void walk(Clausewitz.Block block,Consumer<Clausewitz.Entry> visitor) {
         for(var entry:block.entries()) { visitor.accept(entry); if(entry.value() instanceof Clausewitz.Block child)walk(child,visitor); }
     }
+    @Test void actualDateComparisonRhsUsesNamedScalarValuesBoundToTheExplicitFixtureOwner() {
+        var values=Clausewitz.parse(source("common/script_values/xfmr_values.txt"));
+        for(int day:List.of(1,2)) {
+            var actual=(Clausewitz.Block)values.named("xfmr_book_day"+day+"_value").getFirst().value();
+            assertEquals("global_var:xfmr_fixture_owner.var:xfmr_book_day",actual.named("value").getFirst().value().render());
+            assertEquals(Integer.toString(day),actual.named("add").getFirst().value().render());
+        }
+        java.util.Map<String,Integer> actual=new java.util.HashMap<>();
+        for(String path:List.of("common/scripted_triggers/xfmr_guards.txt","common/scripted_effects/xfmr_observe.txt")) {
+            walk(Clausewitz.parse(source(path)),entry->{
+                if(entry.key().equals("global_var:xfm_exchange.var:xfm_day")) {
+                    assertInstanceOf(Clausewitz.Atom.class,entry.value(),"The real numeric trigger rejects an inline value/add block");
+                    String token=((Clausewitz.Atom)entry.value()).token();
+                    assertTrue(Set.of("xfmr_book_day1_value","xfmr_book_day2_value").contains(token));
+                    actual.merge(token,1,Integer::sum);
+                }
+            });
+        }
+        assertEquals(java.util.Map.of("xfmr_book_day1_value",2,"xfmr_book_day2_value",2),actual);
+    }
     @Test void riskRequestRequiresTheExactExplicitIsolatedSchema() {
         assertThrows(IllegalArgumentException.class,()->new ControlledFuturesRiskFixture.Request(2,ControlledFuturesRiskFixture.CASE_ID,true));
         assertThrows(IllegalArgumentException.class,()->new ControlledFuturesRiskFixture.Request(3,"derivatives",true));

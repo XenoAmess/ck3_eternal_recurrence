@@ -2,6 +2,14 @@
 
 2026-11-23，machine_id: 4-8e1c2f1861。
 
+## 当前补记：R79原解析失败保留；后继完整金融709项通过
+
+Core53已实际build0。R79被engine拒绝四处fixture日期RHS，原run2／verify2／NOT_RUN；Root操作记录为0 setup／交易控制请求、0日期推进请求、0原生SAVE，不将Game_load等未知世界初始化金融效果填为零。normal_close=null及两个held-session error保留。原typed Game／Host／Job／keeper／allocator0、CAS16383资源空另证资源退出，normal_close_qualified=false不改为通过。
+
+闭场后日期／discovery修复的受影响99项、Python197项（含另测optimized15项）及三源typing分别通过；随后完整金融verify实际709distinct全P／0FES／来源before-after不变、56XML，无过滤或skip。709包含99，不与197／15或前序701相加。外层247.2504184秒与内层Maven246.0227761秒分开记，见[R79原失败及修后证据](r0079-fixture-parser-failure-and-fixes.md)。
+
+CPP改动仅为关闭分支的`(void)family`未使用参数处理。709仅覆盖原金融SOURCE-WINDOW；Native profile三叶未列入该来源清单，不获本次资格，也不据此推断采用先后。Core54未build，Q56／后继Game未RUN，20剧情／SYN4096／整产品／首发仍待。下方701项、Core53未build等较早切点、原R78有限PASS及所有历史失败保持原范围。
+
 ## 当前补记：金融701项完整verify通过；新实机场待验
 
 已保留原生产脚本VM风险反例exit1；修后8项、受影响盘口48项、crisis06两类21项、NoGame195项及optimized13项分别原0。共享首轮75P／4ERROR／0F及typing03／04原失败不改写，不能将各组相加冒称distinct总数。完整金融verify实际 **701个distinct方法全部PASS／0FES**，来源before／after保持一致；外层原wait **0／256.3898331秒**，内层原Maven wait **0／255.1551153秒**，两层耗时分开记录。默认完整verify无测试过滤或skip，保留56份原Surefire XML；不将本篇增量组另加为distinct总数。详见[本轮分层软件证据](risk-and-controlled-crisis-software.md)。

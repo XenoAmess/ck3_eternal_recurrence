@@ -1045,6 +1045,44 @@ final class FuturesFullBookScriptContractTest {
             assertTrue(v.loadLogs.isEmpty());assertFalse(owner.vars.containsKey("xfmcl_s1_d1_recorded"));
         }
     }
+    @Test void syntheticNamedComparisonValuesUseTheFixtureOwnerEvenFromForeignRootAndExchangeScopes() throws IOException {
+        Vm v=loadVm();Node owner=loadOwner(v);v.runGui("xfmcl_setup_gui",owner);
+        owner.put("xfmcl_samples1",4);owner.put("xfmcl_samples2",7);owner.put("xfmcl_last_financial",120);
+        Node foreign=actor(v,"foreign-synthetic-value-root",0);
+        for(Node node:List.of(v.exchange,foreign)) {
+            node.put("xfmcl_samples1",900);node.put("xfmcl_samples2",901);node.put("xfmcl_last_financial",902);
+        }
+        var before=new LinkedHashMap<>(owner.vars);
+        for(Node current:List.of(owner,v.exchange,foreign)) {
+            Frame frame=new Frame(current,null,foreign);
+            assertEquals(BigDecimal.valueOf(5),v.value(v.definition("xfmcl_owner_next_sample1_value"),frame,BigDecimal.ZERO));
+            assertEquals(BigDecimal.valueOf(8),v.value(v.definition("xfmcl_owner_next_sample2_value"),frame,BigDecimal.ZERO));
+            assertEquals(BigDecimal.valueOf(121),v.value(v.definition("xfmcl_owner_next_financial_value"),frame,BigDecimal.ZERO));
+        }
+        assertEquals(before,owner.vars,"Named comparison values are pure, regardless of caller/root");
+    }
+
+    @Test void syntheticNamedObservationComparisonsPreserveBeforeFirstEighthAndAfterWindowDates() throws IOException {
+        for(int count:List.of(2048,4096)) {
+            Vm v=loadVm();Node owner=loadOwner(v);v.runGui("xfmcl_setup_gui",owner);loadObservationStage(v,owner,count);
+            int stage=count==2048?1:2;
+            for(long date:List.of(999L,1000L)) {
+                v.scriptDate=date;v.run("xfmcl_after_finance_effect",v.exchange);
+                assertEquals(0,owner.integer("xfmcl_samples"+stage));assertFalse(owner.vars.containsKey("xfmcl_gap"));
+            }
+            for(int day=1;day<=8;day++) {
+                v.scriptDate=1000+day;v.exchange.put("xfm_day",day);
+                v.run("xfmcl_after_finance_effect",v.exchange);assertEquals(day,owner.integer("xfmcl_samples"+stage));
+                v.run("xfmcl_after_finance_effect",v.exchange);assertEquals(day,owner.integer("xfmcl_samples"+stage));
+            }
+            assertEquals(1,owner.integer("xfmcl_window"+stage+"_ready"));
+            var saved=new LinkedHashMap<>(owner.vars);v.scriptDate=1009;v.exchange.put("xfm_day",9);
+            v.run("xfmcl_after_finance_effect",v.exchange);
+            assertEquals(saved,owner.vars);assertEquals(9,v.exchange.integer("xfm_day"));
+            assertEquals(8,owner.integer("xfmcl_samples"+stage));assertFalse(owner.vars.containsKey("xfmcl_gap"));
+        }
+    }
+
     private static String loadDiagnostic(Vm v,Node owner){
         Map<String,Object> state=new LinkedHashMap<>();state.put("trace",List.copyOf(v.trace));state.put("logs",List.copyOf(v.loadLogs));
         for(Node n:v.nodes.values()){
@@ -1071,7 +1109,7 @@ final class FuturesFullBookScriptContractTest {
         }
         org.xar.ck3.markets.acceptance.FollowupObservationScripts.renderControlledLoad(
             new org.xar.ck3.markets.acceptance.FollowupContracts.ControlledLoadRequest(3,"synthetic-controlled-load",true,List.of(2048,4096))).forEach((path,bytes)->{
-            if(path.startsWith("common/scripted_"))for(Entry entry:Clausewitz.parse(new String(bytes,java.nio.charset.StandardCharsets.UTF_8)).entries())
+            if(path.startsWith("common/scripted_")||path.startsWith("common/script_values/"))for(Entry entry:Clausewitz.parse(new String(bytes,java.nio.charset.StandardCharsets.UTF_8)).entries())
                 assertNull(v.program.putIfAbsent(entry.key(),(Block)entry.value()),entry.key());
         });
         v.rules.addAll(List.of("xfm_capacity_standard","xfm_ai_standard","xfm_ai_issuance_disabled","xfm_futures_disabled","xfm_spot_enabled"));
@@ -1284,6 +1322,38 @@ final class FuturesFullBookScriptContractTest {
         List<Node> slices=v.nodes.values().stream().filter(n->n.type.equals("xfm_futures_position")&&!n.ended
             &&n.ref("xfm_source_position")==source&&n.integer("xfm_fill_receipt_version")==1).toList();
         assertEquals(1,slices.size());return slices.getFirst();
+    }
+
+    @Test void riskDateComparisonsReadTheSameGlobalOwnerWhenRootAndCurrentAreDifferentScopes() throws IOException {
+        Vm v=riskVm(0);Node owner=v.custodian,other=v.node("risk-not-owner","");
+        owner.put("xfmr_seed_day",17);owner.put("xfmr_book_day",17);
+        v.exchange.put("xfmr_book_day",900);other.put("xfmr_book_day",1900);
+        // Current=exchange, previous=another actor and root=another actor: neither is the owner.
+        Frame frame=new Frame(v.exchange,other,other);
+        assertEquals(18,v.integerValue("xfmr_book_day1_value",v.exchange));
+        assertEquals(19,v.integerValue("xfmr_book_day2_value",other));
+        var rendered=org.xar.ck3.markets.acceptance.ControlledFuturesRiskFixture.render(
+            new org.xar.ck3.markets.acceptance.ControlledFuturesRiskFixture.Request(3,"futures-risk-engine-fixture",true));
+        List<Entry> comparisons=new ArrayList<>();
+        java.util.function.Consumer<Block> collect=new java.util.function.Consumer<>() {
+            @Override public void accept(Block block) {
+                for(Entry entry:block.entries()) {
+                    if(entry.key().equals("global_var:xfm_exchange.var:xfm_day"))comparisons.add(entry);
+                    if(entry.value() instanceof Block child)accept(child);
+                }
+            }
+        };
+        for(String path:List.of("common/scripted_triggers/xfmr_guards.txt","common/scripted_effects/xfmr_observe.txt"))
+            collect.accept(Clausewitz.parse(new String(rendered.get(path),java.nio.charset.StandardCharsets.UTF_8)));
+        assertEquals(4,comparisons.size());
+        for(Entry entry:comparisons) {
+            assertInstanceOf(Atom.class,entry.value());String token=atom(entry.value());
+            int day=token.equals("xfmr_book_day1_value")?18:19;
+            assertTrue(Set.of("xfmr_book_day1_value","xfmr_book_day2_value").contains(token));
+            v.exchange.put("xfm_day",day);assertTrue(v.check(entry,frame));
+            v.exchange.put("xfm_day",day-1);assertFalse(v.check(entry,frame));
+            v.exchange.put("xfm_day",day+1);assertFalse(v.check(entry,frame));
+        }
     }
 
     private static Vm vm() throws IOException {

@@ -44,6 +44,16 @@ public final class FixtureEmitter {
     }
 
     public static AcceptanceContracts.Emission emit(Path repository, Path output, String machineId, FollowupContracts.Input input) throws IOException {
+        return emit(repository,output,machineId,input,false);
+    }
+
+    public static AcceptanceContracts.Emission emitCrisis20Discovery(Path repository, Path output, String machineId, FollowupContracts.Input input) throws IOException {
+        if(!(input instanceof FollowupContracts.ControlledCrisis20Request))throw new IllegalArgumentException("discovery requires the exact controlled crisis20 request");
+        return emit(repository,output,machineId,input,true);
+    }
+
+    private static AcceptanceContracts.Emission emit(Path repository, Path output, String machineId, FollowupContracts.Input input, boolean discoveryOnly) throws IOException {
+
         java.util.Objects.requireNonNull(input, "fixture input");
         AcceptanceContracts.require(machineId != null && machineId.matches("[A-Za-z0-9][A-Za-z0-9_-]{1,99}"), "explicit machine identity required");
         Path repo = repository.toRealPath();
@@ -117,7 +127,19 @@ public final class FixtureEmitter {
             Path terminal=repo.resolve("mod_financial_markets/common/scripted_effects/xfm_crisis_progression.txt").toRealPath();
             for(Path actual:List.of(selector,terminal)) if(!actual.startsWith(repo) || Files.size(actual)>32768) throw new IOException("bounded exact production crisis source required");
             Pin selected=pin(selector), completed=pin(terminal);
-            payloads=new LinkedHashMap<>(FollowupObservationScripts.renderControlledCrisis20(crisis,Files.readString(selector)));
+            if(discoveryOnly) {
+                Path guards=repo.resolve("mod_financial_markets/common/scripted_triggers/xfm_crisis_triggers.txt").toRealPath();
+                Path values=repo.resolve("mod_financial_markets/common/script_values/xfm_debt_values.txt").toRealPath();
+                for(Path actual:List.of(guards,values))if(!actual.startsWith(repo)||Files.size(actual)>65536)throw new IOException("bounded discovery predicate source required");
+                Pin guardPin=pin(guards),valuePin=pin(values);
+                payloads=new LinkedHashMap<>(FollowupObservationScripts.renderControlledCrisis20Discovery(crisis,Files.readString(selector),Files.readString(guards)));
+                if(!guardPin.equals(pin(guards))||!valuePin.equals(pin(values)))throw new IOException("discovery predicates changed during emission");
+                producerPins.add(guardPin);producerPins.add(valuePin);
+                payloads.put("_xfmc20_discovery_mode.json",JSON.writeValueAsBytes(Map.ofEntries(
+                    Map.entry("schema","ck3-controlled-crisis20-discovery-v1"),Map.entry("discovery_only",true),Map.entry("read_only_finance",true),
+                    Map.entry("private_namespace","xfmc20d_"),Map.entry("maximum_registry_rows",65536),Map.entry("maximum_candidates",52),
+                    Map.entry("maximum_typed_references",104),Map.entry("per_role_maximum",2),Map.entry("context_count",20),Map.entry("case_credit",false))));
+            } else payloads=new LinkedHashMap<>(FollowupObservationScripts.renderControlledCrisis20(crisis,Files.readString(selector)));
             if(!selected.equals(pin(selector)) || !completed.equals(pin(terminal))) throw new IOException("crisis production source changed during rendering");
             producerPins.add(selected); producerPins.add(completed);
             requestBytes=JSON.writeValueAsBytes(crisis); caseId=crisis.caseId(); markers=crisis.markers();
@@ -142,7 +164,7 @@ public final class FixtureEmitter {
         }
         Manifest manifest = new Manifest("ck3-mod-acceptance-prebuilt-fixture-v1", "financial-markets", caseId, machineId,
                 Instant.now().toString(), destination.toString(), producerPins, contents,
-                new AcceptanceContracts.Receipt(markers, Map.of(), input instanceof FollowupContracts.ControlledFuturesRiskRequest || input instanceof FollowupContracts.ControlledFundingRequest || input instanceof FollowupContracts.ControlledDebtAidNewsRequest || input instanceof FollowupContracts.ControlledCrisis20Request || input instanceof FollowupContracts.ControlledLoadRequest));
+                new AcceptanceContracts.Receipt(markers, Map.of(), !discoveryOnly && (input instanceof FollowupContracts.ControlledFuturesRiskRequest || input instanceof FollowupContracts.ControlledFundingRequest || input instanceof FollowupContracts.ControlledDebtAidNewsRequest || input instanceof FollowupContracts.ControlledCrisis20Request || input instanceof FollowupContracts.ControlledLoadRequest)));
         Files.write(manifestPath, JSON.writerWithDefaultPrettyPrinter().writeValueAsBytes(manifest), StandardOpenOption.CREATE_NEW);
         return new AcceptanceContracts.Emission(destination.toString(), pin(manifestPath), false, "NOT_RUN");
     }

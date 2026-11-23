@@ -109,4 +109,35 @@ final class ControlledCrisis20FixtureTest {
             } else assertNotEquals(0,p.exitValue());
         }
     }
+    @Test void discoveryOptInEmitsOnlyPrivateReadonlyScriptsAndKeepsDefaultRenderUnchanged() throws Exception {
+        Path repo=repository();String selector=Files.readString(repo.resolve("mod_financial_markets/common/scripted_effects/xfm_crisis_scenes.txt"));
+        String guards=Files.readString(repo.resolve("mod_financial_markets/common/scripted_triggers/xfm_crisis_triggers.txt"));
+        var before=ControlledCrisis20Fixture.render(request(),selector);
+        var files=ControlledCrisis20Fixture.renderDiscovery(request(),selector,guards);
+        var after=ControlledCrisis20Fixture.render(request(),selector);
+        assertEquals(before.keySet(),after.keySet());before.forEach((name,bytes)->assertArrayEquals(bytes,after.get(name)));
+        assertFalse(files.containsKey("common/scripted_effects/xfmc20_seed.txt"));assertFalse(files.containsKey("common/scripted_effects/xfmc20_dispatch.txt"));
+        assertFalse(files.containsKey("common/story_cycles/xfmc20_sources.txt"));
+        for(var file:files.entrySet())if(file.getKey().startsWith("common/")&&file.getKey().endsWith(".txt"))walk(Clausewitz.parse(new String(file.getValue(),StandardCharsets.UTF_8)),e->{
+            assertFalse(Set.of("create_story","set_global_variable","change_global_variable","death","add_gold","remove_short_term_gold","add_stress","create_character","send_interface_toast","trigger_event","effect_group").contains(e.key()),file.getKey()+e.key());
+            if(e.key().endsWith("_effect"))assertTrue(e.key().startsWith("xfmc20d_"),file.getKey()+e.key());
+            if(Set.of("set_variable","change_variable").contains(e.key())) {
+                var name=((Clausewitz.Atom)((Clausewitz.Block)e.value()).named("name").getFirst().value()).token();assertTrue(name.startsWith("xfmc20d_"));
+            }
+        });
+        var original=Clausewitz.parse(guards).block("xfm_crisis_terminal_review_trigger").named("var:xfm_holder").stream()
+            .filter(e->e.value()instanceof Clausewitz.Block b&&!b.named("any_in_list").isEmpty()).findFirst().orElseThrow();
+        var derived=Clausewitz.parse(new String(files.get("common/scripted_triggers/xfmc20d_guards.txt"),StandardCharsets.UTF_8))
+            .block("xfmc20d_all_wallets_empty_trigger").named("var:xfm_holder").getFirst();
+        assertEquals(original,derived,"Original holder/prev/list AST must remain exact");
+        Path input=temporary.resolve("discovery-request.json");Files.write(input,FixtureEmitter.JSON.writeValueAsBytes(request()));
+        assertEquals(0,new AcceptanceCommand().run("emit-crisis20-discovery","--repo-root",repo.toString(),"--output",temporary.resolve("discover").toString(),"--machine-id","authored-discovery","--inputs",input.toString()));
+        var manifest=FixtureEmitter.JSON.readTree(Files.readAllBytes(temporary.resolve("discover.fixture.json")));
+        assertEquals(12,manifest.path("producer_source_pins").size());assertFalse(manifest.path("receipt").path("fixture_contains_business_effects").booleanValue());
+        assertTrue(manifest.path("files").has("_xfmc20_discovery_mode.json"));
+        Path wrong=temporary.resolve("wrong-discovery.json");Files.write(wrong,FixtureEmitter.JSON.writeValueAsBytes(new FollowupContracts.ControlledFundingRequest(3,"perpetual-funding-engine-fixture",true)));
+        assertEquals(1,new AcceptanceCommand().run("emit-crisis20-discovery","--repo-root",repo.toString(),"--output",temporary.resolve("wrong-discover").toString(),"--machine-id","authored-discovery","--inputs",wrong.toString()));
+        assertFalse(Files.exists(temporary.resolve("wrong-discover")));
+    }
+
 }

@@ -603,7 +603,7 @@ static Arm ArmDateSentinelImplV1(DateSentinelStateV1 &s,const old::TacticalDaily
 #if (defined(XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1) && XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1) || (defined(XAR_CK3_ENABLE_121003_26785313_CCC_TRANSITION_V1) && XAR_CK3_ENABLE_121003_26785313_CCC_TRANSITION_V1)
   if(fixed){g_ted_fixed.runtime=&s;g_ted_fixed.active=true;g_ted_fixed.stage=*fixed;g_ted_fixed.family=family;}
 #else
-  (void)fixed;
+  (void)fixed;(void)family;
 #endif
   s.armed_unix_ms=wall;s.armed_monotonic_ms=mono;s.owner_tls_context=tls;
   s.owner_thread_id.store(GetCurrentThreadId(),std::memory_order_release);

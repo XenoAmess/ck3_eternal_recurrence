@@ -1911,6 +1911,15 @@ public final class FollowupObservationScripts {
         return Map.copyOf(files);
     }
 
+    public static Map<String,byte[]> renderControlledCrisis20Discovery(FollowupContracts.ControlledCrisis20Request request, String selectorSource, String guardSource) {
+        Map<String,byte[]> files=new LinkedHashMap<>(ControlledCrisis20Fixture.renderDiscovery(request,selectorSource,guardSource));
+        files.put("common/story_cycles/xfmc20_retained_observers.txt",("\ufeff"+passiveCompatibilityStories("none")
+            +"xfma_market_evolution_e6_observer = { visible = no }\n"
+            +"xfma_market_evolution_e7_observer = { visible = no }\n"
+            +"xfma_market_evolution_e8_observer = { visible = no }\n").getBytes(StandardCharsets.UTF_8));
+        return Map.copyOf(files);
+    }
+
     public static Map<String, byte[]> renderControlledDebtAidNews(FollowupContracts.ControlledDebtAidNewsRequest request) {
         java.util.Objects.requireNonNull(request, "explicit controlled debt request");
         Map<String, String> scripts = new LinkedHashMap<>();
@@ -2161,6 +2170,13 @@ public final class FollowupObservationScripts {
         java.util.Objects.requireNonNull(request, "explicit synthetic load request");
         Map<String, String> scripts = new LinkedHashMap<>();
         scripts.put("descriptor.mod", "name=\"SYNTHETIC Financial market controlled load\"\nversion=\"1\"\nsupported_version=\"1.21.*\"\n");
+        scripts.put("common/script_values/xfmcl_observation_values.txt", """
+                # Every comparison reads the registered fixture human explicitly;
+                # RHS scope may be the exchange story or a different callback root.
+                xfmcl_owner_next_sample1_value = { value = global_var:xfmcl_fixture_owner.var:xfmcl_samples1 add = 1 }
+                xfmcl_owner_next_sample2_value = { value = global_var:xfmcl_fixture_owner.var:xfmcl_samples2 add = 1 }
+                xfmcl_owner_next_financial_value = { value = global_var:xfmcl_fixture_owner.var:xfmcl_last_financial add = 1 }
+                """);
         scripts.put("common/on_action/xfmcl_after_finance.txt", """
                 xfm_finance_daily_observation_on_action = { on_actions = { xfmcl_after_finance_on_action } }
                 xfmcl_after_finance_on_action = { effect = { xfmcl_after_finance_effect = yes } }
@@ -2484,8 +2500,8 @@ public final class FollowupObservationScripts {
                     limit = {
                      has_variable = xfmcl_last_financial
                      global_var:xfm_exchange = { has_variable = xfm_day }
-                     var:xfmcl_offset = { value = var:xfmcl_samples$STAGE$ add = 1 }
-                     global_var:xfm_exchange.var:xfm_day = { value = var:xfmcl_last_financial add = 1 }
+                     var:xfmcl_offset = xfmcl_owner_next_sample$STAGE$_value
+                     global_var:xfm_exchange.var:xfm_day = xfmcl_owner_next_financial_value
                      var:xfmcl_count = $TARGET$
                      global_var:xfm_exchange = { var:xfm_active_coin_count = $TARGET$ var:xfm_resident_coin_count = $TARGET$ var:xfm_pending_coin_count = 0 }
                     }

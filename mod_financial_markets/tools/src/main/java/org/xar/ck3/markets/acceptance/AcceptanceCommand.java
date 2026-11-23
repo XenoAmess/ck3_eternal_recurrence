@@ -13,7 +13,7 @@ import java.util.Set;
 public final class AcceptanceCommand implements QuarkusApplication {
     @Override public int run(String... args) {
         try {
-            if (args.length != 9 || !args[0].equals("emit")) throw new IllegalArgumentException("expected emit --repo-root --output --machine-id --inputs");
+            if (args.length != 9 || !(args[0].equals("emit") || args[0].equals("emit-crisis20-discovery"))) throw new IllegalArgumentException("expected emit --repo-root --output --machine-id --inputs");
             Map<String, String> options = new LinkedHashMap<>();
             Set<String> allowed = Set.of("--repo-root", "--output", "--machine-id", "--inputs");
             for (int i = 1; i < args.length; i += 2) {
@@ -21,8 +21,10 @@ public final class AcceptanceCommand implements QuarkusApplication {
                     throw new IllegalArgumentException("invalid or duplicate fixture option");
             }
             if (!options.keySet().equals(allowed)) throw new IllegalArgumentException("all four fixture options required");
-            var result = FixtureEmitter.emit(Path.of(options.get("--repo-root")), Path.of(options.get("--output")),
-                    options.get("--machine-id"), FixtureEmitter.readInput(Path.of(options.get("--inputs"))));
+            var input=FixtureEmitter.readInput(Path.of(options.get("--inputs")));
+            var result = args[0].equals("emit-crisis20-discovery")
+                ? FixtureEmitter.emitCrisis20Discovery(Path.of(options.get("--repo-root")),Path.of(options.get("--output")),options.get("--machine-id"),input)
+                : FixtureEmitter.emit(Path.of(options.get("--repo-root")),Path.of(options.get("--output")),options.get("--machine-id"),input);
             System.out.println(FixtureEmitter.JSON.writerWithDefaultPrettyPrinter().writeValueAsString(result));
             return 0;
         } catch (IOException | IllegalArgumentException error) {

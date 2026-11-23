@@ -356,7 +356,7 @@ def _prepare_fixture_case(context):
         _ndd_inputs(json_object(context))
     crisis20 = _crisis20_enabled(json_object(context))
     if crisis20:
-        _c20_inputs(json_object(context))
+        _c20_inputs(json_object(context), allow_discovery_preflight=True)
     continuation21 = _market_evolution_continuation_enabled(json_object(context))
     if continuation21:
         _mec_inputs(json_object(context))
@@ -2416,7 +2416,7 @@ def _run_fixture_case(context, client):
     config = compiled['config']
     crisis20 = _crisis20_enabled(json_object(context))
     if crisis20:
-        _c20_inputs(json_object(context))
+        _c20_inputs(json_object(context), allow_discovery_preflight=True)
     continuation21 = _market_evolution_continuation_enabled(json_object(context))
     if continuation21:
         _mec_inputs(json_object(context))
@@ -4844,11 +4844,15 @@ def _c20_request(value: object) -> JsonObject:
     return row
 
 
-def _c20_inputs(context: JsonObject) -> JsonObject:
+def _c20_inputs(context: JsonObject, *, allow_discovery_preflight: bool = False) -> JsonObject:
     if not _crisis20_enabled(context):
         raise ValueError('Crisis20 inputs are exclusive to their exact case')
     values = object_field(object_field(context,'case_inputs'),'controlled_crisis20')
-    if set(values) != {'schema','request','source_archive'} or values.get('schema') != 'ck3-controlled-crisis20-input-v1':
+    discovery=values.get('discovery_only') is True
+    if 'discovery_only' in values and not discovery:raise ValueError('Literal true explicit discovery opt-in only')
+    expected={'schema','request','source_archive'} | ({'discovery_only'} if discovery else set())
+    if discovery and not allow_discovery_preflight:raise ValueError('Readonly discovery cannot grant normal crisis20 checkpoint or terminal credit')
+    if set(values) != expected or values.get('schema') != 'ck3-controlled-crisis20-input-v1':
         raise ValueError('Closed source archive and actual controlled request binding required')
     request, request_pin = _c20_json(values['request'],128*1024)
     _c20_request(request)
@@ -4862,8 +4866,17 @@ def _c20_inputs(context: JsonObject) -> JsonObject:
     manifest, _ = _c20_json(object_field(context,'case_inputs')['prebuilt_fixture_manifest'])
     if (manifest.get('case_id') != CRISIS20_CASE or manifest.get('product') != 'financial-markets'
             or manifest.get('machine_id') != runtime.get('machine_id')
-            or object_field(manifest,'receipt').get('fixture_contains_business_effects') is not True):
+            or object_field(manifest,'receipt').get('fixture_contains_business_effects') is not (not discovery)):
         raise ValueError('Actual newly emitted controlled fixture manifest required')
+    manifest_files=object_field(manifest,'files');fixture_root=Path(text_field(manifest,'fixture_root')).resolve()
+    mode_path=fixture_root/'_xfmc20_discovery_mode.json'
+    if discovery:
+        mode_entry=object_field(manifest_files,'_xfmc20_discovery_mode.json')
+        actual_mode=pin(mode_path)
+        if actual_mode['bytes']>4096 or any(actual_mode[k]!=mode_entry.get(k)for k in ('bytes','sha256')) or read_json(mode_path)!={'schema': 'ck3-controlled-crisis20-discovery-v1', 'discovery_only': True, 'read_only_finance': True, 'private_namespace': 'xfmc20d_', 'maximum_registry_rows': 65536, 'maximum_candidates': 52, 'maximum_typed_references': 104, 'per_role_maximum': 2, 'context_count': 20, 'case_credit': False}:
+            raise ValueError('Exact immutable discovery-only sidecar required; never infer mode from GUI enabled')
+    elif '_xfmc20_discovery_mode.json' in manifest_files:
+        raise ValueError('Discovery fixture cannot masquerade as a normal crisis20 terminal fixture')
     original = object_field(object_field(manifest,'files'),'_xfma_request.json')
     root = Path(text_field(manifest,'fixture_root')).resolve()
     request_path = root / '_xfma_request.json'
@@ -4876,13 +4889,15 @@ def _c20_inputs(context: JsonObject) -> JsonObject:
     sources = manifest.get('producer_source_pins')
     if not isinstance(sources,list):
         raise ValueError('Actual producer closure required')
-    for name in ('xfm_crisis_scenes.txt','xfm_crisis_progression.txt'):
-        source_path = Path(text_field(context,'repo_root')).resolve() / ('mod_financial_markets/common/scripted_effects/'+name)
+    required=['common/scripted_effects/xfm_crisis_scenes.txt','common/scripted_effects/xfm_crisis_progression.txt']
+    if discovery:required+=['common/scripted_triggers/xfm_crisis_triggers.txt','common/script_values/xfm_debt_values.txt']
+    for relative in required:
+        source_path = Path(text_field(context,'repo_root')).resolve() / ('mod_financial_markets/'+relative)
         found = [file_pin(p) for p in sources if Path(file_pin(p)['path']).resolve() == source_path]
-        staged = pin(Path(text_field(object_field(context,'case_inputs'),'product_dir')) / ('common/scripted_effects/'+name))
+        staged = pin(Path(text_field(object_field(context,'case_inputs'),'product_dir')) / relative)
         if len(found) != 1 or any(pin(source_path)[k] != found[0][k] or staged[k] != found[0][k] for k in ('bytes','sha256')):
             raise ValueError('Selected runtime terminal/selector differ from source-bound emission')
-    return json_object({'request':request,'source_archive':values['source_archive']})
+    return json_object({'request':request,'source_archive':values['source_archive'],**({'discovery_only':True} if discovery else {})})
 
 
 def crisis20_plan_matches(context: object, steps: object, name: object, timeout: object) -> bool:

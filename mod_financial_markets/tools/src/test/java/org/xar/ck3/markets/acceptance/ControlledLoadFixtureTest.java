@@ -29,7 +29,7 @@ final class ControlledLoadFixtureTest {
         assertTrue(manifest.path("receipt").path("fixture_contains_business_effects").booleanValue());
         assertEquals(7,manifest.path("producer_source_pins").size());
         assertEquals(4,manifest.path("receipt").path("required_markers").size());
-        assertEquals(12,manifest.path("files").size());
+        assertEquals(13,manifest.path("files").size());
         assertTrue(manifest.path("files").has("descriptor.mod"));
         assertFalse(emitted.gameStarted());assertEquals("NOT_RUN",emitted.businessAcceptance());
         assertEquals(input(),FixtureEmitter.readInput(Path.of(emitted.fixture()).resolve("_xfma_request.json")));
@@ -126,7 +126,7 @@ final class ControlledLoadFixtureTest {
     }
     @Test void emittedScriptsParseAndOnlyExplicitGenesisAndSyntheticListingMayMutateBusinessState() {
         var payload=FollowupObservationScripts.renderControlledLoad(input());
-        assertEquals(10,payload.size());
+        assertEquals(11,payload.size());
         assertTrue(payload.containsKey("descriptor.mod"));
         payload.forEach((path,bytes)->{
             assertArrayEquals(new byte[]{(byte)0xef,(byte)0xbb,(byte)0xbf},java.util.Arrays.copyOf(bytes,3));
@@ -138,6 +138,19 @@ final class ControlledLoadFixtureTest {
         });
         String observer=new String(payload.get("common/scripted_effects/xfmcl_observe.txt"),StandardCharsets.UTF_8);
         var roots=Clausewitz.parse(observer);assertEquals(3,roots.entries().size());
+        walk(roots,e->{
+            if(e.key().startsWith("var:")||e.key().startsWith("global_var:"))
+                assertFalse(e.value() instanceof Clausewitz.Block b && !b.named("value").isEmpty(),
+                    "Engine numeric trigger RHS must use a named script_value, not a value/add trigger block: "+e.key());
+        });
+        var values=Clausewitz.parse(new String(payload.get("common/script_values/xfmcl_observation_values.txt"),StandardCharsets.UTF_8));
+        assertEquals(3,values.entries().size());
+        for(String name:List.of("xfmcl_owner_next_sample1_value","xfmcl_owner_next_sample2_value","xfmcl_owner_next_financial_value")) {
+            var value=values.block(name);assertEquals(2,value.entries().size());
+            assertTrue(((Clausewitz.Atom)value.named("value").getFirst().value()).token().startsWith("global_var:xfmcl_fixture_owner.var:"));
+            assertEquals("1",((Clausewitz.Atom)value.named("add").getFirst().value()).token());
+        }
+
         walk(roots,e->{if(Set.of("set_variable","change_variable").contains(e.key()))
             assertTrue(((Clausewitz.Atom)((Clausewitz.Block)e.value()).named("name").getFirst().value()).token().startsWith("xfmcl_"));
             assertFalse(Set.of("add_gold","create_story","create_character","set_game_rule").contains(e.key()));});
