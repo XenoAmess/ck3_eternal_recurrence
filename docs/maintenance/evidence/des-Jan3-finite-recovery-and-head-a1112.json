@@ -1,0 +1,153 @@
+{
+  "schema": "xar.des.annual-Jan3-finite-recovery-and-head-following.maintenance-index.v1",
+  "at_utc": "2026-11-23T05:22:18.706669+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "assessment": {
+    "annual_living_member_recovery": "FINITE_PASS",
+    "annual_actual_own_head_following": "FINITE_PASS",
+    "Jan1_observation": "NOT_OBSERVED_AT_JAN1 remains unchanged historical evidence",
+    "source_bug_fix": false
+  },
+  "finite_facts": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-oldsave-inspection-a942\\annual-Jan3-finite-business-facts-a1112.json",
+    "bytes": 2367,
+    "sha256": "1e32de0f4aba4fd4cc2ff4017da8a38e4f7ec77e405400527ad54f6a7a7eb1c0"
+  },
+  "actual_scene": {
+    "root": "D:\\ck3-state\\upgrade-20261118\\des-annual-jan1-boundary-probe-current267-profile-a1098",
+    "same_product71": true,
+    "runtime_patch_or_hot_replace": false,
+    "new_natural_days": 2,
+    "receipts": [
+      {
+        "summary": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-jan1-boundary-probe-current267-profile-a1098\\operations\\advance-day01\\result\\summary.json",
+          "bytes": 37351,
+          "sha256": "68137555d273d6619d67cb974fb5e064cc39970649a0ae4e00602a7e48ab0d55"
+        },
+        "before_raw": 53146920,
+        "after_raw": 53146944,
+        "original_request": "date-advance-0a3902cd62eb48b79aa161a1d74afaff",
+        "original_operation": "date-op-c4baacd3e0db4abdab2968beab9e23a6"
+      },
+      {
+        "summary": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-jan1-boundary-probe-current267-profile-a1098\\operations\\advance-day02\\result\\summary.json",
+          "bytes": 32250,
+          "sha256": "9ca541e4345972ce52b48dddbe52424680a05a69c6af3fa5fa8557744ea2060f"
+        },
+        "before_raw": 53146944,
+        "after_raw": 53146968,
+        "original_request": "date-advance-787c1f87b2ab4e32821bb28d8e91c6c3",
+        "original_operation": "date-op-2a7d76222242459ab3ebea710b004d43"
+      }
+    ],
+    "same_actor": 36423,
+    "paused_map_alive": true,
+    "Save_calls": 1,
+    "checkpoint_summary": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-jan1-boundary-probe-current267-profile-a1098\\operations\\checkpoint-boundary-day2\\result\\summary.json",
+      "bytes": 16440,
+      "sha256": "9f2e7acb6deb6740ced3276fe6867997d3d20c1ab1abfa7c854387b94aef1b6a"
+    },
+    "actual_archive": {
+      "reference": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-jan1-boundary-probe-current267-profile-a1098\\checkpoints\\des-annual-boundary-day2.ck3",
+        "bytes": 172719005,
+        "sha256": "f7d1797e4c427dbae5bf11371bd5dffae89ad7fd4abe7d4b025f5a49d8f691e0"
+      },
+      "identity": {
+        "bytes": 172719005,
+        "file_id": "281474981932765",
+        "mtime_ns": "1795410954300091900"
+      }
+    },
+    "changed_material": true,
+    "archive_is_copy": true,
+    "Native_physical_save_confirmed": false,
+    "creator_end": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-jan1-boundary-probe-current267-profile-a1098\\creator-end.json",
+      "bytes": 619,
+      "sha256": "0da05d50dd8076374938b4673c3fa2f1f6f0d33aad10dd1e234618a598aee90f"
+    },
+    "terminal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-jan1-boundary-probe-current267-profile-a1098\\owner\\terminal.json",
+      "bytes": 1069,
+      "sha256": "9c691ed23e14292667bb2fb880e263a62c4b7edbb57248ee43a917d5de190c21"
+    },
+    "Game_PID": 14548,
+    "creator_PID": 20448,
+    "actual_exit": "NATURAL_EXIT",
+    "creator_Game_exit_code": 0,
+    "Job_active": 0,
+    "cleanup": true
+  },
+  "actual_Saved_readers": {
+    "whole_dynasty": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-oldsave-inspection-a942\\whole-dynasty-after-Jan3-a1110\\inspection.report.json",
+      "bytes": 23957,
+      "sha256": "ebd539e09e0ff85d51ec785f52c654f26940cf58e749f7b7b777ef67ac0304c0"
+    },
+    "full_roles": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-oldsave-inspection-a942\\annual-Jan3-actual-roles-pruned-houses-a1111\\inspection.report.json",
+      "bytes": 918620,
+      "sha256": "1365f1a66215a036dc03aaf051467df199795b2344e4b11915163e097447149d"
+    },
+    "decoder_exit": 0,
+    "full_EOF": true,
+    "native_physical_identity_fullSHA_unchanged_by_readers": true,
+    "members": 56,
+    "all_main_House16113": true,
+    "original_outliers_now_main": [
+      {
+        "actorId": "36423",
+        "beforeHouse": "16115",
+        "afterHouse": "16113"
+      },
+      {
+        "actorId": "77332",
+        "beforeHouse": "16114",
+        "afterHouse": "16113"
+      }
+    ],
+    "empty_old_Houses_absent": [
+      "16114",
+      "16115"
+    ],
+    "Rite150_head": "36423",
+    "MainHouse16113_head": "36423",
+    "Dynast_observed_separately": "36423",
+    "other_Dynasty15399_actor77330_and_Houses16111_16112": "UNCHANGED"
+  },
+  "failed_old_House_requirement": {
+    "original": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-oldsave-inspection-a942\\annual-Jan3-actual-member-head-roles-a1110\\inspection.exit.json",
+      "bytes": 3756,
+      "sha256": "eaba28b9abde880764b03ab566add23d624e5ce3a872a9f9fe78d78a6728176d"
+    },
+    "reason": "Request required old empty Houses16114 and16115; actual full census excluded these pruned records. Not a product runtime error.",
+    "corrected_request": "Only HOUSE record mandatory changed to optional, with independent required assertions for surviving control/Main Houses16111/16112/16113; actual actors and Rite still asserted.",
+    "new_actual_roles_report_exit": 0
+  },
+  "timing_and_order_limit": "Jan1 paused checkpoint preceded observed completed state. The Jan3 finite Saved outcome proves recovery and head alignment in this run; no unique callback timestamp, strict sibling completion-order guarantee or general scheduling guarantee is asserted.",
+  "still_not_qualified": [
+    "NativeCreate",
+    "instant_title_callback",
+    "wholeproduct",
+    "fullSDK",
+    "measured_CPU_FPS_speedup",
+    "cold_persistence_of_new_Jan3_Save",
+    "Workshop_release"
+  ],
+  "previous_source_review": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-des-annual-Jan1-source-review-a1097\\source-review.json",
+    "bytes": 28419,
+    "sha256": "04ce4e4bdcf134ba38b7ffcd9fe0165c65040fd1b388bdcb1d42ff3be1dc1e52"
+  },
+  "counts_unchanged": {
+    "uploaded": "12/17",
+    "strict": "9/17",
+    "DES_published": false
+  },
+  "this_unit": "Small existing JSON originals and normal docs Git only; no Save/OS/Game/SDK access, tests, Maven, package, JAR copying, SourceA/tag/version or Workshop changes."
+}
