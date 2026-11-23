@@ -1,5 +1,7 @@
 # 期货与虚拟货币市场
 
+[Steam 创意工坊：0.1.0-alpha.1](https://steamcommunity.com/sharedfiles/filedetails/?id=3844765196) · 首次公开 Alpha，完整实机与规模验收仍在推进。
+
 一个独立 CK3 Mod，共用账本，包含虚拟货币现货与期货两个内部模块。面向 CK3 1.21.0。
 
 - [综合设计](../docs/design/futures-and-virtual-currency-markets.md)

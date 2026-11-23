@@ -2,6 +2,10 @@
 
 2026-11-23，machine_id: 4-8e1c2f1861。
 
+## Alpha 0.1.0-alpha.1 已实际发布
+
+[Workshop 3844765196](https://steamcommunity.com/sharedfiles/filedetails/?id=3844765196)已首次真实发布，Create1／Submit1，公开标题／说明／完整Notes精确回读，订阅下载236文件全exact；外层descriptor指真实cache，Steam已恢复离线，未改播放集／未启动Game。Source4c343da7和指向它的annotated tag均已push，见[首版记录](../../docs/release-changelogs/financial-markets/0.1.0-alpha.1.md)。Alpha交付完成，20场景／4096／长期性能／完整产品验收继续，原失败及下方软件时间切点不改。
+
 ## 当前补记：发现v2完整软件713项通过，新实机仍待
 
 v2与optionalclaim后完整金融verify实际713distinct全P／0FES／来源不变，外层244.6288915秒、内层Maven243.2234853秒；独立新package输出，旧50JAR身份／字节保持。原testCompile1保留，修后受影响43项P；Python198、新matcher10、Generic typing及optimized16分别有原结果，16包含在198内，不与旧14／709或完整713相加，ResourceWarnings和annotation notes不抹去。

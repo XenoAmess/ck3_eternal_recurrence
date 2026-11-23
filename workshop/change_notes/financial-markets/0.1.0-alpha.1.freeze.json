@@ -1,0 +1,20 @@
+{
+  "schema": "ck3-workshop-complete-change-notes-freeze-v1",
+  "product": "financial-markets",
+  "version": "0.1.0-alpha.1",
+  "workshop_item_id": "3844765196",
+  "initial_baseline": true,
+  "previous_public_version": null,
+  "source_tag": "financial-markets-v0.1.0-alpha.1",
+  "source_commit": "4c343da70c8747ecdde1d6cb1b4b9f11dc0d8dfd",
+  "file": "workshop/change_notes/financial-markets/0.1.0-alpha.1.txt",
+  "bytes": 3368,
+  "characters": 1268,
+  "lines": 29,
+  "sha256": "7ca4b6458260aafd5f17763789796b48b8db6444dc94d383322e9f67217318cc",
+  "normalized_public_characters": 1267,
+  "normalized_public_lines": 29,
+  "normalized_public_sha256": "a438c93d9abb97feced8da44308a36b0346ea2d6dd8e1fff316100231a6e1d6d",
+  "actual_public_changelog_entry_id": "1795443634",
+  "actual_full_public_notes_exact": true
+}

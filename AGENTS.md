@@ -16,7 +16,7 @@ CCC1.0.2／canonical3804807463 已完成当前 Florin 新 22 文件的加载差�
 
 ## 2026-11-23 用户明确：立即发布金融市场Alpha，交还本机试玩
 
-用户明确：“现在发布一个alpha版本到steam，我想玩。”已授权本独立产品首次Alpha发布，版本`0.1.0-alpha.1`；完整20剧情／4096规模／性能与整产品验收仍待，不以Alpha上传改写资格。使用既有236文件allowlist生产包，真实Create/Submit、下载及公开回读各据实际记录；不能借用其他产品ID。
+用户明确：“现在发布一个alpha版本到steam，我想玩。”金融市场`0.1.0-alpha.1`已于2026-11-23T14:20:34Z实际首次公开发布到[3844765196](https://steamcommunity.com/sharedfiles/filedetails/?id=3844765196)，Create／Submit均ER1。Source`4c343da70c8747ecdde1d6cb1b4b9f11dc0d8dfd`／tag`financial-markets-v0.1.0-alpha.1`保持；236文件真实下载与完整标题／正文／Notes精确回读通过，Steam已恢复离线。完整20剧情／4096规模／性能与整产品验收仍待，不以Alpha上传改写资格；后续只更新同一条目，不重复创建。
 
 本组`machine_id: 4-8e1c2f1861`后继CK3实机场次暂停，完成上传后供用户自行试玩，不启动、关闭或注入用户CK3。已有R82正常退出及CAS16438资源空保持。必要Steam短上线发布后恢复离线，全程后台、不抢焦点；其他机器任务不据此暂停。
 

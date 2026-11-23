@@ -151,6 +151,15 @@
       "builder": "mod_religious_ritual_fusion/tools/pom.xml",
       "release_flags": ["--output", "{new-output}", "--revision", "{source-commit}", "--git-tag", "{matching-product-tag}", "--workshop-item-id", "3826756673", "--machine-id", "{actual-machine-id}"],
       "publication": "0.1.0 Alpha; public same-item Submit EResult1 on 2026-10-25T08:02:19Z. Public metadata, full Notes, six screenshots, cover and compatibility sidebar verified. Real Steam cache download/load closure pending. Canonical Java/Quarkus allowlist a03 / publish1 tag preserved."
+    },
+    {
+      "key": "financial-markets",
+      "directory": "mod_financial_markets",
+      "workshop_item_id": "3844765196",
+      "forbidden_upstream_ids": [],
+      "builder": "mod_financial_markets/tools/pom.xml",
+      "release_flags": ["build", "--source", "mod_financial_markets", "--output", "{new-output}", "--revision", "{source-commit}"],
+      "publication": "0.1.0-alpha.1 initial public playtest, CreateItem and SubmitItemUpdate EResult1 on 2026-11-23. Public title, description and full Change Notes exact; subscribed real Steam cache236 files exact and Steam restored offline. Full engine scene, capacity and performance acceptance remains pending; no cache Game launch claimed."
     }
   ]
 }

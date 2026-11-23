@@ -1,0 +1,202 @@
+{
+  "schema": "xfm.release-evidence.financial-markets.v1",
+  "machine_id": "4-8e1c2f1861",
+  "product": "financial-markets",
+  "version": "0.1.0-alpha.1",
+  "release_kind": "initial_alpha_baseline",
+  "previous_public_release": null,
+  "Workshop": {
+    "item_id": "3844765196",
+    "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3844765196",
+    "public_title": "期货市场与虚拟货币市场 / Financial Markets [Alpha]",
+    "owner": "76561198273714027",
+    "creator_app_id": 1158310,
+    "consumer_app_id": 1158310,
+    "visibility": 0,
+    "tags": [
+      "Gameplay",
+      "Events",
+      "1.21 'Florin'"
+    ],
+    "submitted_at_utc": "2026-11-23T14:20:34.627041+00:00",
+    "actual_Create_calls": 1,
+    "actual_Submit_calls": 1,
+    "canonical_publication_receipt": {
+      "path": "C:\\workspace\\ck3-market-alpha-20261123\\CONTENT-CREATE.receipt.json",
+      "bytes": 679,
+      "sha256": "b45f1fa5acaeab9ffd287550bfd89a540968df473a1f41674ede8e9ea7794b50"
+    },
+    "public_raw_API": {
+      "path": "C:\\workspace\\ck3-market-alpha-20261123\\public-readback01\\public_item_api_raw.json",
+      "bytes": 3708,
+      "sha256": "2271517fcf476af249d136547ec42886ec19c1098225b1702b12558d84b35007"
+    },
+    "full_public_readback": {
+      "path": "C:\\workspace\\ck3-market-alpha-20261123\\public-readback01\\verification.json",
+      "bytes": 1005,
+      "sha256": "547945a6f14f06ccfbfb9930640ff7f2af40fa01816c8390015a869616d4b52b"
+    },
+    "title_exact": true,
+    "description_exact": true,
+    "full_Notes_exact": true,
+    "changelog_entry_id": "1795443634",
+    "normalized_full_Notes_characters": 1267,
+    "normalized_full_Notes_lines": 29,
+    "normalized_full_Notes_sha256": "a438c93d9abb97feced8da44308a36b0346ea2d6dd8e1fff316100231a6e1d6d"
+  },
+  "source": {
+    "commit": "4c343da70c8747ecdde1d6cb1b4b9f11dc0d8dfd",
+    "commit_pushed_owner_verified": true,
+    "tag": "financial-markets-v0.1.0-alpha.1",
+    "annotated_tag_created_locally_owner_verified": true,
+    "tag_points_to_commit": "4c343da70c8747ecdde1d6cb1b4b9f11dc0d8dfd",
+    "original_closed_receipt_tag_created_yet": false,
+    "tag_remote_push_at_document_cut": "completed by ordinary push;owner verified at2026-11-23 14:31 UTC",
+    "tag_update_provenance": "Owner verified annotated creation and actual ordinary push after immutable closed publication receipt;no new Git query by this document author."
+  },
+  "compatibility": {
+    "descriptor": {
+      "path": "C:/workspace/ck3_eternal_recurrence/mod_financial_markets/descriptor.mod",
+      "bytes": 144,
+      "sha256": "82675252327187f6229a94253c2a7b49363a1bce2228abcd5aa394b740f79f9a"
+    },
+    "supported_version": "1.21.*",
+    "actual_engine_evidence_scope": {
+      "version": "1.21.0",
+      "steam_build": "26622941",
+      "exact_family": "2F2B",
+      "machine_id": "4-8e1c2f1861"
+    },
+    "other_specific_builds_or_Mod_combinations_not_individually_qualified": true
+  },
+  "runtime_delivery": {
+    "staging_manifest": {
+      "path": "C:\\workspace\\ck3-market-alpha-20261123\\staging01\\manifest.json",
+      "bytes": 41814,
+      "sha256": "69a504421bb2f5e24be09268b2ca83bbcce36b172ad6edcfe41a6d69f4474d7c"
+    },
+    "actual_Steam_download_verification": {
+      "path": "C:\\workspace\\ck3-market-alpha-20261123\\actual-Steam-cache-exact236.actual.json",
+      "bytes": 83196,
+      "sha256": "4f9bf67922cd94e2fe8661b25ff792cc31e231705f3ccea6bde8c5468950c8aa"
+    },
+    "actual_Subscribe_calls": 1,
+    "actual_Download_calls": 1,
+    "Subscribe_original_operation": {
+      "wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\SUBSCRIBE-financial-alpha-actual01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1242,
+        "sha256": "ccd4c2257c5d5dcefedee102a2ec62f1706679cb940479f6ea787b90bd401904"
+      },
+      "elapsed_seconds": 0.7176371999958064,
+      "returncode": 0
+    },
+    "Download_original_operation": {
+      "wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\DOWNLOAD-financial-alpha-actual01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1237,
+        "sha256": "c933744ecdfbc0a4008f4a624d83262af6524caae1c684e1a1822699cdb95166"
+      },
+      "elapsed_seconds": 2.288561599998502,
+      "returncode": 0
+    },
+    "files_exact": 236,
+    "payload_bytes": 1084601,
+    "actual_cache_root": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3844765196",
+    "outer_descriptor": {
+      "file": {
+        "path": "C:\\Users\\Administrator\\Documents\\Paradox Interactive\\Crusader Kings III\\mod\\ugc_3844765196.mod",
+        "bytes": 254,
+        "sha256": "f235859621ad600fb901e59c4095468eaf12fe690aa81ba0a1d952166e621008"
+      },
+      "created": true,
+      "uses_actual_Steam_cache": true,
+      "playset_modified": false
+    },
+    "payload_copied_from_staging": false,
+    "playset_modified": false,
+    "Game_started_or_cache_mounted_claimed": false
+  },
+  "Steam_offline_restored": {
+    "original_probe": {
+      "path": "C:\\workspace\\ck3-market-alpha-20261123\\steam-after-publication-offline.actual.json",
+      "bytes": 2433,
+      "sha256": "0db2e2bb9f38cf49e47f6c46c4cd37a1e770e6ca397a044692f76ab3e84cd9ad"
+    },
+    "status": "offline",
+    "offline_mode": true,
+    "observed_at_utc": "2026-11-23T14:24:07.125202+00:00",
+    "steam_pid": 2652,
+    "steam_version": "11.23.65.88",
+    "method": "native_current_user_byte"
+  },
+  "initial_baseline_player_documents": {
+    "player_notes": {
+      "path": "C:/workspace/ck3_eternal_recurrence/mod_financial_markets/docs/releases/0.1.0-alpha.1-player-notes.md",
+      "bytes": 4099,
+      "sha256": "7116b554bda4536a27e2d66388aa110b996558ed9b9ddc5ae954ae9a0f3cab68"
+    },
+    "Workshop_description": {
+      "path": "C:/workspace/ck3_eternal_recurrence/mod_financial_markets/docs/releases/0.1.0-alpha.1-workshop.bbcode.txt",
+      "bytes": 2993,
+      "sha256": "7366d81892f87341986f721ba6b7f60e9e55d4eec4bc6cd04b84ce5780092927"
+    },
+    "source_BBCode_Change_Notes": {
+      "path": "C:/workspace/ck3_eternal_recurrence/mod_financial_markets/docs/releases/0.1.0-alpha.1-change-notes.bbcode.txt",
+      "bytes": 3454,
+      "sha256": "75227ce698854ffccf931cc1db85c09098905f1619f42c7793e0e04c3edd3080"
+    },
+    "tracked_actual_plain_Change_Notes": {
+      "path": "C:/workspace/ck3_eternal_recurrence/workshop/change_notes/financial-markets/0.1.0-alpha.1.txt",
+      "bytes": 3368,
+      "sha256": "7ca4b6458260aafd5f17763789796b48b8db6444dc94d383322e9f67217318cc"
+    },
+    "tracked_plain_notes_freeze": {
+      "path": "C:/workspace/ck3_eternal_recurrence/workshop/change_notes/financial-markets/0.1.0-alpha.1.freeze.json",
+      "bytes": 831,
+      "sha256": "93b3b296e6082000c480f3073378eff2f9d511672965454445cb4c8ddb1d9930"
+    },
+    "original_frozen_note": {
+      "path": "C:\\workspace\\ck3-market-alpha-20261123\\final-Change-Notes-freeze.actual.json",
+      "bytes": 1479,
+      "sha256": "f29835ca9b6b39602a019f4a9a48c034c654b10bb9ffafda112a5f8154d300f1"
+    }
+  },
+  "publication_closed_record": {
+    "path": "C:/workspace/ck3-market-alpha-20261123/ALPHA-PUBLICATION-CLOSED.actual.json",
+    "bytes": 5513,
+    "sha256": "b77223283923e56d5ce9abacd34408e076684d2e5feea1bec33f46dc254e7d2c"
+  },
+  "original_publish_operation": {
+    "wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PUBLISH-financial-alpha-initial03\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1329,
+      "sha256": "d8737d59bdd06c1e976af60d8a224b5a6c1628f9ff8280e487787f7dff6468f1"
+    },
+    "elapsed_seconds": 15.125151499989443,
+    "returncode": 0
+  },
+  "original_public_verification_operation": {
+    "wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\VERIFY-financial-alpha-public01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1516,
+      "sha256": "59bf70543bb19901190a4a1cb4f97678af7b3cbf34e5c665f200be4cdf85746b"
+    },
+    "elapsed_seconds": 3.102705400000559,
+    "returncode": 0
+  },
+  "release_boundary": {
+    "Alpha_publication_and_delivery_complete": true,
+    "Game_starts_in_this_publication": 0,
+    "financial_product_first_publication_count": 1,
+    "new_twenty_crisis_scene_matrix_PASS": false,
+    "new_4096_scale_or_longterm_performance_PASS": false,
+    "whole_product_acceptance_PASS": false,
+    "other_machine_or_product_migration_counts_not_combined": true,
+    "original_failures_and_prepublication_software_cutpoints_preserved": true
+  },
+  "document_author_actions": {
+    "existing_small_metadata_only": true,
+    "formal_tree_Git_Game_Steam_queries_build_test_payload_actions": 0
+  }
+}
