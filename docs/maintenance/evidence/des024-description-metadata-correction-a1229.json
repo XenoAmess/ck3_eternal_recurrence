@@ -1,0 +1,39 @@
+{
+  "schema": "xar.des024.description-metadata-correction-sourceB.v1",
+  "status": "METADATA_V2_READY_ROOT_TEXT_ACCEPTANCE_AND_PUBLICATION_SEPARATE",
+  "original_formal_delivery": {
+    "path": "D:/ck3-state/upgrade-20261118/des024-formal-release-a1222/formal-delivery-final.json",
+    "bytes": 7398,
+    "sha256": "bfbf0e946bab241eef9e86109880a35f7656943901850f5c316877a24555f749"
+  },
+  "actual_before_external_refusal": {
+    "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/des024-description-size-before-external-refusal-a1229.json",
+    "bytes": 2854,
+    "sha256": "f89df811b73ff371cb57135f8f1fa2e724c266aedee1b88733492a1959d5748a"
+  },
+  "formal_delivery_metadata_v2": {
+    "path": "D:/ck3-state/upgrade-20261118/des024-formal-release-a1222/metadata-correction-a01/formal-delivery-metadata-v2.json",
+    "bytes": 8577,
+    "sha256": "0f92b0472f96564aa2f2b0f2ef4005e726bda306d6ea561a79f6fe1f5cd9e3b9"
+  },
+  "new_complete_description": {
+    "path": "D:/ck3-state/upgrade-20261118/des024-formal-release-a1222/metadata-correction-a01/workshop-description.final.bbcode",
+    "bytes": 7899,
+    "sha256": "5f312d1c4cdc61d9b3d85e3dcd3844be87efeb494c992faf6b02ae5afa703f6d"
+  },
+  "runtime_source_commit": "257088aad4512be651bed1002fbfd7fe35225d1d",
+  "git_tag_unchanged": "dynastic-esotericism-v0.2.4",
+  "tag_object_unchanged": "74cda4d8872d4221f452aab62d582c1ec1ca1096",
+  "reason": "The original complete description10175UTF8bytes was rejected by the existing production limit before freeze/SDK/online. New CN/EN text condenses repetitions rather than truncating features. The strict limit is unchanged.",
+  "unchanged": [
+    "title38 bytes",
+    "plain ChangeNotes3905 bytes",
+    "permanent changelog",
+    "runtime71/MF/ZIP",
+    "SourceA/annotatedtag/CodeSource",
+    "accepted runtime manifest and R4/cold finite evidence"
+  ],
+  "original_FD_and_description_preserved": true,
+  "new_runtime_Game_build_tag_Maven_tests_Steam_or_Submit": false,
+  "distinct_product_counts_unchanged": {"uploaded": 12, "strict": 9, "total": 17}
+}
