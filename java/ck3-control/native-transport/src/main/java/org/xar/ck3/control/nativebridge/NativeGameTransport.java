@@ -1378,6 +1378,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         private boolean riteTextQueryAttempted;
         private boolean stockBookmark1070QueryAttempted;
         private boolean cccRoleQueryAttempted,cccEventQueryAttempted,cccDecisionQueryAttempted;
+        private boolean rmtmTitleQueryAttempted;
         private RiteCreateUnavailable unresolvedRiteCreateRead;
         private RiteTextUnavailable unresolvedRiteTextRead;
         private boolean riteDoctrineReadAttempted;
@@ -5186,6 +5187,81 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             var unknown=new Unknown(id,"Stock choice interrupted after write; original UNKNOWN, no replay",retainedOutbound(id),Optional.empty());unresolvedCoreControl=unknown;
             unresolvedStockBookmark1070=new StockBookmark1070Unavailable(unknown,"Original stock choice interrupted");if(prepared!=null&&prepared.issuer==this)prepared.outcome=unknown;return unknown;
         }
+    }
+
+    public sealed interface RmtmTitleQueryRead permits RmtmTitleQueryReceived,RmtmTitleQueryUnavailable { DispatchOutcome original(); }
+    /** Complete read DATA only; this receipt cannot prepare or authorize any action. */
+    public static final class RmtmTitleQueryReceived implements RmtmTitleQueryRead {
+        private final NativeGameTransport issuer;private final CoreReceived before;
+        private final CurrentRmtmTitleQueryResult frame;private final AckReceived original;private final NativeRequestChronology custody;private final Instant validUntil;
+        private RmtmTitleQueryReceived(NativeGameTransport issuer,CoreReceived before,CurrentRmtmTitleQueryResult frame,AckReceived original,NativeRequestChronology custody,Instant until){this.issuer=issuer;this.before=before;this.frame=frame;this.original=original;this.custody=custody;validUntil=until;}
+        public CurrentRmtmTitleQueryResult frame(){return frame;}@Override public AckReceived original(){return original;}public Instant validUntil(){return validUntil;}
+        public void requireOriginal(NativeGameTransport actual,Instant until)throws IOException{Objects.requireNonNull(actual).requireRmtmTitleQueryOriginal(this,until);}
+    }
+    public record RmtmTitleQueryUnavailable(DispatchOutcome original,String reason)implements RmtmTitleQueryRead {public RmtmTitleQueryUnavailable{Objects.requireNonNull(original);Objects.requireNonNull(reason);}}
+    private RmtmTitleQueryReceived latestRmtmTitleQuery;
+    private RmtmTitleQueryUnavailable unresolvedRmtmTitleQueryRead;
+    private byte[] rmtmTitleQueryPacket(String id,CoreReceived before,Instant until)throws IOException {
+        if(!(before.frame instanceof CoreFrame.Partial core))throw new IOException("Actual current267 RMTM title Core required");
+        var request=CurrentRmtmTitleQuery.request(core);var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));
+        fields.put("core_control_deadline_unix_ms",BigInteger.valueOf(until.toEpochMilli()));return NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+    }
+    private void requireRmtmTitleQueryScope(CoreReceived before,Instant until)throws IOException {
+        Objects.requireNonNull(before);Objects.requireNonNull(until);requireCoreOriginal(before,until);
+        if(closed||hello==null||terminalFailure!=null||applicationExitAttempted||before.controlAttempted||unresolvedCoreControl!=null||unresolvedFullClockControl!=null||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null||unresolvedRmtmTitleQueryRead!=null)
+            throw new IOException("Actual unused Core and resolved original RMTM title family required");
+        if(!(before.frame instanceof CoreFrame.Partial core)||core.build()!=ExactCk3Build.CK3_121003_STEAM_26785313)throw new IOException("Exact current267 Core required");
+        CurrentRmtmTitleQuery.requirePrefix(core.prefix());
+    }
+    public synchronized RmtmTitleQueryRead readCurrentRmtmTitleQuery(CoreReceived before,Instant deadline)throws InterruptedException {
+        if(unresolvedRmtmTitleQueryRead!=null)return unresolvedRmtmTitleQueryRead;
+        String id="rmtm-title-query-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome outcome=null;
+        try {
+            requireRmtmTitleQueryScope(before,deadline);
+            if(before.rmtmTitleQueryAttempted)throw new IOException("Fresh Core required; this original RMTM title query was already attempted");
+            if(!hello.capabilities().contains(CurrentRmtmTitleQuery.CAPABILITY))throw new IOException("Actual current RMTM primary-title readonly query capability absent");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            Instant until=readDeadline(deadline);byte[] packet=rmtmTitleQueryPacket(id,before,until);
+            outcome=retainReadOutcome(dispatchRead(id,packet,until,()->{requireBackgroundAtCoreWrite();try{requireRmtmTitleQueryScope(before,until);}catch(IOException invalid){throw new UncheckedIOException(invalid);}if(before.rmtmTitleQueryAttempted)throw new IllegalStateException("Original RMTM title Core already queried");before.rmtmTitleQueryAttempted=true;latestRmtmTitleQuery=null;}));
+            if(!(outcome instanceof AckReceived ack)){
+                var unavailable=new RmtmTitleQueryUnavailable(outcome,"Actual RMTM title query has no qualified ACK");
+                if(outcome instanceof Unknown)unresolvedRmtmTitleQueryRead=unavailable;
+                return unavailable;
+            }
+            var frame=CurrentRmtmTitleQueryResult.decodeOutcome(ack);
+            if(frame.status()==CurrentRmtmTitleQueryResult.Status.INDETERMINATE||!frame.cleanupKnown())throw new IOException("Native RMTM title cleanup UNKNOWN; retain original family UNKNOWN");
+            if(frame.status()!=CurrentRmtmTitleQueryResult.Status.AVAILABLE)return new RmtmTitleQueryUnavailable(ack,frame.unavailableReason().orElseThrow());
+            requireRmtmTitleQueryFrame(frame,before);
+            var custody=originalRequestChronology(id).orElseThrow(()->new IOException("Actual RMTM title query custody absent"));
+            var received=new RmtmTitleQueryReceived(this,before,frame,ack,custody,until);latestRmtmTitleQuery=received;
+            requireRmtmTitleQueryOriginal(received,until);return received;
+        }catch(IOException|RuntimeException invalid){latestRmtmTitleQuery=null;return rmtmTitleQueryFailure(id,outcome,invalid);}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();latestRmtmTitleQuery=null;
+            var unknown=new Unknown(id,"Actual RMTM title query interrupted after write; preserve original family UNKNOWN",retainedOutbound(id),Optional.empty());
+            return unresolvedRmtmTitleQueryRead=new RmtmTitleQueryUnavailable(unknown,"Original RMTM title query interrupted");}
+    }
+    private void requireRmtmTitleQueryFrame(CurrentRmtmTitleQueryResult frame,CoreReceived before)throws IOException {
+        if(frame.status()==CurrentRmtmTitleQueryResult.Status.INDETERMINATE||!frame.cleanupKnown())throw new IOException("Actual RMTM title cleanup uncertain");
+        if(frame.factsBefore().isPresent()&&!frame.factsBefore().orElseThrow().equals(((CoreFrame.Partial)before.frame).prefix()))throw new IOException("Actual RMTM title Core differs from original");
+        if(frame.owner().isPresent()&&!frame.owner().orElseThrow().connectionGeneration().equals(hello.connectionGeneration()))throw new IOException("Actual RMTM title owner crossed connection");
+        if(frame.source().isPresent()&&(frame.source().orElseThrow().actorId()!=((CoreFrame.Partial)before.frame).prefix().playedCharacterId()))throw new IOException("Actual RMTM title actor differs from original Core");
+    }
+    private void requireRmtmTitleQueryOriginal(RmtmTitleQueryReceived actual,Instant until)throws IOException {
+        Objects.requireNonNull(until);if(actual==null||actual.issuer!=this||actual!=latestRmtmTitleQuery)throw new IOException("Original private RMTM title DATA query unavailable");
+        requireRmtmTitleQueryScope(actual.before,until);Instant now=chronologyClock.instant();
+        if(until.isAfter(actual.validUntil)||!now.isBefore(actual.validUntil)||actual.custody.responseReceived().observedAt().isAfter(now)
+                ||actual.custody.responseReceived().observedAt().isAfter(actual.validUntil)||actual.custody.writeEntered().order().compareTo(actual.before.custody.responseReceived().order())<=0)
+            throw new IOException("RMTM title query escaped original Core/deadline/chronology");
+        if(!actual.custody.session().equals(session())||!actual.custody.custodyEpoch().equals(custodyEpoch)||originalRequestChronology(actual.original.requestId()).filter(actual.custody::equals).isEmpty())throw new IOException("RMTM title query crossed original Game/session/custody");
+        actual.custody.verify(actual.original);
+        var frame=CurrentRmtmTitleQueryResult.decodeOutcome(actual.original);requireRmtmTitleQueryFrame(frame,actual.before);
+        if(!actual.before.rmtmTitleQueryAttempted||!frame.equals(actual.frame)||frame.status()!=CurrentRmtmTitleQueryResult.Status.AVAILABLE)throw new IOException("Actual complete RMTM title DATA changed");
+        if(!Arrays.equals(actual.original.outbound().orElseThrow().originalPacket(),rmtmTitleQueryPacket(actual.original.requestId(),actual.before,actual.validUntil)))throw new IOException("Original RMTM title query body/guard/deadline changed");
+    }
+    private RmtmTitleQueryUnavailable rmtmTitleQueryFailure(String id,DispatchOutcome outcome,Exception invalid) {
+        if(!sentRequestIds.contains(id))return new RmtmTitleQueryUnavailable(zero(id,reason(invalid)),reason(invalid));
+        var unknown=new Unknown(id,"RMTM title original source/custody unqualified after write; preserve family UNKNOWN: "+reason(invalid),retainedOutbound(id),outcome instanceof AckReceived ack?Optional.of(ack.originalFrame()):Optional.empty());
+        return unresolvedRmtmTitleQueryRead=new RmtmTitleQueryUnavailable(unknown,reason(invalid));
     }
 
     public sealed interface RiteCreationBlockersRead permits RiteCreationBlockersReceived,RiteCreationBlockersUnavailable { DispatchOutcome original(); }

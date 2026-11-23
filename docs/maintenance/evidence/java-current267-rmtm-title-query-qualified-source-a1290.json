@@ -1,0 +1,49 @@
+{
+  "schema": "xar.current267.rmtm-title-query.qualified-source-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status": "SOURCE_SOFTWARE32_PASS_NEW_NATIVE_READY_PACKAGE_PENDING_LIVE_NOT_RUN",
+  "source_plan": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-title-query-build-a1290\\source-plan-qualified.json",
+    "bytes": 6439,
+    "sha256": "74797a43e6bede25ad466fd9978814cb16f2087f7bef854eb13de4aca89f87e6"
+  },
+  "actual32_qualification": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-title-query-build-a1290\\affected-qualification.json",
+    "bytes": 9476,
+    "sha256": "da4f1dcdbfff5a75b3bfc08bde4c3d39a53ba73ba002c195ca66574111b3ba07"
+  },
+  "Native23_adoption": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-title-query-build-a1290\\native23-source-adoption.json",
+    "bytes": 6550,
+    "sha256": "2a704d8d440cb522cb709e1b081d9385aa070250a0210a4c5df8aa017437447b"
+  },
+  "actual_Native_normal_push": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-title-query-build-a1290\\native23-normal-push.json",
+    "bytes": 824,
+    "sha256": "f8a331c8d7c10b35b27ff81603e0307f06263b3437fb2f85be9020af109fcd63"
+  },
+  "NativeTree": "2bfa022f0d7588ba1e310e96d81cb809623cda63",
+  "Native_adoption_HEAD": "927ec3d6cf019cb3d5bb1bd8c952245a604fa237",
+  "Native_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rmtm-title-query-production-a01\\frozen-delivery-final.json",
+    "bytes": 2677,
+    "sha256": "1f83b2573d7c5172dc579ec98e3500b30e0dd8b3e92872054c39d012a56110ef"
+  },
+  "source_only_initial_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-title-query-source-a1267\\delivery-final.json",
+    "bytes": 1654,
+    "sha256": "b0848eae75f288866a241504c7834042f795bc37538c3098ab091ce2345a8aff"
+  },
+  "producer_test_Source": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-rmtm-title-query-producer-source-a01\\delivery-final.json",
+    "bytes": 1057,
+    "sha256": "98332cc98ba631a73ea413ef6e2834959d14aa7578ca0460517b5847ec66bf18"
+  },
+  "configuration_schema": "xar.native-owner-snapshot-config/v46",
+  "mode": "current_rmtm_primary_title_query",
+  "strict_common6_no_caller_Title_or_phase_or_CCCepoch": true,
+  "submissions": 2,
+  "scope": "Fixed read-only actual primary fullTitle owner capture. Complete ordered own-laws/holder/current_heir DATA, uint32 fullgeneration incl0/highbits and signed int32 dates/actors. KnownEMPTY differs from SourceNull; dead currentheir is notD5 execution witness. Original Core/ACK/packet/connection/deadline/custody retained, postwriteUNKNOWN sticky. No action/realm/effective law/loadedrules/phase3/RMTM26/Date/Save/live permission. Native production12CL927reuse/source239 prefix separately qualified; old54a1/F644/CCC13-SKU counters unchanged.",
+  "original_failures_retained": true,
+  "package_freeze_new_pair_live_not_yet_granted": true
+}
