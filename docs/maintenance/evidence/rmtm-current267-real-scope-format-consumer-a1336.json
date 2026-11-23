@@ -1,0 +1,30 @@
+{
+  "schema": "xar.rmtm.current267.real-scope-format-consumer.finite-source.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "actual_qualification": {
+    "path": "D:/ck3-state/upgrade-20261118/rmtm-scope-format-control15-nogame-a1336/delivery-final.json",
+    "bytes": 1787,
+    "sha256": "5aea557c606d37392e46a1caa07fdee53e19ba2dbbdaac97cae257f2da05606e"
+  },
+  "actual_selected_methods": 5,
+  "selected_scope": "Four new format DATA methods and one affected existing localized-literal method; previous external10 qualification reused, not rerun or added twice.",
+  "actual_exit_code": 0,
+  "elapsed_seconds": 0.42762909998418763,
+  "actual_Job_peak_bytes": 25272320,
+  "final_Job_active_processes": 0,
+  "terminated_processes": 0,
+  "primary_exact_composition": [
+    {"path": "tools/reclaim_the_motherland_scope_witness.py", "base_bytes": 4820, "base_sha256": "72ea8303e0fa1fd06eafaafe24be6245309c6d8f7b13c30f2a847d7f4de64f52", "previous_qualified_external_sha256": "9e438f24827dbe26cdd80d470ac200490ed74152fb1136aaa36059ad607b1ffd", "target_bytes": 18951, "target_sha256": "26cb14e5543401193ee4cbb838a702f0df3ea5570626c6faf63ac880af74d241"},
+    {"path": "tools/test_reclaim_the_motherland_scope_witness.py", "base_bytes": 7083, "base_sha256": "40949e6b7de0ead5b8e8dec0344873ba22e5a0f0e7f2eff63d56d5623f3f697c", "previous_qualified_external_sha256": "a55589a21dd45c020851ccc4c1e1a48c0102e74c2cc40d63df42896a46fb7bcc", "target_bytes": 19108, "target_sha256": "69457bb35a69e02cfbb6202c3d980fbe26763eea352892d8e4c71723d11f94ff"}
+  ],
+  "observed_fragment": {"path": "D:/ck3-state/upgrade-20261118/rmtm-current267-D3-log-format-source-a1335/actual-D3-window-unattributed-scope-block.bin", "bytes": 292, "sha256": "6358d94185d3c765fac4042717ca56d5f68818e7d179283a65d535d0843f02be"},
+  "closed_debug_log": {"bytes": 649149, "sha256": "fca00a5ca346eafc4efb23f0026d14154e74064dc78d0bdfac4edb09309a7d76", "fragment_byte_range": [545213, 545505]},
+  "consumer_behavior": "Explicit LITERAL_HASH and CONTROL15 formats preserve original bytes and offsets. The observed first logger line uses effectimpl.cpp:656; continuation lines are unprefixed. Unknown/interleaved prefixes refuse. Ordinary liege43279/employee57983 cannot replace original RMTM fixed target names.",
+  "original_projector_functions_and_tests_AST_unchanged": true,
+  "original_stitched_entry_AST_unchanged": true,
+  "genuine_three_dump_binding": "UNBOUND. Original witness containers occur at D5 EXEC and callback entry/exit, not D3/predeath. Their presence in the mounted fixture does not mean execution was observed. Actual Title labels and phase/fullID relations await genuine original samples.",
+  "actual_D5_three_phase_RMTM26_PASS": false,
+  "JARs_tuple4c18_CPP_fixture_claims_and_UNKNOWN_changed": false,
+  "new1MiB_phase": {"status": "END", "remaining_future_bytes": 0, "allocated_held_upper_bytes": 221808, "old_spent_held_refund": false},
+  "workshop_counts": {"uploaded_distinct": 13, "strict_distinct": 9, "total": 17}
+}

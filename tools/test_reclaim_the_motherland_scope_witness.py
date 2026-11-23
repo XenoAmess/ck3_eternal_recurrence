@@ -126,5 +126,194 @@ class ScopeWitnessProjection(unittest.TestCase):
         self.assertEqual(contract["physical_qualified_family_count"], 3)
 
 
+
+
+class ScopeWitnessReadOnlyConsumer(unittest.TestCase):
+    """Explicit software fixtures only; no actual CK3 or D5 facts."""
+
+    LABELS = {"character": "Character", "title": "Landed title"}
+
+    @classmethod
+    def payload(cls, phase="execute", language="english", number=0x8100002A):
+        required = next(item[3] for item in witness._SCOPE_PHASES if item[0] == phase)
+        rows = ["Software current scope only", "Root: SOFTWARE FIXTURE", "", "Saved event targets:"]
+        for name, kind in required:
+            value = witness._SCOPE_DEBUG_FORMATS[language].replace("$NAME$", "Software NAME (Internal ID: 7)")
+            value = value.replace("$TYPE|U$", cls.LABELS[kind]).replace("$ID$", str(number))
+            rows.append(name + ": " + value)
+        return ("\n".join(rows) + "\n").encode("utf-8")
+
+    @classmethod
+    def raw_log(cls, language="english", number=0x8100002A):
+        values = []
+        for phase, begin, end, _ in witness._SCOPE_PHASES:
+            values += [witness.PREFIX + b" " + begin + b"\n",
+                       cls.payload(phase, language, number),
+                       witness.PREFIX + b" " + end + b"\n"]
+        return b"".join(values)
+
+    @staticmethod
+    def source(raw):
+        return {"path": "SOFTWARE-FIXTURE-ONLY/debug.log", **witness.byte_pin(raw)}
+
+    def parsed(self, raw):
+        return witness.parse_original_scope_witness_log(raw, self.source(raw),
+            layout="UNPREFIXED_SOFTWARE_FIXTURE_V1", language="english", kind_labels=self.LABELS)
+
+    def test_three_exact_containers_and_byte_ranges_are_only_software_data(self):
+        raw = self.raw_log()
+        result = self.parsed(raw)
+        self.assertEqual(result["status"], "PARSED_SOFTWARE_FIXTURE_ONLY")
+        self.assertEqual([row["phase"] for row in result["containers"]],
+                         ["execute", "callback_entry", "callback_exit"])
+        self.assertFalse(result["business_pass"])
+        self.assertFalse(result["execute_time_identity_qualified"])
+        for container in result["containers"]:
+            for row in container["parsed_data"]["targets"]:
+                a, z = row["row_byte_range"]
+                self.assertEqual(raw[a:z].decode("utf-8"), row["raw_row"])
+                self.assertEqual(row["full_packed_id"], 0x8100002A)
+
+    def test_real_log_default_remains_unbound_without_transport_and_type_sample(self):
+        raw = self.raw_log()
+        result = witness.parse_original_scope_witness_log(raw, self.source(raw))
+        self.assertEqual(result["status"], "UNBOUND_LOG_TRANSPORT_AND_TYPE_LABELS")
+        self.assertIn("required_actual_sample", result)
+        self.assertTrue(all("parsed_data" not in row for row in result["containers"]))
+        with self.assertRaises(witness.ScopeWitnessParseError):
+            witness.parse_original_scope_witness_log(raw, self.source(raw), layout="CURRENT267_QUALIFIED")
+
+    def test_zero_and_high_generation_are_preserved_with_no_native_actor_authority(self):
+        for number in (0, 1, 0x01000001, 0x80000000, 0xFFFFFFFE):
+            with self.subTest(number=number):
+                result = witness.parse_scope_dump_payload(self.payload(number=number), "execute",
+                    language="english", kind_labels=self.LABELS)
+                self.assertEqual({row["full_packed_id"] for row in result["targets"]}, {number})
+                self.assertEqual(result["world_binding"], "NOT_CHECKED")
+                self.assertNotIn("native_revision", result)
+
+    def test_all_static_localized_suffixes_and_multibyte_offsets_preserve_full_id(self):
+        for language in witness._SCOPE_DEBUG_FORMATS:
+            with self.subTest(language=language):
+                raw = self.payload(language=language).replace(b"Software NAME", "测试名字".encode())
+                result = witness.parse_scope_dump_payload(raw, "execute", language=language,
+                    kind_labels=self.LABELS, origin_byte=73)
+                for row in result["targets"]:
+                    a, z = row["row_byte_range"]
+                    self.assertEqual(raw[a-73:z-73].decode(), row["raw_row"])
+
+    def test_wrong_kind_missing_duplicate_and_saved_list_only_targets_are_rejected(self):
+        raw = self.payload()
+        row = raw.splitlines(keepends=True)[4]
+        failures = [raw.replace(b"Landed title", b"Character", 1), raw.replace(row, b"", 1),
+                    raw + row, raw.replace(b"Saved event targets:", b"Saved list targets:"),
+                    raw.replace(row, row + row.replace(b": ", b":: ", 1), 1)]
+        for bad in failures:
+            with self.subTest(bad=bad), self.assertRaises(witness.ScopeWitnessParseError):
+                witness.parse_scope_dump_payload(bad, "execute", language="english", kind_labels=self.LABELS)
+
+    def test_invalid_full_id_width_sentinel_sign_and_noncanonical_decimal_are_rejected(self):
+        raw = self.payload(number=1)
+        for token in (b"4294967295", b"4294967296", b"-1", b"01", b"9" * 20):
+            bad = raw.replace(b" - 1)#!", b" - " + token + b")#!", 1)
+            with self.subTest(token=token), self.assertRaises(witness.ScopeWitnessParseError):
+                witness.parse_scope_dump_payload(bad, "execute", language="english", kind_labels=self.LABELS)
+
+    def test_duplicate_missing_reordered_truncated_and_marker_suffix_containers_reject(self):
+        raw = self.raw_log()
+        end = witness.PREFIX + b" EXEC_END\n"
+        phases = raw.split(witness.PREFIX + b" CALLBACK_ENTRY_BEGIN\n", 1)
+        bad_logs = [raw + end, raw.replace(end, b"", 1), raw[:-10],
+                    raw.replace(b"EXEC_BEGIN\n", b"EXEC_BEGIN_fake\n", 1),
+                    phases[1] + witness.PREFIX + b" CALLBACK_ENTRY_BEGIN\n" + phases[0]]
+        for bad in bad_logs:
+            with self.subTest(bad=bad), self.assertRaises(witness.ScopeWitnessParseError):
+                self.parsed(bad)
+
+    def test_file_pin_rejects_hash_bytes_bool_or_unknown_fields_without_file_reads(self):
+        raw = self.raw_log()
+        original = self.source(raw)
+        cases = [{**original, "bytes": True}, {**original, "bytes": len(raw)+1},
+                 {**original, "sha256": "0"*64}, {**original, "caller_title_id": 1}]
+        for source in cases:
+            with self.subTest(source=source), self.assertRaises(witness.ScopeWitnessParseError):
+                witness.extract_original_scope_dump_containers(raw, source)
+
+    def test_unobserved_logger_decoration_is_retained_but_never_silently_stripped(self):
+        raw = self.raw_log().replace(witness.PREFIX, b"[SOFTWARE logger] " + witness.PREFIX)
+        result = witness.extract_original_scope_dump_containers(raw, self.source(raw))
+        self.assertEqual(len(result["containers"]), 3)
+        self.assertEqual(result["status"], "UNBOUND_LOG_TRANSPORT_AND_TYPE_LABELS")
+        with self.assertRaises(witness.ScopeWitnessParseError):
+            self.parsed(raw)
+
+    def test_incomplete_utf8_nul_format_and_ambiguous_kind_labels_are_rejected(self):
+        raw = self.payload()
+        cases = [raw+b"\xff", raw+b"\x00", raw.replace(b")#!", b")", 1)]
+        for bad in cases:
+            with self.subTest(bad=bad), self.assertRaises(witness.ScopeWitnessParseError):
+                witness.parse_scope_dump_payload(bad, "execute", language="english", kind_labels=self.LABELS)
+        with self.assertRaises(witness.ScopeWitnessParseError):
+            witness.parse_scope_dump_payload(raw, "execute", language="english",
+                kind_labels={"character": "same", "title": "same"})
+
+class ScopeWitnessObservedFormatSource(unittest.TestCase):
+    """Four software boundary methods, NOT_RUN; no runtime/business qualification."""
+
+    def test_literal_hash_and_control15_require_explicit_separate_encodings(self):
+        for language in witness._SCOPE_DEBUG_FORMATS:
+            literal=ScopeWitnessReadOnlyConsumer.payload(language=language)
+            encoded=literal.replace(b"#weak",b"\x15weak").replace(b"#!",b"\x15!")
+            for payload, encoding in ((literal,"LITERAL_HASH"),(encoded,"CONTROL15")):
+                data=witness.parse_scope_dump_payload(payload,"execute",language=language,
+                    kind_labels=ScopeWitnessReadOnlyConsumer.LABELS,richtext_encoding=encoding)
+                self.assertFalse(data["business_pass"])
+                self.assertEqual({r["full_packed_id"] for r in data["targets"]},{0x8100002A})
+            with self.assertRaises(witness.ScopeWitnessParseError):
+                witness.parse_scope_dump_payload(encoded,"execute",language=language,kind_labels=ScopeWitnessReadOnlyConsumer.LABELS)
+            with self.assertRaises(witness.ScopeWitnessParseError):
+                witness.parse_scope_dump_payload(literal,"execute",language=language,kind_labels=ScopeWitnessReadOnlyConsumer.LABELS,richtext_encoding="CONTROL15")
+
+    @staticmethod
+    def prefixed():
+        raw=ScopeWitnessReadOnlyConsumer.payload(language="simp_chinese",number=0xFFFFFFFE)
+        raw=raw.replace(b"#weak",b"\x15weak").replace(b"#!",b"\x15!")
+        return (b"[03:57:00][D][effectimpl.cpp:656]: empty\n"+raw.split(b"\n",1)[1]).replace(b"\n",b"\r\n")
+
+    def test_first_line_prefix_preserves_all_original_offsets_and_never_grants_runtime(self):
+        raw=self.prefixed();origin=545213
+        result=witness.parse_first_line_prefixed_scope_payload(raw,"execute",language="simp_chinese",
+            kind_labels=ScopeWitnessReadOnlyConsumer.LABELS,origin_byte=origin)
+        self.assertEqual(result["status"],"PARSED_PREFIXED_FORMAT_DATA_ONLY")
+        self.assertEqual(result["original_phase_type_binding"],"NOT_OBSERVED")
+        self.assertEqual(result["world_binding"],"NOT_CHECKED")
+        self.assertFalse(result["business_pass"]);self.assertFalse(result["execute_time_identity_qualified"])
+        for row in result["targets"]:
+            a,z=row["row_byte_range"]
+            self.assertEqual(raw[a-origin:z-origin].decode(),row["raw_row"])
+            self.assertEqual(row["full_packed_id"],0xFFFFFFFE)
+            self.assertIn("Internal ID: 7",row["raw_row"])
+
+    def test_unknown_first_prefix_or_prefixed_and_interleaved_continuations_reject(self):
+        raw=self.prefixed()
+        bad=[raw.replace(b"effectimpl.cpp:656",b"unknown.cpp:656",1),
+             raw.replace(b"Root: ",b"[03:57:00][D][effectimpl.cpp:656]: Root: ",1),
+             raw+b"[03:57:00][D][jomini_effect_impl.cpp:444]: unrelated\r\n",
+             raw+b"\x00",raw+b"\xff"]
+        for value in bad:
+            with self.assertRaises(witness.ScopeWitnessParseError):
+                witness.parse_first_line_prefixed_scope_payload(value,"execute",language="simp_chinese",kind_labels=ScopeWitnessReadOnlyConsumer.LABELS)
+
+    def test_actual_ordinary_fragment_cannot_supply_original_fixed_witness_names(self):
+        # Original292B observed fragment, immutable DATA copy; no liege/employee remapping.
+        raw=bytes.fromhex("5b30333a35373a30305d5b445d5b656666656374696d706c2e6370703a3635365d3a20656d7074790a526f6f743a20656d7074790a0a5361766564206576656e7420746172676574733a0a6c696567653a20457274756772756c20e8b596e5a786e696afe7a791e880b6206f6620635f7261696d736b6f652028496e7465726e616c2049443a203433323739202d20486973746f726963616c2049442066696374696f6e616c5f7475726b6973685f323029157765616b20efbc884368617261637465722d3433323739efbc8915210a656d706c6f7965653a205369726d6120e587bae8baabe58d91e5beae206f66202028496e7465726e616c20494420353739383329157765616b20efbc884368617261637465722d3537393833efbc8915210a0d0a")
+        self.assertIn(b"Saved event targets:",raw)
+        self.assertIn(b"Character-43279",raw);self.assertIn(b"Character-57983",raw)
+        with self.assertRaises(witness.ScopeWitnessParseError):
+            witness.parse_first_line_prefixed_scope_payload(raw,"execute",language="simp_chinese",kind_labels=ScopeWitnessReadOnlyConsumer.LABELS)
+        with self.assertRaises(witness.ScopeWitnessParseError):
+            witness.parse_original_scope_witness_log(raw,ScopeWitnessReadOnlyConsumer.source(raw))
+
+
 if __name__ == "__main__":
     unittest.main()
