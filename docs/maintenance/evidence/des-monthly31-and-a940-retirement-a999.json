@@ -1,0 +1,154 @@
+{
+  "schema": "xar.des.monthly31-and-output-retirement.maintenance-index.v1",
+  "at_utc": "2026-11-23T00:36:46.725661+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "actual_monthly31": {
+    "Root_closure": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\des-legacy-monthly31-finite-closure-a999.json",
+      "bytes": 10642,
+      "sha256": "bd033a692ebff6109cc15f86de2d549263f986d8a4a078b3e625c05fbc5bc428"
+    },
+    "status": "FINITE_31DAY_LEGACY_LEASE_ABSENT_NOT_RENEWED_PASS",
+    "actor": 36423,
+    "source_date_raw": 53144328,
+    "after_date_raw": 53145072,
+    "actual_natural_days": 31,
+    "actual_saved_calendar_date": "1066.10.16",
+    "per_day_known_original_receipt_count": 31,
+    "per_day_receipts_pin_location": "Root_closure /per_day_original_known_receipts (each independent known+24, same actor/paused/fresh afterCore/original deadline)",
+    "source_Save": {
+      "path": "D:/ck3-state/upgrade-20261118/des-legacy-preset-migration-current267-profile-a962/checkpoints/des-legacy-preset-migration-after.ck3",
+      "bytes": 168626052,
+      "sha256": "6195cb119a7bd9eb57d10e4646e7390efd5bdfe802480f9da3e3d5b98ff579b0"
+    },
+    "after31_Save": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-legacy-monthly-drain-current267-profile-a991\\checkpoints\\des-legacy-monthly-drain-after31.ck3",
+      "bytes": 166732930,
+      "sha256": "23253f2dff1687845f1c5d3a170ec7efdcca1a132fcf81c4a7a400a2cf80fb27"
+    },
+    "actual_EOF_report": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-oldsave-inspection-a942\\legacy-monthly-after31-globals-and-player\\inspection.report.json",
+      "bytes": 837052,
+      "sha256": "4741d83d00fd845fecfbcbf69eae6c0f33717329cf849a6f5fc41a65cf025e24"
+    },
+    "old_lease_absent": true,
+    "initialization_and_migration_markers_preserved": true,
+    "actual_Save_calls": 1,
+    "automatic_Save_or_loop_retries": 0,
+    "reserved_physical_save_confirmed": false,
+    "actual_terminal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-legacy-monthly-drain-current267-profile-a991\\owner\\terminal.json",
+      "bytes": 1065,
+      "sha256": "9a061cc075bcfe784d342d64ac23cf90bfee9d2a6effbb4b5fab1b80246a268a"
+    },
+    "actual_creator_end": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-legacy-monthly-drain-current267-profile-a991\\creator-end.json",
+      "bytes": 604,
+      "sha256": "a811a8c4ceadd020c14feebfe357f4084e883a5f4569edfc8fa7c693dc4336f0"
+    },
+    "Game_PID": 20384,
+    "Creator_PID": 1180,
+    "normal_exit_utc": "2026-11-23T00:27:59.510586700Z",
+    "actual_Natural0_Job0_cleanup": true,
+    "proof_boundary": "At saved day31 the old tick31 lease is absent and not renewed. Natural expiration can independently explain absence, so this does not prove handler dispatch. No Jan1/AIcadet/HouseHead/fullqueue/wholeSDK/population-speedup/10seconds-per-saved-day credit."
+  },
+  "actual_a940_replica_retirement": {
+    "actual_result": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-a940-save-duplicates-reclamation-a01\\actual-result.json",
+      "bytes": 5187,
+      "sha256": "cf48539f973c0cb7732544b5c0954186b89d9f136387c7b48b18ebf132049291"
+    },
+    "actual_Root_scope": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\a940-save-retirement-scope-a1000.json",
+      "bytes": 5021,
+      "sha256": "72641a87cd2bc8b818168b526eaa76854ea2faa531e9eb989fc482c33ebba1d1"
+    },
+    "actual_intent": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-a940-save-duplicates-reclamation-a01\\pending-intent.json",
+      "bytes": 3268,
+      "sha256": "e0d0ab0932f24ac4b2df47a7643bb9c979ad7f5699acb7bc5ca4c74ccf635d39"
+    },
+    "Root_performed_actual_OS_helper_probe": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\reclamation-win32-helper-toy-a998\\actual-result.json",
+      "bytes": 424,
+      "sha256": "14a17ab594eeb59acbb7c9453b559732d77dccfde170b61cbb55ccd61605159b"
+    },
+    "executor": "Root, not Source-only reviewer",
+    "complete": true,
+    "protocol": "Root exact scope and current-use review, full SHA plus exclusive distinct FileIDs, short CAS, lock-outside exact held-handle delete. Actual result and intent preserve original identities.",
+    "retired_replicas": [
+      {
+        "historical_path": "D:\\ck3-state\\upgrade-20261118\\des-annual-performance-oldsave-current267-profile-a940\\profile-states\\gui-7173e1f5cef24266b4b62dcb7be20db9\\profile\\last_save.ck3",
+        "original_volume_serial": "7220568048185129294",
+        "original_file_id128": "1bf84e00000001000000000000000000",
+        "original_SHA256": "bc1b3daf368922dfb7e0a87cb71b4db2000fbb85caaecd65a93667bcf9de3279",
+        "availability": "RETIRED_DELETED_UNREADABLE_NOT_A_FUTURE_INPUT",
+        "actual_removed_allocated_bytes": 166797312
+      },
+      {
+        "historical_path": "D:\\ck3-state\\upgrade-20261118\\des-annual-performance-oldsave-current267-profile-a940\\profile-states\\gui-7173e1f5cef24266b4b62dcb7be20db9\\profile\\save games\\autosave.ck3",
+        "original_volume_serial": "7220568048185129294",
+        "original_file_id128": "19f84e00000001000000000000000000",
+        "original_SHA256": "bc1b3daf368922dfb7e0a87cb71b4db2000fbb85caaecd65a93667bcf9de3279",
+        "availability": "RETIRED_DELETED_UNREADABLE_NOT_A_FUTURE_INPUT",
+        "actual_removed_allocated_bytes": 166797312
+      },
+      {
+        "historical_path": "D:\\ck3-state\\upgrade-20261118\\des-annual-performance-oldsave-current267-profile-a940\\profile-states\\gui-7173e1f5cef24266b4b62dcb7be20db9\\profile\\save games\\xar_checkpoint.ck3",
+        "original_volume_serial": "7220568048185129294",
+        "original_file_id128": "1cf84e00000001000000000000000000",
+        "original_SHA256": "bc1b3daf368922dfb7e0a87cb71b4db2000fbb85caaecd65a93667bcf9de3279",
+        "availability": "RETIRED_DELETED_UNREADABLE_NOT_A_FUTURE_INPUT",
+        "actual_removed_allocated_bytes": 166797312
+      }
+    ],
+    "retained_independent_archive": {
+      "bytes": 166793469,
+      "metadata": {
+        "allocated_bytes": 166797312,
+        "attributes": 32,
+        "creation_filetime": "134398617259728068",
+        "delete_pending": false,
+        "directory": false,
+        "file_id128": "1df84e00000001000000000000000000",
+        "links": 1,
+        "logical_bytes": 166793469,
+        "mtime_ns": 1795388120155473200,
+        "volume_serial": "7220568048185129294"
+      },
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-performance-oldsave-current267-profile-a940\\checkpoints\\des-annual-oldsave71-after.ck3",
+      "sha256": "bc1b3daf368922dfb7e0a87cb71b4db2000fbb85caaecd65a93667bcf9de3279"
+    },
+    "allocated_target_bytes_removed": 500391936,
+    "logical_target_bytes_removed": 500380407,
+    "volume_free_delta": "NOT_MEASURED_NO_ATTRIBUTION",
+    "old_spent_or_held_refund": false,
+    "preserved_assets": [
+      "True unmodded S0",
+      "a940 original input copy",
+      "Retained independent bc1b archive FileID1df84e",
+      "All active shadercache",
+      "Original UNKNOWN/actions and user savedPair assets"
+    ],
+    "prior_fact_indices": [
+      "des-annual-oldsave-finite-core-a959.json",
+      "java-current267-rite-text-frozen-pair-a01.json (a979 cold facts)",
+      "des-legacy-preset-finite-closure-a990.json"
+    ],
+    "prior_fact_availability_rule": "These indices remain historical facts at their original observation times. The three profile output replica paths are now unreadable and cannot be used as future inputs; preserved independent archive is a distinct identity, not the old file surviving under another name."
+  },
+  "implementation_commit": "73a91182e1",
+  "published_count": 12,
+  "strict_closed_count": 9,
+  "denominator": 17,
+  "DES_published": false,
+  "pending": [
+    "Actual Jan1 annual dispatch",
+    "AI cadet prohibition/all living annual return",
+    "Religious HouseHead following",
+    "New-world defaults and edited-bundle coverage",
+    "Population wallclock comparison and 10seconds goal",
+    "DES formal release/publication"
+  ],
+  "this_unit": "RootSource <=128KiB ordinary docs; no Maven/tag/version/Workshop/OS helper execution or deletion by Java. Previously END compiler/package/freeze/metadata purposes are not reopened."
+}
