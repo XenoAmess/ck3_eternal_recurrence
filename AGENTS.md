@@ -1,5 +1,13 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-23 当前有限交付：DES0.2.3完成，独立产品仍12/17与9/17
+
+`desktop-3fevhd2-1c74096080` 已完成DES0.2.3／canonical3826991345的一次真实更新、71文件SDK下载精确比对、完整公开标题／正文／Notes回读及原封面／图库保持。真实下载缓存独立加载取得Robert36423／原日期53144328／暂停地图存活Core8，零Date／零Save，并正常Natural0／Job0／cleanup；Steam已恢复离线。原加载期CoreUnavailable、Native保留false、旧UNKNOWN和全部有限范围不改，不由此新增初始化／年度业务、wholeproduct／全SDK或性能提速资格。
+
+当前独立产品计数仍为 **12/17已上传（70.6%）**、**9/17严格有限全闭环（52.9%）**。DES0.2.2此前已对同一canonical完成真实发布、公开全文与缓存闭环；0.2.3是该产品的新版本，不能再次加一。Root原a1131的13／10是版本更新重复计数，原件保留，由a1132更正；两次真实更新与所有通过均保持，不归因于软件或引擎。TED／Vivhite／Superman的三项Notes待核状态不变。[本次有限交付及独立计数核对](docs/maintenance/evidence/des023-finite-publication-and-cache-complete-a1132.json)。
+
+后继按既有长期排序推进剩余五项CCC、收复故土、活体圣物、LYD、天朝361；白绮接管组已完成事实保持，其他未完成产品优先，LYD固定倒数第二、天朝361最后。CCC当前只允许外置Source候选与必要合同核对；Native624MiB／Java328MiB重阶段尚未准入，不借旧池启动编测或把SourceReady当业务通过。用户新反馈“推进日期时周期性卡顿”仅加强日期／定时路径相关性，尚未建立CPU因果或FPS／墙钟改善结论。下列较早计数与排程切点保留历史，不覆盖本段当前事实与长期顺序。
+
 ## 2026-11-22 用户最新长期排序：LYD倒数第二，天朝361最后
 
 Root转达用户最新要求：“LYD固定倒数第二，仅高于天朝361最后，要求现在按新序。” 即日起，其他未完成产品优先，LYD固定倒数第二、天朝361最后；白绮组及其他已完成交付保持完成事实。停止新增LYD observations编测，已有Source保留、已BEGIN只安全收束。LYD的F826／Native4cdd、35项Java软件及13种请求逆核保持原资格；当前只publicprepare实际0、无Game，保留且不launch。Java a833只有资源读取与目录命名规划，尚无新源码或compiler／package／freeze BEGIN；Native仅来源核对，未新增family／CL。后继恢复TED最小actor-transition薄消费者，与Native真实微合同和producer衔接，旧v17／UNKNOWN／原claim不改。此条调整排队顺序，各产品原验收合同与天数继续按原合同保留；下列较早LYD顺序和365文字保留历史时点，不覆盖本次新排序。[用户新排序与当前切点](docs/maintenance/evidence/user-priority-lyd-penultimate-a833.json)。

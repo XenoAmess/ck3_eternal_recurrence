@@ -1,0 +1,286 @@
+{
+  "schema": "xar.des023.actual-finite-publication-public-readback-cache-complete.maintenance-index.v1",
+  "at_utc": "2026-11-23T06:42:43.245940+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status": "FINITE_RELEASE_COMPLETE",
+  "formal_SourceA": "ca702a2174845067f5d31165377a696199ab6565",
+  "git_tag": "dynastic-esotericism-v0.2.3",
+  "tag_object": "6336d261a8ea0d564c65eeefa57d8f11928932e0",
+  "formal_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des023-formal-release-a1121\\formal-delivery-final.json",
+    "bytes": 7745,
+    "sha256": "75d7e79eb42c4ba3b30758281d8c4e7b61b971117fadddd158fc9845d83e0784"
+  },
+  "actual_publication": {
+    "receipt": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des023-formal-release-a1121\\des023-native-publish-receipt.json",
+      "bytes": 647,
+      "sha256": "ef94a6a2cf7083efce60d55efc4f3f8b050b3704286903bd0eb4b16f47b40e8f"
+    },
+    "publication_result": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des023-publication-a1122\\operator-a1122-single-des023-a01\\publication-result.json",
+      "bytes": 2183,
+      "sha256": "e669173082335b662c7d26f68b0ffd3d5ad68f1db1341ec3f249c10c3627b35e"
+    },
+    "operation_id": "des-023-canonical3826991345-a1122",
+    "payload_sha256": "39f1ae47f03739d9317d12c3d94c14d33697919e2ae9464ba9c262c99beeb7bc",
+    "steam_result": 1,
+    "stage": "complete",
+    "submitted_at": "2026-11-23T06:17:02.819149+00:00",
+    "canonical_workshop_id": "3826991345",
+    "single_canonical_update": true,
+    "SDK_download": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des023-publication-a1122\\operator-a1122-single-des023-a01\\des023-download-native.json",
+      "bytes": 1248,
+      "sha256": "72dea737c7457a1a2c142f3288938c9ad8de5037be812644e11b085ae1e13095"
+    },
+    "download71_exact": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des023-publication-a1122\\operator-a1122-single-des023-a01\\des023-download-exact.json",
+      "bytes": 751,
+      "sha256": "da70d56d16f3346a23aa6e2356b76dc0882729bba073ba569e2ecd876965366b"
+    },
+    "all71_paths_bytes_SHA": true,
+    "additional_gallery_before_after": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des023-publication-a1122\\operator-a1122-single-des023-a01\\des023-gallery-preserved.json",
+      "bytes": 311,
+      "sha256": "dfd6c229bc4c94f8c1f155a5206a9259ba9634fb4114670e26ee1a1a1c52a0c7"
+    },
+    "actual_additional_gallery_count": 0,
+    "gallery_same_no_add_upload_or_remove": true,
+    "Root_reported_online_window_seconds": 69.63072409998858,
+    "fresh_offline_observation": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des023-publication-a1122\\operator-a1122-single-des023-a01\\observed-offline-1795414664884449000.json",
+      "bytes": 2461,
+      "sha256": "604524de0c496019e673c089d78a4ff07c38a6470510500316a1706b307494df"
+    },
+    "actual_offline_observed_at_utc": "2026-11-23T06:17:44.884244+00:00",
+    "actual_offline": true
+  },
+  "actual_full_public_readback": {
+    "delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des023-public-readback-a1122\\actual-delivery-final.json",
+      "bytes": 4517,
+      "sha256": "e8b516c64f4f7b194616954d2ae1e3fb55fa8cf58d965af4c64ffca653bf277d"
+    },
+    "full_title_exact": true,
+    "full_body_exact": true,
+    "full_Notes_exact": true,
+    "title_body_and_Notes_complete_not_substring": true,
+    "entry_id": "1795414629",
+    "API_time_updated_and_successful_Submit_match": true,
+    "creator_same": true,
+    "cover_fields_same": {
+      "preview_url": true,
+      "hcontent_preview": true
+    },
+    "official_API_POST_calls": 1,
+    "Notes_GET_calls": 1,
+    "full_text_equality_method": "Existing qualified full title exact; BBcode body CR/LF and final-newline normalization only; complete rendered Notes plus exact paired bold spans. No substring/truncation/homepage-time substitute.",
+    "gallery_and_cover_comparison": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des023-public-readback-a1122\\notes-a01\\gallery-and-public-cover.json",
+      "bytes": 892,
+      "sha256": "21c3093e82db1e1d685755d9ed8472fc284e62f21a70a9b3aefc7f61b4a5320d"
+    },
+    "readback_did_not_repeat_Steam_SDK_Game_Git_Submit": true,
+    "old_publication_result_partial_fields": "Original result at06:17 retained public-cover/changelog pending; later actual full readback at06:20 closes those only, no historical rewrite."
+  },
+  "cache_runtime": {
+    "state": "ACTUAL_FINITE_PASS_NATURAL_EXIT_WRITERS_END",
+    "actual_mount": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3826991345",
+    "all71_bodySHA_equal_formal_after_Game": true,
+    "actual_exact_cache_preflight": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des023-workshop-cache-current267-profile-a1125\\prepared\\workshop-cache-exact-formal.json",
+      "bytes": 18862,
+      "sha256": "650c9d0e5277d82afecefbe5ca750def44d4376b08af681e0cfdda8baf879ed3"
+    },
+    "ready": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des023-workshop-cache-current267-profile-a1125\\ready.json",
+      "bytes": 6790,
+      "sha256": "119112325071608d6328719cd1fb0234c69747973198be97bf120fc42c16b0b6"
+    },
+    "launch": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des023-workshop-cache-current267-profile-a1125\\launch.json",
+      "bytes": 75088,
+      "sha256": "d0a63b335c708891e6b2220bcba0f3e2235e3d74f9b69d6e06c3269e964fe50e"
+    },
+    "Core": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des023-workshop-cache-current267-profile-a1125\\operations\\loaded-cache-map-a1129\\result\\summary.json",
+      "bytes": 10037,
+      "sha256": "4b6ed530291731c9f59922680925c77441e9a8d504a885ff7859233367d7d2ed"
+    },
+    "actual_Core8": {
+      "date_raw": 53144328,
+      "speed": 3,
+      "paused": true,
+      "local_player_id": 1,
+      "map_ready": true,
+      "has_played_character": true,
+      "played_character_id": 36423,
+      "played_character_alive": true
+    },
+    "actual_normal_exit": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des023-workshop-cache-current267-profile-a1125\\operations\\normal-cache-exit-a1130\\result\\summary.json",
+      "bytes": 14759,
+      "sha256": "7c0efbfdb2212e8b4e789637c22ca24738b96ee78bd5795abc8a9c3987bf05dc"
+    },
+    "terminal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des023-workshop-cache-current267-profile-a1125\\owner\\terminal.json",
+      "bytes": 1053,
+      "sha256": "062ed9ba00ab53a82a72bf53d49ef2a6fbde44442002747e49cf866369c6b42a"
+    },
+    "creator_end": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des023-workshop-cache-current267-profile-a1125\\creator-end.json",
+      "bytes": 601,
+      "sha256": "ebf720b16b01a69be0e439a77059a179bab8e81af6440cb2194811cd79a6d1d3"
+    },
+    "actual_Game_PID": 8016,
+    "creator_PID": 22152,
+    "actual_terminal_kind": "NATURAL_EXIT",
+    "actual_Game_and_creator_exit": 0,
+    "actual_Job_active": 0,
+    "actual_cleanup": true,
+    "public_prepared_config_files": 6,
+    "fixture_files": 0,
+    "warm_shader_overlay": false,
+    "natural_days": 0,
+    "Save_calls": 0,
+    "source_archive_unchanged": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-vanilla-seed-current267-profile-a905\\checkpoints\\des-vanilla-1066-robert-day15.ck3",
+      "bytes": 166551273,
+      "sha256": "82178e0f4142b50e0d3d51914574eff8cccce84a187b4f622c80fd2c2c9e94b4"
+    },
+    "distinct_single_input_copy_unchanged": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des023-workshop-cache-current267-profile-a1125\\state-root\\cache-state\\profile\\save games\\des-vanilla-1066-robert-day15.ck3",
+      "bytes": 166551273,
+      "sha256": "82178e0f4142b50e0d3d51914574eff8cccce84a187b4f622c80fd2c2c9e94b4"
+    },
+    "original_early_Core_UNAVAILABLE": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des023-workshop-cache-current267-profile-a1125\\operations\\loaded-cache-core-a1128\\result\\summary.json",
+      "bytes": 10143,
+      "sha256": "b605f3e70d4b12181b262f6006197d631b289a4f0a7a93a10bfa5418ec54191d"
+    },
+    "early_failure_reason": "application_main_executor_unavailable",
+    "reserved_Native_exit_flags": "Not rewritten; actual terminal proof recorded separately.",
+    "not_claimed": [
+      "new_annual_or_init_business_pass",
+      "NativeCreate",
+      "wholeproduct",
+      "fullSDK",
+      "CPU_FPS_speedup"
+    ]
+  },
+  "counts_at_cut": {
+    "uploaded": "12/17",
+    "strict_finite_complete": "9/17",
+    "uploaded_percentage": 70.58823529411765,
+    "strict_percentage": 52.94117647058824,
+    "DES_finite_release_complete": true,
+    "other_Notes_pending": [
+      "tributary-expansion-directives",
+      "vivhite",
+      "superman-qiang"
+    ],
+    "total_unique_canonical_products": 17,
+    "counting_rule": "Distinct canonical products, not number of successful version updates; DES0.2.2 was already in the prior12/9 baseline.",
+    "initial_Root_13_10_values": "Erroneous update double-count, preserved in original a1131 only and corrected before this tracked docs commit."
+  },
+  "new_user_feedback": {
+    "verbatim": "推进日期时周期性卡顿",
+    "reported_by": "Root explicit current user feedback",
+    "assessment": "Strengthens correlation with date/timer-driven paths only. No sampled CPU causation, measured period, FPS, wallclock speedup or rootcause has been established.",
+    "performance_FIX_or_PASS_added": false,
+    "runtime_or_priority_changed": false
+  },
+  "independent_CCC_Source_only": {
+    "Native_root": "D:\\ck3-state\\upgrade-20261118\\ccc-current267-source-a1126",
+    "status": "Source-only candidate contracts not yet frozen/compiled/qualified",
+    "Java_DTO_or_schema_guessed": false,
+    "Maven_NoGame_package_production": false,
+    "separate_from_DES_publication": true
+  },
+  "scope": "Existing small artifact/publication/readback JSONs only. No Save, process, Game, Steam, SDK, HTTP, screenshots, injection, tests, Maven or cleanup executed by this Source task. No F/receipt/SourceA/tag/formal/runtime writes.",
+  "adoption": "After actual cache normalEND, one small tracked evidence/followup/AGENTS commit; no artifact/F/runtime writes.",
+  "previous_external_pending_cache_draft": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-des023-postpublish-docs-source-a1127\\publication-and-feedback-source-a01.json",
+    "bytes": 6944,
+    "sha256": "aa565b9064b83027613d7e0f5f75145bf4927417a26aa12eb34653b35342753b"
+  },
+  "Root_final_release_complete": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\des023-finite-release-complete-corrected-counts-a1132.json",
+    "bytes": 3472,
+    "sha256": "09e44e1647f049b1e3783fb41ba39bd5115f8caaab44a7acf89b9db0189df841"
+  },
+  "Root_actual_cache_finite": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\des023-actual-workshop-cache-finite-a1131.json",
+    "bytes": 3350,
+    "sha256": "3b8d330dc6a85df9dc2f303631e49f4f5d51d365d4765160856fd4c1dc4dbfbd"
+  },
+  "prior_Root_release_complete_with_erroneous_distinct_counts": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\des023-finite-release-complete-a1131.json",
+    "bytes": 2226,
+    "sha256": "0b7f815b2f4dfe6509d3b7dc039ae49a762b5c5ef4fbd9312c1291ad97b53fb6"
+  },
+  "independent_same_product_count_verification": {
+    "workshop_catalog": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\workshop\\products.json",
+      "bytes": 6821,
+      "sha256": "8a71cdaeb7f7bc7380e997db8990da02da27ddb706340c09c119d66c8b83dac5"
+    },
+    "old0.2.2_native_receipt": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-rrf-022-formal-a85\\des-native-publish-receipt.json",
+      "bytes": 659,
+      "sha256": "f4e5f8efe9ce7f2f7c592abb39a88d80d1aeea024043cb179ec3516ef1d7e260"
+    },
+    "old0.2.2_public_full_verification": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-des-rrf-public-readback-a90\\des-public-a01\\verification.json",
+      "bytes": 759,
+      "sha256": "b52045194766cdfd9e2ceaa0a9d87d9519937b802461b95f505857a023dfed53"
+    },
+    "old0.2.2_exact57_download": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-rrf-022-publication-a85\\download-and-rrf-a89\\des-download-exact.json",
+      "bytes": 346,
+      "sha256": "4e9f4047e3f1e4ea8a102a6187bb543b18f368acbb5d289d71dea126cbd85e78"
+    },
+    "old0.2.2_actual_cache_closure": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\postpublish-cache-actual-a90\\des\\actual-cache-load-closure-a94.json",
+      "bytes": 11006,
+      "sha256": "599fcedd9e9221d17280be9586b1b5bccbd1b4d4826fbce08a089233ae1516dc"
+    },
+    "prior_published_product_index": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\evidence\\2026-11-18-ck3-1210-desktop-3fevhd2-1c74096080\\des-rrf-publication-a90.json",
+      "bytes": 14206,
+      "sha256": "094327eb546eb80e0804e71f45b7418d345ef1dff4d1414c26a3e59d911f6f0f"
+    },
+    "same_canonical": "3826991345",
+    "two_genuine_distinct_operations": [
+      "des-0.2.2-20261120-desktop-3fevhd2-1c74096080",
+      "des-023-canonical3826991345-a1122"
+    ],
+    "old_public_title_body_Notes_ok": true,
+    "old_cache_Natural0_Job0_cleanup": true,
+    "added_distinct_products_by0.2.3": 0,
+    "new0.2.3_release_pass_unchanged": true,
+    "remaining_five_products": [
+      {
+        "key": "reclaim-motherland",
+        "workshop_item_id": "3798404599"
+      },
+      {
+        "key": "celestial-commerce-corruption",
+        "workshop_item_id": "3804807463"
+      },
+      {
+        "key": "zhongguo-361",
+        "workshop_item_id": "3792585972"
+      },
+      {
+        "key": "living-artifacts",
+        "workshop_item_id": "3825237804"
+      },
+      {
+        "key": "li-yu-dao",
+        "workshop_item_id": "3817934804"
+      }
+    ]
+  }
+}
