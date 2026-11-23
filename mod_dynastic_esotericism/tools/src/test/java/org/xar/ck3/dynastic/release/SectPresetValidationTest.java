@@ -27,6 +27,59 @@ final class SectPresetValidationTest {
     @TempDir Path temporary;
 
     @Test
+    void leadership024LoadRetainsIndependentOnceGateAndNewGameClergyBoundary() throws IOException {
+        Fixture fixture = fixture();
+        assertEquals(71, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());
+        String actionsFile = "common/on_action/des_on_actions.txt";
+        String initFile = "common/scripted_effects/des_initialization_effects.txt";
+        String guiFile = "common/scripted_guis/des_saved_game_initialization.txt";
+        String leaderFile = "common/scripted_effects/des_leadership_effects.txt";
+        String marker = "set_global_variable = { name = des_leadership_024_checked value = yes }";
+        String gate = "NOT = { has_global_variable = des_leadership_024_checked }";
+        String actions = Files.readString(fixture.product().source().resolve(actionsFile));
+        String init = Files.readString(fixture.product().source().resolve(initFile));
+        String gui = Files.readString(fixture.product().source().resolve(guiFile));
+        String leader = Files.readString(fixture.product().source().resolve(leaderFile));
+        rejectChangedDefinitions(fixture, actionsFile, List.of(actions.replace(marker, "")));
+        rejectChangedDefinitions(fixture, initFile, List.of(init.replace(gate, "always = yes"),
+                init.replace("des_reconcile_loaded_leadership_024_effect = yes", "des_initialize_world_effect = yes")));
+        rejectChangedDefinitions(fixture, guiFile, List.of(gui.replace(gate, "always = yes"), gui.replace("is_ai = no", "always = yes")));
+        rejectChangedDefinitions(fixture, leaderFile, List.of(leader.replace(marker, ""),
+                leader.replace("has_global_variable = des_initialized", "always = yes"),
+                leader.replace("des_repair_rite_binding_effect = yes", "des_initialize_world_effect = yes"),
+                leader.replace("des_sync_created_dynasty_leadership_effect = yes", "des_reconcile_new_game_preset_clergy_effect = yes")));
+        assertEquals(71, StaticValidation.validate(fixture.product(), fixture.repository()).fileCount());
+    }
+
+    @Test
+    void stagedLeadership024RejectsRehashedGateOrCompatibilityCallbackRemoval() throws IOException {
+        Fixture fixture = fixture();
+        ReleaseBuilder builder = new ReleaseBuilder();
+        var built = builder.build(fixture.product(), fixture.repository(), temporary.resolve("leadership024"), REVISION, null, null);
+        ReleaseManifest manifest = built.payload();
+        for (String relative : List.of("common/scripted_effects/des_initialization_effects.txt",
+                "common/scripted_guis/des_saved_game_initialization.txt", "common/scripted_effects/des_leadership_effects.txt")) {
+            Path staged = built.staging().resolve(relative);
+            byte[] original = Files.readAllBytes(staged);
+            String text = new String(original, StandardCharsets.UTF_8);
+            String needle = relative.contains("des_initialization_effects") ? "des_reconcile_loaded_leadership_024_effect = yes"
+                    : relative.contains("scripted_guis") ? "NOT = { has_global_variable = des_leadership_024_checked }"
+                    : "set_global_variable = { name = des_leadership_024_checked value = yes }";
+            assertTrue(text.contains(needle));
+            byte[] changed = text.replace(needle, "").getBytes(StandardCharsets.UTF_8);
+            Files.write(staged, changed);
+            List<ReleaseManifest.FileEntry> entries = manifest.files().stream().map(entry -> entry.path().equals(relative)
+                    ? new ReleaseManifest.FileEntry(entry.path(), changed.length, ReleaseBuilder.sha256(changed)) : entry).toList();
+            Files.write(built.manifest(), ManifestJson.encode(new ReleaseManifest(manifest.formatVersion(), manifest.productId(), manifest.modVersion(),
+                    manifest.gitTag(), manifest.gitSha(), manifest.workshopItemId(), entries)));
+            assertThrows(IllegalArgumentException.class, () -> builder.verify(fixture.product(), built.staging(), built.manifest()));
+            Files.write(staged, original);
+            Files.write(built.manifest(), ManifestJson.encode(manifest));
+        }
+        assertEquals(71, builder.verify(fixture.product(), built.staging(), built.manifest()).verifiedFiles());
+    }
+
+    @Test
     void annualMaintenanceRejectsRepeatedQueueAndPerCharacterScheduling() throws IOException {
         Fixture fixture = fixture();
         String relative = "common/on_action/des_on_actions.txt";

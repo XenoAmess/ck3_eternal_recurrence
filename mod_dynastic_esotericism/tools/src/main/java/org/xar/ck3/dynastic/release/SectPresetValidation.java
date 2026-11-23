@@ -98,6 +98,7 @@ public final class SectPresetValidation {
                 effect = {
                     set_global_variable = { name = des_new_game_preset_clergy_pending value = yes }
                     des_initialize_world_effect = yes
+                    set_global_variable = { name = des_leadership_024_checked value = yes }
                 }
                 """);
         requireScriptBlock(actions, "des_new_game_reconcile", """
@@ -172,6 +173,7 @@ public final class SectPresetValidation {
                             is_alive = yes
                             OR = {
                                 NOT = { has_global_variable = des_initialized }
+                                NOT = { has_global_variable = des_leadership_024_checked }
                                 AND = {
                                     exists = rite:des_procreation_rite
                                     NOT = { has_global_variable = des_procreation_preset_023_checked }
@@ -184,6 +186,7 @@ public final class SectPresetValidation {
                             des_maintenance_effect = yes
                         }
                         des_reconcile_procreation_preset_023_effect = yes
+                        des_reconcile_loaded_leadership_024_effect = yes
                     }
                 """);
         requireScriptBlock(gui, "des_saved_game_initialize_gui", """
@@ -193,6 +196,7 @@ public final class SectPresetValidation {
                         is_alive = yes
                         OR = {
                             NOT = { has_global_variable = des_initialized }
+                            NOT = { has_global_variable = des_leadership_024_checked }
                             AND = {
                                 exists = rite:des_procreation_rite
                                 NOT = { has_global_variable = des_procreation_preset_023_checked }
@@ -204,6 +208,27 @@ public final class SectPresetValidation {
         if (effects.block("des_initialize_world_effect").named("des_reconcile_procreation_preset_023_effect").size() != 1) {
             throw new IllegalArgumentException("world initialization must check the preset migration exactly once");
         }
+        var leadership = org.xar.ck3.save.Clausewitz.parse(StaticValidation.text(Files.readAllBytes(root.resolve("common/scripted_effects/des_leadership_effects.txt"))));
+        requireScriptBlock(leadership, "des_reconcile_loaded_leadership_024_effect", """
+                if = {
+                    limit = {
+                        has_global_variable = des_initialized
+                        NOT = { has_global_variable = des_leadership_024_checked }
+                    }
+                    set_global_variable = { name = des_leadership_024_checked value = yes }
+                    every_religion_global = {
+                        every_faith = {
+                            every_faith_rite = {
+                                if = {
+                                    limit = { OR = { has_variable = des_bound_dynasty has_variable = des_join_house } }
+                                    des_repair_rite_binding_effect = yes
+                                    des_sync_created_dynasty_leadership_effect = yes
+                                }
+                            }
+                        }
+                    }
+                }
+                """);
     }
 
     /** Finite scheduling and bulk-work source contract; no engine timing or performance claim. */

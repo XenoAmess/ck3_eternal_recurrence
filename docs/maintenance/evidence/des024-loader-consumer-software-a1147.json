@@ -1,0 +1,41 @@
+{
+  "schema": "xar.des024.tools-consumer.actual23.v1",
+  "actual_methods": 23,
+  "wholeclasses": [
+    {
+      "name": "SectPresetValidationTest",
+      "actual_methods": 20
+    },
+    {
+      "name": "SectPresetFixtureTest",
+      "actual_methods": 3
+    }
+  ],
+  "reports": [
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-des024-tools-a1147\\target-des024\\dynastic-esotericism-tools\\surefire-reports\\TEST-org.xar.ck3.dynastic.release.SectPresetValidationTest.xml",
+      "bytes": 28143,
+      "sha256": "90f7bd4b467bc07821b6e15298928195c855374e41181f50aa98f89e7b223457"
+    },
+    {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-des024-tools-a1147\\target-des024\\dynastic-esotericism-tools\\surefire-reports\\TEST-org.xar.ck3.dynastic.acceptance.SectPresetFixtureTest.xml",
+      "bytes": 25243,
+      "sha256": "786bc4747862303b8a0f7488656cf126f463a177f59887b587e283ca8434f390"
+    }
+  ],
+  "actual_compiler": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-des024-tools-a1147\\validation-a01\\maven-compile-result.json",
+    "bytes": 1773,
+    "sha256": "7417f25ebfd4a778a27d9ae11519c4735d72e77eab4f0d797a49af7b77e49a6d"
+  },
+  "new_target": "D:\\ck3-state\\upgrade-20261118\\java-des024-tools-a1147\\target-des024",
+  "reused_dev_M2_shared_outputs": true,
+  "original_F023_all55_tool_file_pins_equal": true,
+  "original_F023_tool_qualified": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\des023-formal-release-a1121\\new-qualified71-tool.json",
+    "bytes": 22254,
+    "sha256": "3a3c16fa8499dcabecfd475e9552f18ccef8294e8635bb95d05b88f7f3872f4b"
+  },
+  "old_clergy_escape_guard_changed": false,
+  "scope": "Only explicit024 marker/newgame/load/gui finite AST contract and once-before-callback guarded loader. Existing clergy isolation mutations remain. Two new direct-source and rehashed-manifest bypass-negative cases. First old builder refusal preserved. No engine/Save/cold/publication credit."
+}
