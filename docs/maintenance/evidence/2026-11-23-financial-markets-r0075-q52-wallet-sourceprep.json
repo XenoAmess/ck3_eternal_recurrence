@@ -1,0 +1,457 @@
+{
+  "schema": "ck3-financial-r0075-q52-wallet-sourceprep-evidence-v1",
+  "machine_id": "4-8e1c2f1861",
+  "document_date_local": "2026-11-23",
+  "source_commit": "a208b82646f9de4c7b8085ef3c9e0b7446bb5c03",
+  "scope": "Exact2F2B Native software qualification plus R75 zero-day wallet source preparation; not Cold/debt/whole-product PASS.",
+  "Q52": {
+    "source_ready": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-q52-actual-facts01\\SOURCE_READY.Q52.json",
+      "bytes": 1130,
+      "sha256": "4176241d067730548af3f52ffd2a1cf6c36d3aeeec0e072c7b2650906dfbc9b4"
+    },
+    "facts": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-q52-actual-facts01\\FACTS.actual.json",
+      "bytes": 48038,
+      "sha256": "b114c98370528bef98887c6902fe8287541f94eb624a23616e02379fd9fab688"
+    },
+    "native_owner_summary": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-q52-actual-facts01\\native-q52-actual.source-candidate.md",
+      "bytes": 2051,
+      "sha256": "3b37e44580e162e22fddec3f61dc9cfb982555885bd7dd4766982a749cdb68ee"
+    },
+    "qualification": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification52\\Q.actual.json",
+      "bytes": 18497,
+      "sha256": "5d6399039ab78837c8c1a2e4abc9cb96da9a458287e4d83cac24ea9e6b9d6412"
+    },
+    "public_PASS": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification52\\PUBLIC-CONSUMER-PASS.actual.json",
+      "bytes": 1892,
+      "sha256": "34921048b333c3b29b9aeb02bd8d7df0751f29f3688c2fa2108b9e79337b2807"
+    },
+    "original_outer_wait": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\NATIVE-v29-Q52-01\\ORIGINAL-WAIT.actual.json",
+      "bytes": 1174,
+      "sha256": "75dc3e3e2baffb43f2d504ab17d1e28c44e7a24f46931947dcc40cefa30e43a5"
+    },
+    "returncode": 0,
+    "elapsed_seconds": 127.91081500001019,
+    "flags": 249,
+    "selected_TUs": {
+      "xar_ck3_bridge": 268,
+      "xar_bridge_protocol": 1,
+      "xar_ck3_12002_runtime": 632
+    },
+    "selected_TU_total": 901,
+    "actual_CXX": 9,
+    "actual_links": 4,
+    "formal22_actual_new": 0,
+    "formal22_actual_reused": 22,
+    "OFF_actual_current": 2,
+    "OFF_historical_reused": 14,
+    "published_DLL_ref_only_not_read": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification52\\published\\xar_ck3_bridge.dll",
+      "bytes": 13536256,
+      "sha256": "41bf57378b2f85a30a8b98cb840f5857b981ab282a718b2620791c42e453d534"
+    },
+    "producer_scope": "Selected public base Q50/247; execution predecessor Q51/248; Q52/249. Toast producer retains original Q50 ref/source; fresh_emit false. No new SDK execution or foreign267 ABI credit."
+  },
+  "separate_source_tests_not_added_to_679": {
+    "v29_original_failure": {
+      "name": "TEST-native-profile-v29-three01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v29-three01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1122,
+        "sha256": "a63c421ef11dbb909db1ceafa67562968b1e80e001a425821f8a38e927965747"
+      },
+      "returncode": 1,
+      "elapsed_seconds": 22.03099589998601,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v29-three01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v29-three01\\stderr.log",
+        "bytes": 2534,
+        "sha256": "114713cb51622fe49fd58ac9f7e39763c71ff8631d88d53dcd7707e4776de5f7"
+      }
+    },
+    "v29_corrected_three_PASS": {
+      "name": "TEST-native-profile-v29-three02",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v29-three02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1121,
+        "sha256": "698702fe4a1c2c3d13f11783611ff12f4c51b5b631b1cdf20d16edb6770dd3e5"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 23.341690799978096,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v29-three02\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-native-profile-v29-three02\\stderr.log",
+        "bytes": 862,
+        "sha256": "9b448032528d0e216a60a91e200e9a9a24bb6b91f6c341f8b109cf83141bb3ab"
+      }
+    },
+    "Python41_PASS": {
+      "name": "TEST-wallet75-current-Python41-01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-wallet75-current-Python41-01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1179,
+        "sha256": "06a77cd54f52b2855099670bd72b7d631039fa8d6d595bc3671bc8a56f19d041"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 8.041842399979942,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-wallet75-current-Python41-01\\stdout.log",
+        "bytes": 5902,
+        "sha256": "a92d9c120deb9fb86eb8443a5be2941e1607dc22962f1b3cf7286f29bcd7392d"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\TEST-wallet75-current-Python41-01\\stderr.log",
+        "bytes": 8902,
+        "sha256": "a433995d8bd28d3f3feb74420d00aff1d37f4c318953c8bec203d5bf94c341b6"
+      }
+    },
+    "source01_original_failure": {
+      "name": "QUALIFY-wallet75-current-source01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\QUALIFY-wallet75-current-source01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3189,
+        "sha256": "d0f5089cbec999f02f7b0b81a90726879567afc07ff1b3587042e6445e4dd54d"
+      },
+      "returncode": 1,
+      "elapsed_seconds": 2.6688687999849208,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\QUALIFY-wallet75-current-source01\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\QUALIFY-wallet75-current-source01\\stderr.log",
+        "bytes": 1380,
+        "sha256": "8277f4806ce3f3d967ceab8088e5972415d53c8e59a6fa8d494aa748ddd66f0f"
+      }
+    },
+    "source02_original_failure": {
+      "name": "QUALIFY-wallet75-current-source02",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\QUALIFY-wallet75-current-source02\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3188,
+        "sha256": "09f53a2479a2b212ed365ae9f76ee70bcfe2d6fb2037f14a1cd9e9734467db08"
+      },
+      "returncode": 1,
+      "elapsed_seconds": 12.753245600004448,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\QUALIFY-wallet75-current-source02\\stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\QUALIFY-wallet75-current-source02\\stderr.log",
+        "bytes": 856,
+        "sha256": "7244dc83b3c277dad3d6b57232a10e0384eb9e78a7f8dc2e9004de464dc8eb10"
+      }
+    },
+    "source03_actual_PASS": {
+      "name": "QUALIFY-wallet75-current-source03",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\QUALIFY-wallet75-current-source03\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3187,
+        "sha256": "a9e744899603c13646fd29a13bba8bf46ee6e782af85684b3eaa818703d85a19"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 14.451009300013538,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\QUALIFY-wallet75-current-source03\\stdout.log",
+        "bytes": 269,
+        "sha256": "8b49dbcc10e4916c738c9d83637195952cf6b8f47ec4a0ab7c0db827e9c1df72"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\QUALIFY-wallet75-current-source03\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "source03_READY": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\wallet75-current-source-qualified03\\READY.actual.json",
+      "bytes": 242622,
+      "sha256": "93c871a74f76a417f1d2c4cfeccea2b63960a5755e87f20373b0b06001587c37"
+    },
+    "runtime_builder": {
+      "name": "BUILD-wallet75-public-runtime01",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\BUILD-wallet75-public-runtime01\\ORIGINAL-WAIT.actual.json",
+        "bytes": 3272,
+        "sha256": "ce014bdeba5e336004b7aa65d5c10d8e9791f7f53645beff7c5546605568a9a6"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 14.723690099985106,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\BUILD-wallet75-public-runtime01\\stdout.log",
+        "bytes": 556,
+        "sha256": "e38157a2298080e3d6b2659b3b72de99317c72ccf30c5365844d6bc27a7ff79d"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\BUILD-wallet75-public-runtime01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "runtime_ref": {
+      "path": "C:\\workspace\\ck3-market-live-20261123b\\runtime-wallet75\\runtime.local.json",
+      "bytes": 12697,
+      "sha256": "83ac79ffb8019d4011742765d3beb29517b146414e5a5f737d91c6d4c8310370"
+    }
+  },
+  "R0075": {
+    "run_id": "4-8e1c2f1861--financial-markets--R0075",
+    "scene": "C:/workspace/ck3-market-live-20261123b",
+    "runtime_product_owner_reported": "Core51/236/Q52/Host a208",
+    "run": {
+      "name": "wallet75-start01-run",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\wallet75-start01-run\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1524,
+        "sha256": "618f0b791f8efd6e4f2750c900cd0aa17acb9ba7cd334d36afb2c1fa7db70e15"
+      },
+      "returncode": 2,
+      "elapsed_seconds": 677.229470100021,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\wallet75-start01-run\\stdout.log",
+        "bytes": 82599,
+        "sha256": "ea94d697b8c43887498b4ebabdf0ab470191da458c89db29b7c5b17eb620038c"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\wallet75-start01-run\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "verify": {
+      "name": "wallet75-start01-verify",
+      "original_wait": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\wallet75-start01-verify\\ORIGINAL-WAIT.actual.json",
+        "bytes": 1534,
+        "sha256": "603fdfc869b8c92fc8a91fd6d80e5fc8e089d3dbde16f231afd7823376dfe34b"
+      },
+      "returncode": 2,
+      "elapsed_seconds": 0.5477865000138991,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\wallet75-start01-verify\\stdout.log",
+        "bytes": 9308,
+        "sha256": "af5403a323e327b396b4478589f5bfe2c6889db462dafb614d765a265df877bf"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\wallet75-start01-verify\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "first_Root_phase_assertions": {
+      "actual_minimized_non_topmost_no_foreground_activation_for_entire_run": false,
+      "actual_new_process_exact_exe_dll_product_and_source_save_match_provenance": false,
+      "actual_native_readback_precedes_financial_gui_open_or_other_business_effect": false,
+      "actual_account_coin_order_reservation_contract_position_debt_news_and_oracle_graph_matches_preclose_by_permanent_identity": false,
+      "actual_currency_supply_cash_fees_fund_rights_original_dates_pending_amounts_and_daily_guards_match_preclose": false,
+      "actual_observer_arming_writes_only_new_xfma_epoch_state_and_no_product_repair_or_bootstrap_masks_missing_loaded_state": false
+    },
+    "source_preparation_scope": "normal player wallet/source preparation, no cold-wide or debt acceptance inferred",
+    "archive_receipt": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0075\\wallet75-source01\\ARCHIVE.actual.json",
+      "bytes": 7491,
+      "sha256": "bc6a5c8891ab7b060e48cead3652e129bc59000ca8d7b50796818c26c5d01e58"
+    },
+    "physical_SAVE_ref_only_not_read": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0075\\wallet75-source01\\xar_checkpoint.ck3",
+      "bytes": 147988228,
+      "sha256": "0a3fde209517324c8dddbb73ebcd6acfcd13085e13a52d13f5292d8ad9bf21a5"
+    },
+    "date_raw": 53144376,
+    "new_natural_days": 0,
+    "SAVE_requests": 1,
+    "cold_load_proven": false,
+    "case_acceptance_pass": false,
+    "qualified_boundary_pass": false,
+    "public_case_outcome": "PARTIAL",
+    "normal_close_qualified": true,
+    "closed_process_results": {
+      "game_actual_exit_code": 0,
+      "host_actual_exit_code": 0,
+      "keeper_actual_exit_code": 0,
+      "job_active_processes_final": 0
+    },
+    "closure_before": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0075-closure-before-release.actual.json",
+      "bytes": 8719,
+      "sha256": "0f5a10ca4f110324eef40facdf9a2ab824e23109ee728c2443543bded0eedc58"
+    },
+    "closure_released": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R0075-closure-released.actual.json",
+      "bytes": 1218,
+      "sha256": "2fddad789d84aba54770d280600c6f1c8b6171819b9e9cd7ea43dd3e3abf1af0"
+    },
+    "release_sequence": 16291,
+    "release_state": "done",
+    "resources": [],
+    "exit_autosave_verified": false,
+    "readers": [
+      {
+        "report": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\wallet75-source01-audit\\report.json",
+          "bytes": 608547,
+          "sha256": "fbd10a14a3a07b741ad6769222d1fc0a7e02d31f4fd838e6391de7bba9886179"
+        },
+        "operation": {
+          "name": "AUDIT-wallet75-source01",
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUDIT-wallet75-source01\\ORIGINAL-WAIT.actual.json",
+            "bytes": 1196,
+            "sha256": "19312346563e44a843cdaacc5fec7c01bea497ab8c91f37d8c93ac193a6e7e8f"
+          },
+          "returncode": 0,
+          "elapsed_seconds": 16.835707000020193,
+          "stdout": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUDIT-wallet75-source01\\stdout.log",
+            "bytes": 360,
+            "sha256": "627f2c8c404dcdd555a84215483550ebc984f2a78cdd9e96c1d4a8a0b2c40b84"
+          },
+          "stderr": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\AUDIT-wallet75-source01\\stderr.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "complete_parser_passes": 2,
+        "scope": "Existing same physical SAVE; this document author did not parse SAVE."
+      },
+      {
+        "report": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\wallet75-source01-whole-digest\\report.json",
+          "bytes": 198378,
+          "sha256": "22f701caab015299fd68fd93861c4a75bf0d6b16250dd1a7b23debd9c2aaf14c"
+        },
+        "operation": {
+          "name": "READ-wallet75-whole01",
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-wallet75-whole01\\ORIGINAL-WAIT.actual.json",
+            "bytes": 2025,
+            "sha256": "9b9b87f8ff3360fa4682ad3dbc200cdd65dcbf888a98ee2a3a0ab6e0ffcb3b1a"
+          },
+          "returncode": 0,
+          "elapsed_seconds": 13.750958899996476,
+          "stdout": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-wallet75-whole01\\stdout.log",
+            "bytes": 208,
+            "sha256": "2c977d67ad7957835f19616417d9125cef3e5d8aa2a277f807ba8a1ca0d40b59"
+          },
+          "stderr": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-wallet75-whole01\\stderr.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "complete_parser_passes": 2,
+        "scope": "Existing same physical SAVE; this document author did not parse SAVE."
+      },
+      {
+        "report": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\wallet75-source01-actor-raw\\report.json",
+          "bytes": 363290,
+          "sha256": "d517e8ad9a3b332f0d014dfc03dfd87ff7e76760f9e76b795b00b381570a2b58"
+        },
+        "operation": {
+          "name": "READ-wallet75-raw01",
+          "original_wait": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-wallet75-raw01\\ORIGINAL-WAIT.actual.json",
+            "bytes": 1791,
+            "sha256": "f100b4bddb7cba2013413ac40f23049289ec8e95d9cc1d51679b68fa743c33c3"
+          },
+          "returncode": 0,
+          "elapsed_seconds": 7.193912899994757,
+          "stdout": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-wallet75-raw01\\stdout.log",
+            "bytes": 341,
+            "sha256": "4b1e775cf837a59c7e1453a1b1181eb177313ca279945527cc285f8a102aa8de"
+          },
+          "stderr": {
+            "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\READ-wallet75-raw01\\stderr.log",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "complete_parser_passes": 1,
+        "scope": "Existing same physical SAVE; this document author did not parse SAVE."
+      }
+    ],
+    "wallet_projection": {
+      "human_character": 31254,
+      "native_account": 16777937,
+      "permanent_account": 274,
+      "free_cents": 2000,
+      "reserved_cents": 0,
+      "holder_and_beneficial_owner": 31254
+    },
+    "independent_source_check": {
+      "source_ready": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\debt-emitter-wallet75-inputs01\\SOURCE_READY.json",
+        "bytes": 2899,
+        "sha256": "2e95a7de97fc1f8ed31e8bce3e48d2faecd69a5f5a98cccb4ece34b0036b9452"
+      },
+      "pure_check": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\debt-emitter-wallet75-inputs01\\PURE-SOURCE-CHECK.actual.json",
+        "bytes": 2754,
+        "sha256": "f951b08b9e04a97865436db0ab5b227b8ff5e4fce8d8a44ea555e06d2cd8f561"
+      },
+      "funds_provenance": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\debt-emitter-wallet75-inputs01\\FUNDS-AND-PROVENANCE.actual-metadata.json",
+        "bytes": 4312,
+        "sha256": "8ca563594f927167a687530c04dd36c665001bf12b9a6a8f2babfa94fa88e085"
+      },
+      "root_confirmed_metadata": "Gold255->235; player wallet2000 cents; selected AI original state unchanged.",
+      "Whole_independent_review_still_separate": true,
+      "root_reviewer_draft_not_signature": true,
+      "package_preparer_or_EMIT_executed": false,
+      "AI_engine_eligibility_inferred": false
+    }
+  },
+  "preserved_boundaries": {
+    "R74_missing_financial_day337_and_final_GAP_unchanged": true,
+    "previous_R74_evidence": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\evidence\\2026-11-23-financial-markets-r0074-integrated-software679.json",
+      "bytes": 21605,
+      "sha256": "e54fff6872515cf9eee53b2c17be8c1214bdb7b8ec8c4e9cb4558297a1b4ef90"
+    },
+    "v29_first_and_source01_02_failures_not_reclassified": true,
+    "Debt_two_days_three_SAVE_is_future_only": true,
+    "financialCertified": false,
+    "whole_product_acceptance_pass": false,
+    "Workshop_first_release": false
+  },
+  "author_actions": {
+    "Root_writes": 0,
+    "Git": 0,
+    "new_compiles_or_tests": 0,
+    "OS_process_Game_Steam_queries": 0,
+    "SAVE_or_DLL_payload_reads": 0
+  },
+  "Root_postclose_followup": {
+    "shared_RRF_VM_fix_focused_actual": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\R75-RRF-global-marker-focus01\\report.json",
+      "bytes": 1275,
+      "sha256": "9fc254234705c42190b37eaa0c1f9667ccbd16505cffa408d3226beb0d839aab"
+    },
+    "one_method_not_full_141": true,
+    "actual_source_roles_adopted": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\debt-emitter-wallet75-inputs01\\Root-reviewed-source-roles.actual.json",
+      "bytes": 1991,
+      "sha256": "09847ecf0e321411d546f2ddaf720d4e7905e39e676d2407e5d20300414844b5"
+    },
+    "source_ready_candidate_history_preserved": true
+  }
+}

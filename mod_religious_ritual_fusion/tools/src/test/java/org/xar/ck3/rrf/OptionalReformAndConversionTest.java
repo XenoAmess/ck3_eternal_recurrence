@@ -70,11 +70,14 @@ final class OptionalReformAndConversionTest {
         Model model = model();
         model.globalMarkers.addAll(Set.of("des_initialized", "des_maintenance_queued"));
         model.effect("des_initialize_world_effect", model.actor);
+        assertEquals(Set.of("des_initialized"), model.globalMarkers);
         assertEquals(List.of(entity(Kind.DOCTRINE, "des_doctrine_none")), model.global(DEFAULTS));
         model.global(DEFAULTS).clear();
         // Execute the actual neutral parent -> DES child -> registration path.
         // There is deliberately no on_load assumption and no time advance.
         model.onAction("xar_rite_creation_collect_optional_default_doctrines", model.actor);
+        model.effect("des_ensure_maintenance_effect", model.actor);
+        assertEquals(Set.of("des_initialized"), model.globalMarkers);
         assertEquals(List.of(entity(Kind.DOCTRINE, "des_doctrine_none")), model.global(DEFAULTS));
         assertTrue(model.dispatches.isEmpty());
     }
@@ -516,6 +519,7 @@ final class OptionalReformAndConversionTest {
                 switch (e.key()) {
                     case "save_scope_as" -> saved.put(value.token(), current);
                     case "remove_variable" -> { state(current).links.remove(value.token()); state(current).atoms.remove(value.token()); }
+                    case "remove_global_variable" -> globalMarkers.remove(value.token());
                     case "clear_variable_list" -> list(current, value.token()).clear();
                     case "clear_global_variable_list" -> global(value.token()).clear();
                     case "add_to_list" -> locals.computeIfAbsent(value.token(), unused -> new ArrayList<>()).add(current);
