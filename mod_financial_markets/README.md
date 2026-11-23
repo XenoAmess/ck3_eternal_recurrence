@@ -8,7 +8,7 @@
 - [施工状态及实际验证](docs/development-status.md)
 - [中文玩家手册](docs/player-guide.md)
 
-完整产品正在联调，尚未完成实机业务与规模验收，也未 Workshop 首发。玩家运行时只使用 CK3 脚本及界面；tools 中 Java / Maven / Quarkus 是开发、构建与验证工具。
+当前为 Alpha 试用版，完整实机业务、规模及长期性能验收仍在推进，不宣称正式版或全产品验收通过。安装入口与已知范围见[Alpha 玩家说明](docs/releases/0.1.0-alpha.1-player-notes.md)。玩家运行时只使用 CK3 脚本及界面；tools 中 Java / Maven / Quarkus 是开发、构建与验证工具。
 
 已写入原生模块的功能：
 
