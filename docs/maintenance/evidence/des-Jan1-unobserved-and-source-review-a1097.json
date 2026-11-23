@@ -1,0 +1,191 @@
+{
+  "schema": "xar.des.Jan1-finite-negative-and-source-review.maintenance-index.v1",
+  "at_utc": "2026-11-23T05:15:13.179589+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status": "ANNUAL_RECOVERY_AND_HEAD_FOLLOWING_NOT_OBSERVED_AT_JAN1",
+  "actual_scene": {
+    "root": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly55-bookmark-current267-profile-a1075",
+    "days": 55,
+    "start_date_raw": 53145600,
+    "end_date_raw": 53146920,
+    "end_EOF_date": "1067.1.1",
+    "player_id": 36423,
+    "date_receipt_rollup": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-des-annual-Jan1-source-review-a1097\\55-day-original-summary-index.json",
+      "bytes": 23423,
+      "sha256": "57ed8bf607307f3dd2c8c1dfdba73abe6b0df8dcc27a51b2a6e7cf7a813295f8"
+    },
+    "55_unique_requests_and_operations": true,
+    "each_exact24_same_actor_paused_independent_after_Core": true,
+    "checkpoint_summary": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly55-bookmark-current267-profile-a1075\\operations\\checkpoint-jan1\\result\\summary.json",
+      "bytes": 16473,
+      "sha256": "bc7c74f49b41d8cae52d4fced60d18f7e4c548fcb1844111770cb7be10f6ab8b"
+    },
+    "save_calls": 1,
+    "archive": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly55-bookmark-current267-profile-a1075\\checkpoints\\des-ordinary-dynasty-jan1.ck3",
+      "bytes": 172026479,
+      "sha256": "0c407fb7f8a0a0874758e2a6152674870ce8499edc969edd75314ad3999ab4fd"
+    },
+    "archive_identity_from_original": {
+      "bytes": 172026479,
+      "file_id": "281474981927877",
+      "mtime_ns": "1795409564498529100"
+    },
+    "actual_changed_material": true,
+    "archive_is_copy": true,
+    "Native_physical_save_confirmed": false,
+    "business_or_ledger_SAVE_credit_from_Native_summary": false,
+    "terminal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly55-bookmark-current267-profile-a1075\\owner\\terminal.json",
+      "bytes": 1090,
+      "sha256": "1da8dc88876f9a5c34d2c715ea935615f148577133df17669dfb16925aaeb4af"
+    },
+    "creator_end": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly55-bookmark-current267-profile-a1075\\creator-end.json",
+      "bytes": 635,
+      "sha256": "9d5362b11b3c1593ab4e75dc23180abce9a1f5a81550741d85aaec52657133dc"
+    },
+    "creator_pid": 21512,
+    "game_pid": 11724,
+    "terminal_kind": "NATURAL_EXIT",
+    "creator_and_game_exit_code": 0,
+    "Job_active": 0,
+    "cleanup_proven": true
+  },
+  "actual_fixed_stock_c": {
+    "summary": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly55-bookmark-current267-profile-a1075\\operations\\resolve-bookmark-c-once-a1093\\result\\summary.json",
+      "bytes": 40126,
+      "sha256": "c744b0db6157a07cbc41d944240638fb52c9a99b76f32ec87ea86526802dad0b"
+    },
+    "query_calls": 2,
+    "choice_calls": 1,
+    "callback_dispatched": true,
+    "native_returned": true,
+    "native_handled": false,
+    "independent_target_instance_absent": true,
+    "event_closed": false,
+    "date_gate_cleared": false,
+    "Date_calls": 0,
+    "Save_calls": 0,
+    "assessment": "Finite callback and original target absence observed; reserved effect-success claims remain false."
+  },
+  "actual_readback": {
+    "facts": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-oldsave-inspection-a942\\annual-Jan1-facts-a1097.json",
+      "bytes": 59158,
+      "sha256": "1b9d6ff91c9750aeafb5f7cbe43d8dd7fdfd99a4a9572e76e668a2cbcd3816b6"
+    },
+    "whole_dynasty": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-oldsave-inspection-a942\\whole-dynasty-after-Jan1-a1096\\inspection.report.json",
+      "bytes": 24038,
+      "sha256": "02f33d4cf4c8ec38ccbb8a8c85bfbc8498fd53530037a099e16ab793813bdcb1"
+    },
+    "full_roles": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-oldsave-inspection-a942\\annual-Jan1-actual-member-head-roles-a1096\\inspection.report.json",
+      "bytes": 924544,
+      "sha256": "c27dc2d3f26830ad9fa327171b50440c4b6e0a55d5214d27b37f197134177d0a"
+    },
+    "global_projection": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-oldsave-inspection-a942\\annual-Jan1-globals-a1099\\inspection.report.json",
+      "bytes": 838962,
+      "sha256": "57a00632c28e55435e3650c626caf565e0589c6b4315dbce9b6bc669e1ddfcb9"
+    },
+    "global_compact_facts": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-annual-oldsave-inspection-a942\\annual-Jan1-global-des-facts-a1102-a02.json",
+      "bytes": 1549,
+      "sha256": "96c111abe0f8599ce7789e117b034565e4716addf053fd544bc778e1d1f3cb86"
+    },
+    "all_existing_readers_exit0_fullEOF": true,
+    "live_members": 56,
+    "Houses": 3,
+    "main_House": 16113,
+    "main_members": 54,
+    "outliers_after": [
+      {
+        "actorId": "36423",
+        "houseId": "16115"
+      },
+      {
+        "actorId": "77332",
+        "houseId": "16114"
+      }
+    ],
+    "actual_main_HouseHead": 77331,
+    "actual_RiteHead": 36423,
+    "annual_recovery": "NOT_OBSERVED_AT_JAN1",
+    "annual_head_following": "NOT_OBSERVED_AT_JAN1",
+    "title_callback_case": "PARTIAL_PRESERVED",
+    "source_Save_pin_and_identity_unchanged_by_readers": true
+  },
+  "source_analysis": {
+    "review": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-des-annual-Jan1-source-review-a1097\\source-review.json",
+      "bytes": 28419,
+      "sha256": "04ce4e4bdcf134ba38b7ffcd9fe0165c65040fd1b388bdcb1d42ff3be1dc1e52"
+    },
+    "actual71_match_qualified_manifest": true,
+    "runtime_script_drift": false,
+    "repo_byte_identical_payloads": 70,
+    "only_descriptor_diff": "Qualified builder adds canonical Florin compatibility tag; actual descriptor matches MF.",
+    "actual_initialized": true,
+    "actual_global_bound_Rites_contains150": true,
+    "actual_Rite150_dynastic_doctrine": true,
+    "saved_binding_reciprocal_and_stable_House_present": true,
+    "guard_or_scope_rootcause": "Not established from source and observed AST.",
+    "pulse_execution_before_checkpoint": "NOT_PROVEN",
+    "three_sibling_completion_order": "NOT_PROVEN_BY_LIST_ORDER; do not present an engine race as established rootcause.",
+    "no_runtime_patch": true,
+    "models_are_not_engine_scheduling_proof": true
+  },
+  "current_availability": {
+    "retirement": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-a1075-save-duplicates-reclamation-a01\\actual-result.json",
+      "bytes": 5249,
+      "sha256": "e112d64739471d73e71cc4cb4f1b78c046334c75dab6e937ef6085734928f1e5"
+    },
+    "deleted_generated_replicas": 3,
+    "allocated_removed_bytes": 516083712,
+    "logical_removed_bytes": 516079437,
+    "availability": "DELETED_UNREADABLE; old paths are no longer live inputs.",
+    "archive_retained_from_original": {
+      "bytes": 172026479,
+      "metadata": {
+        "allocated_bytes": 172027904,
+        "attributes": 32,
+        "creation_filetime": "134398831707683819",
+        "delete_pending": false,
+        "directory": false,
+        "file_id128": "c59b4f00000001000000000000000000",
+        "links": 1,
+        "logical_bytes": 172026479,
+        "mtime_ns": 1795409564498529100,
+        "volume_serial": "7220568048185129294"
+      },
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-ordinary-dynasty-yearly55-bookmark-current267-profile-a1075\\checkpoints\\des-ordinary-dynasty-jan1.ck3",
+      "sha256": "0c407fb7f8a0a0874758e2a6152674870ce8499edc969edd75314ad3999ab4fd"
+    },
+    "Da_input_and_shader_logs_Source_preserved": true,
+    "free_delta_attribution": false,
+    "spent_held_refund": false
+  },
+  "boundaries": {
+    "Jan1_annual_PASS": false,
+    "Head_following_PASS": false,
+    "runtime_performance_speedup_or_10s_target": false,
+    "Native_Create_or_Accept_credit": false,
+    "new_Defaults_or_general_edited_bundle_matrix": false,
+    "publication": false,
+    "old_UNKNOWN_flags_and_deadlines": "UNCHANGED",
+    "uploaded": "12/17",
+    "strict": "9/17",
+    "DES_published": false,
+    "this_docs_unit": "Existing small JSON/script bytes only; no real Save read, Game/OS/SDK/test/build/cleanup calls."
+  },
+  "failed_attempts_preserved": {
+    "Root_a1102_first_extraction": "scopes/projections shape error retained, not missing globals",
+    "earlier_SDK_and_fixture_refusals": "Unchanged historical evidence; not overwritten by later successful finite observations."
+  }
+}
