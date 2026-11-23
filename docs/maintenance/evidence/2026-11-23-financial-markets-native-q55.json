@@ -1,0 +1,246 @@
+{
+  "schema": "xfm.native-q55-documentary-evidence.v1",
+  "machine_id": "4-8e1c2f1861",
+  "game_build_scope": {
+    "version": "1.21.0",
+    "steam_build": "26622941",
+    "exact_family": "2F2B"
+  },
+  "source_commit": "34d788d39da69654e389fa7a82bc29c3173c780f",
+  "qualification": {
+    "path": "C:/workspace/ck3-market-task-20261118/native-common-qualification55/Q.actual.json",
+    "bytes": 19048,
+    "sha256": "91392c9e898c69447dfe10bd2bc56d8d83b85b24ce192d8b5b9927bf8cee9de6"
+  },
+  "public_consumer": {
+    "path": "C:/workspace/ck3-market-task-20261118/native-common-qualification55/PUBLIC-CONSUMER-PASS.actual.json",
+    "bytes": 1880,
+    "sha256": "ef9cab95d1963ed80ba8ffe113d50663f38b5b924fd2ff339e30d6393cbfc848"
+  },
+  "outer_original_execution": {
+    "receipt": {
+      "path": "C:/workspace/ck3-market-live-20261118/operations/NATIVE-v32-Q55-01/ORIGINAL-WAIT.actual.json",
+      "bytes": 1174,
+      "sha256": "645b6e89a5b7ba58ee60c5080b3b4f0ce83073d9bd5658213ab5a57eae78184a"
+    },
+    "returncode": 0,
+    "elapsed_seconds": 142.73185599999852,
+    "started_at_utc": "2026-11-23T04:53:02.910999+00:00",
+    "finished_at_utc": "2026-11-23T04:55:25.642851+00:00"
+  },
+  "profile_contract_three_original_execution": {
+    "receipt": {
+      "path": "C:/workspace/ck3-market-live-20261118/operations/TEST-native-profile-v32-three01/ORIGINAL-WAIT.actual.json",
+      "bytes": 1129,
+      "sha256": "9fc826aa2b6c99f9cdc7ad144406c8f22622f123f32bc348df0499e4603918ff"
+    },
+    "returncode": 0,
+    "elapsed_seconds": 24.425388100004056,
+    "started_at_utc": "2026-11-23T04:50:46.434438+00:00",
+    "finished_at_utc": "2026-11-23T04:51:10.859799+00:00"
+  },
+  "profile": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification55\\profile.actual.json",
+    "bytes": 16961,
+    "sha256": "2c23ac8bef4461f0a60b07917f07a7d8b02d0d2fba20ccad4a2ccefa9c531ade"
+  },
+  "flag_count": 252,
+  "configured_scope": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification55\\configured-scope.actual.json",
+    "bytes": 297424,
+    "sha256": "e15f3d1cd024ed5026508a423b2d34dbc9802fc4cb15b5fd2131e7475aeee290"
+  },
+  "production_translation_units": {
+    "xar_ck3_bridge": 268,
+    "xar_bridge_protocol": 1,
+    "xar_ck3_12002_runtime": 644
+  },
+  "total_production_translation_units": 913,
+  "production_build": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification55\\production-build.actual.json",
+    "bytes": 862,
+    "sha256": "8277888d51e04f7f340ddcfa4218f6923e6ff69ea079d83d7167aed22fd07bdf"
+  },
+  "production_build_log": {
+    "path": "C:/workspace/ck3-market-task-20261118/native-common-qualification55/production-build.actual.log",
+    "bytes": 2377,
+    "sha256": "592d4afb77a2f77a4b8dbdde67efb0bf64c9674d5517c113399836f933c461cb"
+  },
+  "observed_incremental_build": {
+    "cxx_compilations": 12,
+    "link_steps": 5,
+    "parallel_jobs": 2
+  },
+  "published_dll_original_pin_not_rehashed": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification55\\published\\xar_ck3_bridge.dll",
+    "bytes": 13536256,
+    "sha256": "56cde91a9157842fe7298ca12d5c828ef0c9f5d7fe156014e4790e538141b3c8"
+  },
+  "dependency_aware_finite_reuse": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification55\\dependency-aware-finite-decisions.actual.json",
+    "bytes": 173441,
+    "sha256": "d261f4d8d029bfe08c37e5fa219598e5a721778d5ea1b06b793ad8ecb7811575"
+  },
+  "formal_fixture_reused_count": 22,
+  "new_formal_fixture_execution_count": 0,
+  "new_current_off_supplement": {
+    "receipt": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification55\\two-stock-one-affected-LYD-step-OFF-supplemental-results.actual.json",
+      "bytes": 1229,
+      "sha256": "b5227bc6a4130864c5e46651b63fdbba79ab621b59b68d8ebd3fecdf4830b4b6"
+    },
+    "executions": [
+      {
+        "summary": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification55\\supplemental-stock-bookmark1070-owner-off-summary.actual.json",
+          "bytes": 1901,
+          "sha256": "5abc0e9192dfea08c5af8067ec86b0975f0790a28bf8023138d101828e1c594d"
+        },
+        "target": "xar_ck3_stock_bookmark1070_off_test",
+        "permission_flag": "XAR_CK3_ENABLE_121003_26785313_STOCK_BOOKMARK1070_V1",
+        "permission_setting": "OFF",
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification55\\supplemental-stock-bookmark1070-owner-off-execution.actual.json",
+          "bytes": 1104,
+          "sha256": "751be2f8dd0849c9c1d36d5be0a67060fff7e4663183d5359f69a2853354634c"
+        },
+        "original_wait_returncode": 0
+      },
+      {
+        "summary": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification55\\supplemental-stock-bookmark1070-step-off-summary.actual.json",
+          "bytes": 1919,
+          "sha256": "9a0cafce966895d1613d117e442639825db031045584619b160deaf0cec63cea"
+        },
+        "target": "xar_ck3_stock_bookmark1070_step_off_test",
+        "permission_flag": "XAR_CK3_ENABLE_121003_26785313_STOCK_BOOKMARK1070_V1",
+        "permission_setting": "OFF",
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification55\\supplemental-stock-bookmark1070-step-off-execution.actual.json",
+          "bytes": 1114,
+          "sha256": "bb6f268742857882c2d16f20fc4a8f780a5513b2846d6cfd1a2f4d3b628dd3f2"
+        },
+        "original_wait_returncode": 0
+      },
+      {
+        "summary": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification55\\supplemental-affected-lyd-step-off-summary.actual.json",
+          "bytes": 2022,
+          "sha256": "b93c3a993f4d801ef0b8c67bf3e0d39128a2194bfb9444468c05ca8448f85614"
+        },
+        "target": "xar_ck3_current_lyd_step_off_test",
+        "permission_flag": "XAR_CK3_ENABLE_121003_26785313_LYD_V1",
+        "permission_setting": "OFF",
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification55\\supplemental-affected-lyd-step-off-execution.actual.json",
+          "bytes": 1093,
+          "sha256": "61cd052debcaa02bff026743e13de3b667a82d06743459f952a64f77f23e7378"
+        },
+        "original_wait_returncode": 0
+      }
+    ]
+  },
+  "prior_off_execution_reuses": [
+    {
+      "kind": "prior_letter_set_off_reuse",
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification55\\reused-original-letter-set-off.actual.json",
+        "bytes": 4141,
+        "sha256": "b54d980834c2289ba15d011840b1c59ae9bfb177c65c337838d9a9f65f82d1fa"
+      },
+      "original_execution_count": 1,
+      "new_execution_count": 0,
+      "sources_flags_commands_executable_equal": true
+    },
+    {
+      "kind": "prior_fullscreen_off_reuse",
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification55\\reused-original-fullscreen-off.actual.json",
+        "bytes": 34837,
+        "sha256": "41ad0b8b5f2b71bc4a97695d358595db46a053e7a815a555e13aeee001a78062"
+      },
+      "original_execution_count": 1,
+      "new_execution_count": 0,
+      "sources_flags_commands_executable_equal": true
+    },
+    {
+      "kind": "prior_xqol_off_reuse",
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification55\\reused-original-xqol-conversion-prompt-off.actual.json",
+        "bytes": 3842,
+        "sha256": "0263b991ef1872dd44ea23521b8cfcd4ccfe186da610a0db3a7270fa3c20ff87"
+      },
+      "original_execution_count": 1,
+      "new_execution_count": 0,
+      "sources_flags_commands_executable_equal": true
+    },
+    {
+      "kind": "prior_q49_off_reuse",
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification55\\reused-four-original-Q49-OFF-results.actual.json",
+        "bytes": 1705,
+        "sha256": "d813d72c5b960004c9e3109d0420091529a22e12cb95fcdba93d4035ef19036d"
+      },
+      "original_execution_count": 4,
+      "new_execution_count": 0,
+      "sources_flags_commands_executable_equal": true
+    },
+    {
+      "kind": "prior_q50_off_reuse",
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification55\\reused-five-original-Q50-OFF-results.actual.json",
+        "bytes": 1956,
+        "sha256": "2402240378401b619bf646a6454de53282c69fab68def29519dfb652e246cc4c"
+      },
+      "original_execution_count": 5,
+      "new_execution_count": 0,
+      "sources_flags_commands_executable_equal": true
+    },
+    {
+      "kind": "prior_q51_off_reuse",
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification55\\reused-two-original-Q51-OFF-results.actual.json",
+        "bytes": 1181,
+        "sha256": "db9f1a65dbab7f332d131323bc05591ad9a444e94e50d17fc49e7bf2979f2825"
+      },
+      "original_execution_count": 2,
+      "new_execution_count": 0,
+      "sources_flags_commands_executable_equal": true
+    },
+    {
+      "kind": "prior_q53_off_reuse",
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification55\\reused-four-original-Q53-OFF-results.actual.json",
+        "bytes": 1704,
+        "sha256": "201bdfc4a3fd91c9a8c1c21a50592609f001fda28fda593ea941eea6d4108a89"
+      },
+      "original_execution_count": 4,
+      "new_execution_count": 0,
+      "sources_flags_commands_executable_equal": true
+    },
+    {
+      "kind": "prior_q54_off_reuse",
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification55\\reused-two-original-Q54-OFF-results.actual.json",
+        "bytes": 1218,
+        "sha256": "207099daccbd00c05e34ad9654213100e09f2e3e6e99669e9d74d33a5a011147"
+      },
+      "original_execution_count": 2,
+      "new_execution_count": 0,
+      "sources_flags_commands_executable_equal": true
+    }
+  ],
+  "prior_off_original_execution_count": 20,
+  "new_prior_off_execution_count": 0,
+  "qualification_limits": {
+    "actual_live_business_qualified": false,
+    "current267_ON_qualified": false,
+    "E8_executed_by_this_work_package": false
+  },
+  "authoring_actions": {
+    "Game_or_OS_query": 0,
+    "build_or_test": 0,
+    "SAVE_or_DLL_payload_read": 0,
+    "formal_repository_write": 0
+  }
+}

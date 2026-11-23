@@ -1,0 +1,1140 @@
+{
+  "schema": "xfm.closed-independent-save-retirement-availability.v1",
+  "machine_id": "4-8e1c2f1861",
+  "record_date": "2026-11-23",
+  "retired_independent_canonical_count": 56,
+  "meaning": "56 superseded independent canonical SAVE originals were retired, not classified as duplicates; their old literal paths are not readable.",
+  "batches": [
+    {
+      "batch": "old8",
+      "result": {
+        "path": "C:/workspace/ck3-market-task-20261118/obsolete-unique-eight-checkpoints-actual02/RESULT.actual.json",
+        "bytes": 9401,
+        "sha256": "704ac46d0662a485f23d7d9f4f90f04b893b4e999c4e9fa8fccaa3cd0f3af89d"
+      },
+      "original_execution": {
+        "receipt": {
+          "path": "C:/workspace/ck3-market-live-20261118/operations/APPLY-obsolete-eight-unique02/ORIGINAL-WAIT.actual.json",
+          "bytes": 1833,
+          "sha256": "df8d5ca7dc9ce21c98a8d5cc3a06e571bc5350014882a1ff9a4718c87da5a2b9"
+        },
+        "returncode": 2,
+        "elapsed_seconds": 8.816924099985044,
+        "started_at_utc": "2026-11-23T03:15:59.086617+00:00",
+        "finished_at_utc": "2026-11-23T03:16:07.903525+00:00"
+      },
+      "Root_review": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\obsolete-unique-eight-checkpoints-actual02\\Root-review.actual.json",
+        "bytes": 10138,
+        "sha256": "238e5fa39dc8ae296e41b91db1dfd57597f6f9866afedf90f16ceae8b8e630a4"
+      },
+      "plan": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\obsolete-unique-eight-checkpoints-actual02\\PLAN.actual.json",
+        "bytes": 7005,
+        "sha256": "8e3dbd08f7270b7c1d850b5bdeae31e5ad748d26533457232291faa634ffb87b"
+      },
+      "retired_independent_canonical_count": 8,
+      "failure": null,
+      "target_reached": false,
+      "window_observations_not_unique_volume_attribution": {
+        "free_before": 32202240000,
+        "free_after": 32771526656,
+        "free_delta_not_uniquely_attributed": 569286656,
+        "allocation_before_for_retired_not_pure_volume_credit": 569331712,
+        "logical_bytes_retired_not_volume_credit": 1517192540,
+        "stop_free_bytes": 33390000000
+      },
+      "originals": [
+        {
+          "result_row": 0,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-R0076/debt76-baseline01/xar_checkpoint.ck3",
+            "bytes": 148002848,
+            "sha256": "7a0bc844f16b4e4fc179786677863789b641942f5678fbb42217cef5d2c23882"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0076\\debt76-baseline01\\ARCHIVE.actual.json",
+            "bytes": 7476,
+            "sha256": "b2fedbd8e67b6feb68ff666aefdc6f8add26a5cee80f30ee90f1a1f82963edda"
+          }
+        },
+        {
+          "result_row": 1,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-futures05/futures08-baseline01/xar_checkpoint.ck3",
+            "bytes": 176060992,
+            "sha256": "a622d4f2ed7746dae661020af7febbde6e48565cbfaf27e53af0582093d1125a"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures05\\futures08-baseline01\\ARCHIVE.actual.json",
+            "bytes": 7514,
+            "sha256": "913ce595cb2e7d87604a9b3f0bef68dee5e4411721c9270d9af9d41f446e071d"
+          }
+        },
+        {
+          "result_row": 2,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-futures05/futures08-long-leverage01/xar_checkpoint.ck3",
+            "bytes": 176068348,
+            "sha256": "a31bf58861f3257f1d16102a1106182cf6f7699c05f44a6d83ca1b75e578eb77"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures05\\futures08-long-leverage01\\ARCHIVE.actual.json",
+            "bytes": 7545,
+            "sha256": "f2a39bb783bd8aa36c2ad30f7d2785a74344d23b9252cd986d8479c8d5dba649"
+          }
+        },
+        {
+          "result_row": 3,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-futures05/futures08-short01/xar_checkpoint.ck3",
+            "bytes": 176075609,
+            "sha256": "c489886339a92f280748110ab2f2126e9e17d8fff8385c2186533af564e566a1"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures05\\futures08-short01\\ARCHIVE.actual.json",
+            "bytes": 7521,
+            "sha256": "e229b573371d31348c96f7051cea96fec07a37543661d044da45949aa2596873"
+          }
+        },
+        {
+          "result_row": 4,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-futures09/futures09-baseline01/xar_checkpoint.ck3",
+            "bytes": 210238496,
+            "sha256": "a4b939b5b7f45198d9e3ef3e819291d6f8f0423c18b0db7ed4450004fc59b6ad"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures09\\futures09-baseline01\\ARCHIVE.actual.json",
+            "bytes": 7522,
+            "sha256": "21ee019bab43aa97e6cda1da74136d055a749a429f94fdf57fcd3bc71533d067"
+          }
+        },
+        {
+          "result_row": 5,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-futures09/futures09-long-leverage01/xar_checkpoint.ck3",
+            "bytes": 210248527,
+            "sha256": "1339aef763167d6bc08e5be431dfdd80c6ddd7f4823f421b6ff5e931f81f79c1"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures09\\futures09-long-leverage01\\ARCHIVE.actual.json",
+            "bytes": 7545,
+            "sha256": "11b06021e04f7da58328e9792b49760320abae755a47866c245d8163121d0981"
+          }
+        },
+        {
+          "result_row": 6,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-futures10/futures10-baseline01/xar_checkpoint.ck3",
+            "bytes": 210248527,
+            "sha256": "064442295eb4823b31450360f5a7d2d459c39bcbaab5edf1014ee894354852cf"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures10\\futures10-baseline01\\ARCHIVE.actual.json",
+            "bytes": 7520,
+            "sha256": "69dba3ffffb3ddd2eb5080b9605470c60cc3ffc9d068d3ae39170a1ca490f18c"
+          }
+        },
+        {
+          "result_row": 7,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-futures10/futures10-add-margin01/xar_checkpoint.ck3",
+            "bytes": 210249193,
+            "sha256": "4cf70d12ee17dc2c7a8c3a738d0ceda903e09fb86c8105d098a2ab18089db248"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures10\\futures10-add-margin01\\ARCHIVE.actual.json",
+            "bytes": 7534,
+            "sha256": "1ebf47b4b5ef09072e75fec7bd84fce6ad907d3ee9e9ef01884c640624c27276"
+          }
+        }
+      ]
+    },
+    {
+      "batch": "old16",
+      "result": {
+        "path": "C:/workspace/ck3-market-task-20261118/obsolete-unique-sixteen-checkpoints-actual01/RESULT.actual.json",
+        "bytes": 17512,
+        "sha256": "1db6ebbbd294706e8489bcb0282ee92bb2630392d8c2a5da6a437cacef6f7ec0"
+      },
+      "original_execution": {
+        "receipt": {
+          "path": "C:/workspace/ck3-market-live-20261118/operations/APPLY-obsolete-sixteen-unique01/ORIGINAL-WAIT.actual.json",
+          "bytes": 1846,
+          "sha256": "33d413e2c0c5f3342e07dd9b24f192aaa1336b83a2a719cd5bec94ef016763a0"
+        },
+        "returncode": 2,
+        "elapsed_seconds": 15.954933200002415,
+        "started_at_utc": "2026-11-23T03:24:16.268351+00:00",
+        "finished_at_utc": "2026-11-23T03:24:32.223280+00:00"
+      },
+      "Root_review": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\obsolete-unique-sixteen-checkpoints-actual01\\Root-review.actual.json",
+        "bytes": 23643,
+        "sha256": "35b4e1dc3177aa57eb2e684355a693bbced1a1e332837b4ba051d67f97a5893c"
+      },
+      "plan": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\obsolete-unique-sixteen-checkpoints-actual01\\PLAN.actual.json",
+        "bytes": 12717,
+        "sha256": "69c3aa142dacc18fca1966276603dc050e0dbbaf3a5e10556ea230dd06ce4213"
+      },
+      "retired_independent_canonical_count": 16,
+      "failure": null,
+      "target_reached": false,
+      "window_observations_not_unique_volume_attribution": {
+        "free_before": 32340832256,
+        "free_after": 33350971392,
+        "free_delta_not_uniquely_attributed": 1010139136,
+        "allocation_before_for_retired_not_pure_volume_credit": 1010216960,
+        "logical_bytes_retired_not_volume_credit": 3275512953,
+        "stop_free_bytes": 33390000000
+      },
+      "originals": [
+        {
+          "result_row": 0,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-futures03/futures06-baseline01/xar_checkpoint.ck3",
+            "bytes": 176059198,
+            "sha256": "1bc71ca4b6ca95a86564715bbb3967c504de6ad68a31791b4821560f45478feb"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures03\\futures06-baseline01\\ARCHIVE.actual.json",
+            "bytes": 7540,
+            "sha256": "291abc6fe5e5a2ee70ce0deb715f4ce461ea7a9ffa2774c85bb8247606785458"
+          }
+        },
+        {
+          "result_row": 1,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-futures04/futures07-baseline01/xar_checkpoint.ck3",
+            "bytes": 176060879,
+            "sha256": "11cb80aece16e500f0873c02f128196e612fc23fcdd736e36ce440b7d16ac2a5"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures04\\futures07-baseline01\\ARCHIVE.actual.json",
+            "bytes": 7516,
+            "sha256": "d13275683cf35600bd12398ffe1b856334be930fab32e5e8f576bf28f644f05c"
+          }
+        },
+        {
+          "result_row": 2,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-futures11/futures11-baseline01/xar_checkpoint.ck3",
+            "bytes": 210249505,
+            "sha256": "7efe93a0d46885a34f3596879d5ac57d07936e1c061e56e79509487be1258de5"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures11\\futures11-baseline01\\ARCHIVE.actual.json",
+            "bytes": 7517,
+            "sha256": "8271d689bfe8ad7c7cb4c9e6700343e3e115d6796703afb33bd83d482d2a2a16"
+          }
+        },
+        {
+          "result_row": 3,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-futures12/futures12-baseline01/xar_checkpoint.ck3",
+            "bytes": 209455790,
+            "sha256": "6c532b9847b126fe3024ed3d723860b44e8034284ff47f9ab083f5a8490e3e70"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures12\\futures12-baseline01\\ARCHIVE.actual.json",
+            "bytes": 7517,
+            "sha256": "82a80cc157c196cebb91976bb0a4b043ec1aa8b2d705de3d2d916f6f24159f15"
+          }
+        },
+        {
+          "result_row": 4,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-futures12/futures12-short01/xar_checkpoint.ck3",
+            "bytes": 209457917,
+            "sha256": "88dc8819787f9763ac06c528627a8c06fef571801ea6ba1e42b2d2ce42d06d67"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures12\\futures12-short01\\ARCHIVE.actual.json",
+            "bytes": 7516,
+            "sha256": "d66a1fb4687f8e661a842c036e2853b2f57630d34b992d43e13b7ba7d73c35b7"
+          }
+        },
+        {
+          "result_row": 5,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-short20/short20-baseline01/xar_checkpoint.ck3",
+            "bytes": 206235942,
+            "sha256": "f1250cad009b3563aa31ae1061a5daf5953f510280dd7803d5d0334c75eaf898"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-short20\\short20-baseline01\\ARCHIVE.actual.json",
+            "bytes": 7543,
+            "sha256": "1402f3047284bc35eadb6914e72e39812f8731f2569e00670ed2f1bfaeedd400"
+          }
+        },
+        {
+          "result_row": 6,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-coin24/coin24-baseline01/xar_checkpoint.ck3",
+            "bytes": 214165398,
+            "sha256": "e0bccf05b2d352cde65995a7b0bc7bedf426154338e56ed436ffb2d630265412"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-coin24\\coin24-baseline01\\ARCHIVE.actual.json",
+            "bytes": 7481,
+            "sha256": "6e668844d0fa1bf85fbe4bfaf4f4aca4e9a23eb600107ae4c61575233d3ad968"
+          }
+        },
+        {
+          "result_row": 7,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-coin25/coin25-baseline01/xar_checkpoint.ck3",
+            "bytes": 214168174,
+            "sha256": "5fa3fad97619784ff73956b5f0dd26ea7cdf7dc0da5c3c9749d4c22c2530981a"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-coin25\\coin25-baseline01\\ARCHIVE.actual.json",
+            "bytes": 7483,
+            "sha256": "33d8d00bbd917feefca4d6e1987fcc512c8b2c04ed8bad1a69e222c382308a00"
+          }
+        },
+        {
+          "result_row": 8,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-clock21/clock21-baseline01/xar_checkpoint.ck3",
+            "bytes": 206240879,
+            "sha256": "f147afa3745c85880a4a3fc33c73d0dc2bf962853e6a5b57dc1ecff36cb05c27"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-clock21\\clock21-baseline01\\ARCHIVE.actual.json",
+            "bytes": 7495,
+            "sha256": "aecba97e2ba056482c38012994d01669460f5da288096559e3a851c7c89f57c6"
+          }
+        },
+        {
+          "result_row": 9,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-clock23/clock23-baseline01/xar_checkpoint.ck3",
+            "bytes": 210151093,
+            "sha256": "109aff7b79d2fd664ff0eff93ae2a93204061770a47b7163dbd9f16d3a2860bf"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-clock23\\clock23-baseline01\\ARCHIVE.actual.json",
+            "bytes": 7499,
+            "sha256": "0021498cdb661bb064b948747a72680d302a6f4d1c6ab115776a67d5deec82b6"
+          }
+        },
+        {
+          "result_row": 10,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-futures26/futures26-baseline01/xar_checkpoint.ck3",
+            "bytes": 214160590,
+            "sha256": "1c2247c43c11c0f1f32bebda16f52df979e2edfd17749a11d370fd356db7dcb7"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures26\\futures26-baseline01\\ARCHIVE.actual.json",
+            "bytes": 7519,
+            "sha256": "4a3faef414965e64dd3b1867e223026c998b44d4f9072fb7e4bc48a578d2778b"
+          }
+        },
+        {
+          "result_row": 11,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-reduce28/reduce28-baseline01/xar_checkpoint.ck3",
+            "bytes": 218666947,
+            "sha256": "2f5fea8fa50c7f36078bf5d68fd8382b9d4419ff9e4ca452842b388a92b5ab8f"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-reduce28\\reduce28-baseline01\\ARCHIVE.actual.json",
+            "bytes": 7505,
+            "sha256": "92d4b9c96cf265c7f04d1526a056de6c5100e706d9b42f4046dd5e27f8c673c4"
+          }
+        },
+        {
+          "result_row": 12,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-reduce28/reduce28-orders01/xar_checkpoint.ck3",
+            "bytes": 218669489,
+            "sha256": "fdeea0bec6a2ec9b4a6be23f198687525a7430f2f79beed59a5af87a76a7dcb2"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-reduce28\\reduce28-orders01\\ARCHIVE.actual.json",
+            "bytes": 7507,
+            "sha256": "42d89cf93586e9fc536cb7115e250347f441f396ebef0333140a56ee9bacbb03"
+          }
+        },
+        {
+          "result_row": 13,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-natural14/natural14-baseline01/xar_checkpoint.ck3",
+            "bytes": 206235942,
+            "sha256": "8f2c89b560650265c3217a944bf73eb134fd59d873f537a64db33d1116ce6374"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-natural14\\natural14-baseline01\\ARCHIVE.actual.json",
+            "bytes": 7569,
+            "sha256": "b072f2fc56a346384c565c979de3970b2b25b72e1db74d2e577b1b6e6266dc71"
+          }
+        },
+        {
+          "result_row": 14,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-continuous03/continuous03-baseline01/xar_checkpoint.ck3",
+            "bytes": 176075609,
+            "sha256": "bfe833b28b74f8dee439e5f6b9bfe6389988a442e071e29284a3898432ff1f82"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous03\\continuous03-baseline01\\ARCHIVE.actual.json",
+            "bytes": 7552,
+            "sha256": "751e2b32864ab0b31618183f7cc9c480a38941a27751abd49d659690b126de8a"
+          }
+        },
+        {
+          "result_row": 15,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-continuous16/clock17-baseline01/xar_checkpoint.ck3",
+            "bytes": 209459601,
+            "sha256": "a01d8b3474079598dcf03b4fb5b0d86c49b4dcd6aff9629ce0268ea5fcb8d7fc"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous16\\clock17-baseline01\\ARCHIVE.actual.json",
+            "bytes": 7538,
+            "sha256": "5689f853af9766b3e00e729cd7917acab5c1cc4dd1e61ba25ed26ae9e3db78ac"
+          }
+        }
+      ]
+    },
+    {
+      "batch": "endpoint16",
+      "result": {
+        "path": "C:/workspace/ck3-market-task-20261118/obsolete-unique-endpoint-sixteen-checkpoints-actual01/RESULT.actual.json",
+        "bytes": 17775,
+        "sha256": "bb74ad46ee600ac10ed8d90cbbcb3dd3d2311270712798f993b520955b8da63b"
+      },
+      "original_execution": {
+        "receipt": {
+          "path": "C:/workspace/ck3-market-live-20261118/operations/APPLY-obsolete-endpoint16-01/ORIGINAL-WAIT.actual.json",
+          "bytes": 1804,
+          "sha256": "b6025aa1f545bfedd83088854bf7c27c039381e805f95dbc66f238c032a2e7cb"
+        },
+        "returncode": 2,
+        "elapsed_seconds": 17.193319899990456,
+        "started_at_utc": "2026-11-23T04:55:05.214254+00:00",
+        "finished_at_utc": "2026-11-23T04:55:22.407574+00:00"
+      },
+      "Root_review": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\endpoint16-Root-postPLAN-review01.actual.json",
+        "bytes": 22716,
+        "sha256": "d76afa7b9843948fa5e42565796520cbe43bd82ed7309699e7f4cf6899970978"
+      },
+      "plan": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\obsolete-unique-endpoint-sixteen-checkpoints-actual01\\PLAN.actual.json",
+        "bytes": 12739,
+        "sha256": "2940737ad15c10943a9aa1bac2ba570af537d6336436d45248ebc92534abe38c"
+      },
+      "retired_independent_canonical_count": 16,
+      "failure": null,
+      "target_reached": false,
+      "window_observations_not_unique_volume_attribution": {
+        "free_before": 32339251200,
+        "free_after": 33347641344,
+        "free_delta_not_uniquely_attributed": 1008390144,
+        "allocation_before_for_retired_not_pure_volume_credit": 1022439424,
+        "logical_bytes_retired_not_volume_credit": 3317919689,
+        "stop_free_bytes": 34393292800
+      },
+      "originals": [
+        {
+          "result_row": 0,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-futures03/futures06-add01/xar_checkpoint.ck3",
+            "bytes": 176060879,
+            "sha256": "e0014ccdc59b8fa95563bbcad590d8b8e4aae6cb5c0d684fa05cbc4969e8501a"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures03\\futures06-add01\\ARCHIVE.actual.json",
+            "bytes": 7536,
+            "sha256": "918e4302cbcc4183915e4de321840aff85c2e1687721c14a15c98c972e7cdd85"
+          }
+        },
+        {
+          "result_row": 1,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-futures04/futures07-withdraw01/xar_checkpoint.ck3",
+            "bytes": 176060992,
+            "sha256": "c1230ea0b9168de4664dfccee0adc088414a2ee36edba5ffeb33cc5fde9ed54b"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures04\\futures07-withdraw01\\ARCHIVE.actual.json",
+            "bytes": 7528,
+            "sha256": "a2c57097298987b518f54b856e2c94a56bbb127a0d42b0ce5ff0bee05b1bb093"
+          }
+        },
+        {
+          "result_row": 2,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-futures11/futures11-short01/xar_checkpoint.ck3",
+            "bytes": 210251728,
+            "sha256": "c2a59b136e59e1921accf6f4a97e0634d491863e924069f08669c722ac814903"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures11\\futures11-short01\\ARCHIVE.actual.json",
+            "bytes": 7517,
+            "sha256": "deb33fae00a96f98ff00ca192849a19ae5ecd80722bfe81fd114b9cad400b680"
+          }
+        },
+        {
+          "result_row": 3,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-futures12/futures12-cancel01/xar_checkpoint.ck3",
+            "bytes": 209459601,
+            "sha256": "0a24f1b13924296a25b615c290bab55fb0572e32504f4df386a2043f55f2b5d1"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures12\\futures12-cancel01\\ARCHIVE.actual.json",
+            "bytes": 7523,
+            "sha256": "f6794f9200e56027dab128a8124f520e875935f2143613ff505409ca1fa4ed54"
+          }
+        },
+        {
+          "result_row": 4,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-short20/short20-orders01/xar_checkpoint.ck3",
+            "bytes": 206240879,
+            "sha256": "aeba9f5b3cb42bf018739a0677a9af2762dddb0094e09c393f85c961b278d295"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-short20\\short20-orders01\\ARCHIVE.actual.json",
+            "bytes": 7550,
+            "sha256": "cbe507c283cab721463c8b53469fe72069e87a8d4196eb4247585fbc8be9355b"
+          }
+        },
+        {
+          "result_row": 5,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-coin24/coin24-paid01/xar_checkpoint.ck3",
+            "bytes": 214168174,
+            "sha256": "024669c28c189ca97a54e6328ab769ff4724865cc407bb143d5823aeacf2d763"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-coin24\\coin24-paid01\\ARCHIVE.actual.json",
+            "bytes": 7481,
+            "sha256": "39974842f4f20587c1f6a6e65e437c8b9b18d6acc03c941c99c95ae0b72265ff"
+          }
+        },
+        {
+          "result_row": 6,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-clock21/clock21-terminal01/xar_checkpoint.ck3",
+            "bytes": 210134371,
+            "sha256": "2dd8ed7c9141bdfe523b097bdd73a3842cf3d0c220a30ccd20a1871be1399c43"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-clock21\\clock21-terminal01\\ARCHIVE.actual.json",
+            "bytes": 7510,
+            "sha256": "f82019d574c944041fcc8ac855348dafeb5c5c0f0658b60ab96e1cb1dd339d14"
+          }
+        },
+        {
+          "result_row": 7,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-clock23/clock23-terminal01/xar_checkpoint.ck3",
+            "bytes": 214165159,
+            "sha256": "601e74280f127bfc94c2de50231bf9f2aaf125862ef66d284eafd1475b9e03f0"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-clock23\\clock23-terminal01\\ARCHIVE.actual.json",
+            "bytes": 7514,
+            "sha256": "c6d064774601ea0d4d87083dda1c0c5a71e73ead5cc2a42807fb168dd8965636"
+          }
+        },
+        {
+          "result_row": 8,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-futures26/futures26-short01/xar_checkpoint.ck3",
+            "bytes": 214169416,
+            "sha256": "bf55de02608f0915cfa79bf8e543daf12664527b87c6ff2eca420a45aaded0bb"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures26\\futures26-short01\\ARCHIVE.actual.json",
+            "bytes": 7518,
+            "sha256": "ac826b064b60b5e56870ab6389fe22a87ef043d8fbdd78c0d7edbb7d1a116d44"
+          }
+        },
+        {
+          "result_row": 9,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-reduce28/reduce28-terminal01/xar_checkpoint.ck3",
+            "bytes": 223158098,
+            "sha256": "39c4840c0dd47703528ea500265041a2a26dc9a2f252179f68032bffa530dd55"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-reduce28\\reduce28-terminal01\\ARCHIVE.actual.json",
+            "bytes": 7521,
+            "sha256": "11c9879eddb22d01b16133b9b7123f19587a7ebdfb6284b42fb22a5276fc85cc"
+          }
+        },
+        {
+          "result_row": 10,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-continuous03/continuous03-terminal01/xar_checkpoint.ck3",
+            "bytes": 191571428,
+            "sha256": "a82c4295ed4928a99c8a0224092464f22c2fe0c2f6326e4089d009512432200e"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous03\\continuous03-terminal01\\ARCHIVE.actual.json",
+            "bytes": 7570,
+            "sha256": "3da78c331b808afe5059e7ac41526a3bbb87a79629993f984ac37bcedead878c"
+          }
+        },
+        {
+          "result_row": 11,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-continuous16/clock17-terminal01/xar_checkpoint.ck3",
+            "bytes": 206234918,
+            "sha256": "46061b6c7602347aab3a44625a8fe323a893218e932b13fc32eb1df2e86b0e98"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous16\\clock17-terminal01\\ARCHIVE.actual.json",
+            "bytes": 7553,
+            "sha256": "c4d59bec66d957539355e15bce767b9b5b5b1ea7cbddfebc89f88194c84a488c"
+          }
+        },
+        {
+          "result_row": 12,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-futures10/futures10-withdraw-margin01/xar_checkpoint.ck3",
+            "bytes": 210249505,
+            "sha256": "716b6daf7d0b25e7ceaac74cdfae9ceb2c0da6f366e9905108b367d9089a18cd"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-futures10\\futures10-withdraw-margin01\\ARCHIVE.actual.json",
+            "bytes": 7550,
+            "sha256": "46a22ff1d66d747fd77339ac27ef60643d1e1131a5c903678a2c9581ed2ced54"
+          }
+        },
+        {
+          "result_row": 13,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-clock27/clock27-terminal01/xar_checkpoint.ck3",
+            "bytes": 218666378,
+            "sha256": "92ac8487d19a233eabeebd050d41d1bb54bce28745fc2f78b8effa74d5f1d85d"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-clock27\\clock27-terminal01\\ARCHIVE.actual.json",
+            "bytes": 7510,
+            "sha256": "86b8fc2f6bed9612cd271afc4c3d278a098706e0b36d118ecc835d84fe3789b1"
+          }
+        },
+        {
+          "result_row": 14,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-clock27/clock27-baseline01/xar_checkpoint.ck3",
+            "bytes": 214169416,
+            "sha256": "8f2e5194f5ae1b490a2c4620500e3ba7b44003e3afcdf8795694ff48c78d1b9a"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-clock27\\clock27-baseline01\\ARCHIVE.actual.json",
+            "bytes": 7495,
+            "sha256": "e820dbb58bb1c100664d4c6a14f74cc00d2f50465d10bf4a7899b72c14918378"
+          }
+        },
+        {
+          "result_row": 15,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-news29/news29-baseline01/xar_checkpoint.ck3",
+            "bytes": 223158747,
+            "sha256": "a8c26ae4ac7aee4529d0203d496d038a059b224a5e0845b4b9e523768e9fb134"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-news29\\news29-baseline01\\ARCHIVE.actual.json",
+            "bytes": 7483,
+            "sha256": "6d72213a8f16ba9764b5c9758cff980b39e0133d5359cfd88d88ea4ff5e89d01"
+          }
+        }
+      ]
+    },
+    {
+      "batch": "continuation16",
+      "result": {
+        "path": "C:/workspace/ck3-market-task-20261118/obsolete-unique-continuation-sixteen-checkpoints-actual01/RESULT.actual.json",
+        "bytes": 17967,
+        "sha256": "d79457d366de1b41baace78c25345e55486201dbbcc938a951fc4ab21b1757b6"
+      },
+      "original_execution": {
+        "receipt": {
+          "path": "C:/workspace/ck3-market-live-20261118/operations/APPLY-obsolete-continuation16-01/ORIGINAL-WAIT.actual.json",
+          "bytes": 1827,
+          "sha256": "93466d6de7a37a7891d54de1985a57c4f0b5e1bfd7801d349d4004d748eaec15"
+        },
+        "returncode": 2,
+        "elapsed_seconds": 20.01042220002273,
+        "started_at_utc": "2026-11-23T04:59:17.787321+00:00",
+        "finished_at_utc": "2026-11-23T04:59:37.797752+00:00"
+      },
+      "Root_review": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\continuation16-Root-postPLAN-review01.actual.json",
+        "bytes": 25436,
+        "sha256": "969679daeba52d1327e47218ae0eb118391a494c214e291e54d1f9881b1c7a38"
+      },
+      "plan": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\obsolete-unique-continuation-sixteen-checkpoints-actual01\\PLAN.actual.json",
+        "bytes": 12809,
+        "sha256": "2c6501804985a68ef5119f28e33102e3e150cb971f3d83af62e23d24ff480e27"
+      },
+      "retired_independent_canonical_count": 16,
+      "failure": null,
+      "target_reached": false,
+      "window_observations_not_unique_volume_attribution": {
+        "free_before": 33334288384,
+        "free_after": 34342133760,
+        "free_delta_not_uniquely_attributed": 1007845376,
+        "allocation_before_for_retired_not_pure_volume_credit": 1007988736,
+        "logical_bytes_retired_not_volume_credit": 3270237891,
+        "stop_free_bytes": 34393292800
+      },
+      "originals": [
+        {
+          "result_row": 0,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-news29/news29-terminal01/xar_checkpoint.ck3",
+            "bytes": 222935933,
+            "sha256": "ff8d929cdeed385a57fbe7e3cfbc39c06c69d7cea084391b101f0bee499fbcc4"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-news29\\news29-terminal01\\ARCHIVE.actual.json",
+            "bytes": 7494,
+            "sha256": "e6854c05c0abf132dc3443f5776ddfc908fb0249a4db2c29c4de716f19e74f55"
+          }
+        },
+        {
+          "result_row": 1,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-news30/news30-baseline01/xar_checkpoint.ck3",
+            "bytes": 222935959,
+            "sha256": "32a5cbff26022836c74feb29dc7cd2c672159054851fcc43cdad8b274df1ad2f"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-news30\\news30-baseline01\\ARCHIVE.actual.json",
+            "bytes": 7481,
+            "sha256": "c74e05b80cbe9fb47007cdf6ffa061b34e434430ae59fce62a7b981e8767dfc2"
+          }
+        },
+        {
+          "result_row": 2,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-news30/news30-terminal01/xar_checkpoint.ck3",
+            "bytes": 222828473,
+            "sha256": "677a0b124c4416c593302e0a197a138da60c319d926da12b022872776d9eb8f0"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-news30\\news30-terminal01\\ARCHIVE.actual.json",
+            "bytes": 7492,
+            "sha256": "adbb74c4322c74e52a499e25b9fdfd453c086d4aec072e0a4c59ab03f524b73e"
+          }
+        },
+        {
+          "result_row": 3,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-R0071/evolution35-baseline01/xar_checkpoint.ck3",
+            "bytes": 223879781,
+            "sha256": "5a4a1ed4f60d13dd3a6fda0e9ce256ccd5e8414501e3bac2bea7759ebcfff607"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0071\\evolution35-baseline01\\ARCHIVE.actual.json",
+            "bytes": 8010,
+            "sha256": "ee6e8d59627760fe0ad76d6c252425090f8569f33ecc051d87ee0d5185e98f3b"
+          }
+        },
+        {
+          "result_row": 4,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-R0072/evolution21-baseline01/xar_checkpoint.ck3",
+            "bytes": 224561706,
+            "sha256": "273758982fbf631ad15e26229652a2ae35c2c9e7272080ff5ce36796e9320f7f"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0072\\evolution21-baseline01\\ARCHIVE.actual.json",
+            "bytes": 8011,
+            "sha256": "bff4c0628fe42014eacda50d594be78ee4774d78321722bda4caad747174b958"
+          }
+        },
+        {
+          "result_row": 5,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-R0073/futures35-baseline01/xar_checkpoint.ck3",
+            "bytes": 222145332,
+            "sha256": "b5c6508d1545032185869fe5142d9c228768d95f4759d9823c6be699f60a43f3"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0073\\futures35-baseline01\\ARCHIVE.actual.json",
+            "bytes": 7511,
+            "sha256": "acbf3e06a5dc42bdc6395158f873f62a19aff6c884abdc86fdcbda7195091653"
+          }
+        },
+        {
+          "result_row": 6,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-R0073/futures35-short3x01/xar_checkpoint.ck3",
+            "bytes": 222154864,
+            "sha256": "ea1efb020fbeea2c32d250b19502b6ee14ee3965c7809ef10f076270cfa70949"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0073\\futures35-short3x01\\ARCHIVE.actual.json",
+            "bytes": 7515,
+            "sha256": "5eed511cf70d48f2448e8c56f2f843198aaf716f697e45554e7d2840865cf371"
+          }
+        },
+        {
+          "result_row": 7,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-continuous15/continuous15-baseline01/xar_checkpoint.ck3",
+            "bytes": 195645199,
+            "sha256": "2afa322eeec71f1da62cd2c8b05854bff94603c11e63ebf2378817f16da65917"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous15\\continuous15-baseline01\\ARCHIVE.actual.json",
+            "bytes": 7528,
+            "sha256": "53ab0521365ea9af67dbb747dd4ea6c37eaeb531a465f570837865c9e44b0e78"
+          }
+        },
+        {
+          "result_row": 8,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-continuous15/continuous15-terminal01/xar_checkpoint.ck3",
+            "bytes": 200163132,
+            "sha256": "fceb2eceda1feb04f5235c4e3fce3214c55f582f005d221ecf51cb0484cb182e"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous15\\continuous15-terminal01\\ARCHIVE.actual.json",
+            "bytes": 7543,
+            "sha256": "a27aa88dd5d40d363eb7c3ab64e9594c3780344a8cc18d78585e55f06065d957"
+          }
+        },
+        {
+          "result_row": 9,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-continuous15/scene21g/clock16-baseline01/xar_checkpoint.ck3",
+            "bytes": 210251728,
+            "sha256": "72f93fa4e116c9c43f46cd193b2e2497514f703ac522ec169e47a6fad063294c"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous15\\scene21g\\clock16-baseline01\\ARCHIVE.actual.json",
+            "bytes": 7568,
+            "sha256": "cc71593b21d68ea1898f9057319e6a4cf13130e55015ad4d5283bd3ef17ae90a"
+          }
+        },
+        {
+          "result_row": 10,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-continuous15/scene21g/clock16-terminal01/xar_checkpoint.ck3",
+            "bytes": 209455220,
+            "sha256": "079f5c0919431d9e22addb704567681b0ae52b1d888127fc476a89e9be4224b8"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous15\\scene21g\\clock16-terminal01\\ARCHIVE.actual.json",
+            "bytes": 7583,
+            "sha256": "9a6e54e720fb7bded402df37a60d2994da60a57e31c777de4a86f9fa8650a0d6"
+          }
+        },
+        {
+          "result_row": 11,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-redemption03/redemption03-baseline01/xar_checkpoint.ck3",
+            "bytes": 200163558,
+            "sha256": "d17ba0d312d2425d2fb831fb5b7ea09e60df49e3c19c5a576d4c684bc28efa30"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-redemption03\\redemption03-baseline01\\ARCHIVE.actual.json",
+            "bytes": 7558,
+            "sha256": "78883951aafccc009b67bb0257dd83a3839dc3d0cf7a7ac494eef98c14417d8e"
+          }
+        },
+        {
+          "result_row": 12,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-redemption03/redemption03-published01/xar_checkpoint.ck3",
+            "bytes": 200165360,
+            "sha256": "8955269799ff36f1825381b1a5b9d778e53d45e4386eb341c4fc152fa38a2e77"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-redemption03\\redemption03-published01\\ARCHIVE.actual.json",
+            "bytes": 7570,
+            "sha256": "3a467da6fb69550583d5e828b5029ebc386eae068381fdc5596f3891fd762f46"
+          }
+        },
+        {
+          "result_row": 13,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-cold02/cold21-baseline01/xar_checkpoint.ck3",
+            "bytes": 164315118,
+            "sha256": "4e0534f6369f02115789f199cbeac7469e540cbab748a1911ff42d69b4e9d331"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-cold02\\cold21-baseline01\\ARCHIVE.actual.json",
+            "bytes": 7480,
+            "sha256": "113da4c4a277d46782621952128b6d7054de5b23305e71b77cb32187916b38ed"
+          }
+        },
+        {
+          "result_row": 14,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-cold02/cold21-refresh01/xar_checkpoint.ck3",
+            "bytes": 164318276,
+            "sha256": "3dcb641624e7a22a55a3c53146de5481cd122f3ceabdcb804a7edff585ecc806"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-cold02\\cold21-refresh01\\ARCHIVE.actual.json",
+            "bytes": 7488,
+            "sha256": "9946e181840ad392fd562f767d159af56160ea1c1cf32fd77c096eb383dbc468"
+          }
+        },
+        {
+          "result_row": 15,
+          "original": {
+            "path": "C:/workspace/ck3-market-task-20261118/financial-physical-saves-continuous02/continuous14-baseline01/xar_checkpoint.ck3",
+            "bytes": 164318252,
+            "sha256": "0c70d15df48ff6cb68a622560ac39098e632db3c5e2f1dec3d3341e45796c4cf"
+          },
+          "availability": "RETIRED_UNIQUE_ORIGINAL_NOT_READABLE",
+          "before_after_FilePins_in_result_row": true,
+          "archive_receipt_preserved": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-continuous02\\continuous14-baseline01\\ARCHIVE.actual.json",
+            "bytes": 7558,
+            "sha256": "e6c64de4abb2dbd3a245d0f600361b9abcc5a80800ad7e59539da345e08e42f3"
+          }
+        }
+      ]
+    }
+  ],
+  "operation_guard_provenance": "Original PLAN/Root review/APPLY and per-row before/after metadata record full SHA, exclusive-handle retirement and short CAS. This documentary author did not rerun those guards.",
+  "preserved_historical_material": [
+    "ARCHIVE receipts",
+    "Raw",
+    "Audit",
+    "Whole",
+    "logs",
+    "original operation failures and waits"
+  ],
+  "separate_R77_profile_alias_maintenance": {
+    "result": {
+      "path": "C:/workspace/ck3-market-task-20261118/closed-R77-six-alias-reclaim01/RESULT.actual.json",
+      "bytes": 11288,
+      "sha256": "f8523382f4403fb738df8be5dc60f133ac967bdd48dc1558d9f0520d49c06ace"
+    },
+    "original_execution": {
+      "receipt": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/APPLY-R77-private601/ORIGINAL-WAIT.actual.json",
+        "bytes": 1365,
+        "sha256": "4a1a38281577b9fa7718d2a5edf3729e61f9cfa3fc3964eb0d6dd34e4b73f25f"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 7.99157230000128,
+      "started_at_utc": "2026-11-23T04:49:16.665826+00:00",
+      "finished_at_utc": "2026-11-23T04:49:24.657399+00:00"
+    },
+    "files_deleted": 6,
+    "logical_bytes_retired": 895487056,
+    "unique_canonical_retirement": false,
+    "all_external_archives_retained": true
+  },
+  "separate_R77_generated_shader_maintenance": {
+    "result": {
+      "path": "C:/workspace/ck3-market-task-20261118/closed-R0077-cache-result01.actual.json",
+      "bytes": 4106767,
+      "sha256": "f5286c30897015e1a9b41241cb91c95af177f2993861cae22fa3cd54c1742921"
+    },
+    "original_execution": {
+      "receipt": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/APPLY-R77-shadercache01/ORIGINAL-WAIT.actual.json",
+        "bytes": 1791,
+        "sha256": "de8c0ec6ba41cc363a9a3f1430b42613d63769247ed779f27caee98ea198b40c"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 49.58827260002727,
+      "started_at_utc": "2026-11-23T04:49:36.753483+00:00",
+      "finished_at_utc": "2026-11-23T04:50:26.341732+00:00"
+    },
+    "files_deleted": 4168,
+    "deleted_logical_bytes": 182529298,
+    "unique_SAVE_deletions": 0
+  },
+  "protected_R75_R77_canonical_archives": [
+    {
+      "archive_receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0077\\debt77-baseline01\\ARCHIVE.actual.json",
+        "bytes": 7479,
+        "sha256": "e259e0e92d759d6d1de930b65035b21670edcd6b2a84633cfbea174c8d1a3adf"
+      },
+      "canonical_original_pin": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0077\\debt77-baseline01\\xar_checkpoint.ck3",
+        "bytes": 148003766,
+        "sha256": "b12b98b189dab98d0330bfe4b702845f22a9c0a4b2c3809907ef6cc805865b50"
+      },
+      "availability": "RETAINED_AS_RECORDED_BY_R77_MAINTENANCE",
+      "current_payload_recheck_by_this_document_author": false
+    },
+    {
+      "archive_receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0077\\debt77-post-help01\\ARCHIVE.actual.json",
+        "bytes": 7495,
+        "sha256": "e2c33e64ae6524acc9a41544d6c669e46ee82a47eba3e7aafc605194b91c7e2a"
+      },
+      "canonical_original_pin": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0077\\debt77-post-help01\\xar_checkpoint.ck3",
+        "bytes": 148014622,
+        "sha256": "997c14260dad0a492f93ef1dbaa2c5fc020694605f0fd58bb3bea4e13802aa05"
+      },
+      "availability": "RETAINED_AS_RECORDED_BY_R77_MAINTENANCE",
+      "current_payload_recheck_by_this_document_author": false
+    },
+    {
+      "archive_receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0077\\debt77-terminal01\\ARCHIVE.actual.json",
+        "bytes": 7492,
+        "sha256": "b434830af93ef1a43a770f421912f84ca94bdfaa28cf55e9e99b6e48b230d5c8"
+      },
+      "canonical_original_pin": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0077\\debt77-terminal01\\xar_checkpoint.ck3",
+        "bytes": 150493480,
+        "sha256": "9e48bbee924a700c8534f1fbb66a0d2c25c21f84acca923554a4128e4b573b8f"
+      },
+      "availability": "RETAINED_AS_RECORDED_BY_R77_MAINTENANCE",
+      "current_payload_recheck_by_this_document_author": false
+    },
+    {
+      "archive_receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0075\\wallet75-source01\\ARCHIVE.actual.json",
+        "bytes": 7491,
+        "sha256": "bc6a5c8891ab7b060e48cead3652e129bc59000ca8d7b50796818c26c5d01e58"
+      },
+      "canonical_original_pin": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0075\\wallet75-source01\\xar_checkpoint.ck3",
+        "bytes": 147988228,
+        "sha256": "0a3fde209517324c8dddbb73ebcd6acfcd13085e13a52d13f5292d8ad9bf21a5"
+      },
+      "availability": "RETAINED_AS_RECORDED_BY_R77_MAINTENANCE",
+      "current_payload_recheck_by_this_document_author": false
+    }
+  ],
+  "credit_limits": {
+    "single_attributed_volume_recovery_total": null,
+    "budget_refund": false,
+    "new_scene_admission": false,
+    "new_business_or_saveday_credit": false,
+    "historical_failure_rewritten": false
+  },
+  "authoring_actions": {
+    "Game_or_OS_query": 0,
+    "payload_hash_or_read": 0,
+    "delete_or_compress": 0,
+    "formal_repository_write": 0
+  }
+}

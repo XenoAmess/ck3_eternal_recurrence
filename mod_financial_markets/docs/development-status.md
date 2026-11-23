@@ -2,6 +2,14 @@
 
 2026-11-23，machine_id: 4-8e1c2f1861。
 
+## 当前补记：金融683项；R78／E8真实35日连续窗口有限PASS
+
+前序金融软件683项通过保持原软件范围；新[R78／E8](r0078-e8-continuous35.md)已在本机1.21.0／26622941、Core52／Q55、来源34d788上完成35个真实Native自然日、四份SAVE／32次完整独立解析。基线加35日共36条记录无缺日，原run0／verify0，四阶段5／3／3／5项全true，公共case及qualified boundary为true；business／financialCertified／整产品／发布仍为false。
+
+实际登记158→182／活跃150→138／pending3→0；D14独立核到23枚AI收费发行（2300分登记费、520分真实补款，含21barony及2名is_landed=0，未知tier不改写）。覆盖仍限64币／64仓，未选择optional expiry，不授4096规模／395日性能／20终局／全球气泡／多人或全生命周期。Game／Host／Job／keeper／allocator正常闭合，CAS16368资源空；R78 D35仅选为下一续行输入，尚未再装载。
+
+[Q55离线资格](native-q55-qualification.md)及[56份独立存档退役可用性](closed-independent-save-retirement-availability.md)保留原精确事实；Q55文中的“E8未执行”是较早离线切点，后续实证以R78为准。R74原missing337／final GAP、[R77原PARTIAL](r0077-debt-claims-and-daily-service.md)和全部原失败保持，下方679项等较早切点不覆写。完整产品及Workshop首发继续待验收。
+
 ## 当前：完整金融软件679项通过；R74连续性失败保持，后继实机场待验
 
 R74四份独立存档覆盖35自然日，每份8次完整解析；E7只有基线加34样本共35条，缺金融337／脚本389688，未达36条。额外一遍原读器确认raw／helper均记录相同缺口，累计gap_count4不算本场四次；原因仍未证。登记139→158，终点活跃150／待募3。原3倍／5倍仓232／233到期终态与标价已保存，不把整个账户差额当成独立盈亏。最终Root判断迟到，原180秒退出门拒发，run2／verify2／PARTIAL保持；Game／Host／Job／keeper／allocator正常0、CAS16274释放。后继自然场只沿D35实档前进，不补缺样本或重ARM。

@@ -1,0 +1,415 @@
+{
+  "schema": "xfm.r0078-e8-continuous35-documentary-evidence.v1",
+  "machine_id": "4-8e1c2f1861",
+  "run_id": "4-8e1c2f1861--financial-markets--R0078",
+  "game_build_scope": {
+    "version": "1.21.0",
+    "steam_build": "26622941",
+    "exact_family": "2F2B"
+  },
+  "source_commit": "34d788d39da69654e389fa7a82bc29c3173c780f",
+  "financial_core": 52,
+  "prior_financial_software_pass_count": 683,
+  "native_qualification": "Q55",
+  "input_lineage": {
+    "code_carrier": "R77/Q54",
+    "sole_physical_SAVE_source": "R74 D35",
+    "new_scene": "C:/workspace/ck3-market-live-20261123e"
+  },
+  "original_run": {
+    "receipt": {
+      "path": "C:/workspace/ck3-market-live-20261118/operations/evolution-e8-start01-run/ORIGINAL-WAIT.actual.json",
+      "bytes": 1549,
+      "sha256": "1761711782c31d65b1742198408b794f3abbe670726ab061f7d9a27f03d82d8c"
+    },
+    "returncode": 0,
+    "elapsed_seconds": 2539.4568096000003,
+    "stdout": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\evolution-e8-start01-run\\stdout.log",
+      "bytes": 844788,
+      "sha256": "58b19fd4a1702f56685db4b241ebe41d4e072e6eeae98b2243c79ed6e00a1b4e"
+    },
+    "stderr": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\evolution-e8-start01-run\\stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "original_verify": {
+    "receipt": {
+      "path": "C:/workspace/ck3-market-live-20261118/operations/evolution-e8-start01-verify/ORIGINAL-WAIT.actual.json",
+      "bytes": 1558,
+      "sha256": "bdd4f0b700b6324d72e554147149c323915f5e1e6e6be443af1096a3f89494fe"
+    },
+    "returncode": 0,
+    "elapsed_seconds": 1.3274254999996629,
+    "stdout": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\evolution-e8-start01-verify\\stdout.log",
+      "bytes": 734825,
+      "sha256": "1cc04e14babae97e8d010f4685775e4d5a0fca0decebcfe49472a4cd879d144a"
+    },
+    "stderr": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\evolution-e8-start01-verify\\stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "public_result": {
+    "acceptance_scope": "bounded_read_only_natural_market_evolution_with_explicit_observed_and_unavailable_facts",
+    "result_boundary": "SOURCE_CASE_OBSERVED_PENDING_PRODUCT_AGGREGATION",
+    "case_acceptance_pass": true,
+    "qualified_boundary_pass": true,
+    "business_pass": false,
+    "product_release_pass": false
+  },
+  "Root_phase_assertion_counts": [
+    5,
+    3,
+    3,
+    5
+  ],
+  "Root_phase_assertions_all_true": true,
+  "checkpoints": [
+    {
+      "day": 0,
+      "archive_receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0078\\evolution-e8-baseline01\\ARCHIVE.actual.json",
+        "bytes": 8022,
+        "sha256": "8f92c247893735bbb7abbdce9d7c8d9027432ad105ccdf4f7540d752368ca994"
+      },
+      "original_SAVE_pin_not_rehashed": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0078\\evolution-e8-baseline01\\xar_checkpoint.ck3",
+        "bytes": 233250248,
+        "sha256": "25288da9ed827c07b76992fbcd400e25c6a2d45a9bf306df92a04f6d2dc6c7bc"
+      },
+      "date_raw": 53152920,
+      "pipeline": {
+        "path": "C:/workspace/ck3-market-task-20261118/evolution-e8-baseline01-PIPELINE.actual.json",
+        "bytes": 41814,
+        "sha256": "db7f14a0aec7e121110918cd2da28cbd243330e1e9415c81693efc2249d26ce6"
+      },
+      "complete_parser_passes": 8,
+      "parser_pass_breakdown": {
+        "audit": 2,
+        "whole": 2,
+        "Raw04": 1,
+        "observer_only": 1,
+        "full_observer_batches": 2
+      },
+      "whole_comparison_declared_pin": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\evolution-e8-baseline01-whole-comparison.json",
+        "bytes": 1840,
+        "sha256": "b2b66f2dd450d0779a1e1a23512307d0d5cfd8a8a7624608def8c8ea32fbec60"
+      },
+      "exact_whole_selected_records_equal": true
+    },
+    {
+      "day": 14,
+      "archive_receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0078\\evolution-e8-day1401\\ARCHIVE.actual.json",
+        "bytes": 8027,
+        "sha256": "25f8e94f04ddd6cc4ee50137e5e0d89ce79c48cfaf6ec56eb5794e3dc2b85fda"
+      },
+      "original_SAVE_pin_not_rehashed": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0078\\evolution-e8-day1401\\xar_checkpoint.ck3",
+        "bytes": 238916043,
+        "sha256": "734ad140d08905c7c6f8c590d389ac4f408de3a93660410b8840477bf5b39ef3"
+      },
+      "date_raw": 53153256,
+      "pipeline": {
+        "path": "C:/workspace/ck3-market-task-20261118/evolution-e8-day1401-PIPELINE.actual.json",
+        "bytes": 41975,
+        "sha256": "23bbe3db6f2fe30fe59d62039945ef6ae4f30d320492322108e8f9174897b54e"
+      },
+      "complete_parser_passes": 8,
+      "parser_pass_breakdown": {
+        "audit": 2,
+        "whole": 2,
+        "Raw04": 1,
+        "observer_only": 1,
+        "full_observer_batches": 2
+      },
+      "whole_comparison_declared_pin": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\evolution-e8-day1401-whole-comparison.json",
+        "bytes": 8307712,
+        "sha256": "01331eed1b00b7ac8fa9b6aeecd1162571e1273a12ae405053e4e84617bea669"
+      },
+      "exact_whole_selected_records_equal": false
+    },
+    {
+      "day": 30,
+      "archive_receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0078\\evolution-e8-day3001\\ARCHIVE.actual.json",
+        "bytes": 8029,
+        "sha256": "0861a151ad5b564be6db655441e9bbb470257c6ae7d592e6e00ed757104bed03"
+      },
+      "original_SAVE_pin_not_rehashed": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0078\\evolution-e8-day3001\\xar_checkpoint.ck3",
+        "bytes": 240335959,
+        "sha256": "5d16ea21fe7676c899a1eb00a41f3eb9ddf76c6d22ae3637731049a2e94b59f7"
+      },
+      "date_raw": 53153640,
+      "pipeline": {
+        "path": "C:/workspace/ck3-market-task-20261118/evolution-e8-day3001-PIPELINE.actual.json",
+        "bytes": 41977,
+        "sha256": "5b2d7437fb17210b760b13505dd34990cf28c55a8c3233e2cc4bd6dec1723867"
+      },
+      "complete_parser_passes": 8,
+      "parser_pass_breakdown": {
+        "audit": 2,
+        "whole": 2,
+        "Raw04": 1,
+        "observer_only": 1,
+        "full_observer_batches": 2
+      },
+      "whole_comparison_declared_pin": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\evolution-e8-day3001-whole-comparison.json",
+        "bytes": 10304036,
+        "sha256": "7e3e7404e9def920e9b624eddf83c625703a0b6be27388aa957b2fc8f50c9592"
+      },
+      "exact_whole_selected_records_equal": false
+    },
+    {
+      "day": 35,
+      "archive_receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0078\\evolution-e8-day3501\\ARCHIVE.actual.json",
+        "bytes": 8033,
+        "sha256": "4f8b91d787c72c194ce8ca3d4a9be11aa5d059f92ebbd4725b9ca281ea4919be"
+      },
+      "original_SAVE_pin_not_rehashed": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0078\\evolution-e8-day3501\\xar_checkpoint.ck3",
+        "bytes": 237264183,
+        "sha256": "a0dd06fac85586f497410b2296f49fba047a9107cc15406bbf6c8400ebf1d57b"
+      },
+      "date_raw": 53153760,
+      "pipeline": {
+        "path": "C:/workspace/ck3-market-task-20261118/evolution-e8-day3501-PIPELINE.actual.json",
+        "bytes": 41976,
+        "sha256": "c17c16470d4dac5abc5d42535f451cb67d1d79954fbb55bad24bbd831d112cc5"
+      },
+      "complete_parser_passes": 8,
+      "parser_pass_breakdown": {
+        "audit": 2,
+        "whole": 2,
+        "Raw04": 1,
+        "observer_only": 1,
+        "full_observer_batches": 2
+      },
+      "whole_comparison_declared_pin": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\evolution-e8-day3501-whole-comparison.json",
+        "bytes": 9652317,
+        "sha256": "c12364eee932bccddd7822577b4fb8b9e21e08772609190c1815a848d4f54842"
+      },
+      "exact_whole_selected_records_equal": false
+    }
+  ],
+  "continuous_window": {
+    "fact_table": {
+      "path": "C:/workspace/ck3-market-task-20261118/evolution-e8-D35-Root-fact-table01.actual.json",
+      "bytes": 3670,
+      "sha256": "354e5f1a8b5e009c4319d25baf21fce5e80116e23e1f869020b66dcb6bd6c242"
+    },
+    "Root_D35_judgment": {
+      "path": "C:/workspace/ck3-market-task-20261118/evolution-e8-D35-Root-judgment01.actual.json",
+      "bytes": 5905,
+      "sha256": "7ffb92efb804c9c46fef1bd1b47f20e9434d94746bace4a13e3d6f728ea2ea33"
+    },
+    "D35_original_facts": {
+      "path": "C:/workspace/ck3-market-task-20261118/evolution-e8-day3501-interpret01/facts.json",
+      "bytes": 990875,
+      "sha256": "a7d364ff051f30614b529ed6ed4a27eaa9c3537f99b5c2d983338549325c1422"
+    },
+    "observer_native_id": 218104376,
+    "original_daily_record_count": 36,
+    "financial_days": [
+      354,
+      389
+    ],
+    "script_days": [
+      389705,
+      389740
+    ],
+    "native_raw_ticks": [
+      53152920,
+      53153760
+    ],
+    "actual_Native_24hour_intervals": 35,
+    "ARM_count": 1,
+    "read_only_refresh_count": 3,
+    "manual_day_advances": 0,
+    "re_ARM_count": 0,
+    "issues": [],
+    "continuity": true,
+    "thirty_five_day_window_observed": true,
+    "financialCertified": false
+  },
+  "D0_whole_financial_news_equality": {
+    "selected_records": 25352,
+    "exact_equal": true,
+    "scope": "Input source versus restored D0; not constant equality across later natural changes."
+  },
+  "natural_market_projection": {
+    "source": {
+      "path": "C:/workspace/ck3-market-task-20261118/evolution-e8-day3501-financial-facts-Root01.actual.json",
+      "bytes": 132506,
+      "sha256": "d22cb37d5ade6f193c4bce6bc5a9e300b68d380c2942f454e9cbded1fc031420"
+    },
+    "registered": [
+      158,
+      182
+    ],
+    "active": [
+      150,
+      138
+    ],
+    "pending": [
+      3,
+      0
+    ],
+    "new_coin_permanent_ids": [
+      159,
+      160,
+      161,
+      162,
+      163,
+      164,
+      165,
+      166,
+      167,
+      168,
+      169,
+      170,
+      171,
+      172,
+      173,
+      174,
+      175,
+      176,
+      177,
+      178,
+      179,
+      180,
+      181,
+      182
+    ],
+    "old_coin_ids_missing_from_projection": []
+  },
+  "D14_independent_paid_issuance": {
+    "SOURCE_READY": {
+      "path": "C:/workspace/ck3-market-task-20261118/evolution-E8-D14-independent-source01/SOURCE_READY.json",
+      "bytes": 4633,
+      "sha256": "485b614ce74132e1a11f6276fc6e28e23563a816ffd1630e81e9456a103cf2fe"
+    },
+    "facts": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\evolution-E8-D14-independent-source01\\FACTS.actual-metadata.json",
+      "bytes": 116144,
+      "sha256": "91f1b5c76f77f659623dbed0899e8837ce323ac886c975cc01e3a2e50be9ddf4"
+    },
+    "original_receipt_summary": {
+      "new_coin_count": 23,
+      "complete_receipt_count": 23,
+      "engine_is_ai1_count": 23,
+      "engine_is_ai1_is_landed0_count": 2,
+      "landless_coin_ids": [
+        "179",
+        "181"
+      ],
+      "engine_highest_tier_barony1_count": 21,
+      "barony_coin_ids": [
+        "159",
+        "160",
+        "161",
+        "162",
+        "163",
+        "164",
+        "165",
+        "166",
+        "167",
+        "168",
+        "169",
+        "170",
+        "171",
+        "172",
+        "173",
+        "174",
+        "175",
+        "176",
+        "177",
+        "178",
+        "180"
+      ],
+      "total_original_registration_fee_cents": 2300,
+      "total_original_primary_topup_cents": 520,
+      "identity_boundary": "is_ai/is_landed/highest_tier are original engine-time receipt snapshots. highest_tier=-1 is unknown tier, not rank0. Adult/living/PRIMARY authorization are production receipt commit guards, not new standalone Native identity observations. Receipts do not prove equal AI opportunity or395-day capacity."
+    },
+    "limit": "23 actual paid issuance receipt legs; not all 24 new coins, equal AI opportunity, or aggregate world Gold."
+  },
+  "bounded_coverage": {
+    "coin_records_maximum": 64,
+    "position_records_maximum": 64,
+    "optional_expiry_selection": null,
+    "not_granted": [
+      "complete lifecycle",
+      "all new coin fee transfers",
+      "4096 capacity",
+      "395-day performance",
+      "20 debt endings",
+      "global visible toast",
+      "multiplayer",
+      "whole product",
+      "Workshop first publication"
+    ]
+  },
+  "normal_resource_closure": {
+    "before_release": {
+      "path": "C:/workspace/ck3-market-task-20261118/R0078-closure-before-release.actual.json",
+      "bytes": 14059,
+      "sha256": "ac7f78cf68028b5425d703cccdb40898dded7b073794585dfadc7e235b31efe4"
+    },
+    "released": {
+      "path": "C:/workspace/ck3-market-task-20261118/R0078-closure-released.actual.json",
+      "bytes": 1214,
+      "sha256": "058233f44eae264d721bd3cd95f89b4e061390b533394f2f587171fa20aeeef4"
+    },
+    "Game_pid": 19092,
+    "Game_exit": 0,
+    "Host_exit": 0,
+    "retained_OS_exit": 0,
+    "Job_final": 0,
+    "tree_gone_and_cleanup_proven": true,
+    "keeper_pid": 2108,
+    "keeper_exit": 0,
+    "allocator_exit": 0,
+    "CAS_before": 16367,
+    "CAS_after": 16368,
+    "state": "done",
+    "resources": [],
+    "normal_close_qualified": true,
+    "autosave_verified": false
+  },
+  "next_continuation": {
+    "selected_archive": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0078\\evolution-e8-day3501\\ARCHIVE.actual.json",
+      "bytes": 8033,
+      "sha256": "4f8b91d787c72c194ce8ca3d4a9be11aa5d059f92ebbd4725b9ca281ea4919be"
+    },
+    "selected_SAVE_original_pin": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0078\\evolution-e8-day3501\\xar_checkpoint.ck3",
+      "bytes": 237264183,
+      "sha256": "a0dd06fac85586f497410b2296f49fba047a9107cc15406bbf6c8400ebf1d57b"
+    },
+    "already_loaded": false
+  },
+  "historical_failures_preserved": [
+    "R74/E7 missing337 and original final GAP/PARTIAL",
+    "R77 original run2/verify2/PARTIAL",
+    "all previous original failed operations"
+  ],
+  "authoring_actions": {
+    "Game_OS_queries": 0,
+    "SAVE_DLL_payload_reads_or_hashes": 0,
+    "Java_build_test": 0,
+    "formal_repository_writes": 0,
+    "Git": 0
+  }
+}
