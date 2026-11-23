@@ -1,6 +1,14 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
-## 2026-11-23 CCC 新 22 文件有限实机通过，正式化尚未发表
+## 2026-11-23 当前CCC1.0.2实际上传及缓存有限通过，Notes429待核
+
+`desktop-3fevhd2-1c74096080` 已对 canonical3804807463 完成一次真实SDK ER1更新，实际下载22文件精确，完整公开标题／正文、creator／AppIDs／原封面及唯一原图库条目保持。实际在线61.5169951秒，13:40:29.006844Z已确认恢复Steam离线。真实Ccanonical缓存直接挂载，退出后22全SHA仍精确，无formalcopy／fixture／warm，Robert36423／.15暂停地图存活；0Date／0Save、原821输入全SHA不变，一次Native quit ACK与独立Natural0／Job0／cleanup／creator0分别有据。早期加载OptionalCoreUnavailable及原PARTIAL／原生false／typedexpiry null保持，不授缓存新业务／全SDK／净县民望或性能。
+
+CCC公开Notes唯一GET为HTTP429且无Retry-After，NOT_OBSERVED并停止重试，不是内容不符，也不表示未上传；不称完整release closed。DES0.2.4后继长退避第三次Notes仍429，旧两次及SourceC当时事实保留，不新增自动请求。当前独立SKU为 **13/17已上传（76.5%）**、**9/17严格有限完成（52.9%）**；CCC Notes待核，DES版本更新不再加一。剩余顺序为收复故土、活体圣物、LYD、天朝361，LYD倒数第二／天朝361最后不变。SourceA7724／注释1.0.2标签／正式22／全部F冻结，SourceC只记录后继事实。[实际发布、缓存和Notes待核索引](docs/maintenance/evidence/ccc102-published-cache-Notes-pending-a1287.json)。
+
+RMTM仅外置只读主头衔query Source已封，3DTO／Main与Transport精确delta／18方法测试草稿均未采用、未编测、无genuine；旧F644／54a1不具该新cap。Java328与Native432仅后继估算，须按真实producer和新用途准入推进，不重开旧spent／held；不得借查询DATA授effective／realm／D5执行时heir或26项业务。[外置Source交付](D:/ck3-state/upgrade-20261118/java-current267-rmtm-title-query-source-a1267/delivery-final.json)。
+
+## 2026-11-23 CCC 新 22 文件有限实机通过，正式化尚未发表（SourceA／SourceB时点）
 
 正式 SourceA `7724df83655475197a39042e9dbef20ae7fd2fde` 与注释标签 `celestial-commerce-corruption-v1.0.2` 已正常推送；一次既有 Python `--release` 构建／verify 均0，全部22文件及ZIP与实机候选精确相同。新formal8目的END／future0，SourceB仅记录交付，不改SourceA／tag／产物。实际工坊发布、公开全文、SDK下载及真实缓存仍待Root各自收据，不由正式包Ready新增计数。[正式交付索引](docs/release-evidence/celestial-commerce-corruption/1.0.2.json)。
 

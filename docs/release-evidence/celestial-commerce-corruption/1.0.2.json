@@ -1,6 +1,6 @@
 {
   "schema": "ck3.workshop-release-evidence.v1",
-  "status": "FORMAL_READY_PUBLICATION_NOT_RUN",
+  "status": "PUBLISHED_CACHE_FINITE_PASS_NOTES_NOT_OBSERVED",
   "release_complete": false,
   "product": "mod_celestial_commerce_corruption",
   "version": "1.0.2",
@@ -82,22 +82,67 @@
   "held_allocation_upper_bytes": 3608576,
   "future_reserved_bytes": 0,
   "old_spent_held_not_refunded": true,
-  "published_at_utc": null,
-  "native_publish": null,
-  "public_exact": null,
-  "fresh_download": null,
-  "actual_cache_load": null,
+  "published_at_utc": "2026-11-23T13:40:02+00:00",
+  "native_publish": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-formal-release-a1273\\ccc102-native-publish-receipt.json",
+    "bytes": 680,
+    "sha256": "1fc5e77de0a2bac2d046b51a3deb0ebee9b1834dcaab6ea57a02932bf60c2702"
+  },
+  "public_exact": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-public-readback-a1274\\actual-a01\\api-full-verification.json",
+    "bytes": 2534,
+    "sha256": "eed983367cc78de9e1e06ed0efd84b9d7ca7c4eaf0a2353184834045c0d2f472"
+  },
+  "fresh_download": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-publication-a1274\\operator-a1274-single-ccc102-a01\\ccc102-download-native.json",
+    "bytes": 1248,
+    "sha256": "b98b76a5f312fb716a39a09d9865e6c6dd1bc5e4d5f5e91d71c7ab9676932716"
+  },
+  "actual_cache_load": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\CCC102-actual-workshop-cache-finite-PASS-a1287.json",
+    "bytes": 8186,
+    "sha256": "32dabbcb33468ab356d8abc10f8d138971f00726fc17841a00ef867d505aef73"
+  },
   "distinct_counts": {
-    "uploaded": 12,
+    "uploaded": 13,
     "strict_complete": 9,
     "total": 17
   },
   "pending_completion": [
-    "Root actual publisher local plan/freeze/check-only",
-    "one canonical SDK Submit, actual download and offline restoration",
-    "independent full public API/Notes verification",
-    "actual downloaded cache match and CK3 load/normal exit"
+    "Complete public Notes NOT_OBSERVED: soleGET HTTP429/noRetryAfter; stopped, no automatic retry."
   ],
   "SourceB_does_not_move_SourceA_tag_or_artifacts": true,
-  "scope": "Actual new22 finite current267 loader/three-day tier4/half/once ordinaryConfirm/new-instance temporary withdrawal/full census/four absent traits/full native disabled cooldown tooltip through1069.9.18 and actual falseCan. Reserved native expiry null and applied/readback/eventclosed flags false remain. No net county opinion/treasury transfers/alltiers/alllanguages/permanentoptout/full three-year wait/save persistence/wholeSDK/performance or publication qualification. All22 formal bytes and ZIP exactly equal accepted candidate; SourceA/tag remain independent from later SourceB documentation HEAD."
+  "scope": "Actual new22 finite current267 loader/three-day tier4/half/once ordinaryConfirm/new-instance temporary withdrawal/full census/four absent traits/full native disabled cooldown tooltip through1069.9.18 and actual falseCan. Reserved native expiry null and applied/readback/eventclosed flags false remain. No net county opinion/treasury transfers/alltiers/alllanguages/permanentoptout/full three-year wait/save persistence/wholeSDK/performance or publication qualification. All22 formal bytes and ZIP exactly equal accepted candidate; SourceA/tag remain independent from later SourceB documentation HEAD.",
+  "completion_status_history": [
+    {
+      "status": "FORMAL_READY_PUBLICATION_NOT_RUN",
+      "SourceB_commit": "0f09f5d11cfe16be018cdc614817a963fa8a8ace",
+      "record_before": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\release-evidence\\celestial-commerce-corruption\\1.0.2.json",
+        "bytes": 5038,
+        "sha256": "3b18f5acb628d18fd598fac065591f05115cf1008a8ff1ac3a7b9d7992017c2f"
+      },
+      "scope": "Actual formal-ready timestamp retained in Git; later independent receipts add publication/cache facts without rewriting F."
+    }
+  ],
+  "published_time_source": "actual public API time_updated; SDK time separately retained",
+  "sdk_submitted_at_utc": "2026-11-23T13:39:50.334632+00:00",
+  "public_Notes": {
+    "status": "NOT_OBSERVED_SERVER_HTTP429_NOT_TEXT_MISMATCH",
+    "actual_single_refusal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-public-readback-a1274\\notes-a01\\http-refusal.json",
+      "bytes": 519,
+      "sha256": "c58e80564fdb3dd3ef090f2fe89fb2ffe4f72b7dd270c3d0b54c5fcacee56134"
+    },
+    "HTTP_status": 429,
+    "Retry_After": null,
+    "requests": 1,
+    "stopped_no_automatic_retry": true,
+    "actual_public_entry_id": null
+  },
+  "publication_and_cache_index": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\evidence\\ccc102-published-cache-Notes-pending-a1287.json",
+    "bytes": 8015,
+    "sha256": "8f0cd4d8dbcb92df3be725fa2ff75dd29e8280523012eaddf16d1d82749fab1f"
+  }
 }

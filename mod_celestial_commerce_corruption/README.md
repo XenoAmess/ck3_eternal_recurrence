@@ -18,6 +18,10 @@
 
 ## 验收与发布状态
 
+当前公开维护版为 **1.0.2**／[3804807463](https://steamcommunity.com/sharedfiles/filedetails/?id=3804807463)。2026-11-23 已完成一次真实 SDK ER1 更新、22 文件实际下载精确比对及公开完整标题／中英正文回读，原标题、封面和一个原图库条目保持。Steam 已恢复离线。真实下载到 C 盘的 canonical 缓存直接挂载，无正式包复制、fixture 或 warm overlay；零推进／零保存、输入全 SHA 保持，并正常 Natural0／Job0／cleanup／creator0。公开 Notes 的唯一 GET 返回429，保持 **NOT_OBSERVED** 并停止重试，尚不称完整 release closed。见[1.0.2 事实与边界](../docs/release-changelogs/celestial-commerce-corruption/1.0.2.md)和[紧凑原件索引](../docs/maintenance/evidence/ccc102-published-cache-Notes-pending-a1287.json)。
+
+新版业务资格限新22加载差异及简中三日第四档／半税、一次普通确认、暂时收手、独立事件消失、四特质清除和完整原生冷却提示／实际 Can=false；不外推净县民望、所有档位／语言、完整三年快进、保存持久、全 SDK 或性能。下方旧版本及候选状态均保留原时点，不覆盖本段；1.0.1 的既有发表与缓存闭环另见其永久证据。
+
 - `1.0.0` 已发布到维护版 Workshop 物品 [`3804807463`](https://steamcommunity.com/sharedfiles/filedetails/?id=3804807463)；上游物品 `3596263413` 未被修改。
 - CK3 `1.19.0.6` 简体中文隔离实机验收及全新订阅缓存复验均 GREEN：正式决议与事件完成 UI 往返，天朝易货规则、第四档特质和 `0.75 - 0.25 = 0.50` 税率计算均由引擎确认。实机验收只使用简体中文。
 - 正式 staging 由 `py tools/build_celestial_commerce_corruption_release.py` 生成，共 22 个运行文件；不要直接上传源码目录。
@@ -25,7 +29,7 @@
 - 工坊标题、主描述（含 `1.0.0` 更新日志段）和完整 Steam Change Notes 已匿名精确回读；正式发布记录见 [`docs/release-changelogs/celestial-commerce-corruption/1.0.0.md`](../docs/release-changelogs/celestial-commerce-corruption/1.0.0.md)。
 - 上游下载未附许可证；仓库所有者已于 2026-09-20 明确确认取得原作者对维护版再分发与发布的许可，并指示据此执行。授权原件仍待所有者方便时补档。
 
-## 1.20.0.3 维护候选
+## 1.20.0.3 维护候选（历史切点）
 
 拟定版本 1.0.1，尚未发布。相对公开版 1.0.0，天朝政府迁移为完整原版 1.20 定义，保留新行政机制、属官发展、东亚庄园、天朝官僚、俸禄、军事与部院预算、AI 传奇与可授予神权政府的能力，仅额外启用 barter。
 四档特质、税率、事件、决议、三年冷却及九语本地化没有玩法改动。1.20.0.2 的核心与代表生产 UI 记录只作历史，不代替 1.20.0.3 验收。
@@ -37,8 +41,8 @@ CK3 1.20.0.3 简中源场复用 Source18/runtime31/原 f150 DLL；D0–D3 及生
 GUI25外层exit1及原 `route-error-no-replay.json` 保留，business_error=null：真实managed结束后磁盘 `session.report` 仍旧为null，Root一次提交原finish17使真实状态落盘，caller随后对同一finish的提交被原queue拒绝；没有重播业务或改旧失败。此边界不写成full caller0。1.0.1仍未发布，正式tag构建、公开Notes、fresh cache代表业务及发布闭环待实际完成；不外推九语实机、全档位、永久退出、独立存读或最终国库转账量已穷举。
 
 
-## Florin1.21.0.3 / build26785313 migration candidate
+## Florin1.21.0.3 / build26785313 migration candidate（2026-11-19历史切点）
 
 Machine `desktop-3fevhd2-1c74096080`, 2026-11-19T23:25:10.116785+00:00. Candidate1.0.2 follows the actual installed celestial government, preserving house power, renamed title MAA setup, current building costs/levy modifier, provincial law, efficiency, legitimacy, court and build-queue rules; only `barter = yes` is added to native government rules. The subject contract retains the native0.2 levy value and all native structure outside the intentional product tax block. Product tax remains0.75 minus the existing0.05/0.10/0.15/0.25 deductions; it is not silently reset to the new native0.5. Existing four traits, events, decisions, three-year cooldown, assets and nine localizations retain their bytes.
 
-This is a source candidate, not a formal tag, new engine acceptance or publication. Historical1.0.1 drafts and1.20 results remain historical; canonical update target3804807463 only. Old upstream3596263413 is forbidden. Full source/software, actual GUI/business and real cache results must be recorded separately.
+At that evidence cut this was a source candidate, not a formal tag, new engine acceptance or publication. The later actual1.0.2 upload, public body and finite cache results are recorded above; public Notes remain unobserved after HTTP429. Historical1.0.1 drafts and1.20 results remain historical; canonical update target3804807463 only. Old upstream3596263413 is forbidden. Full source/software, actual GUI/business and real cache results are recorded separately.

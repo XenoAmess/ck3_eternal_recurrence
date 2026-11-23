@@ -1,0 +1,175 @@
+{
+  "schema": "xar.ccc102.actual-publication-cache-Notes-pending.v1",
+  "at_utc": "2026-11-23T14:13:07.037551+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status": "PUBLISHED_AND_FINITE_CACHE_PASS_PUBLIC_NOTES_NOT_OBSERVED",
+  "release_complete": false,
+  "canonical": "3804807463",
+  "version": "1.0.2",
+  "SourceA": "7724df83655475197a39042e9dbef20ae7fd2fde",
+  "git_tag": "celestial-commerce-corruption-v1.0.2",
+  "tag_object": "1aa795badaa44d01e173179aaa72a89bae9369bc",
+  "formal_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-formal-release-a1273\\formal-delivery-final.json",
+    "bytes": 6834,
+    "sha256": "ef5e6c5edc7ea6dff5ea55526d9a8bf593966564f606ccb5b24f0b6ff6681541"
+  },
+  "actual_single_ER1": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-formal-release-a1273\\ccc102-native-publish-receipt.json",
+    "bytes": 680,
+    "sha256": "1fc5e77de0a2bac2d046b51a3deb0ebee9b1834dcaab6ea57a02932bf60c2702"
+  },
+  "actual_operation_id": "ccc102-a1274-single-update-20261123",
+  "SDK_submitted_at_utc": "2026-11-23T13:39:50.334632+00:00",
+  "publication_result_at_original_timestamp": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-publication-a1274\\operator-a1274-single-ccc102-a01\\publication-result.json",
+    "bytes": 2204,
+    "sha256": "c7fb35279cfe8d8a24b037b1db2a546b5cd01c4d3b1b4e2eaa3bf9434d80bef9"
+  },
+  "later_facts_do_not_rewrite_old_pending_fields": true,
+  "actual_download": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-publication-a1274\\operator-a1274-single-ccc102-a01\\ccc102-download-native.json",
+    "bytes": 1248,
+    "sha256": "b98b76a5f312fb716a39a09d9865e6c6dd1bc5e4d5f5e91d71c7ab9676932716"
+  },
+  "download22_exact": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-publication-a1274\\operator-a1274-single-ccc102-a01\\ccc102-download-exact.json",
+    "bytes": 766,
+    "sha256": "98047705462dd44cd66c5dac66f47d668e1351684e79d4fcfbd7224851a659b4"
+  },
+  "complete_gallery_before": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-publication-a1274\\operator-a1274-single-ccc102-a01\\ccc102-previews-before-native.json",
+    "bytes": 369,
+    "sha256": "840cd07b7d7a6625aa48d16312d021ead1b8b57ef5e1e3875bfc5a5c918de1ba"
+  },
+  "complete_gallery_after": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-publication-a1274\\operator-a1274-single-ccc102-a01\\ccc102-previews-after-native.json",
+    "bytes": 369,
+    "sha256": "840cd07b7d7a6625aa48d16312d021ead1b8b57ef5e1e3875bfc5a5c918de1ba"
+  },
+  "gallery_preserved": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-publication-a1274\\operator-a1274-single-ccc102-a01\\ccc102-gallery-preserved.json",
+    "bytes": 311,
+    "sha256": "33cef7f1f3508fae9cf25dfbdbd87430c14200a5f1ec49da0efe4d68d1374f04"
+  },
+  "actual_gallery_entries": 1,
+  "gallery_upload_or_removal": false,
+  "actual_online_seconds": 61.516995100013446,
+  "fresh_offline_verified_at_utc": "2026-11-23T13:40:29.006844+00:00",
+  "fresh_offline": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-publication-a1274\\operator-a1274-single-ccc102-a01\\observed-offline-1795441228986810100.json",
+    "bytes": 1306,
+    "sha256": "8067acb0b7c91b2278516dfdb6720adc7feecd2fe8dbd520074065fd8024b53c"
+  },
+  "public_full_API": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-public-readback-a1274\\actual-a01\\api-full-verification.json",
+    "bytes": 2534,
+    "sha256": "eed983367cc78de9e1e06ed0efd84b9d7ca7c4eaf0a2353184834045c0d2f472"
+  },
+  "full_public_title_body_exact": true,
+  "accepted_description_UTF8_bytes": 6978,
+  "public_full_description_normalized_bytes": 6977,
+  "normalization": "LF and presentation terminal newline only; full diff empty",
+  "creator_AppIDs_cover_preserved": true,
+  "public_additional_gallery_not_inferred_from_API": true,
+  "public_Notes": {
+    "status": "NOT_OBSERVED_SERVER_HTTP429_NOT_TEXT_MISMATCH",
+    "actual_single_refusal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-public-readback-a1274\\notes-a01\\http-refusal.json",
+      "bytes": 519,
+      "sha256": "c58e80564fdb3dd3ef090f2fe89fb2ffe4f72b7dd270c3d0b54c5fcacee56134"
+    },
+    "HTTP_status": 429,
+    "Retry_After": null,
+    "requests": 1,
+    "stopped_no_automatic_retry": true,
+    "actual_public_entry_id": null
+  },
+  "actual_cache_finite_PASS": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\CCC102-actual-workshop-cache-finite-PASS-a1287.json",
+    "bytes": 8186,
+    "sha256": "32dabbcb33468ab356d8abc10f8d138971f00726fc17841a00ef867d505aef73"
+  },
+  "actual_cache": {
+    "mount": "C:/SteamLibrary/steamapps/workshop/content/1158310/3804807463",
+    "files": 22,
+    "after_all_SHA_exact": true,
+    "formal_copy_fixture_warm": false,
+    "Date_calls": 0,
+    "Save_calls": 0,
+    "source821_after_SHA_unchanged": true,
+    "Core_before_quit": {
+      "date_raw": 53144328,
+      "speed": 3,
+      "paused": true,
+      "local_player_id": 1,
+      "map_ready": true,
+      "has_played_character": true,
+      "played_character_id": 36423,
+      "played_character_alive": true
+    },
+    "one_Native_quit_ACK": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-workshop-cache-current267-profile-a1275\\operations\\normal-cache-quit-a1286\\result\\summary.json",
+      "bytes": 14775,
+      "sha256": "b39cc6ec60685aa391ed623b9b08a764c112a7302b255b3d2955477c8c0d7973"
+    },
+    "independent_normal_terminal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-workshop-cache-current267-profile-a1275\\owner\\terminal.json",
+      "bytes": 1053,
+      "sha256": "76d76743cfe5aa09cc0b0bb748fbad773a32247ce47addce115c5069d349013e"
+    },
+    "creator_END": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-workshop-cache-current267-profile-a1275\\creator-end.json",
+      "bytes": 601,
+      "sha256": "db5c013b46440c913e05d0601d4a714686c39358f6df02daa028390adbaf8ad9"
+    },
+    "Natural0_Job0_cleanup_creator0": true,
+    "optional_loading_CoreUnavailable_preserved": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\ccc102-workshop-cache-current267-profile-a1275\\operations\\optional-cache-core-a1284\\result\\read-result-token.json",
+      "bytes": 658,
+      "sha256": "964a14ffcda3560a4605fd381c10dbf377b4f88775d946c22ff84fd7daa4cc1f"
+    }
+  },
+  "new22_business_qualification_separate": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\CCC-new22-popular-opinion-and-original-case-finite-PASS-a1271.json",
+    "bytes": 7659,
+    "sha256": "204d0cd13d84be7119fa395a0fba637828eb44d5fb023fbeb1ed98de3c5454c4"
+  },
+  "reserved_native": {
+    "event_closed": false,
+    "decision_applied": false,
+    "cooldown_readback_complete": false,
+    "cooldown_expiry_date_raw": null
+  },
+  "DES024_later_third_Notes_refusal": {
+    "actual_refusal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des024-public-readback-a1226-v2\\notes-a03\\http-refusal.json",
+      "bytes": 522,
+      "sha256": "27cecacc629d7e6c76485ddca5f85f2f17a8a213678493f5d03626880bfbf703"
+    },
+    "status": "NOT_OBSERVED_HTTP429",
+    "old_two_refusals_and_SourceC_timestamp_preserved": true,
+    "no_background_request": true
+  },
+  "distinct_SKU_counts": {
+    "uploaded": 13,
+    "uploaded_total": 17,
+    "uploaded_percent": 76.5,
+    "strict_complete": 9,
+    "strict_percent": 52.9,
+    "CCC_new_Notes_pending_does_not_add_strict": true,
+    "DES_version_update_does_not_add_SKU": true
+  },
+  "remaining_product_order": [
+    "RMTM",
+    "LivingRelic",
+    "LYD",
+    "ZG361"
+  ],
+  "SourceC": {
+    "changes_runtime_tag_SourceA_F": false,
+    "new_Maven_test_Game_OS_Steam_SDK_HTTP_calls": 0,
+    "read_Save_payload": false
+  },
+  "scope": "Actual one update/download22/public fulltitle-body and downloaded-cache mount/normal exit only. Notes unobserved after429 is not a failed content comparison or absent upload. Prior PARTIAL, loader failures, optional unavailable and original nativefalse/null remain. No new business/init/netopinion/alltiers/languages/fullSDK/performance qualification."
+}
