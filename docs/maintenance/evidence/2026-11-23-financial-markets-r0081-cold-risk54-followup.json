@@ -1,0 +1,498 @@
+{
+  "schema": "xfm.r0081-cold-risk54-documentary-draft.v1",
+  "status": "ACTUAL_FINITE_COLD_GRAPH_AND_INDEPENDENT_RETRY_PASS_RESOURCES_RELEASED",
+  "machine_id": "4-8e1c2f1861",
+  "record_date": "2026-11-23",
+  "game_build_scope": {
+    "version": "1.21.0",
+    "steam_build": "26622941",
+    "exact_family": "2F2B"
+  },
+  "input_R80_S4_SAVE_original_pin_not_rehashed": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0080\\risk54-day201\\xar_checkpoint.ck3",
+    "bytes": 147377660,
+    "sha256": "4de11be0da50015e2fdd4bb2541201f184733b914a5ddfd303b477e5dd907708"
+  },
+  "new_natural_days": 0,
+  "native_SAVE_count": 2,
+  "complete_EOF_passes": 16,
+  "original_reader_waits": 12,
+  "checkpoints": [
+    {
+      "endpoint": "cold-risk54-loaded01",
+      "pipeline": {
+        "path": "C:/workspace/ck3-market-task-20261118/cold-risk54-loaded01-PIPELINE.actual.json",
+        "bytes": 23831,
+        "sha256": "a7e79898857c5d1cc1a801364dc56dc1bc563bad0bfb00fe33fc9d1d106672d9"
+      },
+      "archive": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0081\\cold-risk54-loaded01\\ARCHIVE.actual.json",
+        "bytes": 8001,
+        "sha256": "7225bc0a21f2a4d015b7dde6b3973c35e000c18bac7338278ada7408f9f718b6"
+      },
+      "SAVE_original_pin_not_rehashed": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0081\\cold-risk54-loaded01\\xar_checkpoint.ck3",
+        "bytes": 147368742,
+        "sha256": "a075319bb6823fca993dde3742cae47d10814221a257796c215c0b4e597c9347"
+      },
+      "date_raw": 53144376,
+      "original_pipeline_wait": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/PIPELINE-cold-risk54-loaded01/ORIGINAL-WAIT.actual.json",
+        "bytes": 2434,
+        "sha256": "650ef77e3dfee9cb315454dc2a1023552faebbbb6e4c78adea8974983b01738a"
+      },
+      "original_pipeline_returncode": 0,
+      "original_pipeline_elapsed_seconds": 85.24378940000315,
+      "started_at_utc": "2026-11-23T11:33:35.244221+00:00",
+      "finished_at_utc": "2026-11-23T11:35:00.488000+00:00",
+      "complete_EOF_passes": 8,
+      "reader_waits": 6,
+      "parser_pass_breakdown": {
+        "Audit": 2,
+        "Whole": 2,
+        "PairA_Raw03_human": 1,
+        "PairA_ExactStories": 1,
+        "PairB_Raw03_human": 1,
+        "PairB_ExactStories": 1
+      },
+      "whole_comparison": {
+        "path": "C:/workspace/ck3-market-task-20261118/cold-risk54-loaded01-whole-comparison.json",
+        "bytes": 1813,
+        "sha256": "1fb7dd228af529af1475d4be1d9ca73e06cb9d91710d8a6365313db72d082fb1"
+      },
+      "whole_summary": {
+        "before_records": 365,
+        "after_records": 365,
+        "exact_whole_selected_records_equal": true
+      },
+      "financialCertified": false
+    },
+    {
+      "endpoint": "cold-risk54-retry01",
+      "pipeline": {
+        "path": "C:/workspace/ck3-market-task-20261118/cold-risk54-retry01-PIPELINE.actual.json",
+        "bytes": 24291,
+        "sha256": "53a211de41da010b09665e022e993695055c8a1da8d28c26fa2dbe76d1199b15"
+      },
+      "archive": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0081\\cold-risk54-retry01\\ARCHIVE.actual.json",
+        "bytes": 8011,
+        "sha256": "367e92d05cbb89ea8b151e47a12812d6ca224aa43e8eb460aeefcf355f9d7964"
+      },
+      "SAVE_original_pin_not_rehashed": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\financial-physical-saves-R0081\\cold-risk54-retry01\\xar_checkpoint.ck3",
+        "bytes": 147512689,
+        "sha256": "f238281022ba7cdda79bb50434e9169280fda541e3d614e724cb03e2588ef5c7"
+      },
+      "date_raw": 53144376,
+      "original_pipeline_wait": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/PIPELINE-cold-risk54-retry01/ORIGINAL-WAIT.actual.json",
+        "bytes": 2548,
+        "sha256": "895cb7826121725eed78e2af4c1dc39532e5445259fc2bc96b14c5fc51d0771e"
+      },
+      "original_pipeline_returncode": 0,
+      "original_pipeline_elapsed_seconds": 86.96037340001203,
+      "started_at_utc": "2026-11-23T11:46:19.910388+00:00",
+      "finished_at_utc": "2026-11-23T11:47:46.870756+00:00",
+      "complete_EOF_passes": 8,
+      "reader_waits": 6,
+      "parser_pass_breakdown": {
+        "Audit": 2,
+        "Whole": 2,
+        "PairA_Raw03_human": 1,
+        "PairA_ExactStories": 1,
+        "PairB_Raw03_human": 1,
+        "PairB_ExactStories": 1
+      },
+      "whole_comparison": {
+        "path": "C:/workspace/ck3-market-task-20261118/cold-risk54-retry01-whole-comparison.json",
+        "bytes": 4494,
+        "sha256": "3d885cfafaa62371f1d2ba9ef3b931c229591b336b4c8ada07328153c6fa64e0"
+      },
+      "whole_summary": {
+        "before_records": 365,
+        "after_records": 366,
+        "exact_whole_selected_records_equal": false
+      },
+      "financialCertified": false
+    }
+  ],
+  "same_action_retry_handled_at_utc_owner_recorded": "2026-11-23T11:46:12.217531+00:00",
+  "post_retry_SAVE_pipeline_started_at_utc": "2026-11-23T11:46:19.910388+00:00",
+  "post_retry_SAVE_pipeline_finished_at_utc": "2026-11-23T11:47:46.870756+00:00",
+  "post_retry_SAVE_after_handled_retry": true,
+  "Root_saved_semantic_summary": {
+    "path": "C:/workspace/ck3-market-task-20261118/R0081-saved-semantic-deltas-Root01.actual.json",
+    "bytes": 2768,
+    "sha256": "0173557297398e7ebb60334025c4bb4649a16fee36a8e5a0ed63418daaeb3336"
+  },
+  "large_arithmetic_original_declared_pin_not_read_or_rehashed": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\cold-risk54-through-retry-arithmetic02.actual.json",
+    "bytes": 6712950,
+    "sha256": "731b673f218ebced68c9f915c594b40a15dea27566d28e81714c27df786df483"
+  },
+  "known_equal_embedded_captures": {
+    "total": 607,
+    "groups": {
+      "64": {
+        "before_count": 132,
+        "after_count": 132,
+        "known_equal_count": 132,
+        "unknown_count": 0,
+        "missing_after": [],
+        "missing_before": [],
+        "different": {}
+      },
+      "72": {
+        "before_count": 132,
+        "after_count": 132,
+        "known_equal_count": 132,
+        "unknown_count": 0,
+        "missing_after": [],
+        "missing_before": [],
+        "different": {}
+      },
+      "80": {
+        "before_count": 148,
+        "after_count": 148,
+        "known_equal_count": 148,
+        "unknown_count": 0,
+        "missing_after": [],
+        "missing_before": [],
+        "different": {}
+      },
+      "human": {
+        "before_count": 195,
+        "after_count": 195,
+        "known_equal_count": 195,
+        "unknown_count": 0,
+        "missing_after": [],
+        "missing_before": [],
+        "different": {}
+      }
+    },
+    "unknown_count_within_these_captures": 0,
+    "scope_limit": "607 embedded before/after captures only;not all world fields or current Gold."
+  },
+  "related_existing_non_xfmr_fields": {
+    "51": {
+      "xfm_next_account_id": {
+        "before": {
+          "state": "KNOWN",
+          "type": null,
+          "value": "265"
+        },
+        "after": {
+          "state": "KNOWN",
+          "type": null,
+          "value": "266"
+        }
+      }
+    }
+  },
+  "human_PRIMARY_before": {
+    "state": "UNKNOWN",
+    "present": false,
+    "reason": "Actual variable absent, not zero"
+  },
+  "human_PRIMARY_after": {
+    "serializedType": "story",
+    "identityPresent": true,
+    "rawIdentity": "419",
+    "present": true,
+    "state": "KNOWN",
+    "native_id": "419",
+    "identity_not_scaled": true
+  },
+  "owner_arithmetic_summary_of_pinned_report": {
+    "loaded_Whole_records": 365,
+    "loaded_versus_R80_S4_exact_equal": true,
+    "retry_after_Whole_records": 366,
+    "added_native_story": "419",
+    "existing_changed_native_stories": [
+      "51",
+      "64",
+      "72",
+      "80"
+    ],
+    "existing_changes_except_exchange_next_account": "counter or QA captures only",
+    "new_PRIMARY": {
+      "native": "419",
+      "permanent": "266",
+      "free_cents": 0,
+      "reserved_cents": 0,
+      "reason": "Ordinary first UI opening;actual human var:xfm_account points419;before absence UNKNOWN not0."
+    },
+    "cash_stock_cents": 307695,
+    "claim_reference": "253",
+    "claim_principal_cents": 2000,
+    "fund_paid_cents": 110,
+    "original_AI_repaid_cents": 500,
+    "outstanding_cents": 1500,
+    "second_claim_created": false,
+    "current_Gold": "UNKNOWN"
+  },
+  "financialCertified": false,
+  "pending_actuals": null,
+  "historical_R80": {
+    "Root_partial_preserved": true,
+    "original_run_exit2_preserved": true,
+    "original_verify_exit2_preserved": true,
+    "original_saved_retry_requirement_FALSE_not_backfilled": true,
+    "R81_is_separate_same_day_followup": true
+  },
+  "qualification_limits": {
+    "full_risk_or_whole_product_PASS": false,
+    "all_human_toast_delivery_PASS": false,
+    "twenty_crisis_scenes_PASS": false,
+    "SYN4096_or395day_performance_PASS": false,
+    "first_publication_or_forecast_certification": false,
+    "finite_public_case_boundary_PASS": true,
+    "local_same_source_day2_retry_PASS": true,
+    "public_business_or_product_aggregation_PASS": false
+  },
+  "authoring_actions": {
+    "small_existing_metadata_only": true,
+    "formal_tree_Git_build_test_Game_OS_or_SAVE_DLL_payload_actions": 0,
+    "new_parser_SAVE_Java_Game_actions_for_news_review": 0,
+    "final_metadata_closure_reads_only": true
+  },
+  "run_id": "4-8e1c2f1861--financial-markets--R0081",
+  "phase_actual_publications": [
+    {
+      "phase": 0,
+      "review": {
+        "path": "C:/workspace/ck3-market-task-20261118/R0081-cold-risk54-phase0-Root-reviewed01.json",
+        "bytes": 5275,
+        "sha256": "e0fe4114e9c34a6e2aa45404ed44d3b5a0436b3587825ad8d9058ba94c2f9e05"
+      },
+      "published_result": {
+        "path": "C:/workspace/ck3-market-live-20261123h/live/4-8e1c2f1861--financial-markets--R0081/case-output/fresh-process-loaded-graph-root-result.json",
+        "bytes": 5563,
+        "sha256": "25237d5f6b455affecd15dff913320bbbf6c73a7ecb30dd35715503fe0e815fb"
+      },
+      "assertions": {
+        "actual_minimized_non_topmost_no_foreground_activation_for_entire_run": true,
+        "actual_new_process_exact_exe_dll_product_and_source_save_match_provenance": true,
+        "actual_native_readback_precedes_financial_gui_open_or_other_business_effect": true,
+        "actual_account_coin_order_reservation_contract_position_debt_news_and_oracle_graph_matches_preclose_by_permanent_identity": true,
+        "actual_currency_supply_cash_fees_fund_rights_original_dates_pending_amounts_and_daily_guards_match_preclose": true,
+        "actual_observer_arming_writes_only_new_xfma_epoch_state_and_no_product_repair_or_bootstrap_masks_missing_loaded_state": true
+      },
+      "published_literal_assertions": {
+        "actual_minimized_non_topmost_no_foreground_activation_for_entire_run": true,
+        "actual_new_process_exact_exe_dll_product_and_source_save_match_provenance": true,
+        "actual_native_readback_precedes_financial_gui_open_or_other_business_effect": true,
+        "actual_account_coin_order_reservation_contract_position_debt_news_and_oracle_graph_matches_preclose_by_permanent_identity": true,
+        "actual_currency_supply_cash_fees_fund_rights_original_dates_pending_amounts_and_daily_guards_match_preclose": true,
+        "actual_observer_arming_writes_only_new_xfma_epoch_state_and_no_product_repair_or_bootstrap_masks_missing_loaded_state": true
+      }
+    },
+    {
+      "phase": 1,
+      "review": {
+        "path": "C:/workspace/ck3-market-task-20261118/R0081-cold-risk54-phase1-Root-reviewed01.json",
+        "bytes": 5611,
+        "sha256": "64cb6efd1d92fcbb42a1ecdacd9afc6fe4c85231d42b44554e93e5fe87a3a160"
+      },
+      "published_result": {
+        "path": "C:/workspace/ck3-market-live-20261123h/live/4-8e1c2f1861--financial-markets--R0081/case-output/same-day-refresh-and-close-root-result.json",
+        "bytes": 5982,
+        "sha256": "1c0345a9af8f413cfb8a2d46775fbd560cb7328e8b28a6b72e245adffd5274a8"
+      },
+      "assertions": {
+        "actual_read_only_xfma_refresh_observer_button_records_second_unchanged_same_day_sample": true,
+        "actual_native_date_remains_exactly_equal_to_source_save_date": true,
+        "actual_normal_market_open_account_selection_and_refresh_leave_business_balances_trade_counts_settlement_ids_and_claims_unchanged": true,
+        "actual_news_journal_and_delivery_cursors_are_loaded_without_inventing_new_delivery_or_duplicate_facts": true
+      },
+      "published_literal_assertions": {
+        "actual_read_only_xfma_refresh_observer_button_records_second_unchanged_same_day_sample": true,
+        "actual_native_date_remains_exactly_equal_to_source_save_date": true,
+        "actual_normal_market_open_account_selection_and_refresh_leave_business_balances_trade_counts_settlement_ids_and_claims_unchanged": true,
+        "actual_news_journal_and_delivery_cursors_are_loaded_without_inventing_new_delivery_or_duplicate_facts": true
+      }
+    }
+  ],
+  "independent_same_source_retry_Root_review": {
+    "pin": {
+      "path": "C:/workspace/ck3-market-task-20261118/R0081-independent-retry-Root-reviewed01.json",
+      "bytes": 2380,
+      "sha256": "86e940308cad3651fdd982995b14abdcfd6a2eeee2ba73aae2d7c0f731c9a021"
+    },
+    "local_business_pass": true,
+    "known_equal_pairs": 607,
+    "financialCertified": false,
+    "R80_upgraded": false
+  },
+  "public_verification": {
+    "schema": "ck3-mod-acceptance-product-case-facts-v1",
+    "run_id": "4-8e1c2f1861--financial-markets--R0081",
+    "result_boundary": "SOURCE_CASE_OBSERVED_PENDING_PRODUCT_AGGREGATION",
+    "case_acceptance_pass": true,
+    "qualified_boundary_pass": true,
+    "business_pass": false,
+    "product_release_pass": false,
+    "has_status_field": false
+  },
+  "original_public_run": {
+    "receipt": {
+      "path": "C:/workspace/ck3-market-live-20261118/operations/cold-risk54-start01-run/ORIGINAL-WAIT.actual.json",
+      "bytes": 1524,
+      "sha256": "c22e6e19da1d25f169ce9586ec6e13fc0f79aa635ef30f5e4fb4054a010f0774"
+    },
+    "returncode": 0,
+    "elapsed_seconds": 2184.989233100001,
+    "stdout": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\cold-risk54-start01-run\\stdout.log",
+      "bytes": 154226,
+      "sha256": "1010298134717eec686f9c4011728d4dc9cddc4c11d61ec8074e81763facd3dc"
+    },
+    "stderr": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\cold-risk54-start01-run\\stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "original_public_verify": {
+    "receipt": {
+      "path": "C:/workspace/ck3-market-live-20261118/operations/cold-risk54-start01-verify/ORIGINAL-WAIT.actual.json",
+      "bytes": 1534,
+      "sha256": "4272da241b997aa3d3b2c28075a7b944e6f8bed6e6674c66163b30a64f46015d"
+    },
+    "returncode": 0,
+    "elapsed_seconds": 0.6291879000200424,
+    "stdout": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\cold-risk54-start01-verify\\stdout.log",
+      "bytes": 74213,
+      "sha256": "7f09be7a59cbd818276439ae00f1621233ba1f30db345b5d3993238baec3fa37"
+    },
+    "stderr": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\cold-risk54-start01-verify\\stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "original_START_outer": {
+    "receipt": {
+      "path": "C:/workspace/ck3-market-live-20261118/operations/START-cold-risk54-current-source01/ORIGINAL-WAIT.actual.json",
+      "bytes": 2449,
+      "sha256": "2b3909790e6f30ad027f08c477bb86547fa3ff939e18e2e86e4b1d8403be1b40"
+    },
+    "returncode": 0,
+    "elapsed_seconds": 2188.5289170999895,
+    "stdout": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\START-cold-risk54-current-source01\\stdout.log",
+      "bytes": 19040,
+      "sha256": "de2aa852632af520917d63e6b300db230ed625ed2b2be96a6f5b5ca924466fd2"
+    },
+    "stderr": {
+      "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\START-cold-risk54-current-source01\\stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "news_journal_cursor_review": {
+    "report": {
+      "path": "C:/workspace/ck3-market-task-20261118/cold-risk54-news-cursor-metadata-review01/NEWS-JOURNAL-CURSOR.actual.json",
+      "bytes": 53039,
+      "sha256": "70a3688351207a79d539e3e9d9a1129251ed4a842da66e1b6a67d26e55bf57d8"
+    },
+    "original_report_new_SAVE_parser_Java_Game_actions": 0,
+    "human_id": "31254",
+    "news_complete_canonical_records": 1,
+    "complete_news_canonical_hash_equal_across_S4_loaded_retry": true,
+    "saved_human_cursor": 1,
+    "saved_sent_today": 1,
+    "saved_delivery_day": 2,
+    "these_saved_cursors_unchanged": true,
+    "seven_human_news_UI_cache_fields_or_list_changes_accounted_separately": true,
+    "actual_Native_toast_or_render_proof": false,
+    "all_human_or_MP_delivery_proof": false,
+    "unknowns": [
+      "Complete retained human31254 alive_data and global snapshots, not all human players/MP.",
+      "News254 body fields and exchange news counter/head/tail are unprojected UNKNOWN. Unchanged whole canonical news hash is the saved-journal proof boundary.",
+      "Missing prefix variables/lists are ABSENT_NOT_ZERO/UNKNOWN. Explicit type=value without identity decodes zero only with actual unsigned64OmittedZero layout.",
+      "Endpoint equality does not prove no transient toast/re-delivery occurred between saves; no Native toast query/render proof added."
+    ],
+    "news_story_nativeId": "254",
+    "news_story_permanentId": "1",
+    "canonicalTokenBytes": 570,
+    "canonicalTokenSha256": "b55c48a6833dda6fdc2337c8e94401aaa5cf987022cbb300cec759eba82d97e6"
+  },
+  "normal_exit_actual": {
+    "normal_result": {
+      "path": "C:/workspace/ck3-market-live-20261123h/live/4-8e1c2f1861--financial-markets--R0081/case-output/normal-close-result.json",
+      "bytes": 8532,
+      "sha256": "1fac9c1e9af7265f935c59ed685c19680aa279db6794dd0f864a99965dacefc9"
+    },
+    "normal_close_qualified": true,
+    "retained_Game": {
+      "signaled": true,
+      "exit_code": 0,
+      "actual_retained_os0": true,
+      "pid": 12024,
+      "create_time": 1795433090.452628,
+      "retained_synchronize_query_handle_acquired": true,
+      "creation_filetime_100ns": "134399066904526280"
+    },
+    "Host_exit": 0,
+    "Job_final": 0,
+    "cleanup_proven": true,
+    "typed_finish_at_utc": "2026-11-23T12:00:47.228633+00:00",
+    "hold_finished_at_utc": "2026-11-23T12:00:50.629487+00:00",
+    "Host_finished_at_utc": "2026-11-23T12:00:51.419249+00:00"
+  },
+  "resource_closure": {
+    "before_release": {
+      "path": "C:/workspace/ck3-market-task-20261118/R0081-closure-before-release.actual.json",
+      "bytes": 13748,
+      "sha256": "d25af88ea306a51a77d49893b67153f6bcb421750390b9786b71eeb98821327d"
+    },
+    "released": {
+      "path": "C:/workspace/ck3-market-task-20261118/R0081-closure-released.actual.json",
+      "bytes": 1355,
+      "sha256": "ff1cbc9bac1e4a779210123e4fe2bd55a36228ffa92b74a9866e1d11881f9aec"
+    },
+    "release_original_wait": {
+      "path": "C:/workspace/ck3-market-live-20261118/operations/RELEASE-R0081-normal02/ORIGINAL-WAIT.actual.json",
+      "bytes": 1343,
+      "sha256": "632373a2d8c63cc27650c21f1b7e03d476b829a96033892bf32bcc01d105af07"
+    },
+    "release_stdout": {
+      "path": "C:/workspace/ck3-market-live-20261118/operations/RELEASE-R0081-normal02/stdout.log",
+      "bytes": 1234,
+      "sha256": "35032e7fce8462084ee94a4a2007a4d611cca35de361cbf20edd2ac01a049958"
+    },
+    "normal_close_qualified": true,
+    "Game_retained_OS_exit": 0,
+    "Host_exit": 0,
+    "Job_final": 0,
+    "cleanup_proven": true,
+    "keeper_exit": 0,
+    "original_allocator_exit": 0,
+    "CAS_before": 16423,
+    "CAS_after": 16424,
+    "state": "done",
+    "resources": [],
+    "public_status_present": false,
+    "public_case_outcome": null,
+    "public_result_boundary": "SOURCE_CASE_OBSERVED_PENDING_PRODUCT_AGGREGATION",
+    "case_acceptance_pass": true,
+    "qualified_boundary_pass": true,
+    "business_pass": false,
+    "whole_product_release_pass": false
+  },
+  "closure_author_interface_correction": {
+    "old01_source_and_three_original_argv": "NOT_EXECUTED_OR_REPLAYED",
+    "caught_before_execution": true,
+    "corrected_contract": "Absent public status preserved as null with actual result_boundary;no invented PASS status.",
+    "source_provenance": "Owner actual source correction and resulting closure receipts"
+  },
+  "repository_publication_context": {
+    "formal_tree_unchanged_through_Game_and_keeper": true,
+    "owner_reported_post_release_FF_head": "b59e1c9c5",
+    "owner_reviewed_incoming_scope": "DES/AGENTS/other documentation;financial source unchanged.",
+    "new_financial_suite_or_Game_qualification_inferred_from_FF": false
+  }
+}

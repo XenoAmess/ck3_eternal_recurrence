@@ -1,0 +1,409 @@
+{
+  "schema": "xfm.q56-core54-and-maintenance-documentary-evidence.v1",
+  "machine_id": "4-8e1c2f1861",
+  "record_date": "2026-11-23",
+  "source_commit": "4da71aa6c1a30a58f3309b01da0ee39e403dbf19",
+  "game_build_scope": {
+    "version": "1.21.0",
+    "steam_build": "26622941",
+    "exact_family": "2F2B"
+  },
+  "Native_Q56": {
+    "qualification": {
+      "path": "C:/workspace/ck3-market-task-20261118/native-common-qualification56/Q.actual.json",
+      "bytes": 19602,
+      "sha256": "9ec38a00f7375e00041a1b145bf4e432cd83e2d09ed675b573f630cc11b74f67"
+    },
+    "public_result": {
+      "path": "C:/workspace/ck3-market-task-20261118/native-common-qualification56/PUBLIC-CONSUMER-PASS.actual.json",
+      "bytes": 1880,
+      "sha256": "fc416612f27f544d7a2434e82e2a443313712a4cc9e1aee93838650c4036a6c4"
+    },
+    "public_status": "PASS",
+    "original_outer_execution": {
+      "receipt": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/NATIVE-v33-Q56-01/ORIGINAL-WAIT.actual.json",
+        "bytes": 1170,
+        "sha256": "8a473c174c14c243eac2c1370ddcbbcf7364f28f59ef0f58b92d5aaa6d68d417"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 204.16959919998772,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\NATIVE-v33-Q56-01\\stdout.log",
+        "bytes": 945,
+        "sha256": "ed60262de60ebd78dfc8b0a2ba2295a702666775ff929f80b2a9dc0aebebf8d6"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\NATIVE-v33-Q56-01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "profile": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification56\\profile.actual.json",
+      "bytes": 17013,
+      "sha256": "ac0ffe781c237add0508810ce9d0ac5bb03c3a8b9f73bee951a338384f3e021f"
+    },
+    "actual_flag_count": 253,
+    "configured_scope": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification56\\configured-scope.actual.json",
+      "bytes": 302150,
+      "sha256": "3b70e27d433ace9b9cf3d2f839ee6daeb7e74e7c44707ecf963f12afb0578835"
+    },
+    "production_translation_units": {
+      "xar_ck3_bridge": 268,
+      "xar_ck3_12002_runtime": 657,
+      "xar_bridge_protocol": 1
+    },
+    "total_translation_units": 926,
+    "production_build": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification56\\production-build.actual.json",
+      "bytes": 862,
+      "sha256": "2257e5ca1de3a29d02d262f148d26adac0fa49ef7f20141c77e9c4432e6d6253"
+    },
+    "production_original_wait_returncode": 0,
+    "production_receipt_wallclock_interval_seconds": 155.645993,
+    "original_build_log": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification56\\production-build.actual.log",
+      "bytes": 4897,
+      "sha256": "be4fdb6c313200900d4edeef4c3ab2167a1a05d081b826eee262ddf7010555fe"
+    },
+    "original_log_decode": "gb18030",
+    "actual_CXX_steps_in_incremental_log": 32,
+    "actual_link_steps_in_incremental_log": 7,
+    "published_DLL_original_pin_not_rehashed": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification56\\published\\xar_ck3_bridge.dll",
+      "bytes": 13536256,
+      "sha256": "2e1b75f7a81db8c0e37d5914cf64e90f39367a67b257360a4469046bd75f5d69"
+    },
+    "formal_fixture_count": 22,
+    "formal_finite_new_executions": [
+      {
+        "target": "xar_ck3_1210_core_control_test",
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification56\\fixture-xar_ck3_1210_core_control_test.json",
+          "bytes": 1077,
+          "sha256": "0ad9b5f8df7cbcedac4be3f0940baf11aeb00e0e7f2a5471f3630730a8056bc5"
+        },
+        "original_wait_returncode": 0
+      },
+      {
+        "target": "xar_ck3_1210_date_sentinel_test",
+        "execution": {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification56\\fixture-xar_ck3_1210_date_sentinel_test.json",
+          "bytes": 1079,
+          "sha256": "cf5569bfbdbc2275cfb408b941e8211e27a5f55aa1248db4cf5e1c69f91d1e66"
+        },
+        "original_wait_returncode": 0
+      }
+    ],
+    "formal_finite_reused_count": 20,
+    "finite_decisions": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification56\\dependency-aware-finite-decisions.actual.json",
+      "bytes": 174496,
+      "sha256": "44a5296ff5fe5b531397bf71200a48f51eaf0f9ec5ac20dc6377777025cd9930"
+    },
+    "new_OFF_supplement": {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification56\\one-CCC-one-affected-TED-OFF-supplemental-results.actual.json",
+        "bytes": 959,
+        "sha256": "b392fdcc075fa16581c2cc6793c45696e49150cf94d640c2137a5c61caf8ff95"
+      },
+      "actual_executions": [
+        {
+          "summary": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification56\\supplemental-ccc-actual-linked-step-off-summary.actual.json",
+            "bytes": 1903,
+            "sha256": "ad4198a3aaf04dfdd2afff066865b17c1a1db6cde27b306352c6ff89c2c5d552"
+          },
+          "target": "xar_ck3_ccc_step_off_test",
+          "permission_flag": "XAR_CK3_ENABLE_121003_26785313_CCC_V1",
+          "permission_setting": "OFF",
+          "execution": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification56\\supplemental-ccc-actual-linked-step-off-execution.actual.json",
+            "bytes": 1082,
+            "sha256": "2c97fbbe962d2edbcb8c22ff4889508798fd78f16cb1e1acfd8304636aedf9b4"
+          },
+          "original_wait_returncode": 0
+        },
+        {
+          "summary": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification56\\supplemental-affected-ted-owner-off-summary.actual.json",
+            "bytes": 1894,
+            "sha256": "d2a70d1ddaa47ba9ea0c8b11646c7f14d90d2ad800eb3f0a7f3e80d5fffcdea8"
+          },
+          "target": "xar_ck3_current_ted_off_test",
+          "permission_flag": "XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1",
+          "permission_setting": "OFF",
+          "execution": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification56\\supplemental-affected-ted-owner-off-execution.actual.json",
+            "bytes": 1084,
+            "sha256": "82e5ab8a0225e1c6550dc3c1f33d44af9aa4be0134bd94273698ce2d5ac07916"
+          },
+          "original_wait_returncode": 0
+        }
+      ]
+    },
+    "current_date_worker_v2_failure_modes": {
+      "summary": {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification56\\current-date-worker-v2-failure-seven-modes-summary.actual.json",
+        "bytes": 4035,
+        "sha256": "a490622ddbfb442b9b231134cb82fd8f0c3c0e8b374a12a952c71d3c69831faa"
+      },
+      "actual_mode_count": 7,
+      "actual_executions": [
+        {
+          "mode": [],
+          "execution": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification56\\supplemental-date-worker-v2-failure-default-execution.actual.json",
+            "bytes": 1140,
+            "sha256": "8216dcd644da23d810c49af5eb9b7c5bc93696e2dd4c56fbd45e6d3a4a2b0aa7"
+          },
+          "original_wait_returncode": 0
+        },
+        {
+          "mode": [
+            "application-drift"
+          ],
+          "execution": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification56\\supplemental-date-worker-v2-failure-application-drift-execution.actual.json",
+            "bytes": 1175,
+            "sha256": "667e012f7dec0f8f34a7c6dd68c4e56ae6d424b45a602b14658304a4cc2e5f15"
+          },
+          "original_wait_returncode": 0
+        },
+        {
+          "mode": [
+            "destroy-after"
+          ],
+          "execution": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification56\\supplemental-date-worker-v2-failure-destroy-after-execution.actual.json",
+            "bytes": 1167,
+            "sha256": "10454211538f0eaad37a345e0a309409820e4a66d295b2874284181144a1331d"
+          },
+          "original_wait_returncode": 0
+        },
+        {
+          "mode": [
+            "barrier-success"
+          ],
+          "execution": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification56\\supplemental-date-worker-v2-failure-barrier-success-execution.actual.json",
+            "bytes": 1171,
+            "sha256": "e0eaeb96eb1e23f5907951b1958e628d05d3c988db56c7a1b9257b0c30a669e6"
+          },
+          "original_wait_returncode": 0
+        },
+        {
+          "mode": [
+            "barrier-unknown"
+          ],
+          "execution": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification56\\supplemental-date-worker-v2-failure-barrier-unknown-execution.actual.json",
+            "bytes": 1171,
+            "sha256": "9a339cba069c68d9143a9e4e308b75ba52a0624e94fa310d1b9e026276b48430"
+          },
+          "original_wait_returncode": 0
+        },
+        {
+          "mode": [
+            "barrier-nested"
+          ],
+          "execution": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification56\\supplemental-date-worker-v2-failure-barrier-nested-execution.actual.json",
+            "bytes": 1169,
+            "sha256": "260da6a3cb589c914c6c889162b7bc0e16366e7fd4bfc714af425fb32381c237"
+          },
+          "original_wait_returncode": 0
+        },
+        {
+          "mode": [
+            "post-seh"
+          ],
+          "execution": {
+            "path": "C:\\workspace\\ck3-market-task-20261118\\native-common-qualification56\\supplemental-date-worker-v2-failure-post-seh-execution.actual.json",
+            "bytes": 1157,
+            "sha256": "2f6efb3a278efbda4aeb34700f89df47407ff732597058e090c617df1a5401be"
+          },
+          "original_wait_returncode": 0
+        }
+      ]
+    },
+    "actual_live_business_qualified": false,
+    "current267_ON_or_Game_qualification": false
+  },
+  "Core54": {
+    "original_execution": {
+      "receipt": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/BUILD-Core54-risk-fixed01/ORIGINAL-WAIT.actual.json",
+        "bytes": 1272,
+        "sha256": "4c11c54979078c70e2cd3f29045872aac4cf778b23ce621f675393236cdd4db1"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 1.5336376999912318,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\BUILD-Core54-risk-fixed01\\stdout.log",
+        "bytes": 41816,
+        "sha256": "69812ac7e6b1ae7f52b7df066983307976410932119ae0e2cf12b2fbe83b0a61"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\BUILD-Core54-risk-fixed01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "manifest": {
+      "path": "C:/workspace/ck3-market-task-20261118/core-build54/manifest.json",
+      "bytes": 41814,
+      "sha256": "0e040598eee2010edd874b4cd751017a5c8e6ca4eb8f4ff10d2f91cfdc33c29e"
+    },
+    "source_revision": "4da71aa6c1a30a58f3309b01da0ee39e403dbf19",
+    "file_count": 236,
+    "qualification": "CANDIDATE_STATIC_ONLY_NO_ENGINE_OR_RELEASE_CREDIT",
+    "engine_or_release_credit": false
+  },
+  "maintenance_scopes_separate_not_unique_volume_attribution": {
+    "financial83_JSON_samebytes": {
+      "summary": {
+        "path": "C:/workspace/ck3-market-task-20261118/financial83-maintenance-Root-completed01.actual.json",
+        "bytes": 5721,
+        "sha256": "fe148f7a3c4eed9fb530c3b798a366a3a68cd9a709b971483eba0693df5d094a"
+      },
+      "actual_files": 83,
+      "actual_allocation_reduction_bytes": 452984832,
+      "identity_and_times_preserved": true,
+      "target_reached": false,
+      "original_scope_exhaustion_exit2_preserved": true,
+      "no_delete_or_refund": true
+    },
+    "closed17_logs_samebytes": {
+      "summary": {
+        "path": "C:/workspace/ck3-market-task-20261118/closed-log17-Root-completed01.actual.json",
+        "bytes": 1838,
+        "sha256": "be9f9a5e74524078bd8020718190b2e6e97594f220cd9476a4541aa8478a0d3d"
+      },
+      "actual_files": 17,
+      "actual_allocation_reduction_bytes": 207163392,
+      "identity_and_times_preserved": true,
+      "first_PREP01_failure_preserved": true,
+      "first_PREP01_original_execution": {
+        "receipt": {
+          "path": "C:/workspace/ck3-market-live-20261118/operations/PREP-log17-R0075-01/ORIGINAL-WAIT.actual.json",
+          "bytes": 1469,
+          "sha256": "2c377bf74ec9b1bae0209427ca16ece9727406fe95e198e8030ca93e66310cdc"
+        },
+        "returncode": 1,
+        "elapsed_seconds": 0.29479410001658835,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PREP-log17-R0075-01\\stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\PREP-log17-R0075-01\\stderr.log",
+          "bytes": 1182,
+          "sha256": "30237d4ec1baa8a16b1b9345e0de7885d551f3ab994d4c1927a3ce7d8de25cad"
+        }
+      },
+      "first_PREP01_target_payload_or_FSCTL_calls": 0,
+      "original_scope_exhaustion_exit2_preserved": true,
+      "no_delete_or_refund": true
+    },
+    "R79_generated_shader_reclamation": {
+      "small_head": {
+        "path": "C:/workspace/ck3-market-task-20261118/closed-R0079-cache-head01.actual.json",
+        "bytes": 1046,
+        "sha256": "c2745cd2baa1b08d060bb906142ae0801b2f9175dd16056816d3e3052237c771"
+      },
+      "large_original_result_pin_not_reread": {
+        "bytes": 4106848,
+        "path": "C:\\workspace\\ck3-market-task-20261118\\closed-R0079-cache-result01.actual.json",
+        "sha256": "932077c1e70ae8188c08dd9af156efe3cfaa3a6579e35379facded881711de5a"
+      },
+      "original_execution": {
+        "receipt": {
+          "path": "C:/workspace/ck3-market-live-20261118/operations/APPLY-R79-closed-shader01/ORIGINAL-WAIT.actual.json",
+          "bytes": 1786,
+          "sha256": "f9bf6edd17ba49c036c14bd8fccf592e3604bab7c2933ec7c569ae507d82e5f7"
+        },
+        "returncode": 0,
+        "elapsed_seconds": 53.14899749998585,
+        "stdout": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-R79-closed-shader01\\stdout.log",
+          "bytes": 292,
+          "sha256": "3a0efc89bbd8f028a307af439b4ae45322e3c6095ecf25f3a7b621bcbef928bb"
+        },
+        "stderr": {
+          "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\APPLY-R79-closed-shader01\\stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "complete": true,
+      "deleted_file_count": 4168,
+      "failure": null,
+      "deleted_logical_bytes_original_result_owner_verified": 182529478,
+      "logs_and_SAVE_retained": true,
+      "free_delta_not_exclusively_attributed": true
+    },
+    "combined_unique_volume_recovery_total": null,
+    "upper_or_spent_refund": false
+  },
+  "risk54_preparation_only": {
+    "original_emit": {
+      "receipt": {
+        "path": "C:/workspace/ck3-market-live-20261118/operations/EMIT-risk54-current-default01/ORIGINAL-WAIT.actual.json",
+        "bytes": 8903,
+        "sha256": "089506166fd17a52a2c47bea12060cd0a27ad7476ca43d7f64e956f25c07dad1"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 1.9628927999874577,
+      "stdout": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\EMIT-risk54-current-default01\\stdout.log",
+        "bytes": 378,
+        "sha256": "314a98586d82989f70caf12b224112a821e52113863bf86f2d030954680e98f6"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3-market-live-20261118\\operations\\EMIT-risk54-current-default01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "fixture_manifest": {
+      "path": "C:/workspace/ck3-market-task-20261118/futures-risk54-fixture01.fixture.json",
+      "bytes": 6010,
+      "sha256": "08ec2a718d47144eff22aa501c30a0d8aec03697ae5f43286371506dcfd17699"
+    },
+    "new_scene_storage_grant": {
+      "path": "C:/workspace/ck3-market-task-20261118/risk54-scene23g-root-storage01.actual.json",
+      "bytes": 1144,
+      "sha256": "50b3f2d71111f345ccf26bdfdfe94669b53853ed410a58f213a9ebd4145aedc6"
+    },
+    "Game_started_at_this_document_cut": false,
+    "emit_or_storage_grant_not_new_business_PASS": true
+  },
+  "preserved_R79_boundary": {
+    "released_closure": {
+      "path": "C:/workspace/ck3-market-task-20261118/R0079-closure-released.actual.json",
+      "bytes": 1431,
+      "sha256": "93eac43124813ca1453d1949035ae80817b32569e8f35ece800c95884ecf9369"
+    },
+    "original_public_outcome": "NOT_RUN",
+    "actual_engine_fixture_date_RHS_rejections": 4,
+    "normal_close_qualified": false,
+    "normal_resource_exit_proven": true
+  },
+  "credit_limits": {
+    "prior_709_financial_suite_scope_preserved": true,
+    "Native_financial_maintenance_not_added_as_one_software_count": true,
+    "twenty_crisis_scenes_Game_PASS": false,
+    "SYN4096_Game_PASS": false,
+    "whole_product_PASS": false,
+    "first_Workshop_publication": false
+  },
+  "authoring_actions": {
+    "Game_OS_queries_builds_tests": 0,
+    "SAVE_DLL_payload_reads_or_hashes": 0,
+    "formal_repository_writes_Git_compress_or_delete": 0
+  }
+}

@@ -2,6 +2,24 @@
 
 2026-11-23，machine_id: 4-8e1c2f1861。
 
+## 当前补记：R81冷载与同日重试有限PASS，资源已闭合
+
+R81从R80 S4冷载，loaded365条Whole精确相等，0自然日／2次原生SAVE／16次EOF／12个reader wait。Root原协议6／6、4／4字面true已实际发表，607组合法重试前后capture已知且一致；原run0／verify0，case及qualified boundary真，公共business／product聚合仍false。verify无status字段，不补造PASS status。
+
+普通UI首开新增空PRIMARY419解释Whole365→366和exchange next_account265→266，原缺失PRIMARY变量保持UNKNOWN。现金stock307695与claim253本金2000／付110／还500／余1500保持，Gold仍UNKNOWN、financialCertified=false。唯一news story254（永久1）的完整记录hash及已保存human cursor保持，只授本次元数据范围，不授瞬时气泡／全人类送达。typed Game／Host／Job及keeper／原allocator实际0，cleanup和CAS16424／done／资源空已有原件；见[R81有限结果及最终释放边界](r0081-cold-risk54-followup.md)。原R80 PARTIAL／run2／verify2与第三FALSE保持，20剧情／4096／性能／整产品／首发未授，进度估计或计划期限不作PASS。
+
+## 当前补记：R80有限实机与重试缺口，原run2／verify2保持
+
+Core54／Q56上R80实际两自然日、四次原生SAVE，共32次完整EOF／24个原reader wait。Root前三阶段4／4／3项全true，末阶段true／true／FALSE／true；原公共NOT_RUN、case／business／product false保持，不称完整risk PASS。stop135授权实际成交110、5倍清算120、100手gap仓抵押0后仍开放；day2本金2000、基金实付110与AI偿还500、剩余1500的局部事实已保存，外部角色活动及未知字段不抹去。
+
+唯一有效retry02在第四SAVE完成后才由Native处理，缺少后置保存／读回，幂等结果UNKNOWN不填0，第三项FALSE与Root时序错误保留，无第五SAVE。自动typed正常退出、retained Game／Host／Job／keeper／allocator0、cleanup及CAS16406资源空均有实际收据；正常关场不改业务失败。见[R80原事实及32遍计数](r0080-risk54-partial-engine.md)。金融709与下方Q56“Game未启动”分别保原软件／历史切点，后者不覆盖本次R80；20剧情、4096、全人类通知、其余risk／性能与整产品／首发仍待。
+
+## 当前补记：Q56与Core54实际完成；新Game尚未启动
+
+来源4da71aa6上Q56原0／204.1695992秒、公共PASS，253flags／926生产TU；原GB18030构建日志32CXX／7link。正式22夹具中2项新执行、20项复用，另两项OFF及七个date-worker失败模式原0，各自范围不与金融709相加。Core54原0／1.5336377秒、236文件静态候选；risk54已EMIT原0及另有新场存储准入，本切点Game尚未启动，不授新业务通过。
+
+83JSON与17闭场日志同字节压缩分别实减AllocationSize452984832／207163392字节；R79shader原0删除4168生成文件，logs／SAVE保持。原PREP01 suffix拒绝、各exit2范围耗尽／目标未达不改，维护范围不合并为唯一卷收益、不退upper／spent。见[Q56／Core54与维护原证据](native-q56-core54-and-maintenance.md)。原R79 NOT_RUN／四处解析失败／normal-close false与resource-exit true保持；20剧情、4096、整产品及首发仍待，下方历史按原来源保留。
+
 ## 当前补记：R79原解析失败保留；后继完整金融709项通过
 
 Core53已实际build0。R79被engine拒绝四处fixture日期RHS，原run2／verify2／NOT_RUN；Root操作记录为0 setup／交易控制请求、0日期推进请求、0原生SAVE，不将Game_load等未知世界初始化金融效果填为零。normal_close=null及两个held-session error保留。原typed Game／Host／Job／keeper／allocator0、CAS16383资源空另证资源退出，normal_close_qualified=false不改为通过。
