@@ -10708,3 +10708,5 @@ include(cmake/current267_des_init_guard_v1.cmake)
 include(cmake/current267_rite_create_v1.cmake)
 
 include(cmake/current267_rite_text_v1.cmake)
+
+include(cmake/current267_rite_creation_blockers_v1.cmake)

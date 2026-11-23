@@ -1,0 +1,28 @@
+{
+  "schema": "xar.native.current267.rite-creation-blockers.qualified-source-adoption.v1",
+  "at_utc": "2026-11-23T02:01:13.425308+00:00",
+  "qualified_source_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-creation-blockers-source-a1021\\qualified-source-manifest.json",
+    "bytes": 28227,
+    "sha256": "5f66b041b61bdeab46f2c3e163d2827c1130ad0db418e93c17830fac6dc2f39d"
+  },
+  "software_closure": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-rite-creation-blockers-source-a1021\\NoGame\\final-closure.json",
+    "bytes": 6778,
+    "sha256": "99def1ea2873790ce1fc5ea1e4bf7bd980852e73c0eb1e16abcf4944c7ad65e6",
+    "metadata": {
+      "bytes": 6778,
+      "allocated": 8192,
+      "file_id": "281474981913040",
+      "volume": "882653518",
+      "creation_filetime": "134398727250273444",
+      "write_filetime": "134398727250283438",
+      "attributes": 32
+    }
+  },
+  "exact_target_count": 21,
+  "scope": "Wire12, owner12, independent OFF, native74, actual StepEnabled ON/OFF, 8 affected consumer units; final native portable include recompiled and run0. All are NoGame, no live ABI/business claim.",
+  "old_Text_Create_and_identity_unused": "PRESERVED_UNCHANGED",
+  "new_source_semantics": "Official readonly GetCreationBlockers with two qualified samples and complete CString copy/destructor accounting. False Can/empty text available DATA; no mutation/Create permission or arbitrary inputs.",
+  "new_runtime_and_live": "PENDING_SEPARATE"
+}

@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_RITE_CREATION_BLOCKERS_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_CREATION_BLOCKERS_V1
+#include "xar_bridge/ck3_121003_rite_creation_blockers26785313_owner_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RITE_TEXT_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_TEXT_V1
 #include "xar_bridge/ck3_121003_rite_text26785313_owner_v1.hpp"
 #endif
@@ -199,6 +202,10 @@ ck3_11906::MainThreadQueryInstallEnvironmentV1 BindCoreRouteMailboxEnvironmentV1
 #if defined(XAR_CK3_ENABLE_121003_26785313_RITE_TEXT_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_TEXT_V1
   if(!VerifyRiteTextImage267V1(image_base))return {};
   out.permitted_executor_novemvigintary=&ExecuteRiteTextOnOwner267V1;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_RITE_CREATION_BLOCKERS_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_CREATION_BLOCKERS_V1
+  if(!VerifyRiteBlockersImage267V1(image_base))return {};
+  out.permitted_executor_trigintary=&ExecuteRiteBlockersOnOwner267V1;
 #endif
   return out;
 }

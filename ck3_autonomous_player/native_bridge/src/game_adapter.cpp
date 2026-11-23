@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_RITE_CREATION_BLOCKERS_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_CREATION_BLOCKERS_V1
+#include "xar_bridge/ck3_121003_rite_creation_blockers26785313_owner_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RITE_TEXT_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_TEXT_V1
 #include "xar_bridge/ck3_121003_rite_text26785313_owner_v1.hpp"
 #endif
@@ -537,6 +540,9 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RITE_TEXT_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_TEXT_V1
   if(step==ck3_121003::build26785313::kRiteTextStep267V1)return ck3_121003::build26785313::RiteTextStepEnabled267V1(actual,step);
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_RITE_CREATION_BLOCKERS_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_CREATION_BLOCKERS_V1
+  if(step==ck3_121003::build26785313::kRiteBlockersStep267V1)return ck3_121003::build26785313::RiteBlockersStepEnabled267V1(actual,step);
 #endif
   std::string_view capability;
   if (step == "query-core-frame-v1") {

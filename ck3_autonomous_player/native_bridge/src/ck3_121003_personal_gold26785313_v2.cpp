@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_RITE_CREATION_BLOCKERS_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_CREATION_BLOCKERS_V1
+#include "xar_bridge/ck3_121003_rite_creation_blockers26785313_owner_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RITE_TEXT_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_TEXT_V1
 #include "xar_bridge/ck3_121003_rite_text26785313_owner_v1.hpp"
 #endif
@@ -304,10 +307,16 @@ const game::AdapterDescriptor &PersonalGoldAdapterDescriptorV2() noexcept {
   const auto&text_base_descriptor=create_base_descriptor;
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RITE_TEXT_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_TEXT_V1
-  static const auto text_caps=[&]{std::vector<std::string_view>combined(text_base_descriptor.capabilities.begin(),text_base_descriptor.capabilities.end());combined.push_back(kRiteTextCapability267V1);return combined;}();static const game::AdapterDescriptor text_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",text_caps};return text_descriptor;
+  static const auto text_caps=[&]{std::vector<std::string_view>combined(text_base_descriptor.capabilities.begin(),text_base_descriptor.capabilities.end());combined.push_back(kRiteTextCapability267V1);return combined;}();static const game::AdapterDescriptor text_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",text_caps};const auto&blockers_base_descriptor=text_descriptor;
 #else
-  return text_base_descriptor;
+  const auto&blockers_base_descriptor=text_base_descriptor;
 #endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_RITE_CREATION_BLOCKERS_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_CREATION_BLOCKERS_V1
+  static const auto blockers_caps=[&]{std::vector<std::string_view>combined(blockers_base_descriptor.capabilities.begin(),blockers_base_descriptor.capabilities.end());combined.push_back(kRiteBlockersCapability267V1);return combined;}();static const game::AdapterDescriptor blockers_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",blockers_caps};return blockers_descriptor;
+#else
+  return blockers_base_descriptor;
+#endif
+
 }
 bool PersonalGoldRouteEnabledV2([[maybe_unused]]const game::AdapterDescriptor &d) noexcept {
 #if defined(XAR_CK3_ENABLE_121003_26785313_PERSONAL_GOLD_V2)
