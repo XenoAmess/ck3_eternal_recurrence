@@ -156,7 +156,7 @@ struct PersonalModelDiagnostic {
   if(associated){std::uintptr_t old=0;if(!At(out.resident,0x180,old)||old!=default_tenet||!Fresh(b,core,scene,mono))return false;bool can=false;out.native_read_entered=true;if(!lyd_personal_native::CanAccept(b.module_base,dialog,can)){out.cleanup_known=false;return false;}m.native_can_accept=can;}
  }
  if(!Recheck(dialogs))return false;auto&m=source.add_modal;
- if(m.found&&m.native_can_accept==true&&active==1&&source.actor_bound&&source.window_visible&&source.window_enabled&&source.is_adding&&source.empty_slot_found&&source.actual_personal_complete&&pending){const auto key=kLydPersonalKeys267V1[static_cast<std::size_t>(pending->personal)];m.accept_admissible=std::find(source.actual_personal_keys.begin(),source.actual_personal_keys.end(),key)==source.actual_personal_keys.end();}
+ if(m.found&&m.native_can_accept==true&&active==1&&source.actor_bound&&source.window_visible&&source.window_enabled&&!source.is_adding&&source.empty_slot_found&&source.actual_personal_complete&&pending){const auto key=kLydPersonalKeys267V1[static_cast<std::size_t>(pending->personal)];m.accept_admissible=std::find(source.actual_personal_keys.begin(),source.actual_personal_keys.end(),key)==source.actual_personal_keys.end();}
  return true;
 }
 [[maybe_unused]]bool Personal(const ReadonlyBindings&b,const ck3_1210::CoreSnapshotPrefix&core,const LydScene267V1&scene,std::uint64_t mono,const std::optional<LydSelectionAssociation267V1>&pending,LydRaw267V1&out,std::string&reason){
