@@ -135,8 +135,9 @@ public record CurrentLivingUiSource(Kind kind, long actorFullId, Optional<Weapon
             var ids=new HashSet<Integer>();
             for(var event:events) {
                 key(event.definitionKey());CurrentLivingEntry.requireActualText(event.opening());CurrentLivingEntry.requireActualText(event.description());
-                StrictJson.require(ids.add(event.instanceId())&&event.options().size()==event.authoredOptionCount(),
-                        "Unique actual event and complete authored option census required");
+                StrictJson.require(ids.add(event.instanceId()),"Unique actual event required");
+                // EventRow validates every displayed authored index against the complete loaded definition count.
+                // Conditional options absent from the displayed census are not fabricated as placeholder rows.
                 for(var option:event.options()) {
                     CurrentLivingEntry.requireActualText(option.text());CurrentLivingEntry.requireActualText(option.disabledReason());
                     StrictJson.require(option.permittedRole().isEmpty()&&option.sourceBoundOptionKey().isEmpty(),
