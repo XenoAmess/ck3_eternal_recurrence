@@ -1,0 +1,170 @@
+{
+  "schema": "xar.current267.RMTM-local-publish-and-resource-cut.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-24T03:38:12.875821+00:00",
+  "RMTM042": {
+    "canonical": "3798404599",
+    "status": "FORMAL36_LOCAL_PLAN_FREEZE_CHECK0_UPLOAD_NOT_RUN_AT_THIS_CUT",
+    "SourceA": "5d091f9db21c4e51a12b28fcc3d3289c125891e2",
+    "git_tag": "reclaim-motherland-v0.4.2",
+    "tag_object": "a9e5b59d71616e5653d9dd9620f95999ab31f71a",
+    "formal_delivery": {
+      "path": "D:/ck3-state/upgrade-20261118/rmtm042-formal-release-a1412/formal-delivery-final.json",
+      "bytes": 5268,
+      "sha256": "415858719911f8fb933a6b5e4ebd481fbe3ce7f963f0d87b7d8b721199af8dfc"
+    },
+    "actual_Root_decision": {
+      "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/RMTM042-Root-finite-release-decision-a1419.json",
+      "bytes": 1550,
+      "sha256": "3546f18daa87fe9a6b317cfc72d0bebcd683fc2bcabd4240fc1759fca9a53b11"
+    },
+    "actual_Root_fulltext_acceptance": {
+      "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/RMTM042-Root-complete-player-text-acceptance-a1419.json",
+      "bytes": 1251,
+      "sha256": "ccf036becb5b7fa5b560dd415d49d40dc3a7bef4c03bcc77cf5df9ad3bacb3d5"
+    },
+    "actual_admission": {
+      "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/RMTM042-publication64-cache512-publicread5-admission-a1419.json",
+      "bytes": 1651,
+      "sha256": "28af89f57cfd2be05991b8d0cbf3adbb6ff3046d1538c2e1362edf1d15073775"
+    },
+    "first_admission_path_spelling_refusal": {
+      "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/RMTM042-admission-first-path-spelling-refusal-a1419.json",
+      "bytes": 658,
+      "sha256": "cf557875c8aafec25fa66df79783054e817c948bf757f0d037b9427ec0876ec6"
+    },
+    "existing_plan": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rmtm042-formal-release-a1412\\rmtm042-native-publish-plan.json",
+      "bytes": 11857,
+      "sha256": "394014d07a2df97e78f07fab3ddd8494c3416cc29e853d5d5c580520c58b026a"
+    },
+    "actual_binding": {
+      "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/RMTM042-actual-publisher-binding-input-a1421.json",
+      "bytes": 1536,
+      "sha256": "c6fd7ec756d97e692d8a82d4c64d395a62fc9ee94945c07a8f2328ba715bc9ef"
+    },
+    "file_only_check": {
+      "path": "D:/ck3-state/upgrade-20261118/rmtm042-publication-a1418/binding-a1421/check-only-execution.json",
+      "bytes": 1856,
+      "sha256": "6aa170f2884890689fba2e66c11da944f1157034c1173a44d9115e485621b543"
+    },
+    "freeze_ready": {
+      "path": "D:/ck3-state/upgrade-20261118/rmtm042-publication-a1418/binding-a1421/freeze-ready.json",
+      "bytes": 2647,
+      "sha256": "b1bed7d8081113e4da03a1478fac5997b4da01a7d0ec9af1aa83d282e67fc550"
+    },
+    "check_exit0": true,
+    "check_external_calls": 0,
+    "public_before": {
+      "path": "D:/ck3-state/upgrade-20261118/rmtm042-public-before-a1420/item-api.raw",
+      "bytes": 8068,
+      "sha256": "2ff801557fda34e6e023010398bf97332ea3d1e802e67f5d6a056b9e4ff53337"
+    },
+    "actual_SDK_submit": "NOT_RUN",
+    "new_public_after": "NOT_RUN",
+    "new_download_and_cache": "NOT_RUN",
+    "original_36_payload_tag_F_unchanged": true
+  },
+  "exact_retirement": {
+    "receipt": {
+      "path": "D:/ck3-state/upgrade-20261118/old53b7-exact-LIB-retirement-a1417/actual-result.json",
+      "bytes": 1099,
+      "sha256": "e8627056a47fd95862c2035936bd47a6abf5fa102a898c8d95bb55dcc9dcfb4c"
+    },
+    "retired_old_53b7_LIB_unreadable": true,
+    "allocated_removed_bytes": 205598720,
+    "no_other_paths_deleted": true,
+    "budget_refund": false
+  },
+  "newly_aged_video_increment": {
+    "receipt": {
+      "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/newly-aged-known-video-metadata-review-a1423.json",
+      "bytes": 15455,
+      "sha256": "6049c7d6fc9708e4ae6e911348c3a151d6f9f7e44909d2333397ddf193765afc"
+    },
+    "known_unique_newly_older_than7days": 0,
+    "new_delete": false,
+    "scope": "Previously young known paths only, no new fullD body scan"
+  },
+  "old_a904": {
+    "first_local_a1424_refusal": {
+      "source": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\root_audit_old_a904_remaining_writers_a1424.py",
+        "bytes": 3609,
+        "sha256": "4ae38898b24ef2a9c6f2aedb003b8036bc53f0de63a7814bd61ed3876f440ba3"
+      },
+      "error": "AssertionError because original birth still queryable; initial audit did not sample termination signal; no output or future conversion occurred"
+    },
+    "actual_same_birth_Win32_exit_audit": {
+      "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/old-a904-process-exit-readonly-audit-a1425.json",
+      "bytes": 2167,
+      "sha256": "a3ba60d80e8789ba2ad84aa9992231e95db4d76127a2b24780c55f50bb1e99e1"
+    },
+    "actual_retirement": {
+      "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/old-a904-unused-future-retirement-a1426.json",
+      "bytes": 2065,
+      "sha256": "694eb09fc0bda45f08489e252dff86e433a68d480f7765a09a594cb18d2bc5fb"
+    },
+    "processes": [
+      {
+        "kind": "game",
+        "pid": 11424,
+        "birth": "134398557806707785",
+        "wait0": 0,
+        "exit_code": 1,
+        "same_original_birth": true
+      },
+      {
+        "kind": "supervisor",
+        "pid": 21256,
+        "birth": "134398557767558324",
+        "wait0": 0,
+        "exit_code": 1,
+        "same_original_birth": true
+      }
+    ],
+    "active_matching_profile_writers": [],
+    "unused_future_removed_bytes": 3221225472,
+    "physical_delete_bytes": 0,
+    "spent_or_held_refund_bytes": 0,
+    "original_UNKNOWN": "UNCHANGED",
+    "original_Natural0_Job0_creator": "NOT_HELD_NOT_RECONSTRUCTED",
+    "expired_request_replay": "FORBIDDEN"
+  },
+  "resource_review": {
+    "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/same-quota-old-a904-actual-exit1-unused-future-retired-review-a1426.json",
+    "bytes": 90696,
+    "sha256": "dfbe748061feba1e27c99ea12613c4be1540f38e7462b3f71e4a58fcff546ba8"
+  },
+  "Living": {
+    "status": "EXTERNAL_SOURCE_ONLY_NOT_ADOPTED_NOT_COMPILED_NOT_TESTED",
+    "delivery": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-living-original8-consumer-Source-a01/reuse-quote-a02/delivery-final.json",
+      "bytes": 1324,
+      "sha256": "45f0e4b7fc15760b7dafb0f26e8da60abe2c4fc4f1c16417ade6f8fc4a6653b6"
+    },
+    "Source_allocation": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-living-original8-source-closure-a02/Source-final-allocation.json",
+      "bytes": 1692,
+      "sha256": "d4260e631338960c2f202b498e1efb795f03450cc89b4af79030933649e960a6"
+    },
+    "new_DTOs": 9,
+    "Source_methods": 22,
+    "test_methods_run": 0,
+    "mode": "current_living_original_case_once",
+    "submissions_upper": 85,
+    "Date0_Save0": true,
+    "current_Frozen_has_Living_authority": false
+  },
+  "independent_SKU": {
+    "uploaded": 13,
+    "total": 17,
+    "strict_closed": 9,
+    "Notes429": "Prior NOT_OBSERVED unchanged; no new GET here"
+  },
+  "current_unit": {
+    "primary_runtime_changes": 0,
+    "new_build_or_test_or_Game_Steam_HTTP": 0,
+    "SourceA_tag_formal_payload_not_moved": true
+  }
+}

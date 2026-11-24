@@ -1,4 +1,12 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
+## 2026-11-24 当前发布／资源切点：RMTM本地check0，尚未上传
+
+RMTM0.4.2的Root发布决定、完整文本接受、真实public-before、既有plan和freeze均已封，本地file-only `--check-only` 实际0，0 SDK／Steam／HTTP／Game调用；目前仍等新账号窗口，未Submit、未取得更新后公开全文／下载／缓存收据。正式SourceA `5d091f9d…`、tag `reclaim-motherland-v0.4.2`、原36与正式F保持；原有限业务PASS不扩为全部旧矩阵。
+
+Root已精确退役旧53b7独立派生LIB，实际释放205,598,720 allocated bytes，该旧LIB现不可读，其他原件保持且不退spent。已知旧视频新增满7日增量为0。a1424只看birth而误拒的首审无output／future转换；a1425改以Win32精确原birth＋Wait0=0证明旧a904 Game11424／supervisor21256均exit1，并无活跃匹配writer。a1426只关闭该过期场3GiB未消耗future，物理delete0／旧spent和held退款0；原UNKNOWN及Natural0／Job0／creator NOT_HELD全部保留，不将OS退出改称正常清场或授权重放。
+
+Living仅外置Source：9DTO、私有Transport与v48单Main的0Date／0Save链及22个测试方法源码已封，均未采用／编测，当前Frozen无其权限。计数仍13/17上传、9/17严格，旧Notes429保持。见[本次精确事实索引](docs/maintenance/evidence/rmtm042-local-publish-and-resource-cut-a1426.json)。以下保留先前切点。
+
 ## 2026-11-24 当前RMTM0.4.2：有限发布业务通过，正式36已封，尚未上传
 
 本机当前1.21.0.3／26785313的a1410原case完成8自然日、0Save：原26项以23脚本PASS＋3物理待定项和实际D5三scope／三独立物理realm_baseline观测合取通过；同一Later20377、原君40180、执行时heir44132、callback后实际holder44132。九席全ID存活保持、代表Budget／Offer打开取消独立hidden、原版`realm_maintenance.2001`一次选择及独立absence、Natural0／Job0／cleanup／creator0均有原件；独立50／51当前构建有限结果复用，不重跑。原summary／reader的false、null及全部旧失败／UNKNOWN不改，不授所有law路线、完整旧矩阵、全部外交理由／Send、自然五年、语言实机或性能。
