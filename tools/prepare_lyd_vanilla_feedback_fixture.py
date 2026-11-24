@@ -105,13 +105,28 @@ SAVED_FUNDED_KNOWN_TENETS = '''
 '''
 
 
-def saved_entry_files(*, funded_known_tenets: bool = False) -> dict[str, str]:
+
+# Controlled initial slot preparation; stock loss hooks are intentionally retained.
+SAVED_CLEAR_APOSTOLIC = '''
+            if = {
+                limit = { has_personal_tenet = tenet_apostolic_succession }
+                remove_personal_tenet = tenet_apostolic_succession
+            }
+'''
+
+
+def saved_entry_files(*, funded_known_tenets: bool = False, clear_apostolic_personal_tenet: bool = False) -> dict[str, str]:
     """Original Saved setup plus an explicit opt-in controlled self prerequisite."""
     if type(funded_known_tenets) is not bool:
         raise ValueError("funded_known_tenets must be a strict boolean")
+    if type(clear_apostolic_personal_tenet) is not bool or (clear_apostolic_personal_tenet and not funded_known_tenets):
+        raise ValueError("Apostolic removal requires explicit controlled funded Saved setup and strict boolean")
     from fixture_engine_prepare import balanced_excerpt
     original = balanced_excerpt(SETUP, r'^\s*random_player\s*=\s*\{')
     original_body = original[original.index('{') + 1:original.rfind('}')]
+    prerequisites_body = SAVED_FUNDED_KNOWN_TENETS if funded_known_tenets else ''
+    if clear_apostolic_personal_tenet:
+        prerequisites_body = prerequisites_body.replace('            add_stress = 90\n', '')
     return {
         'common/scripted_guis/lyd_feedback_saved_entry_guis.txt': f'''lyd_feedback_saved_entry_gui = {{
     scope = character
@@ -121,7 +136,7 @@ def saved_entry_files(*, funded_known_tenets: bool = False) -> dict[str, str]:
             limit = {{ {SAVED_GUARD} }}
             add_character_flag = lyd_feedback_saved_entry_dispatched
 {original_body}
-{SAVED_FUNDED_KNOWN_TENETS if funded_known_tenets else ""}
+{SAVED_CLEAR_APOSTOLIC if clear_apostolic_personal_tenet else ""}{prerequisites_body}
 {SAVED_PREDICATE_OBSERVATIONS}
         }}
     }}
@@ -146,8 +161,10 @@ def saved_entry_files(*, funded_known_tenets: bool = False) -> dict[str, str]:
     }
 
 
-def generate(output: Path, identity: dict, saved_entry_bridge: bool = False, *, funded_known_tenets: bool = False) -> dict:
+def generate(output: Path, identity: dict, saved_entry_bridge: bool = False, *, funded_known_tenets: bool = False, clear_apostolic_personal_tenet: bool = False) -> dict:
     """Pure small fixture emission; callers own exact engine qualification."""
+    if type(clear_apostolic_personal_tenet) is not bool or (clear_apostolic_personal_tenet and not (saved_entry_bridge and funded_known_tenets)):
+        raise ValueError("Apostolic removal requires explicit controlled funded Saved setup and strict boolean")
     if type(funded_known_tenets) is not bool or (funded_known_tenets and not saved_entry_bridge):
         raise ValueError('Controlled prerequisites require explicit Saved entry and strict boolean')
     if type(saved_entry_bridge) is not bool:
@@ -166,7 +183,7 @@ def generate(output: Path, identity: dict, saved_entry_bridge: bool = False, *, 
         files = {
             'descriptor.mod': ('name="LYD original Confucian feedback setup"\nversion="1"\n'
                                f'supported_version="{identity["game_version"]}"\n'),
-            **saved_entry_files(funded_known_tenets=funded_known_tenets),
+            **saved_entry_files(funded_known_tenets=funded_known_tenets, clear_apostolic_personal_tenet=clear_apostolic_personal_tenet),
         }
     refs = []
     for relative, text in files.items():
@@ -208,6 +225,18 @@ def generate(output: Path, identity: dict, saved_entry_bridge: bool = False, *, 
             'learning_decision_or_knowledge_acquisition_validated': False,
             'engine_invariants_and_resources_require_actual_readback': True,
         }
+    if clear_apostolic_personal_tenet:
+        receipt['setup_changes'] = [x for x in receipt['setup_changes'] if x != 'self stress +90']
+        receipt['controlled_prerequisites']['stress_delta'] = 0
+        receipt['controlled_prerequisites']['fixture_stress_grant_omitted_stock_loss_stress_retained'] = True
+        receipt['setup_changes'] += ['self remove existing Apostolic personal tenet if present; stock loss hooks retained']
+        receipt['controlled_personal_slot'] = {
+            'removed_if_present': 'tenet_apostolic_succession',
+            'native_available_slot_or_Can_or_ADD_proven': False,
+            'extra_slots_or_target_personal_adoption_or_cooldown_bypass': False,
+            'stock_loss_stress_fulfillment_modifier_secret_popularity_effects_not_suppressed': True,
+            'requires_new_actual_baseline_after_all_setup': True,
+        }
     with (output / 'setup-receipt.json').open('x', encoding='utf-8', newline='\n') as stream:
         json.dump(receipt, stream, ensure_ascii=False, indent=2)
         stream.write('\n')
@@ -222,6 +251,8 @@ def main() -> None:
                         help='explicit Robert1128/1066.9.15 Saved entry; only the original self setup, no business actions')
     parser.add_argument('--funded-known-tenets', action='store_true',
                         help='Saved-only controlled self resources and T01/T33 knowledge; not business proof')
+    parser.add_argument("--clear-apostolic-personal-tenet", action="store_true",
+                        help="controlled Saved init only: remove Apostolic if present; retain stock loss side effects")
     args = parser.parse_args()
     import fixture_engine_prepare as prep
     repo, output = args.repo.resolve(), args.output.resolve()
@@ -229,7 +260,7 @@ def main() -> None:
         raise ValueError('Fixture output must be outside repository')
     # Shared prepare installs its selected exact-build implementation here.
     identity = prep.engine_identity(repo)
-    receipt = generate(output, identity, args.saved_entry_bridge, funded_known_tenets=args.funded_known_tenets)
+    receipt = generate(output, identity, args.saved_entry_bridge, funded_known_tenets=args.funded_known_tenets, clear_apostolic_personal_tenet=args.clear_apostolic_personal_tenet)
     print(json.dumps({'status': 'SETUP_EMITTED_NOT_RUN', 'output': str(output),
                       'engine_identity': receipt['engine_identity'], 'business_pass': False}))
 

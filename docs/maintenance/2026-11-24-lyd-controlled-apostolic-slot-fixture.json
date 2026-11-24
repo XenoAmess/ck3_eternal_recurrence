@@ -1,0 +1,67 @@
+{
+  "schema": "xar.lyd013-controlled-apostolic-slot-fixture-software-facts/v1",
+  "state": "SOFTWARE_READY_LIVE_SLOT_AND_ADD_NOT_ASSESSED",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\lyd013-apostolic-slot-fixture-source-a01\\delivery-final.json",
+    "bytes": 2326,
+    "sha256": "0d89582809748db6dfaccb17cda399b853c2c87710261ef0529c1550657c507e"
+  },
+  "admission": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\LYD013-empty-Apostolic-fixture-source-focused2-admission-a1524.json",
+    "bytes": 1509,
+    "sha256": "448f5c87f28d3ebffa1d3c03e71ac48c56038d885761cc8339fe57c662c8cb36"
+  },
+  "primary_generator": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\prepare_lyd_vanilla_feedback_fixture.py",
+    "bytes": 13571,
+    "sha256": "1ab05a1d60763793a66a195d27f79885bc4b7d175e159b423f30754751816c38"
+  },
+  "new_focused_tests": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\test_prepare_lyd_apostolic_slot_fixture.py",
+    "bytes": 5615,
+    "sha256": "1b68d187e7c4593d3e0abdb56c20530575531cd491a70f26d5d7c39ac374562e"
+  },
+  "actual_test_receipt": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\lyd-empty-personal-slot-integration-a1524\\validation\\focused14-result.json",
+    "bytes": 1816,
+    "sha256": "23462d7aa7e558d1a7ced0948c6ae617fda7e4a217e2d619295f1d2829e72883"
+  },
+  "actual_methods": [
+    "test_prepare_lyd_apostolic_slot_fixture.ApostolicInitialSlotFixtureTests.test_false_preserves_exact_qualified_old_funded_text_and_stress90",
+    "test_prepare_lyd_apostolic_slot_fixture.ApostolicInitialSlotFixtureTests.test_only_guarded_exact_apostolic_is_removed_with_original_once_scope",
+    "test_prepare_lyd_apostolic_slot_fixture.ApostolicInitialSlotFixtureTests.test_strict_option_requires_explicit_funded_saved_before_output",
+    "test_prepare_lyd_apostolic_slot_fixture.ApostolicInitialSlotFixtureTests.test_true_omits_only_fixture_stress_and_discloses_native_loss_unknown",
+    "test_prepare_lyd_controlled_prerequisites.ControlledLydSavedPrerequisitesTests.test_controlled_payload_is_self_only_once_and_only_knows_two_exact_tenets",
+    "test_prepare_lyd_controlled_prerequisites.ControlledLydSavedPrerequisitesTests.test_default_newgame_and_default_saved_receive_no_controlled_resources",
+    "test_prepare_lyd_controlled_prerequisites.ControlledLydSavedPrerequisitesTests.test_funded_option_is_strict_and_saved_only_before_output_creation",
+    "test_prepare_lyd_controlled_prerequisites.ControlledLydSavedPrerequisitesTests.test_receipt_discloses_new_prerequisites_and_never_claims_learning_or_business",
+    "test_prepare_ccc_lyd_saved_entries.SavedEntryTests.test_ccc_saved_changes_only_bootstrap_not_original_effect_or_event",
+    "test_prepare_ccc_lyd_saved_entries.SavedEntryTests.test_default_entry_files_and_metadata_stay_original",
+    "test_prepare_ccc_lyd_saved_entries.SavedEntryTests.test_duplicate_guards_reject_wrong_source_or_consumed_once",
+    "test_prepare_ccc_lyd_saved_entries.SavedEntryTests.test_lyd_saved_keeps_exact_original_self_setup_and_zero_day_scope",
+    "test_prepare_ccc_lyd_saved_entries.SavedEntryTests.test_strict_flag_bad_descriptor_identity_and_existing_output_refuse",
+    "test_prepare_ccc_lyd_saved_entries.SavedEntryTests.test_widget_root_and_scripted_gui_references_are_exact_and_transparent"
+  ],
+  "test_count": 14,
+  "first_run_exit": 0,
+  "scope": "Explicit initial Saved+funded opt-in removes only present Apostolic, with exact guard and original self/once conditions. No new slot, no target personal adoption, no bypass.",
+  "true_path": "Retain gold/piety+1000 and knownT01/T33; omit only authored fixture add_stress90. Preserve actual stock loss side effects and require fresh real baseline/slot/Can/fees.",
+  "false_path": "All4 returned funded texts match SHA256 captured from exact prior11247/9efa Source; retains extra90stress. Default unfunded unchanged.",
+  "protected_product87_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\li-yu-dao-oldsave-bootstrap-current267-a1517\\content.manifest.json",
+    "bytes": 16153,
+    "sha256": "02ebc8377906ada1d4e4207ba259c1b8493592f569905d380fc44da6f86551fa"
+  },
+  "product87_changed_or_rebuilt": false,
+  "SDK_SaveCore_changed": false,
+  "Root_prior_a1521_report": "Bootstrap entry/welcome and T03 cancellation/payment observed. Personal single slot was full; ADD0, T01/T33 NOT_RUN remain. Root independently read firstSave fullEOF; this task did not decode it.",
+  "prior_checkpoint_boundary": "Original missing archive-parent failure retained, nativeSave only once submitted. Root later copied closed source to archive without replay; Root explicitly holds4 distinct physical payloads. No default2-copy assertion/refund applies to actual files.",
+  "new_fixture_actual_emit": false,
+  "new_Game_or_Save": false,
+  "future_T01_T33_actual_ADD": "UNBOUND; two separate fresh cases owned by Root",
+  "funding_and_known_are_learning_or_business_P": false,
+  "uploaded_products": 15,
+  "strict_products": 10,
+  "products_total": 17
+}
