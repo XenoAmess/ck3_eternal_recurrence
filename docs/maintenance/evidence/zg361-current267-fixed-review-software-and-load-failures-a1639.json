@@ -1,0 +1,566 @@
+{
+  "schema": "xar.zg361.current267.software-pair-and-three-load-failures.permanent-index.v1",
+  "recorded_at_utc": "2026-11-24T22:34:51.851713+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "CK3_version": "1.21.0.3 Florin",
+  "build": 26785313,
+  "EXE_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28",
+  "source_context": {
+    "Java_delivery_source_HEAD": "8878687549e38c275bbcf127c8394a729a58a9b4",
+    "NativeTree": "c444a4e95a6379172aa9cea06ecf120f79a248b0",
+    "Native_code_adoption_and_initial_BEGIN_HEAD": "b6f78ad4cc99c1f036193b04ae6609ba5b92c253",
+    "docs_are_later_independent_Source_only": true
+  },
+  "status": "SOFTWARE_AND_FROZEN_PAIR_READY_THREE_LOAD_FAILURES_BUSINESS_NOT_RUN",
+  "B1_fix": {
+    "source_commit": "1697582e912950d1693a0d07d416b243a532beea",
+    "changes": "Four source/generated/test files, five literal replacements: two production invalid capital_county.development_level links use the current stock prosperity_level accessor; generator and the existing noCapital test expectation match. Original variable names, guards, coefficients, Saved facts, dates and payment25=18+7 remain.",
+    "source_review": {
+      "path": "D:/ck3-state/upgrade-20261118/zg361-b1-development-link-source-a1614/SOURCE-REVIEW.json",
+      "bytes": 9416,
+      "sha256": "04117193d7d6fb45c586aafca74644ab63fd6234df7067e1be5c1cac957b8282"
+    },
+    "focused_END": {
+      "path": "D:/ck3-state/upgrade-20261118/zg361-B1-link-integration-a1614/source-focused-END.json",
+      "bytes": 3221,
+      "sha256": "3e92b00732f291fa4ebf1f19722a764baec84f4806c60377324be311d8817399"
+    },
+    "checks": "Two existing affected Python methods plus generator --check passed. The first focused Job close sampled active1 before handle close; Natural0 was NOT_HELD and remains so. Generator check used corrected Job drain and active0. No repeat of111/14/doublebuild.",
+    "candidate_delivery": {
+      "path": "D:/ck3-state/upgrade-20261118/zg361-b1-candidate-a1618/candidate-delivery-final.json",
+      "bytes": 2929,
+      "sha256": "ef370fa62e595cd412b5a41dd6775f7ea22f7bd6f5a706b00b286a81b812d29b"
+    },
+    "runtime_manifest": {
+      "path": "D:/ck3-state/upgrade-20261118/zg361-b1-candidate-a1618/mod_zhongguo_style.manifest.json",
+      "bytes": 213461,
+      "sha256": "1f3140476e7f49b63e8e72f20a863f637c22602b96a083caf478dc163e9a1bf4"
+    },
+    "runtime_diff": {
+      "path": "D:/ck3-state/upgrade-20261118/zg361-b1-candidate-a1618/runtime1034-exact-diff.json",
+      "bytes": 2074,
+      "sha256": "68f5dbd940e7c2af1cf2de2072f7e1342e982e315a4a488664a94182fa7d6414"
+    },
+    "candidate_END": {
+      "path": "D:/ck3-state/upgrade-20261118/zg361-b1-candidate-a1618/candidate40-END.json",
+      "bytes": 1413,
+      "sha256": "48a460928e0832d8dc5e44b088a230eabbb3de2e64908e139f720e182dc6be2c"
+    },
+    "runtime_rows": 1034,
+    "changed_runtime_rows": 2,
+    "unchanged_runtime_rows": 1032,
+    "old_manifest": "6bec78077ad601217a206d42c44e81312609ab0257f0d2faaf8008c849cee111",
+    "git_tag": null,
+    "formal_release": false,
+    "new_B1_business_PASS": false
+  },
+  "Java_qualification": {
+    "receipt": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-zg361-fixed-review-build-a01/software-qualified-source-final.json",
+      "bytes": 18402,
+      "sha256": "a50a3a0efe78c2ebfa485769e0efcf05bde9e3732d94ffbb15b49a4392d062b1"
+    },
+    "distinct_methods": 17,
+    "new_methods": 16,
+    "necessary_affected_original_factory_methods": 1,
+    "actual_Java_method_executions": 17,
+    "split": {
+      "first10": 10,
+      "true_Cpp_and_factory": 3,
+      "combined": 4
+    },
+    "Native_parser_calls_separate_from_Java_methods": 2,
+    "Native_inverse_receipt": {
+      "path": "D:/ck3-state/upgrade-20261118/zg361-review-nogame-a1617/validation/actual-Java2-inverse-receipt-a01.json",
+      "bytes": 4535,
+      "sha256": "b1f021c8729229bddd88cc8946b2d999480c7f11393ef5d7b83c515f8ec1f249"
+    },
+    "original_Cpp_index": {
+      "path": "D:/ck3-state/upgrade-20261118/zg361-review-nogame-a1617/validation/actual-cpp-originals-index-a01.json",
+      "bytes": 3653,
+      "sha256": "78e2f2d99e5d82740e29e7cc842f0cbd1dbef317c95c7174710305dfbb901fd9"
+    },
+    "XML_retention": [
+      {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-zg361-fixed-review-build-a01/first10-qualified-retention.json",
+        "bytes": 4432,
+        "sha256": "b65ab6a9050507cfabde6114812a8e6f36c42a91d54736e471121445a3a46d56"
+      },
+      {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-zg361-fixed-review-build-a01/genuine3-qualified-retention.json",
+        "bytes": 1026,
+        "sha256": "41e1dfa4a6b7d67582862ee33936ad9c3f8d4d442ba6ddb917287aac3b587453"
+      },
+      {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-zg361-fixed-review-build-a01/combined4-qualified-retention.json",
+        "bytes": 2445,
+        "sha256": "b07c7537e6023a4f7d7ad584dd0552dda9efcbebc1d43b1a33604db4af9585a4"
+      }
+    ],
+    "compiler_END": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-zg361-fixed-review-build-a01/compiler64-END.json",
+      "bytes": 3584,
+      "sha256": "a189fabceadc7cb0ed83d59f80609728e5768156778b7da688f05d5f4aa2c012"
+    },
+    "retained_non_test_LogManager_ERROR": true,
+    "old35_12_8_and_Native14_matrices_not_repeated": true,
+    "earlier_snapshot_status_preserved": "Software qualification was sealed before package; its NOT_YET_PACKAGED field remains historical. Actual later runtime Ready and pair below carry package/freeze status."
+  },
+  "combined_contract": {
+    "configuration_schema": "xar.native-owner-snapshot-config/v51",
+    "mode": "current_zg361_review_ae2_case_once",
+    "common_config_fields": 6,
+    "overall_timeout_seconds": 900,
+    "read_timeout_seconds": 60,
+    "maximum_frames_per_operation": 65536,
+    "maximum_submissions": 32,
+    "private_maximum_effects": 8,
+    "sequence": "One Receiver, one original begin via the explicit typed combined begin, one opaque Run: fixed production review complete first; then the original presentation, three real owned hover tooltips, fixed authored15 pay once, independent original-instance absence and fixed verifier. Review failure cannot proceed to pay.",
+    "old_v49": {
+      "maximum_submissions": 24,
+      "private_maximum_effects": 7
+    },
+    "old_v50": {
+      "readonly_maximum_submissions": 8,
+      "pay_calls": 0
+    },
+    "Date_calls": 0,
+    "Save_calls": 0,
+    "no_poll_or_third_UI_close_or_caller_selectors": true
+  },
+  "Native_qualification": {
+    "delivery": {
+      "path": "D:/ck3-state/upgrade-20261118/native-current267-zg361-fixed-review-production-a1620/frozen-delivery-final.json",
+      "bytes": 4486,
+      "sha256": "27cbca5e7fb22f659fa768ad8f333eeb63d8158fd553dfed473c2d4547293bfe"
+    },
+    "refs": {
+      "path": "D:/ck3-state/upgrade-20261118/native-current267-zg361-fixed-review-production-a1620/ordinary-native-artifact-refs.json",
+      "bytes": 30013,
+      "sha256": "37ad0aeff0c7bb5c67bdc3f7f8948717bef8a9052236feda0b778a8c7947a9e0"
+    },
+    "DLL": {
+      "path": "D:/ck3-state/upgrade-20261118/native-current267-zg361-fixed-review-production-a1620/new-artifacts/xar_ck3_bridge.dll",
+      "bytes": 15618048,
+      "sha256": "fe58617038710fcd88d26501f5400e9056f000d16a23185bbf46bae7fcb1e7ef"
+    },
+    "total_TUs": 973,
+    "actual_CL": 9,
+    "unchanged_reused_TUs": 964,
+    "LIB_members_bijection": 702,
+    "whole_methods_and_closures": 22,
+    "identity_registration_exit": 0,
+    "necessary_new_NoGame_groups": 14,
+    "contract": "effective_zg361_review_requirements_contract",
+    "effective_contract": {
+      "path": "D:/ck3-state/upgrade-20261118/zg361-fixed-review-interface-source-a1613/fixed-review-contract-a02.json",
+      "bytes": 7387,
+      "sha256": "0af2bdd61ff679a7db7376dcef25908b0381e3fb521bdc47efb1fdebb99a72f0"
+    },
+    "scope": "Additive read-only fixed production review query/open-detail. Exact real selected definition, actor/model/row/controller and owned requirements description/HasRequirements with strict before/after samples. Original AE2 phase/lease, Result20, old controls/events4 and sticky UNKNOWN retained. Review is before present/pay/verify; no review Confirm or new payment command."
+  },
+  "actual_runtime_delivery": {
+    "sixpins_index": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-zg361-fixed-review-combined-pair-a1625/actual-six-pins.json",
+      "bytes": 1585,
+      "sha256": "e90e48834fe68536c8e091aabce034d02474348da45274fd2421b4719fd9c2a2"
+    },
+    "sixpins": {
+      "Java_delivery": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-zg361-fixed-review-combined-pair-a1625/frozen-delivery-final.json",
+        "bytes": 17906,
+        "sha256": "beded2840b9331cf29d5a83a9bc4d3ccfb768cfb1abd9f680458841061ae75f5"
+      },
+      "Java_frozen_manifest": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-cli-runtime-zg361-fixed-review-combined-a1625/runtime-manifest.json",
+        "bytes": 170010,
+        "sha256": "d38548070d61e3c01c19d40c02f7fbfe6044bc487aefd46dff9c0e2189c9898f"
+      },
+      "Java_classpath_args": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-cli-runtime-zg361-fixed-review-combined-a1625/cli-classpath.args",
+        "bytes": 16413,
+        "sha256": "a02294b68848adc2cc82a6c86cbba38e7b0d8606ba2bab2ec29885f55c3ae6f5"
+      },
+      "Native_delivery": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-zg361-fixed-review-production-a1620/frozen-delivery-final.json",
+        "bytes": 4486,
+        "sha256": "27cbca5e7fb22f659fa768ad8f333eeb63d8158fd553dfed473c2d4547293bfe"
+      },
+      "Native_refs": {
+        "path": "D:/ck3-state/upgrade-20261118/native-current267-zg361-fixed-review-production-a1620/ordinary-native-artifact-refs.json",
+        "bytes": 30013,
+        "sha256": "37ad0aeff0c7bb5c67bdc3f7f8948717bef8a9052236feda0b778a8c7947a9e0"
+      },
+      "Java_native_pair_binding": {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-zg361-fixed-review-combined-pair-a1625/native-pair-binding-final.json",
+        "bytes": 3544,
+        "sha256": "ce400f23d28cd7a81fbd5cbd66a6161ee95590e3d35511df319158bc82e05264"
+      }
+    },
+    "operator_templates": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-zg361-fixed-review-combined-pair-a1625/operator-templates.json",
+      "bytes": 5098,
+      "sha256": "767cf99ea2ab31f5d5bd7618237466301f0724b0332ddb12c1d50d746b4c01ab"
+    },
+    "Java_runtime_Ready": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-zg361-fixed-review-build-a01/final-phases/java-runtime-ready-before-native.json",
+      "bytes": 1616,
+      "sha256": "b6b14f3cf4a8c0d34d55bc4ced4251d583f101c087a2e7ba3427451dd765f46a"
+    },
+    "new_JARs": 2,
+    "immutable_JAR_identity_reuses_without_copy": 156,
+    "total_JARs": 158,
+    "old156_body_CRC_or_hash_or_copy": 0,
+    "phase_ENDs": [
+      {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-zg361-fixed-review-build-a01/final-phases/package96-END.json",
+        "bytes": 4246,
+        "sha256": "a83eb3c25599d6e13fd4837976ab6ab3f0a4d74dfa02f0d8bdaf18549aa29af9"
+      },
+      {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-zg361-fixed-review-build-a01/final-phases/freeze20-END.json",
+        "bytes": 4013,
+        "sha256": "24a775addb58e5922d3df6981d4d54a153261a88b57cc436247e7aeb3776878a"
+      },
+      {
+        "path": "D:/ck3-state/upgrade-20261118/java-current267-zg361-fixed-review-combined-pair-a1625/all-phases-END.json",
+        "bytes": 4659,
+        "sha256": "a01141cc444cf6810fa6b5cb5e73c53b064767d389168cfcaf1fee7501eb6355"
+      }
+    ],
+    "single_final_package": true,
+    "package_reran_qualified_tests": false,
+    "all_Java_and_Native_writers_END": true
+  },
+  "actual_load_failures": [
+    {
+      "Root_END": {
+        "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/ZG361-first-Saved-memory-limit-failure-END-a1615.json",
+        "bytes": 2878,
+        "sha256": "be47eafc46c911fea5a45e2ae3a6042ff71801e1e207dbe785d8d31fac907897"
+      },
+      "terminal": {
+        "path": "D:/ck3-state/upgrade-20261118/zg361-ae2-current267-saved-profile-source-a1589/owner/terminal.json",
+        "bytes": 1100,
+        "sha256": "8bba2ab452050b0a05d3597f433f8e29eef3e38b6ea7059da457014a8fa041ed"
+      },
+      "creator_END": {
+        "path": "D:/ck3-state/upgrade-20261118/zg361-ae2-current267-saved-profile-source-a1589/creator-end.json",
+        "bytes": 605,
+        "sha256": "467e6c19b451e39a109725ef45c8ae78654633330e185df6a89c0608edf6cec9"
+      },
+      "reported_terminal_kind": "NATURAL_EXIT",
+      "NATURAL0": false,
+      "Job_active_processes": 0,
+      "cleanup_proven": true,
+      "Game_PID": 1708,
+      "Game_creation_filetime": "134400258061991699",
+      "Game_exit": -1073740791,
+      "elapsed_seconds": "112.3164861",
+      "Job_limit_GiB": 13,
+      "Job_limit_bytes": 13958643712,
+      "actual_peak_Job_bytes": 13958836224,
+      "stop_reason": "observed_job_peak_exceeded_limit",
+      "Root_creator_session_collected": 17682,
+      "actual_scene_allocation_bytes": 417585120,
+      "held_upper_bytes": 417650656,
+      "remaining_scene_future_bytes": 0,
+      "Date_Save_pay_calls": 0,
+      "combined_submitted": false,
+      "creator_actual_record": {
+        "at_utc": "2026-11-24T20:32:06.982302+00:00",
+        "begin_utc": "2026-11-24T20:30:01.810702+00:00",
+        "PID": 16820,
+        "creator_exit_code": 1,
+        "stdout": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\zg361-ae2-current267-saved-profile-source-a1589\\creator.stdout",
+          "bytes": 1640,
+          "sha256": "bebab61b1fed4624ac448735ff70e99bb42f67fbd2549d5c7fb3ff630f42fd6e"
+        },
+        "stderr": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\zg361-ae2-current267-saved-profile-source-a1589\\creator.stderr",
+          "bytes": 237,
+          "sha256": "aa9d108e11437c864f6dab8bd4011beb5414a024b327da8cf597ad35d22bace7"
+        }
+      },
+      "Core_attempt": {
+        "path": "D:/ck3-state/upgrade-20261118/zg361-ae2-current267-saved-profile-source-a1589/operations/zg-ae2-a1613-core-a01/execution.json",
+        "bytes": 974,
+        "sha256": "ed15191a50eb82166f84dc7894732795387f56938490d319b772ea2d2afbca74"
+      },
+      "Core_stage": "ATTACH_OpenProcess_FAILED_NO_NATIVE_DISPATCH",
+      "Native_Core_dispatched": false,
+      "case_submitted": false,
+      "loader_diagnostic_scope": {
+        "original_long_profile_warning_preserved": true,
+        "original_two_development_level_links_preserved": true
+      },
+      "qualification": "Load failure only. No actual fixed requirements text, three hover tooltips, payment25=18+7, script verifier or product business qualification."
+    },
+    {
+      "Root_END": {
+        "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/zgr-memory15-failure-END-a1633.json",
+        "bytes": 2647,
+        "sha256": "54f8b4a5517574af576a6b7782f30dcb0f5a26973e960ac013cd3f686e04ef28"
+      },
+      "terminal": {
+        "path": "D:/ck3-state/upgrade-20261118/zgr/owner/terminal.json",
+        "bytes": 1037,
+        "sha256": "52ff947d71d1c5061c70a593bb59f2da725bade1794007e613b13667ec8653d6"
+      },
+      "creator_END": {
+        "path": "D:/ck3-state/upgrade-20261118/zgr/creator-end.json",
+        "bytes": 517,
+        "sha256": "0cb461909049d22cdfa84e27876961d9d4720e04d46824ca76392b531469c236"
+      },
+      "reported_terminal_kind": "NATURAL_EXIT",
+      "NATURAL0": false,
+      "Job_active_processes": 0,
+      "cleanup_proven": true,
+      "Game_PID": 4204,
+      "Game_creation_filetime": "134400307889774904",
+      "Game_exit": 1,
+      "elapsed_seconds": "169.6709065",
+      "Job_limit_GiB": 15,
+      "Job_limit_bytes": 16106127360,
+      "actual_peak_Job_bytes": 16106868736,
+      "stop_reason": "observed_job_peak_exceeded_limit",
+      "Root_creator_session_collected": 77325,
+      "actual_scene_allocation_bytes": 433223656,
+      "held_upper_bytes": 433289192,
+      "remaining_scene_future_bytes": 0,
+      "Date_Save_pay_calls": 0,
+      "combined_submitted": false,
+      "creator_actual_record": {
+        "at_utc": "2026-11-24T21:55:59.138285+00:00",
+        "begin_utc": "2026-11-24T21:53:04.919760+00:00",
+        "PID": 13712,
+        "creator_exit_code": 1,
+        "stdout": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\zgr\\creator.stdout",
+          "bytes": 1524,
+          "sha256": "22fda07236f08746d3abd43db83f7999eee0bb73da72ff4ebbbd10ff918c22ab"
+        },
+        "stderr": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\zgr\\creator.stderr",
+          "bytes": 237,
+          "sha256": "d8cb0a288ef540c7558bdb85d8ff0648806ff04d7a22a6472e671d02e084a73d"
+        }
+      },
+      "Core_or_combined_submitted": false,
+      "loader_diagnostic_counts": {
+        "development_level_invalidlink": 0,
+        "prosperity_level_invalidlink": 0,
+        "over250_path_warning": 0,
+        "texture_allocation_failure": 1
+      },
+      "game_log_ref": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zgr\\profile-states\\gui-ea80e1524b0e4d4d9d342f94a53b9e99\\profile\\logs\\game.log",
+        "bytes": 3740138,
+        "sha256": "8b7d62e7bd13ceb48b86397db17db19371a27afeb5a9dc86b65f1083c50f4df2"
+      },
+      "qualification": "Load failure only. No actual fixed requirements text, three hover tooltips, payment25=18+7, script verifier or product business qualification."
+    },
+    {
+      "Root_END": {
+        "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/zg18-memory-failure-END-a1639.json",
+        "bytes": 2629,
+        "sha256": "45c4a5059acee92f35be918b8848af8e9f9b3514008b487af61935d84f4cd91f"
+      },
+      "terminal": {
+        "path": "D:/ck3-state/upgrade-20261118/zg18/owner/terminal.json",
+        "bytes": 1051,
+        "sha256": "b662bc47e242030d4f70f1d14d089b79edf520717c169d8398bef71d1cdd6408"
+      },
+      "creator_END": {
+        "path": "D:/ck3-state/upgrade-20261118/zg18/creator-end.json",
+        "bytes": 519,
+        "sha256": "605d7c81974a44f43b09c9b94fa36c81efaca918e1a757a23daedd8e551126ba"
+      },
+      "reported_terminal_kind": "NATURAL_EXIT",
+      "NATURAL0": false,
+      "Job_active_processes": 0,
+      "cleanup_proven": true,
+      "Game_PID": 20640,
+      "Game_creation_filetime": "134400325027527808",
+      "Game_exit": -1073740791,
+      "elapsed_seconds": "140.3623083",
+      "Job_limit_GiB": 18,
+      "Job_limit_bytes": 19327352832,
+      "actual_peak_Job_bytes": 19327574016,
+      "stop_reason": "observed_job_peak_exceeded_limit",
+      "Root_creator_session_collected": 18509,
+      "actual_scene_allocation_bytes": 424113968,
+      "held_upper_bytes": 424179504,
+      "remaining_scene_future_bytes": 0,
+      "Date_Save_pay_calls": 0,
+      "combined_submitted": false,
+      "creator_actual_record": {
+        "at_utc": "2026-11-24T22:24:03.523839+00:00",
+        "begin_utc": "2026-11-24T22:21:37.635801+00:00",
+        "PID": 23908,
+        "creator_exit_code": 1,
+        "stdout": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\zg18\\creator.stdout",
+          "bytes": 1541,
+          "sha256": "11166b66fe6192b40aa8c54e3f8b7f1f3d69450f6f89e6b3bca4356f5a289f78"
+        },
+        "stderr": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\zg18\\creator.stderr",
+          "bytes": 237,
+          "sha256": "8d0f2ce6ab8d6b5cc2909a3c88d831dacc83c3ca260d9b2795a637c5eae29f3c"
+        }
+      },
+      "Core_or_combined_submitted": false,
+      "loader_diagnostic_counts": {
+        "development_level_invalidlink": 0,
+        "prosperity_level_invalidlink": 0,
+        "over250_path_warning": 0,
+        "texture_allocation_failure": 0
+      },
+      "game_log_ref": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zg18\\profile-states\\gui-62e29159c2974c19b4962d72acf3f3c9\\profile\\logs\\game.log",
+        "bytes": 3739689,
+        "sha256": "adc2d845e91d409a7d14cd87aa3835e703eeb304b7588773b901426fe85e5486"
+      },
+      "qualification": "Load failure only. No actual fixed requirements text, three hover tooltips, payment25=18+7, script verifier or product business qualification."
+    }
+  ],
+  "precise_retirements": [
+    {
+      "ledger_key": "actual_old_EFBLIB_retirement",
+      "receipt": {
+        "path": "D:/ck3-state/upgrade-20261118/old-efb25-LIB-retirement-a1628/actual-result.json",
+        "bytes": 797,
+        "sha256": "80e13b368ef6f1e28a476aa6bb58735b45a230e9358b0648d5a02d422f035381"
+      },
+      "actual_result": {
+        "operation_id": "retire-released-efb25-LIB-a1628",
+        "complete": true,
+        "availability": "RELEASED_OLD_EFB25_LIB_UNREADABLE",
+        "allocated_removed_bytes": 214900736,
+        "target": "D:\\ck3-state\\upgrade-20261118\\native-current267-zg361-fixed-review-production-a1620\\retained-efb25-affectedOBJ-LIB\\efb25-xar_ck3_12002_runtime.lib",
+        "inventory": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\old-efb25-LIB-retirement-a1628\\inventory.json",
+          "bytes": 1749,
+          "sha256": "fa84bc0cbcc60d0d1609dc0a14156fef7c4fdff7dd24f836812a6f08ba1c88b1"
+        },
+        "intent": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\old-efb25-LIB-retirement-a1628\\pending.json",
+          "bytes": 467,
+          "sha256": "ec1bd19e1edcfa138fe228b644da5ddb48baa5bfdff306367d7079619b476067"
+        },
+        "protected_newLIB_OBJ_DLL_refs_untouched": true,
+        "free_delta_not_attributed": true,
+        "budget_refund": false
+      }
+    },
+    {
+      "ledger_key": "actual_failed_ZG_shader_retirement",
+      "receipt": {
+        "path": "D:/ck3-state/upgrade-20261118/failed-ZG-shader-retirement-source-a1624/actual/actual-result.json",
+        "bytes": 359,
+        "sha256": "015485f0856dca57784f99c4bca47720dcf156407fcc86804566c0032d7db18b"
+      },
+      "actual_result": {
+        "complete": true,
+        "count": 4152,
+        "allocated_removed_bytes": 191050496,
+        "classification": "REGENERABLE_FAILED_SCENE_SHADER_CACHE_RETIRED",
+        "all_listed_paths_unreadable": true,
+        "master940_Save_logs_Source_EXE_configs_UNKNOWN_preserved": true,
+        "master_equivalence_or_exact_byte_reproducibility_claim": false,
+        "budget_refund": false
+      }
+    },
+    {
+      "ledger_key": "actual_memory15_initial_copy_retirement",
+      "receipt": {
+        "path": "D:/ck3-state/upgrade-20261118/failed-zgr-memory15-initial-copy-retirement-a1634/actual-result.json",
+        "bytes": 636,
+        "sha256": "80b278be4c5c081748efb3f4d88a358f3c73318fe1dd85795afea74691ed9edc"
+      },
+      "actual_result": {
+        "operation_id": "failed-zgr-memory15-initial-copy-a1634",
+        "intent": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\failed-zgr-memory15-initial-copy-retirement-a1634\\pending.json",
+          "bytes": 512,
+          "sha256": "bfe9d51c4f9e33498f7a7f9752fd6640400c1deabfab0c431adf07db5e98184e"
+        },
+        "complete": true,
+        "target": "D:\\ck3-state\\upgrade-20261118\\zgr\\profile-states\\gui-ea80e1524b0e4d4d9d342f94a53b9e99\\profile\\save games\\des-vanilla-1066-robert-day15.ck3",
+        "availability": "RETIRED_EXACT_INITIAL_COPY_UNREADABLE",
+        "allocated_removed_bytes": 166551552,
+        "archive_unchanged": true,
+        "this_closed_profile_Save_calls": 0,
+        "additional_Save_calls": 0,
+        "budget_refund": false
+      }
+    },
+    {
+      "ledger_key": "actual_three_failed_projection_retirement",
+      "receipt": {
+        "path": "D:/ck3-state/upgrade-20261118/closed-failed-ZG-derived-retirement-source-a1635/actual-three-target-result-a1637.json",
+        "bytes": 1033,
+        "sha256": "49021dab601c3f15882b263d709b1d4e4fd1d408a23ec30577260e3ce55b8c4c"
+      },
+      "actual_result": {
+        "complete": true,
+        "results": [
+          {
+            "path": "D:\\ck3-state\\upgrade-20261118\\closed-failed-ZG-derived-retirement-source-a1635\\actual-zgr-shader\\actual-result.json",
+            "bytes": 300,
+            "sha256": "86e59ebf012671ff83be1b1860346ed55455225180f76f46f7e9d5f8395fb1d1"
+          },
+          {
+            "path": "D:\\ck3-state\\upgrade-20261118\\closed-failed-ZG-derived-retirement-source-a1635\\actual-zgr-product\\actual-result.json",
+            "bytes": 300,
+            "sha256": "752a3b2a08463105cd83843cf81cea9a1c72956235c2b6aed66fcc00ad6998c2"
+          },
+          {
+            "path": "D:\\ck3-state\\upgrade-20261118\\closed-failed-ZG-derived-retirement-source-a1635\\actual-r1589-product\\actual-result.json",
+            "bytes": 302,
+            "sha256": "8f591a2dc465ed0d07520c5c7767b51aed79f1514a765e0eb2386e635bd92749"
+          }
+        ],
+        "count": 6228,
+        "allocated_removed_bytes": 261789488,
+        "all_original_Save_archives_940master_oldRpayload_newB1candidate_SDK_logs_Source_failures_UNKNOWN_preserved": true,
+        "budget_refund": false
+      }
+    }
+  ],
+  "retirement_boundaries": {
+    "ZG18_derived_inputs_deleted": false,
+    "new_LIB_all_OBJ_Frozen_DLL_refs_and_source_preserved": true,
+    "canonical_940_shader_master_original_Save_archives_and_logs_preserved": true,
+    "failed_shader_classification": "Regenerable retired failed-scene cache; no master-equivalence or exact-byte-reproducibility claim.",
+    "old_payload_paths_in_actual_receipts_unreadable": true,
+    "deleted_bytes_are_FileStandardInfo_allocation_not_free_space_delta": true,
+    "spent_or_held_refund": false
+  },
+  "current_Root_ledger": {
+    "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/same-quota-zg18-END-review-a1639.json",
+    "bytes": 152264,
+    "sha256": "a9177c2477fc117f80de6f6b5ce5e04ed9120eea6896a9d101c1e5e813f0318f"
+  },
+  "current_delivery_boundaries": {
+    "actual_four_localized_review_lines": "NOT_OBSERVED",
+    "actual_three_AE2_hover_texts": "NOT_OBSERVED",
+    "actual_pay25_treasury18_private7": "NOT_RUN",
+    "original_fixture_verifier": "NOT_RUN",
+    "wholeproduct_or_performance_PASS": false,
+    "no_new_formal_tag_or_Workshop_publication": true,
+    "old_698_and_new_e90_pairs_all_failures_UNKNOWN_claims_commands_and_deadlines_preserved": true,
+    "uploaded_products": 16,
+    "total_products": 17,
+    "strict_finite_release_loops": 10,
+    "pending_Notes_HTTP429": 6,
+    "no_automatic_Notes_GET_or_reupload": true
+  },
+  "documentation_only": {
+    "new_tests_or_Maven_or_Native_build_or_package_or_Game_or_HTTP_or_Steam": 0,
+    "formal_tags_and_runtime_payloads_modified": false,
+    "own_Source_upper_bytes": 2097152
+  }
+}

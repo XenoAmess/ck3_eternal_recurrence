@@ -1,5 +1,12 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-25 ZG361 B1／新SDK软件已交付，三次加载失败未授业务
+
+B1两处无效development_level链接已最小修为当前官方prosperity_level；两原受影响方法与generator check通过，单次新候选1034中仅两运行叶变、1032精确保持，未formalTag或发布。新fixed review与显式combined v51共17个必要Java方法、真实Cpp响应／工厂与两次Native逆核通过；一次最终package、2新JAR＋156原件identity复用及实际e90配对已END。源码交付887868／NativeTreec444保持，单Receiver一次begin先review后原pay链，900秒／32提交／私有8effects；旧v49的7／24与v50独立只读语义保留。
+
+Root三次加载分别触13／15／18GiB Job上限并非零退出，Job0／cleanup／creator已收；首场Core attach失败无Native派发，后两场未提交Core／combined，三场均无pay／Date／Save。后两场development／prosperity／路径错误计数0仅为loader诊断，不授四条review文本、三hover、25＝18＋7支付或产品业务P。旧LIB及明确失败派生按精确收据退役，原日志／失败／UNKNOWN、940master、原Save、新LIB／OBJ／DLL与所有冻结交付保留；ZG18派生未删除。当前16／17上传、10／17严格，六项Notes429待核，无重传或自动GET。[永久软件、实际配对、三次失败与退役索引](docs/maintenance/evidence/zg361-current267-fixed-review-software-and-load-failures-a1639.json)。下方保留此前切点。
+
+
 ## 2026-11-25 LYD 0.1.3实际上传与SDK缓存有限通过，Notes429待核
 
 LYD沿canonical3817934804一次Submit取得EResult1，87文件真实下载精确，完整公开标题／正文、creator与封面字段一致；在线62.5022852秒后记录fresh offline。真实SDK缓存87直接挂载，退出后仍全精确；Robert36423／raw53144328／paused，个人T01、资源1141／950／2450／压力0、完整事件为空。0Date／0Save／无再ADD或支付，仅一次导航；Game6572／creator18756 Natural0、Job0、cleanup，Root44419收0。此前a1579因Native17 dirty被公共preflight拒绝且Game0的原件保留，正常CPP提交后新a1599完成。
