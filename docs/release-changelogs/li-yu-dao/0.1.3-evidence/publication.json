@@ -1,0 +1,224 @@
+{
+  "schema": "xar.lyd013.permanent-publication-and-finite-cache-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "version": "0.1.3 Alpha",
+  "canonical_workshop_id": "3817934804",
+  "app_id": 1158310,
+  "status": "PUBLISHED_DOWNLOAD87_PUBLIC_API_AND_FINITE_REAL_CACHE_PASS_NOTES_NOT_OBSERVED",
+  "formal": {
+    "source_commit": "9675ad282ef162c12af70c9e0f7d5106aa977259",
+    "git_tag": "li-yu-dao-v0.1.3-alpha.1",
+    "tag_object": "5871b93ce740ccf01b55211e1784f9c35be99751",
+    "runtime_manifest": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\lyd013-formal-release-a1581\\mod_li_yu_dao.manifest.json",
+      "bytes": 16154,
+      "sha256": "d7194eceead5897507fb3aa7060792f95e286cda916cd52dbaebeb106a713e36"
+    },
+    "accepted_runtime_manifest": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\li-yu-dao-bootstrap-caller-preservation-current267-a1538\\content.manifest.json",
+      "bytes": 16154,
+      "sha256": "4d4d88db02071fc4e2e0bb910a98a232253561d8354441623b1d1dd5260925d3"
+    },
+    "archive": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\lyd013-formal-release-a1581\\mod_li_yu_dao.zip",
+      "bytes": 171855,
+      "sha256": "159c2ef768a896117711369e82d3b76fc332b24c2b8ff42c317b4dd862c2a921"
+    },
+    "metadata_file_refs": {
+      "title": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\lyd013-formal-release-a1581\\metadata\\title.txt",
+        "bytes": 77,
+        "sha256": "5ec0d1c9e065660f1f8763d6d9b745d24383babebaf8253ce019c208a5c5f6d1"
+      },
+      "description": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\lyd013-formal-release-a1581\\metadata\\description.bbcode",
+        "bytes": 7640,
+        "sha256": "6528767275a247b8c220eb22f284c6a1eb1a029b78f74718dd4cde633eae6fbb"
+      },
+      "change_note": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\lyd013-formal-release-a1581\\metadata\\change-notes.txt",
+        "bytes": 3972,
+        "sha256": "c48b30be531bf2e24b73b57d51258d453ada72ebebc497b4fd35760cd6223d19"
+      }
+    },
+    "formal87_exact_proof": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\lyd013-formal-release-a1581\\formal87-and-ZIP-exact-proof.json",
+      "bytes": 24816,
+      "sha256": "e790f0fe7e5383cfb05c9a967c342296924ab3aeb76030e4fbe843d039492ec7"
+    }
+  },
+  "formal_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\lyd013-formal-release-a1581\\formal-delivery-final.json",
+    "bytes": 5090,
+    "sha256": "d242b39c1ef2448cf0a0c7a8c4f2d7a2afb9640fb85488e844a2be5619a30fdb"
+  },
+  "sourceA_qualification_unchanged": "docs/release-changelogs/li-yu-dao/0.1.3-evidence/source-qualification.json",
+  "actual_evidence": {
+    "upload": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\LYD013-actual-upload-download-fresh-offline-END-a1596.json",
+      "bytes": 2822,
+      "sha256": "cba342236ef1f7598f38e8bb78bb951b76a5e63d0fb479ffd1280f9f40dc508f"
+    },
+    "public_API": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\lyd013-public-readback-a1596\\actual-API-full-delivery.json",
+      "bytes": 1079,
+      "sha256": "9f087da03ddfed11f84d5834f515d3837232cb3b0b0d79f84b8c2c40c3bfa397"
+    },
+    "notes_refusal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\lyd013-public-readback-a1596\\notes-a01\\http-refusal.json",
+      "bytes": 519,
+      "sha256": "c39eab27163498053621fc8684264390fd72ba076907a70ce04ad4ad0a3c5a30"
+    },
+    "cache": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\LYD013-actual-SDK-cache-T01-cold-PASS-END-a1602.json",
+      "bytes": 4804,
+      "sha256": "ad371ef5c763b847572634d9efccac13d52ca3d0ae2f94cef038768db444b9fd"
+    },
+    "first_prepare_refusal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\LYD013-first-cache-fileprepare-failure-END-a1600.json",
+      "bytes": 1017,
+      "sha256": "36090c53165f444f98ded4a1479787ac2c8b14f716b08bdcfb9848ae37819e91"
+    }
+  },
+  "publication": {
+    "receipt": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\lyd013-formal-release-a1581\\lyd013-native-publish-receipt.json",
+      "bytes": 654,
+      "sha256": "53a27a6bc798638ce643074f2bee5db3098794116cfefbb7e468731c43f5d474"
+    },
+    "result": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\lyd013-publication-a1585\\operator-lyd013-7f4f27d49518\\publication-result.json",
+      "bytes": 2201,
+      "sha256": "db8c165f555980c786f415f9bbb35add193a1580e4b1c7c6ddb37e83f80d2a0e"
+    },
+    "steam_result": 1,
+    "submitted_at_utc": "2026-11-24T19:25:34.292455+00:00",
+    "online_seconds": 62.50228519999655,
+    "fresh_offline_result_at_utc": "2026-11-24T19:26:16.179125+00:00",
+    "fresh_offline_probe": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\lyd013-publication-a1585\\operator-lyd013-7f4f27d49518\\observed-offline-1795548376084111500.json",
+      "bytes": 1343,
+      "sha256": "bd1206f91c7c694e51fd1883f6ed4d3893048f51813e036902554eb008f15f63"
+    },
+    "download": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\lyd013-publication-a1585\\operator-lyd013-7f4f27d49518\\lyd013-download-native.json",
+      "bytes": 1247,
+      "sha256": "90a07b8ee18b78226b0ac455ab1c35e36fef3bef1f5fbde7ee042d4098f4b063"
+    },
+    "download87_exact": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\lyd013-publication-a1585\\operator-lyd013-7f4f27d49518\\lyd013-download-exact.json",
+      "bytes": 736,
+      "sha256": "995cf86533de93275ad8f6693df6cf16909013e6ff3ef16b15a84447e32d05bc"
+    },
+    "gallery_preserved": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\lyd013-publication-a1585\\operator-lyd013-7f4f27d49518\\lyd013-gallery-preserved.json",
+      "bytes": 311,
+      "sha256": "0fe27c03a0f89ece3a96d8d963a7bbddc4a1748b67c8a3fc050b80a97f10ff37"
+    },
+    "SDK_additional_gallery_count": 0,
+    "API_title_body_creator_cover_fields": "PASS"
+  },
+  "public_Notes": {
+    "status": "NOT_OBSERVED",
+    "http_status": 429,
+    "Retry_After": null,
+    "GET_calls": 1,
+    "intent": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\lyd013-public-readback-a1596\\notes-a01\\intent.json",
+      "bytes": 455,
+      "sha256": "f58e8063a7c88699bf35ad46f6c235a0c92ecd753ef61d5fee62d63b036d2b36"
+    },
+    "refusal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\lyd013-public-readback-a1596\\notes-a01\\http-refusal.json",
+      "bytes": 519,
+      "sha256": "c39eab27163498053621fc8684264390fd72ba076907a70ce04ad4ad0a3c5a30"
+    },
+    "automatic_followup_GET": false,
+    "reupload": false,
+    "full_Notes_exact": false
+  },
+  "actual_SDK_cache": {
+    "root": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3817934804",
+    "files": 87,
+    "manifest": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\lyd013-formal-release-a1581\\mod_li_yu_dao.manifest.json",
+      "bytes": 16154,
+      "sha256": "d7194eceead5897507fb3aa7060792f95e286cda916cd52dbaebeb106a713e36"
+    },
+    "after_Game_all_exact": true,
+    "direct_mount_no_formal_payload_copy": true,
+    "fixture_mounted": false,
+    "core": {
+      "date_raw": 53144328,
+      "speed": 3,
+      "paused": true,
+      "local_player_id": 1,
+      "map_ready": true,
+      "has_played_character": true,
+      "played_character_id": 36423,
+      "played_character_alive": true
+    },
+    "resources": {
+      "personal_gold_raw": "114100000",
+      "prestige_raw": "245000000",
+      "piety_raw": "95000000",
+      "stress_points": 0
+    },
+    "personal_tenets": [
+      "lyd_tenet_reverent_heaven"
+    ],
+    "events_complete_empty": true,
+    "Date_Save_ADD_pay_calls": 0,
+    "open_personal_navigation_calls": 1,
+    "original_and_initial_copy_exact": true,
+    "terminal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\lyd013-T01-real-workshop-cache-cold-a1599\\owner\\terminal.json",
+      "bytes": 1060,
+      "sha256": "85c2034b979a16d8cd11eec63fe456cce5ca2f5eb3728bc15d4cc549b5675df9"
+    },
+    "creator_END": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\lyd013-T01-real-workshop-cache-cold-a1599\\creator-end.json",
+      "bytes": 591,
+      "sha256": "b801bcba10d1e36c0231f4540b3553ec7fbbdb049d9397804c75f8d01e120311"
+    },
+    "Game_PID": 6572,
+    "creator_PID": 18756,
+    "Root_session_collected": 44419,
+    "natural_exit": true,
+    "exit_code": 0,
+    "Job_active": 0,
+    "cleanup_proven": true,
+    "elapsed_seconds": "267.5845322",
+    "peak_commit_bytes": 11665879040
+  },
+  "original_refusals_preserved": {
+    "first_cache_a1579": "GUI dispatch preflight refused dirty Native17; no Game/owner/request/deadline; original execution/stderr retained",
+    "new_attempt_a1599": "Prepared after normal CPP17 commit/push 2affd0af6d3a88253d03aac4de8b145284577057; no bypass or replay",
+    "SourceA_FD_pending_fields": "Historical immutable pre-publication statements remain unchanged",
+    "all_old_UNKNOWN_consumed_claims_B4_and_early_readback_failures": true,
+    "known_stock_greatwall_and_historical_DES_log_diagnostics": true
+  },
+  "finite_scope": {
+    "representative_enrollment_T03_T01_T33_paid_and_fullEOF_saved_evidence": "Inherited SourceA evidence, not replayed in cache",
+    "all36schools_all52branches": false,
+    "complete_seven_field_readback": false,
+    "hidden_T33_practice": false,
+    "long_term_institutions_multiplayer_performance_wholeSDK": false,
+    "fixture_funding_knowledge_empty_slot_is_not_natural_learning": true
+  },
+  "progress_at_this_cut": {
+    "uploaded": 16,
+    "total": 17,
+    "uploaded_percent": 94.1,
+    "strict_finite_complete": 10,
+    "strict_percent": 58.8,
+    "LYD_strict_complete": false,
+    "other_five_prior_Notes_pending_unchanged": true,
+    "next_product": "ZG361; a fresh user account coordination window is required"
+  },
+  "this_SourceC_actions": {
+    "documentation_and_normal_Git_only": true,
+    "new_tests_build_JVM_Game_SDK_Steam_HTTP": 0,
+    "old_formal_tag_payload_runtime_changed": false
+  }
+}

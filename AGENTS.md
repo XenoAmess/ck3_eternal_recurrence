@@ -1,5 +1,12 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-25 LYD 0.1.3实际上传与SDK缓存有限通过，Notes429待核
+
+LYD沿canonical3817934804一次Submit取得EResult1，87文件真实下载精确，完整公开标题／正文、creator与封面字段一致；在线62.5022852秒后记录fresh offline。真实SDK缓存87直接挂载，退出后仍全精确；Robert36423／raw53144328／paused，个人T01、资源1141／950／2450／压力0、完整事件为空。0Date／0Save／无再ADD或支付，仅一次导航；Game6572／creator18756 Natural0、Job0、cleanup，Root44419收0。此前a1579因Native17 dirty被公共preflight拒绝且Game0的原件保留，正常CPP提交后新a1599完成。
+
+公开Notes唯一GET为HTTP429且无Retry-After，全文NOT_OBSERVED并停止，无重传或自动GET；其他五项既有Notes待核不变。当前16/17已上传（94.1%），严格有限闭环10/17；不把本次有限缓存观察外推全部36／52、完整七字段、长期／性能或wholeSDK。SourceA9675／tag5871／87manifest d719／ZIP159c不变，原UNKNOWN、B4、已消费请求和早期失败保持。后继ZG361需fresh账号协调窗口。[永久发布与缓存事实索引](docs/release-changelogs/li-yu-dao/0.1.3-evidence/publication.json)。下方保留此前切点。
+
+
 ## 2026-11-24 LYD旧存档礼仪实例：软件修复待实机
 
 LYD a1513实际证实旧F488加载后缺少36学校礼仪实例，Kongmen不存在；原条件日志与两场零Save正常退出保持。现生产生成器仅为实际存活人类儒教角色、已有main Rite且未完成补建时逐项创建缺失实例（`create_rite_from_type`、`convert=no`），保留已存在实例；全部36存在且同Faith后才记录完成。缺实例lookup以条件分支保护。新建实例的founder元数据与头衔、当前Rite等实际后态仍待Root新场读取，不据convert=no冒无副作用。
