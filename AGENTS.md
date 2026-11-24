@@ -1,5 +1,11 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-24 当前Living管理导航：13项软件通过，真实原8尚未完成
+
+a1480实际完整读取5宝物／36槽、库存打开及武器406装备独立读回通过；OPEN_LIST在写前known stale拒绝，16read／Entry2／UI2／0Date／0Save，随后独立Natural0／Job0／cleanup／creator0。该次Raw及7身份mask均0，Frame1536仅HUD535→537、witness717→719；新增两节点名称／父／type未导出，不能追认无害或唯一首因。原row-lifetime9项软件保留，本场未到detail，不授其实机修复或原8完成；五旧case已消费均不重放。
+
+Native导航最小改动仅OPEN_LIST跨请求使用实际捕获的动作祖先投影与完整非空callback proof，完整Raw／World／Core／actor／库存／期限／once守卫仍须成立；within-request双采及其他Entry严格比较保留。12 ON＋1 OFF首次实际通过、3CL／2link／两测试Natural0；Native唯一应用两CPP，Java只精核后正常提交推送`0a307a62…`／NativeTree`5d92190b…`。Java源／MFfe2b／argsdc46／JDa0d4与1新NT＋157旧JAR身份不变，0Maven／新测试／package／CRC遍历。此切点等待真实新Native产物及新1MiB元数据配对，未授新Game／HELLO／原8／正式发布；14/17上传、10/17严格保持。[精确软件与原场事实](docs/maintenance/evidence/living-navigation-qualified-source-a1482.json)。下方保留此前切点。
+
 ## 2026-11-24 当前Living完整槽位修复：新NT／Native已配对，原8实机待验证
 
 后继a1452真实诊断已证明：原5宝物／cap6、36槽／cap39均可读且跨度有效，仅本组32槽有限上限错误。两旧场都只2次read、0Entry／UI／Date／Save并正常Natural0／Job0／cleanup；已消费请求不重放。Native Raw与serializer完整上限同步为64，Java只改同一Source叶的三处32／32／31→64／64／63；布局、signed capacity、完整双采／身份／跨度守卫、UI retention32及Main／Transport／Entry／UI公开接口不改。

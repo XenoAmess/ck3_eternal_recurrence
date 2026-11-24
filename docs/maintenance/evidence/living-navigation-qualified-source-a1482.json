@@ -1,0 +1,126 @@
+{
+  "schema": "xar.living.navigation-qualified-source.facts.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-11-24T09:32:30.933943+00:00",
+  "status": "QUALIFIED_SOURCE_COMMITTED_NATIVE_PRODUCTION_AND_METADATA_PENDING_AT_THIS_CUT",
+  "source_commit": "0a307a62e7fb74c4b3ea510e4e1941121b4ad37d",
+  "NativeTree": "5d92190b544458e4bfb7b5f2b133d79f3b676b95",
+  "integration": {
+    "Native_only_applied_canonical_CPP": true,
+    "Java_integrator_only_verified_staged_committed_and_pushed": true,
+    "canonical_equals_sealed_equals_actual_NoGame_input": true,
+    "targets": [
+      {
+        "path": "ck3_autonomous_player/native_bridge/src/ck3_121003_living_entry26785313_owner_v1.cpp",
+        "bytes": 21982,
+        "sha256": "ddbb884bef8b57ae2f7110f898d77ab42dc10bbc784a4a46d11868b5fee06bcd"
+      },
+      {
+        "path": "ck3_autonomous_player/native_bridge/src/ck3_121003_living_entry26785313_raw_v1.inc",
+        "bytes": 20717,
+        "sha256": "14ae3a6bd7e8d3c67682ec7f4d800eb909dacb287fdfa9c1e890d892ed59d6bf"
+      }
+    ]
+  },
+  "actual_a1480": {
+    "Root_finite_END": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\Living-row-lifetime-inventory-equip-P-HUD1536-known-stale-Natural0-END-a1481.json",
+      "bytes": 4176,
+      "sha256": "dddeb14718dff9ec659fa4924c6dae41a065849f92246d06e021f71e7bbb3807"
+    },
+    "complete_owned_artifacts": 5,
+    "complete_slots": 36,
+    "independent_weapon_equip_PASS": true,
+    "weapon_target_full_id": 406,
+    "management_status": "KNOWN_STALE_SOURCE_BEFORE_WRITE_NOT_UNKNOWN",
+    "frame_mask": 1536,
+    "HUD_nodes_before_after": [
+      535,
+      537
+    ],
+    "witness_nodes_before_after": [
+      717,
+      719
+    ],
+    "raw_mask": 0,
+    "seven_manage_identity_mask": 0,
+    "added_node_names_parents_and_types": "NOT_OBSERVED",
+    "read_calls": 16,
+    "Entry_action_calls": 2,
+    "UI_action_calls": 2,
+    "Date_calls": 0,
+    "Save_calls": 0,
+    "normal_terminal_exit0_Job0_cleanup_and_creator0": true,
+    "case_claim_consumed_no_replay": true,
+    "row_lifetime_software_9P_preserved": true,
+    "detail_not_reached_no_live_row_fix_credit": true
+  },
+  "qualified_navigation_change": {
+    "contract": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-entry-navigation-lease-source-a1480\\navigation-lease-contract.json",
+      "bytes": 3274,
+      "sha256": "2c7478b7f042b0af69ca17b416a15fb5d3835403a6ffb0faf033ef37ac8aacef"
+    },
+    "qualification": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-entry-navigation-nogame-a1482\\validation\\qualified-Source.json",
+      "bytes": 8912,
+      "sha256": "eece4c1cf0b72cf585ef7362b460856d48a2914cf9345d988e185fd09b433df5"
+    },
+    "Native_canonical_apply_receipt": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-entry-navigation-nogame-a1482\\validation\\Native2-exact-CPP-apply.json",
+      "bytes": 3825,
+      "sha256": "17baefe08336ec5ea8d2712a0ed88e21c7b518f2fdd28088c47188328b6e6d54"
+    },
+    "actual_ON_groups": 12,
+    "actual_OFF_groups": 1,
+    "actual_CL": 3,
+    "actual_successful_links": 2,
+    "all_tests_Natural0": true,
+    "all_owned_writers_END": true,
+    "scope": "Only open_manage_list cross-request lease uses captured action-owned navigation ancestry projection with nonempty matching callback proof. Complete Raw equality, world/Core/actor/inventory/deadline/once/cleanup guards remain; within-request capture/double sample and all other Entry actions remain strict. Bounded joined-node diagnostics use captured copies only.",
+    "actual_added_nodes_are_harmless_or_unique_root_cause": false,
+    "Game_or_ABI_or_original8_business_PASS": false
+  },
+  "unchanged_Java": {
+    "production_source_or_tests_changed": false,
+    "Maven_tests_package_copy_or_old_JAR_CRC_runs": 0,
+    "configuration_schema": "v48",
+    "mode": "current_living_original_case_once",
+    "maximum_submissions": 85,
+    "Date_calls": 0,
+    "Save_calls": 0,
+    "total_JARs": 158,
+    "actual_changed_NT_JARs": 1,
+    "prior_identity_reused_JARs": 157,
+    "runtime_manifest_sha256": "fe2b66d016df6ace19fa8dac44b2e40fd8bf4c61a2cb5ac0ce906ce0762824f5",
+    "classpath_args_sha256": "dc46ec11891a92d6789c8bf8a2dedad1d45d8b71dc6fbed5b596ad1c012d4ae0",
+    "Java_ready_sha256": "a0d40b37832771f90e07c800117369a9cc48e33cf2a55eb0bf57803e14e28953"
+  },
+  "next_metadata_only": {
+    "Source_delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-nav-ancestor-pair-source-a1486\\delivery-final.json",
+      "bytes": 707,
+      "sha256": "fc5330ca8bc2a3fd5e2ccb30fa72afe6ffbfbf155a5233a94d937d91d9dd4747"
+    },
+    "new_1MiB_admission": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\Living-navigation-Java1-admission-a1483.json",
+      "bytes": 1831,
+      "sha256": "61d5ee15a19b48db9dd60cd831c164223a73e8cd354a66502d9fde49a788aebb"
+    },
+    "parent_actual_sixpins_sha256": "a490eb3b20883a392d5404ca5635ad92672c84677552cd0ce36be1a8ad22b4f1",
+    "actual_new_Native_delivery": null,
+    "actual_new_pair": null,
+    "bind_only_after_actual_Native_Ready_and_END": true,
+    "not_reopening_prior_metadata_purpose": true
+  },
+  "preserved_boundaries": {
+    "all_five_consumed_cases_and_known_refusals_preserved": true,
+    "old_UNKNOWN_and_frozen_pairs_not_rewritten": true,
+    "Living_original8_complete_formal_or_publication_PASS": false,
+    "RMTM_SourceA_tag_and_formal_payload_unchanged": true,
+    "uploaded_products": 14,
+    "strict_finite_complete_products": 10,
+    "total_products": 17,
+    "Steam_HTTP_or_Game_operations_in_this_record": 0
+  }
+}
