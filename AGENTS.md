@@ -1,5 +1,12 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-24 当前Living0.1.3已发表并真实缓存通过，Notes429保留
+
+同一条目3825237804已唯一SDK update／EResult1，下载67与正式MF732aec完全一致；SourceA99b0／注释tag living-artifacts-v0.1.3／tag30a430及正式F保持。在线81.3424967秒后11:10:01Z fresh offline。完整公开标题／正文／creator／cover通过；SDK实际additional图库5项原序完整保持，5正文插图另列。唯一Notes GET为HTTP429／全文NOT_OBSERVED，不能写成内容不符或严格完成；停止无重传／自动HTTP。
+
+真实canonical缓存直接挂载并history-loaded，after67全精确，原821／profile副本全SHA不变；可选一次Core观察Robert36423／raw53144328／pausedalive，不加Core8门。0Date／0Save／无fixture或业务重跑，Game11056 Natural0／Job0／cleanup、creator14012于11:22:28.902541Z返回0。原有限85业务、Root独立diet／preview AND及Main false旗各保实际范围，不外推全rank／长期／SaveReload／像素／全SDK或性能。当前15/17上传、10/17严格；后继LYD→ZG361，Notes429不阻独立工作。[永久SourceC发布索引](docs/release-changelogs/living-artifacts/0.1.3-evidence/publication.json)。下方保留SourceA和此前切点。
+
+
 ## 2026-11-24 当前Living0.1.3有限业务通过，正式67准备中，尚未上传
 
 Root a1498单Receiver实际完成66read＋Entry5＋UI14＝85，0Date／0Save并独立Natural0／Job0／cleanup／creator0。原库存36槽／5宝物、武器406装备、manage列表详情确认、真实条件显示子集、取消前后完整库存与numeric守恒、407–410四材料实际消耗与独立numeric读回、管理关闭后原instance absence及3个完整getter均有原件。Root另读实际“食性：甲胄”及common预览80；Main原两个false旗不改，独立全文业务AND通过。新fixed67 b33e实际挂载、after67全精确，9个本组无效modifier字段错误为0；其余stock／fixture／bookkeeping诊断保留，非全error.log通过。

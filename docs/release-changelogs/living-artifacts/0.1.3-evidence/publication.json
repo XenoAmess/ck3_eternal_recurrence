@@ -1,0 +1,287 @@
+{
+  "schema": "xar.living013.SourceC.finite-publication-notes-pending.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-24T11:30:37.196239+00:00",
+  "status": "PUBLISHED_DOWNLOADED_REAL_CACHE_PASS_PUBLIC_NOTES_NOT_OBSERVED",
+  "canonical": "3825237804",
+  "version": "0.1.3",
+  "strict_release_complete": false,
+  "public_Notes_remaining": "FIRST_GET_HTTP429_FULL_TEXT_NOT_OBSERVED_NO_AUTOMATIC_RETRY_OR_REUPLOAD",
+  "SourceA": "99b0e5839643483cada74f036dc2cf8c9f528ddc",
+  "git_tag": "living-artifacts-v0.1.3",
+  "tag_object": "30a430a7f0e838fbecce71a54f540f9e0c058741",
+  "formal_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\living013-formal-release-a1496\\formal-delivery-final.json",
+    "bytes": 5843,
+    "sha256": "7c003f8bea44d4af4aadc93c501a7ff98e0363cb4bdd1f8e8c3524ebb768ba05"
+  },
+  "formal_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\living013-formal-release-a1496\\mod_living_artifacts.manifest.json",
+    "bytes": 12477,
+    "sha256": "732aecb81287bf2a9adc32214a0978e97c70b8d96a1285bc707508131dcbf5cf"
+  },
+  "formal_archive": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\living013-formal-release-a1496\\mod_living_artifacts.zip",
+    "bytes": 675194,
+    "sha256": "f737dbf3aecfefd26647784973ed67021925260d113e5d2b19f2da6d3ccdf905"
+  },
+  "source_tag_record": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\living013-formal-release-a1496\\source-tag-record.json",
+    "bytes": 1494,
+    "sha256": "7f658efb75940d319e6bc4a4fec5ef58ed272b7bb654c6665eb8d5b69bff7ee0"
+  },
+  "accepted_runtime_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\living-current267-fixed-modifiers-product-a1491\\artifact\\mod_living_artifacts.manifest.json",
+    "bytes": 12448,
+    "sha256": "b33e9ee6669cd6ef09fc45f853398dd2c15179c0c3dc477606905f198b4d8db7"
+  },
+  "metadata_file_refs": {
+    "title": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living013-formal-release-a1496\\metadata\\title.txt",
+      "bytes": 52,
+      "sha256": "1e6311fba2e3c9f23c651257f87b2759a4bb3ffda0d6949e5c0654d511c42d16"
+    },
+    "description": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living013-formal-release-a1496\\metadata\\description.bbcode",
+      "bytes": 7909,
+      "sha256": "bb41bb7d8c790485db760a6a547c47be52846193fd1aff5241c3d612069e9dc7"
+    },
+    "change_note": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living013-formal-release-a1496\\metadata\\change-notes.txt",
+      "bytes": 2763,
+      "sha256": "eb3fca111cf33233db92d549f5e47a39e02ff5dc9c13103610e207effa39d45c"
+    }
+  },
+  "finite_business": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\Living013-fixed67-current267-original8-finite-business-PASS-a1495.json",
+    "bytes": 10358,
+    "sha256": "f0d3206c3cbb50e7dc28dde62d78bdf16f214af540d7b7b300d2abc085b1409f"
+  },
+  "SourceA_finite_index": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\evidence\\living013-finite-release-SourceA-a1496.json",
+    "bytes": 4781,
+    "sha256": "44df4982185491795e3a58e23455e3f01019e136a1ae748862102a98cb8797de"
+  },
+  "actual_publish": {
+    "Root_END": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\Living013-published-ER1-download67-offline-END-a1503.json",
+      "bytes": 2763,
+      "sha256": "8d748fc8ea595ba535b1f82a9d4cf4c20a3b8d2a855991df30af6d9abaea2c93"
+    },
+    "receipt": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living013-formal-release-a1496\\living013-native-publish-receipt.json",
+      "bytes": 671,
+      "sha256": "6a723562814036e8350178d1c424914c6d8a0110bb222b9232f74d36106feb1d"
+    },
+    "publication_result": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living013-publication-a1500\\operator-living013-a54809ef220f\\publication-result.json",
+      "bytes": 2226,
+      "sha256": "85b49007217755bd3e8be37c7b32850e7c5e1292a456382ebc4bf3daf4f9cdc4"
+    },
+    "EResult": 1,
+    "Submit_count": 1,
+    "operation": "update",
+    "submitted_at": "2026-11-24T11:09:14.682188+00:00",
+    "actual_download": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living013-publication-a1500\\operator-living013-a54809ef220f\\living013-download-native.json",
+      "bytes": 1246,
+      "sha256": "72662f0eb8ad8f6f1d12ffb7c4e3584947564236d6fb9700a7defa97f3ee94bd"
+    },
+    "exact67": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living013-publication-a1500\\operator-living013-a54809ef220f\\living013-download-exact.json",
+      "bytes": 755,
+      "sha256": "cb07973f0a83c2d8d38fd6c67c0227d1174e62b8cc40d2ff398fe9078b6ad8be"
+    },
+    "online_seconds": 81.34249670000281,
+    "fresh_offline_completion_UTC_Root_reported": "2026-11-24T11:10:01.206824Z",
+    "underlying_offline_probe_observed_UTC": "2026-11-24T11:10:00.823929Z",
+    "offline": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living013-publication-a1500\\operator-living013-a54809ef220f\\observed-offline-1795518601184279800.json",
+      "bytes": 1343,
+      "sha256": "a0c3b5b81123cf3f4f95aea058d27a50d8506733b43cdf6bfa07826b7c0a0545"
+    },
+    "additional_gallery_count": 5,
+    "gallery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living013-publication-a1500\\operator-living013-a54809ef220f\\living013-gallery-preserved.json",
+      "bytes": 311,
+      "sha256": "2d961174892b1adf5fee3616544e61cc45054c942499acb0acb8173c32930401"
+    },
+    "additional_gallery_entries_pre_post_exact": true,
+    "cover_separately_unchanged": true,
+    "inline_illustration_count": 5,
+    "gallery_not_inferred_from_inline_count": true
+  },
+  "public_readback": {
+    "actual_API_verification": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living013-public-readback-a1502\\actual-a01\\api-full-verification.json",
+      "bytes": 2486,
+      "sha256": "6be3648c58c63025f3e986d40de03ee9253ac8e658aa97a96e66f760bd5768c0"
+    },
+    "actual_API_raw": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living013-public-readback-a1502\\actual-a01\\item-api.raw",
+      "bytes": 8765,
+      "sha256": "aa2d5e589e5e3578931cb877b8b6faeb01684117725b301954e562d2454432ca"
+    },
+    "actual_title": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living013-public-readback-a1502\\actual-a01\\public-title-full.txt",
+      "bytes": 52,
+      "sha256": "1e6311fba2e3c9f23c651257f87b2759a4bb3ffda0d6949e5c0654d511c42d16"
+    },
+    "actual_normalized_description": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living013-public-readback-a1502\\actual-a01\\public-description-normalized-full.txt",
+      "bytes": 7908,
+      "sha256": "d092aada895a6d6902ea9de23053d1db5afdb75272046ef0abbb19664acb8387"
+    },
+    "full_diff": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living013-public-readback-a1502\\actual-a01\\body-full.diff",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "full_title_exact": true,
+    "full_body_exact": true,
+    "creator_AppIDs_and_cover_same": true,
+    "title_bytes": 52,
+    "normalized_body_bytes": 7908,
+    "formal_body_bytes": 7909,
+    "normalization": "Actual complete normalized body comparison, zero-length diff; raw API JSON is not claimed byte-identical to the BBCode file.",
+    "Notes_refusal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living013-public-readback-a1502\\notes-a01\\http-refusal.json",
+      "bytes": 522,
+      "sha256": "9ae1dce3106a8973b7fa54107e3d409886bb5d7c8956df45a05cd8faa8f6dc75"
+    },
+    "Notes_transport": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living013-public-readback-a1502\\notes-a01\\changelog.transport.json",
+      "bytes": 2278,
+      "sha256": "d2aef9cea0013650267e92cd11cfe9065e827ef238dd3c8d1e2119b1003570c1"
+    },
+    "Notes_actual_GETs": 1,
+    "Notes_request_UTC": "2026-11-24T11:12:04.519652+00:00",
+    "Notes_received_UTC": "2026-11-24T11:12:06.099034+00:00",
+    "Notes_HTTP_status": 429,
+    "Notes_entry_id": null,
+    "Notes_full_text_observed": false,
+    "Notes_content_mismatch": false,
+    "Retry_After": null,
+    "no_automatic_poll_or_background_next_GET": true
+  },
+  "actual_cache": {
+    "Root_PASS": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\Living013-real-SDK-cache67-mount-load-Natural0-PASS-a1505.json",
+      "bytes": 3760,
+      "sha256": "91ecb9640ded051704ce1f14fa8d5e8d12be116c27c4f5ec34f8d15acaab1517"
+    },
+    "canonical_directory": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3825237804",
+    "files": 67,
+    "all67_after_Game_size_SHA_exact": true,
+    "public_prepare_proof": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living013-real-cache-load-a1504\\prepared\\workshop-cache-exact-formal.json",
+      "bytes": 18081,
+      "sha256": "d417e4a043a8f1c60e80f60d6aa992bc2523bfebcf970d8a9084a0c4192252aa"
+    },
+    "actual_mount_descriptor": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living013-real-cache-load-a1504\\state-root\\cache-state\\profile\\mod\\product.mod",
+      "bytes": 281,
+      "sha256": "6d4e2442b40262e8e633f81d08895cfadd1b0821d4c3c582f55d68d63342176f"
+    },
+    "profile_preparation": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living013-real-cache-load-a1504\\prepared\\profile-preparation.json",
+      "bytes": 2863,
+      "sha256": "bf6d44103198164f5f444a27450c4cedfaa5c289ef704c627f34556e4a32112a"
+    },
+    "actual_history_load_log": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living013-real-cache-load-a1504\\state-root\\cache-state\\profile\\logs\\debug.log",
+      "bytes": 515632,
+      "sha256": "037d521346d46a670237a4f251044a34c0cc22c09ea980f3c727bc492f46f981"
+    },
+    "optional_one_Core": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living013-real-cache-load-a1504\\operations\\living013-cache-a1504-core\\result\\summary.json",
+      "bytes": 9905,
+      "sha256": "1f1edd8e3157ec41b16e1b9962e7a1647a8055cd8155abfba45a71b3da6b4201"
+    },
+    "observed_actor": 36423,
+    "date_raw": 53144328,
+    "paused": true,
+    "alive_mapready_Root_observed": true,
+    "Date": 0,
+    "Save": 0,
+    "fixture": false,
+    "formal_or_staging_copy_over_cache": false,
+    "original_business_not_rerun": true,
+    "normal_quit": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living013-real-cache-load-a1504\\operations\\living013-cache-a1504-quit\\execution.json",
+      "bytes": 883,
+      "sha256": "31d3764a48a0c6208892bd2749756d084cf2d5b6a7d80ee69bab425786401315"
+    },
+    "actual_terminal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living013-real-cache-load-a1504\\owner\\terminal.json",
+      "bytes": 1049,
+      "sha256": "cc4b3657dc107694246f8d9a7943ea18aff193ca2e2462b0ae72d70d6ac74685"
+    },
+    "NATURAL_EXIT": true,
+    "Game_exit0": true,
+    "Jobactive0": true,
+    "cleanup_proven": true,
+    "creator": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living013-real-cache-load-a1504\\creator-end.json",
+      "bytes": 571,
+      "sha256": "d6d42603fffe4e33a6fcd93bfe0fc61570191d27b24860ee0129fa1c6c56701b"
+    },
+    "creator_exit0": true,
+    "creator_END_UTC": "2026-11-24T11:22:28.902541+00:00",
+    "terminal_observed_UTC": "2026-11-24T11:22:28.798554200Z",
+    "Game_elapsed_seconds": "196.4556744",
+    "Game_peak_job_memory_bytes": 11500802048,
+    "source_archive": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-vanilla-seed-current267-profile-a905\\checkpoints\\des-vanilla-1066-robert-day15.ck3",
+      "bytes": 166551273,
+      "sha256": "82178e0f4142b50e0d3d51914574eff8cccce84a187b4f622c80fd2c2c9e94b4"
+    },
+    "profile_initial_Save": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living013-real-cache-load-a1504\\state-root\\cache-state\\profile\\save games\\des-vanilla-1066-robert-day15.ck3",
+      "bytes": 166551273,
+      "sha256": "82178e0f4142b50e0d3d51914574eff8cccce84a187b4f622c80fd2c2c9e94b4"
+    },
+    "both_full_SHA_unchanged": true,
+    "new_Core8_or_Save_gate": false
+  },
+  "resource": {
+    "scene_END": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\Living013-cache512-actual-END-a1505.json",
+      "bytes": 581,
+      "sha256": "1f34e4798f9176bbe1a73f4444b9ce2f1b5c739ad79c12d8b367a7e945f488c3"
+    },
+    "actual_FileStandardInfo_scene_allocation_bytes": 371333480,
+    "scene_held_upper_bytes": 371366248,
+    "remaining_future_bytes": 0,
+    "Root_review": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\same-quota-Living-cache512-END-Notes429-review-a1505.json",
+      "bytes": 120662,
+      "sha256": "f594fe74c8b70256eee6cd4eea6e9ac719544798e5fb1c23a5d3e3435a348470"
+    },
+    "old_spent_held_refund": false
+  },
+  "preserved": {
+    "all_Main_false_flags_and_Native_false_null_values": true,
+    "all_six_consumed_claims_and_known_refusals_UNKNOWN": true,
+    "prebuild_wrapper_refusal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living013-formal-release-a1496\\prebuild-wrapper-refusal-a01.json",
+      "bytes": 782,
+      "sha256": "caa3489c38a7cc837071c0a8f349c8ea646657644267b90426c6e64391d87b52"
+    },
+    "wrapper_refusal_before_any_builder_or_verify_BEGIN": true,
+    "formal_builder_and_verify_unique_actual_once_not_repeated": true,
+    "old_0_1_2_tag_and_publication_evidence": true,
+    "SourceA_tag_F67_and_metadata_bytes_not_modified": true
+  },
+  "migration_counts": {
+    "uploaded": 15,
+    "strict_finite_complete": 10,
+    "total": 17
+  },
+  "remaining_upload_order": [
+    "LYD",
+    "ZG361"
+  ],
+  "boundaries": "Current267 finite original8 zero-day gameplay, real exact formal67, one SDK ER1 update and download, complete public title/body/creator/cover, real canonical cache mount/history load and Natural0. Public Notes full text remains NOT_OBSERVED. Not all curse/affix ranks, long-term, Save/reload, pixels, whole SDK/product or performance.",
+  "no_new_SourceC_Maven_Native_tests_Game_Steam_HTTP": true
+}
