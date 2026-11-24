@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_LIVING_V1) && XAR_CK3_ENABLE_121003_26785313_LIVING_V1
+#include "xar_bridge/ck3_121003_living_all26785313_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RMTM_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_V1
 #include "xar_bridge/ck3_121003_rmtm_all26785313_v1.hpp"
 #endif
@@ -550,6 +553,9 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RITE_TEXT_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_TEXT_V1
   if(step==ck3_121003::build26785313::kRiteTextStep267V1)return ck3_121003::build26785313::RiteTextStepEnabled267V1(actual,step);
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_LIVING_V1) && XAR_CK3_ENABLE_121003_26785313_LIVING_V1
+  if(step==ck3_121003::build26785313::kLivingInventoryQueryStep267V1||step==ck3_121003::build26785313::kLivingUiStep267V1||step==ck3_121003::build26785313::kLivingEntryStep267V1)return ck3_121003::build26785313::LivingWholeStepEnabled267V1(actual,step);
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_QUERY_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_QUERY_V1 && defined(XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_TITLE_V1
   if(step==ck3_121003::build26785313::kRmtmTitleQueryStep267V1)return ck3_121003::build26785313::RmtmTitleQueryStepEnabled267V1(actual,step);

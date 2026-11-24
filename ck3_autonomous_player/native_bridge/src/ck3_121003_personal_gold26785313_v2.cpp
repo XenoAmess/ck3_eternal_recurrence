@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_LIVING_V1) && XAR_CK3_ENABLE_121003_26785313_LIVING_V1
+#include "xar_bridge/ck3_121003_living_all26785313_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RMTM_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_V1
 #include "xar_bridge/ck3_121003_rmtm_all26785313_v1.hpp"
 #endif
@@ -347,11 +350,16 @@ const game::AdapterDescriptor &PersonalGoldAdapterDescriptorV2() noexcept {
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RMTM_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_V1
   static const auto rmtm_caps=[&]{std::vector<std::string_view>combined(rmtm_finite_base_descriptor.capabilities.begin(),rmtm_finite_base_descriptor.capabilities.end());combined.insert(combined.end(),kRmtmTransitionCapabilities267V1.begin(),kRmtmTransitionCapabilities267V1.end());combined.insert(combined.end(),kRmtmEventCaps267V1.begin(),kRmtmEventCaps267V1.end());combined.insert(combined.end(),kRmtmDecisionCapabilities267V1.begin(),kRmtmDecisionCapabilities267V1.end());combined.insert(combined.end(),kRmtmObservationCaps267V1.begin(),kRmtmObservationCaps267V1.end());return combined;}();
-  static const game::AdapterDescriptor rmtm_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",rmtm_caps};return rmtm_descriptor;
+  static const game::AdapterDescriptor rmtm_descriptor{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",rmtm_caps};const auto&living_base_descriptor=rmtm_descriptor;
 #else
-  return rmtm_finite_base_descriptor;
+  const auto&living_base_descriptor=rmtm_finite_base_descriptor;
 #endif
 
+#if defined(XAR_CK3_ENABLE_121003_26785313_LIVING_V1) && XAR_CK3_ENABLE_121003_26785313_LIVING_V1
+  return LivingWholeDescriptor267V1(living_base_descriptor);
+#else
+  return living_base_descriptor;
+#endif
 }
 bool PersonalGoldRouteEnabledV2([[maybe_unused]]const game::AdapterDescriptor &d) noexcept {
 #if defined(XAR_CK3_ENABLE_121003_26785313_PERSONAL_GOLD_V2)

@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_LIVING_V1) && XAR_CK3_ENABLE_121003_26785313_LIVING_V1
+#include "xar_bridge/ck3_121003_living_all26785313_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RMTM_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_V1
 #include "xar_bridge/ck3_121003_rmtm_all26785313_v1.hpp"
 #endif
@@ -232,6 +235,9 @@ ck3_11906::MainThreadQueryInstallEnvironmentV1 BindCoreRouteMailboxEnvironmentV1
 #if defined(XAR_CK3_ENABLE_121003_26785313_RMTM_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_V1
   if(out.permitted_executor_quattuortrigintary||!VerifyRmtmImage267V1(image_base))return {};
   out.permitted_executor_quattuortrigintary=&ExecuteRmtmOnOwner267V1;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_LIVING_V1) && XAR_CK3_ENABLE_121003_26785313_LIVING_V1
+  if(!AttachLivingWholeExecutor267V1(out,image_base))return {};
 #endif
   return out;
 }

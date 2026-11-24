@@ -1,3 +1,6 @@
+#if defined(XAR_CK3_ENABLE_121003_26785313_LIVING_V1) && XAR_CK3_ENABLE_121003_26785313_LIVING_V1
+#include "xar_bridge/ck3_121003_living_all26785313_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RMTM_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_V1
 #include "xar_bridge/ck3_121003_rmtm_all26785313_v1.hpp"
 #endif
@@ -232,6 +235,9 @@ bool OwnerInner(ReadonlyContext&q,const ck3_11906::MainThreadExecutionStampV1&s,
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RMTM_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_V1
     fixed_current_executor=fixed_current_executor||invocation.executor==&ExecuteRmtmOnOwner267V1;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_LIVING_V1) && XAR_CK3_ENABLE_121003_26785313_LIVING_V1
+    fixed_current_executor=fixed_current_executor||invocation.executor==&ExecuteLivingOnOwner267V1;
 #endif
     if(!fixed_current_executor||!invocation.context)return false;
   }
@@ -618,6 +624,12 @@ bool ReadDjcTargetQueryCoreOnOwner267V1(const ReadonlyBindings&bindings,
 #include "ck3_121003_rite_text26785313_reader_v1.inc"
 #include "ck3_121003_rite_creation_blockers26785313_reader_v1.inc"
 #include "ck3_121003_rmtm_title_query26785313_reader_v1.inc"
+#if defined(XAR_CK3_ENABLE_121003_26785313_LIVING_V1) && XAR_CK3_ENABLE_121003_26785313_LIVING_V1
+#include "ck3_121003_living_inventory26785313_reader_v1.inc"
+#include "ck3_121003_living_weapon26785313_reader_v1.inc"
+#include "ck3_121003_living_ui26785313_reader_v1.inc"
+#include "ck3_121003_living_entry26785313_reader_v1.inc"
+#endif
 #include "ck3_121003_decisions_close26785313_reader_v1.inc"
 #if defined(XAR_CK3_ENABLE_121003_26785313_RMTM_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_V1
 #include "ck3_121003_rmtm_actor_transition26785313_reader_v1.inc"
