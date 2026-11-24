@@ -1,0 +1,105 @@
+{
+  "schema": "xar.current267.living.manage-known-stale-and-diagnostic-source.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-11-24T07:35:21.386617+00:00",
+  "status": "ACTUAL_INVENTORY_EQUIPMENT_PARTIAL_RETAINED_MANAGE_KNOWN_STALE_NEW_DIAGNOSTIC_SOFTWARE_ONLY",
+  "actual_observed_partial": "a1460 complete36slots/5artifacts; real inventory Open, target406 weapon Select/Equip and independent readback. This partial scope is retained, not complete original8 or management-open P.",
+  "actual_manage_action": "open_manage_list",
+  "actual_status": "stale_source",
+  "actual_reason": "living_entry_complete_physical_source_changed",
+  "effect_attempted": false,
+  "native_returned": false,
+  "cleanup_known": true,
+  "claim_sequence": 0,
+  "provider_generation": "318370609",
+  "query_sequence": "3",
+  "Source": null,
+  "case_attempt_counts": {
+    "read": 16,
+    "Entry": 2,
+    "UI": 2,
+    "Date": 0,
+    "Save": 0
+  },
+  "consumer_facts": "Original QUERY_MANAGE available then OPEN_MANAGE_LIST, same actual session/Core/deadline/318370609 provider/query3. Queryresponse order89 directly precedes actionwrite90; original body/lease respected. Transport retains known AckReceived; Main4202 correctly rejects dispatched-only predicate. The stale stage label LIVING_FIXED_ENTRY_QUERY does not mean failed query or UNKNOWN. No Java change justified.",
+  "actual_normal_close": {
+    "Natural0": true,
+    "actual_exit0": true,
+    "Job_active0": true,
+    "cleanup": true,
+    "observed_at_utc": "2026-11-24T06:56:20.439518600Z"
+  },
+  "Native_diagnostic": "Only two Native leaves append bounded frame_mask/raw_mask and already captured scalar differences in the existing false branch. Frame/SameRaw bodies and original short-circuit OR byte-exact unchanged. No new public fields, captures, actions, permission or Java/JAR change. Actual differing private field/cause remains NOT_OBSERVED until separately admitted new scene.",
+  "software": {
+    "actual_groups": 16,
+    "tests_Natural0": true,
+    "first2CL0_then2linkRED_preserved": true,
+    "test_only_unused_dependency_stub_repair": true,
+    "stub_calls_asserted_zero": true,
+    "reused_original2_test_OBJ": true,
+    "successful_final_links": 2,
+    "Native_production_and_new_Runtime": "NOT_RUN at this code cut"
+  },
+  "consumed_original_case_no_replay": true,
+  "old90a4_pair_and_MFfe2b_argsdc46_JDa0d4_and_all158_JARs_unchanged": true,
+  "uploaded_SKUs": 14,
+  "strict_finite_completed_SKUs": 10,
+  "total_SKUs": 17,
+  "exact_external_refs": {
+    "consumer_review": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-a1460-manage-stale-consumer-review-a01\\source-review-final.json",
+      "bytes": 39326,
+      "sha256": "80f616ba2f3b85a37629be8e6b1c0f5819bac51597bb274abf6f53b1d09f055a"
+    },
+    "actual_manage_token": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-current267-slot64-original8-profile-a1460\\operations\\living-slot64-a1460-case\\result\\living-manage-list\\read-result-token.json",
+      "bytes": 939,
+      "sha256": "38c898f2af89f407f4be2b64421b47f3d3a053dd47a88a25348bc4a44101123a"
+    },
+    "actual_manage_query_token": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-current267-slot64-original8-profile-a1460\\operations\\living-slot64-a1460-case\\result\\living-manage-before\\read-result-token.json",
+      "bytes": 1492,
+      "sha256": "0fde79149e5d996577b70b41b8b96c7b225fb7bd417b2ee95cecf65b69f9092e"
+    },
+    "actual_case_progress": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-current267-slot64-original8-profile-a1460\\operations\\living-slot64-a1460-case\\result\\current-living-original-progress.json",
+      "bytes": 136046,
+      "sha256": "96320aefc2ccadf96efcdd1f716ebb3d5e0b04e50c1872134455f7e63593c6bd"
+    },
+    "actual_closed_terminal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-current267-slot64-original8-profile-a1460\\owner\\terminal.json",
+      "bytes": 1062,
+      "sha256": "ce0b8795e44a72336556169311a6f0d0b36d3c1c37c6f4639d733e74555d55b7"
+    },
+    "qualified_Source": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-entry-diagnostic-nogame-a1465\\validation\\qualified-Source.json",
+      "bytes": 6749,
+      "sha256": "bd21e700b0fe2b41d24a0b7b4830618accaa8ce38e24b9e8629c91646f6a0bd5"
+    },
+    "Native_Source_FD": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-entry-source-drift-review-a1460\\delivery-final.json",
+      "bytes": 2702,
+      "sha256": "10a1ca0ea9293030890827061bfcf38a96227232b5097ac2388961ab7f300c88"
+    },
+    "diagnostic_contract": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-entry-source-drift-review-a1460\\diagnostic-mask-contract.json",
+      "bytes": 3026,
+      "sha256": "eea6de8fb577bdad3646bfc4cdc7298f611b6908a3e8029d76d59fa807dc61da"
+    },
+    "NoGame_FD": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-entry-diagnostic-nogame-a1465\\validation\\NoGame-delivery-final.json",
+      "bytes": 701,
+      "sha256": "b0ccbcc4d683447fb425823c68eaee735d7899f88b487ade9c730c6ac39dd8e9"
+    },
+    "adoption": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-manage-diagnostic-pair-source-a1470\\exact-Native2-adoption.json",
+      "bytes": 4713,
+      "sha256": "ae52d652d690d33f4a92fd7a460db5b8b606ff444a137c31d6bd5474d4ca71d1"
+    },
+    "new_admission": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\Living-manage-diag-Native280-Java1-admission-a1465.json",
+      "bytes": 2228,
+      "sha256": "34fac01af2b2859e5b0ee725a741e5cc1caade7871977808f68a8af1f89a5165"
+    }
+  }
+}

@@ -5,7 +5,9 @@
 #include <limits>
 #include <mutex>
 #include <windows.h>
-namespace xar::ck3_121003::build26785313 {namespace {
+namespace xar::ck3_121003::build26785313 {
+void AppendLivingEntryRawDifference267V1(const LivingEntryRaw267V1&,const LivingEntryRaw267V1&,std::string&)noexcept;
+namespace {
 using A=LivingEntryAction267V1;using Status=LivingEntryStatus267V1;
 [[maybe_unused]]std::uint64_t Wall(){const auto t=std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();return t>0?static_cast<std::uint64_t>(t):0;}
 [[maybe_unused]]bool Time(const LivingEntryContext267V1&q){const auto wall=Wall();return wall&&wall<q.request.deadline_unix_ms&&q.monotonic_deadline_ms&&GetTickCount64()<q.monotonic_deadline_ms;}
@@ -29,6 +31,50 @@ using A=LivingEntryAction267V1;using Status=LivingEntryStatus267V1;
  }
 
  return true;
+}
+// Only compares already captured private copies after the original stale gate.
+// No extra capture/native call, public address, selector or authority change.
+[[maybe_unused]]void EntryDiffField(std::string&why,const char*key,std::uint64_t value){
+ if(why.size()>1400)return;why+=';';why+=key;why+='=';why+=std::to_string(value);
+}
+[[maybe_unused]]std::uint32_t EntryNodeDiff(const GuiWindowNodeV1&a,const GuiWindowNodeV1&z){
+ std::uint32_t m=0;
+ if(a.widget!=z.widget||a.vtable!=z.vtable||a.parent!=z.parent||a.context!=z.context||a.children!=z.children||a.name_data!=z.name_data)m|=1;
+ if(a.child_count!=z.child_count||a.child_capacity!=z.child_capacity)m|=2;
+ if(a.name_size!=z.name_size||a.name_capacity!=z.name_capacity)m|=4;
+ if(a.parent_index!=z.parent_index||a.depth!=z.depth||a.sibling_index!=z.sibling_index)m|=8;
+ if(a.flags!=z.flags)m|=16;if(a.visible!=z.visible||a.enabled!=z.enabled)m|=32;if(a.name!=z.name)m|=64;
+ return m;
+}
+[[maybe_unused]]void EntryNodeVectorDiff(std::string&why,const std::vector<GuiWindowNodeV1>&before,const std::vector<GuiWindowNodeV1>&after,const char*key){
+ std::uint32_t mask=before.size()!=after.size()?128U:0U;std::size_t first=4096;
+ for(std::size_t n=0;n<(std::min)(before.size(),after.size());++n){const auto m=EntryNodeDiff(before[n],after[n]);mask|=m;if(m&&first==4096)first=n;}
+ EntryDiffField(why,key,mask);
+ if(mask){EntryDiffField(why,"node_first",first);EntryDiffField(why,"nodes_b",before.size());EntryDiffField(why,"nodes_a",after.size());
+  if(first<before.size()&&first<after.size()){EntryDiffField(why,"flags_b",before[first].flags);EntryDiffField(why,"flags_a",after[first].flags);}}
+}
+[[maybe_unused]]void AppendLivingEntryFrameDifference(const LivingEntryFrame267V1&before,const LivingEntryFrame267V1&after,std::string&why)noexcept{
+ try{
+  std::uint64_t mask=0;const auto&a=before.inventory;const auto&z=after.inventory;
+  if(!a.facts_verified||!z.facts_verified||!Core(a.core,z.core))mask|=1;
+  if(a.game!=z.game||a.jomini!=z.jomini||a.actor!=z.actor||a.character_storage!=z.character_storage||a.data!=z.data||a.players!=z.players||a.player!=z.player)mask|=2;
+  if(a.connection_generation!=z.connection_generation)mask|=4;
+  if(before.manage.has_value()!=after.manage.has_value())mask|=8;
+  if(before.view.has_value()!=after.view.has_value())mask|=16;
+  if(before.manage&&after.manage){const auto&b=*before.manage;const auto&c=*after.manage;const auto&x=b.scene;const auto&y=c.scene;
+   if(!b.facts_verified||!c.facts_verified||!Core(b.core,c.core))mask|=32;
+   if(x.jomini!=y.jomini||x.gfx!=y.gfx||x.handler!=y.handler||x.context!=y.context||x.global!=y.global||x.list_root!=y.list_root||x.detail_root!=y.detail_root)mask|=64;
+   if(x.connection_generation!=y.connection_generation||x.wall_deadline!=y.wall_deadline)mask|=128;
+   if(x.list_visible!=y.list_visible||x.list_enabled!=y.list_enabled||x.detail_visible!=y.detail_visible||x.detail_enabled!=y.detail_enabled||x.owner_bound!=y.owner_bound)mask|=256;
+   if(x.hud!=y.hud)mask|=512;if(b.witness!=c.witness)mask|=1024;
+  }
+  if(before.view&&after.view){const auto&b=*before.view;const auto&c=*after.view;
+   if(!b.owner_observed||!c.owner_observed||b.gfx!=c.gfx||b.manager!=c.manager)mask|=2048;
+   if(!SameLivingGuiIdentity267V1(b.gui,c.gui))mask|=4096;
+  }
+  EntryDiffField(why,"frame_mask",mask);
+  if(before.manage&&after.manage){EntryNodeVectorDiff(why,before.manage->scene.hud,after.manage->scene.hud,"hud_mask");EntryNodeVectorDiff(why,before.manage->witness,after.manage->witness,"witness_mask");}
+ }catch(...){/* Diagnostics never alter the original refusal/cleanup outcome. */}
 }
 [[maybe_unused]]bool CaptureFrame(LivingEntryContext267V1&q,const ck3_11906::MainThreadExecutionStampV1&s,LivingEntryFrame267V1&out){
  if(!Time(q)||!q.mailbox||q.mailbox->offline_fixture||!q.connection_generation||
@@ -107,7 +153,11 @@ bool ExecuteLivingEntryInner267V1(LivingEntryContext267V1&q,[[maybe_unused]]cons
   q.monotonic_deadline_ms=(std::min)(q.monotonic_deadline_ms,lease.mono);
   LivingEntryFrame267V1 frame;LivingEntryRaw267V1 actual;
   if(!capture(frame,actual))return failed();
-  if(!Frame(frame,lease.frame)||!SameLivingEntryRaw267V1(actual,lease.raw))return reject(Status::stale_source,"living_entry_complete_physical_source_changed");
+  if(!Frame(frame,lease.frame)||!SameLivingEntryRaw267V1(actual,lease.raw)){
+   std::string why="living_entry_complete_physical_source_changed";
+   AppendLivingEntryFrameDifference(lease.frame,frame,why);AppendLivingEntryRawDifference267V1(lease.raw,actual,why);
+   return reject(Status::stale_source,why.c_str());
+  }
   if(state.claims.size()>=16||state.claim==(std::numeric_limits<std::uint64_t>::max)())return reject(Status::rejected,"living_entry_finite_claim_capacity");
   const auto claim=++state.claim;state.claims.emplace_back(std::string(q.request.id()),claim);
   lease.spent=true;state.once[action]=true;q.result.claim_sequence=claim;

@@ -181,6 +181,54 @@ bool ReadLivingEntryRaw267V1(const ReadonlyBindings&b,const LivingEntryFrame267V
 #endif
 }
 struct LivingEntryCallAccess267V1 {
+ static void AppendDifference(const LivingEntryRaw267V1&before,const LivingEntryRaw267V1&after,std::string&why)noexcept{
+  try{
+   const auto field=[&](const char*key,std::uint64_t value){if(why.size()>1400)return;why+=';';why+=key;why+='=';why+=std::to_string(value);};
+   std::uint64_t mask=0;
+   if(!before.cleanup_known||!after.cleanup_known||!before.state_||!after.state_)mask|=1;
+   if(before.source!=after.source)mask|=2;if(before.inventory!=after.inventory)mask|=4;
+   if(before.state_&&after.state_){const auto&a=*before.state_;const auto&z=*after.state_;const auto&x=a.inventory;const auto&y=z.inventory;
+    if(a.source!=z.source)mask|=8;
+    if(x.source!=y.source)mask|=16;
+    if(x.property!=y.property||x.inventory!=y.inventory||x.storage!=y.storage||x.fallback!=y.fallback||x.storage_rows!=y.storage_rows||x.storage_count!=y.storage_count)mask|=32;
+    if(x.artifacts!=y.artifacts||x.slots!=y.slots)mask|=64;
+    if(x.ids!=y.ids)mask|=128;if(x.artifact_rows!=y.artifact_rows)mask|=256;
+    if(x.slot_rows!=y.slot_rows)mask|=512;if(x.actor_references!=y.actor_references)mask|=1024;
+    if(a.view.has_value()!=z.view.has_value())mask|=2048;
+    if(a.view&&z.view&&*a.view!=*z.view)mask|=4096;
+    if(a.manage.has_value()!=z.manage.has_value())mask|=8192;
+    if(a.manage&&z.manage){const auto&b=*a.manage;const auto&c=*z.manage;
+     if(b.source!=c.source)mask|=16384;
+     if(b.list!=c.list||b.detail!=c.detail||b.definition!=c.definition||b.controller!=c.controller||b.shortcut_manager!=c.shortcut_manager||b.nav_widget!=c.nav_widget||b.rows!=c.rows)mask|=32768;
+     if(b.exact_model!=c.exact_model)mask|=65536;
+     if(b.modal_source!=c.modal_source)mask|=131072;
+     if(b.nav_callbacks!=c.nav_callbacks)mask|=262144;
+     if(b.native_read_entered!=c.native_read_entered||b.cleanup_known!=c.cleanup_known)mask|=524288;
+     const auto flags=[](const LivingManageSource267V1&s){return static_cast<unsigned>(s.list_found)|(static_cast<unsigned>(s.list_visible)<<1)|(static_cast<unsigned>(s.list_enabled)<<2)|(static_cast<unsigned>(s.detail_found)<<3)|(static_cast<unsigned>(s.detail_visible)<<4)|(static_cast<unsigned>(s.detail_enabled)<<5)|(static_cast<unsigned>(s.open_list_admissible)<<6)|(static_cast<unsigned>(s.complete_model_census)<<7)|(static_cast<unsigned>(s.blocked_by_visible_modal)<<8)|(static_cast<unsigned>(s.owner_bound)<<9)|(static_cast<unsigned>(s.confirm_admissible)<<10)|(static_cast<unsigned>(s.confirm_tooltip_observed)<<11)|(static_cast<unsigned>(s.other_decision_selected)<<12);};
+     field("manage_flags_b",flags(b.source));field("manage_flags_a",flags(c.source));
+     std::uint32_t public_mask=flags(b.source)!=flags(c.source)?1U:0U;
+     if(b.source.groups_count!=c.source.groups_count)public_mask|=2;if(b.source.total_model_rows!=c.source.total_model_rows)public_mask|=4;
+     if(b.source.widget_state!=c.source.widget_state)public_mask|=8;if(b.source.selected_decision!=c.source.selected_decision)public_mask|=16;
+     if(b.source.native_can_confirm!=c.source.native_can_confirm)public_mask|=32;if(b.source.rows!=c.source.rows)public_mask|=64;
+     if(b.source.confirm_tooltip!=c.source.confirm_tooltip)public_mask|=128;
+     field("manage_source_mask",public_mask);field("public_rows_b",b.source.rows.size());field("public_rows_a",c.source.rows.size());
+     field("model_bytes_b",b.exact_model.size());field("model_bytes_a",c.exact_model.size());
+     field("modal_bytes_b",b.modal_source.size());field("modal_bytes_a",c.modal_source.size());
+     field("callbacks_b",b.nav_callbacks.size());field("callbacks_a",c.nav_callbacks.size());
+     std::uint32_t callbacks=0;std::size_t first=128;
+     for(std::size_t n=0;n<(std::min)(b.nav_callbacks.size(),c.nav_callbacks.size());++n){const auto&u=b.nav_callbacks[n];const auto&v=c.nav_callbacks[n];std::uint32_t one=0;
+      if(u.object!=v.object||u.vtable!=v.vtable||u.invoke!=v.invoke)one|=1;
+      if(u.binding!=v.binding)one|=2;if(u.object_header!=v.object_header)one|=4;if(u.native_source!=v.native_source)one|=8;
+      callbacks|=one;if(one&&first==128)first=n;
+     }field("callback_mask",callbacks);if(callbacks)field("callback_first",first);
+    }
+    field("artifacts_b",x.source.artifacts.size());field("artifacts_a",y.source.artifacts.size());
+    field("slots_b",x.source.slots.size());field("slots_a",y.source.slots.size());
+   }
+   field("raw_mask",mask);
+  }catch(...){/* Only already captured copies; never convert stale to UNKNOWN. */}
+ }
+
  static LivingEntryCall267V1 Submit(const ReadonlyBindings&b,const LivingEntryFrame267V1&f,
   const LivingEntryRequest267V1&q,std::uint64_t mono,const LivingEntryRaw267V1&issued)noexcept{
   using A=LivingEntryAction267V1;LivingEntryCall267V1 out;
@@ -204,6 +252,9 @@ struct LivingEntryCallAccess267V1 {
   }catch(...){out.cleanup_known=false;return out;}
  }
 };
+void AppendLivingEntryRawDifference267V1(const LivingEntryRaw267V1&before,const LivingEntryRaw267V1&after,std::string&why)noexcept{
+ LivingEntryCallAccess267V1::AppendDifference(before,after,why);
+}
 LivingEntryCall267V1 CallLivingEntryRaw267V1(const ReadonlyBindings&b,const LivingEntryFrame267V1&f,
  const LivingEntryRequest267V1&q,std::uint64_t mono,const LivingEntryRaw267V1&issued)noexcept{
 #if defined(XAR_CK3_ENABLE_121003_26785313_LIVING_ENTRY_V1) && XAR_CK3_ENABLE_121003_26785313_LIVING_ENTRY_V1 && defined(XAR_CK3_ENABLE_121003_26785313_LIVING_INVENTORY_V1) && XAR_CK3_ENABLE_121003_26785313_LIVING_INVENTORY_V1
