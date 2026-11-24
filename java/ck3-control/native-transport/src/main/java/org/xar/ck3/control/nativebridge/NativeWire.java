@@ -103,7 +103,22 @@ public final class NativeWire {
                     "fixed Living claim has no caller selector or revision");
             integer(row.get("deadline_unix_ms"), BigInteger.ONE, UINT64_MAX);
         }
-        require(revision.isPresent() || snapshotRevision.isPresent() || councilStatus || livingFixed, "outgoing primitive requires its actual revision profile");
+        boolean zg361Ae2 = operation.equals(CurrentZg361Ae2.STEP);
+        if (zg361Ae2) {
+            Set<String> fields = new HashSet<>(); row.fieldNames().forEachRemaining(fields::add);
+            require(fields.equals(Set.of("type", "protocol_version", "request_id", "step", "actor", "target", "arguments", "deadline_unix_ms"))
+                    && revision.isEmpty() && snapshotRevision.isEmpty(), "fixed AE2 requires its strict8 revisionless profile");
+            require(text(row.get("actor")).equals("local_player"), "fixed AE2 actor must remain local_player");
+            ObjectNode target = object(row.get("target"));
+            require(target.size() == 1 && text(target.get("kind")).equals("none"), "fixed AE2 has no caller target");
+            ObjectNode arguments = object(row.get("arguments"));
+            require(arguments.size() == 1 && arguments.has("zg361_ae2"), "fixed AE2 arguments contain only its own claim");
+            ObjectNode claim = object(arguments.get("zg361_ae2")); Set<String> keys = new HashSet<>(); claim.fieldNames().forEachRemaining(keys::add);
+            require(keys.equals(Set.of("schema", "game_version", "executable_sha256", "adapter_id", "backend", "action", "expected_core", "provider_generation", "query_sequence")),
+                    "fixed AE2 claim has no caller selector or revision");
+            integer(row.get("deadline_unix_ms"), BigInteger.ONE, UINT64_MAX);
+        }
+        require(revision.isPresent() || snapshotRevision.isPresent() || councilStatus || livingFixed || zg361Ae2, "outgoing primitive requires its actual revision profile");
         return new ExecuteRequest(id, operation, revision, snapshotRevision, new Bytes(JSON.writeValueAsBytes(additional)), new Bytes(packet));
     }
 

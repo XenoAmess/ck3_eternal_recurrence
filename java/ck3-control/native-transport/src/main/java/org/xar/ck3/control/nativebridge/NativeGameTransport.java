@@ -5976,6 +5976,220 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         unresolvedLivingFamily=unknown;if(action)unresolvedCoreControl=unknown;return unknown;
     }
 
+    // Fixed AE2 finite0day case: only authentic private observations convey custody.
+    private CoreReceived zg361Ae2InitialCore;
+    private AckReceived zg361Ae2LastAction;
+    private Unknown unresolvedZg361Ae2;
+    private boolean zg361Ae2PresentConfirmed,zg361Ae2PayAbsenceConfirmed;
+    private Zg361Ae2Prepared zg361Ae2PayOriginal;
+    private final Set<CoreReceived> zg361Ae2QueryCores=java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<>());
+    private final Set<String> zg361Ae2Attempted=new HashSet<>();
+
+    public synchronized void beginCurrentZg361Ae2Case(CoreReceived actual)throws IOException {
+        if(zg361Ae2InitialCore!=null)throw new IOException("Original AE2 finite case already captured by this Receiver");
+        requireZg361Ae2Core(actual,actual==null?chronologyClock.instant():actual.validUntil);
+        zg361Ae2InitialCore=actual;
+    }
+    private void requireZg361Ae2Core(CoreReceived before,Instant until)throws IOException {
+        Objects.requireNonNull(before);Objects.requireNonNull(until);requireCoreOriginal(before,until);
+        if(applicationExitAttempted||before.controlAttempted||unresolvedCoreControl!=null||unresolvedFullClockControl!=null
+                ||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null||unresolvedZg361Ae2!=null)
+            throw new IOException("Actual unused Core and resolved background owner scope required for AE2");
+        if(!(before.frame instanceof CoreFrame.Partial core)||core.build()!=ExactCk3Build.CK3_121003_STEAM_26785313)
+            throw new IOException("Exact current267 actual Core required for AE2");
+        CurrentZg361Ae2.requirePrefix(core.prefix());
+    }
+    public synchronized void requireCurrentZg361Ae2ZeroDay(CoreReceived actual)throws IOException {
+        requireZg361Ae2Scope(actual,actual==null?chronologyClock.instant():actual.validUntil);
+    }
+    private void requireZg361Ae2Scope(CoreReceived before,Instant until)throws IOException {
+        requireZg361Ae2Core(before,until);
+        if(zg361Ae2InitialCore==null||!((CoreFrame.Partial)before.frame).prefix().equals(((CoreFrame.Partial)zg361Ae2InitialCore.frame).prefix()))
+            throw new IOException("AE2 finite case crossed actual actor/date/speed/paused/player/map/alive Core");
+        var anchor=zg361Ae2InitialCore.custody;anchor.verify(zg361Ae2InitialCore.original);
+        if(!anchor.session().equals(session())||!anchor.custodyEpoch().equals(custodyEpoch)
+                ||originalRequestChronology(zg361Ae2InitialCore.original.requestId()).filter(anchor::equals).isEmpty())
+            throw new IOException("AE2 case crossed original Game/session/connection/custody");
+        if(zg361Ae2LastAction!=null) {
+            var original=originalRequestChronology(zg361Ae2LastAction.requestId()).orElseThrow(()->new IOException("Original AE2 action chronology unavailable"));
+            original.verify(zg361Ae2LastAction);
+            if(before.custody.writeEntered().order().compareTo(original.responseReceived().order())<=0)
+                throw new IOException("Independent actual after-Core must follow THIS original AE2 action ACK");
+        }
+    }
+    private void requireZg361Ae2Custody(AckReceived ack,NativeRequestChronology actual,NativeRequestChronology before,Instant until)throws IOException {
+        actual.verify(ack);Instant now=chronologyClock.instant();
+        if(!actual.session().equals(session())||!actual.custodyEpoch().equals(custodyEpoch)
+                ||originalRequestChronology(ack.requestId()).filter(actual::equals).isEmpty()
+                ||actual.writeEntered().order().compareTo(before.responseReceived().order())<=0
+                ||actual.responseReceived().observedAt().isAfter(until)||actual.responseReceived().observedAt().isAfter(now))
+            throw new IOException("Actual AE2 request escaped original Source/ACK/session/deadline chronology");
+    }
+    public sealed interface Zg361Ae2Read permits Zg361Ae2Received,Zg361Ae2Unavailable {DispatchOutcome original();}
+    public static final class Zg361Ae2Received implements Zg361Ae2Read {
+        private final NativeGameTransport issuer;private final CoreReceived before;private final CurrentZg361Ae2Result frame;
+        private final AckReceived original;private final NativeRequestChronology custody;private final Instant until;
+        private boolean attempted;private Zg361Ae2Prepared prepared;
+        private Zg361Ae2Received(NativeGameTransport i,CoreReceived b,CurrentZg361Ae2Result f,AckReceived a,NativeRequestChronology c,Instant u){issuer=i;before=b;frame=f;original=a;custody=c;until=u;}
+        public CurrentZg361Ae2Result frame(){return frame;}public AckReceived original(){return original;}public Instant validUntil(){return until;}
+        public void requireOriginal(NativeGameTransport actual,Instant deadline)throws IOException{actual.requireZg361Ae2Original(this,deadline);}
+    }
+    public record Zg361Ae2Unavailable(DispatchOutcome original,String reason)implements Zg361Ae2Read {
+        public Zg361Ae2Unavailable{Objects.requireNonNull(original);Objects.requireNonNull(reason);}
+    }
+    public static final class Zg361Ae2Prepared {
+        private final NativeGameTransport issuer;private final Zg361Ae2Received query;private final CurrentZg361Ae2.Action action;
+        private final String id,onceKey;private final NativeWire.Bytes packet;private final java.util.OptionalInt actualInstance;
+        private boolean called;private DispatchOutcome outcome;private CurrentZg361Ae2Result latest;
+        private Zg361Ae2Prepared(NativeGameTransport i,Zg361Ae2Received q,CurrentZg361Ae2.Action a,String n,byte[] p,String key,java.util.OptionalInt instance){issuer=i;query=q;action=a;id=n;packet=new NativeWire.Bytes(p);onceKey=key;actualInstance=instance;}
+        public String requestId(){return id;}public Instant deadline(){return query.until;}public NativeWire.Bytes originalPacket(){return packet;}
+        public CurrentZg361Ae2.Action action(){return action;}public Optional<CurrentZg361Ae2Result> latestFrame(){return Optional.ofNullable(latest);}
+        public java.util.OptionalInt actualInstanceId(){return actualInstance;}
+    }
+    private Zg361Ae2Received latestZg361Ae2;
+    /** Exact production strict8 factory, also consumed by the original C++ request inverse test. */
+    static byte[] currentZg361Ae2Packet(String id,NativeRequest request,BigInteger deadline)throws IOException {
+        Objects.requireNonNull(request);CurrentLivingInventoryQuery.unsigned(deadline,true);
+        if(!request.step().equals(CurrentZg361Ae2.STEP))throw new IOException("Only the fixed AE2 step belongs to this revisionless profile");
+        var fields=StrictJson.object(NativeWire.parse(request.additionalFields().bytes()),Set.of("arguments","zg361_ae2"));
+        if(!fields.get("arguments").isObject()||!fields.get("arguments").isEmpty())throw new IOException("Typed AE2 request must not contain caller arguments");
+        var claim=StrictJson.object(fields.get("zg361_ae2"),Set.of("schema","game_version","executable_sha256","adapter_id","backend","action","expected_core","provider_generation","query_sequence"));
+        var action=CurrentZg361Ae2.Action.parse(NativeWire.text(claim.get("action")));
+        if(!request.requiredCapability().equals(Optional.of(action.capability())))throw new IOException("Actual AE2 action capability differs from typed request");
+        var wire=StrictJson.object().put("type","execute_step").put("protocol_version",1).put("request_id",id).put("step",request.step())
+                .put("actor","local_player").put("deadline_unix_ms",deadline);
+        wire.putObject("target").put("kind","none");wire.putObject("arguments").set("zg361_ae2",claim);
+        byte[] packet=NativeWire.packet(StrictJson.canonical(wire));NativeWire.decodeExecuteRequest(packet);return packet;
+    }
+    private byte[] zg361Ae2Packet(String id,CurrentZg361Ae2.Action action,CoreReceived before,BigInteger gen,BigInteger seq,Instant until)throws IOException {
+        if(!(before.frame instanceof CoreFrame.Partial core))throw new IOException("Actual exact current267 Core required");
+        return currentZg361Ae2Packet(id,CurrentZg361Ae2.request(core,action,gen,seq),BigInteger.valueOf(until.toEpochMilli()));
+    }
+    private static CurrentZg361Ae2Result.Status zg361Ae2DispatchStatus(CurrentZg361Ae2.Action action)throws IOException {
+        return switch(action) {
+            case OPEN_CONTROLS_LIST,OPEN_PRESENT_DETAIL,OPEN_VERIFY_DETAIL->CurrentZg361Ae2Result.Status.NAVIGATION_DISPATCHED;
+            case CHOOSE_PAY_NOW->CurrentZg361Ae2Result.Status.SELECTION_DISPATCHED;
+            case CONFIRM_PRESENT,CONFIRM_VERIFY->CurrentZg361Ae2Result.Status.CONFIRMATION_DISPATCHED;
+            default->throw new IOException("Readonly AE2 action cannot dispatch");
+        };
+    }
+    private void requireZg361Ae2Frame(CurrentZg361Ae2Result frame,CurrentZg361Ae2.Action action,CoreReceived before)throws IOException {
+        if(frame.action()!=action||!frame.cleanupKnown()||frame.status()==CurrentZg361Ae2Result.Status.INDETERMINATE)
+            throw new IOException("Actual AE2 action or cleanup UNKNOWN");
+        // A known refusal keeps its actual SourceNull/why/Core/generations; only a successful source is joined to the requested boundary.
+        if(frame.source().isPresent()) {
+            if(!frame.factsBefore().equals(Optional.of(((CoreFrame.Partial)before.frame).prefix()))
+                    ||frame.owner().isEmpty()||!frame.owner().orElseThrow().connectionGeneration().equals(hello.connectionGeneration())
+                    ||frame.source().orElseThrow().kind()!=action.sourceKind())throw new IOException("AE2 Source crossed original Core/connection/kind");
+            var events=frame.source().orElseThrow().events();
+            if(action==CurrentZg361Ae2.Action.CHOOSE_PAY_NOW&&events.isPresent()&&events.orElseThrow().ae2().isPresent()
+                    &&events.orElseThrow().ae2().orElseThrow().recipientCharacterId()!=Integer.toUnsignedLong(((CoreFrame.Partial)before.frame).prefix().playedCharacterId()))
+                throw new IOException("Actual AE2 recipient differs from current full actor");
+        }
+    }
+    private void requireZg361Ae2Original(Zg361Ae2Received query,Instant until)throws IOException {
+        if(query==null||query.issuer!=this||query!=latestZg361Ae2||query.attempted)throw new IOException("Original unused private AE2 query required");
+        requireZg361Ae2Scope(query.before,until);
+        if(until.isAfter(query.until)||!chronologyClock.instant().isBefore(query.until))throw new IOException("Original AE2 query deadline expired or extended");
+        requireZg361Ae2Custody(query.original,query.custody,query.before.custody,query.until);
+        var actual=CurrentZg361Ae2Result.decodeOutcome(query.original);requireZg361Ae2Frame(actual,query.frame.action(),query.before);
+        if(!zg361Ae2QueryCores.contains(query.before)||!actual.equals(query.frame)||actual.status()!=CurrentZg361Ae2Result.Status.AVAILABLE
+                ||!Arrays.equals(query.original.outbound().orElseThrow().originalPacket(),zg361Ae2Packet(query.original.requestId(),query.frame.action(),query.before,BigInteger.ZERO,BigInteger.ZERO,query.until)))
+            throw new IOException("Original AE2 packet/full Source/receipt/deadline changed");
+    }
+    private DispatchOutcome zg361Ae2Failure(String id,DispatchOutcome out,Exception failure,boolean action) {
+        if(!sentRequestIds.contains(id)||out instanceof RejectedBeforeDispatch)return out!=null?out:zero(id,reason(failure));
+        var unknown=out instanceof Unknown actual?actual:new Unknown(id,"Original AE2 Source/cleanup/custody UNKNOWN; keep claim, never replay: "+reason(failure),retainedOutbound(id),out instanceof AckReceived ack?Optional.of(ack.originalFrame()):Optional.empty());
+        unresolvedZg361Ae2=unknown;if(action)unresolvedCoreControl=unknown;return unknown;
+    }
+    public synchronized Zg361Ae2Read readCurrentZg361Ae2(CoreReceived before,CurrentZg361Ae2.Action action,Instant deadline)throws InterruptedException {
+        if(unresolvedZg361Ae2!=null)return new Zg361Ae2Unavailable(unresolvedZg361Ae2,"Original AE2 family UNKNOWN");
+        String id="zg361-ae2-query-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome out=null;
+        try {
+            requireZg361Ae2Scope(before,deadline);
+            if(action==null||!action.queryOnly()||zg361Ae2QueryCores.contains(before)||!hello.capabilities().contains(action.capability())||sentRequestIds.size()>=maximumSubmissions)
+                throw new IOException("Fresh original Core and actual AE2 query capability required");
+            Instant until=readDeadline(deadline);byte[] packet=zg361Ae2Packet(id,action,before,BigInteger.ZERO,BigInteger.ZERO,until);
+            out=retainReadOutcome(dispatchRead(id,packet,until,()->{requireBackgroundAtCoreWrite();try{requireZg361Ae2Scope(before,until);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
+                if(!zg361Ae2QueryCores.add(before))throw new IllegalStateException("Original AE2 query Core already consumed");latestZg361Ae2=null;}));
+            if(!(out instanceof AckReceived ack))return new Zg361Ae2Unavailable(zg361Ae2Failure(id,out,new IOException("Actual AE2 query ACK unavailable"),false),"Original AE2 query ACK unavailable");
+            var frame=CurrentZg361Ae2Result.decodeOutcome(ack);requireZg361Ae2Frame(frame,action,before);var custody=originalRequestChronology(id).orElseThrow(()->new IOException("Original AE2 query chronology unavailable"));
+            requireZg361Ae2Custody(ack,custody,before.custody,until);
+            if(frame.status()!=CurrentZg361Ae2Result.Status.AVAILABLE)return new Zg361Ae2Unavailable(ack,frame.unavailableReason().orElseThrow());
+            var query=new Zg361Ae2Received(this,before,frame,ack,custody,until);latestZg361Ae2=query;requireZg361Ae2Original(query,until);return query;
+        }catch(IOException|RuntimeException invalid){return new Zg361Ae2Unavailable(zg361Ae2Failure(id,out,invalid,false),reason(invalid));}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();return new Zg361Ae2Unavailable(zg361Ae2Failure(id,out,interrupted,false),"Original AE2 read interrupted after write");}
+    }
+    private String zg361Ae2OnceKey(CurrentZg361Ae2.Action action) {
+        return action==CurrentZg361Ae2.Action.OPEN_CONTROLS_LIST?action.wire()+(zg361Ae2PayAbsenceConfirmed?":after-pay":":before-present"):action.wire();
+    }
+    private void requireZg361Ae2Admission(Zg361Ae2Received query,CurrentZg361Ae2.Action action)throws IOException {
+        if(action==null||action.queryOnly()||action.sourceKind()!=query.frame.action().sourceKind()||!query.frame.source().orElseThrow().actionAdmissible(action))
+            throw new IOException("Actual complete same-kind AE2 query does not admit this fixed action");
+        if(action==CurrentZg361Ae2.Action.CHOOSE_PAY_NOW&&!zg361Ae2PresentConfirmed)
+            throw new IOException("AE2 payment requires THIS Receiver's original fixed presentation ACK");
+        if(action==CurrentZg361Ae2.Action.CHOOSE_PAY_NOW
+                &&query.frame.source().orElseThrow().events().orElseThrow().ae2().orElseThrow().recipientCharacterId()
+                !=Integer.toUnsignedLong(((CoreFrame.Partial)query.before.frame).prefix().playedCharacterId()))
+            throw new IOException("Actual private AE2 payment recipient differs from current full actor");
+        if((action==CurrentZg361Ae2.Action.OPEN_VERIFY_DETAIL||action==CurrentZg361Ae2.Action.CONFIRM_VERIFY)&&!zg361Ae2PayAbsenceConfirmed)
+            throw new IOException("AE2 verification requires independent original-instance absence after THIS payment ACK");
+        if(zg361Ae2Attempted.contains(zg361Ae2OnceKey(action))||zg361Ae2Attempted.size()>=7)
+            throw new IOException("Original AE2 action/phase already attempted or finite case capacity reached");
+    }
+    public synchronized Zg361Ae2Prepared prepareCurrentZg361Ae2(Zg361Ae2Received query,CurrentZg361Ae2.Action action)throws IOException {
+        if(query!=null&&query.issuer==this&&query.prepared!=null){if(query.prepared.action!=action)throw new IOException("Original AE2 query prepared for another action");return query.prepared;}
+        if(query==null)throw new IOException("Original private AE2 query missing");requireZg361Ae2Original(query,query.until);requireZg361Ae2Admission(query,action);
+        if(!hello.capabilities().contains(action.capability()))throw new IOException("Actual fixed AE2 action capability absent");
+        String id="zg361-ae2-action-"+UUID.randomUUID().toString().replace("-","");java.util.OptionalInt instance=action==CurrentZg361Ae2.Action.CHOOSE_PAY_NOW
+                ?java.util.OptionalInt.of(query.frame.source().orElseThrow().events().orElseThrow().ae2().orElseThrow().instanceId()):java.util.OptionalInt.empty();
+        return query.prepared=new Zg361Ae2Prepared(this,query,action,id,zg361Ae2Packet(id,action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),query.until),zg361Ae2OnceKey(action),instance);
+    }
+    public synchronized DispatchOutcome submitCurrentZg361Ae2(Zg361Ae2Prepared prepared)throws InterruptedException {
+        if(prepared!=null&&prepared.issuer==this&&prepared.outcome!=null)return prepared.outcome;
+        if(unresolvedZg361Ae2!=null)return unresolvedZg361Ae2;
+        String id=prepared==null?"zg361-ae2-invalid-"+UUID.randomUUID().toString().replace("-",""):prepared.id;DispatchOutcome out=null;
+        try {
+            if(prepared==null||prepared.issuer!=this||prepared.called||prepared.query.prepared!=prepared)throw new IOException("Original unused private AE2 preparation required");
+            var query=prepared.query;requireZg361Ae2Original(query,query.until);requireZg361Ae2Admission(query,prepared.action);
+            if(!hello.capabilities().contains(prepared.action.capability())||sentRequestIds.size()>=maximumSubmissions||!prepared.onceKey.equals(zg361Ae2OnceKey(prepared.action))
+                    ||!Arrays.equals(prepared.packet.value(),zg361Ae2Packet(id,prepared.action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),query.until)))
+                throw new IOException("Original AE2 capability/body/phase/lease/deadline changed");
+            out=dispatch(id,prepared.packet.value(),query.until,()->{requireBackgroundAtCoreWrite();try{requireZg361Ae2Original(query,query.until);requireZg361Ae2Admission(query,prepared.action);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
+                if(!zg361Ae2Attempted.add(prepared.onceKey))throw new IllegalStateException("Original AE2 action/phase already attempted");
+                prepared.called=true;query.attempted=true;query.before.controlAttempted=true;latestZg361Ae2=null;heldSnapshotInvalidated=true;});
+            if(out instanceof Unknown unknown){unresolvedZg361Ae2=unknown;unresolvedCoreControl=unknown;return prepared.outcome=unknown;}
+            if(out instanceof AckReceived ack) {
+                var frame=CurrentZg361Ae2Result.decodeOutcome(ack);requireZg361Ae2Frame(frame,prepared.action,query.before);
+                requireZg361Ae2Custody(ack,originalRequestChronology(id).orElseThrow(),query.custody,query.until);
+                if(frame.source().isPresent()&&(!frame.source().equals(query.frame.source())||!frame.factsBefore().equals(query.frame.factsBefore())
+                        ||!frame.providerGeneration().equals(query.frame.providerGeneration())||!frame.querySequence().equals(query.frame.querySequence())))
+                    throw new IOException("AE2 dispatch rebound immutable actual beforeSource/Core/query lease");
+                prepared.latest=frame;zg361Ae2LastAction=ack;
+                if(frame.status()==zg361Ae2DispatchStatus(prepared.action)) {
+                    if(prepared.action==CurrentZg361Ae2.Action.CONFIRM_PRESENT)zg361Ae2PresentConfirmed=true;
+                    if(prepared.action==CurrentZg361Ae2.Action.CHOOSE_PAY_NOW)zg361Ae2PayOriginal=prepared;
+                }
+                // Any known0effect refusal stays its authentic ACK and spent action; never relabel it applied or retry it.
+            }
+            return prepared.outcome=out;
+        }catch(IOException|RuntimeException invalid){var failure=zg361Ae2Failure(id,out,invalid,true);if(prepared!=null&&prepared.issuer==this)prepared.outcome=failure;return failure;}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();var failure=zg361Ae2Failure(id,out,interrupted,true);if(prepared!=null&&prepared.issuer==this)prepared.outcome=failure;return failure;}
+    }
+    /** Only independent full census after THIS typed15 ACK can advance the private verification/list-reopen phase. */
+    public synchronized boolean currentZg361Ae2EventAbsent(Zg361Ae2Prepared original,Zg361Ae2Received after)throws IOException {
+        if(original==null||original.issuer!=this||original!=zg361Ae2PayOriginal||original.actualInstance.isEmpty()
+                ||!(original.outcome instanceof AckReceived ack)||original.latest==null||original.latest.status()!=CurrentZg361Ae2Result.Status.SELECTION_DISPATCHED)
+            throw new IOException("Original actual AE2 fixed payment ACK required");
+        if(after==null)throw new IOException("Original independent AE2 aftercensus unavailable");requireZg361Ae2Original(after,after.until);
+        var custody=originalRequestChronology(ack.requestId()).orElseThrow(()->new IOException("Original AE2 payment chronology unavailable"));custody.verify(ack);
+        if(after.frame.action()!=CurrentZg361Ae2.Action.QUERY_AE2||after.before.custody.writeEntered().order().compareTo(custody.responseReceived().order())<=0
+                ||!after.frame.factsBefore().equals(original.query.frame.factsBefore()))throw new IOException("Independent same-Core after-ACK AE2 census required");
+        var events=after.frame.source().orElseThrow().events().orElseThrow();if(!events.censusComplete())throw new IOException("Complete actual aftercensus required");
+        boolean absent=events.census().stream().noneMatch(e->e.instanceId()==original.actualInstance.orElseThrow());
+        if(absent)zg361Ae2PayAbsenceConfirmed=true;return absent;
+    }
+
     public sealed interface LivingEntryRead permits LivingEntryReceived,LivingEntryUnavailable {DispatchOutcome original();}
     public static final class LivingEntryReceived implements LivingEntryRead {
         private final NativeGameTransport issuer;private final CoreReceived before;private final CurrentLivingEntryResult frame;

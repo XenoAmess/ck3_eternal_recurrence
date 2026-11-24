@@ -49,6 +49,9 @@ import org.xar.ck3.control.nativebridge.CurrentLivingEntryResult;
 import org.xar.ck3.control.nativebridge.CurrentLivingUi;
 import org.xar.ck3.control.nativebridge.CurrentLivingUiSource;
 import org.xar.ck3.control.nativebridge.CurrentLivingUiResult;
+import org.xar.ck3.control.nativebridge.CurrentZg361Ae2;
+import org.xar.ck3.control.nativebridge.CurrentZg361Ae2Source;
+import org.xar.ck3.control.nativebridge.CurrentZg361Ae2Result;
 import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFrame;
 import org.xar.ck3.control.nativebridge.capabilities.registry.FrontendMenuFrameV1;
 import org.xar.ck3.control.nativebridge.capabilities.registry.FrontendMenuFrameV1PublicCodec;
@@ -189,6 +192,8 @@ public final class NativeOwnerSnapshotMain268 {
         ObjectNode config = StrictJson.object(StrictJson.parse(configBytes, SMALL), Set.of("schema", "owner_descriptor",
                 "overall_timeout_seconds", "read_timeout_seconds", "maximum_frames_per_operation"), Set.of("core_prefix_only", "mode", "control_step", "maximum_status_polls", "status_poll_interval_ms", "window_name", "expected_source_rite_id", "checkpoint_archive_path", "maximum_checkpoint_bytes", "checkpoint_observation_attempts", "checkpoint_poll_interval_ms", "previous_checkpoint_source", "previous_checkpoint_archive", "navigation_action", "rite_action", "maximum_confirmation_polls", "target_character_id", "cb_key", "tuple_intent", "maximum_warning_polls", "warning_poll_interval_ms", "instance_id", "decision_key", "target_threshold", "product", "control", "setting", "catalog", "choice_key", "phase", "baseline_progress", "personal_key", "event_role", "status_poll_delay_ms", "maximum_core_polls", "core_poll_interval_ms", "confirmation_poll_interval_ms", "text"));
         ObservationMode observationMode=observationMode(config);
+        boolean currentZg361Ae2=observationMode==ObservationMode.CURRENT_ZG361_AE2;
+        Zg361Ae2Config zg361Ae2Config=currentZg361Ae2?currentZg361Ae2Config(config):null;
         boolean currentLivingOriginal=observationMode==ObservationMode.CURRENT_LIVING_ORIGINAL;
         LivingOriginalConfig livingConfig=currentLivingOriginal?currentLivingOriginalConfig(config):null;
         boolean currentRmtmRemaining=observationMode==ObservationMode.CURRENT_RMTM_REMAINING;
@@ -445,19 +450,22 @@ public final class NativeOwnerSnapshotMain268 {
                 .put("read_calls",0).put("continue_calls",0).put("native_callback_returned",false).put("continuation_confirmed",false).put("physical_save_confirmed",false).put("save_calls",0);
         if(currentFrontendMenu)result.put("schema","xar.native-owner-current-menu/v1").put("mode",currentFrontendQuit?"current_frontend_menu_quit":"current_frontend_menu")
                 .put("read_calls",0).put("quit_calls",0).put("world_core_fabricated",false).put("application_exit_confirmed",false).put("game_started_confirmed",false).put("physical_save_confirmed",false);
+        if(currentZg361Ae2)initializeCurrentZg361Ae2Result(result,owner.machineId());
         stage = "ATTACH";
         try (var supervisor = WindowsJobProcess.retainReadOnlyProcess(owner.supervisorIdentity().pid())) {
             requireSupervisor(supervisor, owner.supervisorIdentity());
-            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,currentLivingOriginal?livingConfig.submissions():currentRmtmRemaining?rmtmConfig.submissions():currentRmtmTitleQuery?2:currentCcc?cccConfig.submissions():currentStockBookmark1070?stockBookmark1070Config.submissions():currentRiteCreationBlockers?2:currentRiteText?riteTextConfig.submissions():currentRiteCreate?riteCreateConfig.submissions():currentDesInitGuard?2:currentStockSeed?stockSeedConfig.submissions():currentTed?tedConfig.submissions():currentLyd?lydConfig.mode().submissions():currentSupermanSavedBaseline?3:currentSupermanHealth?(healthConfig.mode()==SupermanHealthMode.QUERY?2:healthConfig.mode()==SupermanHealthMode.BASELINE_SAVE_AND_BEGIN?5:3):currentCourtierChoices?(choicesConfig.action()==CurrentCourtierChoices.Action.QUERY_CHOICES?2:3):currentCourtierConfiguration?(configurationConfig.action()==CurrentCourtierConfiguration.Action.QUERY_CONFIGURATION?2:3):currentDecisionsClose?(decisionsCloseAction==CurrentDecisionsClose.Action.QUERY_CLOSE?2:3):currentCourtierControls?(courtierConfig.action()==CurrentCourtierControls.Action.QUERY_CONTROL?2:3):currentXqolThreshold?(thresholdConfig.action()==CurrentXqolThreshold.Action.QUERY_THRESHOLD?2:3):currentXqolPrompt?(xqolPromptAction==CurrentXqolPrompt.Action.QUERY_PROMPT?2:3):currentCuratedDecision?(curatedConfig.action()==CurrentCuratedDecisions.Action.QUERY?2:3):currentFullscreenEvent?(acknowledgeKnownIntro?3:2):currentLetterSet?(letterSetReply?3:2):djcSelectedCost?(djcCostPreview?9:3):currentLetter?(knownLetterReply?3:2):djcUiMode?(djcUiSubmit?declarationConfig.maximumWarningPolls()+12:2):currentSuccession?(continueSuccession?2:1):currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||aubObserver||djcQuery||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
+            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,currentZg361Ae2?zg361Ae2Config.submissions():currentLivingOriginal?livingConfig.submissions():currentRmtmRemaining?rmtmConfig.submissions():currentRmtmTitleQuery?2:currentCcc?cccConfig.submissions():currentStockBookmark1070?stockBookmark1070Config.submissions():currentRiteCreationBlockers?2:currentRiteText?riteTextConfig.submissions():currentRiteCreate?riteCreateConfig.submissions():currentDesInitGuard?2:currentStockSeed?stockSeedConfig.submissions():currentTed?tedConfig.submissions():currentLyd?lydConfig.mode().submissions():currentSupermanSavedBaseline?3:currentSupermanHealth?(healthConfig.mode()==SupermanHealthMode.QUERY?2:healthConfig.mode()==SupermanHealthMode.BASELINE_SAVE_AND_BEGIN?5:3):currentCourtierChoices?(choicesConfig.action()==CurrentCourtierChoices.Action.QUERY_CHOICES?2:3):currentCourtierConfiguration?(configurationConfig.action()==CurrentCourtierConfiguration.Action.QUERY_CONFIGURATION?2:3):currentDecisionsClose?(decisionsCloseAction==CurrentDecisionsClose.Action.QUERY_CLOSE?2:3):currentCourtierControls?(courtierConfig.action()==CurrentCourtierControls.Action.QUERY_CONTROL?2:3):currentXqolThreshold?(thresholdConfig.action()==CurrentXqolThreshold.Action.QUERY_THRESHOLD?2:3):currentXqolPrompt?(xqolPromptAction==CurrentXqolPrompt.Action.QUERY_PROMPT?2:3):currentCuratedDecision?(curatedConfig.action()==CurrentCuratedDecisions.Action.QUERY?2:3):currentFullscreenEvent?(acknowledgeKnownIntro?3:2):currentLetterSet?(letterSetReply?3:2):djcSelectedCost?(djcCostPreview?9:3):currentLetter?(knownLetterReply?3:2):djcUiMode?(djcUiSubmit?declarationConfig.maximumWarningPolls()+12:2):currentSuccession?(continueSuccession?2:1):currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||aubObserver||djcQuery||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
             // This factory returns ATTACHED only. Its close releases communication and readonly handles, never a Job.
-            try (ManagedGameSession game = NativeGameAttachment.attach(request, (currentLivingOriginal||currentRmtmRemaining||currentRmtmTitleQuery||currentCcc||currentStockBookmark1070||currentRiteCreationBlockers||currentRiteText||currentRiteCreate||currentDesInitGuard||currentStockSeed||currentTed||currentLyd||currentSupermanSavedBaseline||currentSupermanHealth||currentCourtierChoices||currentCourtierConfiguration||currentDecisionsClose||currentCourtierControls||currentXqolThreshold||currentXqolPrompt||currentCuratedDecision||currentFullscreenEvent||currentLetterSet||djcSelectedCost||currentLetter||djcUiMode||currentFrontendMenu||currentSuccession||aubObserver||djcQuery||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
+            try (ManagedGameSession game = NativeGameAttachment.attach(request, (currentZg361Ae2||currentLivingOriginal||currentRmtmRemaining||currentRmtmTitleQuery||currentCcc||currentStockBookmark1070||currentRiteCreationBlockers||currentRiteText||currentRiteCreate||currentDesInitGuard||currentStockSeed||currentTed||currentLyd||currentSupermanSavedBaseline||currentSupermanHealth||currentCourtierChoices||currentCourtierConfiguration||currentDecisionsClose||currentCourtierControls||currentXqolThreshold||currentXqolPrompt||currentCuratedDecision||currentFullscreenEvent||currentLetterSet||djcSelectedCost||currentLetter||djcUiMode||currentFrontendMenu||currentSuccession||aubObserver||djcQuery||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
                 if (game.mode() != ManagedGameSession.Mode.ATTACHED) throw new IOException("actual attachment mode differs");
                 requireSupervisor(supervisor, owner.supervisorIdentity());
                 var transport = game.nativeTransport();
                 var hello = transport.diagnostics().originalHello().orElseThrow(() -> new IOException("actual received HELLO unavailable"));
                 originals.set("new_hello", write(output, "new-hello.bin", hello.original().packet().value()));
                 result.put("hello_observed_at_utc", hello.observedAt().toString());
-                if(currentLivingOriginal) {
+                if(currentZg361Ae2) {
+                    runCurrentZg361Ae2(transport,owner,plan,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
+                } else if(currentLivingOriginal) {
                     runCurrentLivingOriginal(transport,owner,plan,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
                 } else if(currentRmtmRemaining) {
                     runCurrentRmtm(transport,owner,plan,rmtmConfig,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,Duration.ofSeconds(readSeconds),result,originals);
@@ -4014,6 +4022,186 @@ if(riteDraftCosts) {
         }
     }
 
+    record Zg361Ae2Config() { int submissions(){return currentZg361Ae2SubmissionBound(true,true);} }
+    static Zg361Ae2Config currentZg361Ae2Config(ObjectNode config) {
+        StrictJson.require("xar.native-owner-snapshot-config/v49".equals(StrictJson.text(config.get("schema")))
+                &&"current_zg361_ae2_case_once".equals(StrictJson.text(config.get("mode"))),"Only explicit v49 fixed ZG361 AE2 case");
+        StrictJson.object(config,Set.of("schema","mode","owner_descriptor","overall_timeout_seconds","read_timeout_seconds","maximum_frames_per_operation"));
+        ExactRef.fromJson(config.get("owner_descriptor"));
+        StrictJson.integer(config.get("overall_timeout_seconds"),1,600);
+        StrictJson.integer(config.get("read_timeout_seconds"),1,60);
+        StrictJson.integer(config.get("maximum_frames_per_operation"),1,65536);
+        return new Zg361Ae2Config();
+    }
+    static int currentZg361Ae2SubmissionBound(boolean openBeforePresent,boolean reopenAfterAbsence) {
+        // Base:7 freshCore +6 query +5 effect. Each optional list action adds
+        // exactly one effect and an independent freshCore/query. No polling.
+        return 18+(openBeforePresent?3:0)+(reopenAfterAbsence?3:0);
+    }
+    static void requireCurrentZg361Ae2SameCore(CoreFrame.Prefix before,CoreFrame.Prefix after)throws IOException {
+        if(!before.equals(after))throw new IOException("ZG361 AE2 requires the same complete actual paused Core; no Date or replacement actor");
+    }
+    static CurrentZg361Ae2Source requireCurrentZg361Ae2QueryFrame(CurrentZg361Ae2Result f,CurrentZg361Ae2.Action action,
+            CoreFrame.Prefix core,java.math.BigInteger connection)throws IOException {
+        if(!action.queryOnly()||f.action()!=action||f.status()!=CurrentZg361Ae2Result.Status.AVAILABLE||!f.cleanupKnown()
+                ||!f.sourceAvailable()||f.effectAttempted()||f.nativeReturned()||f.nativeHandled()||f.claimSequence().signum()!=0
+                ||f.providerGeneration().signum()<=0||f.querySequence().signum()<=0||f.factsBefore().filter(core::equals).isEmpty()
+                ||f.owner().filter(o->o.connectionGeneration().equals(connection)).isEmpty()
+                ||f.source().filter(s->s.kind()==action.sourceKind()).isEmpty())
+            throw new IOException("Actual ZG361 query lost full immutable Source/Core/connection or readonly flags");
+        return f.source().orElseThrow(); // Source DATA alone is not a prepared action.
+    }
+    static CurrentZg361Ae2Result.Status currentZg361Ae2DispatchStatus(CurrentZg361Ae2.Action action)throws IOException {
+        if(action.queryOnly())throw new IOException("Readonly AE2 query is not a dispatched effect");
+        return switch(action) {
+            case CHOOSE_PAY_NOW -> CurrentZg361Ae2Result.Status.SELECTION_DISPATCHED;
+            case CONFIRM_PRESENT,CONFIRM_VERIFY -> CurrentZg361Ae2Result.Status.CONFIRMATION_DISPATCHED;
+            default -> CurrentZg361Ae2Result.Status.NAVIGATION_DISPATCHED;
+        };
+    }
+    static void requireCurrentZg361Ae2DispatchFrame(CurrentZg361Ae2Result actual,CurrentZg361Ae2Result before,
+            CurrentZg361Ae2.Action action,java.math.BigInteger connection)throws IOException {
+        if(actual.action()!=action||actual.status()!=currentZg361Ae2DispatchStatus(action)||!actual.cleanupKnown()
+                ||!actual.effectAttempted()||!actual.nativeReturned()||actual.nativeHandled()||actual.claimSequence().signum()<=0
+                ||!actual.source().equals(before.source())||!actual.factsBefore().equals(before.factsBefore())
+                ||!actual.providerGeneration().equals(before.providerGeneration())||!actual.querySequence().equals(before.querySequence())
+                ||actual.owner().filter(o->o.connectionGeneration().equals(connection)).isEmpty())
+            throw new IOException("THIS AE2 dispatch lost immutable actual beforeSource/Core/lease; no known-refusal or UNKNOWN retry");
+    }
+    static CurrentZg361Ae2Source.Ae2 requireCurrentZg361Ae2ActualTooltips(CurrentZg361Ae2Source source,CoreFrame.Prefix core)throws IOException {
+        var events=source.events().orElseThrow(()->new IOException("Actual AE2 event Source required"));
+        var ae2=events.ae2().orElseThrow(()->new IOException("Actual bound AE2 instance absent; no synthetic event"));
+        if(!events.censusComplete()||ae2.recipientCharacterId()!=Integer.toUnsignedLong(core.playedCharacterId())
+                ||!ae2.phaseBound()||!ae2.namedRootBound()||!ae2.windowVisible()||!ae2.windowEnabled()||!ae2.tooltipsComplete()
+                ||ae2.options().size()!=3||ae2.options().stream().anyMatch(o->o.tooltip().isEmpty()))
+            throw new IOException("Original three actual full AE2 tooltips/root/recipient/phase not observed");
+        // Exact richtext/controls/NUL are archived in the complete Source. Do
+        // not normalize, localize, parse amounts, or choose displayed ordinal0.
+        return ae2;
+    }
+    static void initializeCurrentZg361Ae2Result(ObjectNode result,String machineId) {
+        result.put("schema","xar.native-owner-current-zg361-ae2-case/v1").put("mode","current_zg361_ae2_case_once")
+                .put("machine_id",machineId).put("steam_build_id","26785313").put("read_calls",0).put("query_calls",0).put("action_calls",0)
+                .put("date_calls",0).put("save_calls",0).put("new_date_observed",false).put("physical_save_confirmed",false)
+                .put("three_actual_full_tooltips_archived",false).put("pay_now_callback_dispatched",false)
+                .put("original_instance_absence_observed",false).put("verify_confirmation_callback_dispatched",false)
+                .put("original_private_channel_completed",false).put("payment_confirmed",false).put("fixture_verifier_pass",false)
+                .put("actual_wallet_deltas_observed",false).put("business_contract_pass",false).put("wholeproduct_pass",false);
+    }
+    private static final class Zg361Ae2Run {
+        final NativeGameTransport transport;final GameSupervisorControl.Descriptor owner;final NativeLaunchPlan plan;
+        final Path output;final Instant deadline;final ObjectNode result,originals;
+        NativeObservationPort.TransportSession actualSession;CoreFrame.Prefix initial;boolean bound;
+        NativeActionPort.AckReceived lastEffect;
+        Zg361Ae2Run(NativeGameTransport t,GameSupervisorControl.Descriptor o,NativeLaunchPlan p,Path out,Instant d,ObjectNode r,ObjectNode refs){transport=t;owner=o;plan=p;output=out;deadline=d;result=r;originals=refs;}
+        Instant until(NativeGameTransport.CoreReceived c){return c.validUntil().isBefore(deadline)?c.validUntil():deadline;}
+        NativeGameTransport.CoreReceived core(String label)throws IOException,InterruptedException {
+            var c=readCurrentRiteCreateCore(transport,owner,plan,actualSession,output,label+"-core",deadline,result,originals);
+            var prefix=requireCurrentRiteCreateCore(c.frame());
+            if(initial==null){initial=prefix;actualSession=c.original().custody().orElseThrow().session();result.set("session",session(actualSession));}
+            else requireCurrentZg361Ae2SameCore(initial,prefix);
+            if(lastEffect!=null&&c.original().custody().orElseThrow().writeEntered().order()
+                    .compareTo(lastEffect.custody().orElseThrow().responseReceived().order())<=0)
+                throw new IOException("AE2 independent Core was not written after THIS effect ACK");
+            if(bound)transport.requireCurrentZg361Ae2ZeroDay(c);
+            return c;
+        }
+        void archive(String label,NativeActionPort.DispatchOutcome outcome)throws IOException {
+            archiveCurrentLetterOutcome(transport,Files.createDirectory(output.resolve(label)),label,outcome,originals);
+        }
+        void original(String label,NativeActionPort.AckReceived ack,CurrentZg361Ae2Result f)throws IOException {
+            originals.set(label+"_original_result",write(output.resolve(label),"original-result.json",ack.originalResultToken().orElseThrow().bytes()));
+            result.set(label,FullJsonTree.parse(f.encode().bytes(),FullJsonTree.MAXIMUM_BYTES));
+        }
+        NativeGameTransport.Zg361Ae2Received query(CurrentZg361Ae2.Action action,String label)throws IOException,InterruptedException {
+            return query(core(label),action,label);
+        }
+        NativeGameTransport.Zg361Ae2Received query(NativeGameTransport.CoreReceived before,CurrentZg361Ae2.Action action,String label)throws IOException,InterruptedException {
+            stage="ZG361_AE2_ACTUAL_PRIVATE_QUERY";
+            var read=transport.readCurrentZg361Ae2(before,action,until(before));archive(label,read.original());
+            result.put("query_calls",result.path("query_calls").intValue()+1).put("read_calls",result.path("read_calls").intValue()+1);
+            if(!(read instanceof NativeGameTransport.Zg361Ae2Received q))throw new IOException("Actual ZG361 Source unavailable/UNKNOWN; no synthetic controls/event or retry");
+            q.requireOriginal(transport,q.validUntil());requireCurrentDjcAckOwner(transport,owner,q.original(),actualSession);
+            var f=CurrentZg361Ae2Result.decodeOutcome(q.original());
+            if(!f.equals(q.frame())||q.validUntil().isAfter(until(before)))throw new IOException("AE2 THIS_ACK differs from its private immutable frame/deadline");
+            requireCurrentZg361Ae2QueryFrame(f,action,initial,actualSession.connectionGeneration());original(label,q.original(),f);return q;
+        }
+        NativeGameTransport.Zg361Ae2Prepared action(NativeGameTransport.Zg361Ae2Received query,CurrentZg361Ae2.Action action,String label)throws IOException,InterruptedException {
+            query.requireOriginal(transport,query.validUntil());
+            if(!query.frame().source().orElseThrow().actionAdmissible(action))throw new IOException("Actual fixed AE2 Source necessary conditions refuse this effect");
+            var prepared=transport.prepareCurrentZg361Ae2(query,action);
+            if(prepared.action()!=action||!prepared.deadline().equals(query.validUntil()))throw new IOException("AE2 prepared action/original deadline differs");
+            Path intentOutput=Files.createDirectory(output.resolve(label+"-intent"));
+            var intent=StrictJson.object().put("schema","xar.current-zg361-ae2-intent/v1").put("request_id",prepared.requestId())
+                    .put("action",action.wire()).put("original_deadline_utc",prepared.deadline().toString()).put("payment_confirmed",false);
+            intent.set("original_outbound",write(intentOutput,"original-request.packet",prepared.originalPacket().value()));
+            intent.set("actual_before_query",FullJsonTree.parse(query.frame().encode().bytes(),FullJsonTree.MAXIMUM_BYTES));
+            originals.set(label+"_intent",write(intentOutput,"original-intent.json",FullJsonTree.encode(intent,FullJsonTree.MAXIMUM_BYTES)));
+            stage="ZG361_AE2_ONCE_FIXED_EFFECT";result.put("action_calls",result.path("action_calls").intValue()+1);
+            var outcome=transport.submitCurrentZg361Ae2(prepared);archive(label,outcome);
+            var ack=requireCurrentRiteCreateActualAck(transport,owner,actualSession,outcome,prepared.requestId(),prepared.originalPacket().value());
+            var f=CurrentZg361Ae2Result.decodeOutcome(ack);original(label,ack,f);
+            if(prepared.latestFrame().filter(f::equals).isEmpty())throw new IOException("AE2 actual ACK differs from this prepared action's retained frame");
+            requireCurrentZg361Ae2DispatchFrame(f,query.frame(),action,actualSession.connectionGeneration());lastEffect=ack;return prepared;
+        }
+    }
+    private static NativeGameTransport.Zg361Ae2Received ensureCurrentZg361Ae2List(Zg361Ae2Run run,
+            NativeGameTransport.Zg361Ae2Received query,String label)throws IOException,InterruptedException {
+        var controls=query.frame().source().orElseThrow().controls().orElseThrow();
+        if(!controls.listVisible()) {
+            if(!controls.openListAdmissible())throw new IOException("AE2 list is hidden and actual fixed open-list is not admissible");
+            run.action(query,CurrentZg361Ae2.Action.OPEN_CONTROLS_LIST,label+"-open");
+            query=run.query(CurrentZg361Ae2.Action.QUERY_CONTROLS,label+"-after");controls=query.frame().source().orElseThrow().controls().orElseThrow();
+        }
+        if(!controls.listVisible()||!controls.actorBound()||!controls.modelComplete()||controls.blockedByVisibleModal())
+            throw new IOException("Actual complete actor-bound AE2 controls list not independently observed");
+        return query;
+    }
+    private static void requireCurrentZg361Ae2Confirmation(NativeGameTransport.Zg361Ae2Received query,CurrentZg361Ae2Source.Control selected)throws IOException {
+        var controls=query.frame().source().orElseThrow().controls().orElseThrow();
+        var row=controls.row(selected).orElseThrow(()->new IOException("Actual fixed AE2 control row missing"));
+        if(!controls.detailVisible()||!controls.selectedControl().equals(Optional.of(selected))||!row.nativeCanConfirm().orElse(false)||!row.confirmAdmissible())
+            throw new IOException("Actual selected AE2 detail does not admit its once confirmation");
+    }
+    private static void runCurrentZg361Ae2(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeLaunchPlan plan,
+            Path output,Instant deadline,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        var run=new Zg361Ae2Run(transport,owner,plan,output,deadline,result,originals);
+        try {
+            if(!(plan.load() instanceof NativeLaunchPlan.SavedGame))throw new IOException("ZG361 AE2 requires actual Saved-v3 owner");
+            var first=run.core("zg361-initial");transport.beginCurrentZg361Ae2Case(first);run.bound=true;
+            var present=run.query(first,CurrentZg361Ae2.Action.QUERY_CONTROLS,"zg361-controls-initial");
+            present=ensureCurrentZg361Ae2List(run,present,"zg361-present-list");
+            run.action(present,CurrentZg361Ae2.Action.OPEN_PRESENT_DETAIL,"zg361-present-detail");
+            present=run.query(CurrentZg361Ae2.Action.QUERY_CONTROLS,"zg361-present-detail-after");
+            requireCurrentZg361Ae2Confirmation(present,CurrentZg361Ae2Source.Control.PRESENT);
+            run.action(present,CurrentZg361Ae2.Action.CONFIRM_PRESENT,"zg361-present-confirm");
+            var event=run.query(CurrentZg361Ae2.Action.QUERY_AE2,"zg361-ae2-before-pay");
+            var actual=requireCurrentZg361Ae2ActualTooltips(event.frame().source().orElseThrow(),run.initial);
+            result.put("three_actual_full_tooltips_archived",true).put("actual_event_instance",actual.instanceId())
+                    .put("actual_pay_authored_index",actual.payNowOption().authoredOptionIndex());
+            var pay=run.action(event,CurrentZg361Ae2.Action.CHOOSE_PAY_NOW,"zg361-pay-now");
+            result.put("pay_now_callback_dispatched",true);
+            var after=run.query(CurrentZg361Ae2.Action.QUERY_AE2,"zg361-ae2-after-pay");
+            if(pay.actualInstanceId().isEmpty()||pay.actualInstanceId().getAsInt()!=actual.instanceId()
+                    ||!transport.currentZg361Ae2EventAbsent(pay,after))throw new IOException("Original AE2 instance still present or independent full census absence unqualified");
+            result.put("original_instance_absence_observed",true); // Not a global modal/date gate assertion.
+            var verify=run.query(CurrentZg361Ae2.Action.QUERY_CONTROLS,"zg361-verify-controls");
+            verify=ensureCurrentZg361Ae2List(run,verify,"zg361-verify-list");
+            run.action(verify,CurrentZg361Ae2.Action.OPEN_VERIFY_DETAIL,"zg361-verify-detail");
+            verify=run.query(CurrentZg361Ae2.Action.QUERY_CONTROLS,"zg361-verify-detail-after");
+            requireCurrentZg361Ae2Confirmation(verify,CurrentZg361Ae2Source.Control.VERIFY);
+            run.action(verify,CurrentZg361Ae2.Action.CONFIRM_VERIFY,"zg361-verify-confirm");
+            result.put("verify_confirmation_callback_dispatched",true);
+            run.core("zg361-final-after-verifier");result.put("original_private_channel_completed",true);
+            // The original real verifier/log and actual wallet deltas are an
+            // independent consumer AND. Never fill their reserved booleans here.
+        } finally {
+            archiveNaturalDiagnostics(output,originals,transport.diagnostics());
+            var progress=result.deepCopy();progress.set("originals",originals.deepCopy());
+            write(output,"current-zg361-ae2-progress.json",FullJsonTree.encode(progress,FullJsonTree.MAXIMUM_BYTES));
+        }
+    }
+
     record LivingOriginalConfig() { int submissions(){return 85;} }
     static LivingOriginalConfig currentLivingOriginalConfig(ObjectNode config) {
         StrictJson.require("xar.native-owner-snapshot-config/v48".equals(StrictJson.text(config.get("schema")))
@@ -5476,7 +5664,7 @@ if(riteDraftCosts) {
         }
     }
 
-    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE,CURRENT_DJC_TARGET_QUERY,CURRENT_SUCCESSION_QUERY,CURRENT_SUCCESSION_CONTINUE,CURRENT_DJC_DECLARATION_UI,CURRENT_DJC_DECLARATION_SUBMIT,CURRENT_LETTER_QUERY,CURRENT_LETTER_REPLY_KNOWN,CURRENT_DJC_SELECTED_COST,CURRENT_DJC_SELECTED_COST_PREVIEW,CURRENT_LETTER_SET_QUERY,CURRENT_LETTER_SET_REPLY_KNOWN_INSTANCE,CURRENT_FULLSCREEN_EVENT_QUERY,CURRENT_FULLSCREEN_EVENT_ACK_KNOWN_INTRO,CURRENT_CURATED_DECISIONS_QUERY,CURRENT_CURATED_DECISIONS_OPEN,CURRENT_CURATED_DECISION_DETAIL,CURRENT_CURATED_DECISION_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_QUERY,CURRENT_XQOL_CONVERSION_PROMPT_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_CANCEL,CURRENT_XQOL_CONVERSION_THRESHOLD_QUERY,CURRENT_XQOL_CONVERSION_THRESHOLD_SET,CURRENT_COURTIER_CREATOR_CONTROLS_QUERY,CURRENT_COURTIER_CREATOR_CONTROL_EXECUTE,CURRENT_DECISIONS_CLOSE_QUERY,CURRENT_DECISIONS_CLOSE,CURRENT_COURTIER_CONFIGURATION_QUERY,CURRENT_COURTIER_CONFIGURATION_EXECUTE,CURRENT_COURTIER_CHOICES_QUERY,CURRENT_COURTIER_CHOICE_SELECT,CURRENT_SUPERMAN_HEALTH_QUERY,CURRENT_SUPERMAN_HEALTH_BASELINE_SAVE_AND_BEGIN,CURRENT_SUPERMAN_HEALTH_COMPLETED_CLOSE,CURRENT_SUPERMAN_HEALTH_RESUME_SAVED_BASELINE_AND_BEGIN,CURRENT_LYD,CURRENT_TED,CURRENT_STOCK_NEWGAME_SEED,CURRENT_DES_SAVED_GAME_INIT_GUARD,CURRENT_RITE_CREATE,CURRENT_RITE_TEXT,CURRENT_RITE_CREATION_BLOCKERS,CURRENT_STOCK_BOOKMARK1070,CURRENT_CCC,CURRENT_RMTM_TITLE_QUERY,CURRENT_RMTM_REMAINING,CURRENT_LIVING_ORIGINAL }
+    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE,CURRENT_DJC_TARGET_QUERY,CURRENT_SUCCESSION_QUERY,CURRENT_SUCCESSION_CONTINUE,CURRENT_DJC_DECLARATION_UI,CURRENT_DJC_DECLARATION_SUBMIT,CURRENT_LETTER_QUERY,CURRENT_LETTER_REPLY_KNOWN,CURRENT_DJC_SELECTED_COST,CURRENT_DJC_SELECTED_COST_PREVIEW,CURRENT_LETTER_SET_QUERY,CURRENT_LETTER_SET_REPLY_KNOWN_INSTANCE,CURRENT_FULLSCREEN_EVENT_QUERY,CURRENT_FULLSCREEN_EVENT_ACK_KNOWN_INTRO,CURRENT_CURATED_DECISIONS_QUERY,CURRENT_CURATED_DECISIONS_OPEN,CURRENT_CURATED_DECISION_DETAIL,CURRENT_CURATED_DECISION_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_QUERY,CURRENT_XQOL_CONVERSION_PROMPT_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_CANCEL,CURRENT_XQOL_CONVERSION_THRESHOLD_QUERY,CURRENT_XQOL_CONVERSION_THRESHOLD_SET,CURRENT_COURTIER_CREATOR_CONTROLS_QUERY,CURRENT_COURTIER_CREATOR_CONTROL_EXECUTE,CURRENT_DECISIONS_CLOSE_QUERY,CURRENT_DECISIONS_CLOSE,CURRENT_COURTIER_CONFIGURATION_QUERY,CURRENT_COURTIER_CONFIGURATION_EXECUTE,CURRENT_COURTIER_CHOICES_QUERY,CURRENT_COURTIER_CHOICE_SELECT,CURRENT_SUPERMAN_HEALTH_QUERY,CURRENT_SUPERMAN_HEALTH_BASELINE_SAVE_AND_BEGIN,CURRENT_SUPERMAN_HEALTH_COMPLETED_CLOSE,CURRENT_SUPERMAN_HEALTH_RESUME_SAVED_BASELINE_AND_BEGIN,CURRENT_LYD,CURRENT_TED,CURRENT_STOCK_NEWGAME_SEED,CURRENT_DES_SAVED_GAME_INIT_GUARD,CURRENT_RITE_CREATE,CURRENT_RITE_TEXT,CURRENT_RITE_CREATION_BLOCKERS,CURRENT_STOCK_BOOKMARK1070,CURRENT_CCC,CURRENT_RMTM_TITLE_QUERY,CURRENT_RMTM_REMAINING,CURRENT_LIVING_ORIGINAL,CURRENT_ZG361_AE2 }
     static void requireGuiRootIndexSelection(NativeLaunchPlan plan,GuiRootIndexFrame frame)throws IOException {
         Objects.requireNonNull(plan);Objects.requireNonNull(frame);
         if(!frame.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())
@@ -5508,6 +5696,7 @@ if(riteDraftCosts) {
     }
     static ObservationMode observationMode(ObjectNode config) {
         String schema=StrictJson.text(config.get("schema"));
+        if(schema.equals("xar.native-owner-snapshot-config/v49")) {currentZg361Ae2Config(config);return ObservationMode.CURRENT_ZG361_AE2;}
         if(schema.equals("xar.native-owner-snapshot-config/v48")) {currentLivingOriginalConfig(config);return ObservationMode.CURRENT_LIVING_ORIGINAL;}
         if(schema.equals("xar.native-owner-snapshot-config/v47")) {currentRmtmConfig(config);return ObservationMode.CURRENT_RMTM_REMAINING;}
         if(schema.equals("xar.native-owner-snapshot-config/v46")) {currentRmtmTitleQueryConfig(config);return ObservationMode.CURRENT_RMTM_TITLE_QUERY;}
