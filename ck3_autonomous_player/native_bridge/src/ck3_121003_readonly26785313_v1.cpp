@@ -81,6 +81,9 @@
 #if defined(XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2) && XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2
 #include "xar_bridge/ck3_121003_gui_controls26785313_v2.hpp"
 #endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_ZG361_AE2_V1) && XAR_CK3_ENABLE_121003_26785313_ZG361_AE2_V1
+#include "xar_bridge/ck3_121003_zg361_ae226785313_owner_v1.hpp"
+#endif
 #include "xar_bridge/ck3_121003_readonly26785313_v1.hpp"
 #if defined(XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1
 #include "xar_bridge/ck3_121003_rite_doctrine26785313_v1.hpp"
@@ -238,6 +241,9 @@ bool OwnerInner(ReadonlyContext&q,const ck3_11906::MainThreadExecutionStampV1&s,
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_LIVING_V1) && XAR_CK3_ENABLE_121003_26785313_LIVING_V1
     fixed_current_executor=fixed_current_executor||invocation.executor==&ExecuteLivingOnOwner267V1;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_ZG361_AE2_V1) && XAR_CK3_ENABLE_121003_26785313_ZG361_AE2_V1
+    fixed_current_executor=fixed_current_executor||invocation.executor==&ExecuteZg361Ae2OnOwner267V1;
 #endif
     if(!fixed_current_executor||!invocation.context)return false;
   }
@@ -606,6 +612,7 @@ bool ReadDjcTargetQueryCoreOnOwner267V1(const ReadonlyBindings&bindings,
 #include "ck3_121003_letter26785313_reader_v1.inc"
 #include "ck3_121003_fullscreen_event26785313_reader_v1.inc"
 #include "ck3_121003_letter_set26785313_reader_v1.inc"
+#include "ck3_121003_zg361_ae226785313_reader_v1.inc"
 #include "ck3_121003_curated_decisions26785313_reader_v1.inc"
 #include "ck3_121003_xqol_conversion_prompt26785313_reader_v1.inc"
 #include "ck3_121003_xqol_threshold26785313_reader_v1.inc"

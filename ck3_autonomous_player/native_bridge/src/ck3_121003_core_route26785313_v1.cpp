@@ -93,6 +93,9 @@
 #include "xar_bridge/ck3_121003_aub_observer_fixture26785313_v1.hpp"
 #endif
 #include "xar_bridge/ck3_121003_aub_private_console26785313_v1.hpp"
+#if defined(XAR_CK3_ENABLE_121003_26785313_ZG361_AE2_V1) && XAR_CK3_ENABLE_121003_26785313_ZG361_AE2_V1
+#include "xar_bridge/ck3_121003_zg361_ae226785313_owner_v1.hpp"
+#endif
 #include "xar_bridge/ck3_121003_core_route26785313_v1.hpp"
 #if defined(XAR_CK3_ENABLE_121003_26785313_APPLICATION_EXIT_V1)
 #include "xar_bridge/ck3_121003_application_exit26785313_v1.hpp"
@@ -238,6 +241,10 @@ ck3_11906::MainThreadQueryInstallEnvironmentV1 BindCoreRouteMailboxEnvironmentV1
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_LIVING_V1) && XAR_CK3_ENABLE_121003_26785313_LIVING_V1
   if(!AttachLivingWholeExecutor267V1(out,image_base))return {};
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_ZG361_AE2_V1) && XAR_CK3_ENABLE_121003_26785313_ZG361_AE2_V1
+  if(out.permitted_executor_sextrigintary||!VerifyZg361Ae2Image267V1(image_base))return {};
+  out.permitted_executor_sextrigintary=&ExecuteZg361Ae2OnOwner267V1;
 #endif
   return out;
 }

@@ -107,6 +107,9 @@
 #include "xar_bridge/game_adapter.hpp"
 #include "xar_bridge/ck3_1210_adapter.hpp"
 #if defined(XAR_CK3_ENABLE_121003_26785313_CORE_ROUTE_V1)
+#if defined(XAR_CK3_ENABLE_121003_26785313_ZG361_AE2_V1) && XAR_CK3_ENABLE_121003_26785313_ZG361_AE2_V1
+#include "xar_bridge/ck3_121003_zg361_ae226785313_owner_v1.hpp"
+#endif
 #include "xar_bridge/ck3_121003_core_route26785313_v1.hpp"
 #endif
 #include "xar_bridge/ck3_1210_read_wire_registry_v1.hpp"
@@ -553,6 +556,9 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RITE_TEXT_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_TEXT_V1
   if(step==ck3_121003::build26785313::kRiteTextStep267V1)return ck3_121003::build26785313::RiteTextStepEnabled267V1(actual,step);
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_ZG361_AE2_V1) && XAR_CK3_ENABLE_121003_26785313_ZG361_AE2_V1
+  if(step==ck3_121003::build26785313::kZg361Ae2Step267V1)return ck3_121003::build26785313::Zg361Ae2StepEnabled267V1(actual,step);
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_LIVING_V1) && XAR_CK3_ENABLE_121003_26785313_LIVING_V1
   if(step==ck3_121003::build26785313::kLivingInventoryQueryStep267V1||step==ck3_121003::build26785313::kLivingUiStep267V1||step==ck3_121003::build26785313::kLivingEntryStep267V1)return ck3_121003::build26785313::LivingWholeStepEnabled267V1(actual,step);

@@ -160,6 +160,9 @@
 #endif
 #include "xar_bridge/main_thread_timeline_policy_v1.hpp"
 #include "xar_bridge/ck3_1210_adapter.hpp"
+#if defined(XAR_CK3_ENABLE_121003_26785313_ZG361_AE2_V1) && XAR_CK3_ENABLE_121003_26785313_ZG361_AE2_V1
+#include "xar_bridge/ck3_121003_zg361_ae226785313_owner_v1.hpp"
+#endif
 #include "xar_bridge/ck3_121003_core_route26785313_v1.hpp"
 #if defined(XAR_CK3_ENABLE_26757580_COUNCIL_OBSERVATION67)
 #include "xar_bridge/ck3_26757580_council_frame67.hpp"
@@ -17154,6 +17157,9 @@ void RunConnectedSession(
           early_step_dispatched = true;
         }
         trace_command_entry("step_parse_returned");
+#if defined(XAR_CK3_ENABLE_121003_26785313_ZG361_AE2_V1) && XAR_CK3_ENABLE_121003_26785313_ZG361_AE2_V1
+        if(!early_step_dispatched&&step==xar::ck3_121003::build26785313::kZg361Ae2Step267V1&&xar::game::IsCk3_121003Core26785313Descriptor(game.descriptor())){connected=write_frame(pipe,xar::ck3_121003::build26785313::DispatchZg361Ae2Request267V1(game,state.connection_generation,request_id,step,incoming.payload,g_main_thread_query_mailbox_v1));early_step_dispatched=true;}
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_LIVING_V1) && XAR_CK3_ENABLE_121003_26785313_LIVING_V1
         if(!early_step_dispatched&&step==xar::ck3_121003::build26785313::kLivingInventoryQueryStep267V1&&xar::game::IsCk3_121003Core26785313Descriptor(game.descriptor())){connected=write_frame(pipe,xar::ck3_121003::build26785313::DispatchLivingInventoryQueryRequest267V1(game,state.connection_generation,request_id,step,incoming.payload,g_main_thread_query_mailbox_v1));early_step_dispatched=true;}
         if(!early_step_dispatched&&step==xar::ck3_121003::build26785313::kLivingUiStep267V1&&xar::game::IsCk3_121003Core26785313Descriptor(game.descriptor())){connected=write_frame(pipe,xar::ck3_121003::build26785313::DispatchLivingUiRequest267V1(game,state.connection_generation,request_id,step,incoming.payload,g_main_thread_query_mailbox_v1));early_step_dispatched=true;}

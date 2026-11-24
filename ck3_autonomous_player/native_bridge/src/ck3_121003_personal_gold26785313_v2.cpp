@@ -89,6 +89,9 @@
 #if defined(XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2) && XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2
 #include "xar_bridge/ck3_121003_gui_controls26785313_wire_v2.hpp"
 #endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_ZG361_AE2_V1) && XAR_CK3_ENABLE_121003_26785313_ZG361_AE2_V1
+#include "xar_bridge/ck3_121003_zg361_ae226785313_owner_v1.hpp"
+#endif
 #include "xar_bridge/ck3_121003_personal_gold26785313_v2.hpp"
 #include "xar_bridge/ck3_1210_core_control_v1.hpp"
 #include <algorithm>
@@ -356,9 +359,14 @@ const game::AdapterDescriptor &PersonalGoldAdapterDescriptorV2() noexcept {
 #endif
 
 #if defined(XAR_CK3_ENABLE_121003_26785313_LIVING_V1) && XAR_CK3_ENABLE_121003_26785313_LIVING_V1
-  return LivingWholeDescriptor267V1(living_base_descriptor);
+  const auto&ae2_base_descriptor=LivingWholeDescriptor267V1(living_base_descriptor);
 #else
-  return living_base_descriptor;
+  const auto&ae2_base_descriptor=living_base_descriptor;
+#endif
+#if defined(XAR_CK3_ENABLE_121003_26785313_ZG361_AE2_V1) && XAR_CK3_ENABLE_121003_26785313_ZG361_AE2_V1
+  return Zg361Ae2Descriptor267V1(ae2_base_descriptor);
+#else
+  return ae2_base_descriptor;
 #endif
 }
 bool PersonalGoldRouteEnabledV2([[maybe_unused]]const game::AdapterDescriptor &d) noexcept {
