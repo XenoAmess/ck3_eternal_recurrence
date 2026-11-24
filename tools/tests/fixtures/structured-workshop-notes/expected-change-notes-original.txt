@@ -1,0 +1,24 @@
+[h1]Reclaim the Motherland / 重整河山 0.4.2[/h1]
+
+[b]CK3 1.21.0.3 Florin 适配 / CK3 1.21.0.3 Florin compatibility[/b]
+以当前原版的附庸、天命、官署准入与割据朝贡连接逻辑为基础，保留本模组对后朝的限定改动；同步原版圭尔夫／吉伯林条件，不将后朝当作仍在位的中华天子。
+Follows current vanilla vassalization, Mandate, ministry access and Chaos tributary connectivity while preserving the mod's specific Later-dynasty rules, including current Guelph/Ghibelline conditions. Later rulers do not receive reigning-China identity benefits.
+
+[b]原有完整玩法保留 / Existing gameplay retained[/b]
+[list]
+[*]两项规则：重整河山／原版割据，以及人心离散／誓死尊王；普通原版割据入口继续适用。
+Two game rules retain the Later-dynasty/vanilla routes and Divided Hearts/Unwavering Loyalty choices through ordinary Chaos play.
+[*]旧君保有个人领地与其他头衔；后朝名称、纹章、颜色和最终忠臣的原国号与完整下级领国保留。AI忠诚判定一次，玩家诸侯采用50分确定性分界。
+Personal lands and other titles remain; Later names, arms and colors and loyalists' names and complete realms persist. AI loyalty resolves once; human vassals use the deterministic 50-point boundary.
+[*]同一后朝按引擎主继承人接续，保留忠臣与合资格旧官；既有带标记后朝可补齐继承设置，其他个人头衔仍按原规则继承。
+The same Later title follows the engine's primary heir, retaining loyal realms and eligible incumbents. Existing marked titles receive succession migration; other titles retain ordinary succession.
+[*]中华霸权空缺时，最近一轮合资格后朝延续三省六部九席及预算资格；旧臣去留和真实空缺照原条件处理，不授天命或现任中华霸权专属特权。
+While China is vacant, the latest eligible Later dynasty retains the nine ministries and budget access, with qualified incumbents and vanilla vacancy filling, without the Mandate or reigning-Hegemony privileges.
+[*]后朝附庸提议保留普通品级加成及其他原版理由；本轮实际独立者对该后朝有1825日-50软性阻力，双方换君不绕过。
+Ordinary rank and other vanilla acceptance reasons remain. Lords actually released by that collapse face a title-bound -50 reason for 1,825 days; changing rulers does not bypass it.
+[*]后朝不能直接宣称天命；混乱期和平、独立的成年统治者达到中华法理伯爵领51%后可宣称复辟，合资格朝贡国计入。复辟结束自身全部后朝，其他历史后朝继续存在。
+Later rulers restore at 51% of China's de-jure counties, including qualifying tributaries, while independent, adult and at peace during Chaos. Restoration ends their own Later titles, not other historical Later dynasties.
+[*]保留九种语言及89个标准朝号和自定义名称。需要《溥天之下》；跨游戏大版本存档兼容仍不保证。
+Retains nine languages, 89 standard dynasty names and custom names. Requires All Under Heaven; cross-major-version save compatibility remains unguaranteed.
+[*]保留玩家旧君的【人心向背】去留摘要事件。 / Retains the player emperor's loyalty-and-defection summary event.
+[/list]

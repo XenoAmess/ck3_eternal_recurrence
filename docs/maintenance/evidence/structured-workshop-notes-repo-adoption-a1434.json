@@ -1,0 +1,60 @@
+{
+  "schema": "xar.structured-workshop-notes.repo-adoption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status": "OPT_IN_HELPER_ADOPTED_REPO_LAYOUT8_PASS",
+  "Source_delivery": {
+    "path": "D:/ck3-state/upgrade-20261118/rmtm042-notes-structured-verifier-source-a01/delivery-final.json",
+    "bytes": 1609,
+    "sha256": "4d3e8d14029c453d8979543cdd0a33e19c59efbd6efb2a578c1cd5902b8896f9"
+  },
+  "Root_actual_public_qualification": {
+    "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/RMTM042-public-full-structured-offline-PASS-a1434.json",
+    "bytes": 2761,
+    "sha256": "937fde77ef688f95021280d8da4873ebed02333b266fd5ecfed96039aac0d425"
+  },
+  "adoption": {
+    "path": "D:/ck3-state/upgrade-20261118/rmtm042-notes-verifier-adoption-a1434/adoption-record.json",
+    "bytes": 2716,
+    "sha256": "c4b5e35271d9442a3d28a0e0a1ed33c23e4b47745f2edf9b5c23bc03f1c97dc1"
+  },
+  "repo_layout_retest": {
+    "path": "D:/ck3-state/upgrade-20261118/rmtm042-notes-verifier-adoption-a1434/repo-layout8-result.json",
+    "bytes": 2336,
+    "sha256": "e0e9d447e3e5531deacf870e91f3597459d7b16750a14a3abd21f0bababdf3c1"
+  },
+  "helper": {
+    "path": "D:/workspace/ck3_eternal_recurrence/tools/verify_structured_workshop_notes.py",
+    "bytes": 16957,
+    "sha256": "a886daf7c15442485bb46505b43ffb642a1d193a8191ded6de9edbc731aba06a"
+  },
+  "tests": {
+    "path": "D:/workspace/ck3_eternal_recurrence/tools/tests/test_structured_workshop_notes.py",
+    "bytes": 5714,
+    "sha256": "23f4c77b50453b3bb7adb56443107ab806963414a88389fcda72653fd8f36c2a"
+  },
+  "distinct_methods": 8,
+  "rerun_reason": "Only fixture directory moved under tools/tests/fixtures/structured-workshop-notes; same8 methods rerun for actual repo import and pinned capture layout, not16 distinct methods.",
+  "legacy_tool": {
+    "path": "D:/workspace/ck3_eternal_recurrence/tools/verify_workshop_publication.py",
+    "bytes": 10072,
+    "sha256": "9aa557556d6cd3cdc16d04a22e62adc786d95d339a5e60e0bb7acb9185aa7761"
+  },
+  "legacy_functions_unchanged": true,
+  "original_bold_only_false": {
+    "path": "D:/ck3-state/upgrade-20261118/rmtm042-public-readback-a1428/notes-a01/verification.json",
+    "bytes": 3503,
+    "sha256": "61e625a1a6e8c403a6368dbfb6e6796942db7561f10e07b29e016337247f43bc"
+  },
+  "captured_original_inputs": "Three portable byte-exact captures; .gitattributes -text protects physical hashes across checkouts.",
+  "opt_in": "Standalone helper requires --structured-bbcode-notes; no default renderer behavior changed",
+  "limits": "Full h1/list/ordered-item/b/text/space/inlineLF structure compare; only four captured block LF layouts explicit. Does not collapse or strip text.",
+  "current_unit": {
+    "elapsed_seconds": 0.6566492999554612,
+    "actual_Job_peak_commit": 27570176,
+    "Natural0": true,
+    "Job_active0": true,
+    "new_HTTP_Steam_SDK_Game_Maven_Native": 0
+  },
+  "release_scope": "Root full public title/body/Notes pass is separate from cacheGame. Cache still in progress at this adoption cut; complete release/strict counter is not promoted here.",
+  "RMTM_SourceA_tag_F_originals_unchanged": true
+}
