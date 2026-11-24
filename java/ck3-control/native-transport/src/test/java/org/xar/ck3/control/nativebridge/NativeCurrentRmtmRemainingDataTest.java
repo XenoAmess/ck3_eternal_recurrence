@@ -81,7 +81,7 @@ final class NativeCurrentRmtmRemainingDataTest {
                 List.of(new CurrentLydSource.EventOption(0,can,"actual option","",Optional.empty(),Optional.empty())));
     }
     @Test void actionDefinesTwoFixedChannelsWithoutAnOptionRole()throws IOException {
-        assertEquals(4,CurrentRmtmEvent.Action.values().length);
+        assertEquals(5,CurrentRmtmEvent.Action.values().length);
         assertEquals(CurrentRmtmEvent.Action.ACK_CHAOS,CurrentRmtmEvent.Action.QUERY_CHAOS.ackAction());
         assertEquals(CurrentRmtmEvent.Action.QUERY_SUMMARY,CurrentRmtmEvent.Action.ACK_SUMMARY.queryAction());
         assertThrows(IOException.class,()->CurrentRmtmEvent.Action.parse("select_tier_four"));

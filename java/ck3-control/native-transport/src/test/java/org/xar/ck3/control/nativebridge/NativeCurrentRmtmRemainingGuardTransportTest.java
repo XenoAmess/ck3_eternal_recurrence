@@ -119,11 +119,98 @@ final class NativeCurrentRmtmRemainingGuardTransportTest {
         }
     }
 
+    // New tests opt into ordinary-event DATA only. Original nine tests never enable this flag.
+    private static void reachPostSuccessionData(NativeGameTransport t,DataPort port)throws Exception {
+        for(int n=1;n<=5;n++){
+            var prepared=day(t);
+            if(n==1)for(var channel:List.of(CurrentRmtmEvent.Action.QUERY_CHAOS,CurrentRmtmEvent.Action.QUERY_SUMMARY)){
+                var q=event(t,channel);var fixed=t.prepareCurrentRmtmEventAck(q);ack(t.submitCurrentRmtmEvent(fixed));
+                assertTrue(t.currentRmtmEventAbsent(fixed,event(t,channel)));port.eventPresent=true;port.instance++;
+            }
+            if(n==5)epoch(t,prepared);
+        }
+        port.postEvents=true;port.eventPresent=true;port.instance=71;
+    }
+    @Test void postEventPublicCaseBoundAndPendingCannotCreatePrivateSuccessorEpoch()throws Exception {
+        var port=new DataPort("post-epoch-negative");port.postEvents=true;
+        try(var t=transport(port)){
+            role(t,null);var zero=event(t,CurrentRmtmEvent.Action.QUERY_SUMMARY);
+            assertTrue(zero.frame().source().orElseThrow().caseBound());
+            assertThrows(IOException.class,()->t.prepareCurrentRmtmPostSuccessionEvent(zero,port.instance));
+            for(int n=1;n<=4;n++)day(t);
+            var before=event(t,CurrentRmtmEvent.Action.QUERY_SUMMARY);
+            assertThrows(IOException.class,()->t.prepareCurrentRmtmPostSuccessionEvent(before,port.instance));
+            var fifth=day(t);assertEquals(CurrentRmtmActorTransitionResult.Status.TRANSITION_PENDING,fifth.latestFrame().orElseThrow().status());
+            assertEquals(0,port.epochs);var c=core(t);
+            var pending=t.readCurrentRmtmEvent(c,CurrentRmtmEvent.Action.QUERY_SUMMARY,c.validUntil());
+            if(pending instanceof NativeGameTransport.RmtmEventReceived q){
+                assertTrue(q.frame().source().orElseThrow().caseBound());
+                assertThrows(IOException.class,()->t.prepareCurrentRmtmPostSuccessionEvent(q,port.instance));
+            }else assertInstanceOf(NativeGameTransport.RmtmEventUnavailable.class,pending);
+            assertEquals(0,port.postEventEffects);
+        }
+    }
+    @Test void postEventConfirmedPrivateEpochAllowsDifferentInstancesButRetainsOnceAndIndependentAbsence()throws Exception {
+        var port=new DataPort("post-known");try(var t=transport(port)){
+            reachPostSuccessionData(t,port);assertEquals(1,port.epochs);assertEquals(2,port.eventEffects);
+            for(int instance:List.of(71,72)){
+                port.eventPresent=true;port.instance=instance;var q=event(t,CurrentRmtmEvent.Action.QUERY_SUMMARY);
+                assertFalse(q.frame().source().orElseThrow().ackAdmissible());assertTrue(q.frame().source().orElseThrow().fixedInstanceId().isEmpty());
+                assertEquals(2,CurrentRmtmEvent.postSuccessionChoice(q.frame().source().orElseThrow(),SUCCESSOR,instance).orElseThrow().authoredOptionIndex());
+                var prepared=t.prepareCurrentRmtmPostSuccessionEvent(q,instance);var out=ack(t.submitCurrentRmtmEvent(prepared));
+                assertSame(out,t.submitCurrentRmtmEvent(prepared));assertEquals(2,port.postSelectedAuthored);
+                assertFalse(prepared.latestFrame().orElseThrow().eventClosed());assertFalse(prepared.latestFrame().orElseThrow().newDateObserved());
+                assertTrue(t.currentRmtmEventAbsent(prepared,event(t,CurrentRmtmEvent.Action.QUERY_SUMMARY)));
+                port.eventPresent=true;var same=event(t,CurrentRmtmEvent.Action.QUERY_SUMMARY);
+                assertThrows(IOException.class,()->t.prepareCurrentRmtmPostSuccessionEvent(same,instance));
+            }
+            assertEquals(2,port.postEventEffects);assertEquals(4,port.eventEffects); // Old two ACKs stay spent; new action is not channel-once.
+        }
+    }
+    @Test void postEventForeignReceivedOldQueryAndExpiredDeadlineHaveNoEffectWrite()throws Exception {
+        var port=new DataPort("post-known");var other=new DataPort("post-foreign");
+        try(var t=transport(port);var foreign=transport(other)){
+            reachPostSuccessionData(t,port);var old=event(t,CurrentRmtmEvent.Action.QUERY_SUMMARY);
+            assertThrows(IOException.class,()->foreign.prepareCurrentRmtmPostSuccessionEvent(old,71));
+            var fresh=event(t,CurrentRmtmEvent.Action.QUERY_SUMMARY);
+            assertThrows(IOException.class,()->t.prepareCurrentRmtmPostSuccessionEvent(old,71));
+            var c=core(t);int writes=port.packetWrites;
+            assertInstanceOf(NativeGameTransport.RmtmEventUnavailable.class,t.readCurrentRmtmEvent(c,CurrentRmtmEvent.Action.QUERY_SUMMARY,Instant.EPOCH));
+            assertEquals(writes,port.packetWrites);assertEquals(0,port.postEventEffects);assertEquals(0,other.effectWrites());
+            var actual=event(t,CurrentRmtmEvent.Action.QUERY_SUMMARY);var prepared=t.prepareCurrentRmtmPostSuccessionEvent(actual,71);
+            assertInstanceOf(NativeActionPort.RejectedBeforeDispatch.class,foreign.submitCurrentRmtmEvent(prepared));
+            assertEquals(0,port.postEventEffects);assertEquals(0,other.effectWrites());assertNotNull(fresh);
+        }
+    }
+    @Test void postEventLostOriginalResultIsStickyUnknownAndNeverWritesAgain()throws Exception {
+        var port=new DataPort("lost-post-event");try(var t=transport(port)){
+            reachPostSuccessionData(t,port);var q=event(t,CurrentRmtmEvent.Action.QUERY_SUMMARY);var prepared=t.prepareCurrentRmtmPostSuccessionEvent(q,71);
+            var out=assertInstanceOf(NativeActionPort.Unknown.class,t.submitCurrentRmtmEvent(prepared));
+            assertSame(out,t.submitCurrentRmtmEvent(prepared));assertEquals(1,port.postEventEffects);
+            var c=core(t);port.eventPresent=true;port.instance=72;int writes=port.packetWrites;
+            var after=assertInstanceOf(NativeGameTransport.RmtmEventUnavailable.class,t.readCurrentRmtmEvent(c,CurrentRmtmEvent.Action.QUERY_SUMMARY,c.validUntil()));
+            assertSame(out,after.original());assertEquals(writes,port.packetWrites);assertEquals(1,port.postEventEffects);
+        }
+    }
+    @Test void postEventLegalWholeSourceDriftBecomesUnknownWithoutClearingTheRetainedFailure()throws Exception {
+        var port=new DataPort("changed-post-source");try(var t=transport(port)){
+            reachPostSuccessionData(t,port);var q=event(t,CurrentRmtmEvent.Action.QUERY_SUMMARY);var prepared=t.prepareCurrentRmtmPostSuccessionEvent(q,71);
+            var out=assertInstanceOf(NativeActionPort.Unknown.class,t.submitCurrentRmtmEvent(prepared));
+            assertSame(out,t.submitCurrentRmtmEvent(prepared));assertEquals(1,port.postEventEffects);
+            assertTrue(t.originalIndeterminateCoreAcknowledgement(out.requestId()).isPresent());
+            var c=core(t);port.eventPresent=true;port.instance=72;int writes=port.packetWrites;
+            assertInstanceOf(NativeGameTransport.RmtmEventUnavailable.class,t.readCurrentRmtmEvent(c,CurrentRmtmEvent.Action.QUERY_SUMMARY,c.validUntil()));
+            assertEquals(writes,port.packetWrites);assertTrue(t.originalIndeterminateCoreAcknowledgement(out.requestId()).isPresent());
+            assertEquals(1,port.postEventEffects);
+        }
+    }
+
     private static final class DataPort implements NativePacketPort {
         final String mode;final ArrayDeque<byte[]> packets=new ArrayDeque<>();boolean closed,pending,confirmed,opCompleted,listVisible,detailVisible,budgetVisible,eventPresent=true;
         int days,advances,epochs,roleQueries,decisionEffects,eventEffects,budgetEffects,percent,restoreConfirms,instance=10,querySequence;
         CurrentRmtmDecision.DecisionKey selected;CurrentRmtmActorTransitionSource roleBefore,opSource;CoreFrame.Prefix opCore;String operation;long opDeadline;BigInteger opProvider,opQuery;int opDay;
         CurrentRmtmDecisionSource decisionBefore;CurrentRmtmEventSource eventBefore;CurrentRmtmObservationSource observationBefore;
+        boolean postEvents;int postEventEffects,postSelectedAuthored=-1,packetWrites;
         DataPort(String mode)throws IOException{this.mode=mode;var h=StrictJson.object().put("type","hello").put("protocol_version",1).put("pid",42).put("connection_generation",T)
                 .put("bridge_version","rmtm-DATA").put("expected_ck3_version",BUILD.version()).put("expected_ck3_sha256",BUILD.executableSha256()).put("game_adapter_id",BUILD.coreFrameAdapterId()).put("game_adapter_status","ready").put("ck3_build_match",true);
             var names=new java.util.LinkedHashSet<String>();names.add(CoreFrame.CAPABILITY);for(var a:CurrentRmtmActorTransition.Action.values())names.add(a.capability());for(var a:CurrentRmtmDecision.Action.values())names.add(a.capability());for(var a:CurrentRmtmEvent.Action.values())names.add(a.capability());for(var a:CurrentRmtmObservation.Action.values())names.add(a.capability());var caps=h.putArray("capabilities");names.forEach(caps::add);packets.add(NativeWire.packet(StrictJson.canonical(h)));}
@@ -143,7 +230,25 @@ final class NativeCurrentRmtmRemainingGuardTransportTest {
             return new CurrentRmtmDecisionSource(true,listVisible,true,detailVisible,detailVisible,detailVisible,false,!listVisible,true,false,detailVisible&&can,true,detailVisible,
                     detailVisible?Optional.of(can?"":"actual original50 why"):Optional.empty(),Optional.of(1),Optional.of(5),detailVisible?Optional.of(1):Optional.empty(),detailVisible?Optional.of(selected):Optional.empty(),detailVisible?Optional.of(can):Optional.empty(),rows);
         }
-        CurrentRmtmEventSource eventSource(CurrentRmtmEvent.Action action){List<CurrentLydSource.EventRow> rows=List.of();if(eventPresent){var option=new CurrentLydSource.EventOption(0,true,"actual generated DATA option","",Optional.empty(),Optional.empty());rows=List.of(new CurrentLydSource.EventRow(instance,actor(),1,action.definition(),"actual generated DATA opening","description",true,true,true,List.of(option)));}
+        // Explicit Java DATA fixture, never a C++/Native reply or actual popup claim.
+        CurrentRmtmEventSource postEventSource(){
+            List<CurrentLydSource.EventRow> rows=List.of();
+            if(eventPresent){
+                var options=List.of(new CurrentLydSource.EventOption(3,true,"first vector DATA option","",Optional.<String>empty(),Optional.<CurrentLyd.EventRole>empty()),
+                        new CurrentLydSource.EventOption(0,false,"actual disabled DATA option","actual disabled reason",Optional.<String>empty(),Optional.<CurrentLyd.EventRole>empty()),
+                        new CurrentLydSource.EventOption(2,true,"minimum authored available DATA option","",Optional.<String>empty(),Optional.<CurrentLyd.EventRole>empty()));
+                rows=List.of(new CurrentLydSource.EventRow(instance,actor(),4,"java_data.post_succession_event","Java DATA ordinary opening","Java DATA ordinary description",true,true,true,options));
+            }
+            return new CurrentRmtmEventSource(new CurrentLydSource.Events(true,rows.size(),rows),Optional.empty(),true,false,true);
+        }
+        CurrentRmtmEventSource changedPostEventSource(CurrentRmtmEventSource original){
+            var row=original.eventCensus().events().get(0);
+            var changed=new CurrentLydSource.EventRow(row.instanceId(),row.recipientCharacterId(),row.authoredOptionCount(),row.definitionKey(),row.opening(),
+                    row.description()+" valid changed wholeSource DATA",row.namedRootBound(),row.windowVisible(),row.windowEnabled(),row.options());
+            return new CurrentRmtmEventSource(new CurrentLydSource.Events(true,1,List.of(changed)),Optional.empty(),true,false,true);
+        }
+
+        CurrentRmtmEventSource eventSource(CurrentRmtmEvent.Action action){if(postEvents)return postEventSource();List<CurrentLydSource.EventRow> rows=List.of();if(eventPresent){var option=new CurrentLydSource.EventOption(0,true,"actual generated DATA option","",Optional.empty(),Optional.empty());rows=List.of(new CurrentLydSource.EventRow(instance,actor(),1,action.definition(),"actual generated DATA opening","description",true,true,true,List.of(option)));}
             return new CurrentRmtmEventSource(new CurrentLydSource.Events(true,rows.size(),rows),eventPresent?Optional.of(instance):Optional.empty(),true,eventPresent,true);
         }
         CurrentRmtmObservationSource budgetSource(){var b=new CurrentRmtmObservationSource.Budget(budgetVisible,budgetVisible,budgetVisible,false,budgetVisible?Optional.of(actor()):Optional.empty(),budgetVisible?Optional.of(100L):Optional.empty(),budgetVisible?Optional.of(Integer.toUnsignedLong(actor())):Optional.empty(),!budgetVisible,budgetVisible,"my_realm_player",true);
@@ -162,7 +267,7 @@ final class NativeCurrentRmtmRemainingGuardTransportTest {
             return new CurrentRmtmActorTransitionResult(a,id,op,status,true,accepted,provider,query,claim,epoch,count,BigInteger.valueOf(deadline),T,BigInteger.valueOf(20),BigInteger.valueOf(30),7,Optional.of(expected),source,progress,effect,returned,true,Optional.empty());
         }
         public void writePacket(byte[] bytes,Instant until)throws IOException{
-            verify();var request=NativeWire.decodeExecuteRequest(bytes);ObjectNode result;
+            verify();packetWrites++;var request=NativeWire.decodeExecuteRequest(bytes);ObjectNode result;
             if(request.step().equals(CoreFrame.STEP))result=NativeWire.object(NativeWire.parse(CoreFramePublicCodec.encode(new CoreFrame.Partial(BUILD,current())).bytes()));
             else{
                 var f=NativeWire.parse(request.normalizedAdditionalFields().value());long deadline=f.get("core_control_deadline_unix_ms").longValue();
@@ -178,7 +283,13 @@ final class NativeCurrentRmtmRemainingGuardTransportTest {
                     var frame=new CurrentRmtmDecisionResult(a,status,!query,!query,false,true,provider,sequence,query?Z:BigInteger.valueOf(decisionEffects),Optional.of(prefix(c.get("expected_core"))),Optional.of(owner()),Optional.of(s),Optional.empty(),key);result=NativeWire.object(NativeWire.parse(frame.encode().bytes()));
                 }else if(f.has("rmtm_event")){
                     var c=f.get("rmtm_event");var a=CurrentRmtmEvent.Action.parse(c.get("action").asText());boolean query=a.queryOnly();var s=query?eventSource(a):eventBefore;var fixed=query?Optional.<Integer>empty():Optional.of(c.get("instance_id").intValue());
-                    if(query)eventBefore=s;else {eventEffects++;eventPresent=false;}
+                    if(query)eventBefore=s;else {eventEffects++;eventPresent=false;
+                        if(postEvents&&a==CurrentRmtmEvent.Action.CHOOSE_POST_SUCCESSION_FIRST_AVAILABLE){
+                            postEventEffects++;postSelectedAuthored=CurrentRmtmEvent.postSuccessionChoice(s,prefix(c.get("expected_core")).playedCharacterId(),fixed.orElseThrow()).orElseThrow(()->new IOException("New DATA port received no admitted actual choice")).authoredOptionIndex();
+                            if(mode.equals("lost-post-event"))return;
+                            if(mode.equals("changed-post-source"))s=changedPostEventSource(s);
+                        }
+                    }
                     var frame=new CurrentRmtmEventResult(a,query?CurrentRmtmEventResult.Status.AVAILABLE:CurrentRmtmEventResult.Status.SELECTION_DISPATCHED,!query,!query,true,query?O:number(c.get("provider_generation")),query?seq():number(c.get("query_sequence")),query?Z:BigInteger.valueOf(eventEffects),Optional.of(prefix(c.get("expected_core"))),Optional.of(owner()),Optional.of(s),Optional.empty(),fixed);result=NativeWire.object(NativeWire.parse(frame.encode().bytes()));
                 }else if(f.has("rmtm_observation")){
                     var c=f.get("rmtm_observation");var a=CurrentRmtmObservation.Action.parse(c.get("action").asText());if(a.kind()!=CurrentRmtmObservation.Kind.BUDGET)throw new IOException("This finite generated DATA port has no nonbudget observation");

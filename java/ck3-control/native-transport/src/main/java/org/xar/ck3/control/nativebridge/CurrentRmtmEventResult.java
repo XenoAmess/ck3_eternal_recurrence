@@ -54,7 +54,12 @@ public record CurrentRmtmEventResult(CurrentRmtmEvent.Action action, Status stat
                     && providerGeneration.signum() > 0 && querySequence.signum() > 0 && claimSequence.signum() > 0
                     && effectAttempted && nativeReturned && instanceId.isPresent() && unavailableReason.isEmpty(), "Fixed void selection coherence differs");
             var s = source.orElseThrow();
-            StrictJson.require(s.ackAdmissible()&&s.fixedInstanceId().equals(instanceId)&&s.eventCensus().events().get(0).definitionKey().equals(action.definition()), "Selection must retain the exact immutable admitted beforeSource");
+            if (action == CurrentRmtmEvent.Action.CHOOSE_POST_SUCCESSION_FIRST_AVAILABLE) {
+                StrictJson.require(CurrentRmtmEvent.postSuccessionChoice(s, factsBefore.orElseThrow().playedCharacterId(),
+                        instanceId.orElseThrow()).isPresent(), "Post-succession selection must retain the actual deterministic beforeSource");
+            } else {
+                StrictJson.require(s.ackAdmissible()&&s.fixedInstanceId().equals(instanceId)&&s.eventCensus().events().get(0).definitionKey().equals(action.definition()), "Selection must retain the exact immutable admitted beforeSource");
+            }
         } else {
             StrictJson.require(unavailableReason.filter(reason -> !reason.isEmpty()).isPresent(), "Original RMTM event refusal reason required");
             if (status != Status.INDETERMINATE) StrictJson.require(!effectAttempted && !nativeReturned,

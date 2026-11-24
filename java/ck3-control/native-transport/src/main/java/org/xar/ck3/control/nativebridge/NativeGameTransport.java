@@ -4442,6 +4442,35 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         if(query==null)throw new IOException("Actual private query required");
         return prepareRmtmEvent(query,query.frame.action().ackAction());
     }
+    /** Original query/instance DATA only; actual confirmed private successor custody supplies authority. */
+    public synchronized RmtmEventPrepared prepareCurrentRmtmPostSuccessionEvent(RmtmEventReceived query,int actualInstanceId)throws IOException {
+        var action=CurrentRmtmEvent.Action.CHOOSE_POST_SUCCESSION_FIRST_AVAILABLE;
+        if(query!=null&&query.issuer==this&&query.prepared!=null){
+            if(query.prepared.action!=action||query.prepared.instanceId!=actualInstanceId)throw new IOException("Original post-succession query already prepared for another instance/action");
+            return query.prepared;
+        }
+        if(query==null)throw new IOException("Actual private original QUERY_SUMMARY required");
+        requireRmtmEventOriginal(query,query.validUntil);requireRmtmCase(query.before);
+        requireRmtmEventAdmission(query,action,actualInstanceId);
+        if(!hello.capabilities().contains(action.capability()))throw new IOException("Actual post-succession event capability absent");
+        String id="rmtm-post-succession-choice-"+UUID.randomUUID().toString().replace("-","");
+        return query.prepared=new RmtmEventPrepared(this,query,action,id,rmtmEventPacket(id,action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),Optional.of(actualInstanceId),query.validUntil),actualInstanceId);
+    }
+    private void requireRmtmPostSuccessionEventAdmission(RmtmEventReceived query,int instance)throws IOException {
+        requireRmtmCase(query.before);
+        if(query.frame.action()!=CurrentRmtmEvent.Action.QUERY_SUMMARY||confirmedRmtmEpoch==null||knownRmtmDays<5||knownRmtmDays>14
+                ||attemptedRmtmEventInstances.contains(instance)||attemptedRmtmEventInstances.size()>=64)
+            throw new IOException("Actual confirmed successor/query lease or per-instance claim capacity unavailable");
+        var actual=((CoreFrame.Partial)query.before.frame).prefix();
+        var predecessor=((CoreFrame.Partial)rmtmCapturedRole.before.frame).prefix();
+        var epoch=confirmedRmtmEpoch.latest;
+        if(epoch==null||epoch.status()!=CurrentRmtmActorTransitionResult.Status.EPOCH_CONFIRMED||!epoch.actorEpoch().equals(BigInteger.ONE)
+                ||epoch.factsBefore().filter(c->c.playedCharacterId()==actual.playedCharacterId()).isEmpty()
+                ||actual.playedCharacterId()==predecessor.playedCharacterId())
+            throw new IOException("Public caseBound cannot create private successor epoch authority");
+        if(CurrentRmtmEvent.postSuccessionChoice(query.frame.source().orElseThrow(),actual.playedCharacterId(),instance).isEmpty())
+            throw new IOException("Complete actual instance has no first available displayed choice or requires a dedicated strategy");
+    }
     private RmtmEventPrepared prepareRmtmEvent(RmtmEventReceived query,CurrentRmtmEvent.Action action)throws IOException {
         if(query!=null&&query.issuer==this&&query.prepared!=null){if(query.prepared.action!=action)throw new IOException("RMTM original query already prepared for a different fixed choice");return query.prepared;}
         requireRmtmEventOriginal(query,query.validUntil);requireRmtmCase(query.before);
@@ -4452,6 +4481,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         return query.prepared=new RmtmEventPrepared(this,query,action,id,rmtmEventPacket(id,action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),Optional.of(instance),query.validUntil),instance);
     }
     private void requireRmtmEventAdmission(RmtmEventReceived query,CurrentRmtmEvent.Action action,int instance)throws IOException {
+        if(action==CurrentRmtmEvent.Action.CHOOSE_POST_SUCCESSION_FIRST_AVAILABLE){requireRmtmPostSuccessionEventAdmission(query,instance);return;}
         var s=query.frame.source().orElseThrow();
         if(action.queryOnly()||action!=query.frame.action().ackAction()||!s.caseBound()||!s.ackAdmissible()||!s.fixedInstanceId().equals(Optional.of(instance))
                 ||attemptedRmtmEventInstances.contains(instance)||attemptedRmtmEventChannels.contains(action))throw new IOException("Original same-channel once-per-case event authority unavailable");
@@ -4478,7 +4508,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             if(!hello.capabilities().contains(prepared.action.capability())||sentRequestIds.size()>=maximumSubmissions)throw new IOException("RMTM action capability/retention unavailable");
             if(!Arrays.equals(prepared.packet.value(),rmtmEventPacket(id,prepared.action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),Optional.of(prepared.instanceId),query.validUntil)))throw new IOException("RMTM original private action packet/deadline drift");
             outcome=dispatch(id,prepared.packet.value(),query.validUntil,()->{requireBackgroundAtCoreWrite();try{requireRmtmEventOriginal(query,query.validUntil);requireRmtmCase(query.before);requireRmtmEventAdmission(query,prepared.action,prepared.instanceId);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
-                if(!attemptedRmtmEventChannels.add(prepared.action)||!attemptedRmtmEventInstances.add(prepared.instanceId))throw new IllegalStateException("Original fixed channel/instance already attempted");prepared.called=true;query.actionAttempted=true;query.before.controlAttempted=true;heldSnapshotInvalidated=true;latestRmtmEvent=null;});
+                if((prepared.action!=CurrentRmtmEvent.Action.CHOOSE_POST_SUCCESSION_FIRST_AVAILABLE&&!attemptedRmtmEventChannels.add(prepared.action))||!attemptedRmtmEventInstances.add(prepared.instanceId))throw new IllegalStateException("Original channel/actual instance already attempted");prepared.called=true;query.actionAttempted=true;query.before.controlAttempted=true;heldSnapshotInvalidated=true;latestRmtmEvent=null;});
             if(outcome instanceof Unknown unknown){unresolvedCoreControl=unknown;unresolvedRmtmEvent=new RmtmEventUnavailable(unknown,"Original RMTM business UNKNOWN");return prepared.outcome=unknown;}
             if(outcome instanceof AckReceived ack){
                 var frame=CurrentRmtmEventResult.decodeOutcome(ack);requireRmtmEventFrame(frame,prepared.action,query.before);

@@ -4004,7 +4004,7 @@ if(riteDraftCosts) {
     record RmtmConfig(RmtmMode mode,int maximumStatusPolls,long statusPollDelayMillis) {
         boolean queryOnly(){return mode==RmtmMode.QUERY_ROLE||mode==RmtmMode.QUERY_DECISION;}
         int submissions(){return switch(mode){case QUERY_ROLE,QUERY_DECISION->2;case THRESHOLD_50_51_ONCE->Math.addExact(82,Math.multiplyExact(4,maximumStatusPolls));
-            case ORIGINAL_CASE_ONCE->Math.addExact(85,Math.multiplyExact(8,maximumStatusPolls));};}
+            case ORIGINAL_CASE_ONCE->Math.addExact(Math.addExact(85,RMTM_POST_SUCCESSION_ADDITIONAL_SUBMISSIONS),Math.multiplyExact(8,maximumStatusPolls));};}
     }
     static RmtmConfig currentRmtmConfig(ObjectNode config) {
         StrictJson.require("xar.native-owner-snapshot-config/v47".equals(StrictJson.text(config.get("schema"))),"Explicit v47 RMTM family required");
@@ -4201,13 +4201,16 @@ if(riteDraftCosts) {
             NativeGameTransport.RmtmEventPrepared prepared,NativeObservationPort.TransportSession session,Path output,String label,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
         if(!prepared.deadline().equals(query.validUntil()))throw new IOException("Original RMTM event deadline changed before intent");
         archiveCurrentRmtmIntent(output,label+"-intent",prepared.requestId(),"",prepared.deadline(),prepared.originalPacket().value(),originals);
-        stage="ONCE_FIXED_RMTM_EVENT";result.put("event_ack_calls",result.path("event_ack_calls").intValue()+1);
+        boolean postSuccession=prepared.action()==CurrentRmtmEvent.Action.CHOOSE_POST_SUCCESSION_FIRST_AVAILABLE;
+        stage=postSuccession?"ONCE_POST_SUCCESSION_RMTM_EVENT":"ONCE_FIXED_RMTM_EVENT";
+        String count=postSuccession?"post_succession_event_calls":"event_ack_calls";result.put(count,result.path(count).intValue()+1);
         var outcome=transport.submitCurrentRmtmEvent(prepared);Path out=Files.createDirectory(output.resolve(label+"-result"));archiveCurrentLetterOutcome(transport,out,label,outcome,originals);
         if(!(outcome instanceof NativeActionPort.AckReceived ack))throw new IOException("RMTM original event effect refused/UNKNOWN; no resubmit");
         requireCurrentDjcAckOwner(transport,owner,ack,session);var frame=CurrentRmtmEventResult.decodeOutcome(ack);
         originals.set(label+"_original_result",write(out,"original-result.json",ack.originalResultToken().orElseThrow().bytes()));result.set(label,FullJsonTree.parse(frame.encode().bytes(),FullJsonTree.MAXIMUM_BYTES));
         if(!ack.requestId().equals(prepared.requestId())||prepared.latestFrame().filter(frame::equals).isEmpty())throw new IOException("THIS RMTM event ACK differs from original private preparation");
-        requireCurrentRmtmEventDispatch(frame,query.frame(),query.frame().factsBefore().orElseThrow(),session.connectionGeneration(),prepared.instanceId());return frame;
+        if(postSuccession)requireCurrentRmtmPostSuccessionDispatch(frame,query.frame(),query.frame().factsBefore().orElseThrow(),session.connectionGeneration(),prepared.instanceId());
+        else requireCurrentRmtmEventDispatch(frame,query.frame(),query.frame().factsBefore().orElseThrow(),session.connectionGeneration(),prepared.instanceId());return frame;
     }
     private record RmtmDecisionObservation(NativeGameTransport.CoreReceived core,NativeGameTransport.RmtmDecisionReceived query) {}
     private static RmtmDecisionObservation navigateCurrentRmtmDecision(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeLaunchPlan plan,
@@ -4377,6 +4380,76 @@ if(riteDraftCosts) {
         for(int i=0;i<9;i++){var a=before.seats().get(i);var b=after.seats().get(i);
             if(!a.positionKey().equals(b.positionKey())||a.incumbentId().isEmpty()||!a.incumbentAlive().orElse(false)||!a.incumbentId().equals(b.incumbentId())||!b.incumbentAlive().orElse(false))throw new IOException("Actual full-ID nine incumbent identity/liveness changed");}
     }
+    // Event owner retains64 claims for this case: the two original D1 ACKs stay spent.
+    static final int RMTM_POST_SUCCESSION_INSTANCE_LIMIT=64-2;
+    static final int RMTM_POST_SUCCESSION_ADDITIONAL_SUBMISSIONS=3+3*RMTM_POST_SUCCESSION_INSTANCE_LIMIT;
+    static void requireCurrentRmtmPostSuccessionBoundary(CoreFrame.Prefix core,int song,int successor,int completedDays,int startingDate)throws IOException {
+        long exactDate=(long)startingDate+24L*completedDays;
+        if(core==null||song==-1||successor==-1||song==successor||completedDays<5||completedDays>14
+                ||exactDate<Integer.MIN_VALUE||exactDate>Integer.MAX_VALUE||core.dateRaw()!=exactDate||core.playedCharacterId()!=successor
+                ||!core.paused()||!core.mapReady()||!core.hasPlayedCharacter()||!core.playedCharacterAlive()||core.localPlayerId()<0)
+            throw new IOException("Actual same-day successor Core after D5 required; DATA is not private epoch authority");
+    }
+    static Optional<CurrentRmtmEvent.PostSuccessionChoice> currentRmtmFirstPostSuccessionChoice(CurrentRmtmEventSource source,int actualActor)throws IOException {
+        if(source==null||actualActor==-1||!source.sampledTwice()||!source.eventCensus().censusComplete()
+                ||source.eventCensus().namedRootCount()!=source.eventCensus().events().size())
+            throw new IOException("Complete actual ordinary event census required");
+        if(source.eventCensus().events().isEmpty())return Optional.empty();
+        // Multiple ordinary rows are valid. Never skip a refused/foreign/specialized first row.
+        int instance=source.eventCensus().events().get(0).instanceId();
+        var choice=CurrentRmtmEvent.postSuccessionChoice(source,actualActor,instance)
+                .orElseThrow(()->new IOException("First actual event has no legal post-succession route; full DATA retained, no fallback"));
+        if(choice.instanceId()!=instance)throw new IOException("Derived event choice changed actual first instance");
+        return Optional.of(choice);
+    }
+    static void requireCurrentRmtmPostSuccessionCapacity(Set<Integer> attempted,int instance)throws IOException {
+        if(attempted==null||instance<=0||attempted.contains(instance)||attempted.size()>=RMTM_POST_SUCCESSION_INSTANCE_LIMIT)
+            throw new IOException("Original post-succession instance retained or Event64 capacity exhausted; no replay");
+    }
+    static void requireCurrentRmtmPostSuccessionDispatch(CurrentRmtmEventResult frame,CurrentRmtmEventResult query,
+            CoreFrame.Prefix core,java.math.BigInteger connection,int instance)throws IOException {
+        var source=requireCurrentRmtmEventQuery(query,CurrentRmtmEvent.Action.QUERY_SUMMARY,core,connection);
+        var choice=currentRmtmFirstPostSuccessionChoice(source,core.playedCharacterId())
+                .orElseThrow(()->new IOException("Original post-succession selection had no actual first event"));
+        if(choice.instanceId()!=instance||frame.action()!=CurrentRmtmEvent.Action.CHOOSE_POST_SUCCESSION_FIRST_AVAILABLE
+                ||frame.status()!=CurrentRmtmEventResult.Status.SELECTION_DISPATCHED||!frame.effectAttempted()||!frame.nativeReturned()||!frame.cleanupKnown()
+                ||frame.claimSequence().signum()<=0||frame.instanceId().filter(n->n==instance).isEmpty()||!frame.source().equals(query.source())
+                ||!frame.factsBefore().equals(query.factsBefore())||!frame.providerGeneration().equals(query.providerGeneration())
+                ||!frame.querySequence().equals(query.querySequence())||frame.owner().filter(o->o.connectionGeneration().equals(connection)).isEmpty()
+                ||frame.nativeHandled()||frame.eventClosed()||frame.newDateObserved()||frame.physicalSaveConfirmed())
+            throw new IOException("Post-succession ACK lost immutable actual Source/Core/instance/lease or claimed unobserved afterstate");
+    }
+    private static NativeGameTransport.CoreReceived drainCurrentRmtmPostSuccessionEvents(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,
+            NativeLaunchPlan plan,NativeGameTransport.CoreReceived initial,NativeObservationPort.TransportSession session,CoreFrame.Prefix expected,
+            int song,int successor,int completedDays,int startingDate,Set<Integer> attempted,Path output,String label,Instant deadline,ObjectNode result,ObjectNode originals)
+            throws IOException,InterruptedException {
+        requireCurrentRmtmPostSuccessionBoundary(expected,song,successor,completedDays,startingDate);
+        var core=initial;
+        var query=readCurrentRmtmEvent(transport,owner,core,CurrentRmtmEvent.Action.QUERY_SUMMARY,session,output,label+"-initial-census",deadline,result,originals);
+        result.put("post_succession_ordinary_census_checks",result.path("post_succession_ordinary_census_checks").intValue()+1);
+        while(true){
+            var choice=currentRmtmFirstPostSuccessionChoice(query.frame().source().orElseThrow(),expected.playedCharacterId());
+            if(choice.isEmpty()){
+                result.put(label+"_ordinary_complete_empty_observed",true);
+                return core; // Ordinary empty DATA is not clearance of the independent runtime/Date gate.
+            }
+            int instance=choice.orElseThrow().instanceId();requireCurrentRmtmPostSuccessionCapacity(attempted,instance);
+            var prepared=transport.prepareCurrentRmtmPostSuccessionEvent(query,instance);
+            if(prepared.action()!=CurrentRmtmEvent.Action.CHOOSE_POST_SUCCESSION_FIRST_AVAILABLE||prepared.instanceId()!=instance
+                    ||!prepared.deadline().equals(query.validUntil()))throw new IOException("Private post-succession preparation rebound original query");
+            attempted.add(instance); // Retain before intent/write; every refusal/UNKNOWN stops this Main, never retries.
+            String once=label+"-instance-"+instance+"-attempt-"+attempted.size();
+            submitCurrentRmtmEvent(transport,owner,query,prepared,session,output,once,result,originals);
+            core=readCurrentRmtmCore(transport,owner,plan,output,once+"-independent-core",deadline,result,originals,session,expected);
+            requireCurrentRmtmAfterRequest(transport,core,prepared.requestId());
+            var observed=readCurrentRmtmEvent(transport,owner,core,CurrentRmtmEvent.Action.QUERY_SUMMARY,session,output,once+"-after-census",deadline,result,originals);
+            result.put("post_succession_ordinary_census_checks",result.path("post_succession_ordinary_census_checks").intValue()+1);
+            if(!transport.currentRmtmEventAbsent(prepared,observed))throw new IOException("Original actual instance still present in independent complete census; no reselect");
+            result.put(once+"_instance_absent_observed",true);
+            query=observed; // Reuse this actual unused private census, not the consumed beforeSource.
+        }
+    }
+
     private static void acknowledgeCurrentRmtmChannel(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeLaunchPlan plan,CurrentRmtmEvent.Action action,
             NativeObservationPort.TransportSession session,CoreFrame.Prefix expected,Path output,String label,Instant deadline,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
         var core=readCurrentRmtmCore(transport,owner,plan,output,label+"-before-core",deadline,result,originals,session,expected);
@@ -4415,9 +4488,12 @@ if(riteDraftCosts) {
         var start=capture.frame().factsBefore().orElseThrow();int song=start.playedCharacterId(),successor=-1;var current=start;
         requireCurrentRmtmPositiveRole(capture.frame(),start,CurrentRmtmActorTransitionSource.Role.SONG,java.math.BigInteger.ZERO,song,-1,false,0,start.dateRaw());
         CurrentRmtmObservationResult d3=null,pre=null,post=null;CurrentRmtmObservationSource.Council council=null;
+        var postSuccessionInstances=new java.util.HashSet<Integer>();
         for(int day=1;day<=8;day++){
             String label="rmtm-day"+String.format(java.util.Locale.ROOT,"%02d",day);var role=capture;
-            if(day>1){var before=readCurrentRmtmCore(transport,owner,plan,output,label+"-before-core",deadline,result,originals,session,current);role=readCurrentRmtmRole(transport,owner,before,session,output,label+"-before-role",deadline,result,originals);}
+            if(day>1){var before=readCurrentRmtmCore(transport,owner,plan,output,label+"-before-core",deadline,result,originals,session,current);
+                if(day>=6)before=drainCurrentRmtmPostSuccessionEvents(transport,owner,plan,before,session,current,song,successor,day-1,start.dateRaw(),postSuccessionInstances,output,label+"-post-succession-events",deadline,result,originals);
+                role=readCurrentRmtmRole(transport,owner,before,session,output,label+"-before-role",deadline,result,originals);}
             requireCurrentRmtmPositiveRole(role.frame(),current,day<=5?CurrentRmtmActorTransitionSource.Role.SONG:CurrentRmtmActorTransitionSource.Role.SUCCESSOR,
                     day<=5?java.math.BigInteger.ZERO:java.math.BigInteger.ONE,song,successor,false,day-1,start.dateRaw());
             var prepared=transport.prepareCurrentRmtmAdvance(role);var terminal=runCurrentRmtmDay(transport,owner,role,prepared,config,session,output,label,deadline,readTimeout,result,originals);
@@ -4455,7 +4531,8 @@ if(riteDraftCosts) {
                 .put("machine_id",machine).put("read_calls",0).put("advance_calls",0).put("status_queries",0).put("epoch_confirm_calls",0).put("event_ack_calls",0).put("decision_action_calls",0)
                 .put("maximum_natural_days",14).put("natural_days_observed",0).put("query_available",false).put("event_closed",false).put("decision_applied",false)
                 .put("d5_execute_identity_observed",false).put("rmtm26_business_pass",false).put("physical_save_confirmed",false).put("save_calls",0)
-                .put("threshold_private_dispatch_chain_completed",false).put("original_case_contracts_bound",true);
+                .put("threshold_private_dispatch_chain_completed",false).put("original_case_contracts_bound",true)
+                .put("post_succession_ordinary_census_checks",0).put("post_succession_event_calls",0);
     }
     private static void runCurrentRmtm(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeLaunchPlan plan,RmtmConfig config,Path output,
             Instant deadline,Duration readTimeout,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {

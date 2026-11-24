@@ -25,7 +25,10 @@ public final class CurrentRmtmEvent {
         QUERY_SUMMARY("query_summary","query-rmtm-summary-current-v1","game.query.current-rmtm-summary.v1"),
         ACK_SUMMARY("ack_summary","ack-rmtm-summary-current-v1","game.command.ack-current-rmtm-summary.v1"),
         QUERY_CHAOS("query_chaos","query-rmtm-chaos-current-v1","game.query.current-rmtm-chaos.v1"),
-        ACK_CHAOS("ack_chaos","ack-rmtm-chaos-current-v1","game.command.ack-current-rmtm-chaos.v1");
+        ACK_CHAOS("ack_chaos","ack-rmtm-chaos-current-v1","game.command.ack-current-rmtm-chaos.v1"),
+        CHOOSE_POST_SUCCESSION_FIRST_AVAILABLE("choose_post_succession_first_available",
+                "choose-rmtm-post-succession-first-available-current-v1",
+                "game.command.choose-current-rmtm-post-succession-first-available.v1");
         private final String wire, step, capability;
         Action(String wire, String step, String capability) { this.wire = wire; this.step = step; this.capability = capability; }
         public String wire() { return wire; }
@@ -62,6 +65,38 @@ public final class CurrentRmtmEvent {
         var fields = StrictJson.object(); fields.set("rmtm_event", claim); fields.set("arguments", StrictJson.object());
         // Outer request ID and original deadline belong exclusively to the transport.
         return new NativeRequest(action.step(), action.capability(), new RawJson(StrictJson.canonical(fields)));
+    }
+
+    /** Derived readonly DATA only; this record is not a Native lease, prepared command or actor-epoch proof. */
+    public record PostSuccessionChoice(int instanceId, int authoredOptionIndex) {
+        public PostSuccessionChoice {
+            StrictJson.require(instanceId > 0 && authoredOptionIndex >= 0 && authoredOptionIndex < 64,
+                    "Actual event instance and bounded authored option index required");
+        }
+    }
+    /** Exact mirror of the Native finite policy; no caller-supplied option index or event definition is accepted. */
+    public static Optional<PostSuccessionChoice> postSuccessionChoice(CurrentRmtmEventSource source,
+            int actualActor, int instanceId) {
+        Objects.requireNonNull(source);
+        if (instanceId <= 0 || !source.caseBound() || !source.sampledTwice() || !source.eventCensus().censusComplete())
+            return Optional.empty();
+        var specialized = java.util.Set.of("rmtm.1001", "tgp_dynastic_cycle.0081", "lyd.1", "lyd.1000", "lyd.1002", "lyd.1032",
+                "ep3_laamps.0003", "bookmark.1070", "gdp_guelph_ghibelline.0500", "xqol.100", "sxat.2", "sxat.4", "xccc.1001");
+        CurrentLydSource.EventRow event = null;
+        for (var row : source.eventCensus().events()) if (row.instanceId() == instanceId) {
+            if (event != null) return Optional.empty();
+            event = row;
+        }
+        if (event == null || event.recipientCharacterId() != actualActor || !event.namedRootBound()
+                || !event.windowVisible() || !event.windowEnabled() || specialized.contains(event.definitionKey()))
+            return Optional.empty();
+        Integer first = null;
+        for (var option : event.options()) {
+            if (option.permittedRole().isPresent() || option.sourceBoundOptionKey().isPresent()) return Optional.empty();
+            if (option.nativeCanSelect() && !option.text().isEmpty()
+                    && (first == null || option.authoredOptionIndex() < first)) first = option.authoredOptionIndex();
+        }
+        return first == null ? Optional.empty() : Optional.of(new PostSuccessionChoice(instanceId, first));
     }
 
     static ObjectNode core(CoreFrame.Prefix p) {
