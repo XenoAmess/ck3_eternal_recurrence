@@ -1,4 +1,13 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
+
+## 2026-11-24 当前Living v48：58项软件与真实新配对已闭，原8实机尚未运行
+
+正式代码`d157f10c…`已正常推送；NativeTree`3cced9bd…`，Native初始实际BEGIN仍为`9b1527e6…`／Tree`0d5ac9ae…`。首22项DATA加真实Cpp消费36项为58个不同方法，实际运行59次因真实工厂packet缺陷后必要重验1项；13个原Cpp响应、23个真实Java工厂请求及原解析器逐body各一次逆核均通过。UI／Entry通过同一生产helper发严格revisionless8字段包，Inventory保留原legacy8／revision0。原8方法Surefire XML在mutable target被后继单方法覆盖的保留缺口明示，原首22收据／stdout／方法记录不改，不重跑旧矩阵补造原件。
+
+唯一最终package自然0／Job0，实际123.2715秒；2个新JAR与156个不可变身份复用组成158，未遍历旧158 CRC。新六pins`99cf0989…`绑定MF`c3de403c…`／args`dd5cb974…`和Native ND`b8bc35b0…`／DLL`db4fcaa0…`；严格v48、`current_living_original_case_once`、85提交上界／0Date／0Save，同一Main／Attachment／Receiver。Native969图为19次CL尝试、18个唯一TU成功、951旧复用、修错后17成功对象复用；原C2679和非Natural阶段作业保持，43整方法和698实际LIB成员独立封件。
+
+本切点仅软件／产物Ready，HELLO、原8实机、实际预览／饮食与详情全文业务阅读、正式产品和发布均未授。Root后继独占实际prepare／绑定／Game，不以SourceB文档作为启动门；RMTM SourceA／tag／F和所有旧UNKNOWN保持，仍14/17上传、10/17严格完成。Root a1444分配统计已用FileStandardInfo／FileID更正，旧compressed-size原记录保留，真实卷占用与205598720B旧LIB退役量不变。[实际软件、配对与边界](docs/maintenance/evidence/living-current267-actual-frozen-pair-a1427.json)。下方保留此前切点。
+
 ## 2026-11-24 当前RMTM0.4.2实际有限发布完成：14/17上传，10/17严格闭环
 
 本机current267的原26＋实际D5三scope全ID／三物理realm_baseline有限业务，以及独立50／51结果，已合正式36的一次EResult1更新／真实下载、完整公开标题正文Notes、真实canonical工坊缓存载入及正常Natural0／Job0／cleanup／creator0闭环。SourceA `5d091f9d…`、tag `reclaim-motherland-v0.4.2`、正式F／payload不动；在线56.9113407秒，03:41:15.733956Z fresh offline。实际SDK additional gallery3项＋封面另核保持，旧“四图”表述保留。

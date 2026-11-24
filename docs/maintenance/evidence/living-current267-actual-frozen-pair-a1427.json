@@ -1,0 +1,223 @@
+{
+  "schema": "xar.current267.living-original8.software-artifact-pair-facts.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-11-24T05:20:11.987051+00:00",
+  "status": "ACTUAL_SOFTWARE_AND_JAVA_NATIVE_ARTIFACT_PAIR_READY_GAME_BUSINESS_NOT_RUN",
+  "code_HEAD": "d157f10c694e757c83fc85b1d4af990566c0b4e1",
+  "NativeTree": "3cced9bdad721f0a80be2ddc5ee86fdc5d77ff90",
+  "Native_actual_initial_BEGIN_HEAD": "9b1527e6993cf3c307ba30cf0670d8f75a76d97a",
+  "Native_actual_initial_NativeTree": "0d5ac9ae6396dd48dfdd58a70890a8e09b7777d4",
+  "java_qualification": {
+    "distinct_methods": 58,
+    "actual_method_runs": 59,
+    "initial_DATA": 22,
+    "genuine_CPP_roundtrip_and_factory": 36,
+    "actual_CPP_responses": 13,
+    "actual_Java_factory_requests": 23,
+    "actual_original_parser_inverses": 23,
+    "inverse_runs_per_body": 1,
+    "all_required_exit0": true,
+    "original_ID_and_U64MAX_kept": true
+  },
+  "necessary_packet_repair": "Actual Cpp consumer exposed original Transport legacy8 encoding for UI/Entry. The single production helper now emits their exact strict8 revisionless envelope; NativeWire accepts only these two exact revisionless steps. Inventory remains legacy8 revision0. One affected existing DATA factory method repeated and passed; no old full matrix.",
+  "retention_gap": "Original eight-method UI/Entry raw Surefire XML was overwritten in mutable target during the one-method repeat before a raw copy was retained. Original immutable first22 receipt/stdout and method records remain. Do not reconstruct the lost XML, count 59 distinct methods, or rerun old methods to relabel original evidence.",
+  "package": {
+    "exit_code": 0,
+    "natural_exit_observed": true,
+    "Job_active0": true,
+    "Job_terminated0": true,
+    "elapsed_seconds": 123.27149939996889,
+    "Job_peak_commit": 1117908992,
+    "changed_modules": [
+      "native-transport",
+      "local-service"
+    ],
+    "reactor_dependencies_are_not_all_recompiled": true,
+    "final_package_count": 1,
+    "new_JARs": 2,
+    "unchanged_identity_reused_JARs": 156,
+    "total_JARs": 158,
+    "old158_CRC_or_hash_traversal": 0,
+    "all158_from_one_Git_tree": false
+  },
+  "native": {
+    "total_TUs": 969,
+    "CL_attempts": 19,
+    "successful_unique_changed_TUs": 18,
+    "retained_C2679": 1,
+    "old_reused_TUs": 951,
+    "repair_reused_successful_TUs": 17,
+    "library_and_final_link_once_exit0": true,
+    "whole_methods": 43,
+    "runtime_library_members": 698,
+    "standalone_identity_and_registration_exit0": true,
+    "nonNatural_stage_jobs_preserved": [
+      "objects-a01",
+      "objects-a02",
+      "link-a01"
+    ],
+    "archive_and_identity_Natural": true,
+    "source_scope": "44 qualified new runtime/helper/header plus six shared exact operations, then one necessary production-only array96 to array97 std::copy repair; no public fields/actions change"
+  },
+  "operator": {
+    "configuration_schema": "xar.native-owner-snapshot-config/v48",
+    "mode": "current_living_original_case_once",
+    "maximum_submissions": 85,
+    "Date_calls": 0,
+    "Save_calls": 0,
+    "composite_Main_Attachment_Receiver": 1,
+    "fixture_references_are_DATA": true,
+    "management_close_dispatch_requires_independent_instance_absence": true
+  },
+  "phase_END": {
+    "compiler128_remaining_future": 0,
+    "package160_remaining_future": 0,
+    "freeze20_remaining_future": 0,
+    "metadata20_remaining_future": 0,
+    "compiler_held_upper": 5361792,
+    "package_endpoint_held_upper": 106305992,
+    "freeze_held_upper": 19534512,
+    "metadata_held_upper": 65536,
+    "package_FSI_boundary": "Conservative positive endpoint versus original compiler baseline includes already-held compiler growth and metadata; not an exact package-only increment or continuously sampled disk peak. No old spent/held refund."
+  },
+  "Root_allocation_correction": {
+    "method": "FileStandardInfo AllocationSize plus FileID dedup; prior GetCompressedFileSizeW values were compressed sizes",
+    "RMTM_cache_actual_allocation": 365673392,
+    "RMTM_cache_held_upper": 365689776,
+    "public_read_actual_allocation": 374160,
+    "public_read_held_upper": 406928,
+    "publication_actual_allocation": 159488,
+    "publication_held_upper": 175872,
+    "old_LIB_retirement_metadata_actual_allocation": 12384,
+    "old_LIB_retirement_metadata_held_upper": 28768,
+    "actual_retired_LIB_allocation": 205598720,
+    "old_records_preserved": true,
+    "global_D_volume_usage_was_always_real": true,
+    "no_qualification_rollback_or_new_test": true
+  },
+  "runtime_HELLO": "NOT_RUN",
+  "original8_Game_business": "NOT_RUN",
+  "preview_diet_and_final_engine_text_business_review": "NOT_RUN; only actual complete native text carriers can support later review",
+  "formal_product_and_publication": "NOT_RUN",
+  "uploaded_distinct_SKUs": 14,
+  "strict_finite_completed_SKUs": 10,
+  "total_SKUs": 17,
+  "RMTM_SourceA_tag_F_and_all_old_UNKNOWN_unchanged": true,
+  "exact_external_refs": {
+    "software58": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-original8-build-a1427\\affected-qualification-final.json",
+      "bytes": 17021,
+      "sha256": "260f7ad7569c35d92238c77ca0b7282d9a6db09d7ecea3f096d87543b38a33cd"
+    },
+    "qualified_source54": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-original8-build-a1427\\source-plan-qualified.json",
+      "bytes": 16317,
+      "sha256": "49de4f8a7470eb292222e391623b180e08656f515cd47057ad0e1b5c932ce9e7"
+    },
+    "actual_Java_source_commit": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-original8-build-a1427\\source-code-commit.json",
+      "bytes": 377,
+      "sha256": "1ddfd214ccbc651cd941c6e6d20d8d573d078614e12a4c70c591b317e329aea5"
+    },
+    "compiler128_END": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-original8-build-a1427\\compiler128-END.json",
+      "bytes": 2474,
+      "sha256": "49a93d0d0d0f983eba2e0010b38b65ff8df6cf0b63fe7fab15a6e1cca8e93ba0"
+    },
+    "first22_original": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-original8-build-a1427\\first22-qualification.json",
+      "bytes": 6939,
+      "sha256": "33c2788a010ad8a9569e4267af75b60abd0017c193e95c6ab98c0a6501133bb9"
+    },
+    "raw_report_retention_gap": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-original8-build-a1427\\report-retention-cut.json",
+      "bytes": 3012,
+      "sha256": "8a5052dbe9a54426871f6e22e03ef5d9ba3ac114ed7df5fd7249bd5b557ef218"
+    },
+    "actual_cpp_originals": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-current267-nogame-a01\\validation\\actual-producer-originals-a03.json",
+      "bytes": 29837,
+      "sha256": "69f629b8f61992c36dbe1351fe44e6fc8fada252596b57238bc05eefb19a72cd"
+    },
+    "actual_Java23_factory_index": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-original8-build-a1427\\actual-Java23-requests-index.json",
+      "bytes": 28809,
+      "sha256": "eac0822179f60dcb9df5c6060bd6ef3577f8f7bb93ec2cf1daa4709884190d97"
+    },
+    "actual_original_parser_inverse23": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-current267-nogame-a01\\validation\\actual-Java23-parser-inverse-receipt-a01.json",
+      "bytes": 25448,
+      "sha256": "aa7bd7f4ed0ef807b7d57c7717d75881fd082a64545ea6f68e0dd1c01453fa83"
+    },
+    "actual_package": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-original8-build-a1427\\validation\\package-result.json",
+      "bytes": 983,
+      "sha256": "cf43c0076fdcd5ca813003234a460b67fad9de6898192ae48cd7ad0e380004b2"
+    },
+    "package160_END": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-original8-build-a1427\\package160-END.json",
+      "bytes": 1209,
+      "sha256": "659943d8fecd4a12d1fcd057ccc59714626245e029e30c4b963901d65bf30ad0"
+    },
+    "freeze20_END": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-original8-build-a1427\\freeze20-END.json",
+      "bytes": 2036,
+      "sha256": "76f61778e9edcf53ef2be43f29d6b512a399a663615cd94a332ad24a97447996"
+    },
+    "Java_ready": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-original8-build-a1427\\java-runtime-ready-before-native.json",
+      "bytes": 1506,
+      "sha256": "2c7a7786b0f5ec4727a8904fda750fd2c7e6d458b8273fa298ab0b7bdf2c3da0"
+    },
+    "actual_six_pins": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-original8-pair-a1427\\actual-six-pins.json",
+      "bytes": 1512,
+      "sha256": "99cf09896ccff057dbcd21cd10f5dc93a43f074b20a44e7cadaf4fd10aee2594"
+    },
+    "final_delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-original8-pair-a1427\\frozen-delivery-final.json",
+      "bytes": 9802,
+      "sha256": "d36913679a4aa67a27266206d9cd55e5339fdfc8d162e648f2c4b679fb84d7e0"
+    },
+    "five_ref_sidecar": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-original8-pair-a1427\\native-pair-binding-final.json",
+      "bytes": 3984,
+      "sha256": "467bae614ed9f0a0d11dff7200bd6035a9c3393e4d9dbf35cbbe2a780ca9b753"
+    },
+    "operator_templates": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-original8-pair-a1427\\operator-templates.json",
+      "bytes": 5511,
+      "sha256": "ed892fc5f8a46471cc2ca7179747d460fcfe3c573e993c00e880c986ea4d0684"
+    },
+    "metadata20_END": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-original8-pair-a1427\\all-phases-END.json",
+      "bytes": 6180,
+      "sha256": "0601de2b56dc38aeb65e426061b4685ef1ab3d078ebb4bb8cc1b92f6238347a5"
+    },
+    "Native_delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-living-production-a01\\frozen-delivery-final.json",
+      "bytes": 4460,
+      "sha256": "b8bc35b0bd79bd28a3384e774d5d0c2e904b220dc244a0898bbee53c88b9ead2"
+    },
+    "Native_refs": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-living-production-a01\\ordinary-native-artifact-refs.json",
+      "bytes": 19118,
+      "sha256": "757682032e2b6679948762326057468bbb35c162d66d94fc0ec9c3568602fa7b"
+    },
+    "Native_single_leaf_production_repair": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-living-production-a01\\production-fix-a02\\exact-single-leaf-source-fix.json",
+      "bytes": 1877,
+      "sha256": "ba6c2155b663769bd90242e9436d251c6d8e5a4eb95b70f239954bc0287d8f22"
+    },
+    "Root_allocation_ABI_correction": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\closed-Root-file-allocation-ABI-correction-a1444.json",
+      "bytes": 2646,
+      "sha256": "dffe38eda226e02b00f9af8d1ed5a41a0c0c0264181da0962730140b1711c6f5"
+    },
+    "Root_quota_actual_Native_END": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\same-quota-Living-Native384-END-Java200-scene1G-review-a1447.json",
+      "bytes": 97113,
+      "sha256": "0121eb9493ce71056847ccdb9bdc1b687ababc23b7a68ee391ac8a108a1b8564"
+    }
+  }
+}
