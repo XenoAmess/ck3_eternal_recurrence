@@ -12,7 +12,11 @@ lyd_can_enter_display_trigger = {
     lyd_display_eligible_trigger = yes
     faith = faith:confucian_faith
     exists = rite:lyd_rite_kongmen
-    faith = rite:lyd_rite_kongmen.faith
+    trigger_if = {
+        limit = { exists = rite:lyd_rite_kongmen }
+        faith = rite:lyd_rite_kongmen.faith
+    }
+    trigger_else = { always = no }
     custom_description = {
         text = lyd_not_current_faith_head_tt
         subject = root
@@ -33,7 +37,340 @@ lyd_can_enter_trigger = {
     lyd_can_enter_display_trigger = yes
 }
 lyd_catalogue_rite_trigger = {
-    OR = { rite = rite:lyd_rite_kongmen rite = rite:lyd_rite_mengzi rite = rite:lyd_rite_xunzi rite = rite:lyd_rite_dongzhongshu rite = rite:lyd_rite_guwen rite = rite:lyd_rite_zhengxuan rite = rite:lyd_rite_wangsu rite = rite:lyd_rite_wangbi rite = rite:lyd_rite_guoxiang rite = rite:lyd_rite_jingshu rite = rite:lyd_rite_hanyu rite = rite:lyd_rite_liao rite = rite:lyd_rite_zhoudunyi rite = rite:lyd_rite_chengbrothers rite = rite:lyd_rite_zhangzai rite = rite:lyd_rite_shaoyong rite = rite:lyd_rite_wanganshi rite = rite:lyd_rite_sushi rite = rite:lyd_rite_huxiang rite = rite:lyd_rite_zhuxi rite = rite:lyd_rite_lujiuyuan rite = rite:lyd_rite_yongjia rite = rite:lyd_rite_yongkang rite = rite:lyd_rite_wucheng rite = rite:lyd_rite_chenxianzhang rite = rite:lyd_rite_zhanruoshui rite = rite:lyd_rite_wangyangming rite = rite:lyd_rite_jiangyou rite = rite:lyd_rite_taizhou rite = rite:lyd_rite_liuzongzhou rite = rite:lyd_rite_donglin rite = rite:lyd_rite_wangfuzhi rite = rite:lyd_rite_yanli rite = rite:lyd_rite_qianjia rite = rite:lyd_rite_changzhou rite = rite:lyd_rite_jingshi }
+    OR = {
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_kongmen }
+                rite = rite:lyd_rite_kongmen
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_mengzi }
+                rite = rite:lyd_rite_mengzi
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_xunzi }
+                rite = rite:lyd_rite_xunzi
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_dongzhongshu }
+                rite = rite:lyd_rite_dongzhongshu
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_guwen }
+                rite = rite:lyd_rite_guwen
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_zhengxuan }
+                rite = rite:lyd_rite_zhengxuan
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_wangsu }
+                rite = rite:lyd_rite_wangsu
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_wangbi }
+                rite = rite:lyd_rite_wangbi
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_guoxiang }
+                rite = rite:lyd_rite_guoxiang
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_jingshu }
+                rite = rite:lyd_rite_jingshu
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_hanyu }
+                rite = rite:lyd_rite_hanyu
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_liao }
+                rite = rite:lyd_rite_liao
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_zhoudunyi }
+                rite = rite:lyd_rite_zhoudunyi
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_chengbrothers }
+                rite = rite:lyd_rite_chengbrothers
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_zhangzai }
+                rite = rite:lyd_rite_zhangzai
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_shaoyong }
+                rite = rite:lyd_rite_shaoyong
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_wanganshi }
+                rite = rite:lyd_rite_wanganshi
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_sushi }
+                rite = rite:lyd_rite_sushi
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_huxiang }
+                rite = rite:lyd_rite_huxiang
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_zhuxi }
+                rite = rite:lyd_rite_zhuxi
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_lujiuyuan }
+                rite = rite:lyd_rite_lujiuyuan
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_yongjia }
+                rite = rite:lyd_rite_yongjia
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_yongkang }
+                rite = rite:lyd_rite_yongkang
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_wucheng }
+                rite = rite:lyd_rite_wucheng
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_chenxianzhang }
+                rite = rite:lyd_rite_chenxianzhang
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_zhanruoshui }
+                rite = rite:lyd_rite_zhanruoshui
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_wangyangming }
+                rite = rite:lyd_rite_wangyangming
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_jiangyou }
+                rite = rite:lyd_rite_jiangyou
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_taizhou }
+                rite = rite:lyd_rite_taizhou
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_liuzongzhou }
+                rite = rite:lyd_rite_liuzongzhou
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_donglin }
+                rite = rite:lyd_rite_donglin
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_wangfuzhi }
+                rite = rite:lyd_rite_wangfuzhi
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_yanli }
+                rite = rite:lyd_rite_yanli
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_qianjia }
+                rite = rite:lyd_rite_qianjia
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_changzhou }
+                rite = rite:lyd_rite_changzhou
+            }
+            trigger_else = { always = no }
+        }
+        AND = {
+            trigger_if = {
+                limit = { exists = rite:lyd_rite_jingshi }
+                rite = rite:lyd_rite_jingshi
+            }
+            trigger_else = { always = no }
+        }
+    }
+}
+lyd_catalogue_instances_ready_trigger = {
+    trigger_if = {
+        limit = {
+            exists = rite:lyd_rite_kongmen
+            exists = rite:lyd_rite_mengzi
+            exists = rite:lyd_rite_xunzi
+            exists = rite:lyd_rite_dongzhongshu
+            exists = rite:lyd_rite_guwen
+            exists = rite:lyd_rite_zhengxuan
+            exists = rite:lyd_rite_wangsu
+            exists = rite:lyd_rite_wangbi
+            exists = rite:lyd_rite_guoxiang
+            exists = rite:lyd_rite_jingshu
+            exists = rite:lyd_rite_hanyu
+            exists = rite:lyd_rite_liao
+            exists = rite:lyd_rite_zhoudunyi
+            exists = rite:lyd_rite_chengbrothers
+            exists = rite:lyd_rite_zhangzai
+            exists = rite:lyd_rite_shaoyong
+            exists = rite:lyd_rite_wanganshi
+            exists = rite:lyd_rite_sushi
+            exists = rite:lyd_rite_huxiang
+            exists = rite:lyd_rite_zhuxi
+            exists = rite:lyd_rite_lujiuyuan
+            exists = rite:lyd_rite_yongjia
+            exists = rite:lyd_rite_yongkang
+            exists = rite:lyd_rite_wucheng
+            exists = rite:lyd_rite_chenxianzhang
+            exists = rite:lyd_rite_zhanruoshui
+            exists = rite:lyd_rite_wangyangming
+            exists = rite:lyd_rite_jiangyou
+            exists = rite:lyd_rite_taizhou
+            exists = rite:lyd_rite_liuzongzhou
+            exists = rite:lyd_rite_donglin
+            exists = rite:lyd_rite_wangfuzhi
+            exists = rite:lyd_rite_yanli
+            exists = rite:lyd_rite_qianjia
+            exists = rite:lyd_rite_changzhou
+            exists = rite:lyd_rite_jingshi
+        }
+        faith = faith:confucian_faith
+        faith = rite:lyd_rite_kongmen.faith
+        faith = rite:lyd_rite_mengzi.faith
+        faith = rite:lyd_rite_xunzi.faith
+        faith = rite:lyd_rite_dongzhongshu.faith
+        faith = rite:lyd_rite_guwen.faith
+        faith = rite:lyd_rite_zhengxuan.faith
+        faith = rite:lyd_rite_wangsu.faith
+        faith = rite:lyd_rite_wangbi.faith
+        faith = rite:lyd_rite_guoxiang.faith
+        faith = rite:lyd_rite_jingshu.faith
+        faith = rite:lyd_rite_hanyu.faith
+        faith = rite:lyd_rite_liao.faith
+        faith = rite:lyd_rite_zhoudunyi.faith
+        faith = rite:lyd_rite_chengbrothers.faith
+        faith = rite:lyd_rite_zhangzai.faith
+        faith = rite:lyd_rite_shaoyong.faith
+        faith = rite:lyd_rite_wanganshi.faith
+        faith = rite:lyd_rite_sushi.faith
+        faith = rite:lyd_rite_huxiang.faith
+        faith = rite:lyd_rite_zhuxi.faith
+        faith = rite:lyd_rite_lujiuyuan.faith
+        faith = rite:lyd_rite_yongjia.faith
+        faith = rite:lyd_rite_yongkang.faith
+        faith = rite:lyd_rite_wucheng.faith
+        faith = rite:lyd_rite_chenxianzhang.faith
+        faith = rite:lyd_rite_zhanruoshui.faith
+        faith = rite:lyd_rite_wangyangming.faith
+        faith = rite:lyd_rite_jiangyou.faith
+        faith = rite:lyd_rite_taizhou.faith
+        faith = rite:lyd_rite_liuzongzhou.faith
+        faith = rite:lyd_rite_donglin.faith
+        faith = rite:lyd_rite_wangfuzhi.faith
+        faith = rite:lyd_rite_yanli.faith
+        faith = rite:lyd_rite_qianjia.faith
+        faith = rite:lyd_rite_changzhou.faith
+        faith = rite:lyd_rite_jingshi.faith
+    }
+    trigger_else = { always = no }
 }
 lyd_member_rite_trigger = {
     lyd_catalogue_rite_trigger = yes

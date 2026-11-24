@@ -1,0 +1,12 @@
+﻿# GENERATED FILE: edit tools/gen_saved_rite_bootstrap.py and run tools/gen_runtime.py.
+lyd_saved_rite_bootstrap_gui = {
+    scope = character
+    is_shown = {
+        is_ai = no
+        is_alive = yes
+        faith = faith:confucian_faith
+        faith = { exists = main_rite }
+        NOT = { has_global_variable = lyd_catalogue_013_bootstrapped }
+    }
+    effect = { lyd_materialize_missing_catalogue_rites_effect = yes }
+}

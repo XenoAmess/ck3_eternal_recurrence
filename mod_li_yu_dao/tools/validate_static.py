@@ -27,7 +27,7 @@ LOC_ROW = re.compile(r'^\s+([A-Za-z0-9_.-]+):[0-9]+\s+"((?:[^"\\]|\\.)*)"\s*(?:#
 PLACEHOLDER = re.compile(r"\$[^$\r\n]+\$|\[[^\]\r\n]+\]")
 LYD_ID = re.compile(r"(?:lyd_[A-Za-z0-9_]+|lyd\.[0-9]+)")
 LOC_FIELDS = frozenset({"title", "desc", "name", "confirm_text", "selection_tooltip", "custom_tooltip", "text"})
-INTERNAL_NAME_CONTAINERS = frozenset({"set_variable", "change_variable", "add_to_variable_list", "remove_list_variable", "save_scope_value_as"})
+INTERNAL_NAME_CONTAINERS = frozenset({"set_global_variable", "set_variable", "change_variable", "add_to_variable_list", "remove_list_variable", "save_scope_value_as"})
 META_FIELDS = frozenset({"namespace", "add_namespace"})
 NATIVE_TIERS = frozenset({"barony", "county", "duchy", "kingdom", "empire", "hegemony"})
 EFFECT_CONTAINERS = frozenset({"effect", "immediate", "after", "option", "on_send", "on_accept", "on_decline", "on_auto_accept"})
@@ -164,6 +164,9 @@ PROVEN_NATIVE_EFFECT_OPERATIONS = frozenset({
     "add_doctrine", "remove_doctrine", "change_rite_doctrine", "set_character_rite",
     # Stock pam_ecumenical_council_effects / 00_religion_effects: faith status and character knowledge.
     "set_tenet_status", "add_known_tenet",
+    # Current859 rite effect documentation + stock historical/slavic scripts.
+    # Script vocabulary only, never runtime qualification.
+    "create_rite_from_type", "set_global_variable",
     "trigger_event", "create_dynamic_title", "create_title_and_vassal_change", "change_title_holder",
     "resolve_title_and_vassal_change", "set_religious_head_title", "remove_religious_head_title",
     # Current stock 00_decisions_effects.txt:1681-1697 proves character-scope removal.
@@ -286,6 +289,14 @@ def validate(source: Path = SOURCE, *, game_dir: Path | None = None) -> dict:
         category = relative.rsplit("/", 1)[0]
         bucket = definitions.setdefault(category, {})
         if relative == "descriptor.mod" or relative.startswith("history/"):
+            continue
+        if category == "gui/scripted_widgets":
+            expected = {"gui/lyd_saved_rite_bootstrap.gui": "lyd_saved_rite_bootstrap_window"}
+            mapping = {entry.key: entry.value for entry in ast.entries}
+            if (len(ast.entries) != 1 or mapping != expected
+                    or any(entry.operator != "=" for entry in ast.entries)
+                    or not (source / "gui/lyd_saved_rite_bootstrap.gui").is_file()):
+                errors.append(f"invalid bootstrap widget mapping: {relative}")
             continue
         for entry in ast.entries:
             if entry.key in META_FIELDS:

@@ -1,0 +1,14 @@
+﻿# GENERATED FILE: edit tools/gen_saved_rite_bootstrap.py and run tools/gen_runtime.py.
+window = {
+    name = "lyd_saved_rite_bootstrap_window"
+    size = { 1 1 }
+    layer = tutorial
+    position = { 0 0 }
+    visible = "[GetPlayer.IsValid]"
+    alwaystransparent = yes
+    state = {
+        name = "lyd_saved_rite_bootstrap"
+        trigger_when = "[GetScriptedGui('lyd_saved_rite_bootstrap_gui').IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+        on_start = "[GetScriptedGui('lyd_saved_rite_bootstrap_gui').Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+    }
+}

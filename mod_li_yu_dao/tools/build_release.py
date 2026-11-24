@@ -23,6 +23,10 @@ sys.path.append(str(ROOT / "tools"))
 from workshop_compatibility_tags import render_release_file_bytes
 PRODUCT_ID = "mod_li_yu_dao"
 REQUIRED_RUNTIME_FILES = frozenset({
+    "common/scripted_effects/lyd_saved_rite_bootstrap_effects.txt",
+    "common/scripted_guis/lyd_saved_rite_bootstrap.txt",
+    "gui/lyd_saved_rite_bootstrap.gui",
+    "gui/scripted_widgets/lyd_saved_rite_bootstrap.txt",
     'common/decisions/lyd_tenet_playstyle_decisions.txt',
     'common/modifiers/lyd_tenet_playstyle_modifiers.txt',
     'events/lyd_tenet_playstyle_events.txt',

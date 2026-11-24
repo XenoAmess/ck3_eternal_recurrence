@@ -1,0 +1,42 @@
+{
+  "schema": "xar.lyd013-oldsave-bootstrap-software-facts/v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "build": 26785313,
+  "EXE_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28",
+  "state": "SOFTWARE_QUALIFIED_AWAITING_NEW_GAME",
+  "cause": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\LYD013-current267-missing-runtime-school-Rites-CAUSE-a1515.json",
+    "bytes": 5654,
+    "sha256": "5ecdbe118429e64f76db57291b235574bf22cdc55c0cea73ce565d737097b4c8"
+  },
+  "source_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\lyd013-oldsave-rite-bootstrap-source-a01\\delivery-final.json",
+    "bytes": 1927,
+    "sha256": "7de3f84b5275f4191be485b78e94c96f6118b57e0f643af904ec527ab4132d67"
+  },
+  "actual_qualification": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\li-yu-dao-oldsave-bootstrap-current267-a1517\\affected-qualification-final.json",
+    "bytes": 14906,
+    "sha256": "34ac3201a127c6e9841a60b8a8a8b12dae802b1e1a9371e4ee7229fae83d21d0"
+  },
+  "test_methods_distinct": 21,
+  "test_method_executions": 29,
+  "first_run": "16 passed, 3 failed and 2 errors; original retained",
+  "incremental_fix_runs": "5 methods:4 passed/1 failed; then3 Build methods passed. Successful unmodified test bodies retained; no false claim of first21 all green.",
+  "generator_check": "PASS",
+  "static": "GREEN/errors[]/87runtime",
+  "scope": "Create only missing36 literal Rite types on actual human alive Confucian character with existing main Rite; preserve existing objects; convert=no; completion only after all36 exist with same Faith. Missing lookup safely false.",
+  "runtime_count": 87,
+  "new_runtime_leaf_count": 4,
+  "changed_old_runtime": [
+    "common/scripted_triggers/lyd_player_triggers.txt"
+  ],
+  "founder_side_effect": "Caller is founder of newly created Rites; actual head/currentRite/Faith outcomes not yet observed. No forced head/faith/rite changes authored.",
+  "formal_tag": null,
+  "formal_release": false,
+  "new_Game_or_Save": false,
+  "uploaded_products": 15,
+  "strict_products": 10,
+  "products_total": 17,
+  "frozen158_changed": false
+}

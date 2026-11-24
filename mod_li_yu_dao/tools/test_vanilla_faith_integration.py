@@ -72,7 +72,10 @@ class VanillaFaithIntegrationTests(unittest.TestCase):
     def test_entry_requires_exact_current_and_target_faith_before_character_setter(self):
         display = self.defs['lyd_can_enter_display_trigger']
         self.assertTrue(direct(display, 'faith', 'faith:confucian_faith'))
-        self.assertTrue(direct(display, 'faith', f'rite:{MAIN_RITE_ID}.faith'))
+        guarded_faith = one(display, 'trigger_if')
+        self.assertTrue(direct(one(guarded_faith, 'limit'), 'exists', f'rite:{MAIN_RITE_ID}'))
+        self.assertTrue(direct(guarded_faith, 'faith', f'rite:{MAIN_RITE_ID}.faith'))
+        self.assertTrue(direct(one(display, 'trigger_else'), 'always', 'no'))
         branch = one(self.defs['lyd_enter_effect'], 'if')
         pre = one(branch, 'limit')
         self.assertTrue(direct(pre, 'faith', 'faith:confucian_faith'))
@@ -165,7 +168,7 @@ class VanillaFaithIntegrationTests(unittest.TestCase):
                 path = source/rel; path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(payload)
             (source/'descriptor.mod').write_bytes((REPO/'mod_li_yu_dao/descriptor.mod').read_bytes())
             inventory = collect_runtime_files(source)
-            self.assertEqual(len(inventory), 83)
+            self.assertEqual(len(inventory), 87)
             self.assertNotIn("history/faiths/lyd_faith_history.txt", inventory)
             result = validate(source)
             self.assertEqual(result['errors'], [])

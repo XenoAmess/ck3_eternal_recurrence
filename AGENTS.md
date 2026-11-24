@@ -1,5 +1,12 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-24 LYD旧存档礼仪实例：软件修复待实机
+
+LYD a1513实际证实旧F488加载后缺少36学校礼仪实例，Kongmen不存在；原条件日志与两场零Save正常退出保持。现生产生成器仅为实际存活人类儒教角色、已有main Rite且未完成补建时逐项创建缺失实例（`create_rite_from_type`、`convert=no`），保留已存在实例；全部36存在且同Faith后才记录完成。缺实例lookup以条件分支保护。新建实例的founder元数据与头衔、当前Rite等实际后态仍待Root新场读取，不据convert=no冒无副作用。
+
+已实际生成87运行叶，generator check与静态检查通过；受影响21个不同Python方法经29次执行最终合格，首轮5项失败及第二轮1项失败原件保留。此次为软件与源码候选，未新Game/Save、未formalTag/发布，不改冻结158JAR。已上传15/17、严格10/17保持；Living Notes429不重传。参见[机器事实](docs/maintenance/2026-11-24-lyd-oldsave-bootstrap-current267.json)。
+
+
 ## 2026-11-24 当前Living0.1.3已发表并真实缓存通过，Notes429保留
 
 同一条目3825237804已唯一SDK update／EResult1，下载67与正式MF732aec完全一致；SourceA99b0／注释tag living-artifacts-v0.1.3／tag30a430及正式F保持。在线81.3424967秒后11:10:01Z fresh offline。完整公开标题／正文／creator／cover通过；SDK实际additional图库5项原序完整保持，5正文插图另列。唯一Notes GET为HTTP429／全文NOT_OBSERVED，不能写成内容不符或严格完成；停止无重传／自动HTTP。

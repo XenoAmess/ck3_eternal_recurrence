@@ -29,13 +29,15 @@ def fixture(source: Path) -> None:
         "common/decisions/lyd_decisions.txt": 'lyd_open = { picture = { reference = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds" } ai_check_interval = 0 is_shown = { lyd_actor = yes } effect = { if = { limit = { lyd_actor = yes } lyd_notify = yes } } }\n',
         "common/character_interactions/lyd_interactions.txt": "lyd_request = { is_shown = { scope:actor = { lyd_actor = yes } } on_accept = { scope:actor = { lyd_notify = yes } } }\n",
         "events/lyd_events.txt": "namespace = lyd\nlyd.1 = { type = character_event title = lyd.1.t desc = lyd.1.d option = { name = lyd.1.a } }\n",
+        "gui/lyd_saved_rite_bootstrap.gui": 'window = { name = "lyd_saved_rite_bootstrap_window" }\n',
+        "gui/scripted_widgets/lyd_saved_rite_bootstrap.txt": "gui/lyd_saved_rite_bootstrap.gui = lyd_saved_rite_bootstrap_window\n",
     }
     for relative, text in scripts.items():
         write(source / relative, text, bom=True)
     # Keep the fixture minimal while covering every fixed production path.
     for relative in release.REQUIRED_RUNTIME_FILES:
         path = source / relative
-        if path.suffix == ".txt" and not path.exists():
+        if path.suffix in {".txt", ".gui"} and not path.exists():
             write(path, "# Empty consent fixture\n", bom=True)
     for language in ("english", "simp_chinese"):
         write(source / f"localization/{language}/lyd_content_l_{language}.yml", f'l_{language}:\n lyd_rite:0 "School"\n lyd_rite_desc:0 "A tradition"\n lyd_tenet_name:0 "Learning"\n lyd_tenet_desc:0 "Learning practice"\n lyd_tenet_second_name:0 "Rites"\n lyd_tenet_second_desc:0 "Ritual practice"\n lyd_tenet_third_name:0 "Virtue"\n lyd_tenet_third_desc:0 "Virtue practice"\n', bom=True)
@@ -74,7 +76,7 @@ class BuildTests(unittest.TestCase):
             legacy.unlink()
             self.assertEqual(release.collect_runtime_files(source), inventory)
         actual = release.collect_runtime_files(release.SOURCE)
-        self.assertEqual(len(actual), 83)
+        self.assertEqual(len(actual), 87)
         self.assertNotIn("history/faiths/lyd_faith_history.txt", actual)
 
     def test_history_exclusion_rejects_real_entries_and_other_paths(self) -> None:

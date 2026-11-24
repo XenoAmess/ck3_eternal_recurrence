@@ -1,0 +1,160 @@
+﻿# GENERATED FILE: edit tools/gen_saved_rite_bootstrap.py and run tools/gen_runtime.py.
+lyd_materialize_missing_catalogue_rites_effect = {
+    if = {
+        limit = {
+            is_ai = no
+            is_alive = yes
+            faith = faith:confucian_faith
+            faith = { exists = main_rite }
+            NOT = { has_global_variable = lyd_catalogue_013_bootstrapped }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_kongmen } }
+            create_rite_from_type = { type = lyd_rite_kongmen convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_mengzi } }
+            create_rite_from_type = { type = lyd_rite_mengzi convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_xunzi } }
+            create_rite_from_type = { type = lyd_rite_xunzi convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_dongzhongshu } }
+            create_rite_from_type = { type = lyd_rite_dongzhongshu convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_guwen } }
+            create_rite_from_type = { type = lyd_rite_guwen convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_zhengxuan } }
+            create_rite_from_type = { type = lyd_rite_zhengxuan convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_wangsu } }
+            create_rite_from_type = { type = lyd_rite_wangsu convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_wangbi } }
+            create_rite_from_type = { type = lyd_rite_wangbi convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_guoxiang } }
+            create_rite_from_type = { type = lyd_rite_guoxiang convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_jingshu } }
+            create_rite_from_type = { type = lyd_rite_jingshu convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_hanyu } }
+            create_rite_from_type = { type = lyd_rite_hanyu convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_liao } }
+            create_rite_from_type = { type = lyd_rite_liao convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_zhoudunyi } }
+            create_rite_from_type = { type = lyd_rite_zhoudunyi convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_chengbrothers } }
+            create_rite_from_type = { type = lyd_rite_chengbrothers convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_zhangzai } }
+            create_rite_from_type = { type = lyd_rite_zhangzai convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_shaoyong } }
+            create_rite_from_type = { type = lyd_rite_shaoyong convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_wanganshi } }
+            create_rite_from_type = { type = lyd_rite_wanganshi convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_sushi } }
+            create_rite_from_type = { type = lyd_rite_sushi convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_huxiang } }
+            create_rite_from_type = { type = lyd_rite_huxiang convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_zhuxi } }
+            create_rite_from_type = { type = lyd_rite_zhuxi convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_lujiuyuan } }
+            create_rite_from_type = { type = lyd_rite_lujiuyuan convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_yongjia } }
+            create_rite_from_type = { type = lyd_rite_yongjia convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_yongkang } }
+            create_rite_from_type = { type = lyd_rite_yongkang convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_wucheng } }
+            create_rite_from_type = { type = lyd_rite_wucheng convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_chenxianzhang } }
+            create_rite_from_type = { type = lyd_rite_chenxianzhang convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_zhanruoshui } }
+            create_rite_from_type = { type = lyd_rite_zhanruoshui convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_wangyangming } }
+            create_rite_from_type = { type = lyd_rite_wangyangming convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_jiangyou } }
+            create_rite_from_type = { type = lyd_rite_jiangyou convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_taizhou } }
+            create_rite_from_type = { type = lyd_rite_taizhou convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_liuzongzhou } }
+            create_rite_from_type = { type = lyd_rite_liuzongzhou convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_donglin } }
+            create_rite_from_type = { type = lyd_rite_donglin convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_wangfuzhi } }
+            create_rite_from_type = { type = lyd_rite_wangfuzhi convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_yanli } }
+            create_rite_from_type = { type = lyd_rite_yanli convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_qianjia } }
+            create_rite_from_type = { type = lyd_rite_qianjia convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_changzhou } }
+            create_rite_from_type = { type = lyd_rite_changzhou convert = no }
+        }
+        if = {
+            limit = { NOT = { exists = rite:lyd_rite_jingshi } }
+            create_rite_from_type = { type = lyd_rite_jingshi convert = no }
+        }
+        if = {
+            limit = { lyd_catalogue_instances_ready_trigger = yes }
+            set_global_variable = { name = lyd_catalogue_013_bootstrapped value = yes }
+        }
+    }
+}

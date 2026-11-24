@@ -1,0 +1,2 @@
+﻿# GENERATED FILE: edit tools/gen_saved_rite_bootstrap.py and run tools/gen_runtime.py.
+gui/lyd_saved_rite_bootstrap.gui = lyd_saved_rite_bootstrap_window

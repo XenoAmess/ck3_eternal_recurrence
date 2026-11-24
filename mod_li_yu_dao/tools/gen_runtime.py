@@ -10,6 +10,7 @@ import argparse
 from pathlib import Path
 
 from content_data import MAIN_RITE_ID, PARENT_FAITH, PRACTICES, SAMPLE_RITES, ACTIVE_RITES, ACTIVE_TENETS, PRACTICE_EVENT_IDS
+from gen_saved_rite_bootstrap import catalogue_gate, catalogue_ready_gate
 
 SOURCE = Path(__file__).resolve().parents[1]
 HEADER = "# GENERATED FILE: edit tools/gen_runtime.py and run it again.\n"
@@ -63,7 +64,11 @@ lyd_can_enter_display_trigger = {
     lyd_display_eligible_trigger = yes
     faith = faith:@PRODUCT_FAITH@
     exists = rite:lyd_rite_kongmen
-    faith = rite:lyd_rite_kongmen.faith
+    trigger_if = {
+        limit = { exists = rite:lyd_rite_kongmen }
+        faith = rite:lyd_rite_kongmen.faith
+    }
+    trigger_else = { always = no }
     custom_description = {
         text = lyd_not_current_faith_head_tt
         subject = root
@@ -85,6 +90,9 @@ lyd_can_enter_trigger = {
 }
 lyd_catalogue_rite_trigger = {
     @PRODUCT_RITE_GATE@
+}
+lyd_catalogue_instances_ready_trigger = {
+    @PRODUCT_RITE_READY@
 }
 lyd_member_rite_trigger = {
     lyd_catalogue_rite_trigger = yes
@@ -116,7 +124,7 @@ lyd_can_study_trigger = {
     lyd_can_study_display_trigger = yes
 }
 """.replace("@PRODUCT_FAITH@", PARENT_FAITH).replace(
-        "@PRODUCT_RITE_GATE@", "OR = { " + " ".join(f"rite = rite:{r.script_id}" for r in ACTIVE_RITES) + " }"))
+        "@PRODUCT_RITE_GATE@", catalogue_gate()).replace("@PRODUCT_RITE_READY@", catalogue_ready_gate()))
     # Stock faith-scoped status and character-scoped knowledge operations.
     # Only new LYD IDs without an existing explicit status are registered;
     # vanilla tenets and prior player prohibitions are never overwritten.
@@ -366,12 +374,14 @@ lyd.{10 + page_index} = {{
     from gen_institution import build_outputs as institution_outputs
     from gen_faith_assets import build_outputs as faith_asset_outputs
     from gen_tenet_playstyles import build_outputs as playstyle_outputs
+    from gen_saved_rite_bootstrap import build_outputs as saved_bootstrap_outputs
     for extension in (
         consent_outputs(native_evidence=DEFAULT_NATIVE_EVIDENCE, include_shared=False),
         leadership_outputs(),
         institution_outputs(),
         faith_asset_outputs(),
         playstyle_outputs(),
+        saved_bootstrap_outputs(),
     ):
         duplicates = outputs.keys() & extension.keys()
         if duplicates:
