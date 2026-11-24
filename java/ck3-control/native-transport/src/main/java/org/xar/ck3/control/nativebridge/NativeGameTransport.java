@@ -4462,6 +4462,16 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                 ||attemptedRmtmEventInstances.contains(instance)||attemptedRmtmEventInstances.size()>=64)
             throw new IOException("Actual confirmed successor/query lease or per-instance claim capacity unavailable");
         var actual=((CoreFrame.Partial)query.before.frame).prefix();
+        // Native's private anchor is the latest actual query_role Core prefix, not an event query's public DATA.
+        // This stamp survives same-prefix UI reads; it does not grant a new role, day, epoch or lease.
+        var role=latestRmtmRole;
+        if(role==null||role.issuer!=this||!rmtmRoleQueries.contains(role.before)
+                ||role.frame.status()!=CurrentRmtmActorTransitionResult.Status.AVAILABLE
+                ||role.frame.factsBefore().filter(actual::equals).isEmpty())
+            throw new IOException("Actual same-day native-admitted RMTM role Core is required before post-succession choice");
+        requireRmtmCustody(role.original,role.custody);
+        if(!CurrentRmtmActorTransitionResult.decodeOutcome(role.original).equals(role.frame))
+            throw new IOException("Original native-admitted RMTM role frame changed");
         var predecessor=((CoreFrame.Partial)rmtmCapturedRole.before.frame).prefix();
         var epoch=confirmedRmtmEpoch.latest;
         if(epoch==null||epoch.status()!=CurrentRmtmActorTransitionResult.Status.EPOCH_CONFIRMED||!epoch.actorEpoch().equals(BigInteger.ONE)

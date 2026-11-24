@@ -205,6 +205,23 @@ final class NativeCurrentRmtmRemainingGuardTransportTest {
         }
     }
 
+    @Test void postEventNextDayQueryCannotReplaceNativeRoleStampButSameDayFreshRoleAdmitsTheOriginalInstance()throws Exception {
+        var port=new DataPort("post-same-day-role");try(var t=transport(port)){
+            reachPostSuccessionData(t,port);day(t);assertEquals(6,port.days);assertEquals(1,port.epochs);
+            var stale=event(t,CurrentRmtmEvent.Action.QUERY_SUMMARY);
+            assertTrue(stale.frame().source().orElseThrow().caseBound());
+            int effects=port.effectWrites(),roles=port.roleQueries;
+            assertThrows(IOException.class,()->t.prepareCurrentRmtmPostSuccessionEvent(stale,71));
+            assertEquals(effects,port.effectWrites());assertEquals(0,port.postEventEffects);
+            var actualRole=role(t,null);assertEquals(6,actualRole.frame().source().orElseThrow().completedNaturalDays());
+            assertEquals(roles+1,port.roleQueries);
+            var q=event(t,CurrentRmtmEvent.Action.QUERY_SUMMARY);var p=t.prepareCurrentRmtmPostSuccessionEvent(q,71);
+            ack(t.submitCurrentRmtmEvent(p));assertEquals(1,port.postEventEffects);
+            assertTrue(t.currentRmtmEventAbsent(p,event(t,CurrentRmtmEvent.Action.QUERY_SUMMARY)));
+            assertEquals(6,port.advances);assertEquals(1,port.epochs); // Event query/role stamp grant no extra Date or epoch.
+        }
+    }
+
     private static final class DataPort implements NativePacketPort {
         final String mode;final ArrayDeque<byte[]> packets=new ArrayDeque<>();boolean closed,pending,confirmed,opCompleted,listVisible,detailVisible,budgetVisible,eventPresent=true;
         int days,advances,epochs,roleQueries,decisionEffects,eventEffects,budgetEffects,percent,restoreConfirms,instance=10,querySequence;

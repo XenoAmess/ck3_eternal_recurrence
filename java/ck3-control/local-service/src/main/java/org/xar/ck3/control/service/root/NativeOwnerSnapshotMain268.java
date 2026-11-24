@@ -4382,7 +4382,7 @@ if(riteDraftCosts) {
     }
     // Event owner retains64 claims for this case: the two original D1 ACKs stay spent.
     static final int RMTM_POST_SUCCESSION_INSTANCE_LIMIT=64-2;
-    static final int RMTM_POST_SUCCESSION_ADDITIONAL_SUBMISSIONS=3+3*RMTM_POST_SUCCESSION_INSTANCE_LIMIT;
+    static final int RMTM_POST_SUCCESSION_ADDITIONAL_SUBMISSIONS=3+3*RMTM_POST_SUCCESSION_INSTANCE_LIMIT+3;
     static void requireCurrentRmtmPostSuccessionBoundary(CoreFrame.Prefix core,int song,int successor,int completedDays,int startingDate)throws IOException {
         long exactDate=(long)startingDate+24L*completedDays;
         if(core==null||song==-1||successor==-1||song==successor||completedDays<5||completedDays>14
@@ -4419,6 +4419,16 @@ if(riteDraftCosts) {
                 ||frame.nativeHandled()||frame.eventClosed()||frame.newDateObserved()||frame.physicalSaveConfirmed())
             throw new IOException("Post-succession ACK lost immutable actual Source/Core/instance/lease or claimed unobserved afterstate");
     }
+    @FunctionalInterface
+    interface RmtmPostEventRead<C,R> { R read(C actual)throws IOException,InterruptedException; }
+    static <C,R> R withCurrentRmtmPostEventRole(C before,RmtmPostEventRead<C,R> readRole,RmtmPostEventRead<C,C> drain)
+            throws IOException,InterruptedException {
+        var originalRole=readRole.read(before); // Native private anchor is admitted by this actual Role before any event query.
+        var after=drain.read(before);
+        if(after==null)throw new IOException("Post-event drain lost actual Core");
+        return after==before?originalRole:readRole.read(after); // At most one refresh after this boundary's final new Core.
+    }
+
     private static NativeGameTransport.CoreReceived drainCurrentRmtmPostSuccessionEvents(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,
             NativeLaunchPlan plan,NativeGameTransport.CoreReceived initial,NativeObservationPort.TransportSession session,CoreFrame.Prefix expected,
             int song,int successor,int completedDays,int startingDate,Set<Integer> attempted,Path output,String label,Instant deadline,ObjectNode result,ObjectNode originals)
@@ -4492,8 +4502,13 @@ if(riteDraftCosts) {
         for(int day=1;day<=8;day++){
             String label="rmtm-day"+String.format(java.util.Locale.ROOT,"%02d",day);var role=capture;
             if(day>1){var before=readCurrentRmtmCore(transport,owner,plan,output,label+"-before-core",deadline,result,originals,session,current);
-                if(day>=6)before=drainCurrentRmtmPostSuccessionEvents(transport,owner,plan,before,session,current,song,successor,day-1,start.dateRaw(),postSuccessionInstances,output,label+"-post-succession-events",deadline,result,originals);
-                role=readCurrentRmtmRole(transport,owner,before,session,output,label+"-before-role",deadline,result,originals);}
+                if(day>=6){
+                    var expected=current;int actualSuccessor=successor,completedDays=day-1;
+                    role=withCurrentRmtmPostEventRole(before,
+                            actual->{var observed=readCurrentRmtmRole(transport,owner,actual,session,output,label+(actual==before?"-before-role":"-post-events-role"),deadline,result,originals);
+                                requireCurrentRmtmPositiveRole(observed.frame(),expected,CurrentRmtmActorTransitionSource.Role.SUCCESSOR,java.math.BigInteger.ONE,song,actualSuccessor,false,completedDays,start.dateRaw());return observed;},
+                            actual->drainCurrentRmtmPostSuccessionEvents(transport,owner,plan,actual,session,expected,song,actualSuccessor,completedDays,start.dateRaw(),postSuccessionInstances,output,label+"-post-succession-events",deadline,result,originals));
+                }else role=readCurrentRmtmRole(transport,owner,before,session,output,label+"-before-role",deadline,result,originals);}
             requireCurrentRmtmPositiveRole(role.frame(),current,day<=5?CurrentRmtmActorTransitionSource.Role.SONG:CurrentRmtmActorTransitionSource.Role.SUCCESSOR,
                     day<=5?java.math.BigInteger.ZERO:java.math.BigInteger.ONE,song,successor,false,day-1,start.dateRaw());
             var prepared=transport.prepareCurrentRmtmAdvance(role);var terminal=runCurrentRmtmDay(transport,owner,role,prepared,config,session,output,label,deadline,readTimeout,result,originals);

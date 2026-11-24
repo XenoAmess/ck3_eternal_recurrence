@@ -30,16 +30,41 @@ final class NativeOwnerCurrentRmtmPostSuccessionEventSelectionTest {
 
     @Test void exactAdditionalBudgetKeepsQueriesThresholdAndStrictConfig() throws IOException {
         assertEquals(62,NativeOwnerSnapshotMain268.RMTM_POST_SUCCESSION_INSTANCE_LIMIT);
-        assertEquals(189,NativeOwnerSnapshotMain268.RMTM_POST_SUCCESSION_ADDITIONAL_SUBMISSIONS);
+        assertEquals(192,NativeOwnerSnapshotMain268.RMTM_POST_SUCCESSION_ADDITIONAL_SUBMISSIONS);
         var c=StrictJson.object().put("schema","xar.native-owner-snapshot-config/v47").put("mode","current_rmtm_original_case_once")
                 .put("overall_timeout_seconds",600).put("read_timeout_seconds",60).put("maximum_frames_per_operation",65536).put("maximum_status_polls",128).put("status_poll_delay_ms",500);
         c.putObject("owner_descriptor").put("path","D:/rmtm-post-DATA/owner.json").put("bytes",1).put("sha256","0".repeat(64));
-        assertEquals(1298,NativeOwnerSnapshotMain268.currentRmtmConfig(c).submissions());
-        assertEquals(2322,NativeOwnerSnapshotMain268.currentRmtmConfig(c.deepCopy().put("maximum_status_polls",256)).submissions());
+        assertEquals(1301,NativeOwnerSnapshotMain268.currentRmtmConfig(c).submissions());
+        assertEquals(2325,NativeOwnerSnapshotMain268.currentRmtmConfig(c.deepCopy().put("maximum_status_polls",256)).submissions());
         assertEquals(594,NativeOwnerSnapshotMain268.currentRmtmConfig(c.deepCopy().put("mode","current_rmtm_threshold_50_51_once")).submissions());
         for(String forbidden:List.of("event_role","instance_id","option_index","event_key","actor_epoch","maximum_post_events"))
             assertThrows(IllegalArgumentException.class,()->NativeOwnerSnapshotMain268.currentRmtmConfig(c.deepCopy().put(forbidden,1)));
     }
+    @Test void actualRolePrecedesEventDrainAndRefreshesOnlyForItsFinalIndependentCore() throws IOException,InterruptedException {
+        var before=new Object();var after=new Object();var order=new java.util.ArrayList<String>();
+        var unchanged=NativeOwnerSnapshotMain268.withCurrentRmtmPostEventRole(before,
+                actual->{assertSame(before,actual);order.add("role-before");return "original-role";},
+                actual->{assertSame(before,actual);order.add("drain");return before;});
+        assertEquals("original-role",unchanged);assertEquals(List.of("role-before","drain"),order);
+        order.clear();
+        var changed=NativeOwnerSnapshotMain268.withCurrentRmtmPostEventRole(before,
+                actual->{order.add(actual==before?"role-before":"role-after");return actual==before?"original-role":"refreshed-role";},
+                actual->{assertSame(before,actual);order.add("drain");return after;});
+        assertEquals("refreshed-role",changed);assertEquals(List.of("role-before","drain","role-after"),order);
+        order.clear();
+        assertThrows(IOException.class,()->NativeOwnerSnapshotMain268.withCurrentRmtmPostEventRole(before,
+                actual->{order.add("failed-role");throw new IOException("actual Role unavailable");},
+                actual->{order.add("must-not-drain");return actual;}));
+        assertEquals(List.of("failed-role"),order);
+        assertEquals(192,NativeOwnerSnapshotMain268.RMTM_POST_SUCCESSION_ADDITIONAL_SUBMISSIONS);
+        assertEquals(277,85+NativeOwnerSnapshotMain268.RMTM_POST_SUCCESSION_ADDITIONAL_SUBMISSIONS);
+        assertEquals(1301,new NativeOwnerSnapshotMain268.RmtmConfig(NativeOwnerSnapshotMain268.RmtmMode.ORIGINAL_CASE_ONCE,128,500).submissions());
+        assertEquals(2325,new NativeOwnerSnapshotMain268.RmtmConfig(NativeOwnerSnapshotMain268.RmtmMode.ORIGINAL_CASE_ONCE,256,500).submissions());
+        assertEquals(594,new NativeOwnerSnapshotMain268.RmtmConfig(NativeOwnerSnapshotMain268.RmtmMode.THRESHOLD_50_51_ONCE,128,500).submissions());
+        assertEquals(1106,new NativeOwnerSnapshotMain268.RmtmConfig(NativeOwnerSnapshotMain268.RmtmMode.THRESHOLD_50_51_ONCE,256,500).submissions());
+        assertEquals(2,new NativeOwnerSnapshotMain268.RmtmConfig(NativeOwnerSnapshotMain268.RmtmMode.QUERY_ROLE,0,0).submissions());
+    }
+
     @Test void successorBoundaryUsesExactSignedCoreAndOriginalDateNotCallerAuthority() throws IOException {
         for(int actor:List.of(0,-2))for(int day:List.of(5,6,7,14))
             assertDoesNotThrow(()->NativeOwnerSnapshotMain268.requireCurrentRmtmPostSuccessionBoundary(core(day,actor),42,actor,day,START));

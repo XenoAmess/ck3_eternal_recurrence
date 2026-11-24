@@ -69,7 +69,7 @@ final class NativeOwnerCurrentRmtmSelectionTest {
         assertEquals(594,NativeOwnerSnapshotMain268.currentRmtmConfig(config("current_rmtm_threshold_50_51_once")).submissions());
         assertEquals(1106,NativeOwnerSnapshotMain268.currentRmtmConfig(config("current_rmtm_threshold_50_51_once").put("maximum_status_polls",256)).submissions());
         var original=NativeOwnerSnapshotMain268.currentRmtmConfig(config("current_rmtm_original_case_once"));assertFalse(original.queryOnly());
-        assertEquals(1298,original.submissions());assertEquals(2322,NativeOwnerSnapshotMain268.currentRmtmConfig(config("current_rmtm_original_case_once").put("maximum_status_polls",256)).submissions());
+        assertEquals(1301,original.submissions());assertEquals(2325,NativeOwnerSnapshotMain268.currentRmtmConfig(config("current_rmtm_original_case_once").put("maximum_status_polls",256)).submissions());
     }
     @Test void thresholdPrestateRequiresActualD4SongEpochZeroAndOriginalStart() throws IOException {
         var d4=core(4,SONG);var stopped=source(4,SONG,SUCCESSOR,true,false);var valid=role(stopped,d4);
