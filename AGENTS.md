@@ -1,4 +1,12 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
+## 2026-11-24 当前 RMTM：后继事件软件与实际新配对已闭，实机场仍待新收据
+
+本机已正常推送 Java `f687274fe5aa393f287001689d76ec000153b199`；Native 实际编译 BEGIN 仍是 `81770ba8…`，NativeTree `6cfbadd6…`。原29项受影响软件、Native26组和原解析器一次真实 factory 逆核分别保留；另一个新64MiB目的只运行2个必要方法，证明同日 fresh role 必须先于普通事件查询/选择，选择后的最终独立 Core 再刷新 role 供 Date。两个方法均通过并自然 active0，旧128目的没有重开。原失败与 UNKNOWN 保持，不重旧矩阵。
+
+唯一最终 package0、Natural0/Jobactive0；复制2新JAR（19,185,664 allocated bytes）、156旧JAR只按不可变身份复用，无旧158CRC。新Java MF `aaa216d5…`、args `fe87e646…` 与实际Native ND `abde1ca4…`／DLL `30b53c8d…` 配成六针 `6ab06910…`，各 phase 全 END/future0。实际模板为 original `277+8poll`（256→2325，128→1301），threshold `82+4poll` 与 query2保持。只在同一Receiver内处理真实完整普通census/实例的最小实际可用选项，专用定义／role／key优先；不以独立absence替代Date门，不重放旧Day7拒绝。
+
+这是新软件／产物Ready；新pair尚无实机popup、RMTM26、三物理phase、整产品或本轮正式发布资格。此前D5真实三容器格式／完整ID DATA、独立50/51有限通过及所有旧失败保留。CCC另一次明确长退避Notes GET实际intent为 `2026-11-24T00:32:21.887418+00:00`，仍HTTP429／NOT_OBSERVED且停止，无Steam／SDK上线；旧首次429不改。计数仍13/17上传、9/17严格，后继顺序RMTM→LivingRelic→LYD→ZG361。[本次紧凑事实与精确原件](docs/maintenance/evidence/java-current267-rmtm-post-succession-actual-frozen-pair-a1392.json)。以下保留先前实际切点。
+
 
 ## 2026-11-24 当前 RMTM：D4 Offer 有限通过，D5 原始三容器格式已核，第七次推进写前拒绝
 

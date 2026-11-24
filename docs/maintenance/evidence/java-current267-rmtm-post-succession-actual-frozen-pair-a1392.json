@@ -1,0 +1,214 @@
+{
+  "schema": "xar.current267.rmtm-post-event.actual-frozen-pair.compact-facts.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-24T01:46:47.660643+00:00",
+  "status": "ACTUAL_SOFTWARE_AND_PAIR_READY_NEW_SCENE_NOT_RUN",
+  "Java_source_HEAD": "f687274fe5aa393f287001689d76ec000153b199",
+  "prior_qualified_Java_source_HEAD": "dd841b20cbda66639f23b7e51639d1cb8020a671",
+  "Native_actual_compiled_BEGIN_HEAD": "81770ba812698abcd4e58572a54abd57fe351a93",
+  "NativeTree": "6cfbadd6ed045ad8c73c2b0a32920deecda11f74",
+  "software": {
+    "prior29_distinct_methods_exit0": 29,
+    "new_same_day_role_methods_exit0": 2,
+    "Cpp_NoGame_groups_exit0": 26,
+    "new_actual_Cpp_responses": 3,
+    "new_actual_Cpp_request_factory": 1,
+    "original_Cpp_parser_actual_inverse_calls": 1,
+    "prior29_and_original_failures_retained_without_rewriting": true,
+    "old70_Title32_CCC_old32frames20inverse_or_independent50_51_rerun": false
+  },
+  "native_production": {
+    "total_TUs": 956,
+    "actual_CL": 10,
+    "immutable_reuse": 946,
+    "finite_caps": 20,
+    "steps": 21,
+    "all_owned_writers_END": true,
+    "future0": true,
+    "DLL_sha256": "30b53c8d79684414307f9694cf5b0f803971750a6f3759f6e433d9c68e16a4d2",
+    "old256_estimate_and_actual291349696_peak_preserved": true,
+    "revised_new_purpose_upper": 301989888
+  },
+  "Java": {
+    "role_order2_seconds": 173.6542437999742,
+    "role_order2_Job_peak": 1908678656,
+    "role_order2_active0": true,
+    "compiler64_held_upper": 2240992,
+    "final_package_calls": 1,
+    "final_package_exit": 0,
+    "final_package_seconds": 107.59046480001416,
+    "final_package_Job_peak": 1216913408,
+    "final_package_Natural0_active0_terminated0": true,
+    "new_JAR_copies": 2,
+    "new_JAR_allocated": 19185664,
+    "immutable_JAR_identity_reuse": 156,
+    "no_old158CRC": true,
+    "package_freeze_held_upper": 19509936,
+    "metadata_only_new_JAR_copies": 0,
+    "metadata_allocated_before_END": 32768,
+    "metadata_END_upper": 8192,
+    "metadata_held_upper": 40960,
+    "all_phase_remaining_future": 0
+  },
+  "source_policy": {
+    "original_formula": "277+8*maximum_status_polls",
+    "original_polls128": 1301,
+    "original_polls256": 2325,
+    "threshold_formula": "82+4*maximum_status_polls",
+    "threshold_polls256": 1106,
+    "query_submissions": 2,
+    "post_instances_maximum": 62,
+    "day6_7_8_same_day_actual_role_precedes_census": true,
+    "conditional_final_Core_role_refresh_maximum": 3,
+    "ordinary_query_does_not_install_native_anchor": true,
+    "first_actual_row_uses_minimum_actually_enabled_authored_index": true,
+    "dedicated13_and_any_role_key_are_not_generic_permissions": true,
+    "independent_instance_absence_is_not_Date_gate_clearance": true,
+    "no_caller_definition_option_index_or_key": true,
+    "original_lease_Core_epoch_connection_once_and_UNKNOWN_protections": true
+  },
+  "limitations": [
+    "New pair has not run a new Game or observed its actual popup identity.",
+    "Earlier D5 full-log layout and packed-ID DATA do not automatically qualify all business joins or three physical phases.",
+    "Current267 RMTM26, wholeproduct, formalization, publication and performance remain unqualified.",
+    "All old known refusals, Offer UNKNOWN, request bodies, IDs and deadlines remain original; no replay.",
+    "The original wrong module-selector refusal, Source-only path spelling refusal, Native registration/Job-close refusals and END metadata str/Path refusal remain preserved."
+  ],
+  "CCC_Notes": {
+    "actual_intent_utc": "2026-11-24T00:32:21.887418+00:00",
+    "HTTP_GET_calls": 1,
+    "http_status": 429,
+    "result": "NOT_OBSERVED_HTTP_REFUSAL_NOT_TEXT_MISMATCH",
+    "no_automatic_next_request": true,
+    "old_first429_retained": true,
+    "Steam_SDK_API_POST_Submit_or_download_calls": 0
+  },
+  "distinct_products": {
+    "uploaded": 13,
+    "total": 17,
+    "strict": 9,
+    "remaining_order": [
+      "RMTM",
+      "LivingRelic",
+      "LYD",
+      "ZG361"
+    ]
+  },
+  "original_refs": {
+    "prior29": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-rmtm-post-succession-build-a1392/affected-qualification-final.json",
+      "bytes": 6406,
+      "sha256": "8a40ccaa659642903e1d0899e79648a04518534f72c08ff85edd640ff8c3fd6a"
+    },
+    "new_role_order2": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-rmtm-post-event-role-anchor-a1402/affected-role-order-qualification.json",
+      "bytes": 2856,
+      "sha256": "e1ac445443ea084467797f72f2457c899e41a5d17393f90c679e1f13b4b9ca00"
+    },
+    "compiler64_END": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-rmtm-post-event-role-anchor-a1402/compiler64-END.json",
+      "bytes": 1798,
+      "sha256": "cf6405584361b3e4e3ed68216e3142a0a20bf061a599f2ba6c6b0bce5fce4a3a"
+    },
+    "prior_compiler128_END": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-rmtm-post-succession-build-a1392/compiler128-END.json",
+      "bytes": 2311,
+      "sha256": "f5874ed7ecfd1a53ecdf2b723a002b35585c148332717ca8e4dcccfdafb833cf"
+    },
+    "Cpp26": {
+      "path": "D:/ck3-state/upgrade-20261118/rmtm-post-succession-event-nogame-a01/validation/software-qualified-source-final.json",
+      "bytes": 22097,
+      "sha256": "313300c0b8d37a699769c403df2b95c44f557c551c37f32ec7d380dfaf52579b"
+    },
+    "actual_original_Java_factory_parser_inverse": {
+      "path": "D:/ck3-state/upgrade-20261118/rmtm-post-succession-event-nogame-a01/validation/actual-Java-original-parser-inverse-receipt-a01.json",
+      "bytes": 3779,
+      "sha256": "7663608795e4c19314a243340e643aad89c2752a50b70557c15e546b677e85cb"
+    },
+    "Java_normal_push": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-rmtm-post-event-role-anchor-a1402/Java-role-anchor-normal-source-push.json",
+      "bytes": 1320,
+      "sha256": "da6a4649810a8d6fc4e3480812396ca6e4f2c3f899f02aa33f2815118afdda4f"
+    },
+    "Native_normal_push": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-rmtm-post-succession-build-a1392/native4-normal-source-push.json",
+      "bytes": 3414,
+      "sha256": "50c703fe5f2d84f9d8a9843094d63db955799aa8b8937990b42caa22a73aa9ee"
+    },
+    "package_freeze_END": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-rmtm-post-event-role-anchor-a1402/package160-freeze20-END.json",
+      "bytes": 2429,
+      "sha256": "ab447d2aed81f2bcdfd2fdb8a333bb45535fa6ae81573a1e2a11583bf610edc0"
+    },
+    "JavaReady": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-rmtm-post-event-role-anchor-a1402/java-runtime-ready-before-native.json",
+      "bytes": 1323,
+      "sha256": "965ae31de28e1a625f632ba1f13b4f95fbb93841ebd41bb282758051b6ba3456"
+    },
+    "runtime_manifest": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-cli-runtime-rmtm-post-succession-a1392/runtime-manifest.json",
+      "bytes": 168032,
+      "sha256": "aaa216d524c1c8ca4c7ac770196ebdbb6fa11663d67bb6100292c5a3158e25ce"
+    },
+    "classpath_args": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-cli-runtime-rmtm-post-succession-a1392/cli-classpath.args",
+      "bytes": 16399,
+      "sha256": "fe87e646a270c38ebad69d0cfadbd0be274d2be45165efbdf6330c86c364bc79"
+    },
+    "actual_six_pins": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-rmtm-post-succession-pair-a1392/actual-six-pins.json",
+      "bytes": 1572,
+      "sha256": "6ab069100a40f665299d73797f42aef8ddd4159e5de8607eeb9b597c67c1e2cf"
+    },
+    "frozen_delivery": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-rmtm-post-succession-pair-a1392/frozen-delivery-final.json",
+      "bytes": 9376,
+      "sha256": "62043799a0e08180a4887571c4f57e0829f0041370297da4b0d60bb1b7c7def0"
+    },
+    "native_pair_sidecar": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-rmtm-post-succession-pair-a1392/native-pair-binding-final.json",
+      "bytes": 3527,
+      "sha256": "54792832f68d4b69c47fa642794d1e9ea738d540ea6c306a016b68bf8356eba4"
+    },
+    "operator_templates": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-rmtm-post-succession-pair-a1392/operator-templates.json",
+      "bytes": 8158,
+      "sha256": "ea4070a714c26526f1d46317c9eb932466daeec170ec0da3454cb8232ebab447"
+    },
+    "metadata20_END": {
+      "path": "D:/ck3-state/upgrade-20261118/java-current267-rmtm-post-succession-pair-a1392/all-phases-END.json",
+      "bytes": 5255,
+      "sha256": "212e37cecace4e4d7ad4ce0b8f98f2cbae73b767591a62046e9c1a7bfc921f33"
+    },
+    "Native_actual_delivery": {
+      "path": "D:/ck3-state/upgrade-20261118/native-current267-rmtm-post-succession-event-production-a1382/frozen-delivery-final.json",
+      "bytes": 2760,
+      "sha256": "abde1ca43807e791eb9f388164cc9ff9483e83bfc55277d96fcddd68b0cdc08a"
+    },
+    "Native_actual_refs": {
+      "path": "D:/ck3-state/upgrade-20261118/native-current267-rmtm-post-succession-event-production-a1382/ordinary-native-artifact-refs.json",
+      "bytes": 19948,
+      "sha256": "b2dc7ab36010fb59b9f6ad0a9eb27bd4737fd14aabd3d5c34cd059dee4d58da9"
+    },
+    "prior_actual_scene_partial": {
+      "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/RMTM-visibility-core-D5-records-Day7-known-refusal-PARTIAL-a1383.json",
+      "bytes": 3342,
+      "sha256": "179dc51c35c6fc286dc3a397323a1b5e7dd067e73080f68cf9f3c6b29783b5b2"
+    },
+    "CCC_second_Notes_intent": {
+      "path": "D:/ck3-state/upgrade-20261118/ccc102-public-readback-a1274/notes-long-backoff-a02/intent.json",
+      "bytes": 1565,
+      "sha256": "baf8b75aa62b2f48269fffef1d5f0b6a29fb0b0fb574a3407a8ec8d90f3ebc9f"
+    },
+    "CCC_second_Notes_transport": {
+      "path": "D:/ck3-state/upgrade-20261118/ccc102-public-readback-a1274/notes-long-backoff-a02/changelog.transport.json",
+      "bytes": 2259,
+      "sha256": "1907514ed1f3a845699384cc2fae5618f836fd64923ef0b0b01f83a1cb653e41"
+    },
+    "CCC_second_Notes_not_observed": {
+      "path": "D:/ck3-state/upgrade-20261118/ccc102-public-readback-a1274/notes-long-backoff-a02/not-observed.json",
+      "bytes": 475,
+      "sha256": "c1b3785004acf43d2869132120078d2da0e1f80f9baee966d2ec1c4efe36cb32"
+    }
+  }
+}
