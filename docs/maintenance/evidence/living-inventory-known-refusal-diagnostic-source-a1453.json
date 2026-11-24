@@ -1,0 +1,115 @@
+{
+  "schema": "xar.current267.living.initial-inventory-known-refusal-and-diagnostic-source.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-24T05:55:27.820394+00:00",
+  "status": "ORIGINAL_KNOWN_UNAVAILABLE_NORMAL_EXIT_NEW_DIAGNOSTIC_SOFTWARE_ONLY",
+  "actual_request_id": "living-inventory-query-eff92c25316142b09b2aee454aebe2ac",
+  "actual_typed_status": "unavailable",
+  "actual_reason": "living_inventory_complete_arrays_unavailable",
+  "cleanup_known": true,
+  "effect_attempted": false,
+  "native_returned": false,
+  "source": null,
+  "read_calls": 2,
+  "Entry_calls": 0,
+  "UI_calls": 0,
+  "Date_calls": 0,
+  "Save_calls": 0,
+  "original_case_consumed": true,
+  "replay": false,
+  "Native_take_boundary": "Read/validate artifacts+0x58 and slots+0x40 Array16 headers. Actual original output did not distinguish either header/subpredicate or export its scalar values. Current859 static source agrees with existing offsets/order/signed capacity; there is no evidence for a mask/relaxation.",
+  "Java_consumer": "Transport5877-5879 correctly preserved a known AckReceived refusal. Main4156 shares an unavailable/UNKNOWN exception sentence; this does not reclassify actual unavailable as UNKNOWN. No Java change or extra tests/package/JAR copy.",
+  "diagnostic_only": "One Raw TU adds bounded field/issue/read count/capacity/nonNull/span diagnostic reason. Original Array acceptance, header/owner/wire/public fields/actions/caps/permissions unchanged. Actual15ON+1OFF software P is not actual cause observation, runtime repair, HELLO or original8 business P.",
+  "normal_close": {
+    "terminal_kind": "NATURAL_EXIT",
+    "actual_exit0": true,
+    "Job_active0": true,
+    "cleanup": true,
+    "actual_close_UTC": "2026-11-24T05:25:57.655789600Z"
+  },
+  "NoGame": {
+    "actual_ON": 15,
+    "actual_OFF": 1,
+    "new_CL": 2,
+    "links": 2,
+    "test_Jobs_Natural0": true,
+    "build_Job_nonNatural_preserved": true,
+    "original_setup_failure_preserved": true
+  },
+  "uploaded_SKUs": 14,
+  "strict_finite_completed_SKUs": 10,
+  "total_SKUs": 17,
+  "original_58_software_and_23_inverse_scope_retained": true,
+  "exact_refs": {
+    "consumer_review": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-a1440-initial-inventory-consumer-review-a01\\source-review-final.json",
+      "bytes": 17400,
+      "sha256": "66524a584b9fa27bc8cc90dfab7e9f3a2244a6b79696423ef1aae4362b34b291"
+    },
+    "original_execution": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-current267-original8-profile-a1440\\operations\\living-original-a1440-once\\execution.json",
+      "bytes": 914,
+      "sha256": "3a69bcfc19e8f04c4024bb21acd089535b06c317a9d9bab8c7b08d668d5515bc"
+    },
+    "original_typed_ACK": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-current267-original8-profile-a1440\\operations\\living-original-a1440-once\\result\\living-inventory-initial\\read-ack-payload.json",
+      "bytes": 1074,
+      "sha256": "300a94f44a2e1f66b094d183fa4f985b6df2bce267868910897490d5b82da4bb"
+    },
+    "original_token": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-current267-original8-profile-a1440\\operations\\living-original-a1440-once\\result\\living-inventory-initial\\read-result-token.json",
+      "bytes": 936,
+      "sha256": "d1b0b6e7d57cab9ca429541e262ab4aa2193b240fea48fe658c03c3fd84e8ac5"
+    },
+    "original_request_packet": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-current267-original8-profile-a1440\\operations\\living-original-a1440-once\\result\\living-inventory-initial\\read-outbound.bin",
+      "bytes": 729,
+      "sha256": "b57c194ffded2305fb5aaf9e17301aae4aa1484e6a06f62f45effd06f67cf3d9"
+    },
+    "original_custody": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-current267-original8-profile-a1440\\operations\\living-original-a1440-once\\result\\living-inventory-initial\\read-custody.json",
+      "bytes": 815,
+      "sha256": "94eb74e9432b7a7c777cae6d8b800bfb4795f53920eb870bb19aa5b50da76959"
+    },
+    "original_progress": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-current267-original8-profile-a1440\\operations\\living-original-a1440-once\\result\\current-living-original-progress.json",
+      "bytes": 15685,
+      "sha256": "5095c32fc2fa1f5f5dd9e123a293da9c19f423199e5b03b3c5c8aed13ae95d73"
+    },
+    "actual_normal_terminal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-current267-original8-profile-a1440\\owner\\terminal.json",
+      "bytes": 1059,
+      "sha256": "6f3ac6b1721207400d369b0f05358522643606950fea73438218c241aff36708"
+    },
+    "qualified_diagnostic_Source": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-inventory-diagnostic-nogame-a1453\\validation\\qualified-Source.json",
+      "bytes": 4222,
+      "sha256": "087bdd15ff52d97c0a21986282dbf594ea24fa7fda787e52390632ec4360d213"
+    },
+    "NoGame_delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-inventory-diagnostic-nogame-a1453\\validation\\NoGame-delivery-final.json",
+      "bytes": 1942,
+      "sha256": "5eb32c12f1876dad67dbd9fe67d583d84c6fe9d5a8304ccfbfec032e00b6821a"
+    },
+    "Native_Source_FD": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-inventory-first-refusal-review-a1440\\diagnostic-source-a01\\delivery-final.json",
+      "bytes": 3659,
+      "sha256": "e3d227cbd9c0046bfe7796bdd84d43ac7e9089a7ce70b800721b715803ada0d2"
+    },
+    "Native_static_review": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-inventory-first-refusal-review-a1440\\diagnostic-source-a01\\diagnosis-and-static-review.json",
+      "bytes": 2972,
+      "sha256": "8fa05401e06a63591ea73f0dd37f670ce053288c11bbe79a68addca2a1acc28f"
+    },
+    "exact_adoption": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-inventory-diagnostic-pair-source-a1452\\exact-adoption.json",
+      "bytes": 2581,
+      "sha256": "2b5040f25292f31284e3bfbe85c69734f8611c8104a602f17b49668d10983df1"
+    },
+    "new_admission": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\Living-inventory-diagnostic-Native280-Java1-admission-a1453.json",
+      "bytes": 2149,
+      "sha256": "bd044bc60232f0ff6cb4df97eacb5e958371e946bd2854c3a14d940ea369b2b1"
+    }
+  }
+}

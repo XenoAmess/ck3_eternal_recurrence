@@ -56,6 +56,45 @@ bool Array(const Array16&a,std::size_t bound,std::size_t stride)noexcept {
  (!a.count||(a.data&&static_cast<std::size_t>(a.count)<=(std::numeric_limits<std::uintptr_t>::max)()/stride&&
  static_cast<std::size_t>(a.count)*stride-1<=(std::numeric_limits<std::uintptr_t>::max)()-a.data));
 }
+// Diagnostics only: Array remains the sole unchanged acceptance predicate.
+// Never serialize the data address or dereference rejected array elements.
+const char* ArrayIssue(const Array16&a,std::size_t bound,std::size_t stride)noexcept {
+ if(a.count<0)return "negative_count";
+ if(a.capacity<a.count)return "capacity_below_count";
+ if(static_cast<std::size_t>(a.count)>bound)return "count_exceeds_bound";
+ if(a.count&&!a.data)return "nonnull_data_required";
+ if(a.count&&(static_cast<std::size_t>(a.count)>(std::numeric_limits<std::uintptr_t>::max)()/stride||
+ static_cast<std::size_t>(a.count)*stride-1>(std::numeric_limits<std::uintptr_t>::max)()-a.data))return "span_overflow";
+ return "predicate_inconsistent";
+}
+void AppendArrayDiagnostic(std::string&why,const char*name,const Array16&a,bool read,
+ std::size_t bound,std::size_t stride) {
+ const auto field=[&](const char*key,const std::string&value){why+=';';why+=name;why+=key;why+=value;};
+ field("_read=",read?"1":"0");
+ if(!read)return; // Partial Copy bytes are not diagnostic DATA.
+ field("_count=",std::to_string(a.count));field("_capacity=",std::to_string(a.capacity));
+ field("_data_nonnull=",a.data?"1":"0");
+ field("_count_oob=",a.count>=0&&static_cast<std::size_t>(a.count)>bound?"1":"0");
+ const bool overflow=a.count>0&&(static_cast<std::size_t>(a.count)>(std::numeric_limits<std::uintptr_t>::max)()/stride||
+ static_cast<std::size_t>(a.count)*stride-1>(std::numeric_limits<std::uintptr_t>::max)()-a.data);
+ field("_span_oob=",overflow?"1":"0");
+}
+bool ReadInventoryArrays(std::uintptr_t inventory,Array16&artifacts,Array16&slots,std::string&why) {
+ bool artifacts_read=false,slots_read=false;
+ const auto fail=[&](const char*field,const char*issue){
+  why="living_inventory_complete_arrays_unavailable;field=";why+=field;why+=";issue=";why+=issue;
+  AppendArrayDiagnostic(why,"artifacts",artifacts,artifacts_read,artifact_limit,4);
+  AppendArrayDiagnostic(why,"slots",slots,slots_read,slot_limit,24);return false;
+ };
+ // Preserve the old OR expression's read and validation order exactly.
+ artifacts_read=At(inventory,0x58,artifacts);
+ if(!artifacts_read)return fail("artifacts_header","unreadable");
+ slots_read=At(inventory,0x40,slots);
+ if(!slots_read)return fail("slots_header","unreadable");
+ if(!Array(artifacts,artifact_limit,4))return fail("artifacts",ArrayIssue(artifacts,artifact_limit,4));
+ if(!Array(slots,slot_limit,24))return fail("slots",ArrayIssue(slots,slot_limit,24));
+ return true;
+}
 struct String32 {std::array<std::byte,32>header{};std::string value;friend bool operator==(const String32&,const String32&)=default;};
 bool String(std::uintptr_t p,String32&out) {
  std::uint64_t n=0,cap=0;std::uintptr_t data=p;
@@ -215,8 +254,7 @@ bool Take(const ReadonlyBindings&b,const LivingInventoryFrame267V1&f,const Livin
  if(0x458>(std::numeric_limits<std::uintptr_t>::max)()-out.property)return false;
  out.inventory=out.property+0x458;
  if(out.inventory==image+0x5D5E9D0||!At(out.inventory,0,vt)||vt!=image+0x4E1E908)return fail("living_inventory_actual_type_unavailable");
- if(!At(out.inventory,0x58,out.artifacts)||!At(out.inventory,0x40,out.slots)||
- !Array(out.artifacts,artifact_limit,4)||!Array(out.slots,slot_limit,24))return fail("living_inventory_complete_arrays_unavailable");
+ if(!ReadInventoryArrays(out.inventory,out.artifacts,out.slots,why))return false;
  if(!At(image,0x6A669D8,out.storage)||!out.storage||!At(image,0x6A669C0,out.fallback)||
  !At(out.storage,0x20,out.storage_rows)||!At(out.storage,0x2C,out.storage_count))return fail("living_artifact_storage_unavailable");
  out.ids.resize(static_cast<std::size_t>(out.artifacts.count));
