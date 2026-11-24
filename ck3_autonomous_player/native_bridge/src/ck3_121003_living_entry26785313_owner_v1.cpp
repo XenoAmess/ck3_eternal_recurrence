@@ -4,9 +4,14 @@
 #include <chrono>
 #include <limits>
 #include <mutex>
+#include <unordered_set>
 #include <windows.h>
 namespace xar::ck3_121003::build26785313 {
+#ifndef XAR_LIVING_ENTRY_READ_CURRENT_RAW
+#define XAR_LIVING_ENTRY_READ_CURRENT_RAW ReadLivingEntryRaw267V1
+#endif
 void AppendLivingEntryRawDifference267V1(const LivingEntryRaw267V1&,const LivingEntryRaw267V1&,std::string&)noexcept;
+bool SameLivingEntryManageNavigationLease267V1(const LivingEntryRaw267V1&,const LivingManageFrame267V1&,const LivingEntryRaw267V1&,const LivingManageFrame267V1&,bool&)noexcept;
 namespace {
 using A=LivingEntryAction267V1;using Status=LivingEntryStatus267V1;
 [[maybe_unused]]std::uint64_t Wall(){const auto t=std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();return t>0?static_cast<std::uint64_t>(t):0;}
@@ -32,6 +37,60 @@ using A=LivingEntryAction267V1;using Status=LivingEntryStatus267V1;
 
  return true;
 }
+// Stable action-owned leaves, evaluated only from complete captured copies.
+[[maybe_unused]]const GuiWindowNodeV1* EntryUniqueNode(const std::vector<GuiWindowNodeV1>&v,std::uintptr_t id){
+ const GuiWindowNodeV1*out=nullptr;for(const auto&n:v)if(n.widget==id){if(out)return nullptr;out=&n;}return out;
+}
+[[maybe_unused]]const GuiWindowNodeV1* EntryUniqueNamed(const std::vector<GuiWindowNodeV1>&v,std::string_view name,std::uintptr_t parent,bool restrict_parent){
+ const GuiWindowNodeV1*out=nullptr;for(const auto&n:v)if(n.name==name&&(!restrict_parent||n.parent==parent)){if(out)return nullptr;out=&n;}return out;
+}
+[[maybe_unused]]bool EntryStableNode(const GuiWindowNodeV1&a,const GuiWindowNodeV1&z){
+ return a.widget&&a.widget==z.widget&&a.vtable==z.vtable&&a.parent==z.parent&&a.context==z.context&&
+  a.name==z.name&&a.flags==z.flags&&a.visible==z.visible&&a.enabled==z.enabled;
+}
+[[maybe_unused]]bool EntrySceneScalars(const LivingManageScene267V1&a,const LivingManageScene267V1&z){
+ return a.connection_generation==z.connection_generation&&a.wall_deadline==z.wall_deadline&&
+  a.jomini==z.jomini&&a.gfx==z.gfx&&a.handler==z.handler&&a.context==z.context&&a.global==z.global&&
+  a.list_root==z.list_root&&a.detail_root==z.detail_root&&a.list_visible==z.list_visible&&
+  a.list_enabled==z.list_enabled&&a.detail_visible==z.detail_visible&&a.detail_enabled==z.detail_enabled&&a.owner_bound==z.owner_bound;
+}
+[[maybe_unused]]bool EntryNavigationProjection(const LivingManageFrame267V1&a,const LivingManageFrame267V1&z,std::uintptr_t nav){
+ if(!nav||!a.facts_verified||!z.facts_verified||!Core(a.core,z.core)||!EntrySceneScalars(a.scene,z.scene)||
+  a.witness.empty()||z.witness.empty()||a.witness.size()>4096||z.witness.size()>4096||
+  a.scene.hud.empty()||z.scene.hud.empty()||a.scene.hud.size()>4096||z.scene.hud.size()>4096)return false;
+ const auto&b=a.scene;const auto&c=z.scene;
+ const auto global_b=EntryUniqueNode(a.witness,b.global),global_a=EntryUniqueNode(z.witness,c.global);
+ if(!global_b||!global_a||global_b->parent||global_a->parent||global_b->context!=b.context||global_a->context!=c.context||!EntryStableNode(*global_b,*global_a))return false;
+ const GuiWindowNodeV1*layers_b[3]{},*layers_a[3]{};
+ constexpr const char*names[]{"windows_layer","middle","hud_layer"};
+ for(std::size_t n=0;n<3;++n){layers_b[n]=EntryUniqueNamed(a.witness,names[n],b.global,true);layers_a[n]=EntryUniqueNamed(z.witness,names[n],c.global,true);
+  if(!layers_b[n]||!layers_a[n]||layers_b[n]->context!=b.context||layers_a[n]->context!=c.context||!EntryStableNode(*layers_b[n],*layers_a[n]))return false;}
+ const std::uintptr_t roots_b[]{b.list_root,b.detail_root},roots_a[]{c.list_root,c.detail_root};
+ constexpr const char*root_names[]{"decisions_view","decisiondetail_view"};
+ for(std::size_t n=0;n<2;++n){const auto x=EntryUniqueNamed(a.witness,root_names[n],layers_b[n]->widget,true),y=EntryUniqueNamed(z.witness,root_names[n],layers_a[n]->widget,true);
+  if(roots_b[n]!=roots_a[n]||bool(x)!=bool(roots_b[n])||bool(y)!=bool(roots_a[n]))return false;
+  if(x&&(!y||x->widget!=roots_b[n]||y->widget!=roots_a[n]||x->context!=b.context||y->context!=c.context||!EntryStableNode(*x,*y)))return false;}
+ const auto tab_b=EntryUniqueNamed(b.hud,"tab_decisions",0,false),tab_a=EntryUniqueNamed(c.hud,"tab_decisions",0,false);
+ if(!tab_b||!tab_a||!EntryStableNode(*tab_b,*tab_a)||nav==tab_b->widget)return false;
+ std::unordered_set<std::uintptr_t>seen;bool tab=false;std::uintptr_t current=nav;
+ for(std::size_t depth=0;depth<=32;++depth){
+  if(!seen.insert(current).second)return false;
+  const auto x=EntryUniqueNode(b.hud,current),y=EntryUniqueNode(c.hud,current);
+  if(!x||!y||x->context!=b.context||y->context!=c.context||!EntryStableNode(*x,*y))return false;
+  const auto wx=EntryUniqueNode(a.witness,current),wy=EntryUniqueNode(z.witness,current);
+  if(!wx||!wy||!EntryStableNode(*x,*wx)||!EntryStableNode(*y,*wy))return false;
+  tab|=current==tab_b->widget;
+  if(current==layers_b[2]->widget)return tab&&x->parent==b.global&&y->parent==c.global;
+  if(!x->parent)return false;current=x->parent;
+ }return false;
+}
+[[maybe_unused]]bool EntryLeaseFrame(LivingEntryAction267V1 action,const LivingEntryFrame267V1&a,const LivingEntryRaw267V1&raw_a,const LivingEntryFrame267V1&z,const LivingEntryRaw267V1&raw_z){
+ if(action!=A::open_manage_list||!a.manage||!z.manage)return Frame(a,z);
+ bool applied=false;const bool projected=SameLivingEntryManageNavigationLease267V1(raw_a,*a.manage,raw_z,*z.manage,applied);
+ if(!applied)return Frame(a,z);
+ return World(a.inventory,z.inventory)&&a.view.has_value()==z.view.has_value()&&!a.view&&projected;
+}
+
 // Only compares already captured private copies after the original stale gate.
 // No extra capture/native call, public address, selector or authority change.
 [[maybe_unused]]void EntryDiffField(std::string&why,const char*key,std::uint64_t value){
@@ -53,6 +112,27 @@ using A=LivingEntryAction267V1;using Status=LivingEntryStatus267V1;
  if(mask){EntryDiffField(why,"node_first",first);EntryDiffField(why,"nodes_b",before.size());EntryDiffField(why,"nodes_a",after.size());
   if(first<before.size()&&first<after.size()){EntryDiffField(why,"flags_b",before[first].flags);EntryDiffField(why,"flags_a",after[first].flags);}}
 }
+[[maybe_unused]]std::string EntryDiagnosticName(std::string_view text){
+ constexpr char hex[]="0123456789ABCDEF";std::string out;const auto size=(std::min)(text.size(),std::size_t{16});
+ for(std::size_t n=0;n<size;++n){const auto c=static_cast<unsigned char>(text[n]);if((c>='a'&&c<='z')||(c>='A'&&c<='Z')||(c>='0'&&c<='9')||c=='_'||c=='.'||c=='-')out+=static_cast<char>(c);else{out+='%';out+=hex[c>>4];out+=hex[c&15];}}
+ if(text.size()>size)out+='~';return out;
+}
+[[maybe_unused]]void EntryJoinedNodeDifference(std::string&why,const std::vector<GuiWindowNodeV1>&before,const std::vector<GuiWindowNodeV1>&after){
+ std::size_t added=0,removed=0,changed=0;std::vector<std::pair<char,const GuiWindowNodeV1*>>samples;
+ const auto sample=[&](char tag,const GuiWindowNodeV1&node){if(samples.size()<2)samples.emplace_back(tag,&node);};
+ for(const auto&n:after){const auto old=EntryUniqueNode(before,n.widget);if(!old){++added;sample('+',n);}else if(!EntryStableNode(*old,n)){++changed;sample('~',n);}}
+ for(const auto&n:before)if(!EntryUniqueNode(after,n.widget)){++removed;sample('-',n);}
+ EntryDiffField(why,"gui_added",added);EntryDiffField(why,"gui_removed",removed);EntryDiffField(why,"gui_changed",changed);
+ std::vector<std::uintptr_t>types;
+ for(const auto*nodes:{&before,&after})for(const auto&n:*nodes)if(std::find(types.begin(),types.end(),n.vtable)==types.end())types.push_back(n.vtable);
+ for(std::size_t i=0;i<samples.size();++i){const auto[tag,node]=samples[i];const auto&nodes=tag=='-'?before:after;const auto parent=EntryUniqueNode(nodes,node->parent);
+  const char*role="unknown";if(node->name=="windows_layer"||node->name=="middle"||node->name=="hud_layer")role="layer";else if(node->name=="decisions_view"||node->name=="decisiondetail_view")role="decision_root";else if(node->name=="tab_decisions")role="fixed_tab";else if(!node->parent)role="global";
+  const auto type=static_cast<std::size_t>(std::find(types.begin(),types.end(),node->vtable)-types.begin())+1;
+  std::string text=";gui_d"+std::to_string(i)+'='+tag+",name="+EntryDiagnosticName(node->name)+",parent="+(parent?EntryDiagnosticName(parent->name):std::string(node->parent?"missing_or_ambiguous":"root"))+",visible="+(node->visible?"1":"0")+",enabled="+(node->enabled?"1":"0")+",type_group="+std::to_string(type)+",role="+role;
+  if(why.size()+text.size()<=1000)why+=text;
+ }
+}
+
 [[maybe_unused]]void AppendLivingEntryFrameDifference(const LivingEntryFrame267V1&before,const LivingEntryFrame267V1&after,std::string&why)noexcept{
  try{
   std::uint64_t mask=0;const auto&a=before.inventory;const auto&z=after.inventory;
@@ -73,7 +153,7 @@ using A=LivingEntryAction267V1;using Status=LivingEntryStatus267V1;
    if(!SameLivingGuiIdentity267V1(b.gui,c.gui))mask|=4096;
   }
   EntryDiffField(why,"frame_mask",mask);
-  if(before.manage&&after.manage){EntryNodeVectorDiff(why,before.manage->scene.hud,after.manage->scene.hud,"hud_mask");EntryNodeVectorDiff(why,before.manage->witness,after.manage->witness,"witness_mask");}
+  if(before.manage&&after.manage){EntryNodeVectorDiff(why,before.manage->scene.hud,after.manage->scene.hud,"hud_mask");EntryNodeVectorDiff(why,before.manage->witness,after.manage->witness,"witness_mask");EntryJoinedNodeDifference(why,before.manage->witness,after.manage->witness);}
  }catch(...){/* Diagnostics never alter the original refusal/cleanup outcome. */}
 }
 [[maybe_unused]]bool CaptureFrame(LivingEntryContext267V1&q,const ck3_11906::MainThreadExecutionStampV1&s,LivingEntryFrame267V1&out){
@@ -90,6 +170,7 @@ using A=LivingEntryAction267V1;using Status=LivingEntryStatus267V1;
   out.inventory.connection_generation==q.connection_generation&&Time(q);
 }
 }
+bool SameLivingEntryNavigationProjection267V1(const LivingManageFrame267V1&a,const LivingManageFrame267V1&z,std::uintptr_t nav){return EntryNavigationProjection(a,z,nav);}
 struct LivingEntrySession267V1::State {
  struct Lease {LivingEntryFrame267V1 frame;LivingEntryRaw267V1 raw;LivingEntryRequest267V1 request;
   std::uint64_t sequence=0,connection=0,mono=0;bool spent=false;};
@@ -117,7 +198,7 @@ bool ExecuteLivingEntryInner267V1(LivingEntryContext267V1&q,[[maybe_unused]]cons
   if(!Time(q))return reject(Status::expired,"living_entry_original_deadline_expired");
   const auto capture=[&](LivingEntryFrame267V1&frame,LivingEntryRaw267V1&raw){
    if(!CaptureFrame(q,s,frame))return false;std::string why;
-   const bool good=ReadLivingEntryRaw267V1(q.bindings,frame,q.request,q.monotonic_deadline_ms,raw,why);
+   const bool good=XAR_LIVING_ENTRY_READ_CURRENT_RAW(q.bindings,frame,q.request,q.monotonic_deadline_ms,raw,why);
    q.observation_entered|=raw.entered;q.result.cleanup_known&=raw.cleanup_known;
    if(!good){q.result.reason=why;return false;}
    LivingEntryFrame267V1 after;
@@ -153,8 +234,10 @@ bool ExecuteLivingEntryInner267V1(LivingEntryContext267V1&q,[[maybe_unused]]cons
   q.monotonic_deadline_ms=(std::min)(q.monotonic_deadline_ms,lease.mono);
   LivingEntryFrame267V1 frame;LivingEntryRaw267V1 actual;
   if(!capture(frame,actual))return failed();
-  if(!Frame(frame,lease.frame)||!SameLivingEntryRaw267V1(actual,lease.raw)){
+  const bool lease_frame_equal=EntryLeaseFrame(q.request.action,frame,actual,lease.frame,lease.raw);
+  if(!lease_frame_equal||!SameLivingEntryRaw267V1(actual,lease.raw)){
    std::string why="living_entry_complete_physical_source_changed";
+   EntryDiffField(why,"lease_frame_equal",lease_frame_equal);
    AppendLivingEntryFrameDifference(lease.frame,frame,why);AppendLivingEntryRawDifference267V1(lease.raw,actual,why);
    return reject(Status::stale_source,why.c_str());
   }

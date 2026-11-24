@@ -2,7 +2,9 @@
 // Does not replace the c661 inventory/query/UI13 implementation.
 #include "xar_bridge/ck3_121003_living_entry26785313_owner_v1.hpp"
 #include "xar_bridge/ck3_121003_living_entry26785313_pins_v1.hpp"
-namespace xar::ck3_121003::build26785313 {namespace living_inventory_private {
+namespace xar::ck3_121003::build26785313 {
+bool SameLivingEntryNavigationProjection267V1(const LivingManageFrame267V1&,const LivingManageFrame267V1&,std::uintptr_t);
+namespace living_inventory_private {
 #include "ck3_121003_living_entry_visibility26785313_private_v1.inc"
 
 bool EntryGuiProof(const LivingWeaponFrame267V1&f,std::uintptr_t image,
@@ -199,6 +201,17 @@ bool ReadLivingEntryRaw267V1(const ReadonlyBindings&b,const LivingEntryFrame267V
 #define XAR_LIVING_ENTRY_READ_CURRENT_RAW ReadLivingEntryRaw267V1
 #endif
 struct LivingEntryCallAccess267V1 {
+ static bool NavigationLease(const LivingEntryRaw267V1&a,const LivingManageFrame267V1&fa,const LivingEntryRaw267V1&z,const LivingManageFrame267V1&fz,bool&applied)noexcept{
+  applied=false;try{
+   if(!a.cleanup_known||!z.cleanup_known||!a.state_||!z.state_||!a.state_->manage||!z.state_->manage)return false;
+   const auto&b=*a.state_->manage;const auto&c=*z.state_->manage;
+   if(!b.source.open_list_admissible||!c.source.open_list_admissible||!b.nav_widget||!c.nav_widget)return false;
+   applied=true;
+   if(b.nav_widget!=c.nav_widget||b.nav_callbacks.empty()||b.nav_callbacks!=c.nav_callbacks)return false;
+   return SameLivingEntryNavigationProjection267V1(fa,fz,b.nav_widget);
+  }catch(...){return false;}
+ }
+
  static void AppendDifference(const LivingEntryRaw267V1&before,const LivingEntryRaw267V1&after,std::string&why)noexcept{
   try{
    const auto field=[&](const char*key,std::uint64_t value){if(why.size()>1400)return;why+=';';why+=key;why+='=';why+=std::to_string(value);};
@@ -272,6 +285,9 @@ struct LivingEntryCallAccess267V1 {
   }catch(...){out.cleanup_known=false;return out;}
  }
 };
+bool SameLivingEntryManageNavigationLease267V1(const LivingEntryRaw267V1&a,const LivingManageFrame267V1&fa,const LivingEntryRaw267V1&z,const LivingManageFrame267V1&fz,bool&applied)noexcept{
+ return LivingEntryCallAccess267V1::NavigationLease(a,fa,z,fz,applied);
+}
 void AppendLivingEntryRawDifference267V1(const LivingEntryRaw267V1&before,const LivingEntryRaw267V1&after,std::string&why)noexcept{
  LivingEntryCallAccess267V1::AppendDifference(before,after,why);
 }
