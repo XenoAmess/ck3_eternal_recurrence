@@ -21,11 +21,13 @@ std::uint64_t Wall(){const auto t=std::chrono::duration_cast<std::chrono::millis
 }
 [[maybe_unused]]bool CaptureFrame(LivingUiContext267V1&q,const ck3_11906::MainThreadExecutionStampV1&s,LivingUiFrame267V1&out){
  if(!Time(q)||!q.mailbox||q.mailbox->offline_fixture||!q.connection_generation||
-    q.mailbox->permitted_executor_artifact_personal_read12004!=&ExecuteLivingOnOwner267V1)return false;
+    q.mailbox->permitted_executor_artifact_personal_read12004!=&ExecuteLivingOnOwner267V1){q.result.reason="living_UI_owner_frame_gate_unavailable";return false;}
  q.bindings=BindReadonlyImage(reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),kExecutableSha256);
  std::string why;const bool good=ReadLivingUiFrameOnOwner267V1(q.bindings,q.mailbox,q.ticket,s,&q.invocation,q.request,q.monotonic_deadline_ms,out,why);
  if(out.inventory.facts_verified){q.result.facts_available=true;q.result.facts=out.inventory.core;q.result.connection_generation=q.connection_generation;q.result.ticket_sequence=q.ticket.sequence;q.result.pump_epoch=s.pump_epoch;q.result.thread_id=s.thread_id;}
- if(!good){q.result.reason=why;return false;}return Core(q.request.expected,out.inventory.core)&&out.inventory.connection_generation==q.connection_generation&&Time(q);
+ if(!good){q.result.reason=why;return false;}
+ const bool current=Core(q.request.expected,out.inventory.core)&&out.inventory.connection_generation==q.connection_generation&&Time(q);
+ if(!current)q.result.reason="living_UI_frame_Core_connection_or_deadline_changed";return current;
 }
 }
 struct LivingUiSession267V1::State {
@@ -50,11 +52,14 @@ bool ExecuteLivingUiInner267V1(LivingUiContext267V1&q,[[maybe_unused]]const ck3_
   if(LivingFamilyUnknown267V1()){q.result.cleanup_known=false;return reject(S::indeterminate,"living_UI_prior_family_UNKNOWN");}
   if(!Time(q))return reject(S::expired,"living_UI_original_deadline_expired");
   const auto capture=[&](LivingUiFrame267V1&frame,LivingUiRaw267V1&raw,living_inventory_private::LivingFiniteCase267V1&finite){
-   if(!CaptureFrame(q,s,frame))return false;std::string why;
+   if(!CaptureFrame(q,s,frame)){if(q.result.reason.empty())q.result.reason="living_UI_frame_before_read_unavailable";return false;}std::string why;
    const bool good=ReadLivingUiRaw267V1(q.bindings,frame,q.request,q.monotonic_deadline_ms,finite,raw,why);
    q.observation_entered|=raw.entered;q.result.cleanup_known&=raw.cleanup_known;
-   if(!good){q.result.reason=why;return false;}
-   LivingUiFrame267V1 after;return CaptureFrame(q,s,after)&&Frame(frame,after)&&Time(q);
+   if(!good){q.result.reason=why.empty()?"living_UI_actual_complete_raw_read_unavailable":why;return false;}
+   LivingUiFrame267V1 after;
+   if(!CaptureFrame(q,s,after)){if(q.result.reason.empty())q.result.reason="living_UI_frame_after_read_unavailable";return false;}
+   if(!Frame(frame,after)){q.result.reason="living_UI_complete_frame_changed_during_read";return false;}
+   if(!Time(q)){q.result.reason="living_UI_original_deadline_expired_after_read";return false;}return true;
   };
   const auto failed=[&]{if(!q.result.cleanup_known){BlockLivingFamilyUnknown267V1();return reject(S::indeterminate,"living_UI_owned_read_cleanup_UNKNOWN");}const auto why=q.result.reason;return reject(Time(q)?S::unavailable:S::expired,why.empty()?"living_UI_complete_source_unavailable":why.c_str());};
   if(LivingUiQuery267V1(q.request.action)){

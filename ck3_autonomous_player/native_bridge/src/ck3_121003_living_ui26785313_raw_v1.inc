@@ -2,6 +2,31 @@
 #include "xar_bridge/ck3_121003_living_ui26785313_owner_v1.hpp"
 #include "xar_bridge/ck3_121003_living_entry26785313_owner_v1.hpp"
 namespace xar::ck3_121003::build26785313 {
+namespace living_inventory_private {
+// Preserve the actual displayed sequence and authored indices.  This pure
+// projection grants no callback authority: the private finite case, held scope,
+// actual Can and fresh complete recapture remain mandatory at submission.
+void AppendLivingDisplayedActions267V1(LivingEventData267V1&data,
+ const LydEventRow267V1&e,bool observed,const LivingFiniteCase267V1&case_state,
+ const LivingEventScopeData267V1&binding){
+ using A=LivingUiAction267V1;
+ constexpr std::array<A,8>actions{A::open_tutorial,A::feed_common,A::feed_masterwork,A::feed_famed,A::feed_illustrious,A::cancel_review,A::confirm_review,A::close_management};
+ for(const auto action:actions){
+  int index=-1;
+  if(e.definition_key=="xalw.12"&&action==A::open_tutorial)index=0;
+  if(e.definition_key=="xalw.10"&&action>=A::feed_common&&action<=A::feed_illustrious)index=1+static_cast<int>(action)-static_cast<int>(A::feed_common);
+  if(e.definition_key=="xalw.10"&&action==A::close_management)index=9;
+  if(e.definition_key=="xalw.11"&&action==A::confirm_review)index=0;
+  if(e.definition_key=="xalw.11"&&action==A::cancel_review)index=1;
+  if(index<0)continue;
+  const auto option=std::find_if(e.options.begin(),e.options.end(),[&](const auto&o){return o.authored_option_index==index;});
+  // A hidden authored option is absent DATA, never an invented action.
+  if(option==e.options.end())continue;
+  data.fixed_actions.push_back({action,e.instance_id,index,observed&&e.named_root_bound&&e.window_visible&&e.window_enabled&&
+   option->native_can_select&&!option->text.empty()&&LivingFiniteMayConsume267V1(case_state,action,binding)});
+ }
+}
+}
 struct LivingUiRaw267V1::State {
  living_inventory_private::Snapshot inventory;
  std::optional<living_inventory_private::WeaponSnapshot>weapon;
@@ -23,14 +48,14 @@ bool ReadLivingUiRaw267V1(const ReadonlyBindings&b,const LivingUiFrame267V1&f,
  using namespace living_inventory_private;
  try{
   if(!Fresh(b,f.inventory,q,mono)||!VerifyLivingEntryImage267V1(b.module_base)||
-     !VerifyReadonlyImage(b.module_base))return false;
+     !VerifyReadonlyImage(b.module_base)){why="living_UI_current_binding_or_deadline_unavailable";return false;}
   const auto take=[&](LivingUiRaw267V1::State&state,LivingFiniteCase267V1&case_state){
    LivingInventoryRaw267V1 inv;
    if(!Take(b,f.inventory,q,mono,state.inventory,inv,why)){out.entered|=inv.entered;out.cleanup_known&=inv.cleanup_known;return false;}
    out.entered|=inv.entered;out.cleanup_known&=inv.cleanup_known;
    auto actual=state.inventory.source;actual.complete_inventory=actual.sampled_twice=true;
    if(!case_state.bound)LivingFiniteBind267V1(case_state,f.inventory,actual);
-   if(case_state.bound&&!LivingFiniteSameOwner267V1(case_state,f.inventory))return false;
+   if(case_state.bound&&!LivingFiniteSameOwner267V1(case_state,f.inventory)){why="living_UI_finite_case_owner_changed";return false;}
    auto&s=state.source;s.kind=LivingUiKindFor267V1(q.action);s.actor_full_id=actual.actor_full_id;s.sampled_twice=true;
    if(s.kind==LivingUiKind267V1::weapon){
     if(!f.weapon)return false;state.weapon.emplace();bool clean=true;
@@ -55,19 +80,17 @@ bool ReadLivingUiRaw267V1(const ReadonlyBindings&b,const LivingUiFrame267V1&f,
     out.entered|=detail.entered;out.cleanup_known&=detail.cleanup_known;
     if(state.detail->inventory!=state.inventory)return false;s.detail=state.detail->source;return true;
    }
-   if(!f.events||!VerifyLydImage267V1(b.module_base))return false;
+   if(!f.events||!VerifyLydImage267V1(b.module_base)){why="living_UI_actual_event_frame_or_binding_unavailable";return false;}
    state.events.emplace();LydRequest267V1 read;read.action=LydAction267V1::query_events;
    read.expected=q.expected;std::copy(q.request_id.begin(),q.request_id.end(),read.request_id.begin());read.request_id_size=q.request_id_size;read.deadline_unix_ms=q.deadline_unix_ms;
    if(!ReadLydRaw267V1(b,f.events->core,f.events->scene,mono,read,{},*state.events,why)){
     out.entered|=state.events->native_read_entered;out.cleanup_known&=state.events->cleanup_known;return false;}
    out.entered|=state.events->native_read_entered;out.cleanup_known&=state.events->cleanup_known;
    if(!state.events->source.events||state.events->source.events->events.size()!=state.events->event_rows.size()||
-      state.events->manager_census.game!=f.inventory.game||state.events->manager_census.jomini!=f.inventory.jomini)return false;
+      state.events->manager_census.game!=f.inventory.game||state.events->manager_census.jomini!=f.inventory.jomini){why="living_UI_actual_event_census_owner_unavailable";return false;}
    LivingEventData267V1 data;data.census=*state.events->source.events;
    // This is DATA projection, not permission borrowed from the original LYD roles.
    for(auto&e:data.census.events)for(auto&o:e.options){o.permitted_role.reset();o.source_bound_option_key.reset();}
-   using A=LivingUiAction267V1;
-   constexpr std::array<A,8>actions{A::open_tutorial,A::feed_common,A::feed_masterwork,A::feed_famed,A::feed_illustrious,A::cancel_review,A::confirm_review,A::close_management};
    for(std::size_t n=0;n<data.census.events.size();++n){
     const auto&e=data.census.events[n];
     if(e.recipient_character_id!=f.inventory.core.played_character_id||
@@ -78,26 +101,17 @@ bool ReadLivingUiRaw267V1(const ReadonlyBindings&b,const LivingUiFrame267V1&f,
     out.entered|=held.entered;out.cleanup_known&=held.cleanup_known;
     state.scope_proof.push_back(held.fingerprint);data.bindings.push_back(held.source);
     const bool observed=case_state.bound&&LivingFiniteObserve267V1(case_state,f.inventory,held.source,actual);
-    for(const auto action:actions){
-     int index=-1;
-     if(e.definition_key=="xalw.12"&&action==A::open_tutorial)index=0;
-     if(e.definition_key=="xalw.10"&&action>=A::feed_common&&action<=A::feed_illustrious)index=1+static_cast<int>(action)-static_cast<int>(A::feed_common);
-     if(e.definition_key=="xalw.10"&&action==A::close_management)index=9;
-     if(e.definition_key=="xalw.11"&&action==A::confirm_review)index=0;
-     if(e.definition_key=="xalw.11"&&action==A::cancel_review)index=1;
-     if(index<0)continue;
-     const auto option=std::find_if(e.options.begin(),e.options.end(),[&](const auto&o){return o.authored_option_index==index;});
-     if(option==e.options.end())return false;
-     data.fixed_actions.push_back({action,e.instance_id,index,observed&&e.named_root_bound&&e.window_visible&&e.window_enabled&&
-      option->native_can_select&&!option->text.empty()&&LivingFiniteMayConsume267V1(case_state,action,held.source)});
-    }
+    AppendLivingDisplayedActions267V1(data,e,observed,case_state,held.source);
    }
    data.complete_bindings=true;s.events=std::move(data);return true;
   };
   auto a=std::make_shared<LivingUiRaw267V1::State>(),z=std::make_shared<LivingUiRaw267V1::State>();
   auto first=finite,last=finite;
-  if(!take(*a,first)||!take(*z,last)||*a!=*z||!Fresh(b,f.inventory,q,mono)||
-     !LivingUiSourceShape267V1(z->source,f.inventory.core))return false;
+  if(!take(*a,first)){if(why.empty()||why=="living_UI_Raw_default_off")why="living_UI_first_complete_take_unavailable";return false;}
+  if(!take(*z,last)){if(why.empty()||why=="living_UI_Raw_default_off")why="living_UI_second_complete_take_unavailable";return false;}
+  if(*a!=*z){why="living_UI_complete_snapshot_changed_between_takes";return false;}
+  if(!Fresh(b,f.inventory,q,mono)){why="living_UI_deadline_or_Core_changed_after_takes";return false;}
+  if(!LivingUiSourceShape267V1(z->source,f.inventory.core)){why="living_UI_complete_public_source_shape_unavailable";return false;}
   finite=std::move(last);out.source=z->source;out.inventory=z->inventory.source;
   out.inventory.complete_inventory=out.inventory.sampled_twice=true;out.state_=std::move(z);why.clear();return true;
  }catch(...){why="living_UI_private_snapshot_copy_unavailable";return false;}
