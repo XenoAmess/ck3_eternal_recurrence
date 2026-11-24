@@ -78,7 +78,7 @@ const char*ReferenceState(LivingReferenceState267V1 s)noexcept{switch(s){case Li
 }
 bool LivingInventoryQueryRequestShape267V1(const LivingInventoryQueryRequest267V1&q)noexcept{return q.request_id_size&&q.request_id_size<=96&&Id(q.id())&&q.deadline_unix_ms&&Prefix(q.expected);}
 bool LivingInventoryQuerySourceShape267V1(const LivingInventoryQuerySource267V1&s,const ck3_1210::CoreSnapshotPrefix&f)noexcept{
- if(s.actor_full_id==0xFFFFFFFFU||s.actor_full_id!=static_cast<std::uint32_t>(f.played_character_id)||!s.complete_inventory||!s.sampled_twice||s.artifacts.size()>128||s.slots.size()>32)return false;
+ if(s.actor_full_id==0xFFFFFFFFU||s.actor_full_id!=static_cast<std::uint32_t>(f.played_character_id)||!s.complete_inventory||!s.sampled_twice||s.artifacts.size()>128||s.slots.size()>64)return false;
  for(std::size_t i=0;i<s.artifacts.size();++i){const auto&a=s.artifacts[i];if(a.full_id==0xFFFFFFFFU||a.owner_full_id!=s.actor_full_id||!Utf8(a.type_key))return false;
   for(std::size_t j=0;j<i;++j)if(s.artifacts[j].full_id==a.full_id)return false;
   for(const auto&n:a.numeric){switch(n.state){case LivingNumericState267V1::absent:case LivingNumericState267V1::present_empty:if(n.scope_kind||n.raw)return false;break;

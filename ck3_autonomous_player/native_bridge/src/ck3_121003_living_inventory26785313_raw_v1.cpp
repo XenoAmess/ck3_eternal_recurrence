@@ -11,7 +11,7 @@
 #endif
 namespace xar::ck3_121003::build26785313 { namespace living_inventory_private {
 constexpr std::uint32_t invalid=0xFFFFFFFFU;
-constexpr std::size_t artifact_limit=128,slot_limit=32,string_limit=4096;
+constexpr std::size_t artifact_limit=128,slot_limit=64,string_limit=4096;
 bool Copy(std::uintptr_t p,void*out,std::size_t n)noexcept {
  if(!p||!out||!n||n-1>(std::numeric_limits<std::uintptr_t>::max)()-p)return false;
  __try{std::memcpy(out,reinterpret_cast<const void*>(p),n);return true;}
