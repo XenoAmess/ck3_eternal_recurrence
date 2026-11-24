@@ -1,0 +1,72 @@
+{
+  "schema": "xar.current267.Living.original8.first22-current-cut.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status": "FIRST22_SOFTWARE_PASS_NATIVE_PROTOCOL_AND_RUNTIME_PENDING",
+  "actual_qualification": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-living-original8-build-a1427/first22-qualification.json",
+    "bytes": 6939,
+    "sha256": "33c2788a010ad8a9569e4267af75b60abd0017c193e95c6ab98c0a6501133bb9"
+  },
+  "actual_first_stage_END": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-living-original8-build-a1427/compiler128-first22-stage-END-a02.json",
+    "bytes": 1312,
+    "sha256": "a9a8d42fbb83ccc808177b70951e6408698e54343d86d411aa0359f28b70e693"
+  },
+  "actual_adopted_Source": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-living-original8-build-a1427/source-plan-current.json",
+    "bytes": 4878,
+    "sha256": "8e07927ad6ce959ab49b1bba04b1da8a30be11a6f2153d233b0b39226f35bac7"
+  },
+  "Source_bundle": {
+    "path": "D:/ck3-state/upgrade-20261118/java-current267-living-original8-consumer-Source-a01/reuse-quote-a02/delivery-final.json",
+    "bytes": 1324,
+    "sha256": "45f0e4b7fc15760b7dafb0f26e8da60abe2c4fc4f1c16417ade6f8fc4a6653b6"
+  },
+  "new_scope": {
+    "families": [
+      "readonly_inventory",
+      "fixed_Entry8",
+      "fixed_UI14"
+    ],
+    "Main_schema": "xar.native-owner-snapshot-config/v48",
+    "mode": "current_living_original_case_once",
+    "submissions": 85,
+    "Date": 0,
+    "Save": 0,
+    "private_capture": "One original same-Receiver actual complete inventory/Core/session/connection; public rows/refs never mint action permission",
+    "private_query": "Each fixed effect needs fresh actual own-family query, exact full Source/Core/generation/original deadline/packet/custody, once retained before write, shared sticky UNKNOWN",
+    "original_pipeline": "Initial5refs/complete inventory, actual open/select/equip readback, fixed manage decision, actual .12/.10/.11 held bindings, common cancel/conservation/fresh review,4rarity confirmations with independent inventory/numeric readbacks,management close index9+independent absence,final actual detail3getters",
+    "text_boundary": "Full actual review/detail text archived as DATA. Diet/80 preview/pixel/business correctness not synthesized from fixture/l10n or granted by controller."
+  },
+  "tested": {
+    "distinct_methods": 22,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "elapsed_seconds": 264.1255637999857,
+    "Job_peak_commit": 1779257344,
+    "Natural0": true,
+    "active0": true
+  },
+  "compile_reuse": {
+    "native_transport_production_sources": 591,
+    "native_transport_test_sources": 115,
+    "local_service_production_sources": 653,
+    "local_service_test_sources": 53,
+    "reactor_threads": 2,
+    "other_listed_reactor_modules": "mostly unchanged reused artifacts, not claimed recompiled"
+  },
+  "pending": [
+    "Actual new Cpp13 responses/23 original requests consumer and original parser inverse",
+    "Native NoGame/production/new exact DLL/capability",
+    "One finalpackage/changed2JAR156reuse freeze/actualNative pair",
+    "Actual0day business/text review and product publication"
+  ],
+  "boundaries": {
+    "no_old_matrix_retest": true,
+    "no_old_12004_LYD_CCC_RMTM_authority_reuse": true,
+    "old_RMTM_6ab_JARs_args_Native_Delivery_immutable": true,
+    "RMTM_SourceA_tag_F_payload_unchanged": true,
+    "new_Game_Steam_HTTP": 0
+  }
+}

@@ -5831,6 +5831,428 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         }
     }
 
+    public sealed interface LivingInventoryQueryRead permits LivingInventoryQueryReceived,LivingInventoryQueryUnavailable { DispatchOutcome original(); }
+    /** Complete readonly DATA. Public fixed references may outlive consumed materials.
+     * This receipt has no action preparation API and cannot mint a private weapon/event lease. */
+    public static final class LivingInventoryQueryReceived implements LivingInventoryQueryRead {
+        private final NativeGameTransport issuer;private final CoreReceived before;
+        private final CurrentLivingInventoryQueryResult frame;private final AckReceived original;private final NativeRequestChronology custody;private final Instant validUntil;
+        private LivingInventoryQueryReceived(NativeGameTransport issuer,CoreReceived before,CurrentLivingInventoryQueryResult frame,AckReceived original,NativeRequestChronology custody,Instant until){this.issuer=issuer;this.before=before;this.frame=frame;this.original=original;this.custody=custody;validUntil=until;}
+        public CurrentLivingInventoryQueryResult frame(){return frame;}@Override public AckReceived original(){return original;}public Instant validUntil(){return validUntil;}
+        public void requireOriginal(NativeGameTransport actual,Instant until)throws IOException{Objects.requireNonNull(actual).requireLivingInventoryQueryOriginal(this,until);}
+    }
+    public record LivingInventoryQueryUnavailable(DispatchOutcome original,String reason)implements LivingInventoryQueryRead {public LivingInventoryQueryUnavailable{Objects.requireNonNull(original);Objects.requireNonNull(reason);}}
+    private LivingInventoryQueryReceived latestLivingInventoryQuery;
+    private LivingInventoryQueryUnavailable unresolvedLivingInventoryQueryRead;
+    private final Set<CoreReceived> livingInventoryQueryCores=java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<>());
+    private byte[] livingInventoryQueryPacket(String id,CoreReceived before,Instant until)throws IOException {
+        if(!(before.frame instanceof CoreFrame.Partial core))throw new IOException("Actual current267 Living inventory Core required");
+        var request=CurrentLivingInventoryQuery.request(core);var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));
+        fields.put("core_control_deadline_unix_ms",BigInteger.valueOf(until.toEpochMilli()));return NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+    }
+    private void requireLivingInventoryQueryScope(CoreReceived before,Instant until)throws IOException {
+        Objects.requireNonNull(before);Objects.requireNonNull(until);requireCoreOriginal(before,until);
+        if(closed||hello==null||terminalFailure!=null||applicationExitAttempted||before.controlAttempted||unresolvedCoreControl!=null||unresolvedFullClockControl!=null||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null||unresolvedLivingInventoryQueryRead!=null||unresolvedLivingFamily!=null)
+            throw new IOException("Actual unused Core and resolved original Living inventory family required");
+        if(!(before.frame instanceof CoreFrame.Partial core)||core.build()!=ExactCk3Build.CK3_121003_STEAM_26785313)throw new IOException("Exact current267 Core required");
+        CurrentLivingInventoryQuery.requirePrefix(core.prefix());
+        if(livingInitialInventory!=null)requireCurrentLivingZeroDay(before);
+    }
+    public synchronized LivingInventoryQueryRead readCurrentLivingInventoryQuery(CoreReceived before,Instant deadline)throws InterruptedException {
+        if(unresolvedLivingFamily!=null)return new LivingInventoryQueryUnavailable(unresolvedLivingFamily,"Original Living family UNKNOWN");
+        if(unresolvedLivingInventoryQueryRead!=null)return unresolvedLivingInventoryQueryRead;
+        String id="living-inventory-query-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome outcome=null;
+        try {
+            requireLivingInventoryQueryScope(before,deadline);
+            if(livingInventoryQueryCores.contains(before))throw new IOException("Fresh Core required; this original Living inventory query was already attempted");
+            if(!hello.capabilities().contains(CurrentLivingInventoryQuery.CAPABILITY))throw new IOException("Actual current Living inventory readonly query capability absent");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            Instant until=readDeadline(deadline);byte[] packet=livingInventoryQueryPacket(id,before,until);
+            outcome=retainReadOutcome(dispatchRead(id,packet,until,()->{requireBackgroundAtCoreWrite();try{requireLivingInventoryQueryScope(before,until);}catch(IOException invalid){throw new UncheckedIOException(invalid);}if(!livingInventoryQueryCores.add(before))throw new IllegalStateException("Original Living inventory Core already queried");latestLivingInventoryQuery=null;}));
+            if(!(outcome instanceof AckReceived ack)){
+                var unavailable=new LivingInventoryQueryUnavailable(outcome,"Actual Living inventory query has no qualified ACK");
+                if(outcome instanceof Unknown unknown){unresolvedLivingFamily=unknown;unresolvedLivingInventoryQueryRead=unavailable;}
+                return unavailable;
+            }
+            var frame=CurrentLivingInventoryQueryResult.decodeOutcome(ack);
+            if(frame.status()==CurrentLivingInventoryQueryResult.Status.INDETERMINATE||!frame.cleanupKnown())throw new IOException("Native Living inventory cleanup UNKNOWN; retain original family UNKNOWN");
+            if(frame.status()!=CurrentLivingInventoryQueryResult.Status.AVAILABLE)return new LivingInventoryQueryUnavailable(ack,frame.unavailableReason().orElseThrow());
+            requireLivingInventoryQueryFrame(frame,before);
+            var custody=originalRequestChronology(id).orElseThrow(()->new IOException("Actual Living inventory query custody absent"));
+            var received=new LivingInventoryQueryReceived(this,before,frame,ack,custody,until);latestLivingInventoryQuery=received;
+            requireLivingInventoryQueryOriginal(received,until);return received;
+        }catch(IOException|RuntimeException invalid){latestLivingInventoryQuery=null;return livingInventoryQueryFailure(id,outcome,invalid);}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();latestLivingInventoryQuery=null;
+            var unknown=new Unknown(id,"Actual Living inventory query interrupted after write; preserve original family UNKNOWN",retainedOutbound(id),Optional.empty());
+            unresolvedLivingFamily=unknown;return unresolvedLivingInventoryQueryRead=new LivingInventoryQueryUnavailable(unknown,"Original Living inventory query interrupted");}
+    }
+    private void requireLivingInventoryQueryFrame(CurrentLivingInventoryQueryResult frame,CoreReceived before)throws IOException {
+        if(frame.status()==CurrentLivingInventoryQueryResult.Status.INDETERMINATE||!frame.cleanupKnown())throw new IOException("Actual Living inventory cleanup uncertain");
+        if(frame.factsBefore().isPresent()&&!frame.factsBefore().orElseThrow().equals(((CoreFrame.Partial)before.frame).prefix()))throw new IOException("Actual Living inventory Core differs from original");
+        if(frame.owner().isPresent()&&!frame.owner().orElseThrow().connectionGeneration().equals(hello.connectionGeneration()))throw new IOException("Actual Living inventory owner crossed connection");
+        if(frame.source().isPresent()&&(frame.source().orElseThrow().actorFullId()!=Integer.toUnsignedLong(((CoreFrame.Partial)before.frame).prefix().playedCharacterId())))throw new IOException("Actual Living inventory actor differs from original Core");
+    }
+    private void requireLivingInventoryQueryOriginal(LivingInventoryQueryReceived actual,Instant until)throws IOException {
+        Objects.requireNonNull(until);if(actual==null||actual.issuer!=this||actual!=latestLivingInventoryQuery)throw new IOException("Original private Living inventory DATA query unavailable");
+        requireLivingInventoryQueryScope(actual.before,until);Instant now=chronologyClock.instant();
+        if(until.isAfter(actual.validUntil)||!now.isBefore(actual.validUntil)||actual.custody.responseReceived().observedAt().isAfter(now)
+                ||actual.custody.responseReceived().observedAt().isAfter(actual.validUntil)||actual.custody.writeEntered().order().compareTo(actual.before.custody.responseReceived().order())<=0)
+            throw new IOException("Living inventory query escaped original Core/deadline/chronology");
+        if(!actual.custody.session().equals(session())||!actual.custody.custodyEpoch().equals(custodyEpoch)||originalRequestChronology(actual.original.requestId()).filter(actual.custody::equals).isEmpty())throw new IOException("Living inventory query crossed original Game/session/custody");
+        actual.custody.verify(actual.original);
+        var frame=CurrentLivingInventoryQueryResult.decodeOutcome(actual.original);requireLivingInventoryQueryFrame(frame,actual.before);
+        if(!livingInventoryQueryCores.contains(actual.before)||!frame.equals(actual.frame)||frame.status()!=CurrentLivingInventoryQueryResult.Status.AVAILABLE)throw new IOException("Actual complete Living inventory DATA changed");
+        if(!Arrays.equals(actual.original.outbound().orElseThrow().originalPacket(),livingInventoryQueryPacket(actual.original.requestId(),actual.before,actual.validUntil)))throw new IOException("Original Living inventory query body/guard/deadline changed");
+    }
+    private LivingInventoryQueryUnavailable livingInventoryQueryFailure(String id,DispatchOutcome outcome,Exception invalid) {
+        DispatchOutcome actual=livingBusinessFailure(id,outcome,invalid,false);
+        var unavailable=new LivingInventoryQueryUnavailable(actual,reason(invalid));
+        if(actual instanceof Unknown)unresolvedLivingInventoryQueryRead=unavailable;
+        return unavailable;
+    }
+
+    // Source-only current267 Living finite0day case. No public row, ref or caller selector is authority.
+    private LivingInventoryQueryReceived livingInitialInventory;
+    private CoreFrame.Prefix livingInitialCore;
+    private long livingTargetFullId;
+    private AckReceived livingLastEffect;
+    private Unknown unresolvedLivingFamily;
+
+    public synchronized void beginCurrentLivingOriginalCase(LivingInventoryQueryReceived initial)throws IOException {
+        if(livingInitialInventory!=null)throw new IOException("Original Living finite case already captured by this Receiver");
+        if(initial==null)throw new IOException("Original Living inventory receipt required");
+        requireLivingInventoryQueryOriginal(initial,initial.validUntil);
+        var source=initial.frame.source().orElseThrow();
+        var target=source.fixedReferences().stream().filter(r->r.role()==CurrentLivingInventoryQuerySource.ReferenceRole.FIXTURE_TARGET)
+                .findFirst().orElseThrow(()->new IOException("Actual fixed target reference unavailable"));
+        if(target.state()!=CurrentLivingInventoryQuerySource.ReferenceState.ARTIFACT||target.scopeKind()!=36||target.artifactFullId().isEmpty())
+            throw new IOException("Actual native kind36 full target ref required");
+        long actual=target.artifactFullId().orElseThrow();
+        if(source.artifacts().stream().noneMatch(a->a.fullId()==actual&&a.ownerFullId()==source.actorFullId()))
+            throw new IOException("Initial native fixed target must independently belong to complete owned inventory");
+        livingInitialInventory=initial;livingInitialCore=((CoreFrame.Partial)initial.before.frame).prefix();livingTargetFullId=actual;
+        // The initial observation is provenance only. Every action still needs a fresh original private Entry/UI query.
+    }
+    public synchronized void requireCurrentLivingZeroDay(CoreReceived actual)throws IOException {
+        if(actual==null)throw new IOException("Original actual Core receipt required");
+        requireCoreOriginal(actual,actual.validUntil);
+        if(livingInitialInventory==null||livingInitialCore==null||unresolvedLivingFamily!=null)
+            throw new IOException("Original private Living finite case absent or UNKNOWN");
+        if(!(actual.frame instanceof CoreFrame.Partial core)||!core.prefix().equals(livingInitialCore))
+            throw new IOException("Living original finite case crossed actual actor/date/speed/paused/player/map/alive Core");
+        var anchor=livingInitialInventory.custody;
+        if(!anchor.session().equals(session())||!anchor.custodyEpoch().equals(custodyEpoch)
+                ||!livingInitialInventory.frame.owner().orElseThrow().connectionGeneration().equals(hello.connectionGeneration()))
+            throw new IOException("Living finite case crossed original Game/session/connection/custody");
+        anchor.verify(livingInitialInventory.original);
+        if(originalRequestChronology(livingInitialInventory.original.requestId()).filter(anchor::equals).isEmpty())
+            throw new IOException("Original Living case capture chronology absent");
+        if(livingLastEffect!=null) {
+            var receipt=originalRequestChronology(livingLastEffect.requestId()).orElseThrow(()->new IOException("Original Living effect chronology absent"));
+            receipt.verify(livingLastEffect);
+            if(actual.custody.writeEntered().order().compareTo(receipt.responseReceived().order())<=0)
+                throw new IOException("Independent actual after-Core must follow THIS original Living effect ACK");
+        }
+    }
+    private void requireLivingBusinessScope(CoreReceived before,Instant until)throws IOException {
+        requireLivingInventoryQueryScope(before,until);requireCurrentLivingZeroDay(before);
+    }
+    private void requireLivingCustody(AckReceived ack,NativeRequestChronology actual,NativeRequestChronology before,Instant until)throws IOException {
+        Instant now=chronologyClock.instant();actual.verify(ack);
+        if(!actual.session().equals(session())||!actual.custodyEpoch().equals(custodyEpoch)
+                ||originalRequestChronology(ack.requestId()).filter(actual::equals).isEmpty()
+                ||actual.writeEntered().order().compareTo(before.responseReceived().order())<=0
+                ||actual.responseReceived().observedAt().isAfter(until)||actual.responseReceived().observedAt().isAfter(now))
+            throw new IOException("Actual Living request escaped original Source/ACK/session/deadline chronology");
+    }
+    private void invalidateLivingQueriesAfterWrite() {
+        latestLivingInventoryQuery=null;latestLivingEntry=null;latestLivingUi=null;heldSnapshotInvalidated=true;
+    }
+    private DispatchOutcome livingBusinessFailure(String id,DispatchOutcome out,Exception failure,boolean action) {
+        if(!sentRequestIds.contains(id)||out instanceof RejectedBeforeDispatch)return out!=null?out:zero(id,reason(failure));
+        var unknown=out instanceof Unknown actual?actual:new Unknown(id,
+                "Original Living Source/cleanup/custody UNKNOWN; retain original claim and do not replay: "+reason(failure),
+                retainedOutbound(id),out instanceof AckReceived ack?Optional.of(ack.originalFrame()):Optional.empty());
+        unresolvedLivingFamily=unknown;if(action)unresolvedCoreControl=unknown;return unknown;
+    }
+
+    public sealed interface LivingEntryRead permits LivingEntryReceived,LivingEntryUnavailable {DispatchOutcome original();}
+    public static final class LivingEntryReceived implements LivingEntryRead {
+        private final NativeGameTransport issuer;private final CoreReceived before;private final CurrentLivingEntryResult frame;
+        private final AckReceived original;private final NativeRequestChronology custody;private final Instant until;
+        private boolean attempted;private LivingEntryPrepared prepared;
+        private LivingEntryReceived(NativeGameTransport i,CoreReceived b,CurrentLivingEntryResult f,AckReceived a,NativeRequestChronology c,Instant u){issuer=i;before=b;frame=f;original=a;custody=c;until=u;}
+        public CurrentLivingEntryResult frame(){return frame;}public AckReceived original(){return original;}public Instant validUntil(){return until;}
+        public void requireOriginal(NativeGameTransport actual,Instant deadline)throws IOException{actual.requireLivingEntryOriginal(this,deadline);}
+    }
+    public record LivingEntryUnavailable(DispatchOutcome original,String reason)implements LivingEntryRead {
+        public LivingEntryUnavailable{Objects.requireNonNull(original);Objects.requireNonNull(reason);}
+    }
+    public static final class LivingEntryPrepared {
+        private final NativeGameTransport issuer;private final LivingEntryReceived query;private final CurrentLivingEntry.Action action;
+        private final String id;private final NativeWire.Bytes packet;private final String onceKey;private final java.util.OptionalInt actualInstance;
+        private boolean called;private DispatchOutcome outcome;private CurrentLivingEntryResult latest;
+        private LivingEntryPrepared(NativeGameTransport i,LivingEntryReceived q,CurrentLivingEntry.Action a,String n,byte[] p,String key,java.util.OptionalInt instance){issuer=i;query=q;action=a;id=n;packet=new NativeWire.Bytes(p);onceKey=key;actualInstance=instance;}
+        public String requestId(){return id;}public Instant deadline(){return query.until;}public NativeWire.Bytes originalPacket(){return packet;}
+        public CurrentLivingEntry.Action action(){return action;}public Optional<CurrentLivingEntryResult> latestFrame(){return Optional.ofNullable(latest);}
+        public java.util.OptionalInt actualInstanceId(){return actualInstance;}
+    }
+    private LivingEntryReceived latestLivingEntry;
+    private final Set<CoreReceived> livingEntryCores=java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<>());
+    private final Set<String> livingEntryAttempted=new HashSet<>();
+    private byte[] livingEntryPacket(String id,CurrentLivingEntry.Action a,CoreReceived before,BigInteger gen,BigInteger seq,Instant until)throws IOException {
+        if(!(before.frame instanceof CoreFrame.Partial core))throw new IOException("Actual exact current267 Core required");
+        var request=CurrentLivingEntry.request(core,a,gen,seq);var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));
+        fields.put("core_control_deadline_unix_ms",BigInteger.valueOf(until.toEpochMilli()));
+        return NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+    }
+    private void requireLivingEntryFrame(CurrentLivingEntryResult frame,CurrentLivingEntry.Action action,CoreReceived before)throws IOException {
+        if(frame.action()!=action||!frame.cleanupKnown()||frame.status()==CurrentLivingEntryResult.Status.INDETERMINATE)
+            throw new IOException("Actual Living Entry action/cleanup UNKNOWN");
+        if(frame.factsBefore().isPresent()&&!frame.factsBefore().orElseThrow().equals(((CoreFrame.Partial)before.frame).prefix())
+                ||frame.owner().isPresent()&&!frame.owner().orElseThrow().connectionGeneration().equals(hello.connectionGeneration()))
+            throw new IOException("Living Entry crossed original Core/connection");
+        if(frame.source().isPresent()) {
+            var source=frame.source().orElseThrow();
+            if(source.actorFullId()!=Integer.toUnsignedLong(((CoreFrame.Partial)before.frame).prefix().playedCharacterId())
+                    ||source.kind()!=action.sourceKind())throw new IOException("Living Entry kind or complete full actor differs");
+            if(source.detail().isPresent()&&source.detail().orElseThrow().expectedPayloadFullId()!=livingTargetFullId)throw new IOException("Actual detail target differs from original private case capture");
+        }
+    }
+    private void requireLivingEntryOriginal(LivingEntryReceived query,Instant until)throws IOException {
+        if(query==null||query.issuer!=this||query!=latestLivingEntry||query.attempted)
+            throw new IOException("Original unused private Living Entry query required");
+        requireLivingBusinessScope(query.before,until);
+        if(until.isAfter(query.until)||!chronologyClock.instant().isBefore(query.until))throw new IOException("Original Living Entry deadline expired or extended");
+        requireLivingCustody(query.original,query.custody,query.before.custody,query.until);
+        var actual=CurrentLivingEntryResult.decodeOutcome(query.original);requireLivingEntryFrame(actual,query.frame.action(),query.before);
+        if(!livingEntryCores.contains(query.before)||!actual.equals(query.frame)||actual.status()!=CurrentLivingEntryResult.Status.AVAILABLE
+                ||!Arrays.equals(query.original.outbound().orElseThrow().originalPacket(),livingEntryPacket(query.original.requestId(),query.frame.action(),query.before,BigInteger.ZERO,BigInteger.ZERO,query.until)))
+            throw new IOException("Original Living Entry packet/full Source/receipt/deadline changed");
+    }
+    public synchronized LivingEntryRead readCurrentLivingEntry(CoreReceived before,CurrentLivingEntry.Action action,Instant deadline)throws InterruptedException {
+        if(unresolvedLivingFamily!=null)return new LivingEntryUnavailable(unresolvedLivingFamily,"Original Living family UNKNOWN");
+        String id="living-Entry-query-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome out=null;
+        try {
+            requireLivingBusinessScope(before,deadline);
+            if(action==null||!action.queryOnly()||livingEntryCores.contains(before)||!hello.capabilities().contains(action.capability())||sentRequestIds.size()>=maximumSubmissions)
+                throw new IOException("Fresh original Core and actual Living Entry query capability required");
+            Instant until=readDeadline(deadline);byte[] packet=livingEntryPacket(id,action,before,BigInteger.ZERO,BigInteger.ZERO,until);
+            out=retainReadOutcome(dispatchRead(id,packet,until,()->{requireBackgroundAtCoreWrite();
+                try{requireLivingBusinessScope(before,until);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
+                if(!livingEntryCores.add(before))throw new IllegalStateException("Original Living Entry query Core already consumed");latestLivingEntry=null;}));
+            if(!(out instanceof AckReceived ack))return new LivingEntryUnavailable(livingBusinessFailure(id,out,new IOException("Actual Living Entry query ACK unavailable"),false),"Original Living Entry query ACK unavailable");
+            var frame=CurrentLivingEntryResult.decodeOutcome(ack);requireLivingEntryFrame(frame,action,before);
+            var custody=originalRequestChronology(id).orElseThrow(()->new IOException("Original Living Entry query chronology unavailable"));
+            requireLivingCustody(ack,custody,before.custody,until);
+            if(frame.status()!=CurrentLivingEntryResult.Status.AVAILABLE)return new LivingEntryUnavailable(ack,frame.unavailableReason().orElseThrow());
+            var query=new LivingEntryReceived(this,before,frame,ack,custody,until);latestLivingEntry=query;requireLivingEntryOriginal(query,until);return query;
+        }catch(IOException|RuntimeException invalid){return new LivingEntryUnavailable(livingBusinessFailure(id,out,invalid,false),reason(invalid));}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();return new LivingEntryUnavailable(livingBusinessFailure(id,out,interrupted,false),"Original Living Entry read interrupted after write");}
+    }
+    private String livingEntryOnceKey(LivingEntryReceived query,CurrentLivingEntry.Action action)throws IOException {
+        return action.wire();
+    }
+    private void requireLivingEntryAdmission(LivingEntryReceived query,CurrentLivingEntry.Action action)throws IOException {
+        var source=query.frame.source().orElseThrow();
+        if(action==null||action.queryOnly()||action.sourceKind()!=query.frame.action().sourceKind()||!source.actionAdmissible(action))
+            throw new IOException("Actual complete same-kind Living Entry query does not admit fixed action");
+        String key=livingEntryOnceKey(query,action);
+        if(livingEntryAttempted.contains(key)||livingEntryAttempted.size()>=16)throw new IOException("Original Living Entry instance/action retained or finite claim capacity reached");
+    }
+    public synchronized LivingEntryPrepared prepareCurrentLivingEntry(LivingEntryReceived query,CurrentLivingEntry.Action action)throws IOException {
+        if(query!=null&&query.issuer==this&&query.prepared!=null){if(query.prepared.action!=action)throw new IOException("Original Living Entry query already prepared for another action");return query.prepared;}
+        if(query==null)throw new IOException("Original private Living Entry query missing");
+        requireLivingEntryOriginal(query,query.until);requireLivingEntryAdmission(query,action);
+        if(!hello.capabilities().contains(action.capability()))throw new IOException("Actual fixed Living Entry action capability absent");
+        String id="living-Entry-action-"+UUID.randomUUID().toString().replace("-","");String key=livingEntryOnceKey(query,action);
+        java.util.OptionalInt instance=java.util.OptionalInt.empty();
+        return query.prepared=new LivingEntryPrepared(this,query,action,id,livingEntryPacket(id,action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),query.until),key,instance);
+    }
+    public synchronized DispatchOutcome submitCurrentLivingEntry(LivingEntryPrepared prepared)throws InterruptedException {
+        if(prepared!=null&&prepared.issuer==this&&prepared.outcome!=null)return prepared.outcome;
+        if(unresolvedLivingFamily!=null)return unresolvedLivingFamily;
+        String id=prepared==null?"living-Entry-invalid-"+UUID.randomUUID().toString().replace("-",""):prepared.id;DispatchOutcome out=null;
+        try {
+            if(prepared==null||prepared.issuer!=this||prepared.called||prepared.query.prepared!=prepared)throw new IOException("Original unused private Living Entry preparation required");
+            var query=prepared.query;requireLivingEntryOriginal(query,query.until);requireLivingEntryAdmission(query,prepared.action);
+            if(!hello.capabilities().contains(prepared.action.capability())||sentRequestIds.size()>=maximumSubmissions
+                    ||!prepared.onceKey.equals(livingEntryOnceKey(query,prepared.action))
+                    ||!Arrays.equals(prepared.packet.value(),livingEntryPacket(id,prepared.action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),query.until)))
+                throw new IOException("Original Living Entry action/capability/body/lease/deadline changed");
+            out=dispatch(id,prepared.packet.value(),query.until,()->{requireBackgroundAtCoreWrite();
+                try{requireLivingEntryOriginal(query,query.until);requireLivingEntryAdmission(query,prepared.action);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
+                if(!livingEntryAttempted.add(prepared.onceKey))throw new IllegalStateException("Original Living Entry action/instance already attempted");
+                prepared.called=true;query.attempted=true;query.before.controlAttempted=true;invalidateLivingQueriesAfterWrite();});
+            if(out instanceof Unknown unknown){unresolvedLivingFamily=unknown;unresolvedCoreControl=unknown;return prepared.outcome=unknown;}
+            if(out instanceof AckReceived ack) {
+                var frame=CurrentLivingEntryResult.decodeOutcome(ack);requireLivingEntryFrame(frame,prepared.action,query.before);
+                requireLivingCustody(ack,originalRequestChronology(id).orElseThrow(),query.custody,query.until);
+                if(frame.source().isPresent()&&!frame.source().equals(query.frame.source())
+                        ||frame.providerGeneration().signum()>0&&!frame.providerGeneration().equals(query.frame.providerGeneration())
+                        ||frame.querySequence().signum()>0&&!frame.querySequence().equals(query.frame.querySequence()))
+                    throw new IOException("Living Entry ACK rebound actual immutable beforeSource or original query lease");
+                if(frame.status()==CurrentLivingEntryResult.Status.DISPATCHED&&(!frame.source().equals(query.frame.source())
+                        ||!frame.factsBefore().equals(query.frame.factsBefore())||!frame.providerGeneration().equals(query.frame.providerGeneration())
+                        ||!frame.querySequence().equals(query.frame.querySequence())))throw new IOException("Living Entry dispatch lost complete original Source/Core/lease");
+                prepared.latest=frame;livingLastEffect=ack;
+                // A known0effect rejection remains its original ACK. It is spent once, never relabelled applied or replayed.
+            }
+            return prepared.outcome=out;
+        }catch(IOException|RuntimeException invalid){var failure=livingBusinessFailure(id,out,invalid,true);if(prepared!=null&&prepared.issuer==this)prepared.outcome=failure;return failure;}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();var failure=livingBusinessFailure(id,out,interrupted,true);if(prepared!=null&&prepared.issuer==this)prepared.outcome=failure;return failure;}
+    }
+
+    public sealed interface LivingUiRead permits LivingUiReceived,LivingUiUnavailable {DispatchOutcome original();}
+    public static final class LivingUiReceived implements LivingUiRead {
+        private final NativeGameTransport issuer;private final CoreReceived before;private final CurrentLivingUiResult frame;
+        private final AckReceived original;private final NativeRequestChronology custody;private final Instant until;
+        private boolean attempted;private LivingUiPrepared prepared;
+        private LivingUiReceived(NativeGameTransport i,CoreReceived b,CurrentLivingUiResult f,AckReceived a,NativeRequestChronology c,Instant u){issuer=i;before=b;frame=f;original=a;custody=c;until=u;}
+        public CurrentLivingUiResult frame(){return frame;}public AckReceived original(){return original;}public Instant validUntil(){return until;}
+        public void requireOriginal(NativeGameTransport actual,Instant deadline)throws IOException{actual.requireLivingUiOriginal(this,deadline);}
+    }
+    public record LivingUiUnavailable(DispatchOutcome original,String reason)implements LivingUiRead {
+        public LivingUiUnavailable{Objects.requireNonNull(original);Objects.requireNonNull(reason);}
+    }
+    public static final class LivingUiPrepared {
+        private final NativeGameTransport issuer;private final LivingUiReceived query;private final CurrentLivingUi.Action action;
+        private final String id;private final NativeWire.Bytes packet;private final String onceKey;private final java.util.OptionalInt actualInstance;
+        private boolean called;private DispatchOutcome outcome;private CurrentLivingUiResult latest;
+        private LivingUiPrepared(NativeGameTransport i,LivingUiReceived q,CurrentLivingUi.Action a,String n,byte[] p,String key,java.util.OptionalInt instance){issuer=i;query=q;action=a;id=n;packet=new NativeWire.Bytes(p);onceKey=key;actualInstance=instance;}
+        public String requestId(){return id;}public Instant deadline(){return query.until;}public NativeWire.Bytes originalPacket(){return packet;}
+        public CurrentLivingUi.Action action(){return action;}public Optional<CurrentLivingUiResult> latestFrame(){return Optional.ofNullable(latest);}
+        public java.util.OptionalInt actualInstanceId(){return actualInstance;}
+    }
+    private LivingUiReceived latestLivingUi;
+    private final Set<CoreReceived> livingUiCores=java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<>());
+    private final Set<String> livingUiAttempted=new HashSet<>();
+    private byte[] livingUiPacket(String id,CurrentLivingUi.Action a,CoreReceived before,BigInteger gen,BigInteger seq,Instant until)throws IOException {
+        if(!(before.frame instanceof CoreFrame.Partial core))throw new IOException("Actual exact current267 Core required");
+        var request=CurrentLivingUi.request(core,a,gen,seq);var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));
+        fields.put("core_control_deadline_unix_ms",BigInteger.valueOf(until.toEpochMilli()));
+        return NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+    }
+    private void requireLivingUiFrame(CurrentLivingUiResult frame,CurrentLivingUi.Action action,CoreReceived before)throws IOException {
+        if(frame.action()!=action||!frame.cleanupKnown()||frame.status()==CurrentLivingUiResult.Status.INDETERMINATE)
+            throw new IOException("Actual Living Ui action/cleanup UNKNOWN");
+        if(frame.factsBefore().isPresent()&&!frame.factsBefore().orElseThrow().equals(((CoreFrame.Partial)before.frame).prefix())
+                ||frame.owner().isPresent()&&!frame.owner().orElseThrow().connectionGeneration().equals(hello.connectionGeneration()))
+            throw new IOException("Living Ui crossed original Core/connection");
+        if(frame.source().isPresent()) {
+            var source=frame.source().orElseThrow();
+            if(source.actorFullId()!=Integer.toUnsignedLong(((CoreFrame.Partial)before.frame).prefix().playedCharacterId())
+                    ||source.kind()!=action.sourceKind())throw new IOException("Living Ui kind or complete full actor differs");
+            if(source.weapon().isPresent()&&source.weapon().orElseThrow().targetFullId()!=livingTargetFullId||source.detail().isPresent()&&source.detail().orElseThrow().targetFullId()!=livingTargetFullId)throw new IOException("Actual fixed UI target differs from original private case capture");
+        }
+    }
+    private void requireLivingUiOriginal(LivingUiReceived query,Instant until)throws IOException {
+        if(query==null||query.issuer!=this||query!=latestLivingUi||query.attempted)
+            throw new IOException("Original unused private Living Ui query required");
+        requireLivingBusinessScope(query.before,until);
+        if(until.isAfter(query.until)||!chronologyClock.instant().isBefore(query.until))throw new IOException("Original Living Ui deadline expired or extended");
+        requireLivingCustody(query.original,query.custody,query.before.custody,query.until);
+        var actual=CurrentLivingUiResult.decodeOutcome(query.original);requireLivingUiFrame(actual,query.frame.action(),query.before);
+        if(!livingUiCores.contains(query.before)||!actual.equals(query.frame)||actual.status()!=CurrentLivingUiResult.Status.AVAILABLE
+                ||!Arrays.equals(query.original.outbound().orElseThrow().originalPacket(),livingUiPacket(query.original.requestId(),query.frame.action(),query.before,BigInteger.ZERO,BigInteger.ZERO,query.until)))
+            throw new IOException("Original Living Ui packet/full Source/receipt/deadline changed");
+    }
+    public synchronized LivingUiRead readCurrentLivingUi(CoreReceived before,CurrentLivingUi.Action action,Instant deadline)throws InterruptedException {
+        if(unresolvedLivingFamily!=null)return new LivingUiUnavailable(unresolvedLivingFamily,"Original Living family UNKNOWN");
+        String id="living-Ui-query-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome out=null;
+        try {
+            requireLivingBusinessScope(before,deadline);
+            if(action==null||!action.queryOnly()||livingUiCores.contains(before)||!hello.capabilities().contains(action.capability())||sentRequestIds.size()>=maximumSubmissions)
+                throw new IOException("Fresh original Core and actual Living Ui query capability required");
+            Instant until=readDeadline(deadline);byte[] packet=livingUiPacket(id,action,before,BigInteger.ZERO,BigInteger.ZERO,until);
+            out=retainReadOutcome(dispatchRead(id,packet,until,()->{requireBackgroundAtCoreWrite();
+                try{requireLivingBusinessScope(before,until);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
+                if(!livingUiCores.add(before))throw new IllegalStateException("Original Living Ui query Core already consumed");latestLivingUi=null;}));
+            if(!(out instanceof AckReceived ack))return new LivingUiUnavailable(livingBusinessFailure(id,out,new IOException("Actual Living Ui query ACK unavailable"),false),"Original Living Ui query ACK unavailable");
+            var frame=CurrentLivingUiResult.decodeOutcome(ack);requireLivingUiFrame(frame,action,before);
+            var custody=originalRequestChronology(id).orElseThrow(()->new IOException("Original Living Ui query chronology unavailable"));
+            requireLivingCustody(ack,custody,before.custody,until);
+            if(frame.status()!=CurrentLivingUiResult.Status.AVAILABLE)return new LivingUiUnavailable(ack,frame.unavailableReason().orElseThrow());
+            var query=new LivingUiReceived(this,before,frame,ack,custody,until);latestLivingUi=query;requireLivingUiOriginal(query,until);return query;
+        }catch(IOException|RuntimeException invalid){return new LivingUiUnavailable(livingBusinessFailure(id,out,invalid,false),reason(invalid));}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();return new LivingUiUnavailable(livingBusinessFailure(id,out,interrupted,false),"Original Living Ui read interrupted after write");}
+    }
+    private String livingUiOnceKey(LivingUiReceived query,CurrentLivingUi.Action action)throws IOException {
+        if(action.sourceKind()!=CurrentLivingUiSource.Kind.EVENTS)return action.wire();
+        var matches=query.frame.source().orElseThrow().events().orElseThrow().fixedActions().stream().filter(a->a.action()==action&&a.admissible()).toList();
+        if(matches.size()!=1)throw new IOException("Exactly one currently admitted private fixed event instance required");
+        int instance=matches.get(0).instanceId();
+        var held=query.frame.source().orElseThrow().events().orElseThrow().bindings().stream().filter(b->b.instanceId()==instance).findFirst().orElseThrow(()->new IOException("Actual held event binding absent"));
+        if(!held.targetOwned()||!held.target().artifactFullId().equals(Optional.of(livingTargetFullId)))throw new IOException("Actual event held target differs from private initial inventory capture");
+        return action.wire()+":"+instance;
+    }
+    private void requireLivingUiAdmission(LivingUiReceived query,CurrentLivingUi.Action action)throws IOException {
+        var source=query.frame.source().orElseThrow();
+        if(action==null||action.queryOnly()||action.sourceKind()!=query.frame.action().sourceKind()||!source.actionAdmissible(action))
+            throw new IOException("Actual complete same-kind Living Ui query does not admit fixed action");
+        String key=livingUiOnceKey(query,action);
+        if(livingUiAttempted.contains(key)||livingUiAttempted.size()>=32)throw new IOException("Original Living Ui instance/action retained or finite claim capacity reached");
+    }
+    public synchronized LivingUiPrepared prepareCurrentLivingUi(LivingUiReceived query,CurrentLivingUi.Action action)throws IOException {
+        if(query!=null&&query.issuer==this&&query.prepared!=null){if(query.prepared.action!=action)throw new IOException("Original Living Ui query already prepared for another action");return query.prepared;}
+        if(query==null)throw new IOException("Original private Living Ui query missing");
+        requireLivingUiOriginal(query,query.until);requireLivingUiAdmission(query,action);
+        if(!hello.capabilities().contains(action.capability()))throw new IOException("Actual fixed Living Ui action capability absent");
+        String id="living-Ui-action-"+UUID.randomUUID().toString().replace("-","");String key=livingUiOnceKey(query,action);
+        java.util.OptionalInt instance=action.sourceKind()==CurrentLivingUiSource.Kind.EVENTS?java.util.OptionalInt.of(query.frame.source().orElseThrow().events().orElseThrow().fixedActions().stream().filter(a->a.action()==action&&a.admissible()).findFirst().orElseThrow().instanceId()):java.util.OptionalInt.empty();
+        return query.prepared=new LivingUiPrepared(this,query,action,id,livingUiPacket(id,action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),query.until),key,instance);
+    }
+    public synchronized DispatchOutcome submitCurrentLivingUi(LivingUiPrepared prepared)throws InterruptedException {
+        if(prepared!=null&&prepared.issuer==this&&prepared.outcome!=null)return prepared.outcome;
+        if(unresolvedLivingFamily!=null)return unresolvedLivingFamily;
+        String id=prepared==null?"living-Ui-invalid-"+UUID.randomUUID().toString().replace("-",""):prepared.id;DispatchOutcome out=null;
+        try {
+            if(prepared==null||prepared.issuer!=this||prepared.called||prepared.query.prepared!=prepared)throw new IOException("Original unused private Living Ui preparation required");
+            var query=prepared.query;requireLivingUiOriginal(query,query.until);requireLivingUiAdmission(query,prepared.action);
+            if(!hello.capabilities().contains(prepared.action.capability())||sentRequestIds.size()>=maximumSubmissions
+                    ||!prepared.onceKey.equals(livingUiOnceKey(query,prepared.action))
+                    ||!Arrays.equals(prepared.packet.value(),livingUiPacket(id,prepared.action,query.before,query.frame.providerGeneration(),query.frame.querySequence(),query.until)))
+                throw new IOException("Original Living Ui action/capability/body/lease/deadline changed");
+            out=dispatch(id,prepared.packet.value(),query.until,()->{requireBackgroundAtCoreWrite();
+                try{requireLivingUiOriginal(query,query.until);requireLivingUiAdmission(query,prepared.action);}catch(IOException invalid){throw new UncheckedIOException(invalid);}
+                if(!livingUiAttempted.add(prepared.onceKey))throw new IllegalStateException("Original Living Ui action/instance already attempted");
+                prepared.called=true;query.attempted=true;query.before.controlAttempted=true;invalidateLivingQueriesAfterWrite();});
+            if(out instanceof Unknown unknown){unresolvedLivingFamily=unknown;unresolvedCoreControl=unknown;return prepared.outcome=unknown;}
+            if(out instanceof AckReceived ack) {
+                var frame=CurrentLivingUiResult.decodeOutcome(ack);requireLivingUiFrame(frame,prepared.action,query.before);
+                requireLivingCustody(ack,originalRequestChronology(id).orElseThrow(),query.custody,query.until);
+                if(frame.source().isPresent()&&!frame.source().equals(query.frame.source())
+                        ||frame.providerGeneration().signum()>0&&!frame.providerGeneration().equals(query.frame.providerGeneration())
+                        ||frame.querySequence().signum()>0&&!frame.querySequence().equals(query.frame.querySequence()))
+                    throw new IOException("Living Ui ACK rebound actual immutable beforeSource or original query lease");
+                if(frame.status()==CurrentLivingUiResult.Status.DISPATCHED&&(!frame.source().equals(query.frame.source())
+                        ||!frame.factsBefore().equals(query.frame.factsBefore())||!frame.providerGeneration().equals(query.frame.providerGeneration())
+                        ||!frame.querySequence().equals(query.frame.querySequence())))throw new IOException("Living Ui dispatch lost complete original Source/Core/lease");
+                prepared.latest=frame;livingLastEffect=ack;
+                // A known0effect rejection remains its original ACK. It is spent once, never relabelled applied or replayed.
+            }
+            return prepared.outcome=out;
+        }catch(IOException|RuntimeException invalid){var failure=livingBusinessFailure(id,out,invalid,true);if(prepared!=null&&prepared.issuer==this)prepared.outcome=failure;return failure;}
+        catch(InterruptedException interrupted){if(!sentRequestIds.contains(id))throw interrupted;Thread.currentThread().interrupt();var failure=livingBusinessFailure(id,out,interrupted,true);if(prepared!=null&&prepared.issuer==this)prepared.outcome=failure;return failure;}
+    }
+
+    /** Independent actual instance absence DATA, never event_closed or a general modal/date gate. */
+    public synchronized boolean currentLivingEventAbsent(LivingUiPrepared original,LivingUiReceived after)throws IOException {
+        if(original==null||original.issuer!=this||original.actualInstance.isEmpty()||!(original.outcome instanceof AckReceived ack)
+                ||original.latest==null||original.latest.status()!=CurrentLivingUiResult.Status.DISPATCHED)
+            throw new IOException("Original known actual fixed event action ACK required");
+        if(after==null)throw new IOException("Original independent Living event census missing");
+        requireLivingUiOriginal(after,after.until);
+        var custody=originalRequestChronology(ack.requestId()).orElseThrow(()->new IOException("Original event action custody absent"));
+        custody.verify(ack);
+        if(after.frame.action()!=CurrentLivingUi.Action.QUERY_EVENTS
+                ||after.before.custody.writeEntered().order().compareTo(custody.responseReceived().order())<=0
+                ||!after.frame.factsBefore().equals(original.query.frame.factsBefore()))
+            throw new IOException("Independent same-Core fresh after-ACK event query required");
+        return after.frame.source().orElseThrow().events().orElseThrow().events().stream()
+                .noneMatch(event->event.instanceId()==original.actualInstance.orElseThrow());
+    }
+
     public sealed interface RmtmTitleQueryRead permits RmtmTitleQueryReceived,RmtmTitleQueryUnavailable { DispatchOutcome original(); }
     /** Complete read DATA only; this receipt cannot prepare or authorize any action. */
     public static final class RmtmTitleQueryReceived implements RmtmTitleQueryRead {

@@ -40,6 +40,15 @@ import org.xar.ck3.control.application.action.OperationKey;
 import org.xar.ck3.control.nativebridge.FullSnapshotClockControlResult;
 import org.xar.ck3.control.nativebridge.DateSentinelArmResult;
 import org.xar.ck3.control.nativebridge.NativeGameTransport;
+import org.xar.ck3.control.nativebridge.CurrentLivingInventoryQuery;
+import org.xar.ck3.control.nativebridge.CurrentLivingInventoryQuerySource;
+import org.xar.ck3.control.nativebridge.CurrentLivingInventoryQueryResult;
+import org.xar.ck3.control.nativebridge.CurrentLivingEntry;
+import org.xar.ck3.control.nativebridge.CurrentLivingEntrySource;
+import org.xar.ck3.control.nativebridge.CurrentLivingEntryResult;
+import org.xar.ck3.control.nativebridge.CurrentLivingUi;
+import org.xar.ck3.control.nativebridge.CurrentLivingUiSource;
+import org.xar.ck3.control.nativebridge.CurrentLivingUiResult;
 import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFrame;
 import org.xar.ck3.control.nativebridge.capabilities.registry.FrontendMenuFrameV1;
 import org.xar.ck3.control.nativebridge.capabilities.registry.FrontendMenuFrameV1PublicCodec;
@@ -180,6 +189,8 @@ public final class NativeOwnerSnapshotMain268 {
         ObjectNode config = StrictJson.object(StrictJson.parse(configBytes, SMALL), Set.of("schema", "owner_descriptor",
                 "overall_timeout_seconds", "read_timeout_seconds", "maximum_frames_per_operation"), Set.of("core_prefix_only", "mode", "control_step", "maximum_status_polls", "status_poll_interval_ms", "window_name", "expected_source_rite_id", "checkpoint_archive_path", "maximum_checkpoint_bytes", "checkpoint_observation_attempts", "checkpoint_poll_interval_ms", "previous_checkpoint_source", "previous_checkpoint_archive", "navigation_action", "rite_action", "maximum_confirmation_polls", "target_character_id", "cb_key", "tuple_intent", "maximum_warning_polls", "warning_poll_interval_ms", "instance_id", "decision_key", "target_threshold", "product", "control", "setting", "catalog", "choice_key", "phase", "baseline_progress", "personal_key", "event_role", "status_poll_delay_ms", "maximum_core_polls", "core_poll_interval_ms", "confirmation_poll_interval_ms", "text"));
         ObservationMode observationMode=observationMode(config);
+        boolean currentLivingOriginal=observationMode==ObservationMode.CURRENT_LIVING_ORIGINAL;
+        LivingOriginalConfig livingConfig=currentLivingOriginal?currentLivingOriginalConfig(config):null;
         boolean currentRmtmRemaining=observationMode==ObservationMode.CURRENT_RMTM_REMAINING;
         RmtmConfig rmtmConfig=currentRmtmRemaining?currentRmtmConfig(config):null;
         boolean currentRmtmTitleQuery=observationMode==ObservationMode.CURRENT_RMTM_TITLE_QUERY;
@@ -354,6 +365,7 @@ public final class NativeOwnerSnapshotMain268 {
                 .putNull("formatted_text").put("open_calls",0).put("select_calls",0).put("send_calls",0).put("accept_calls",0).put("payment_confirmed",false).put("physical_save_confirmed",false);
         if(currentCcc)initializeCurrentCccResult(result,cccConfig,owner.machineId());
         if(currentStockBookmark1070)initializeCurrentStockBookmark1070Result(result,stockBookmark1070Config,owner.machineId());
+        if(currentLivingOriginal)initializeCurrentLivingOriginalResult(result,owner.machineId());
         if(currentRmtmRemaining)initializeCurrentRmtmResult(result,rmtmConfig,owner.machineId());
         if(currentRmtmTitleQuery)initializeCurrentRmtmTitleQueryResult(result,owner.machineId());
         if(currentRiteCreationBlockers)initializeCurrentRiteCreationBlockersResult(result,riteCreationBlockersConfig,owner.machineId());
@@ -436,16 +448,18 @@ public final class NativeOwnerSnapshotMain268 {
         stage = "ATTACH";
         try (var supervisor = WindowsJobProcess.retainReadOnlyProcess(owner.supervisorIdentity().pid())) {
             requireSupervisor(supervisor, owner.supervisorIdentity());
-            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,currentRmtmRemaining?rmtmConfig.submissions():currentRmtmTitleQuery?2:currentCcc?cccConfig.submissions():currentStockBookmark1070?stockBookmark1070Config.submissions():currentRiteCreationBlockers?2:currentRiteText?riteTextConfig.submissions():currentRiteCreate?riteCreateConfig.submissions():currentDesInitGuard?2:currentStockSeed?stockSeedConfig.submissions():currentTed?tedConfig.submissions():currentLyd?lydConfig.mode().submissions():currentSupermanSavedBaseline?3:currentSupermanHealth?(healthConfig.mode()==SupermanHealthMode.QUERY?2:healthConfig.mode()==SupermanHealthMode.BASELINE_SAVE_AND_BEGIN?5:3):currentCourtierChoices?(choicesConfig.action()==CurrentCourtierChoices.Action.QUERY_CHOICES?2:3):currentCourtierConfiguration?(configurationConfig.action()==CurrentCourtierConfiguration.Action.QUERY_CONFIGURATION?2:3):currentDecisionsClose?(decisionsCloseAction==CurrentDecisionsClose.Action.QUERY_CLOSE?2:3):currentCourtierControls?(courtierConfig.action()==CurrentCourtierControls.Action.QUERY_CONTROL?2:3):currentXqolThreshold?(thresholdConfig.action()==CurrentXqolThreshold.Action.QUERY_THRESHOLD?2:3):currentXqolPrompt?(xqolPromptAction==CurrentXqolPrompt.Action.QUERY_PROMPT?2:3):currentCuratedDecision?(curatedConfig.action()==CurrentCuratedDecisions.Action.QUERY?2:3):currentFullscreenEvent?(acknowledgeKnownIntro?3:2):currentLetterSet?(letterSetReply?3:2):djcSelectedCost?(djcCostPreview?9:3):currentLetter?(knownLetterReply?3:2):djcUiMode?(djcUiSubmit?declarationConfig.maximumWarningPolls()+12:2):currentSuccession?(continueSuccession?2:1):currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||aubObserver||djcQuery||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
+            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,currentLivingOriginal?livingConfig.submissions():currentRmtmRemaining?rmtmConfig.submissions():currentRmtmTitleQuery?2:currentCcc?cccConfig.submissions():currentStockBookmark1070?stockBookmark1070Config.submissions():currentRiteCreationBlockers?2:currentRiteText?riteTextConfig.submissions():currentRiteCreate?riteCreateConfig.submissions():currentDesInitGuard?2:currentStockSeed?stockSeedConfig.submissions():currentTed?tedConfig.submissions():currentLyd?lydConfig.mode().submissions():currentSupermanSavedBaseline?3:currentSupermanHealth?(healthConfig.mode()==SupermanHealthMode.QUERY?2:healthConfig.mode()==SupermanHealthMode.BASELINE_SAVE_AND_BEGIN?5:3):currentCourtierChoices?(choicesConfig.action()==CurrentCourtierChoices.Action.QUERY_CHOICES?2:3):currentCourtierConfiguration?(configurationConfig.action()==CurrentCourtierConfiguration.Action.QUERY_CONFIGURATION?2:3):currentDecisionsClose?(decisionsCloseAction==CurrentDecisionsClose.Action.QUERY_CLOSE?2:3):currentCourtierControls?(courtierConfig.action()==CurrentCourtierControls.Action.QUERY_CONTROL?2:3):currentXqolThreshold?(thresholdConfig.action()==CurrentXqolThreshold.Action.QUERY_THRESHOLD?2:3):currentXqolPrompt?(xqolPromptAction==CurrentXqolPrompt.Action.QUERY_PROMPT?2:3):currentCuratedDecision?(curatedConfig.action()==CurrentCuratedDecisions.Action.QUERY?2:3):currentFullscreenEvent?(acknowledgeKnownIntro?3:2):currentLetterSet?(letterSetReply?3:2):djcSelectedCost?(djcCostPreview?9:3):currentLetter?(knownLetterReply?3:2):djcUiMode?(djcUiSubmit?declarationConfig.maximumWarningPolls()+12:2):currentSuccession?(continueSuccession?2:1):currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||aubObserver||djcQuery||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
             // This factory returns ATTACHED only. Its close releases communication and readonly handles, never a Job.
-            try (ManagedGameSession game = NativeGameAttachment.attach(request, (currentRmtmRemaining||currentRmtmTitleQuery||currentCcc||currentStockBookmark1070||currentRiteCreationBlockers||currentRiteText||currentRiteCreate||currentDesInitGuard||currentStockSeed||currentTed||currentLyd||currentSupermanSavedBaseline||currentSupermanHealth||currentCourtierChoices||currentCourtierConfiguration||currentDecisionsClose||currentCourtierControls||currentXqolThreshold||currentXqolPrompt||currentCuratedDecision||currentFullscreenEvent||currentLetterSet||djcSelectedCost||currentLetter||djcUiMode||currentFrontendMenu||currentSuccession||aubObserver||djcQuery||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
+            try (ManagedGameSession game = NativeGameAttachment.attach(request, (currentLivingOriginal||currentRmtmRemaining||currentRmtmTitleQuery||currentCcc||currentStockBookmark1070||currentRiteCreationBlockers||currentRiteText||currentRiteCreate||currentDesInitGuard||currentStockSeed||currentTed||currentLyd||currentSupermanSavedBaseline||currentSupermanHealth||currentCourtierChoices||currentCourtierConfiguration||currentDecisionsClose||currentCourtierControls||currentXqolThreshold||currentXqolPrompt||currentCuratedDecision||currentFullscreenEvent||currentLetterSet||djcSelectedCost||currentLetter||djcUiMode||currentFrontendMenu||currentSuccession||aubObserver||djcQuery||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
                 if (game.mode() != ManagedGameSession.Mode.ATTACHED) throw new IOException("actual attachment mode differs");
                 requireSupervisor(supervisor, owner.supervisorIdentity());
                 var transport = game.nativeTransport();
                 var hello = transport.diagnostics().originalHello().orElseThrow(() -> new IOException("actual received HELLO unavailable"));
                 originals.set("new_hello", write(output, "new-hello.bin", hello.original().packet().value()));
                 result.put("hello_observed_at_utc", hello.observedAt().toString());
-                if(currentRmtmRemaining) {
+                if(currentLivingOriginal) {
+                    runCurrentLivingOriginal(transport,owner,plan,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
+                } else if(currentRmtmRemaining) {
                     runCurrentRmtm(transport,owner,plan,rmtmConfig,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,Duration.ofSeconds(readSeconds),result,originals);
                 } else if(currentRmtmTitleQuery) {
                     runCurrentRmtmTitleQuery(transport,owner,plan,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
@@ -4000,6 +4014,323 @@ if(riteDraftCosts) {
         }
     }
 
+    record LivingOriginalConfig() { int submissions(){return 85;} }
+    static LivingOriginalConfig currentLivingOriginalConfig(ObjectNode config) {
+        StrictJson.require("xar.native-owner-snapshot-config/v48".equals(StrictJson.text(config.get("schema")))
+                &&"current_living_original_case_once".equals(StrictJson.text(config.get("mode"))),"Only explicit v48 fixed Living original-case mode");
+        StrictJson.object(config,Set.of("schema","mode","owner_descriptor","overall_timeout_seconds","read_timeout_seconds","maximum_frames_per_operation"));
+        ExactRef.fromJson(config.get("owner_descriptor"));
+        StrictJson.integer(config.get("overall_timeout_seconds"),1,600);
+        StrictJson.integer(config.get("read_timeout_seconds"),1,60);
+        StrictJson.integer(config.get("maximum_frames_per_operation"),1,65536);
+        return new LivingOriginalConfig();
+    }
+    static void requireCurrentLivingSameCore(CoreFrame.Prefix original,CoreFrame.Prefix actual)throws IOException {
+        if(!original.equals(actual))throw new IOException("Living original case requires same complete actual actor/date/paused Core; no Date or replacement actor");
+    }
+    static CurrentLivingInventoryQuerySource requireCurrentLivingInventoryFrame(CurrentLivingInventoryQueryResult frame,
+            CoreFrame.Prefix core,java.math.BigInteger connection)throws IOException {
+        if(frame.status()!=CurrentLivingInventoryQueryResult.Status.AVAILABLE||!frame.cleanupKnown()||!frame.sourceAvailable()
+                ||frame.effectAttempted()||frame.nativeReturned()||frame.nativeHandled()||frame.claimSequence().signum()!=0
+                ||frame.providerGeneration().signum()<=0||frame.querySequence().signum()<=0
+                ||frame.factsBefore().filter(core::equals).isEmpty()
+                ||frame.owner().filter(o->o.connectionGeneration().equals(connection)).isEmpty()||frame.source().isEmpty())
+            throw new IOException("Actual complete readonly Living inventory/Core/connection required");
+        var s=frame.source().orElseThrow();
+        if(s.actorFullId()!=Integer.toUnsignedLong(core.playedCharacterId())||!s.completeInventory()||!s.sampledTwice())
+            throw new IOException("Living inventory differs from actual full actor or complete two samples");
+        return s; // Fixed references are DATA, never a prepared action or caller authority.
+    }
+    static CurrentLivingInventoryQuerySource.Artifact currentLivingArtifact(CurrentLivingInventoryQuerySource source,long id)throws IOException {
+        var all=source.artifacts().stream().filter(a->a.fullId()==id).toList();
+        if(all.size()!=1||all.get(0).ownerFullId()!=source.actorFullId())throw new IOException("Actual unique owned full Artifact ID absent");
+        return all.get(0);
+    }
+    static long currentLivingReference(CurrentLivingInventoryQuerySource source,CurrentLivingInventoryQuerySource.ReferenceRole role)throws IOException {
+        var all=source.fixedReferences().stream().filter(r->r.role()==role).toList();
+        if(all.size()!=1||all.get(0).state()!=CurrentLivingInventoryQuerySource.ReferenceState.ARTIFACT
+                ||all.get(0).scopeKind()!=36||all.get(0).artifactFullId().isEmpty())throw new IOException("Actual fixed kind36 Artifact reference unavailable");
+        return all.get(0).artifactFullId().orElseThrow();
+    }
+    record LivingOriginalBindings(long target,List<Long> materials) {LivingOriginalBindings{materials=List.copyOf(materials);}}
+    static LivingOriginalBindings currentLivingOriginalBindings(CurrentLivingInventoryQuerySource actual)throws IOException {
+        long target=currentLivingReference(actual,CurrentLivingInventoryQuerySource.ReferenceRole.FIXTURE_TARGET);
+        currentLivingArtifact(actual,target);var materials=new java.util.ArrayList<Long>();
+        for(var role:List.of(CurrentLivingInventoryQuerySource.ReferenceRole.FIXTURE_MATERIAL_COMMON,
+                CurrentLivingInventoryQuerySource.ReferenceRole.FIXTURE_MATERIAL_MASTERWORK,
+                CurrentLivingInventoryQuerySource.ReferenceRole.FIXTURE_MATERIAL_FAMED,
+                CurrentLivingInventoryQuerySource.ReferenceRole.FIXTURE_MATERIAL_ILLUSTRIOUS)) {
+            long id=currentLivingReference(actual,role);currentLivingArtifact(actual,id);materials.add(id);
+        }
+        var all=new java.util.HashSet<>(materials);all.add(target);
+        if(all.size()!=5)throw new IOException("Original Living target and four materials must be five distinct actual owned full IDs");
+        return new LivingOriginalBindings(target,materials); // Native private Raw/owner still authorizes every action.
+    }
+    static List<Long> currentLivingNumeric(CurrentLivingInventoryQuerySource.Artifact actual)throws IOException {
+        var values=new java.util.ArrayList<Long>();
+        for(var n:actual.numeric()) {
+            if(n.state()!=CurrentLivingInventoryQuerySource.NumericState.NUMERIC||n.scopeKind()!=1||n.raw().isEmpty())
+                throw new IOException("All four actual signed64 fixed5 numeric observations are required");
+            values.add(n.raw().orElseThrow());
+        }
+        if(values.size()!=4)throw new IOException("Four actual numeric observations required");return List.copyOf(values);
+    }
+    static void requireCurrentLivingNumbers(CurrentLivingInventoryQuerySource source,long target,int stage)throws IOException {
+        long[] levels={1,2,3,4,6},xp={92,72,72,272,572},sequence={0,1,2,3,5};
+        if(stage<0||stage>=levels.length)throw new IOException("Only the fixed original four-rarity checkpoints");
+        var expected=List.of(Math.multiplyExact(levels[stage],100000L),Math.multiplyExact(xp[stage],100000L),0L,Math.multiplyExact(sequence[stage],100000L));
+        if(source.numericDenominator()!=100000L||!currentLivingNumeric(currentLivingArtifact(source,target)).equals(expected))
+            throw new IOException("Actual numeric4 readback differs from original fixed checkpoint; no arithmetic or Source-body substitute");
+    }
+    static void requireCurrentLivingEquipped(CurrentLivingInventoryQuerySource source,long target)throws IOException {
+        var artifact=currentLivingArtifact(source,target);
+        if(!artifact.equipped()||source.weaponSlot().isEmpty())throw new IOException("Actual target must be independently equipped in weapon slot");
+        var slot=source.slots().get(source.weaponSlot().orElseThrow());
+        if(!slot.key().equals("weapon")||slot.artifactFullId().filter(id->id==target).isEmpty())
+            throw new IOException("Actual canonical weapon slot does not independently contain this full target");
+    }
+    private static java.util.Map<Long,CurrentLivingInventoryQuerySource.Artifact> currentLivingArtifactMap(CurrentLivingInventoryQuerySource source) {
+        return source.artifacts().stream().collect(java.util.stream.Collectors.toMap(CurrentLivingInventoryQuerySource.Artifact::fullId,java.util.function.Function.identity()));
+    }
+    private static java.util.Map<String,Optional<Long>> currentLivingSlotMap(CurrentLivingInventoryQuerySource source) {
+        return source.slots().stream().collect(java.util.stream.Collectors.toMap(CurrentLivingInventoryQuerySource.Slot::key,CurrentLivingInventoryQuerySource.Slot::artifactFullId));
+    }
+    static void requireCurrentLivingCancelConserved(CurrentLivingInventoryQuerySource before,CurrentLivingInventoryQuerySource after,long target,long material)throws IOException {
+        currentLivingArtifact(before,target);currentLivingArtifact(before,material);currentLivingArtifact(after,target);currentLivingArtifact(after,material);
+        if(before.actorFullId()!=after.actorFullId()||!currentLivingArtifactMap(before).equals(currentLivingArtifactMap(after))
+                ||!currentLivingSlotMap(before).equals(currentLivingSlotMap(after)))throw new IOException("Actual canceled review changed complete artifact/numeric4/slot DATA");
+        // Storage order and stale fixed references are archived, not invented business invariants.
+    }
+    static void requireCurrentLivingConsumed(CurrentLivingInventoryQuerySource before,CurrentLivingInventoryQuerySource after,long target,long material,int stage)throws IOException {
+        if(target==material||before.actorFullId()!=after.actorFullId())throw new IOException("Distinct actual target/material and same actor required");
+        currentLivingArtifact(before,material);var old=currentLivingArtifact(before,target);var now=currentLivingArtifact(after,target);
+        if(after.artifacts().stream().anyMatch(a->a.fullId()==material))throw new IOException("Actual selected material still present in complete inventory");
+        if(old.ownerFullId()!=now.ownerFullId()||!old.typeKey().equals(now.typeKey())||old.equipped()!=now.equipped())
+            throw new IOException("Actual same target owner/type/equipment identity changed");
+        var left=new java.util.HashMap<>(currentLivingArtifactMap(before));left.remove(target);left.remove(material);
+        var right=new java.util.HashMap<>(currentLivingArtifactMap(after));right.remove(target);
+        if(!left.equals(right)||!currentLivingSlotMap(before).equals(currentLivingSlotMap(after)))throw new IOException("Unrelated actual artifacts/slots changed across consumption");
+        requireCurrentLivingNumbers(after,target,stage);requireCurrentLivingEquipped(after,target);
+        // A retained fixture-material variable may still contain its old full ID: it is not present/owned proof.
+    }
+    static void initializeCurrentLivingOriginalResult(ObjectNode result,String machineId) {
+        result.put("schema","xar.native-owner-current-living-original-case/v1").put("mode","current_living_original_case_once")
+                .put("machine_id",machineId).put("steam_build_id","26785313").put("read_calls",0).put("entry_action_calls",0).put("ui_action_calls",0)
+                .put("date_calls",0).put("save_calls",0).put("new_date_observed",false).put("physical_save_confirmed",false)
+                .put("cancel_conservation_observed",false).put("four_rarity_numeric_readbacks_observed",false).put("original_private_channel_completed",false)
+                .put("actual_preview_fulltext_archived",false).put("detail_getter_fulltext_archived",false)
+                .put("diet_flag_independently_observed",false).put("preview_number_independently_parsed",false)
+                .put("pixels_observed",false).put("original_five_save_png_contract_pass",false).put("wholeproduct_pass",false);
+    }
+    private static final class LivingOriginalRun {
+        final NativeGameTransport transport;final GameSupervisorControl.Descriptor owner;final NativeLaunchPlan plan;
+        final Path output;final Instant deadline;final ObjectNode result,originals;
+        NativeObservationPort.TransportSession actualSession;CoreFrame.Prefix initial;boolean bound;
+        LivingOriginalRun(NativeGameTransport t,GameSupervisorControl.Descriptor o,NativeLaunchPlan p,Path out,Instant d,ObjectNode r,ObjectNode refs){transport=t;owner=o;plan=p;output=out;deadline=d;result=r;originals=refs;}
+        Instant until(NativeGameTransport.CoreReceived c){return c.validUntil().isBefore(deadline)?c.validUntil():deadline;}
+        NativeGameTransport.CoreReceived core(String label)throws IOException,InterruptedException {
+            var c=readCurrentRiteCreateCore(transport,owner,plan,actualSession,output,label+"-core",deadline,result,originals);
+            var prefix=requireCurrentRiteCreateCore(c.frame());
+            if(initial==null){initial=prefix;actualSession=c.original().custody().orElseThrow().session();result.set("session",session(actualSession));}
+            else requireCurrentLivingSameCore(initial,prefix);
+            if(bound)transport.requireCurrentLivingZeroDay(c);
+            return c;
+        }
+        void archive(String label,NativeActionPort.DispatchOutcome outcome)throws IOException {
+            archiveCurrentLetterOutcome(transport,Files.createDirectory(output.resolve(label)),label,outcome,originals);
+        }
+        void original(String label,NativeActionPort.AckReceived ack,byte[] encoded)throws IOException {
+            originals.set(label+"_original_result",write(output.resolve(label),"original-result.json",ack.originalResultToken().orElseThrow().bytes()));
+            result.set(label,FullJsonTree.parse(encoded,FullJsonTree.MAXIMUM_BYTES));
+        }
+        void intent(String label,String id,Instant until,byte[] packet)throws IOException {
+            Path out=Files.createDirectory(output.resolve(label+"-intent"));
+            var intent=StrictJson.object().put("schema","xar.current-living-original-intent/v1").put("request_id",id)
+                    .put("original_deadline_utc",until.toString()).put("physical_save_confirmed",false);
+            intent.set("original_outbound",write(out,"original-request.packet",packet));
+            originals.set(label+"_intent",write(out,"original-intent.json",FullJsonTree.encode(intent,SMALL)));
+        }
+        NativeGameTransport.LivingInventoryQueryReceived inventory(String label)throws IOException,InterruptedException {
+            var before=core(label);stage="LIVING_ACTUAL_COMPLETE_INVENTORY";
+            var read=transport.readCurrentLivingInventoryQuery(before,until(before));archive(label,read.original());result.put("read_calls",result.path("read_calls").intValue()+1);
+            if(!(read instanceof NativeGameTransport.LivingInventoryQueryReceived q))throw new IOException("Actual complete Living inventory unavailable/UNKNOWN; no replacement or retry");
+            q.requireOriginal(transport,q.validUntil());requireCurrentDjcAckOwner(transport,owner,q.original(),actualSession);
+            var f=CurrentLivingInventoryQueryResult.decodeOutcome(q.original());
+            if(!f.equals(q.frame())||q.validUntil().isAfter(until(before)))throw new IOException("Inventory THIS_ACK/private immutable query deadline differs");
+            requireCurrentLivingInventoryFrame(f,initial,actualSession.connectionGeneration());original(label,q.original(),f.encode().bytes());return q;
+        }
+        NativeGameTransport.LivingEntryReceived entry(CurrentLivingEntry.Action action,String label)throws IOException,InterruptedException {
+            var before=core(label);stage="LIVING_FIXED_ENTRY_QUERY";
+            var read=transport.readCurrentLivingEntry(before,action,until(before));archive(label,read.original());result.put("read_calls",result.path("read_calls").intValue()+1);
+            if(!(read instanceof NativeGameTransport.LivingEntryReceived q))throw new IOException("Actual Living Entry unavailable/UNKNOWN; no assumed hidden model");
+            q.requireOriginal(transport,q.validUntil());requireCurrentDjcAckOwner(transport,owner,q.original(),actualSession);
+            var f=CurrentLivingEntryResult.decodeOutcome(q.original());
+            if(!f.equals(q.frame())||q.validUntil().isAfter(until(before))||f.action()!=action||!action.queryOnly()
+                    ||f.status()!=CurrentLivingEntryResult.Status.AVAILABLE||!f.cleanupKnown()||f.claimSequence().signum()!=0||f.effectAttempted()||f.nativeReturned()
+                    ||f.providerGeneration().signum()<=0||f.querySequence().signum()<=0||f.factsBefore().filter(initial::equals).isEmpty()
+                    ||f.owner().filter(o->o.connectionGeneration().equals(actualSession.connectionGeneration())).isEmpty()
+                    ||f.source().filter(s->s.actorFullId()==Integer.toUnsignedLong(initial.playedCharacterId())&&s.kind()==action.sourceKind()&&s.sampledTwice()).isEmpty())
+                throw new IOException("Living Entry query lost exact Source/actor/Core/connection/original receipt");
+            original(label,q.original(),f.encode().bytes());return q;
+        }
+        NativeGameTransport.LivingUiReceived ui(CurrentLivingUi.Action action,String label)throws IOException,InterruptedException {
+            var before=core(label);stage="LIVING_ACTUAL_FIXED_UI_QUERY";
+            var read=transport.readCurrentLivingUi(before,action,until(before));archive(label,read.original());result.put("read_calls",result.path("read_calls").intValue()+1);
+            if(!(read instanceof NativeGameTransport.LivingUiReceived q))throw new IOException("Actual Living UI unavailable/UNKNOWN; no synthetic event/view or retry");
+            q.requireOriginal(transport,q.validUntil());requireCurrentDjcAckOwner(transport,owner,q.original(),actualSession);
+            var f=CurrentLivingUiResult.decodeOutcome(q.original());
+            if(!f.equals(q.frame())||q.validUntil().isAfter(until(before))||f.action()!=action||!action.queryOnly()
+                    ||f.status()!=CurrentLivingUiResult.Status.AVAILABLE||!f.cleanupKnown()||f.claimSequence().signum()!=0||f.effectAttempted()||f.nativeReturned()
+                    ||f.providerGeneration().signum()<=0||f.querySequence().signum()<=0||f.factsBefore().filter(initial::equals).isEmpty()
+                    ||f.owner().filter(o->o.connectionGeneration().equals(actualSession.connectionGeneration())).isEmpty()
+                    ||f.source().filter(s->s.actorFullId()==Integer.toUnsignedLong(initial.playedCharacterId())&&s.kind()==action.sourceKind()&&s.sampledTwice()).isEmpty())
+                throw new IOException("Living UI query lost complete Source/actor/Core/connection/original receipt");
+            original(label,q.original(),f.encode().bytes());return q;
+        }
+        void entryAction(NativeGameTransport.LivingEntryReceived query,CurrentLivingEntry.Action action,String label)throws IOException,InterruptedException {
+            query.requireOriginal(transport,query.validUntil());var prepared=transport.prepareCurrentLivingEntry(query,action);
+            if(!prepared.deadline().equals(query.validUntil()))throw new IOException("Original Entry action deadline changed");
+            intent(label,prepared.requestId(),prepared.deadline(),prepared.originalPacket().value());
+            result.put("entry_action_calls",result.path("entry_action_calls").intValue()+1);
+            var outcome=transport.submitCurrentLivingEntry(prepared);archive(label,outcome);
+            var ack=requireCurrentRiteCreateActualAck(transport,owner,actualSession,outcome,prepared.requestId(),prepared.originalPacket().value());
+            var f=CurrentLivingEntryResult.decodeOutcome(ack);original(label,ack,f.encode().bytes());var old=query.frame();
+            if(prepared.latestFrame().filter(f::equals).isEmpty()||f.action()!=action||f.status()!=CurrentLivingEntryResult.Status.DISPATCHED
+                    ||!f.cleanupKnown()||!f.effectAttempted()||!f.nativeReturned()||f.claimSequence().signum()<=0
+                    ||!f.source().equals(old.source())||!f.factsBefore().equals(old.factsBefore())||!f.providerGeneration().equals(old.providerGeneration())
+                    ||!f.querySequence().equals(old.querySequence())||f.owner().filter(o->o.connectionGeneration().equals(actualSession.connectionGeneration())).isEmpty())
+                throw new IOException("THIS Entry dispatch lost actual immutable beforeSource/Core/lease; never replay known refusal/UNKNOWN");
+        }
+        NativeGameTransport.LivingUiReceived uiActionThenQuery(NativeGameTransport.LivingUiReceived query,CurrentLivingUi.Action action,
+                CurrentLivingUi.Action afterAction,String label)throws IOException,InterruptedException {
+            query.requireOriginal(transport,query.validUntil());var prepared=transport.prepareCurrentLivingUi(query,action);
+            if(!prepared.deadline().equals(query.validUntil()))throw new IOException("Original UI action deadline changed");
+            intent(label,prepared.requestId(),prepared.deadline(),prepared.originalPacket().value());
+            result.put("ui_action_calls",result.path("ui_action_calls").intValue()+1);
+            var outcome=transport.submitCurrentLivingUi(prepared);archive(label,outcome);
+            var ack=requireCurrentRiteCreateActualAck(transport,owner,actualSession,outcome,prepared.requestId(),prepared.originalPacket().value());
+            var f=CurrentLivingUiResult.decodeOutcome(ack);original(label,ack,f.encode().bytes());var old=query.frame();
+            if(prepared.latestFrame().filter(f::equals).isEmpty()||f.action()!=action||f.status()!=CurrentLivingUiResult.Status.DISPATCHED
+                    ||!f.cleanupKnown()||!f.effectAttempted()||!f.nativeReturned()||f.claimSequence().signum()<=0
+                    ||!f.source().equals(old.source())||!f.factsBefore().equals(old.factsBefore())||!f.providerGeneration().equals(old.providerGeneration())
+                    ||!f.querySequence().equals(old.querySequence())||f.owner().filter(o->o.connectionGeneration().equals(actualSession.connectionGeneration())).isEmpty())
+                throw new IOException("THIS UI dispatch lost actual immutable beforeSource/Core/lease; never replay known refusal/UNKNOWN");
+            var after=ui(afterAction,label+"-after");
+            if(action.sourceKind()==CurrentLivingUiSource.Kind.EVENTS) {
+                if(prepared.actualInstanceId().isEmpty()||!transport.currentLivingEventAbsent(prepared,after))
+                    throw new IOException("Original actual event instance still present or independent complete absence unqualified");
+                result.put(label+"_original_instance_absent",true); // Not event_closed or global modal/date gate clearance.
+            }
+            return after;
+        }
+        void ensureView(boolean inventory,long payload,String label)throws IOException,InterruptedException {
+            var queryAction=inventory?CurrentLivingEntry.Action.QUERY_INVENTORY_ENTRY:CurrentLivingEntry.Action.QUERY_DETAIL_ENTRY;
+            var action=inventory?CurrentLivingEntry.Action.OPEN_INVENTORY:CurrentLivingEntry.Action.OPEN_DETAIL;
+            var query=entry(queryAction,label+"-before");var s=query.frame().source().orElseThrow();
+            var view=(inventory?s.inventory():s.detail()).orElseThrow();
+            if(!view.visible()) {entryAction(query,action,label+"-open");query=entry(queryAction,label+"-after");s=query.frame().source().orElseThrow();view=(inventory?s.inventory():s.detail()).orElseThrow();}
+            if(!view.windowFound()||!view.visible()||!view.enabled()||!view.payloadBound()||view.expectedPayloadFullId()!=payload)
+                throw new IOException("Actual bound Inventory/Details view did not independently show the original actor/artifact payload");
+        }
+    }
+    private static CurrentLivingUiSource.EventBinding requireCurrentLivingEvent(NativeGameTransport.LivingUiReceived query,
+            CurrentLivingUi.Action action,String definition,long target,Optional<Long> material)throws IOException {
+        var source=query.frame().source().orElseThrow();var census=source.events().orElseThrow();
+        var choices=census.fixedActions().stream().filter(a->a.action()==action&&a.admissible()).toList();
+        if(choices.size()!=1)throw new IOException("Actual unique fixed Living action not admissible");
+        var choice=choices.get(0);var events=census.events().stream().filter(e->e.instanceId()==choice.instanceId()).toList();
+        var bindings=census.bindings().stream().filter(b->b.instanceId()==choice.instanceId()).toList();
+        if(events.size()!=1||bindings.size()!=1)throw new IOException("Original Living event/binding not unique in complete census");
+        var event=events.get(0);var binding=bindings.get(0);
+        if(!census.censusComplete()||!census.completeBindings()||!event.definitionKey().equals(definition)||!binding.definitionKey().equals(definition)
+                ||!event.windowVisible()||!event.windowEnabled()||!event.namedRootBound()||event.recipientCharacterId()!=binding.recipientId()
+                ||Integer.toUnsignedLong(binding.recipientId())!=source.actorFullId()||!binding.targetOwned()||!binding.completeNamedScopes()||!binding.sampledTwice()
+                ||binding.target().artifactFullId().filter(id->id==target).isEmpty())throw new IOException("Actual fixed event lost original held target/recipient/visible window binding");
+        if(material.isPresent()&&(!binding.materialRequired()||!binding.materialOwned()||!binding.material().artifactFullId().equals(material)))
+            throw new IOException("Actual review material does not match its distinct originally observed fixture identity");
+        var options=event.options().stream().filter(o->o.authoredOptionIndex()==choice.authoredOptionIndex()).toList();
+        if(options.size()!=1||!options.get(0).nativeCanSelect()||options.get(0).text().isEmpty())throw new IOException("Actual fixed event option lacks actual Can/text");
+        // Original rich text is already fully archived in this query result. No trim, localization lookup or numeric parsing is substituted.
+        return binding;
+    }
+    private static NativeGameTransport.LivingEntryReceived openCurrentLivingManage(LivingOriginalRun run)throws IOException,InterruptedException {
+        var q=run.entry(CurrentLivingEntry.Action.QUERY_MANAGE,"living-manage-before");var m=q.frame().source().orElseThrow().manage().orElseThrow();
+        if(!m.listVisible()&&!m.detailVisible()) {run.entryAction(q,CurrentLivingEntry.Action.OPEN_MANAGE_LIST,"living-manage-list");q=run.entry(CurrentLivingEntry.Action.QUERY_MANAGE,"living-manage-after-list");m=q.frame().source().orElseThrow().manage().orElseThrow();}
+        if(!m.detailVisible()||!m.selectedDecisionKey().equals(Optional.of(CurrentLivingEntry.MANAGE_DECISION))) {
+            run.entryAction(q,CurrentLivingEntry.Action.OPEN_MANAGE_DETAIL,"living-manage-detail");q=run.entry(CurrentLivingEntry.Action.QUERY_MANAGE,"living-manage-after-detail");m=q.frame().source().orElseThrow().manage().orElseThrow();
+        }
+        if(!m.ownerBound()||!m.detailVisible()||!m.detailEnabled()||!m.selectedDecisionKey().equals(Optional.of(CurrentLivingEntry.MANAGE_DECISION))
+                ||!m.nativeCanConfirm().orElse(false)||!m.confirmAdmissible())throw new IOException("Actual fixed manage detail does not admit one normal confirmation");
+        return q;
+    }
+    private static void runCurrentLivingOriginal(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeLaunchPlan plan,
+            Path output,Instant deadline,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        var run=new LivingOriginalRun(transport,owner,plan,output,deadline,result,originals);
+        try {
+            if(!(plan.load() instanceof NativeLaunchPlan.SavedGame))throw new IOException("Original Living slice requires actual SavedGame owner");
+            var initial=run.inventory("living-inventory-initial");var inventory=initial.frame().source().orElseThrow();
+            var binding=currentLivingOriginalBindings(inventory);long target=binding.target();
+            requireCurrentLivingNumbers(inventory,target,0);result.put("actual_target_full_id",target);
+            transport.beginCurrentLivingOriginalCase(initial);run.bound=true;
+            run.ensureView(true,inventory.actorFullId(),"living-inventory-entry");
+            var weapon=run.ui(CurrentLivingUi.Action.QUERY_WEAPON,"living-weapon-before");var w=weapon.frame().source().orElseThrow().weapon().orElseThrow();
+            if(w.targetFullId()!=target)throw new IOException("Actual weapon query rebound the captured full target");
+            if(!w.targetEquipped()) {
+                if(!w.weaponSelected())weapon=run.uiActionThenQuery(weapon,CurrentLivingUi.Action.SELECT_WEAPON,CurrentLivingUi.Action.QUERY_WEAPON,"living-select-weapon");
+                weapon=run.uiActionThenQuery(weapon,CurrentLivingUi.Action.EQUIP_TARGET,CurrentLivingUi.Action.QUERY_WEAPON,"living-equip-target");
+            }
+            inventory=run.inventory("living-inventory-equipped").frame().source().orElseThrow();requireCurrentLivingEquipped(inventory,target);requireCurrentLivingNumbers(inventory,target,0);
+            var manage=openCurrentLivingManage(run);run.entryAction(manage,CurrentLivingEntry.Action.CONFIRM_MANAGE,"living-manage-confirm");
+            var events=run.ui(CurrentLivingUi.Action.QUERY_EVENTS,"living-events-after-manage");
+            requireCurrentLivingEvent(events,CurrentLivingUi.Action.OPEN_TUTORIAL,"xalw.12",target,Optional.empty());
+            events=run.uiActionThenQuery(events,CurrentLivingUi.Action.OPEN_TUTORIAL,CurrentLivingUi.Action.QUERY_EVENTS,"living-tutorial-open");
+            long common=binding.materials().get(0);
+            requireCurrentLivingEvent(events,CurrentLivingUi.Action.FEED_COMMON,"xalw.10",target,Optional.empty());
+            events=run.uiActionThenQuery(events,CurrentLivingUi.Action.FEED_COMMON,CurrentLivingUi.Action.QUERY_EVENTS,"living-common-first-preview");
+            int canceledReview=requireCurrentLivingEvent(events,CurrentLivingUi.Action.CANCEL_REVIEW,"xalw.11",target,Optional.of(common)).instanceId();
+            var beforeCancel=run.inventory("living-inventory-before-cancel").frame().source().orElseThrow();
+            events=run.uiActionThenQuery(events,CurrentLivingUi.Action.CANCEL_REVIEW,CurrentLivingUi.Action.QUERY_EVENTS,"living-common-cancel");
+            var afterCancel=run.inventory("living-inventory-after-cancel").frame().source().orElseThrow();
+            requireCurrentLivingCancelConserved(beforeCancel,afterCancel,target,common);requireCurrentLivingNumbers(afterCancel,target,0);result.put("cancel_conservation_observed",true);
+            requireCurrentLivingEvent(events,CurrentLivingUi.Action.FEED_COMMON,"xalw.10",target,Optional.empty());
+            events=run.uiActionThenQuery(events,CurrentLivingUi.Action.FEED_COMMON,CurrentLivingUi.Action.QUERY_EVENTS,"living-common-new-preview");
+            var review=requireCurrentLivingEvent(events,CurrentLivingUi.Action.CONFIRM_REVIEW,"xalw.11",target,Optional.of(common));
+            if(review.instanceId()==canceledReview)throw new IOException("Canceled review instance cannot become the fresh review/confirmation");
+            result.put("actual_preview_fulltext_archived",true);
+            events=run.uiActionThenQuery(events,CurrentLivingUi.Action.CONFIRM_REVIEW,CurrentLivingUi.Action.QUERY_EVENTS,"living-common-confirm");
+            inventory=run.inventory("living-inventory-common-after").frame().source().orElseThrow();requireCurrentLivingConsumed(afterCancel,inventory,target,common,1);
+            var rarities=List.of(CurrentLivingUi.Action.FEED_MASTERWORK,CurrentLivingUi.Action.FEED_FAMED,CurrentLivingUi.Action.FEED_ILLUSTRIOUS);
+            for(int index=0;index<rarities.size();index++) {
+                var action=rarities.get(index);long material=binding.materials().get(index+1);String label="living-rarity-"+(index+2);var before=inventory;
+                currentLivingArtifact(before,material);requireCurrentLivingEvent(events,action,"xalw.10",target,Optional.empty());
+                events=run.uiActionThenQuery(events,action,CurrentLivingUi.Action.QUERY_EVENTS,label+"-preview");
+                requireCurrentLivingEvent(events,CurrentLivingUi.Action.CONFIRM_REVIEW,"xalw.11",target,Optional.of(material));
+                events=run.uiActionThenQuery(events,CurrentLivingUi.Action.CONFIRM_REVIEW,CurrentLivingUi.Action.QUERY_EVENTS,label+"-confirm");
+                inventory=run.inventory(label+"-inventory-after").frame().source().orElseThrow();requireCurrentLivingConsumed(before,inventory,target,material,index+2);
+            }
+            result.put("four_rarity_numeric_readbacks_observed",true);
+            // Actual appended UI14 enum: .10/count10/index9; no caller action/key selector.
+            var close=CurrentLivingUi.Action.CLOSE_MANAGEMENT;
+            requireCurrentLivingEvent(events,close,"xalw.10",target,Optional.empty());
+            events=run.uiActionThenQuery(events,close,CurrentLivingUi.Action.QUERY_EVENTS,"living-management-close");
+            run.ensureView(false,target,"living-detail-entry");
+            var detail=run.ui(CurrentLivingUi.Action.QUERY_DETAIL,"living-final-detail").frame().source().orElseThrow().detail().orElseThrow();
+            if(detail.targetFullId()!=target||!detail.windowFound()||!detail.visible()||!detail.enabled()||!detail.targetBound()
+                    ||detail.modifierEffectsText().isEmpty()||detail.customEffectsText().isEmpty()||detail.descriptionText().isEmpty())
+                throw new IOException("Final actual target-bound detail lacks one of three complete engine getter texts; no fake empty/static replacement");
+            result.put("detail_getter_fulltext_archived",true); // Actual strings including empty/NUL/control remain in the immutable query.
+            var finalInventory=run.inventory("living-inventory-final").frame().source().orElseThrow();
+            requireCurrentLivingNumbers(finalInventory,target,4);requireCurrentLivingEquipped(finalInventory,target);
+            for(long material:binding.materials())if(finalInventory.artifacts().stream().anyMatch(a->a.fullId()==material))
+                throw new IOException("An original consumed material is present in the final complete owned inventory");
+            result.put("original_private_channel_completed",true).put("original_text_and_diet_business_review_pending",true);
+            // Root combines actual preview/detail strings and original business/log evidence separately.
+            // This controller never promotes Source fixtures, whole-product, pixels, diet flags or five physical Saves.
+        } finally {
+            archiveNaturalDiagnostics(output,originals,transport.diagnostics());var progress=result.deepCopy();progress.set("originals",originals.deepCopy());
+            write(output,"current-living-original-progress.json",FullJsonTree.encode(progress,FullJsonTree.MAXIMUM_BYTES));
+        }
+    }
     enum RmtmMode { QUERY_ROLE, QUERY_DECISION, ORIGINAL_CASE_ONCE, THRESHOLD_50_51_ONCE }
     record RmtmConfig(RmtmMode mode,int maximumStatusPolls,long statusPollDelayMillis) {
         boolean queryOnly(){return mode==RmtmMode.QUERY_ROLE||mode==RmtmMode.QUERY_DECISION;}
@@ -5145,7 +5476,7 @@ if(riteDraftCosts) {
         }
     }
 
-    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE,CURRENT_DJC_TARGET_QUERY,CURRENT_SUCCESSION_QUERY,CURRENT_SUCCESSION_CONTINUE,CURRENT_DJC_DECLARATION_UI,CURRENT_DJC_DECLARATION_SUBMIT,CURRENT_LETTER_QUERY,CURRENT_LETTER_REPLY_KNOWN,CURRENT_DJC_SELECTED_COST,CURRENT_DJC_SELECTED_COST_PREVIEW,CURRENT_LETTER_SET_QUERY,CURRENT_LETTER_SET_REPLY_KNOWN_INSTANCE,CURRENT_FULLSCREEN_EVENT_QUERY,CURRENT_FULLSCREEN_EVENT_ACK_KNOWN_INTRO,CURRENT_CURATED_DECISIONS_QUERY,CURRENT_CURATED_DECISIONS_OPEN,CURRENT_CURATED_DECISION_DETAIL,CURRENT_CURATED_DECISION_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_QUERY,CURRENT_XQOL_CONVERSION_PROMPT_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_CANCEL,CURRENT_XQOL_CONVERSION_THRESHOLD_QUERY,CURRENT_XQOL_CONVERSION_THRESHOLD_SET,CURRENT_COURTIER_CREATOR_CONTROLS_QUERY,CURRENT_COURTIER_CREATOR_CONTROL_EXECUTE,CURRENT_DECISIONS_CLOSE_QUERY,CURRENT_DECISIONS_CLOSE,CURRENT_COURTIER_CONFIGURATION_QUERY,CURRENT_COURTIER_CONFIGURATION_EXECUTE,CURRENT_COURTIER_CHOICES_QUERY,CURRENT_COURTIER_CHOICE_SELECT,CURRENT_SUPERMAN_HEALTH_QUERY,CURRENT_SUPERMAN_HEALTH_BASELINE_SAVE_AND_BEGIN,CURRENT_SUPERMAN_HEALTH_COMPLETED_CLOSE,CURRENT_SUPERMAN_HEALTH_RESUME_SAVED_BASELINE_AND_BEGIN,CURRENT_LYD,CURRENT_TED,CURRENT_STOCK_NEWGAME_SEED,CURRENT_DES_SAVED_GAME_INIT_GUARD,CURRENT_RITE_CREATE,CURRENT_RITE_TEXT,CURRENT_RITE_CREATION_BLOCKERS,CURRENT_STOCK_BOOKMARK1070,CURRENT_CCC,CURRENT_RMTM_TITLE_QUERY,CURRENT_RMTM_REMAINING }
+    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE,CURRENT_DJC_TARGET_QUERY,CURRENT_SUCCESSION_QUERY,CURRENT_SUCCESSION_CONTINUE,CURRENT_DJC_DECLARATION_UI,CURRENT_DJC_DECLARATION_SUBMIT,CURRENT_LETTER_QUERY,CURRENT_LETTER_REPLY_KNOWN,CURRENT_DJC_SELECTED_COST,CURRENT_DJC_SELECTED_COST_PREVIEW,CURRENT_LETTER_SET_QUERY,CURRENT_LETTER_SET_REPLY_KNOWN_INSTANCE,CURRENT_FULLSCREEN_EVENT_QUERY,CURRENT_FULLSCREEN_EVENT_ACK_KNOWN_INTRO,CURRENT_CURATED_DECISIONS_QUERY,CURRENT_CURATED_DECISIONS_OPEN,CURRENT_CURATED_DECISION_DETAIL,CURRENT_CURATED_DECISION_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_QUERY,CURRENT_XQOL_CONVERSION_PROMPT_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_CANCEL,CURRENT_XQOL_CONVERSION_THRESHOLD_QUERY,CURRENT_XQOL_CONVERSION_THRESHOLD_SET,CURRENT_COURTIER_CREATOR_CONTROLS_QUERY,CURRENT_COURTIER_CREATOR_CONTROL_EXECUTE,CURRENT_DECISIONS_CLOSE_QUERY,CURRENT_DECISIONS_CLOSE,CURRENT_COURTIER_CONFIGURATION_QUERY,CURRENT_COURTIER_CONFIGURATION_EXECUTE,CURRENT_COURTIER_CHOICES_QUERY,CURRENT_COURTIER_CHOICE_SELECT,CURRENT_SUPERMAN_HEALTH_QUERY,CURRENT_SUPERMAN_HEALTH_BASELINE_SAVE_AND_BEGIN,CURRENT_SUPERMAN_HEALTH_COMPLETED_CLOSE,CURRENT_SUPERMAN_HEALTH_RESUME_SAVED_BASELINE_AND_BEGIN,CURRENT_LYD,CURRENT_TED,CURRENT_STOCK_NEWGAME_SEED,CURRENT_DES_SAVED_GAME_INIT_GUARD,CURRENT_RITE_CREATE,CURRENT_RITE_TEXT,CURRENT_RITE_CREATION_BLOCKERS,CURRENT_STOCK_BOOKMARK1070,CURRENT_CCC,CURRENT_RMTM_TITLE_QUERY,CURRENT_RMTM_REMAINING,CURRENT_LIVING_ORIGINAL }
     static void requireGuiRootIndexSelection(NativeLaunchPlan plan,GuiRootIndexFrame frame)throws IOException {
         Objects.requireNonNull(plan);Objects.requireNonNull(frame);
         if(!frame.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())
@@ -5177,6 +5508,7 @@ if(riteDraftCosts) {
     }
     static ObservationMode observationMode(ObjectNode config) {
         String schema=StrictJson.text(config.get("schema"));
+        if(schema.equals("xar.native-owner-snapshot-config/v48")) {currentLivingOriginalConfig(config);return ObservationMode.CURRENT_LIVING_ORIGINAL;}
         if(schema.equals("xar.native-owner-snapshot-config/v47")) {currentRmtmConfig(config);return ObservationMode.CURRENT_RMTM_REMAINING;}
         if(schema.equals("xar.native-owner-snapshot-config/v46")) {currentRmtmTitleQueryConfig(config);return ObservationMode.CURRENT_RMTM_TITLE_QUERY;}
         if(schema.equals("xar.native-owner-snapshot-config/v45")) {currentCccConfig(config);return ObservationMode.CURRENT_CCC;}
