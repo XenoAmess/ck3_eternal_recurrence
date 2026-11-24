@@ -1,6 +1,6 @@
 # 重整河山：设计与实现说明
 
-> 2026-11-24 当前0.4.2／CK3 1.21.0.3 Florin（build26785313）：原8自然日、26项与D5完整ID／三物理realm_baseline合取的有限发布业务验收通过；独立50／51当前构建结果保留。**0.4.2尚未上传**；正式包、公开回读和下载缓存各按后继实际收据。完整边界见[0.4.2更改说明](../docs/release-changelogs/reclaim-motherland/0.4.2.md)。下列266、旧版本候选与历史资格保留各自时点，不外推为本轮全矩阵、所有外交理由或性能通过。
+> 2026-11-24 当前公开0.4.2／CK3 1.21.0.3 Florin（build26785313）：同一Workshop3798404599已实际EResult1更新，下载36精确，完整公开标题／正文／Notes与真实工坊缓存载入／Natural0退出有限闭环通过；零新增日／Save，Steam已fresh offline。原26＋D5全ID／三物理realm_baseline及独立50／51保持有限范围，不授全路线／全SDK／像素／性能。实际additional gallery3项与封面分别保持。见[0.4.2更改说明](../docs/release-changelogs/reclaim-motherland/0.4.2.md)。下列旧候选及未发布表述保留各自时点。
 
 > 2026-11-19 Florin离线候选：版本 `0.4.2`，目标本机 `desktop-3fevhd2-1c74096080` 的 CK3 `1.21.0` / build `26622941`。已更新七文件/六对象合同、两处实际原版逻辑变化及生成投影；46项软件回归与离线夹具生成通过。**新实机与Native ABI均未获资格，尚未发布**。新26项fresh合同不复用另一机器旧GUI资格；具体来源、软件边界与待验输入见[本轮说明](../docs/maintenance/2026-11-19-reclaim-motherland-florin-offline.md)。
 

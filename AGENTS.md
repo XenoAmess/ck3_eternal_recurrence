@@ -1,4 +1,12 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
+## 2026-11-24 当前RMTM0.4.2实际有限发布完成：14/17上传，10/17严格闭环
+
+本机current267的原26＋实际D5三scope全ID／三物理realm_baseline有限业务，以及独立50／51结果，已合正式36的一次EResult1更新／真实下载、完整公开标题正文Notes、真实canonical工坊缓存载入及正常Natural0／Job0／cleanup／creator0闭环。SourceA `5d091f9d…`、tag `reclaim-motherland-v0.4.2`、正式F／payload不动；在线56.9113407秒，03:41:15.733956Z fresh offline。实际SDK additional gallery3项＋封面另核保持，旧“四图”表述保留。
+
+Notes首GET200，同一原HTML经严格h1/list/items/b完整结构离线校验通过，旧only-bold false61e625保留且无重发／再HTTP。缓存全36 afterGame仍精确，实际mount与history-load完成；可用Core为paused/map/alive Robert36423/raw53144328，前两Unavailable保持，不加Core8门。0Date／0Save，源821与当前唯一profile copy全SHA不变；quit摘要normal_exit_confirmed=false保，独立terminal与creator实际0于04:11:40Z收束。dirty-prepare首拒、Root1431输出前缩进失败、旧UNKNOWN／false／null及各Source资格边界全保，不授全law／全理由／Send／完整旧矩阵／wholeSDK／像素／长期／性能。
+
+独立SKU当前14/17（82.4%）已上传、10/17（58.8%）严格有限闭环；旧CCC／DES Notes429不改。后继Living→LYD→ZG361。Living首22软件P与Source已正常推送，真实Cpp消费、Native产物／pair及实机仍待后继，不混为RMTM发布成果。见[永久发布事实与精确收据](docs/release-changelogs/reclaim-motherland/0.4.2-evidence/publication.json)。下方保留此前切点。
+
 ## 2026-11-24 当前发布／资源切点：RMTM本地check0，尚未上传
 
 RMTM0.4.2的Root发布决定、完整文本接受、真实public-before、既有plan和freeze均已封，本地file-only `--check-only` 实际0，0 SDK／Steam／HTTP／Game调用；目前仍等新账号窗口，未Submit、未取得更新后公开全文／下载／缓存收据。正式SourceA `5d091f9d…`、tag `reclaim-motherland-v0.4.2`、原36与正式F保持；原有限业务PASS不扩为全部旧矩阵。
