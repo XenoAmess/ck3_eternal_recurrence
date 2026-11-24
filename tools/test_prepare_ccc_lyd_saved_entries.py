@@ -107,7 +107,7 @@ class SavedEntryTests(unittest.TestCase):
         self.assertFalse((out / 'common/on_action/lyd_feedback_setup.txt').exists())
         _, _, dispatch = entry(lyd.saved_entry_files()['common/scripted_guis/lyd_feedback_saved_entry_guis.txt'], 'lyd_feedback_saved_entry_gui')
         original = child(child(child(parse_clausewitz(lyd.SETUP), 'lyd_feedback_setup'), 'effect'), 'random_player')
-        self.assertEqual(dispatch.entries[2:], original.entries)
+        self.assertEqual(dispatch.entries[2:2 + len(original.entries)], original.entries)
         self.assertEqual(receipt['setup_changes'], ['self character rite to original jingxue', 'self idempotence flag'])
         self.assertFalse(receipt['business_pass'])
         self.assertFalse(receipt['faith_main_rite_or_NPC_or_title_changes'])

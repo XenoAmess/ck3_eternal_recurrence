@@ -33,8 +33,82 @@ SAVED_GUARD = '''this = character:1128
         NOT = { has_character_flag = lyd_feedback_setup_done }'''
 
 
-def saved_entry_files() -> dict[str, str]:
-    """Run only the original self setup from a guarded explicit Saved entry."""
+
+# Saved-only observation. Every marker is selected by an engine limit/else.
+# These branches never create rites, set faith, advance time, or change state.
+SAVED_PREDICATE_OBSERVATIONS = r'''
+            if = {
+                limit = { faith = faith:confucian_faith }
+                debug_log = "LYD_FEEDBACK_OBS: ACTOR_FAITH_CONFUCIAN_TRUE"
+            }
+            else = { debug_log = "LYD_FEEDBACK_OBS: ACTOR_FAITH_CONFUCIAN_FALSE" }
+            if = {
+                limit = { rite = rite:jingxue }
+                debug_log = "LYD_FEEDBACK_OBS: ACTOR_RITE_JINGXUE_TRUE"
+            }
+            else = { debug_log = "LYD_FEEDBACK_OBS: ACTOR_RITE_JINGXUE_FALSE" }
+            if = {
+                limit = { rite = rite:daoxue }
+                debug_log = "LYD_FEEDBACK_OBS: ACTOR_RITE_DAOXUE_TRUE"
+            }
+            else = { debug_log = "LYD_FEEDBACK_OBS: ACTOR_RITE_DAOXUE_FALSE" }
+            if = {
+                limit = { exists = rite:lyd_rite_kongmen }
+                debug_log = "LYD_FEEDBACK_OBS: KONGMEN_EXISTS_TRUE"
+                if = {
+                    limit = { faith = rite:lyd_rite_kongmen.faith }
+                    debug_log = "LYD_FEEDBACK_OBS: KONGMEN_FAITH_EQUALS_ACTOR_FAITH_TRUE"
+                }
+                else = { debug_log = "LYD_FEEDBACK_OBS: KONGMEN_FAITH_EQUALS_ACTOR_FAITH_FALSE" }
+            }
+            else = {
+                debug_log = "LYD_FEEDBACK_OBS: KONGMEN_EXISTS_FALSE"
+                debug_log = "LYD_FEEDBACK_OBS: KONGMEN_FAITH_NOT_OBSERVED_MISSING_RITE"
+            }
+            if = {
+                limit = { exists = faith.religious_head this = faith.religious_head }
+                debug_log = "LYD_FEEDBACK_OBS: ACTOR_IS_FAITH_HEAD_TRUE"
+            }
+            else = { debug_log = "LYD_FEEDBACK_OBS: ACTOR_IS_FAITH_HEAD_FALSE" }
+            if = {
+                limit = { exists = rite.head_of_rite this = rite.head_of_rite }
+                debug_log = "LYD_FEEDBACK_OBS: ACTOR_IS_CURRENT_RITE_HEAD_TRUE"
+            }
+            else = { debug_log = "LYD_FEEDBACK_OBS: ACTOR_IS_CURRENT_RITE_HEAD_FALSE" }
+            if = {
+                limit = { has_character_flag = lyd_enabled }
+                debug_log = "LYD_FEEDBACK_OBS: LYD_ENABLED_TRUE"
+            }
+            else = { debug_log = "LYD_FEEDBACK_OBS: LYD_ENABLED_FALSE" }
+            if = {
+                limit = { lyd_catalogue_rite_trigger = yes }
+                debug_log = "LYD_FEEDBACK_OBS: LYD_CATALOGUE_RITE_TRUE"
+            }
+            else = { debug_log = "LYD_FEEDBACK_OBS: LYD_CATALOGUE_RITE_FALSE" }
+'''
+
+
+
+# Explicit controlled Saved prerequisites; never a payment/ADD/learning PASS.
+SAVED_FUNDED_KNOWN_TENETS = '''
+            add_gold = 1000
+            add_piety = 1000
+            add_stress = 90
+            if = {
+                limit = { NOT = { knows_tenet = lyd_tenet_reverent_heaven } }
+                add_known_tenet = lyd_tenet_reverent_heaven
+            }
+            if = {
+                limit = { NOT = { knows_tenet = lyd_tenet_knowing_acting_support } }
+                add_known_tenet = lyd_tenet_knowing_acting_support
+            }
+'''
+
+
+def saved_entry_files(*, funded_known_tenets: bool = False) -> dict[str, str]:
+    """Original Saved setup plus an explicit opt-in controlled self prerequisite."""
+    if type(funded_known_tenets) is not bool:
+        raise ValueError("funded_known_tenets must be a strict boolean")
     from fixture_engine_prepare import balanced_excerpt
     original = balanced_excerpt(SETUP, r'^\s*random_player\s*=\s*\{')
     original_body = original[original.index('{') + 1:original.rfind('}')]
@@ -47,6 +121,8 @@ def saved_entry_files() -> dict[str, str]:
             limit = {{ {SAVED_GUARD} }}
             add_character_flag = lyd_feedback_saved_entry_dispatched
 {original_body}
+{SAVED_FUNDED_KNOWN_TENETS if funded_known_tenets else ""}
+{SAVED_PREDICATE_OBSERVATIONS}
         }}
     }}
 }}
@@ -70,8 +146,10 @@ def saved_entry_files() -> dict[str, str]:
     }
 
 
-def generate(output: Path, identity: dict, saved_entry_bridge: bool = False) -> dict:
+def generate(output: Path, identity: dict, saved_entry_bridge: bool = False, *, funded_known_tenets: bool = False) -> dict:
     """Pure small fixture emission; callers own exact engine qualification."""
+    if type(funded_known_tenets) is not bool or (funded_known_tenets and not saved_entry_bridge):
+        raise ValueError('Controlled prerequisites require explicit Saved entry and strict boolean')
     if type(saved_entry_bridge) is not bool:
         raise ValueError('saved_entry_bridge must be a strict boolean')
     if saved_entry_bridge and (not isinstance(identity.get('game_version'), str)
@@ -88,7 +166,7 @@ def generate(output: Path, identity: dict, saved_entry_bridge: bool = False) -> 
         files = {
             'descriptor.mod': ('name="LYD original Confucian feedback setup"\nversion="1"\n'
                                f'supported_version="{identity["game_version"]}"\n'),
-            **saved_entry_files(),
+            **saved_entry_files(funded_known_tenets=funded_known_tenets),
         }
     refs = []
     for relative, text in files.items():
@@ -115,6 +193,20 @@ def generate(output: Path, identity: dict, saved_entry_bridge: bool = False) -> 
             'once_flag': 'lyd_feedback_saved_entry_dispatched',
             'original_self_setup': 'UNCHANGED', 'new_game_on_action_included': False,
             'maximum_natural_days': 0, 'runtime_status': 'NOT_RUN',
+            'predicate_logs_are_observations_only': True,
+            'predicate_log_prefix': 'LYD_FEEDBACK_OBS:',
+            'missing_kongmen_faith_observation': 'NOT_OBSERVED_MISSING_RITE',
+        }
+    if funded_known_tenets:
+        receipt['setup_changes'] += ['self gold +1000', 'self piety +1000', 'self stress +90',
+            'self known T01/T33 only; no personal adoption']
+        receipt['controlled_prerequisites'] = {
+            'contract': 'NEW_CONTROLLED_SELF_PREREQUISITES_NOT_ORIGINAL_PURE_SETUP_PASS',
+            'gold_delta': 1000, 'piety_delta': 1000, 'stress_delta': 90,
+            'known_tenets': ['lyd_tenet_reverent_heaven', 'lyd_tenet_knowing_acting_support'],
+            'personal_adoption_or_payment_or_cooldown_or_business_flags_written': False,
+            'learning_decision_or_knowledge_acquisition_validated': False,
+            'engine_invariants_and_resources_require_actual_readback': True,
         }
     with (output / 'setup-receipt.json').open('x', encoding='utf-8', newline='\n') as stream:
         json.dump(receipt, stream, ensure_ascii=False, indent=2)
@@ -128,6 +220,8 @@ def main() -> None:
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--saved-entry-bridge', action='store_true',
                         help='explicit Robert1128/1066.9.15 Saved entry; only the original self setup, no business actions')
+    parser.add_argument('--funded-known-tenets', action='store_true',
+                        help='Saved-only controlled self resources and T01/T33 knowledge; not business proof')
     args = parser.parse_args()
     import fixture_engine_prepare as prep
     repo, output = args.repo.resolve(), args.output.resolve()
@@ -135,7 +229,7 @@ def main() -> None:
         raise ValueError('Fixture output must be outside repository')
     # Shared prepare installs its selected exact-build implementation here.
     identity = prep.engine_identity(repo)
-    receipt = generate(output, identity, args.saved_entry_bridge)
+    receipt = generate(output, identity, args.saved_entry_bridge, funded_known_tenets=args.funded_known_tenets)
     print(json.dumps({'status': 'SETUP_EMITTED_NOT_RUN', 'output': str(output),
                       'engine_identity': receipt['engine_identity'], 'business_pass': False}))
 
