@@ -1,2 +1,4 @@
 # Captured byte-exact inputs are pinned by the portable tests.
 * -text
+# Keep the original Steam HTML's whitespace and richtext byte-for-byte.
+public-changelog-original.html -diff
