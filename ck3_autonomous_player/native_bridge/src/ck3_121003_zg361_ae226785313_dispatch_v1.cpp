@@ -6,7 +6,8 @@ const game::AdapterDescriptor&Zg361Ae2Descriptor267V1(const game::AdapterDescrip
 #if defined(XAR_CK3_ENABLE_121003_26785313_ZG361_AE2_V1) && XAR_CK3_ENABLE_121003_26785313_ZG361_AE2_V1
  if(!game::IsCk3_121003Core26785313Descriptor(base))return base;
  static const auto caps=[&]{std::vector<std::string_view>v(base.capabilities.begin(),base.capabilities.end());
-  for(const auto cap:kZg361Ae2Capabilities267V1)if(std::find(v.begin(),v.end(),cap)==v.end())v.push_back(cap);return v;}();
+  for(const auto cap:kZg361Ae2Capabilities267V1)if(std::find(v.begin(),v.end(),cap)==v.end())v.push_back(cap);
+  for(const auto cap:kZg361ReviewCapabilities267V1)if(std::find(v.begin(),v.end(),cap)==v.end())v.push_back(cap);return v;}();
  static const game::AdapterDescriptor d{base.adapter_id,base.game_version,base.executable_sha256,base.checkpoint_save_name,caps};return d;
 #else
  return base;
@@ -27,6 +28,11 @@ std::string DispatchZg361Ae2Request267V1(const game::GameAdapter&game,std::uint6
  const auto emit=[&]{return SerializeZg361Ae2Result267V1(id,q.result);};
  if(!ParseZg361Ae2Request267V1(payload,q.request)||q.request.id()!=id)return emit();
  q.result.action=q.request.action;q.result.provider_generation=q.request.provider_generation;q.result.query_sequence=q.request.query_sequence;
+ if(q.request.action==Zg361Ae2Action267V1::query_review_requirements||q.request.action==Zg361Ae2Action267V1::open_review_detail){
+  const auto cap=kZg361ReviewCapabilities267V1[q.request.action==Zg361Ae2Action267V1::query_review_requirements?0:1];
+  if(std::find(game.descriptor().capabilities.begin(),game.descriptor().capabilities.end(),cap)==game.descriptor().capabilities.end())return emit();
+ }
+
  if(!game.enabled()||!connection||!Zg361Ae2StepEnabled267V1(game.descriptor(),step)||!game.supports_step(step)||
   mailbox.permitted_executor_sextrigintary!=&ExecuteZg361Ae2OnOwner267V1)return emit();
  q.session=&RetainedZg361Ae2Session267V1();q.connection_generation=connection;q.mailbox=&mailbox;

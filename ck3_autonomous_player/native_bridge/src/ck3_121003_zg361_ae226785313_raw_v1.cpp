@@ -3,12 +3,13 @@
 #include <bit>
 #include <chrono>
 #include <windows.h>
+#include "ck3_121003_zg361_review_requirements26785313_native_v1.inc"
 #include "ck3_121003_zg361_ae2_controls26785313_private_v1.inc"
 #include "ck3_121003_zg361_ae2_tooltip26785313_native_v1.inc"
 namespace xar::ck3_121003::build26785313 {
 bool VerifyZg361Ae2Image267V1(std::uintptr_t image)noexcept{
 #if defined(XAR_CK3_ENABLE_121003_26785313_ZG361_AE2_V1) && XAR_CK3_ENABLE_121003_26785313_ZG361_AE2_V1
- return VerifyLetterImage267V1(image)&&zg361_ae2_control::VerifyZg361Ae2ManageImage267V1(image);
+ return VerifyLetterImage267V1(image)&&zg361_ae2_control::VerifyZg361Ae2ManageImage267V1(image)&&zg361_review_source::Verify(image);
 #else
  (void)image;return false;
 #endif
@@ -16,6 +17,13 @@ bool VerifyZg361Ae2Image267V1(std::uintptr_t image)noexcept{
 namespace {
 namespace control=zg361_ae2_control;
 namespace tooltip=zg361_ae2_source;
+#ifndef XAR_ZG361_REVIEW_READ_MANAGE
+#define XAR_ZG361_REVIEW_READ_MANAGE control::ReadZg361Ae2ManageRaw267V1
+#endif
+#ifndef XAR_ZG361_REVIEW_CALL_MANAGE
+#define XAR_ZG361_REVIEW_CALL_MANAGE control::CallZg361Ae2ManageRaw267V1
+#endif
+
 #ifndef XAR_ZG361_AE2_SELECT_CALL_ADDRESS
 #define XAR_ZG361_AE2_SELECT_CALL_ADDRESS(image,rva) ((image)+(rva))
 #endif
@@ -49,8 +57,9 @@ namespace tooltip=zg361_ae2_source;
  out.resident_available=r.list||r.detail||r.nav_widget;out.list_visible=s.list_visible;
  out.detail_visible=s.detail_visible;out.actor_bound=s.owner_bound;
  out.model_complete=s.complete_model_census;out.blocked_by_visible_modal=s.blocked_by_visible_modal;
- out.open_list_admissible=s.open_list_admissible&&!s.detail_visible;out.selected_control=s.selected_decision;
- for(const auto&row:s.rows){Zg361Ae2ControlRow267V1 v;v.control=row.decision;
+ out.open_list_admissible=s.open_list_admissible&&!s.detail_visible;
+ if(s.selected_decision&&static_cast<unsigned>(*s.selected_decision)<2)out.selected_control=s.selected_decision;
+ for(const auto&row:s.rows){if(static_cast<unsigned>(row.decision)>=2)continue;Zg361Ae2ControlRow267V1 v;v.control=row.decision;
   v.definition_key=kZg361Ae2ControlKeys267V1[static_cast<std::size_t>(row.decision)];
   // This is the captured native row/window navigation guard. It does not
   // pretend that RowSelect has an independent bool-returning Can method.
@@ -58,6 +67,17 @@ namespace tooltip=zg361_ae2_source;
   if(s.selected_decision==row.decision&&s.detail_visible){v.native_can_confirm=s.native_can_confirm;
    v.confirm_admissible=s.confirm_admissible;}out.rows.push_back(std::move(v));
  }return out;
+}
+[[maybe_unused]]Zg361Review267V1 ReviewData(const control::Zg361Ae2ManageRaw267V1&r){
+ const auto&s=r.source;Zg361Review267V1 out;
+ out.resident_available=r.list||r.detail||r.nav_widget;out.list_visible=s.list_visible;out.detail_visible=s.detail_visible;out.detail_enabled=s.detail_enabled;
+ out.actor_bound=s.owner_bound;out.model_complete=s.complete_model_census;out.blocked_by_visible_modal=s.blocked_by_visible_modal;
+ out.selected_definition_key=s.selected_definition_key;
+ out.selected_review=s.detail_visible&&s.selected_decision==Zg361Ae2Control267V1::review;
+ for(const auto&row:s.rows)if(row.decision==Zg361Ae2Control267V1::review){out.row_present=true;out.open_detail_admissible=row.can_open_detail;}
+ out.requirements_complete=s.requirements_complete;
+ if(out.requirements_complete){out.has_requirements=s.has_requirements;out.requirements_description=s.requirements_description;}
+ return out;
 }
 [[maybe_unused]]bool SameControl(const control::Zg361Ae2ManageRaw267V1&a,
  const control::Zg361Ae2ManageRaw267V1&b){
@@ -92,12 +112,13 @@ bool ReadZg361Ae2Raw267V1(const ReadonlyBindings&b,const Zg361Ae2Frame267V1&f,
  try{
   if(!XAR_ZG361_AE2_PARENT_FRESH(b,f,q,mono))return false;
   auto state=std::make_shared<Zg361Ae2Raw267V1::State>();out.source.kind=Zg361Ae2KindFor267V1(q.action);
-  if(out.source.kind==Zg361Ae2Kind267V1::controls){
+  if(out.source.kind!=Zg361Ae2Kind267V1::events){
    if(!f.controls||!f.controls->facts_verified||!RawCore(f.controls->core,f.core))return false;
    state->controls.emplace();
-   const bool good=control::ReadZg361Ae2ManageRaw267V1(b,f.core,f.controls->scene,mono,*state->controls,why);
+   const bool good=XAR_ZG361_REVIEW_READ_MANAGE(b,f.core,f.controls->scene,mono,*state->controls,why,out.source.kind==Zg361Ae2Kind267V1::review);
    out.entered=state->controls->native_read_entered;out.cleanup_known=state->controls->cleanup_known;
-   if(!good)return false;out.source.controls=ControlData(*state->controls);
+   if(!good)return false;
+   if(out.source.kind==Zg361Ae2Kind267V1::review)out.source.review=ReviewData(*state->controls);else out.source.controls=ControlData(*state->controls);
   }else{
    if(!f.events||!f.events->facts_verified||!RawCore(f.events->core,f.core))return false;
    const auto bindings=BindLetterImage267V1(b.module_base,kExecutableSha256);
@@ -184,10 +205,11 @@ struct Zg361Ae2CallAccess267V1 {
     using A=Zg361Ae2Action267V1;control::Zg361Ae2ManageAction267V1 action;
     std::optional<Zg361Ae2Control267V1>key;
     if(q.action==A::open_controls_list)action=control::Zg361Ae2ManageAction267V1::open_list;
+    else if(q.action==A::open_review_detail){action=control::Zg361Ae2ManageAction267V1::open_detail;key=Zg361Ae2Control267V1::review;}
     else if(q.action==A::open_present_detail||q.action==A::open_verify_detail){action=control::Zg361Ae2ManageAction267V1::open_detail;key=q.action==A::open_present_detail?Zg361Ae2Control267V1::present:Zg361Ae2Control267V1::verify;}
     else if(q.action==A::confirm_present||q.action==A::confirm_verify){action=control::Zg361Ae2ManageAction267V1::confirm;key=q.action==A::confirm_present?Zg361Ae2Control267V1::present:Zg361Ae2Control267V1::verify;}
     else return out;
-    const auto call=control::CallZg361Ae2ManageRaw267V1(b,f.core,f.controls->scene,mono,*actual.state_->controls,action,key);
+    const auto call=XAR_ZG361_REVIEW_CALL_MANAGE(b,f.core,f.controls->scene,mono,*actual.state_->controls,action,key);
     return {call.effect_entered,call.status==control::Zg361Ae2ManageRawCallStatus267V1::returned,call.cleanup_known};
    }
    if(!actual.source.events||!actual.source.events->ae2||!actual.source.events->ae2->pay_now_admissible||

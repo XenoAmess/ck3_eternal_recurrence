@@ -30,7 +30,7 @@ bool ReadZg361Ae2FrameOnOwner267V1(const ReadonlyBindings&b,
     At(b.module_base,kJominiStateSlotRva,f.jomini)&&f.jomini&&
     At(b.module_base,kCharacterStorageSlotRva,f.character_storage)&&f.character_storage;};
   Zg361Ae2Frame267V1 a,z;
-  if(Zg361Ae2KindFor267V1(r.action)==Zg361Ae2Kind267V1::controls){
+  if(Zg361Ae2KindFor267V1(r.action)!=Zg361Ae2Kind267V1::events){
    a.controls.emplace();z.controls.emplace();
    const auto conn=static_cast<const Zg361Ae2Context267V1*>(context)->connection_generation;
    a.controls->scene.connection_generation=z.controls->scene.connection_generation=conn;

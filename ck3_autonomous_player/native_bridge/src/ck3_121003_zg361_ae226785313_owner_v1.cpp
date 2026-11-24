@@ -94,7 +94,7 @@ struct Zg361Ae2Session267V1::State {
  std::atomic_bool unknown{false};std::mutex mutex;
  std::uint64_t generation=GetTickCount64()?GetTickCount64():1,query=0,claim=0,connection=0;
  std::uint32_t thread=0;std::optional<Zg361Ae2Frame267V1>initial;std::optional<Lease>latest;
- std::array<bool,8>once{};std::array<bool,2>list_once{};
+ std::array<bool,10>once{};std::array<bool,2>list_once{};
  bool present_sent=false,pay_sent=false,original_instance_absent=false,verify_sent=false;
  std::optional<Zg361Ae2EventIdentity267V1>event;
  std::vector<std::pair<std::string,std::uint64_t>>claims;
@@ -139,6 +139,7 @@ bool ExecuteZg361Ae2Inner267V1(Zg361Ae2Context267V1&q,[[maybe_unused]]const ck3_
     (index>=state.once.size()||state.once[index]))return false;
    if(a==A::open_controls_list){const auto phase=state.pay_sent&&state.original_instance_absent?1U:0U;
     return !state.verify_sent&&!state.list_once[phase]&&(phase==1||!state.present_sent);}
+   if(a==A::open_review_detail)return !state.present_sent&&!state.pay_sent&&!state.verify_sent;
    if(a==A::open_present_detail)return !state.present_sent&&!state.once[static_cast<unsigned>(a)];
    if(a==A::confirm_present)return !state.present_sent&&state.once[static_cast<unsigned>(A::open_present_detail)];
    if(a==A::choose_pay_now)return state.present_sent&&!state.pay_sent&&state.event.has_value();
@@ -152,6 +153,7 @@ bool ExecuteZg361Ae2Inner267V1(Zg361Ae2Context267V1&q,[[maybe_unused]]const ck3_
     for(auto&r:c.rows){const bool present=r.control==Zg361Ae2Control267V1::present;
      r.open_detail_admissible&=phase_admits(present?A::open_present_detail:A::open_verify_detail);
      r.confirm_admissible&=phase_admits(present?A::confirm_present:A::confirm_verify);}}
+   if(source.review)source.review->open_detail_admissible&=phase_admits(A::open_review_detail);
    if(source.events&&source.events->ae2){auto&a=*source.events->ae2;
     const bool same=state.event&&state.event->instance_id==a.instance_id&&state.event->recipient_character_id==a.recipient_character_id&&state.event->definition_key==a.definition_key;
     a.pay_now_admissible&=phase_admits(A::choose_pay_now)&&same;}

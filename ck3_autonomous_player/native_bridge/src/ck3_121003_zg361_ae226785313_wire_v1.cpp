@@ -98,6 +98,14 @@ bool Controls(const Zg361Ae2Controls267V1&s)noexcept{
   if(r.confirm_admissible&&(!s.actor_bound||!s.model_complete||!s.detail_visible||s.selected_control!=r.control||r.native_can_confirm!=true||s.blocked_by_visible_modal))return false;
  }return true;
 }
+bool Review(const Zg361Review267V1&s)noexcept{
+ if(s.selected_definition_key&&!Key(*s.selected_definition_key))return false;
+ if(s.selected_review&&(!s.detail_visible||s.selected_definition_key!=kZg361ReviewKey267V1))return false;
+ if(s.requirements_complete){
+  if(!s.selected_review||!s.actor_bound||!s.model_complete||!s.row_present||!s.has_requirements||!s.requirements_description||!Utf8(*s.requirements_description))return false;
+ }else if(s.has_requirements||s.requirements_description)return false;
+ return !s.open_detail_admissible||(s.resident_available&&s.actor_bound&&s.model_complete&&s.row_present&&s.list_visible&&!s.selected_review&&!s.blocked_by_visible_modal);
+}
 const Zg361Ae2Option267V1*Pay(const Zg361Ae2Snapshot267V1&s)noexcept{
  for(const auto&o:s.options)if(o.authored_option_index==15)return &o;return nullptr;
 }
@@ -141,7 +149,19 @@ Zg361Ae2Status267V1 Dispatched(Zg361Ae2Action267V1 a)noexcept{
  return T::navigation_dispatched;
 }
 void Source(Json&j,const Zg361Ae2Source267V1&s){
- j.data+="{\"schema\":";String(j.data,kZg361Ae2SourceSchema267V1);j.str("kind",s.kind==Zg361Ae2Kind267V1::controls?"controls":"events");
+ j.data+="{\"schema\":";String(j.data,kZg361Ae2SourceSchema267V1);
+ if(s.kind==Zg361Ae2Kind267V1::review){
+  j.str("kind","review");j.key("review");const auto&r=*s.review;
+  j.data+="{\"definition_key\":";String(j.data,kZg361ReviewKey267V1);
+  j.flag("resident_available",r.resident_available);j.flag("list_visible",r.list_visible);j.flag("detail_visible",r.detail_visible);j.flag("detail_enabled",r.detail_enabled);
+  j.flag("actor_bound",r.actor_bound);j.flag("model_complete",r.model_complete);j.flag("blocked_by_visible_modal",r.blocked_by_visible_modal);j.flag("row_present",r.row_present);
+  j.flag("selected_review",r.selected_review);j.flag("open_detail_admissible",r.open_detail_admissible);j.flag("requirements_complete",r.requirements_complete);
+  j.key("selected_definition_key");if(r.selected_definition_key)String(j.data,*r.selected_definition_key);else j.data+="null";
+  j.key("has_requirements");if(r.has_requirements)j.data+=*r.has_requirements?"true":"false";else j.data+="null";
+  j.key("requirements_description");if(r.requirements_description)String(j.data,*r.requirements_description);else j.data+="null";
+  j.data+="}}";return;
+ }
+ j.str("kind",s.kind==Zg361Ae2Kind267V1::controls?"controls":"events");
  j.key("controls");
  if(s.controls){const auto&c=*s.controls;j.data+="{\"resident_available\":";j.data+=c.resident_available?"true":"false";
   j.flag("list_visible",c.list_visible);j.flag("detail_visible",c.detail_visible);j.flag("actor_bound",c.actor_bound);j.flag("model_complete",c.model_complete);j.flag("blocked_by_visible_modal",c.blocked_by_visible_modal);j.flag("open_list_admissible",c.open_list_admissible);
@@ -159,11 +179,11 @@ void Source(Json&j,const Zg361Ae2Source267V1&s){
 } // namespace
 
 const char*Zg361Ae2ActionName267V1(Zg361Ae2Action267V1 a)noexcept{
- constexpr const char*names[]{"query_controls","open_controls_list","open_present_detail","confirm_present","query_ae2","choose_pay_now","open_verify_detail","confirm_verify"};
+ constexpr const char*names[]{"query_controls","open_controls_list","open_present_detail","confirm_present","query_ae2","choose_pay_now","open_verify_detail","confirm_verify","query_review_requirements","open_review_detail"};
  const auto n=static_cast<unsigned>(a);return n<std::size(names)?names[n]:"invalid";
 }
-bool Zg361Ae2Query267V1(Zg361Ae2Action267V1 a)noexcept{return a==Zg361Ae2Action267V1::query_controls||a==Zg361Ae2Action267V1::query_ae2;}
-Zg361Ae2Kind267V1 Zg361Ae2KindFor267V1(Zg361Ae2Action267V1 a)noexcept{return a==Zg361Ae2Action267V1::query_ae2||a==Zg361Ae2Action267V1::choose_pay_now?Zg361Ae2Kind267V1::events:Zg361Ae2Kind267V1::controls;}
+bool Zg361Ae2Query267V1(Zg361Ae2Action267V1 a)noexcept{return a==Zg361Ae2Action267V1::query_controls||a==Zg361Ae2Action267V1::query_ae2||a==Zg361Ae2Action267V1::query_review_requirements;}
+Zg361Ae2Kind267V1 Zg361Ae2KindFor267V1(Zg361Ae2Action267V1 a)noexcept{if(a==Zg361Ae2Action267V1::query_review_requirements||a==Zg361Ae2Action267V1::open_review_detail)return Zg361Ae2Kind267V1::review;return a==Zg361Ae2Action267V1::query_ae2||a==Zg361Ae2Action267V1::choose_pay_now?Zg361Ae2Kind267V1::events:Zg361Ae2Kind267V1::controls;}
 bool Zg361Ae2RequestShape267V1(const Zg361Ae2Request267V1&q)noexcept{
  return q.request_id_size<=96&&Id(q.id())&&q.deadline_unix_ms&&Prefix(q.expected)&&std::string_view(Zg361Ae2ActionName267V1(q.action))!="invalid"&&(Zg361Ae2Query267V1(q.action)?(!q.provider_generation&&!q.query_sequence):(q.provider_generation&&q.query_sequence));
 }
@@ -176,15 +196,17 @@ bool ParseZg361Ae2Request267V1(std::string_view packet,Zg361Ae2Request267V1&out)
  }c.Space();if(seen!=255||c.pos!=packet.size()||!Zg361Ae2RequestShape267V1(q))return false;out=q;return true;
 }
 bool Zg361Ae2SourceShape267V1(const Zg361Ae2Source267V1&s)noexcept{
- if(static_cast<unsigned>(s.controls.has_value())+static_cast<unsigned>(s.events.has_value())!=1)return false;
+ if(static_cast<unsigned>(s.controls.has_value())+static_cast<unsigned>(s.events.has_value())+static_cast<unsigned>(s.review.has_value())!=1)return false;
  if(s.kind==Zg361Ae2Kind267V1::controls)return s.controls&&Controls(*s.controls);
  if(s.kind==Zg361Ae2Kind267V1::events)return s.events&&Events(*s.events);
+ if(s.kind==Zg361Ae2Kind267V1::review)return s.review&&Review(*s.review);
  return false;
 }
 bool Zg361Ae2PublicAdmissible267V1(const Zg361Ae2Source267V1&s,Zg361Ae2Action267V1 a)noexcept{
  using A=Zg361Ae2Action267V1;
  if(std::string_view(Zg361Ae2ActionName267V1(a))=="invalid"||s.kind!=Zg361Ae2KindFor267V1(a)||!Zg361Ae2SourceShape267V1(s))return false;
  if(Zg361Ae2Query267V1(a))return true;
+ if(a==A::open_review_detail)return s.review->open_detail_admissible;
  if(a==A::choose_pay_now)return s.events->ae2&&s.events->ae2->pay_now_admissible;
  const auto&c=*s.controls;if(a==A::open_controls_list)return c.open_list_admissible;
  const auto which=a==A::open_present_detail||a==A::confirm_present?Zg361Ae2Control267V1::present:Zg361Ae2Control267V1::verify;
