@@ -5978,6 +5978,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
 
     // Fixed AE2 finite0day case: only authentic private observations convey custody.
     private CoreReceived zg361Ae2InitialCore;
+    private boolean zg361Ae2CombinedCase;
     private AckReceived zg361Ae2LastAction;
     private Unknown unresolvedZg361Ae2;
     private boolean zg361Ae2PresentConfirmed,zg361Ae2PayAbsenceConfirmed;
@@ -5985,6 +5986,14 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     private final Set<CoreReceived> zg361Ae2QueryCores=java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<>());
     private final Set<String> zg361Ae2Attempted=new HashSet<>();
 
+    /** Fixed combined workflow only; no caller-selected capacity or authority boolean. */
+    public synchronized void beginCurrentZg361Ae2CombinedCase(CoreReceived actual)throws IOException {
+        if(!hello.capabilities().containsAll(Set.of(CurrentZg361Ae2.QUERY_CAPABILITY,CurrentZg361Ae2.CONTROLS_CAPABILITY,
+                CurrentZg361Ae2.PAY_CAPABILITY,CurrentZg361Ae2.REVIEW_QUERY_CAPABILITY,CurrentZg361Ae2.REVIEW_DETAIL_CAPABILITY)))
+            throw new IOException("Actual combined review/payment capabilities are unavailable");
+        beginCurrentZg361Ae2Case(actual);
+        zg361Ae2CombinedCase=true;
+    }
     public synchronized void beginCurrentZg361Ae2Case(CoreReceived actual)throws IOException {
         if(zg361Ae2InitialCore!=null)throw new IOException("Original AE2 finite case already captured by this Receiver");
         requireZg361Ae2Core(actual,actual==null?chronologyClock.instant():actual.validUntil);
@@ -6067,7 +6076,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     }
     private static CurrentZg361Ae2Result.Status zg361Ae2DispatchStatus(CurrentZg361Ae2.Action action)throws IOException {
         return switch(action) {
-            case OPEN_CONTROLS_LIST,OPEN_PRESENT_DETAIL,OPEN_VERIFY_DETAIL->CurrentZg361Ae2Result.Status.NAVIGATION_DISPATCHED;
+            case OPEN_CONTROLS_LIST,OPEN_PRESENT_DETAIL,OPEN_VERIFY_DETAIL,OPEN_REVIEW_DETAIL->CurrentZg361Ae2Result.Status.NAVIGATION_DISPATCHED;
             case CHOOSE_PAY_NOW->CurrentZg361Ae2Result.Status.SELECTION_DISPATCHED;
             case CONFIRM_PRESENT,CONFIRM_VERIFY->CurrentZg361Ae2Result.Status.CONFIRMATION_DISPATCHED;
             default->throw new IOException("Readonly AE2 action cannot dispatch");
@@ -6134,7 +6143,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             throw new IOException("Actual private AE2 payment recipient differs from current full actor");
         if((action==CurrentZg361Ae2.Action.OPEN_VERIFY_DETAIL||action==CurrentZg361Ae2.Action.CONFIRM_VERIFY)&&!zg361Ae2PayAbsenceConfirmed)
             throw new IOException("AE2 verification requires independent original-instance absence after THIS payment ACK");
-        if(zg361Ae2Attempted.contains(zg361Ae2OnceKey(action))||zg361Ae2Attempted.size()>=7)
+        if(zg361Ae2Attempted.contains(zg361Ae2OnceKey(action))||zg361Ae2Attempted.size()>=(zg361Ae2CombinedCase?8:7))
             throw new IOException("Original AE2 action/phase already attempted or finite case capacity reached");
     }
     public synchronized Zg361Ae2Prepared prepareCurrentZg361Ae2(Zg361Ae2Received query,CurrentZg361Ae2.Action action)throws IOException {

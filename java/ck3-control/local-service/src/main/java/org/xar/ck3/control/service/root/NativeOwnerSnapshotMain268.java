@@ -192,6 +192,10 @@ public final class NativeOwnerSnapshotMain268 {
         ObjectNode config = StrictJson.object(StrictJson.parse(configBytes, SMALL), Set.of("schema", "owner_descriptor",
                 "overall_timeout_seconds", "read_timeout_seconds", "maximum_frames_per_operation"), Set.of("core_prefix_only", "mode", "control_step", "maximum_status_polls", "status_poll_interval_ms", "window_name", "expected_source_rite_id", "checkpoint_archive_path", "maximum_checkpoint_bytes", "checkpoint_observation_attempts", "checkpoint_poll_interval_ms", "previous_checkpoint_source", "previous_checkpoint_archive", "navigation_action", "rite_action", "maximum_confirmation_polls", "target_character_id", "cb_key", "tuple_intent", "maximum_warning_polls", "warning_poll_interval_ms", "instance_id", "decision_key", "target_threshold", "product", "control", "setting", "catalog", "choice_key", "phase", "baseline_progress", "personal_key", "event_role", "status_poll_delay_ms", "maximum_core_polls", "core_poll_interval_ms", "confirmation_poll_interval_ms", "text"));
         ObservationMode observationMode=observationMode(config);
+        boolean currentZg361Combined=observationMode==ObservationMode.CURRENT_ZG361_REVIEW_AE2;
+        Zg361CombinedConfig zg361CombinedConfig=currentZg361Combined?currentZg361CombinedConfig(config):null;
+        boolean currentZg361Review=observationMode==ObservationMode.CURRENT_ZG361_REVIEW;
+        Zg361ReviewConfig zg361ReviewConfig=currentZg361Review?currentZg361ReviewConfig(config):null;
         boolean currentZg361Ae2=observationMode==ObservationMode.CURRENT_ZG361_AE2;
         Zg361Ae2Config zg361Ae2Config=currentZg361Ae2?currentZg361Ae2Config(config):null;
         boolean currentLivingOriginal=observationMode==ObservationMode.CURRENT_LIVING_ORIGINAL;
@@ -283,7 +287,7 @@ public final class NativeOwnerSnapshotMain268 {
         boolean coreCommand=applicationExit||controlStep!=null;
         ExactRef expectedDescriptor = ExactRef.fromJson(config.get("owner_descriptor"));
         StrictJson.require(Path.of(expectedDescriptor.path()).toAbsolutePath().normalize().equals(descriptorPath), "descriptor path differs from explicit config");
-        long overall = StrictJson.integer(config.get("overall_timeout_seconds"), 1, 600);
+        long overall = StrictJson.integer(config.get("overall_timeout_seconds"), 1, currentZg361OverallTimeoutLimit(observationMode));
         long readSeconds = StrictJson.integer(config.get("read_timeout_seconds"), 1, 60);
         int frames = Math.toIntExact(StrictJson.integer(config.get("maximum_frames_per_operation"), 1, 65536));
         boolean corePrefixOnly=observationMode!=ObservationMode.SAVED_FULL;
@@ -450,20 +454,26 @@ public final class NativeOwnerSnapshotMain268 {
                 .put("read_calls",0).put("continue_calls",0).put("native_callback_returned",false).put("continuation_confirmed",false).put("physical_save_confirmed",false).put("save_calls",0);
         if(currentFrontendMenu)result.put("schema","xar.native-owner-current-menu/v1").put("mode",currentFrontendQuit?"current_frontend_menu_quit":"current_frontend_menu")
                 .put("read_calls",0).put("quit_calls",0).put("world_core_fabricated",false).put("application_exit_confirmed",false).put("game_started_confirmed",false).put("physical_save_confirmed",false);
+        if(currentZg361Combined)initializeCurrentZg361CombinedResult(result,owner.machineId());
+        if(currentZg361Review)initializeCurrentZg361ReviewResult(result,owner.machineId());
         if(currentZg361Ae2)initializeCurrentZg361Ae2Result(result,owner.machineId());
         stage = "ATTACH";
         try (var supervisor = WindowsJobProcess.retainReadOnlyProcess(owner.supervisorIdentity().pid())) {
             requireSupervisor(supervisor, owner.supervisorIdentity());
-            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,currentZg361Ae2?zg361Ae2Config.submissions():currentLivingOriginal?livingConfig.submissions():currentRmtmRemaining?rmtmConfig.submissions():currentRmtmTitleQuery?2:currentCcc?cccConfig.submissions():currentStockBookmark1070?stockBookmark1070Config.submissions():currentRiteCreationBlockers?2:currentRiteText?riteTextConfig.submissions():currentRiteCreate?riteCreateConfig.submissions():currentDesInitGuard?2:currentStockSeed?stockSeedConfig.submissions():currentTed?tedConfig.submissions():currentLyd?lydConfig.mode().submissions():currentSupermanSavedBaseline?3:currentSupermanHealth?(healthConfig.mode()==SupermanHealthMode.QUERY?2:healthConfig.mode()==SupermanHealthMode.BASELINE_SAVE_AND_BEGIN?5:3):currentCourtierChoices?(choicesConfig.action()==CurrentCourtierChoices.Action.QUERY_CHOICES?2:3):currentCourtierConfiguration?(configurationConfig.action()==CurrentCourtierConfiguration.Action.QUERY_CONFIGURATION?2:3):currentDecisionsClose?(decisionsCloseAction==CurrentDecisionsClose.Action.QUERY_CLOSE?2:3):currentCourtierControls?(courtierConfig.action()==CurrentCourtierControls.Action.QUERY_CONTROL?2:3):currentXqolThreshold?(thresholdConfig.action()==CurrentXqolThreshold.Action.QUERY_THRESHOLD?2:3):currentXqolPrompt?(xqolPromptAction==CurrentXqolPrompt.Action.QUERY_PROMPT?2:3):currentCuratedDecision?(curatedConfig.action()==CurrentCuratedDecisions.Action.QUERY?2:3):currentFullscreenEvent?(acknowledgeKnownIntro?3:2):currentLetterSet?(letterSetReply?3:2):djcSelectedCost?(djcCostPreview?9:3):currentLetter?(knownLetterReply?3:2):djcUiMode?(djcUiSubmit?declarationConfig.maximumWarningPolls()+12:2):currentSuccession?(continueSuccession?2:1):currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||aubObserver||djcQuery||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
+            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,currentZg361Combined?zg361CombinedConfig.submissions():currentZg361Review?zg361ReviewConfig.submissions():currentZg361Ae2?zg361Ae2Config.submissions():currentLivingOriginal?livingConfig.submissions():currentRmtmRemaining?rmtmConfig.submissions():currentRmtmTitleQuery?2:currentCcc?cccConfig.submissions():currentStockBookmark1070?stockBookmark1070Config.submissions():currentRiteCreationBlockers?2:currentRiteText?riteTextConfig.submissions():currentRiteCreate?riteCreateConfig.submissions():currentDesInitGuard?2:currentStockSeed?stockSeedConfig.submissions():currentTed?tedConfig.submissions():currentLyd?lydConfig.mode().submissions():currentSupermanSavedBaseline?3:currentSupermanHealth?(healthConfig.mode()==SupermanHealthMode.QUERY?2:healthConfig.mode()==SupermanHealthMode.BASELINE_SAVE_AND_BEGIN?5:3):currentCourtierChoices?(choicesConfig.action()==CurrentCourtierChoices.Action.QUERY_CHOICES?2:3):currentCourtierConfiguration?(configurationConfig.action()==CurrentCourtierConfiguration.Action.QUERY_CONFIGURATION?2:3):currentDecisionsClose?(decisionsCloseAction==CurrentDecisionsClose.Action.QUERY_CLOSE?2:3):currentCourtierControls?(courtierConfig.action()==CurrentCourtierControls.Action.QUERY_CONTROL?2:3):currentXqolThreshold?(thresholdConfig.action()==CurrentXqolThreshold.Action.QUERY_THRESHOLD?2:3):currentXqolPrompt?(xqolPromptAction==CurrentXqolPrompt.Action.QUERY_PROMPT?2:3):currentCuratedDecision?(curatedConfig.action()==CurrentCuratedDecisions.Action.QUERY?2:3):currentFullscreenEvent?(acknowledgeKnownIntro?3:2):currentLetterSet?(letterSetReply?3:2):djcSelectedCost?(djcCostPreview?9:3):currentLetter?(knownLetterReply?3:2):djcUiMode?(djcUiSubmit?declarationConfig.maximumWarningPolls()+12:2):currentSuccession?(continueSuccession?2:1):currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:checkpointSave||aubObserver||djcQuery||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
             // This factory returns ATTACHED only. Its close releases communication and readonly handles, never a Job.
-            try (ManagedGameSession game = NativeGameAttachment.attach(request, (currentZg361Ae2||currentLivingOriginal||currentRmtmRemaining||currentRmtmTitleQuery||currentCcc||currentStockBookmark1070||currentRiteCreationBlockers||currentRiteText||currentRiteCreate||currentDesInitGuard||currentStockSeed||currentTed||currentLyd||currentSupermanSavedBaseline||currentSupermanHealth||currentCourtierChoices||currentCourtierConfiguration||currentDecisionsClose||currentCourtierControls||currentXqolThreshold||currentXqolPrompt||currentCuratedDecision||currentFullscreenEvent||currentLetterSet||djcSelectedCost||currentLetter||djcUiMode||currentFrontendMenu||currentSuccession||aubObserver||djcQuery||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
+            try (ManagedGameSession game = NativeGameAttachment.attach(request, (currentZg361Combined||currentZg361Review||currentZg361Ae2||currentLivingOriginal||currentRmtmRemaining||currentRmtmTitleQuery||currentCcc||currentStockBookmark1070||currentRiteCreationBlockers||currentRiteText||currentRiteCreate||currentDesInitGuard||currentStockSeed||currentTed||currentLyd||currentSupermanSavedBaseline||currentSupermanHealth||currentCourtierChoices||currentCourtierConfiguration||currentDecisionsClose||currentCourtierControls||currentXqolThreshold||currentXqolPrompt||currentCuratedDecision||currentFullscreenEvent||currentLetterSet||djcSelectedCost||currentLetter||djcUiMode||currentFrontendMenu||currentSuccession||aubObserver||djcQuery||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
                 if (game.mode() != ManagedGameSession.Mode.ATTACHED) throw new IOException("actual attachment mode differs");
                 requireSupervisor(supervisor, owner.supervisorIdentity());
                 var transport = game.nativeTransport();
                 var hello = transport.diagnostics().originalHello().orElseThrow(() -> new IOException("actual received HELLO unavailable"));
                 originals.set("new_hello", write(output, "new-hello.bin", hello.original().packet().value()));
                 result.put("hello_observed_at_utc", hello.observedAt().toString());
-                if(currentZg361Ae2) {
+                if(currentZg361Combined) {
+                    runCurrentZg361Combined(transport,owner,plan,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
+                } else if(currentZg361Review) {
+                    runCurrentZg361Review(transport,owner,plan,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
+                } else if(currentZg361Ae2) {
                     runCurrentZg361Ae2(transport,owner,plan,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
                 } else if(currentLivingOriginal) {
                     runCurrentLivingOriginal(transport,owner,plan,output,plan.deadline().isBefore(deadline)?plan.deadline():deadline,result,originals);
@@ -4022,6 +4032,184 @@ if(riteDraftCosts) {
         }
     }
 
+    record Zg361CombinedConfig() { int submissions(){return currentZg361CombinedSubmissionBound();} }
+    static Zg361CombinedConfig currentZg361CombinedConfig(ObjectNode config) {
+        StrictJson.require("xar.native-owner-snapshot-config/v51".equals(StrictJson.text(config.get("schema")))
+                &&"current_zg361_review_ae2_case_once".equals(StrictJson.text(config.get("mode"))),"Only explicit v51 same-receiver review then original AE2 case");
+        StrictJson.object(config,Set.of("schema","mode","owner_descriptor","overall_timeout_seconds","read_timeout_seconds","maximum_frames_per_operation"));
+        ExactRef.fromJson(config.get("owner_descriptor"));
+        StrictJson.integer(config.get("overall_timeout_seconds"),1,900);
+        StrictJson.integer(config.get("read_timeout_seconds"),1,60);
+        StrictJson.integer(config.get("maximum_frames_per_operation"),1,65536);
+        return new Zg361CombinedConfig();
+    }
+    static int currentZg361CombinedSubmissionBound() {
+        // Conservative structural bound. The shared phase-0 list normally
+        // removes three from 8+24; do not assume a public GUI value is private
+        // permission, or require an extra Close to obtain that shorter path.
+        return currentZg361ReviewSubmissionBound(true,true)+currentZg361Ae2SubmissionBound(true,true);
+    }
+    static int currentZg361OverallTimeoutLimit(ObservationMode mode) {
+        return mode==ObservationMode.CURRENT_ZG361_REVIEW_AE2?900:600;
+    }
+    interface CheckedZg361ReviewAe2Sequence<C> {
+        C begin()throws IOException,InterruptedException;
+        void review(C sameContext)throws IOException,InterruptedException;
+        void payment(C sameContext)throws IOException,InterruptedException;
+    }
+    static <C> C currentZg361ReviewBeforeAe2(CheckedZg361ReviewAe2Sequence<C> sequence)throws IOException,InterruptedException {
+        C context=Objects.requireNonNull(sequence.begin());
+        sequence.review(context);
+        sequence.payment(context);
+        return context;
+    }
+    static void initializeCurrentZg361CombinedResult(ObjectNode result,String machineId) {
+        initializeCurrentZg361Ae2Result(result,machineId);
+        result.put("schema","xar.native-owner-current-zg361-review-ae2-case/v1").put("mode","current_zg361_review_ae2_case_once")
+                .put("requirements_complete_observed",false).put("review_detail_open_dispatched",false)
+                .put("four_localized_labels_observed",false).put("review_readonly_channel_completed",false)
+                .put("combined_private_channel_completed",false);
+    }
+    private record Zg361CombinedContext(Zg361Ae2Run run,NativeGameTransport.CoreReceived first) {}
+    private static void runCurrentZg361Combined(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeLaunchPlan plan,
+            Path output,Instant deadline,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        var run=new Zg361Ae2Run(transport,owner,plan,output,deadline,result,originals);
+        try {
+            if(!(plan.load() instanceof NativeLaunchPlan.SavedGame))throw new IOException("Combined review/AE2 requires the actual Saved-v3 owner");
+            currentZg361ReviewBeforeAe2(new CheckedZg361ReviewAe2Sequence<Zg361CombinedContext>() {
+                public Zg361CombinedContext begin()throws IOException,InterruptedException {
+                    var first=run.core("zg361-combined-initial");
+                    transport.beginCurrentZg361Ae2CombinedCase(first);run.bound=true;
+                    return new Zg361CombinedContext(run,first);
+                }
+                public void review(Zg361CombinedContext same)throws IOException,InterruptedException {
+                    observeCurrentZg361Review(same.run(),same.first());
+                }
+                public void payment(Zg361CombinedContext same)throws IOException,InterruptedException {
+                    // This fresh private controls query is after actual Review
+                    // completion in the same Run/session/connection. Original
+                    // ensureList skips the already visible shared phase-0 list.
+                    var present=same.run().query(CurrentZg361Ae2.Action.QUERY_CONTROLS,"zg361-controls-after-review");
+                    completeCurrentZg361Ae2(same.run(),present);
+                }
+            });
+            result.put("combined_private_channel_completed",true);
+        } finally {
+            archiveNaturalDiagnostics(output,originals,transport.diagnostics());
+            var progress=result.deepCopy();progress.set("originals",originals.deepCopy());
+            write(output,"current-zg361-review-ae2-progress.json",FullJsonTree.encode(progress,FullJsonTree.MAXIMUM_BYTES));
+        }
+    }
+
+    private static void observeCurrentZg361Review(Zg361Ae2Run run,NativeGameTransport.CoreReceived first)throws IOException,InterruptedException {
+        var result=run.result;
+        var controls=run.query(first,CurrentZg361Ae2.Action.QUERY_CONTROLS,"zg361-review-controls");
+        if(currentZg361ReviewShouldOpenList(controls.frame().source().orElseThrow()))
+            run.action(controls,CurrentZg361Ae2.Action.OPEN_CONTROLS_LIST,"zg361-review-list-open");
+        // Always ask the actual review reader next. Hidden old controls do
+        // not rule out an already selected complete production review.
+        var query=run.query(CurrentZg361Ae2.Action.QUERY_REVIEW_REQUIREMENTS,"zg361-review-before");
+        if(currentZg361ReviewNeedsOpen(query.frame().source().orElseThrow())) {
+            run.action(query,CurrentZg361Ae2.Action.OPEN_REVIEW_DETAIL,"zg361-review-detail-open");
+            result.put("review_detail_open_dispatched",true);
+            query=run.query(CurrentZg361Ae2.Action.QUERY_REVIEW_REQUIREMENTS,"zg361-review-after");
+        }
+        var actual=requireCurrentZg361ReviewComplete(query.frame().source().orElseThrow());
+        result.put("requirements_complete_observed",true).put("has_requirements",actual.hasRequirements().orElseThrow())
+                .put("requirements_description",actual.requirementsDescription().orElseThrow())
+                .put("actual_selected_definition_key",actual.selectedDefinitionKey().orElseThrow())
+                .put("review_readonly_channel_completed",true);
+        // Description is an actual complete native carrier. Root checks
+        // four localized labels independently; no predicted rows/Confirm.
+    }
+    private static void completeCurrentZg361Ae2(Zg361Ae2Run run,NativeGameTransport.Zg361Ae2Received present)throws IOException,InterruptedException {
+        var result=run.result;var transport=run.transport;
+        present=ensureCurrentZg361Ae2List(run,present,"zg361-present-list");
+        run.action(present,CurrentZg361Ae2.Action.OPEN_PRESENT_DETAIL,"zg361-present-detail");
+        present=run.query(CurrentZg361Ae2.Action.QUERY_CONTROLS,"zg361-present-detail-after");
+        requireCurrentZg361Ae2Confirmation(present,CurrentZg361Ae2Source.Control.PRESENT);
+        run.action(present,CurrentZg361Ae2.Action.CONFIRM_PRESENT,"zg361-present-confirm");
+        var event=run.query(CurrentZg361Ae2.Action.QUERY_AE2,"zg361-ae2-before-pay");
+        var actual=requireCurrentZg361Ae2ActualTooltips(event.frame().source().orElseThrow(),run.initial);
+        result.put("three_actual_full_tooltips_archived",true).put("actual_event_instance",actual.instanceId())
+                .put("actual_pay_authored_index",actual.payNowOption().authoredOptionIndex());
+        var pay=run.action(event,CurrentZg361Ae2.Action.CHOOSE_PAY_NOW,"zg361-pay-now");
+        result.put("pay_now_callback_dispatched",true);
+        var after=run.query(CurrentZg361Ae2.Action.QUERY_AE2,"zg361-ae2-after-pay");
+        if(pay.actualInstanceId().isEmpty()||pay.actualInstanceId().getAsInt()!=actual.instanceId()
+                ||!transport.currentZg361Ae2EventAbsent(pay,after))throw new IOException("Original AE2 instance still present or independent full census absence unqualified");
+        result.put("original_instance_absence_observed",true); // Not a global modal/date gate assertion.
+        var verify=run.query(CurrentZg361Ae2.Action.QUERY_CONTROLS,"zg361-verify-controls");
+        verify=ensureCurrentZg361Ae2List(run,verify,"zg361-verify-list");
+        run.action(verify,CurrentZg361Ae2.Action.OPEN_VERIFY_DETAIL,"zg361-verify-detail");
+        verify=run.query(CurrentZg361Ae2.Action.QUERY_CONTROLS,"zg361-verify-detail-after");
+        requireCurrentZg361Ae2Confirmation(verify,CurrentZg361Ae2Source.Control.VERIFY);
+        run.action(verify,CurrentZg361Ae2.Action.CONFIRM_VERIFY,"zg361-verify-confirm");
+        result.put("verify_confirmation_callback_dispatched",true);
+        run.core("zg361-final-after-verifier");result.put("original_private_channel_completed",true);
+        // The original real verifier/log and actual wallet deltas are an
+        // independent consumer AND. Never fill their reserved booleans here.
+    }
+
+    record Zg361ReviewConfig() { int submissions(){return currentZg361ReviewSubmissionBound(true,true);} }
+    static Zg361ReviewConfig currentZg361ReviewConfig(ObjectNode config) {
+        StrictJson.require("xar.native-owner-snapshot-config/v50".equals(StrictJson.text(config.get("schema")))
+                &&"current_zg361_review_requirements_once".equals(StrictJson.text(config.get("mode"))),"Only explicit v50 fixed review requirements observation");
+        StrictJson.object(config,Set.of("schema","mode","owner_descriptor","overall_timeout_seconds","read_timeout_seconds","maximum_frames_per_operation"));
+        ExactRef.fromJson(config.get("owner_descriptor"));
+        StrictJson.integer(config.get("overall_timeout_seconds"),1,600);
+        StrictJson.integer(config.get("read_timeout_seconds"),1,60);
+        StrictJson.integer(config.get("maximum_frames_per_operation"),1,65536);
+        return new Zg361ReviewConfig();
+    }
+    static int currentZg361ReviewSubmissionBound(boolean openList,boolean openDetail) {
+        // Initial Core/controls + independent Core/review =4. List needs one
+        // effect only; detail needs one effect and independent Core/review.
+        return 4+(openList?1:0)+(openDetail?3:0);
+    }
+    static boolean currentZg361ReviewShouldOpenList(CurrentZg361Ae2Source controls) {
+        var actual=controls.controls().orElseThrow();
+        return !actual.listVisible()&&actual.openListAdmissible();
+        // Hidden controls with no open permission do not reject a potentially
+        // already selected Review: the independent typed review query follows.
+    }
+    static void initializeCurrentZg361ReviewResult(ObjectNode result,String machineId) {
+        result.put("schema","xar.native-owner-current-zg361-review-requirements/v1").put("mode","current_zg361_review_requirements_once")
+                .put("machine_id",machineId).put("steam_build_id","26785313").put("read_calls",0).put("query_calls",0).put("action_calls",0)
+                .put("date_calls",0).put("save_calls",0).put("pay_calls",0).put("confirmation_calls",0)
+                .put("new_date_observed",false).put("physical_save_confirmed",false).put("requirements_complete_observed",false)
+                .put("review_detail_open_dispatched",false).put("four_localized_labels_observed",false)
+                .put("business_contract_pass",false).put("wholeproduct_pass",false);
+    }
+    static CurrentZg361Ae2Source.Review requireCurrentZg361ReviewComplete(CurrentZg361Ae2Source source)throws IOException {
+        var actual=source.review().orElseThrow(()->new IOException("Actual typed review Source required"));
+        if(!actual.requirementsComplete()||!actual.selectedReview()||!actual.detailVisible()||!actual.actorBound()
+                ||!actual.modelComplete()||!actual.rowPresent()
+                ||actual.selectedDefinitionKey().filter("zg361_review_now_decision"::equals).isEmpty()
+                ||actual.hasRequirements().isEmpty()||actual.requirementsDescription().isEmpty())
+            throw new IOException("Actual selected review Description/HasRequirements is incomplete; fixed target metadata is not current selection");
+        return actual; // Actual false/empty values are DATA, not missing getters.
+    }
+    static boolean currentZg361ReviewNeedsOpen(CurrentZg361Ae2Source source)throws IOException {
+        var actual=source.review().orElseThrow(()->new IOException("Actual typed review Source required"));
+        if(actual.requirementsComplete()) {requireCurrentZg361ReviewComplete(source);return false;}
+        if(!actual.openDetailAdmissible())throw new IOException("Actual review getters incomplete and fixed detail is not open-admissible; no retry/fallback");
+        return true;
+    }
+    private static void runCurrentZg361Review(NativeGameTransport transport,GameSupervisorControl.Descriptor owner,NativeLaunchPlan plan,
+            Path output,Instant deadline,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        var run=new Zg361Ae2Run(transport,owner,plan,output,deadline,result,originals);
+        try {
+            if(!(plan.load() instanceof NativeLaunchPlan.SavedGame))throw new IOException("Review observation requires the actual Saved-v3 owner");
+            var first=run.core("zg361-review-initial");transport.beginCurrentZg361Ae2Case(first);run.bound=true;
+            observeCurrentZg361Review(run,first);
+        } finally {
+            archiveNaturalDiagnostics(output,originals,transport.diagnostics());
+            var progress=result.deepCopy();progress.set("originals",originals.deepCopy());
+            write(output,"current-zg361-review-progress.json",FullJsonTree.encode(progress,FullJsonTree.MAXIMUM_BYTES));
+        }
+    }
+
     record Zg361Ae2Config() { int submissions(){return currentZg361Ae2SubmissionBound(true,true);} }
     static Zg361Ae2Config currentZg361Ae2Config(ObjectNode config) {
         StrictJson.require("xar.native-owner-snapshot-config/v49".equals(StrictJson.text(config.get("schema")))
@@ -4170,31 +4358,7 @@ if(riteDraftCosts) {
             if(!(plan.load() instanceof NativeLaunchPlan.SavedGame))throw new IOException("ZG361 AE2 requires actual Saved-v3 owner");
             var first=run.core("zg361-initial");transport.beginCurrentZg361Ae2Case(first);run.bound=true;
             var present=run.query(first,CurrentZg361Ae2.Action.QUERY_CONTROLS,"zg361-controls-initial");
-            present=ensureCurrentZg361Ae2List(run,present,"zg361-present-list");
-            run.action(present,CurrentZg361Ae2.Action.OPEN_PRESENT_DETAIL,"zg361-present-detail");
-            present=run.query(CurrentZg361Ae2.Action.QUERY_CONTROLS,"zg361-present-detail-after");
-            requireCurrentZg361Ae2Confirmation(present,CurrentZg361Ae2Source.Control.PRESENT);
-            run.action(present,CurrentZg361Ae2.Action.CONFIRM_PRESENT,"zg361-present-confirm");
-            var event=run.query(CurrentZg361Ae2.Action.QUERY_AE2,"zg361-ae2-before-pay");
-            var actual=requireCurrentZg361Ae2ActualTooltips(event.frame().source().orElseThrow(),run.initial);
-            result.put("three_actual_full_tooltips_archived",true).put("actual_event_instance",actual.instanceId())
-                    .put("actual_pay_authored_index",actual.payNowOption().authoredOptionIndex());
-            var pay=run.action(event,CurrentZg361Ae2.Action.CHOOSE_PAY_NOW,"zg361-pay-now");
-            result.put("pay_now_callback_dispatched",true);
-            var after=run.query(CurrentZg361Ae2.Action.QUERY_AE2,"zg361-ae2-after-pay");
-            if(pay.actualInstanceId().isEmpty()||pay.actualInstanceId().getAsInt()!=actual.instanceId()
-                    ||!transport.currentZg361Ae2EventAbsent(pay,after))throw new IOException("Original AE2 instance still present or independent full census absence unqualified");
-            result.put("original_instance_absence_observed",true); // Not a global modal/date gate assertion.
-            var verify=run.query(CurrentZg361Ae2.Action.QUERY_CONTROLS,"zg361-verify-controls");
-            verify=ensureCurrentZg361Ae2List(run,verify,"zg361-verify-list");
-            run.action(verify,CurrentZg361Ae2.Action.OPEN_VERIFY_DETAIL,"zg361-verify-detail");
-            verify=run.query(CurrentZg361Ae2.Action.QUERY_CONTROLS,"zg361-verify-detail-after");
-            requireCurrentZg361Ae2Confirmation(verify,CurrentZg361Ae2Source.Control.VERIFY);
-            run.action(verify,CurrentZg361Ae2.Action.CONFIRM_VERIFY,"zg361-verify-confirm");
-            result.put("verify_confirmation_callback_dispatched",true);
-            run.core("zg361-final-after-verifier");result.put("original_private_channel_completed",true);
-            // The original real verifier/log and actual wallet deltas are an
-            // independent consumer AND. Never fill their reserved booleans here.
+            completeCurrentZg361Ae2(run,present);
         } finally {
             archiveNaturalDiagnostics(output,originals,transport.diagnostics());
             var progress=result.deepCopy();progress.set("originals",originals.deepCopy());
@@ -5664,7 +5828,7 @@ if(riteDraftCosts) {
         }
     }
 
-    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE,CURRENT_DJC_TARGET_QUERY,CURRENT_SUCCESSION_QUERY,CURRENT_SUCCESSION_CONTINUE,CURRENT_DJC_DECLARATION_UI,CURRENT_DJC_DECLARATION_SUBMIT,CURRENT_LETTER_QUERY,CURRENT_LETTER_REPLY_KNOWN,CURRENT_DJC_SELECTED_COST,CURRENT_DJC_SELECTED_COST_PREVIEW,CURRENT_LETTER_SET_QUERY,CURRENT_LETTER_SET_REPLY_KNOWN_INSTANCE,CURRENT_FULLSCREEN_EVENT_QUERY,CURRENT_FULLSCREEN_EVENT_ACK_KNOWN_INTRO,CURRENT_CURATED_DECISIONS_QUERY,CURRENT_CURATED_DECISIONS_OPEN,CURRENT_CURATED_DECISION_DETAIL,CURRENT_CURATED_DECISION_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_QUERY,CURRENT_XQOL_CONVERSION_PROMPT_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_CANCEL,CURRENT_XQOL_CONVERSION_THRESHOLD_QUERY,CURRENT_XQOL_CONVERSION_THRESHOLD_SET,CURRENT_COURTIER_CREATOR_CONTROLS_QUERY,CURRENT_COURTIER_CREATOR_CONTROL_EXECUTE,CURRENT_DECISIONS_CLOSE_QUERY,CURRENT_DECISIONS_CLOSE,CURRENT_COURTIER_CONFIGURATION_QUERY,CURRENT_COURTIER_CONFIGURATION_EXECUTE,CURRENT_COURTIER_CHOICES_QUERY,CURRENT_COURTIER_CHOICE_SELECT,CURRENT_SUPERMAN_HEALTH_QUERY,CURRENT_SUPERMAN_HEALTH_BASELINE_SAVE_AND_BEGIN,CURRENT_SUPERMAN_HEALTH_COMPLETED_CLOSE,CURRENT_SUPERMAN_HEALTH_RESUME_SAVED_BASELINE_AND_BEGIN,CURRENT_LYD,CURRENT_TED,CURRENT_STOCK_NEWGAME_SEED,CURRENT_DES_SAVED_GAME_INIT_GUARD,CURRENT_RITE_CREATE,CURRENT_RITE_TEXT,CURRENT_RITE_CREATION_BLOCKERS,CURRENT_STOCK_BOOKMARK1070,CURRENT_CCC,CURRENT_RMTM_TITLE_QUERY,CURRENT_RMTM_REMAINING,CURRENT_LIVING_ORIGINAL,CURRENT_ZG361_AE2 }
+    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE,CURRENT_DJC_TARGET_QUERY,CURRENT_SUCCESSION_QUERY,CURRENT_SUCCESSION_CONTINUE,CURRENT_DJC_DECLARATION_UI,CURRENT_DJC_DECLARATION_SUBMIT,CURRENT_LETTER_QUERY,CURRENT_LETTER_REPLY_KNOWN,CURRENT_DJC_SELECTED_COST,CURRENT_DJC_SELECTED_COST_PREVIEW,CURRENT_LETTER_SET_QUERY,CURRENT_LETTER_SET_REPLY_KNOWN_INSTANCE,CURRENT_FULLSCREEN_EVENT_QUERY,CURRENT_FULLSCREEN_EVENT_ACK_KNOWN_INTRO,CURRENT_CURATED_DECISIONS_QUERY,CURRENT_CURATED_DECISIONS_OPEN,CURRENT_CURATED_DECISION_DETAIL,CURRENT_CURATED_DECISION_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_QUERY,CURRENT_XQOL_CONVERSION_PROMPT_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_CANCEL,CURRENT_XQOL_CONVERSION_THRESHOLD_QUERY,CURRENT_XQOL_CONVERSION_THRESHOLD_SET,CURRENT_COURTIER_CREATOR_CONTROLS_QUERY,CURRENT_COURTIER_CREATOR_CONTROL_EXECUTE,CURRENT_DECISIONS_CLOSE_QUERY,CURRENT_DECISIONS_CLOSE,CURRENT_COURTIER_CONFIGURATION_QUERY,CURRENT_COURTIER_CONFIGURATION_EXECUTE,CURRENT_COURTIER_CHOICES_QUERY,CURRENT_COURTIER_CHOICE_SELECT,CURRENT_SUPERMAN_HEALTH_QUERY,CURRENT_SUPERMAN_HEALTH_BASELINE_SAVE_AND_BEGIN,CURRENT_SUPERMAN_HEALTH_COMPLETED_CLOSE,CURRENT_SUPERMAN_HEALTH_RESUME_SAVED_BASELINE_AND_BEGIN,CURRENT_LYD,CURRENT_TED,CURRENT_STOCK_NEWGAME_SEED,CURRENT_DES_SAVED_GAME_INIT_GUARD,CURRENT_RITE_CREATE,CURRENT_RITE_TEXT,CURRENT_RITE_CREATION_BLOCKERS,CURRENT_STOCK_BOOKMARK1070,CURRENT_CCC,CURRENT_RMTM_TITLE_QUERY,CURRENT_RMTM_REMAINING,CURRENT_LIVING_ORIGINAL,CURRENT_ZG361_AE2,CURRENT_ZG361_REVIEW,CURRENT_ZG361_REVIEW_AE2 }
     static void requireGuiRootIndexSelection(NativeLaunchPlan plan,GuiRootIndexFrame frame)throws IOException {
         Objects.requireNonNull(plan);Objects.requireNonNull(frame);
         if(!frame.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())
@@ -5696,6 +5860,8 @@ if(riteDraftCosts) {
     }
     static ObservationMode observationMode(ObjectNode config) {
         String schema=StrictJson.text(config.get("schema"));
+        if(schema.equals("xar.native-owner-snapshot-config/v51")) {currentZg361CombinedConfig(config);return ObservationMode.CURRENT_ZG361_REVIEW_AE2;}
+        if(schema.equals("xar.native-owner-snapshot-config/v50")) {currentZg361ReviewConfig(config);return ObservationMode.CURRENT_ZG361_REVIEW;}
         if(schema.equals("xar.native-owner-snapshot-config/v49")) {currentZg361Ae2Config(config);return ObservationMode.CURRENT_ZG361_AE2;}
         if(schema.equals("xar.native-owner-snapshot-config/v48")) {currentLivingOriginalConfig(config);return ObservationMode.CURRENT_LIVING_ORIGINAL;}
         if(schema.equals("xar.native-owner-snapshot-config/v47")) {currentRmtmConfig(config);return ObservationMode.CURRENT_RMTM_REMAINING;}

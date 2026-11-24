@@ -22,6 +22,9 @@ public final class CurrentZg361Ae2 {
     public static final String QUERY_CAPABILITY = "game.query.current-zg361-ae2.v1";
     public static final String CONTROLS_CAPABILITY = "game.command.current-zg361-ae2-fixed-controls.v1";
     public static final String PAY_CAPABILITY = "game.command.current-zg361-ae2-pay-now.v1";
+    public static final String REVIEW_QUERY_CAPABILITY = "game.query.current-zg361-review-requirements.v1";
+    public static final String REVIEW_DETAIL_CAPABILITY = "game.command.current-zg361-review-detail.v1";
+    public static final String REVIEW_DEFINITION = "zg361_review_now_decision";
     public static final String EVENT_DEFINITION = "zg361comp.1";
     public static final int AUTHORED_COUNT = 42;
 
@@ -33,7 +36,9 @@ public final class CurrentZg361Ae2 {
         QUERY_AE2("query_ae2", CurrentZg361Ae2Source.Kind.EVENTS, true),
         CHOOSE_PAY_NOW("choose_pay_now", CurrentZg361Ae2Source.Kind.EVENTS, false),
         OPEN_VERIFY_DETAIL("open_verify_detail", CurrentZg361Ae2Source.Kind.CONTROLS, false),
-        CONFIRM_VERIFY("confirm_verify", CurrentZg361Ae2Source.Kind.CONTROLS, false);
+        CONFIRM_VERIFY("confirm_verify", CurrentZg361Ae2Source.Kind.CONTROLS, false),
+        QUERY_REVIEW_REQUIREMENTS("query_review_requirements", CurrentZg361Ae2Source.Kind.REVIEW, true),
+        OPEN_REVIEW_DETAIL("open_review_detail", CurrentZg361Ae2Source.Kind.REVIEW, false);
 
         private final String wire;
         private final CurrentZg361Ae2Source.Kind sourceKind;
@@ -46,6 +51,8 @@ public final class CurrentZg361Ae2 {
         public boolean queryOnly() { return queryOnly; }
         public String step() { return STEP; }
         public String capability() {
+            if (this == QUERY_REVIEW_REQUIREMENTS) return REVIEW_QUERY_CAPABILITY;
+            if (this == OPEN_REVIEW_DETAIL) return REVIEW_DETAIL_CAPABILITY;
             return queryOnly ? QUERY_CAPABILITY : this == CHOOSE_PAY_NOW ? PAY_CAPABILITY : CONTROLS_CAPABILITY;
         }
         public static Action parse(String text) throws IOException {

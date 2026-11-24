@@ -129,7 +129,10 @@ final class NativeCurrentZg361Ae226785313ProducerTest {
                 .put("request_count",8).put("original_IDs_and_MAX_deadlines_preserved",true)
                 .put("Cplusplus_validation","NOT_RUN_BY_JAVA_FACTORY_TEST");
         var rows = index.putArray("requests");
-        for (var action : CurrentZg361Ae2.Action.values()) rows.add(EXPORTED.get(action));
+        for (var action : List.of(CurrentZg361Ae2.Action.QUERY_CONTROLS,CurrentZg361Ae2.Action.OPEN_CONTROLS_LIST,
+                CurrentZg361Ae2.Action.OPEN_PRESENT_DETAIL,CurrentZg361Ae2.Action.CONFIRM_PRESENT,
+                CurrentZg361Ae2.Action.QUERY_AE2,CurrentZg361Ae2.Action.CHOOSE_PAY_NOW,
+                CurrentZg361Ae2.Action.OPEN_VERIFY_DETAIL,CurrentZg361Ae2.Action.CONFIRM_VERIFY)) rows.add(EXPORTED.get(action));
         Files.write(Path.of(configured).resolve("java-requests-index.json"),StrictJson.canonical(index),StandardOpenOption.CREATE_NEW);
     }
 

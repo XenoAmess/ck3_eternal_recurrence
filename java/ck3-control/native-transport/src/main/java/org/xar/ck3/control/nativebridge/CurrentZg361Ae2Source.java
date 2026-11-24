@@ -12,9 +12,9 @@ import java.util.Set;
 import org.xar.ck3.control.contracts.StrictJson;
 
 /** Exact AE2 observation DATA, with no invented public case values or action authority. */
-public record CurrentZg361Ae2Source(Kind kind, Optional<Controls> controls, Optional<Events> events) {
+public record CurrentZg361Ae2Source(Kind kind, Optional<Controls> controls, Optional<Events> events, Optional<Review> review) {
     public enum Kind {
-        CONTROLS("controls"), EVENTS("events");
+        CONTROLS("controls"), EVENTS("events"), REVIEW("review");
         private final String wire;
         Kind(String wire) { this.wire = wire; }
         public String wire() { return wire; }
@@ -202,10 +202,61 @@ public record CurrentZg361Ae2Source(Kind kind, Optional<Controls> controls, Opti
         }
     }
 
+    /** Fixed target metadata and actual selected-window DATA are deliberately separate. */
+    public record Review(String definitionKey, boolean residentAvailable, boolean listVisible,
+            boolean detailVisible, boolean detailEnabled, boolean actorBound, boolean modelComplete,
+            boolean blockedByVisibleModal, boolean rowPresent, boolean selectedReview,
+            boolean openDetailAdmissible, boolean requirementsComplete, Optional<String> selectedDefinitionKey,
+            Optional<Boolean> hasRequirements, Optional<String> requirementsDescription) {
+        public Review {
+            StrictJson.require(CurrentZg361Ae2.REVIEW_DEFINITION.equals(definitionKey), "Exact fixed review target metadata required");
+            Objects.requireNonNull(selectedDefinitionKey); Objects.requireNonNull(hasRequirements); Objects.requireNonNull(requirementsDescription);
+            selectedDefinitionKey.ifPresent(CurrentZg361Ae2Source::key);
+            requirementsDescription.ifPresent(text -> CurrentZg361Ae2.requireActualText(text,true));
+            if (selectedReview) StrictJson.require(detailVisible && selectedDefinitionKey.filter(CurrentZg361Ae2.REVIEW_DEFINITION::equals).isPresent(),
+                    "Selected review must retain actual visible detail and selected definition");
+            if (requirementsComplete) StrictJson.require(selectedReview && actorBound && modelComplete && rowPresent
+                    && hasRequirements.isPresent() && requirementsDescription.isPresent(), "Complete review requirements need both actual returned values and bound material");
+            else StrictJson.require(hasRequirements.isEmpty() && requirementsDescription.isEmpty(), "Incomplete review requirements stay null, never synthetic empty");
+            if (openDetailAdmissible) StrictJson.require(residentAvailable && actorBound && modelComplete && rowPresent
+                    && listVisible && !selectedReview && !blockedByVisibleModal, "Review open-detail necessary actual conditions differ");
+        }
+        static Review decode(JsonNode node) throws IOException {
+            var r = StrictJson.object(node, Set.of("definition_key", "resident_available", "list_visible", "detail_visible", "detail_enabled",
+                    "actor_bound", "model_complete", "blocked_by_visible_modal", "row_present", "selected_review", "open_detail_admissible",
+                    "requirements_complete", "selected_definition_key", "has_requirements", "requirements_description"));
+            var has = r.get("has_requirements");
+            if (!has.isNull() && !has.isBoolean()) throw new IOException("Nullable actual HasRequirements bool required");
+            return new Review(NativeWire.text(r.get("definition_key")), b(r,"resident_available"), b(r,"list_visible"), b(r,"detail_visible"),
+                    b(r,"detail_enabled"), b(r,"actor_bound"), b(r,"model_complete"), b(r,"blocked_by_visible_modal"), b(r,"row_present"),
+                    b(r,"selected_review"), b(r,"open_detail_admissible"), b(r,"requirements_complete"),
+                    r.get("selected_definition_key").isNull() ? Optional.empty() : Optional.of(CurrentZg361Ae2.actualText(r.get("selected_definition_key"),false)),
+                    has.isNull() ? Optional.empty() : Optional.of(has.booleanValue()),
+                    r.get("requirements_description").isNull() ? Optional.empty() : Optional.of(CurrentZg361Ae2.actualText(r.get("requirements_description"),true)));
+        }
+        ObjectNode encode() {
+            var r = StrictJson.object().put("definition_key",definitionKey).put("resident_available",residentAvailable).put("list_visible",listVisible)
+                    .put("detail_visible",detailVisible).put("detail_enabled",detailEnabled).put("actor_bound",actorBound).put("model_complete",modelComplete)
+                    .put("blocked_by_visible_modal",blockedByVisibleModal).put("row_present",rowPresent).put("selected_review",selectedReview)
+                    .put("open_detail_admissible",openDetailAdmissible).put("requirements_complete",requirementsComplete);
+            if (selectedDefinitionKey.isPresent()) r.put("selected_definition_key",selectedDefinitionKey.orElseThrow()); else r.putNull("selected_definition_key");
+            if (hasRequirements.isPresent()) r.put("has_requirements",hasRequirements.orElseThrow()); else r.putNull("has_requirements");
+            if (requirementsDescription.isPresent()) r.put("requirements_description",requirementsDescription.orElseThrow()); else r.putNull("requirements_description");
+            return r;
+        }
+    }
+
+    public CurrentZg361Ae2Source(Kind kind, Optional<Controls> controls, Optional<Events> events) {
+        this(kind,controls,events,Optional.empty());
+    }
+
     public CurrentZg361Ae2Source {
-        Objects.requireNonNull(kind); Objects.requireNonNull(controls); Objects.requireNonNull(events);
-        StrictJson.require(kind == Kind.CONTROLS ? controls.isPresent() && events.isEmpty()
-                : controls.isEmpty() && events.isPresent(), "Exact AE2 Source union required");
+        Objects.requireNonNull(kind); Objects.requireNonNull(controls); Objects.requireNonNull(events); Objects.requireNonNull(review);
+        StrictJson.require(switch (kind) {
+            case CONTROLS -> controls.isPresent() && events.isEmpty() && review.isEmpty();
+            case EVENTS -> controls.isEmpty() && events.isPresent() && review.isEmpty();
+            case REVIEW -> controls.isEmpty() && events.isEmpty() && review.isPresent();
+        }, "Exact AE2 Source union required");
     }
 
     /** Necessary DATA predicate only; never creates a Native claim or private present-to-event custody. */
@@ -218,6 +269,7 @@ public record CurrentZg361Ae2Source(Kind kind, Optional<Controls> controls, Opti
             case OPEN_VERIFY_DETAIL -> controls.orElseThrow().row(Control.VERIFY).map(ControlRow::openDetailAdmissible).orElse(false);
             case CONFIRM_PRESENT -> controls.orElseThrow().row(Control.PRESENT).map(ControlRow::confirmAdmissible).orElse(false);
             case CONFIRM_VERIFY -> controls.orElseThrow().row(Control.VERIFY).map(ControlRow::confirmAdmissible).orElse(false);
+            case OPEN_REVIEW_DETAIL -> review.orElseThrow().openDetailAdmissible();
             case CHOOSE_PAY_NOW -> events.orElseThrow().ae2().map(Ae2::payNowAdmissible).orElse(false);
             default -> false;
         };
@@ -225,15 +277,20 @@ public record CurrentZg361Ae2Source(Kind kind, Optional<Controls> controls, Opti
 
     public static CurrentZg361Ae2Source decode(JsonNode node) throws IOException {
         try {
-            var r = StrictJson.object(node, Set.of("schema", "kind", "controls", "events"));
+            var object = NativeWire.object(node);
+            Kind kind = Kind.parse(NativeWire.text(object.get("kind")));
+            var r = StrictJson.object(object,kind == Kind.REVIEW ? Set.of("schema","kind","review")
+                    : Set.of("schema","kind","controls","events"));
             CurrentLivingInventoryQuery.identity(r,"schema",CurrentZg361Ae2.SOURCE_SCHEMA);
-            return new CurrentZg361Ae2Source(Kind.parse(NativeWire.text(r.get("kind"))),
+            if (kind == Kind.REVIEW) return new CurrentZg361Ae2Source(kind,Optional.empty(),Optional.empty(),Optional.of(Review.decode(r.get("review"))));
+            return new CurrentZg361Ae2Source(kind,
                     r.get("controls").isNull() ? Optional.empty() : Optional.of(Controls.decode(r.get("controls"))),
                     r.get("events").isNull() ? Optional.empty() : Optional.of(Events.decode(r.get("events"))));
         } catch (IllegalArgumentException | ArithmeticException invalid) { throw new IOException("Invalid exact AE2 Source DATA",invalid); }
     }
     public ObjectNode encode() {
         var r = StrictJson.object().put("schema",CurrentZg361Ae2.SOURCE_SCHEMA).put("kind",kind.wire());
+        if (kind == Kind.REVIEW) { r.set("review",review.orElseThrow().encode()); return r; }
         if (controls.isPresent()) r.set("controls",controls.orElseThrow().encode()); else r.putNull("controls");
         if (events.isPresent()) r.set("events",events.orElseThrow().encode()); else r.putNull("events"); return r;
     }
