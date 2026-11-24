@@ -138,8 +138,23 @@ struct LivingEntryRaw267V1::State {
  friend bool operator==(const State&,const State&)=default;
 };
 bool SameLivingEntryRaw267V1(const LivingEntryRaw267V1&a,const LivingEntryRaw267V1&z)noexcept{
- try{return a.cleanup_known&&z.cleanup_known&&a.state_&&z.state_&&a.source==z.source&&
-  a.inventory==z.inventory&&*a.state_==*z.state_;}catch(...){return false;}
+ try{
+  if(!a.cleanup_known||!z.cleanup_known||!a.state_||!z.state_||a.source!=z.source||a.inventory!=z.inventory)return false;
+  const auto&x=*a.state_;const auto&y=*z.state_;
+  if(x.inventory!=y.inventory||x.view!=y.view||x.source!=y.source||x.manage.has_value()!=y.manage.has_value())return false;
+  if(!x.manage)return true;
+  const auto&b=*x.manage;const auto&c=*y.manage;
+  // Official list update frees/rebuilds row storage. Across requests only its
+  // fixed-row presence is retained; all content and stable receivers stay exact.
+  // Within-request Sample/State double captures still use default operator==.
+  for(std::size_t n=0;n<b.rows.size();++n)if(bool(b.rows[n])!=bool(c.rows[n]))return false;
+  return b.source==c.source&&b.list==c.list&&b.detail==c.detail&&
+   b.definition==c.definition&&b.controller==c.controller&&
+   b.shortcut_manager==c.shortcut_manager&&b.nav_widget==c.nav_widget&&
+   b.exact_model==c.exact_model&&b.modal_source==c.modal_source&&
+   b.nav_callbacks==c.nav_callbacks&&b.native_read_entered==c.native_read_entered&&
+   b.cleanup_known==c.cleanup_known;
+ }catch(...){return false;}
 }
 bool ReadLivingEntryRaw267V1(const ReadonlyBindings&b,const LivingEntryFrame267V1&f,
  const LivingEntryRequest267V1&q,std::uint64_t mono,LivingEntryRaw267V1&out,std::string&why)noexcept{
@@ -180,6 +195,9 @@ bool ReadLivingEntryRaw267V1(const ReadonlyBindings&b,const LivingEntryFrame267V
  (void)b;(void)f;(void)q;(void)mono;return false;
 #endif
 }
+#ifndef XAR_LIVING_ENTRY_READ_CURRENT_RAW
+#define XAR_LIVING_ENTRY_READ_CURRENT_RAW ReadLivingEntryRaw267V1
+#endif
 struct LivingEntryCallAccess267V1 {
  static void AppendDifference(const LivingEntryRaw267V1&before,const LivingEntryRaw267V1&after,std::string&why)noexcept{
   try{
@@ -200,6 +218,8 @@ struct LivingEntryCallAccess267V1 {
     if(a.manage&&z.manage){const auto&b=*a.manage;const auto&c=*z.manage;
      if(b.source!=c.source)mask|=16384;
      if(b.list!=c.list||b.detail!=c.detail||b.definition!=c.definition||b.controller!=c.controller||b.shortcut_manager!=c.shortcut_manager||b.nav_widget!=c.nav_widget||b.rows!=c.rows)mask|=32768;
+     const std::uint32_t identities=(b.list!=c.list?1U:0U)|(b.detail!=c.detail?2U:0U)|(b.definition!=c.definition?4U:0U)|(b.controller!=c.controller?8U:0U)|(b.shortcut_manager!=c.shortcut_manager?16U:0U)|(b.nav_widget!=c.nav_widget?32U:0U)|(b.rows!=c.rows?64U:0U);
+     field("manage_identity_mask",identities);
      if(b.exact_model!=c.exact_model)mask|=65536;
      if(b.modal_source!=c.modal_source)mask|=131072;
      if(b.nav_callbacks!=c.nav_callbacks)mask|=262144;
@@ -234,7 +254,7 @@ struct LivingEntryCallAccess267V1 {
   using A=LivingEntryAction267V1;LivingEntryCall267V1 out;
   try{
    LivingEntryRaw267V1 actual;std::string why;
-   if(!ReadLivingEntryRaw267V1(b,f,q,mono,actual,why)||!SameLivingEntryRaw267V1(actual,issued)){
+   if(!XAR_LIVING_ENTRY_READ_CURRENT_RAW(b,f,q,mono,actual,why)||!SameLivingEntryRaw267V1(actual,issued)){
     out.cleanup_known=actual.cleanup_known;return out;}
    if(q.action==A::open_inventory||q.action==A::open_detail){
     const auto&v=actual.state_->view;

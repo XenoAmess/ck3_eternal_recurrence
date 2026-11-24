@@ -1,0 +1,114 @@
+{
+  "schema": "xar.current267.living.row-lifetime.qualified-source-and-retirements.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-24T08:27:21.727942+00:00",
+  "status": "TRUE_ROW_LIFETIME_FIX_PLUS_DIAGNOSTICS_SOFTWARE_P_NATIVE_ARTIFACT_AND_GAME_PENDING",
+  "historical_actual": "a1460 inventory36slots/5artifacts and target406 select/equip independent readback retained. a1470 OPEN_LIST dispatched plus fresh observed listvisibletrue/groups6/total31/unique fixed row can_open_detailtrue; following OPEN_DETAIL known stale_source/effectfalse/cleanuptrue/claim0. Only aggregate manage receiver/model identity group32768 differed; frame/hud/witness/publicManage/callback masks0. The actual individual changed member was NOT_OBSERVED.",
+  "actual_consumer_chain": "Same actual session/Core/deadline/provider321938609/query4, query response109 directly before detail action write110. No Java fault observed; old requests/deadlines consumed and not replayed.",
+  "fix_scope": "Official current859 row rebuild/free lifetime means a fixed-row address can be transient across requests. Only cross-request SameRaw permits fixed-row address relocation when presence, exact definition/fullactor/owner/state/key/fullproof all match. Six other identities remain strict and all seven member diagnostic masks remain; not a generic identity bypass or proof that rows were the original unique cause. Within-State/Sample default equality and original EntryOwner Frame/OR unchanged. Submit reads and passes freshactual.rows, not an old cached row address.",
+  "software": {
+    "actual_groups": 9,
+    "ON": 8,
+    "OFF": 1,
+    "all_test_Natural0": true,
+    "actual_CL": 3,
+    "first2_CL0": true,
+    "first_ON_link_RED_unusedVerifyReadonlyImage_preserved": true,
+    "first_OFF_link0_preserved": true,
+    "test_only_stub_repair_reused_original2_OBJ": true,
+    "unused_calls_asserted_zero": true,
+    "poison_old_row_PAGE_NOACCESS_and_actual_Submit_fresh_boundary": true
+  },
+  "Java_source_Maven_JAR_tests_or_package_changed": false,
+  "public_header_fields_schema_caps_actions_slot64_unchanged": true,
+  "Native_production_new_artifact": "NOT_RUN at this qualified-source cut",
+  "new_Game_and_original8_business": "NOT_RUN",
+  "parent_a75b_and_all158_JARs_preserved": true,
+  "actual_second_closed_Save_retirements": {
+    "scope": "Only each initial Save in closed a1460 and a1470 profiles, not archive/shader/log/Source/SDK.",
+    "outcomes": [
+      {
+        "target": "D:\\ck3-state\\upgrade-20261118\\living-current267-slot64-original8-profile-a1460\\profile-states\\gui-df07fddf376c4befbab0148044c8da60\\profile\\save games\\des-vanilla-1066-robert-day15.ck3",
+        "archive": "D:\\ck3-state\\upgrade-20261118\\des-vanilla-seed-current267-profile-a905\\checkpoints\\des-vanilla-1066-robert-day15.ck3",
+        "availability": "RETIRED_PROFILE_INPUT_UNREADABLE",
+        "allocated_removed": 166551552
+      },
+      {
+        "target": "D:\\ck3-state\\upgrade-20261118\\living-current267-manage-diagnostic-profile-a1470\\profile-states\\gui-a58e4625a42e44068ee20b7b30fbe67a\\profile\\save games\\des-vanilla-1066-robert-day15.ck3",
+        "archive": "D:\\ck3-state\\upgrade-20261118\\des-vanilla-seed-current267-profile-a905\\checkpoints\\des-vanilla-1066-robert-day15.ck3",
+        "availability": "RETIRED_PROFILE_INPUT_UNREADABLE",
+        "allocated_removed": 166551552
+      }
+    ],
+    "actual_allocated_removed_bytes": 333103104,
+    "old_profile_inputs_unreadable_and_Ready_unusable": true,
+    "original_821_archive_unchanged": true,
+    "old_spent_held_refund": false
+  },
+  "actual_db4f_old_LIB_retirement": {
+    "actual_allocated_removed_bytes": 211984384,
+    "one_old_LIB_only": true,
+    "current52a9_LIB_OBJ_Source_and_Frozens_preserved": true,
+    "retired_payload_unreadable": true
+  },
+  "uploaded_SKUs": 14,
+  "strict_finite_completed_SKUs": 10,
+  "total_SKUs": 17,
+  "exact_external_refs": {
+    "qualified_Source": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-entry-row-lease-nogame-a1474\\validation\\qualified-Source.json",
+      "bytes": 7068,
+      "sha256": "ea78f1e8e487a22204195f9f0ac51cd2735e999a47b3f55f681caa6f86621750"
+    },
+    "NoGame_FD": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-entry-row-lease-nogame-a1474\\validation\\NoGame-delivery-final.json",
+      "bytes": 1109,
+      "sha256": "961a7aa524ea545aab1f2c3cfc9c0e6a44bb159cb1e7d43e680e87b324d5321a"
+    },
+    "selected_Raw_adoption": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-row-lifetime-pair-source-a1480\\exact-Raw-adoption.json",
+      "bytes": 2919,
+      "sha256": "5a2631424d36afb2645791e88bba85e6faa4045c83b1c86824e2603b39df4289"
+    },
+    "private_lease_contract": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-entry-receiver-review-a1470\\lease-source-contract.json",
+      "bytes": 3662,
+      "sha256": "751e8c61448823f94bc71ea00388d6458fa3105a8719894181c007f7f7e115a4"
+    },
+    "official_row_lifetime_static": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\current267-living-decision-row-lifetime-static-a1470\\delivery-final.json",
+      "bytes": 1146,
+      "sha256": "cf8bb813bc6e7fe7d63e566d1284450850a7bc94c8a14f1b453c1491af853422"
+    },
+    "actual_a1470_partial_END": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\Living-manage-list-P-detail-identity32768-known-stale-Natural0-END-a1471.json",
+      "bytes": 4930,
+      "sha256": "5fec35c66271d954cad57d78724105e68243943dd1379c40ca4a7c839b542655"
+    },
+    "actual_a1470_consumer_review": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-a1470-manage-detail-consumer-review-a01\\source-review-final.json",
+      "bytes": 24449,
+      "sha256": "b0567bee331794efc0a584f4e6658ebce9c4f36637d7b577992ad2015df20257"
+    },
+    "second_Save_retirement_inventory": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\Living-two-closed-initial-Save-duplicates-a1472\\inventory.json",
+      "bytes": 5300,
+      "sha256": "63cd5fab90fab99db5b40db370efcf558bf9ee04f7ea63960e6bcf7b9f2c2c78"
+    },
+    "second_Save_retirement_actual_result": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\Living-two-closed-initial-Save-duplicates-a1472\\actual-result.json",
+      "bytes": 1322,
+      "sha256": "c9280a89944d09028fc534c35c3f316cb24d4eec384b625b49279df2d8e1a0c6"
+    },
+    "db4f_LIB_retirement_actual_result": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\db4f-exact-LIB-retirement-a1473\\actual-result.json",
+      "bytes": 1098,
+      "sha256": "7690fc7d30505e9d647a48e66318c33393ecae98638f50484033dff98bf514cc"
+    },
+    "new_Java_metadata_admission": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\Living-row-lifetime-Java1-admission-a1475.json",
+      "bytes": 1808,
+      "sha256": "d8847db57c32e27063368cfce16263d989845f75d553afc2ddbbc959b62420a4"
+    }
+  }
+}
