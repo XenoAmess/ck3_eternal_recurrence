@@ -12,9 +12,9 @@ inline constexpr char kRmtmSummaryDefinition267V1[]="rmtm.1001";
 inline constexpr char kRmtmChaosDefinition267V1[]="tgp_dynastic_cycle.0081";
 inline constexpr char kRmtmSummaryOption267V1[]="rmtm_loyalty_summary_acknowledge";
 inline constexpr char kRmtmChaosOption267V1[]="tgp_dynastic_cycle.0081.a";
-inline constexpr std::array<std::string_view,4>kRmtmEventSteps267V1{"query-rmtm-summary-current-v1","ack-rmtm-summary-current-v1","query-rmtm-chaos-current-v1","ack-rmtm-chaos-current-v1"};
-inline constexpr std::array<std::string_view,4>kRmtmEventCaps267V1{"game.query.current-rmtm-summary.v1","game.command.ack-current-rmtm-summary.v1","game.query.current-rmtm-chaos.v1","game.command.ack-current-rmtm-chaos.v1"};
-enum class RmtmEventAction267V1{query_summary,ack_summary,query_chaos,ack_chaos};
+inline constexpr std::array<std::string_view,5>kRmtmEventSteps267V1{"query-rmtm-summary-current-v1","ack-rmtm-summary-current-v1","query-rmtm-chaos-current-v1","ack-rmtm-chaos-current-v1","choose-rmtm-post-succession-first-available-current-v1"};
+inline constexpr std::array<std::string_view,5>kRmtmEventCaps267V1{"game.query.current-rmtm-summary.v1","game.command.ack-current-rmtm-summary.v1","game.query.current-rmtm-chaos.v1","game.command.ack-current-rmtm-chaos.v1","game.command.choose-current-rmtm-post-succession-first-available.v1"};
+enum class RmtmEventAction267V1{query_summary,ack_summary,query_chaos,ack_chaos,choose_post_succession_first_available};
 enum class RmtmEventStatus267V1{unavailable,expired,stale_source,claim_consumed,available,selection_dispatched,indeterminate};
 struct RmtmEventRequest267V1{
  RmtmEventAction267V1 action=RmtmEventAction267V1::query_summary;ck3_1210::CoreSnapshotPrefix expected{};
@@ -33,6 +33,14 @@ struct RmtmEventResult267V1{
  std::uint32_t thread_id=0;ck3_1210::CoreSnapshotPrefix facts{};std::optional<std::int32_t>instance_id;
  std::optional<RmtmEventSource267V1>source;std::string reason;
 };
+// DATA derivation only; this grants no action lease, actor epoch or case custody.
+// Existing specialized strategies take priority. The caller never chooses an index.
+struct RmtmPostSuccessionChoice267V1 {
+ std::int32_t instance_id=0,authored_option_index=-1;
+ friend bool operator==(const RmtmPostSuccessionChoice267V1&,const RmtmPostSuccessionChoice267V1&)=default;
+};
+std::optional<RmtmPostSuccessionChoice267V1> FindRmtmPostSuccessionChoice267V1(
+ const RmtmEventSource267V1&,std::int32_t actor,std::int32_t actual_instance)noexcept;
 bool RmtmEventRequestShape267V1(const RmtmEventRequest267V1&)noexcept;
 bool RmtmEventSourceShape267V1(const RmtmEventSource267V1&)noexcept;
 bool ParseRmtmEventRequest267V1(std::string_view,RmtmEventRequest267V1&)noexcept;

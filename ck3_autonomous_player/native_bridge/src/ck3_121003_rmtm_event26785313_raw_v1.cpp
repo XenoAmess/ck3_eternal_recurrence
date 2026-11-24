@@ -40,7 +40,22 @@ namespace xar::ck3_121003::build26785313 { namespace {
  for(const auto&o:s.options){LydEventOption267V1 v;v.authored_option_index=o.authored_option_index;v.native_can_select=o.native_can_select;v.text=o.text;v.disabled_reason=o.disabled_reason;v.source_bound_option_key={};v.permitted_role={};row.options.push_back(std::move(v));}
  out.events.push_back(std::move(row));return true;
 }
-[[maybe_unused]]std::uintptr_t Option(const RmtmEventRaw267V1&r)noexcept {
+[[maybe_unused]]std::uintptr_t Option(const RmtmEventRaw267V1&r,const RmtmEventRequest267V1&q)noexcept {
+ if(q.action==RmtmEventAction267V1::choose_post_succession_first_available){
+  if(r.fullscreen_channel||!q.instance_id)return 0;
+  const auto choice=FindRmtmPostSuccessionChoice267V1(r.source,q.expected.played_character_id,*q.instance_id);
+  if(!choice||r.material.event_rows.size()!=r.source.event_census.events.size())return 0;
+  for(std::size_t n=0;n<r.source.event_census.events.size();++n){
+   const auto&pub=r.source.event_census.events[n];if(pub.instance_id!=choice->instance_id)continue;
+   const auto&row=r.material.event_rows[n];
+   if(row.instance_id!=pub.instance_id||!row.controller||!row.root||!row.runtime||
+      !row.definition||row.options.size()!=pub.options.size())return 0;
+   for(std::size_t k=0;k<pub.options.size();++k)
+    if(pub.options[k].authored_option_index==choice->authored_option_index)return row.options[k];
+   return 0;
+  }
+  return 0;
+ }
  if(!r.source.ack_admissible||!r.source.fixed_instance_id||r.source.event_census.events.size()!=1)return 0;
  const auto&pub=r.source.event_census.events[0];if(pub.authored_option_count!=1||pub.options.size()!=1||pub.options[0].authored_option_index!=0)return 0;
  if(r.fullscreen_channel){if(!r.fullscreen.source.instance_id||r.fullscreen.source.instance_id!=r.source.fixed_instance_id||r.fullscreen.option_pointers.size()!=1||!r.fullscreen.runtime_event||!r.fullscreen.definition||!r.fullscreen.window)return 0;return r.fullscreen.option_pointers[0];}
@@ -236,11 +251,20 @@ RmtmEventCall267V1 CallRmtmEventRaw267V1(const ReadonlyBindings&b,const RmtmEven
  RmtmEventCall267V1 call;
 #if defined(XAR_CK3_ENABLE_121003_26785313_RMTM_EVENT_V1) && XAR_CK3_ENABLE_121003_26785313_RMTM_EVENT_V1
  try {
-  if((q.action!=RmtmEventAction267V1::ack_summary&&q.action!=RmtmEventAction267V1::ack_chaos)||!q.instance_id||q.instance_id!=issued.source.fixed_instance_id||Chaos(q.action)!=issued.fullscreen_channel)return call;
+  if((q.action!=RmtmEventAction267V1::ack_summary&&q.action!=RmtmEventAction267V1::ack_chaos&&q.action!=RmtmEventAction267V1::choose_post_succession_first_available)||!q.instance_id||Chaos(q.action)!=issued.fullscreen_channel)return call;
   RmtmEventRaw267V1 actual;std::string why;
   if(!ReadRmtmEventRaw267V1(b,f,q,mono,actual,why)){call.cleanup_known=actual.fullscreen_channel?actual.fullscreen.cleanup_known:actual.material.cleanup_known;if(!call.cleanup_known)call.status=RmtmEventCallStatus267V1::indeterminate;return call;}
-  if(actual!=issued||!actual.source.ack_admissible||!Fresh(b,f,q,mono))return call;
-  const auto p=Option(actual);bool can=false;if(!p)return call;
+  if(actual!=issued||!Fresh(b,f,q,mono))return call;
+   const bool post=q.action==RmtmEventAction267V1::choose_post_succession_first_available;
+   if(post){
+    RmtmPrivateCaseAnchor267V1 anchor;
+    if(!ReadRmtmPrivateCaseAnchor267V1(f.core,f.connection_generation,
+       actual.material.manager_census.game,actual.material.manager_census.jomini,anchor)||
+       !anchor.successor||*anchor.successor!=f.core.played_character_id||
+       anchor.predecessor==f.core.played_character_id||anchor.completed_days<5||anchor.completed_days>14||
+       !FindRmtmPostSuccessionChoice267V1(actual.source,f.core.played_character_id,*q.instance_id))return call;
+   }else if(!actual.source.ack_admissible||q.instance_id!=actual.source.fixed_instance_id)return call;
+   const auto p=Option(actual,q);bool can=false;if(!p)return call;
   if(!NativeCan(b.module_base,p,can)){call.cleanup_known=false;call.status=RmtmEventCallStatus267V1::indeterminate;return call;}
   if(!can||!Fresh(b,f,q,mono))return call;call.entered=true;
   if(!NativeSelect(b.module_base,p)){call.cleanup_known=false;call.status=RmtmEventCallStatus267V1::indeterminate;return call;}
