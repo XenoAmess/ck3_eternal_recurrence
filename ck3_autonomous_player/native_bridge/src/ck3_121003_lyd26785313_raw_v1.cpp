@@ -15,8 +15,8 @@ namespace xar::ck3_121003::build26785313 {
 namespace lyd_raw {
 using namespace lyd_common;
 struct ArrayView{std::uintptr_t address=0,data=0;std::int32_t count=0;std::array<std::byte,16>header{};};
-[[maybe_unused]]bool Capture(std::uintptr_t address,std::size_t limit,ArrayView&v,std::vector<std::byte>&proof){
- v.address=address;std::int32_t capacity=0;if(!Bytes(address,v.header.data(),16))return false;std::memcpy(&v.data,v.header.data(),8);std::memcpy(&capacity,v.header.data()+8,4);std::memcpy(&v.count,v.header.data()+12,4);
+[[maybe_unused]]bool Capture(std::uintptr_t address,std::size_t limit,ArrayView&v,std::vector<std::byte>&proof,bool*header_read=nullptr){
+ v.address=address;std::int32_t capacity=0;const bool copied=Bytes(address,v.header.data(),16);if(header_read)*header_read=copied;if(!copied)return false;std::memcpy(&v.data,v.header.data(),8);std::memcpy(&capacity,v.header.data()+8,4);std::memcpy(&v.count,v.header.data()+12,4);
  return v.count>=0&&static_cast<std::size_t>(v.count)<=limit&&capacity>=v.count&&capacity<=0x1000000&&(!v.count||v.data)&&Value(proof,v.count);
 }
 [[maybe_unused]]bool Recheck(const ArrayView&v){std::array<std::byte,16>now{};return Bytes(v.address,now.data(),16)&&now==v.header;}
@@ -49,20 +49,98 @@ constexpr std::array<RoleRule,7>rules{{{"lyd.1","lyd_welcome_continue",1,0,LydEv
  for(std::int32_t n=0;n<a.count;++n){std::uintptr_t definition=0;std::string key;if(!At(a.data,static_cast<std::size_t>(n)*8,definition)||!Key(b.module_base,definition,key,out.semantic_model)||!seen.insert(key).second)return false;source.actual_personal_keys.push_back(std::move(key));}
  if(!Recheck(a))return false;source.actual_personal_complete=true;return true;
 }
-[[maybe_unused]]bool Models(const ReadonlyBindings&b,const ck3_1210::CoreSnapshotPrefix&core,const LydScene267V1&scene,std::uint64_t mono,std::uintptr_t window,std::uintptr_t default_tenet,LydRaw267V1&out,LydPersonalSource267V1&source){
- ArrayView slots,groups;if(!Capture(window+0x190,64,slots,out.semantic_model)||!Capture(window+0x1A8,7,groups,out.semantic_model))return false;std::unordered_set<std::string>slotkeys,keys;std::unordered_set<unsigned>categories;
- for(std::int32_t n=0;n<slots.count;++n){const auto item=slots.data+static_cast<std::size_t>(n)*0x70;std::uintptr_t definition=0;std::uint8_t personal=0;std::uint32_t magic=0;if(!At(item,0x28,definition)||!definition||!At(item,0x58,personal)||personal>1||!At(definition,0x38,magic)||!Value(out.semantic_model,personal))return false;LydPersonalSlot267V1 row;
-  if(magic!=0x4744624F){if(definition!=default_tenet||personal||!Typed(definition,b.module_base,lyd_personal_pins::kSTenetPrimaryVtableRva)||!Value(out.semantic_model,definition)||!Value(out.semantic_model,magic))return false;row.is_empty=true;source.empty_slot_found=true;}
-  else{std::string key;if(!Key(b.module_base,definition,key,out.semantic_model)||!slotkeys.insert(key).second)return false;row.definition_key=key;row.is_personal=personal!=0;}source.slots.push_back(std::move(row));
+// Only values already read by Models are described on its failure path.
+// No pointer/address, new target read, changed bound or caller selector.
+struct PersonalModelDiagnostic {
+ const char*stage="headers";
+ std::int32_t slot=-1,group=-1,row=-1;
+ ArrayView slots,groups,rows;
+ bool slots_read=false,groups_read=false,rows_read=false;
+ bool definition_read=false,definition_nonnull=false,definition_is_default=false;
+ bool personal_read=false,magic_read=false,key_complete=false;
+ std::uint8_t personal=0;std::uint32_t magic=0;
+ void Item(){definition_read=definition_nonnull=definition_is_default=false;personal_read=magic_read=key_complete=false;personal=0;magic=0;}
+ void Header(std::string&why,const char*name,const ArrayView&v,bool read)const{
+  why+=';';why+=name;why+="_read=";why+=read?"1":"0";
+  if(!read)return;std::int32_t cap=0;std::memcpy(&cap,v.header.data()+8,4);
+  why+=';';why+=name;why+="_count=";why+=std::to_string(v.count);
+  why+=';';why+=name;why+="_cap=";why+=std::to_string(cap);
+  why+=';';why+=name;why+="_nonNull=";why+=v.data?"1":"0";
  }
- for(std::int32_t n=0;n<groups.count;++n){const auto group=groups.data+static_cast<std::size_t>(n)*0x20;std::uint8_t category=0;if(!At(group,0,category)||category>6||!categories.insert(category).second||!Value(out.semantic_model,category))return false;ArrayView rows;if(!Capture(group+8,2048,rows,out.semantic_model)||source.rows.size()+static_cast<std::size_t>(rows.count)>2048)return false;
-  for(std::int32_t k=0;k<rows.count;++k){const auto item=rows.data+static_cast<std::size_t>(k)*0x70;std::uintptr_t definition=0;std::uint8_t personal=0;std::string key;if(!At(item,0x28,definition)||!At(item,0x58,personal)||personal>1||!Key(b.module_base,definition,key,out.semantic_model)||!keys.insert(key).second||!Value(out.semantic_model,personal))return false;
-   LydPersonalRow267V1 row;row.group_category=category;row.definition_key=key;row.group_can_pick=category!=0&&category!=6;row.is_personal=personal!=0;LydPersonalChoice267V1 choice;choice.key=key;choice.definition=definition;
-   if(PersonalKey(key)){if(!Fresh(b,core,scene,mono))return false;bool can=false;out.native_read_entered=true;if(!lyd_personal_native::CanPick(b.module_base,core.played_character_id,definition,can)){out.cleanup_known=false;return false;}row.native_can_pick=can;}
-   out.choices.push_back(std::move(choice));source.rows.push_back(std::move(row));
-  }if(!Recheck(rows))return false;
+ bool Fail(std::string&why)const{
+  why="lyd_personal_model_unavailable;stage=";why+=stage;
+  why+=";slot="+std::to_string(slot)+";group="+std::to_string(group)+";row="+std::to_string(row);
+  Header(why,"slots",slots,slots_read);Header(why,"groups",groups,groups_read);Header(why,"rows",rows,rows_read);
+  why+=";def_read=";why+=definition_read?"1":"0";
+  if(definition_read){why+=";def_nonNull=";why+=definition_nonnull?"1":"0";why+=";def_is_default=";why+=definition_is_default?"1":"0";}
+  why+=";personal_read=";why+=personal_read?"1":"0";
+  if(personal_read)why+=";personal="+std::to_string(personal);
+  why+=";magic_read=";why+=magic_read?"1":"0";
+  if(magic_read){why+=";loaded_magic=";why+=magic==0x4744624F?"1":"0";}
+  why+=";key_complete=";why+=key_complete?"1":"0";return false;
  }
- if(!Recheck(slots)||!Recheck(groups))return false;source.model_materialized=true;source.slots_complete=true;source.groups_complete=true;source.slot_count=slots.count;source.group_count=groups.count;return true;
+};
+[[maybe_unused]]bool Models(const ReadonlyBindings&b,const ck3_1210::CoreSnapshotPrefix&core,const LydScene267V1&scene,std::uint64_t mono,std::uintptr_t window,std::uintptr_t default_tenet,LydRaw267V1&out,LydPersonalSource267V1&source,std::string&reason){
+ PersonalModelDiagnostic d;
+ d.stage="slots_capture";if(!Capture(window+0x190,64,d.slots,out.semantic_model,&d.slots_read))return d.Fail(reason);
+ d.stage="groups_capture";if(!Capture(window+0x1A8,7,d.groups,out.semantic_model,&d.groups_read))return d.Fail(reason);
+ const auto&slots=d.slots;const auto&groups=d.groups;
+ std::unordered_set<std::string>slotkeys,keys;std::unordered_set<unsigned>categories;
+ for(std::int32_t n=0;n<slots.count;++n){
+  d.slot=n;d.Item();const auto item=slots.data+static_cast<std::size_t>(n)*0x70;
+  std::uintptr_t definition=0;std::uint8_t personal=0;std::uint32_t magic=0;
+  d.stage="slot_definition";d.definition_read=At(item,0x28,definition);d.definition_nonnull=definition!=0;d.definition_is_default=definition==default_tenet;
+  if(!d.definition_read||!definition)return d.Fail(reason);
+  d.stage="slot_personal";d.personal_read=At(item,0x58,personal);d.personal=personal;
+  if(!d.personal_read||personal>1)return d.Fail(reason);
+  d.stage="slot_magic";d.magic_read=At(definition,0x38,magic);d.magic=magic;
+  if(!d.magic_read)return d.Fail(reason);
+  d.stage="slot_personal_proof";if(!Value(out.semantic_model,personal))return d.Fail(reason);
+  LydPersonalSlot267V1 row;
+  if(magic!=0x4744624F){
+   d.stage="slot_empty_identity_or_personal";if(definition!=default_tenet||personal)return d.Fail(reason);
+   d.stage="slot_empty_type";if(!Typed(definition,b.module_base,lyd_personal_pins::kSTenetPrimaryVtableRva))return d.Fail(reason);
+   d.stage="slot_empty_proof";if(!Value(out.semantic_model,definition)||!Value(out.semantic_model,magic))return d.Fail(reason);
+   row.is_empty=true;source.empty_slot_found=true;
+  }else{
+   std::string key;d.stage="slot_key";d.key_complete=Key(b.module_base,definition,key,out.semantic_model);
+   if(!d.key_complete)return d.Fail(reason);
+   d.stage="slot_duplicate_key";if(!slotkeys.insert(key).second)return d.Fail(reason);
+   row.definition_key=key;row.is_personal=personal!=0;
+  }source.slots.push_back(std::move(row));
+ }
+ d.slot=-1;d.Item();
+ for(std::int32_t n=0;n<groups.count;++n){
+  d.group=n;d.row=-1;const auto group=groups.data+static_cast<std::size_t>(n)*0x20;std::uint8_t category=0;
+  d.stage="group_category";if(!At(group,0,category)||category>6||!categories.insert(category).second||!Value(out.semantic_model,category))return d.Fail(reason);
+  ArrayView rows;d.rows_read=false;d.stage="group_rows_capture";
+  const bool captured=Capture(group+8,2048,rows,out.semantic_model,&d.rows_read);d.rows=rows;
+  if(!captured)return d.Fail(reason);
+  d.stage="candidate_total_bound";if(source.rows.size()+static_cast<std::size_t>(rows.count)>2048)return d.Fail(reason);
+  for(std::int32_t k=0;k<rows.count;++k){
+   d.row=k;d.Item();const auto item=rows.data+static_cast<std::size_t>(k)*0x70;std::uintptr_t definition=0;std::uint8_t personal=0;std::string key;
+   d.stage="candidate_definition";d.definition_read=At(item,0x28,definition);d.definition_nonnull=definition!=0;d.definition_is_default=definition==default_tenet;
+   if(!d.definition_read)return d.Fail(reason);
+   d.stage="candidate_personal";d.personal_read=At(item,0x58,personal);d.personal=personal;
+   if(!d.personal_read||personal>1)return d.Fail(reason);
+   d.stage="candidate_key";d.key_complete=Key(b.module_base,definition,key,out.semantic_model);
+   if(!d.key_complete)return d.Fail(reason);
+   d.stage="candidate_duplicate_key";if(!keys.insert(key).second)return d.Fail(reason);
+   d.stage="candidate_personal_proof";if(!Value(out.semantic_model,personal))return d.Fail(reason);
+   LydPersonalRow267V1 row;row.group_category=category;row.definition_key=key;row.group_can_pick=category!=0&&category!=6;row.is_personal=personal!=0;
+   LydPersonalChoice267V1 choice;choice.key=key;choice.definition=definition;
+   if(PersonalKey(key)){
+    d.stage="candidate_current_source";if(!Fresh(b,core,scene,mono))return d.Fail(reason);
+    bool can=false;out.native_read_entered=true;d.stage="candidate_native_Can_completion";
+    if(!lyd_personal_native::CanPick(b.module_base,core.played_character_id,definition,can)){out.cleanup_known=false;return d.Fail(reason);}
+    row.native_can_pick=can;
+   }out.choices.push_back(std::move(choice));source.rows.push_back(std::move(row));
+  }d.stage="group_rows_recheck";if(!Recheck(rows))return d.Fail(reason);
+ }
+ d.stage="slots_recheck";if(!Recheck(slots))return d.Fail(reason);
+ d.stage="groups_recheck";if(!Recheck(groups))return d.Fail(reason);
+ source.model_materialized=true;source.slots_complete=true;source.groups_complete=true;
+ source.slot_count=slots.count;source.group_count=groups.count;return true;
 }
 [[maybe_unused]]bool Dialogs(const ReadonlyBindings&b,const ck3_1210::CoreSnapshotPrefix&core,const LydScene267V1&scene,std::uint64_t mono,const std::optional<LydSelectionAssociation267V1>&pending,LydRaw267V1&out,LydPersonalSource267V1&source,std::uintptr_t default_tenet){
  out.native_read_entered=true;if(!NativeManager(b.module_base,out.dialog_manager)){out.cleanup_known=false;return false;}ArrayView dialogs;if(!Capture(out.dialog_manager+0x18,128,dialogs,out.modal_source)||!Value(out.modal_source,out.dialog_manager))return false;std::unordered_set<std::uintptr_t>seen;unsigned active=0,matched=0;
@@ -89,7 +167,7 @@ constexpr std::array<RoleRule,7>rules{{{"lyd.1","lyd_welcome_continue",1,0,LydEv
  if((out.root&&out.root!=scene.personal_root)||(!out.root&&scene.personal_root)||v.window_visible&&(!v.named_root_bound||!v.actor_bound))return fail("lyd_actual_personal_named_root_or_actor_mismatch");
  out.native_read_entered=true;bool native_visible=false;if(!Fresh(b,core,scene,mono)||!NativeVisible(image,out.resident,native_visible)){out.cleanup_known=false;return fail("lyd_native_personal_visibility_completion_unknown");}v.native_window_visible=native_visible;if(native_visible!=v.window_visible)return fail("lyd_actual_native_and_widget_visibility_differ");
  if(!Value(out.semantic_model,out.resident)||!Value(out.semantic_model,handler_source)||!Value(out.semantic_model,out.root)||!Value(out.semantic_model,context)||!Value(out.semantic_model,actor)||!Value(out.semantic_model,adding)||!Value(out.semantic_model,default_tenet)||!ActualPersonal(b,out.actor,out,v))return fail("lyd_actual_personal_membership_unavailable");
- if(v.actor_bound&&v.named_root_bound){if(!Models(b,core,scene,mono,out.resident,default_tenet,out,v))return fail("lyd_actual_complete_slot_group_candidate_model_unavailable");}
+ if(v.actor_bound&&v.named_root_bound){if(!Models(b,core,scene,mono,out.resident,default_tenet,out,v,reason))return false;}
  else{ArrayView slots,groups;if(actor!=-1||v.is_adding||native_visible||!Capture(out.resident+0x190,64,slots,out.semantic_model)||!Capture(out.resident+0x1A8,7,groups,out.semantic_model)||slots.count||groups.count||!Recheck(slots)||!Recheck(groups))return fail("lyd_hidden_default_personal_model_not_exact_unmaterialized");}
  if(!Dialogs(b,core,scene,mono,pending,out,v,default_tenet))return fail("lyd_actual_complete_dialog_or_selected_association_unavailable");
  // A free slot ADD starts from the actual default old tenet, never a swap/remove request.
