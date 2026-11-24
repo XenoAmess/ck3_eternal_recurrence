@@ -86,7 +86,24 @@ public final class NativeWire {
         additional.remove(List.of("type", "protocol_version", "request_id", "step", "expected_revision", "expected_snapshot_revision"));
         boolean councilStatus = operation.equals("private-council-application-main-status-v1");
         require(!councilStatus || revision.isEmpty() && snapshotRevision.isEmpty() && additional.isEmpty(), "council status is exactly revisionless and has no domain fields");
-        require(revision.isPresent() || snapshotRevision.isPresent() || councilStatus, "outgoing primitive requires its actual revision profile");
+        boolean livingFixed = operation.equals(CurrentLivingEntry.STEP) || operation.equals(CurrentLivingUi.STEP);
+        if (livingFixed) {
+            Set<String> fields = new HashSet<>(); row.fieldNames().forEachRemaining(fields::add);
+            require(fields.equals(Set.of("type", "protocol_version", "request_id", "step", "actor", "target", "arguments", "deadline_unix_ms"))
+                    && revision.isEmpty() && snapshotRevision.isEmpty(), "fixed Living UI/Entry requires its original strict8 revisionless profile");
+            require(text(row.get("actor")).equals("local_player"), "fixed Living actor must remain local_player");
+            ObjectNode target = object(row.get("target"));
+            require(target.size() == 1 && text(target.get("kind")).equals("none"), "fixed Living has no caller target");
+            String family = operation.equals(CurrentLivingEntry.STEP) ? "living_entry" : "living_ui";
+            ObjectNode arguments = object(row.get("arguments"));
+            require(arguments.size() == 1 && arguments.has(family), "fixed Living arguments must contain only their own family claim");
+            ObjectNode claim = object(arguments.get(family));
+            Set<String> keys = new HashSet<>(); claim.fieldNames().forEachRemaining(keys::add);
+            require(keys.equals(Set.of("schema", "game_version", "executable_sha256", "adapter_id", "backend", "action", "expected_core", "provider_generation", "query_sequence")),
+                    "fixed Living claim has no caller selector or revision");
+            integer(row.get("deadline_unix_ms"), BigInteger.ONE, UINT64_MAX);
+        }
+        require(revision.isPresent() || snapshotRevision.isPresent() || councilStatus || livingFixed, "outgoing primitive requires its actual revision profile");
         return new ExecuteRequest(id, operation, revision, snapshotRevision, new Bytes(JSON.writeValueAsBytes(additional)), new Bytes(packet));
     }
 

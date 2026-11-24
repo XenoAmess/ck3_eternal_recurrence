@@ -1,0 +1,38 @@
+{
+  "schema": "xar.Living.current267.protocol-software-cut.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status": "58_DISTINCT_SOFTWARE_AND_CPP23_INVERSE_PASS_RUNTIME_PENDING",
+  "qualification": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-original8-build-a1427\\affected-qualification-final.json",
+    "bytes": 17021,
+    "sha256": "260f7ad7569c35d92238c77ca0b7282d9a6db09d7ecea3f096d87543b38a33cd"
+  },
+  "actual_Java_requests": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-original8-build-a1427\\actual-Java23-requests-index.json",
+    "bytes": 28809,
+    "sha256": "eac0822179f60dcb9df5c6060bd6ef3577f8f7bb93ec2cf1daa4709884190d97"
+  },
+  "Native_inverse": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\living-current267-nogame-a01\\validation\\actual-Java23-parser-inverse-receipt-a01.json",
+    "bytes": 25448,
+    "sha256": "aa7bd7f4ed0ef807b7d57c7717d75881fd082a64545ea6f68e0dd1c01453fa83"
+  },
+  "Native_50_adoption": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\living-current267-native-source-adoption-a1441\\postcommit-Native50-raw-guard.json",
+    "bytes": 9914,
+    "sha256": "e83bd853796359ea890a49cbe3217e917389f8aff91091171552569f4ac0cf48"
+  },
+  "Native_failed_raw_TU_fix": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-living-production-a01\\production-fix-a02\\exact-single-leaf-source-fix.json",
+    "bytes": 1877,
+    "sha256": "ba6c2155b663769bd90242e9436d251c6d8e5a4eb95b70f239954bc0287d8f22"
+  },
+  "current_wire": "Inventory original legacy8 unchanged; UI/Entry actual strict8 exact named profiles. Other outgoing primitive revision requirements retained.",
+  "retained_originals": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-original8-build-a1427\\report-retention-cut.json",
+    "bytes": 3012,
+    "sha256": "8a5052dbe9a54426871f6e22e03ef5d9ba3ac114ed7df5fd7249bd5b557ef218"
+  },
+  "old_RMTM_source_tag_formal_runtime_unchanged": true,
+  "new_Game_Steam_HTTP": 0
+}

@@ -68,16 +68,23 @@ final class NativeCurrentLivingUiEntryDataTest {
         assertEquals(query?BigInteger.ZERO:MAX,claim.get("query_sequence").bigIntegerValue());
         assertEquals(-2,claim.get("expected_core").get("played_character_id").intValue());
         assertEquals(Integer.MIN_VALUE,claim.get("expected_core").get("date_raw").intValue());
-        // This is an explicitly authored Java DATA envelope, never an original C++ request or a Transport exchange.
+        // Compare the production encoder with explicit Java DATA; C++ originals are consumed separately.
         var envelope=StrictJson.object().put("type","execute_step").put("protocol_version",1)
                 .put("request_id","java-data-living-max").put("step",request.step()).put("actor","local_player").put("deadline_unix_ms",MAX);
         envelope.putObject("target").put("kind","none");envelope.putObject("arguments").set(family,claim);
-        byte[] packet=NativeWire.packet(StrictJson.canonical(envelope));
+        byte[] packet=NativeGameTransport.currentLivingFixedEntryUiPacket("java-data-living-max",request,MAX);
         assertEquals(packet.length-4,ByteBuffer.wrap(packet,0,4).order(ByteOrder.LITTLE_ENDIAN).getInt());
         var actual=StrictJson.object(NativeWire.parse(Arrays.copyOfRange(packet,4,packet.length)),
                 Set.of("type","protocol_version","request_id","step","actor","target","arguments","deadline_unix_ms"));
         assertEquals(MAX,actual.get("deadline_unix_ms").bigIntegerValue());
         assertEquals(NativeWire.parse(StrictJson.canonical(envelope)),actual);assertFalse(actual.has("expected_revision"));
+        var decoded=NativeWire.decodeExecuteRequest(packet);assertTrue(decoded.expectedRevision().isEmpty());assertTrue(decoded.expectedSnapshotRevision().isEmpty());
+        var extraRevision=actual.deepCopy();extraRevision.put("expected_revision",0);
+        assertThrows(java.io.IOException.class,()->NativeWire.decodeExecuteRequest(NativeWire.packet(StrictJson.canonical(extraRevision))));
+        var foreign=actual.deepCopy();foreign.put("step","java-data-other-primitive");
+        assertThrows(java.io.IOException.class,()->NativeWire.decodeExecuteRequest(NativeWire.packet(StrictJson.canonical(foreign))));
+        var callerSelector=actual.deepCopy();((com.fasterxml.jackson.databind.node.ObjectNode)callerSelector.get("arguments")).put("caller_artifact_id",0);
+        assertThrows(java.io.IOException.class,()->NativeWire.decodeExecuteRequest(NativeWire.packet(StrictJson.canonical(callerSelector))));
     }
 
     @Test void exactFactoriesKeepThreeQueryAndFiveEntryEffectGenerationsAndMaxDeadline() throws Exception {

@@ -6000,11 +6000,29 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     private LivingEntryReceived latestLivingEntry;
     private final Set<CoreReceived> livingEntryCores=java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<>());
     private final Set<String> livingEntryAttempted=new HashSet<>();
+    /** The actual UI/Entry producer uses strict8, unlike the independent inventory query's legacy8 profile.
+     * Package visibility lets the original C++ factory consumers exercise this exact production encoder. */
+    static byte[] currentLivingFixedEntryUiPacket(String id,NativeRequest request,BigInteger deadline)throws IOException {
+        Objects.requireNonNull(request);
+        final String family,capability;
+        if(request.step().equals(CurrentLivingEntry.STEP)){family="living_entry";capability=CurrentLivingEntry.CAPABILITY;}
+        else if(request.step().equals(CurrentLivingUi.STEP)){family="living_ui";capability=CurrentLivingUi.CAPABILITY;}
+        else throw new IOException("Only the actual fixed Living UI/Entry profile is revisionless here");
+        if(!request.requiredCapability().equals(Optional.of(capability)))throw new IOException("Actual Living family capability differs from typed request");
+        CurrentLivingInventoryQuery.unsigned(deadline,true);
+        var fields=StrictJson.object(NativeWire.parse(request.additionalFields().bytes()),Set.of("arguments",family));
+        if(!fields.get("arguments").isObject()||!fields.get("arguments").isEmpty())throw new IOException("Typed Living request must not supply caller arguments");
+        var claim=StrictJson.object(fields.get(family),Set.of("schema","game_version","executable_sha256","adapter_id","backend","action","expected_core","provider_generation","query_sequence"));
+        var wire=StrictJson.object().put("type","execute_step").put("protocol_version",1).put("request_id",id).put("step",request.step())
+                .put("actor","local_player").put("deadline_unix_ms",deadline);
+        wire.putObject("target").put("kind","none");wire.putObject("arguments").set(family,claim);
+        byte[] packet=NativeWire.packet(StrictJson.canonical(wire));
+        NativeWire.decodeExecuteRequest(packet);return packet;
+    }
     private byte[] livingEntryPacket(String id,CurrentLivingEntry.Action a,CoreReceived before,BigInteger gen,BigInteger seq,Instant until)throws IOException {
         if(!(before.frame instanceof CoreFrame.Partial core))throw new IOException("Actual exact current267 Core required");
         var request=CurrentLivingEntry.request(core,a,gen,seq);var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));
-        fields.put("core_control_deadline_unix_ms",BigInteger.valueOf(until.toEpochMilli()));
-        return NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+        return currentLivingFixedEntryUiPacket(id,request,BigInteger.valueOf(until.toEpochMilli()));
     }
     private void requireLivingEntryFrame(CurrentLivingEntryResult frame,CurrentLivingEntry.Action action,CoreReceived before)throws IOException {
         if(frame.action()!=action||!frame.cleanupKnown()||frame.status()==CurrentLivingEntryResult.Status.INDETERMINATE)
@@ -6130,8 +6148,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     private byte[] livingUiPacket(String id,CurrentLivingUi.Action a,CoreReceived before,BigInteger gen,BigInteger seq,Instant until)throws IOException {
         if(!(before.frame instanceof CoreFrame.Partial core))throw new IOException("Actual exact current267 Core required");
         var request=CurrentLivingUi.request(core,a,gen,seq);var fields=NativeWire.object(NativeWire.parse(request.additionalFields().bytes()));
-        fields.put("core_control_deadline_unix_ms",BigInteger.valueOf(until.toEpochMilli()));
-        return NativeWire.execute(id,request.step(),BigInteger.ZERO,StrictJson.canonical(fields));
+        return currentLivingFixedEntryUiPacket(id,request,BigInteger.valueOf(until.toEpochMilli()));
     }
     private void requireLivingUiFrame(CurrentLivingUiResult frame,CurrentLivingUi.Action action,CoreReceived before)throws IOException {
         if(frame.action()!=action||!frame.cleanupKnown()||frame.status()==CurrentLivingUiResult.Status.INDETERMINATE)

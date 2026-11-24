@@ -57,7 +57,7 @@ bool ReadLivingUiRaw267V1(const ReadonlyBindings&b,const LivingUiFrame267V1&f,
    }
    if(!f.events||!VerifyLydImage267V1(b.module_base))return false;
    state.events.emplace();LydRequest267V1 read;read.action=LydAction267V1::query_events;
-   read.expected=q.expected;read.request_id=q.request_id;read.request_id_size=q.request_id_size;read.deadline_unix_ms=q.deadline_unix_ms;
+   read.expected=q.expected;std::copy(q.request_id.begin(),q.request_id.end(),read.request_id.begin());read.request_id_size=q.request_id_size;read.deadline_unix_ms=q.deadline_unix_ms;
    if(!ReadLydRaw267V1(b,f.events->core,f.events->scene,mono,read,{},*state.events,why)){
     out.entered|=state.events->native_read_entered;out.cleanup_known&=state.events->cleanup_known;return false;}
    out.entered|=state.events->native_read_entered;out.cleanup_known&=state.events->cleanup_known;
