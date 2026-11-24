@@ -365,7 +365,7 @@ class B1RuntimeFoundationTests(unittest.TestCase):
     def test_finalize_without_capital_preserves_cohort_and_start_facts(self) -> None:
         finalize = top_level_block(self.effects, "zg361_b1_finalize_subject_facts_effect")
         guard = "limit = { var:zg361_b1_baseline_available = 1 exists = capital_county }"
-        self.assertLess(finalize.index(guard), finalize.index("capital_county.development_level"))
+        self.assertLess(finalize.index(guard), finalize.index("capital_county.prosperity_level"))
         fallback = finalize.rsplit("\telse_if = {", 1)[1].split(
             "\tif = {\n\t\tlimit = { root.var:zg361_b1_m001_mode", 1
         )[0]

@@ -1397,7 +1397,7 @@ zg361_b1_initialize_subject_case_effect = {
 	}
 	set_variable = { name = zg361_b1_baseline_adjusted value = var:zg361_b1_baseline_raw }
 	set_variable = { name = zg361_b1_baseline_source value = 1 }
-	set_variable = { name = zg361_b1_baseline_start_development value = capital_county.development_level }
+	set_variable = { name = zg361_b1_baseline_start_development value = capital_county.prosperity_level }
 	set_variable = { name = zg361_b1_baseline_start_control value = capital_county.county_control }
 	set_variable = { name = zg361_b1_baseline_start_gold value = gold }
 	set_variable = { name = zg361_b1_baseline_start_war value = 0 }
@@ -2938,7 +2938,7 @@ zg361_b1_finalize_subject_facts_effect = {
 	set_variable = { name = zg361_b1_difficulty_score_adjustment value = 0 }
 	if = {
 		limit = { var:zg361_b1_baseline_available = 1 exists = capital_county }
-		set_variable = { name = zg361_b1_baseline_end_development value = capital_county.development_level }
+		set_variable = { name = zg361_b1_baseline_end_development value = capital_county.prosperity_level }
 		set_variable = { name = zg361_b1_baseline_end_control value = capital_county.county_control }
 		set_variable = { name = zg361_b1_baseline_end_gold value = gold }
 		set_variable = { name = zg361_b1_baseline_end_war value = 0 }
