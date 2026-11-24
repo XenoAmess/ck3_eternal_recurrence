@@ -1,5 +1,13 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-24 当前 RMTM：D4 Offer 有限通过，D5 原始三容器格式已核，第七次推进写前拒绝
+
+`desktop-3fevhd2-1c74096080` 的a1390场实际装载六针`5d72a0a9…`／DLL`a121504f…`，Java MFc770／args eff3保持。唯一original-case-a1382完成6自然日、2次原事件ACK及独立absence；D4 Budget与Offer均已实际打开、取消并独立观察hidden，Continue三动作后D5死亡／玩家切换至44132及epoch1确认成立。第7次advance因`rmtm_actual_runtime_event_still_blocks_date`在写前known unavailable拒绝，effect=false／cleanup=true，0Save；原ID/body/deadline不重发。实际当前popup definition／instance尚未捕获，不能用hidden rmtm.2001或Savedtargets猜事件。normal-quit-a1383与独立Natural0/Job0/cleanup、creator0已闭。
+
+真实621545B debug.log含EXEC／callback entry／exit三容器；首次1个真实profile positive及wrong-pin／shifted-range两个negative均通过，0.2985675秒／Job峰20,217,856B／active0，旧5／10不重跑。CONTROL15、原首行prefix及continuation、Character／Landed_title标签与8个phase行完整ID已核：Later20377、heir／holder44132；CALLBACK_ROOT_REF_ABSENT为原合法消费边界保留。opt-in full-log reader已精确追加到现有scope witness模块，旧prefix与所有旧函数AST不变，默认仍UNBOUND、真实profile仍为外置输入。这是格式／完整ID DATA，不自动授world／execute业务AND、三物理phase、26或整产品通过。
+
+本场4153生成输入副本实际退役357602048 allocated bytes，原初始副本／重复shader路径不可再读或重跑，821S0／940master／logs／SDK保留。新事件处理只在同一原case／Receiver内按完整实际census和实际选项绑定推进，现有query_summary可重复只读，不能借用已消费的summary ACK权限；陌生事件动作仍须实际新合同与资格。全部旧Offer UNKNOWN、独立50/51有限通过及429保留；仍13/17上传、9/17严格，无本轮RMTM正式化或发布。[精确原件与本次有限边界](docs/maintenance/evidence/rmtm-current267-D5-scope-format-Day7-event-refusal-a1383.json)。
+
 ## 2026-11-24 当前 RMTM Origin 修复软件已闭，实机 D4 Offer 仍 UNKNOWN
 
 `desktop-3fevhd2-1c74096080` 已正常推送 Origin 三叶 `e140c42354a533369f8e6ed31907f043a66f7e56`／NativeTree `65069fb35d3f5ca5b22fc3141f468b420bda7d5b`。27 个必要 NoGame case 通过，生产956/1CL/955复用及 Identity/登记通过；ND `6d904200…`／DLL `d6ecabd3…` 与原 Java MFc770／args eff3 配成实际六针 `428ae047…`，新 metadata20 已 END/future0，未重编 Java、测试或复制 JAR。这些软件／产物事实不授实机成功。

@@ -1,0 +1,151 @@
+{
+  "schema": "xar.rmtm.current267.D5-scope-format-Day7-known-refusal.machine-facts.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "actual_scene": {
+    "root": "D:/ck3-state/upgrade-20261118/rmtm-current267-original-case-profile-a1390",
+    "operation": "original-case-a1382",
+    "Root_facts": {
+      "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/RMTM-visibility-core-D5-records-Day7-known-refusal-PARTIAL-a1383.json",
+      "bytes": 3342,
+      "sha256": "179dc51c35c6fc286dc3a397323a1b5e7dd067e73080f68cf9f3c6b29783b5b2"
+    },
+    "actual_pair_sha256": "5d72a0a944d6894fc30f134d63657614ec043cc13be9f755706370d94599cd66",
+    "actual_Native_delivery_sha256": "6947dfe0d9d2135c4dfcaaf973aba3ea7ab824fea94121a0cd5af7c404c2af01",
+    "actual_DLL_sha256": "a121504f407bd87d42e6f5c521766009c1b8225414b9b089cad04931f992e53a",
+    "Java_manifest_sha256_unchanged": "c770187a8b2a05e1260852d6f39a165f26e88eea9655ceb24865795307c123e4",
+    "Java_args_sha256_unchanged": "eff331fe148e151f03448a8b77c4d4b5d59a1ea9fe910f5a68bfd03b2a8f6a7d",
+    "natural_days_observed": 6,
+    "advance_requests": 7,
+    "original_event_ACK_calls": 2,
+    "Continue_decision_action_calls": 3,
+    "epoch_confirmations": 1,
+    "Save_calls": 0,
+    "D4_finite_observations": "Budget and Offer actual open/cancel/independent hidden; all prior UNKNOWN receipts retained, not retroactively settled.",
+    "D5_finite_observations": "Actual predecessor death, player44132 and private epoch1 confirmation. execute_time_identity_confirmed stays nullable DATA, not an automatic business witness.",
+    "day7_before_write": {
+      "ACK": {
+        "path": "D:/ck3-state/upgrade-20261118/rmtm-current267-original-case-profile-a1390/operations/original-case-a1382/result/rmtm-day07-submit/read-ack-payload.json",
+        "bytes": 1539,
+        "sha256": "ee5410565d0f188b1dc6b9d2ae6aed882ee6f3df0fb8e28e2269114a25d4662a"
+      },
+      "request_id": "rmtm-advance-ee800ece09064b338d01348afc3e1b06",
+      "operation_id": "rmtm-op-451ac07a0b1347ffb179d7cd78e3f06b",
+      "status": "unavailable",
+      "reason": "rmtm_actual_runtime_event_still_blocks_date",
+      "accepted": false,
+      "effect_attempted": false,
+      "cleanup_known": true,
+      "current_actor": 44132,
+      "current_date_raw": 53144472,
+      "no_replay": true,
+      "actual_popup_definition_and_instance": "NOT_OBSERVED"
+    },
+    "actual_terminal": {
+      "path": "D:/ck3-state/upgrade-20261118/rmtm-current267-original-case-profile-a1390/owner/terminal.json",
+      "bytes": 1059,
+      "sha256": "465d8bbf21a87626b7894855f6542e2ad3374506581175c35f2620155f9b4445"
+    },
+    "creator_END": {
+      "path": "D:/ck3-state/upgrade-20261118/rmtm-current267-original-case-profile-a1390/creator-end.json",
+      "bytes": 594,
+      "sha256": "cada3aed2b1330272b779700d062174f215a95b969edb7f2b80bf09fe6e41219"
+    },
+    "Natural_exit_code": 0,
+    "Job_active_processes": 0,
+    "cleanup_proven": true,
+    "creator_exit_code": 0
+  },
+  "actual_original_scope_profile": {
+    "full_log": {
+      "path": "D:/ck3-state/upgrade-20261118/rmtm-current267-original-case-profile-a1390/profile-states/gui-38fa34c736b243b499a3483767cc7dbb/profile/logs/debug.log",
+      "bytes": 621545,
+      "sha256": "20a089108b010fb821716de871634138cd7baa1d5aa730854f4599d1e084ef68"
+    },
+    "actual_delivery": {
+      "path": "D:/ck3-state/upgrade-20261118/rmtm-real-D5-full-log-profile-a1383/delivery-final.json",
+      "bytes": 2814,
+      "sha256": "67f757a4df2f8ab39af866fbe4de0a93f578bc5b50b5738c7847925ce44d4311"
+    },
+    "profile": {
+      "path": "D:/ck3-state/upgrade-20261118/rmtm-real-D5-full-log-profile-a1383/actual-full-log-profile.json",
+      "bytes": 3352,
+      "sha256": "5c5fa46287c22803bd935e69b26b4d9611def16a54d57adcdfbc2476b9530614"
+    },
+    "actual_validation": {
+      "path": "D:/ck3-state/upgrade-20261118/rmtm-real-D5-full-log-profile-a1383/actual-profile-validation.json",
+      "bytes": 16864,
+      "sha256": "e03dd0d662c976e103561ad72262467bdb03df8f8ba214b75acd836c20e1c2b2"
+    },
+    "actual_phase_END": {
+      "path": "D:/ck3-state/upgrade-20261118/rmtm-real-D5-full-log-profile-a1383/phase-END.json",
+      "bytes": 1526,
+      "sha256": "9c62614fd84ff02b30884f8b555b1cdb397f99b5870f7afe41c070bbc2908576"
+    },
+    "new_actual_validation_cases": 3,
+    "cases": ["real_full_log_positive", "wrong_full_log_pin_negative", "shifted_payload_range_negative"],
+    "old5_or10_repeated": false,
+    "elapsed_seconds": 0.2985674999654293,
+    "Job_peak_bytes": 20217856,
+    "Job_active_processes": 0,
+    "Job_terminated_processes": 0,
+    "all_private_Source_and_validation_held_upper_bytes": 111904,
+    "new_Python1_remaining_future_bytes": 0,
+    "container_ranges_zero_based_exclusive": {
+      "execute": [562590, 563857],
+      "callback_entry": [568920, 572925],
+      "callback_exit": [573078, 577532]
+    },
+    "actual_full_ID_data": {
+      "execute": {"later": 20377, "current_heir": 44132, "primary_heir": 44132},
+      "callback_entry": {"later": 20377, "expected_heir": 44132},
+      "callback_exit": {"later": 20377, "primary_after": 20377, "holder_after": 44132}
+    },
+    "actual_layout": "CONTROL15_FIRST_LINE_PREFIX_UNPREFIXED_CONTINUATIONS",
+    "actual_kind_labels": {"character": "Character", "title": "Landed_title"},
+    "callback_root_ref_absent": "Preserved original normal consumption observation; not a fabricated replacement row.",
+    "world_binding": "NOT_CHECKED",
+    "execute_business_identity_qualification": false,
+    "all_three_physical_phases": false,
+    "RMTM26": false
+  },
+  "exact_optin_reader_adoption": {
+    "adoption": {
+      "path": "D:/ck3-state/upgrade-20261118/rmtm-real-D5-full-log-profile-a1383/primary-append-only-adoption.json",
+      "bytes": 1381,
+      "sha256": "3f29691cdfbf7b7afa4f87ee440788a6b3ab405955c9e32bcc3549dfaa0b26d1"
+    },
+    "repository_relative": "tools/reclaim_the_motherland_scope_witness.py",
+    "base_bytes": 18951,
+    "base_sha256": "26cb14e5543401193ee4cbb838a702f0df3ea5570626c6faf63ac880af74d241",
+    "target_bytes": 27876,
+    "target_sha256": "3e86faa7512029dbc87cdb2f3b95b84ba9ea35760f4ea3cff8cf52229e3f8579",
+    "all_old_prefix_bytes_and_AST_nodes_unchanged": true,
+    "default": "UNBOUND",
+    "actual_profile_embedded_in_code": false,
+    "new_tests_after_adoption": 0
+  },
+  "actual_duplicate_reclamation": {
+    "receipt": {
+      "path": "D:/ck3-state/upgrade-20261118/RMTM-visibility-core-duplicate-reclamation-a1383/actual-result.json",
+      "bytes": 2046802,
+      "sha256": "6bc5dd9af127c8c0a7da16a4edd6561c8672d3d99b6f1a0a52976e3c60e0f545"
+    },
+    "retired_count": 4153,
+    "allocated_removed_bytes": 357602048,
+    "availability": "RETIRED_PROFILE_INPUT_UNREADABLE",
+    "archives_unchanged": true,
+    "scope": "Generated initial Save copy and4152 duplicate shader files; original821S0/940master/logs/SDK remain, old prepared paths/wrappers not replayable.",
+    "old_spent_held_refund": false
+  },
+  "next_event_Source_boundary": "Existing QUERY_SUMMARY can reread complete ordinary census in the same successor Receiver; current four actions do not authorize stranger selection. New post-succession first-actual-enabled per-instance contract and qualification are separate; hidden rmtm.2001/Savedtargets cannot identify the current popup.",
+  "preserved_boundaries": {
+    "prior_independent50_51_finite_PASS": true,
+    "all_prior_Offer_UNKNOWN_and_beforewrite_refusals": "Preserved, no replay or retroactive settlement",
+    "current267_RMTM_formal_release_or_publication": false,
+    "uploaded_distinct_products": 13,
+    "strict_finite_release_complete_products": 9,
+    "total_products": 17,
+    "Notes429": "Preserved",
+    "new_Game_Steam_HTTP_Maven_JVM_Native_or_JAR_changes_in_this_unit": 0
+  }
+}

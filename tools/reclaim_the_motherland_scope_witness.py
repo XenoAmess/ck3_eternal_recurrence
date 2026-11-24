@@ -385,3 +385,159 @@ def parse_original_scope_witness_log(raw: bytes, source: dict, *, layout: str = 
     result["status"] = "PARSED_SOFTWARE_FIXTURE_ONLY"
     result["layout"] = layout
     return result
+
+
+def _current267_scope_profile_ranges(containers: list) -> list:
+    return [{"phase": item["phase"],
+             "begin_line_byte_range": list(item["begin"]["line_byte_range"]),
+             "begin_literal_byte_range": list(item["begin"]["literal_byte_range"]),
+             "payload_byte_range": list(item["payload_byte_range"]),
+             "end_line_byte_range": list(item["end"]["line_byte_range"]),
+             "end_literal_byte_range": list(item["end"]["literal_byte_range"])}
+            for item in containers]
+
+
+def _current267_scope_profile_range(value: list, size: int) -> list:
+    _scope_need(type(value) is list and len(value) == 2
+                and all(type(number) is int for number in value)
+                and 0 <= value[0] < value[1] <= size,
+                "Actual original byte range is not a bounded integer pair")
+    return list(value)
+
+
+def parse_current267_original_scope_full_log(raw: bytes, source: dict, *,
+                                           profile: dict | None = None) -> dict:
+    """Join original extractor and observed-format parser, never business authority.
+
+    Default remains UNBOUND. The explicit profile is DATA bound to the exact
+    complete log, actual three containers, six message prefixes and observed
+    Character/Title label rows. No caller actor/title/epoch/revision is accepted.
+    Missing original D5 containers must not be supplied by an ordinary D3 dump.
+    This function does not promote typed epoch/ACK or parsed IDs to D5/26 PASS.
+    """
+    result = extract_original_scope_dump_containers(raw, source)
+    if profile is None:
+        result["required_actual_binding"] = [
+            "Exact full-log FilePin plus three original container byte ranges",
+            "Six actual original debug_log message prefixes",
+            "Effective language and actual Character/Title label rows",
+        ]
+        return result
+    keys = {"schema", "source", "language", "kind_labels", "container_ranges",
+            "marker_prefixes", "kind_label_evidence"}
+    _scope_need(type(profile) is dict and set(profile) == keys,
+                "Exact current267 original full-log profile required")
+    _scope_need(profile["schema"] == "rmtm-current267-original-control15-profile-data-v1",
+                "Unknown original full-log DATA profile")
+    bound_source = _scope_file_pin(raw, profile["source"])
+    _scope_need(bound_source == result["source"],
+                "Profile refers to another original full log")
+    language = profile["language"]
+    _scope_need(type(language) is str and language in _SCOPE_DEBUG_FORMATS,
+                "Effective actual language remains UNBOUND")
+    labels = _scope_type_labels(profile["kind_labels"])
+    actual_ranges = _current267_scope_profile_ranges(result["containers"])
+    ranges = profile["container_ranges"]
+    _scope_need(type(ranges) is list and len(ranges) == len(_SCOPE_PHASES),
+                "All three actual original containers must be bound")
+    range_keys = set(actual_ranges[0])
+    for item, actual in zip(ranges, actual_ranges, strict=True):
+        _scope_need(type(item) is dict and set(item) == range_keys
+                    and item["phase"] == actual["phase"],
+                    "Original container phase/range shape differs")
+        for key in range_keys - {"phase"}:
+            _current267_scope_profile_range(item[key], len(raw))
+        _scope_need(item == actual,
+                    "Profile byte ranges differ from complete original extractor")
+    prefixes = profile["marker_prefixes"]
+    _scope_need(type(prefixes) is list and len(prefixes) == 6,
+                "Six actual original marker prefixes remain UNBOUND")
+    index = 0
+    for container in result["containers"]:
+        phase = container["phase"]
+        script = (b"common/scripted_effects/rqa_effects.txt" if phase == "execute"
+                  else b"events/rmtm_loyalty_events.txt")
+        for edge in ("begin", "end"):
+            item = prefixes[index]
+            index += 1
+            _scope_need(type(item) is dict and set(item) == {"phase", "edge", "prefix"}
+                        and item["phase"] == phase and item["edge"] == edge
+                        and type(item["prefix"]) is str,
+                        "Original marker prefix phase/order differs")
+            first = container[edge]["line_byte_range"][0]
+            at = container[edge]["literal_byte_range"][0]
+            actual_prefix = raw[first:at]
+            _scope_need(item["prefix"].encode("utf-8") == actual_prefix,
+                        "Profile must retain the complete actual logger prefix")
+            envelope = (rb"\[(?:[01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]\]"
+                        rb"\[D\]\[jomini_effect_impl\.cpp:444\]: file: "
+                        + _scope_re.escape(script)
+                        + rb" line: [1-9][0-9]* \([^\r\n\x00]+\): ")
+            _scope_need(_scope_re.fullmatch(envelope, actual_prefix) is not None,
+                        "Original marker transport/callsite layout is UNBOUND")
+        a, z = container["payload_byte_range"]
+        # Do not strip first prefix/blank lines or rewrite richtext. Existing
+        # observed-format parser preserves all original UTF8/control offsets.
+        container["parsed_data"] = parse_first_line_prefixed_scope_payload(
+            raw[a:z], phase, language=language, kind_labels=labels, origin_byte=a)
+    evidence = profile["kind_label_evidence"]
+    _scope_need(type(evidence) is list and len(evidence) == 2,
+                "Both actual label rows must be bound, no guessed Title label")
+    seen = set()
+    for item in evidence:
+        _scope_need(type(item) is dict
+                    and set(item) == {"kind", "phase", "scope_name", "row_byte_range"}
+                    and item["kind"] in {"character", "title"}
+                    and item["kind"] not in seen,
+                    "Observed type-label evidence shape differs")
+        seen.add(item["kind"])
+        rows = [row for container in result["containers"]
+                if container["phase"] == item["phase"]
+                for row in container["parsed_data"]["targets"]
+                if row["scope_name"] == item["scope_name"]
+                and row["expected_kind"] == item["kind"]]
+        _scope_need(len(rows) == 1, "Evidence is not an original fixed-name/kind row")
+        _current267_scope_profile_range(item["row_byte_range"], len(raw))
+        _scope_need(item["row_byte_range"] == rows[0]["row_byte_range"]
+                    and rows[0]["display_kind_label"] == labels[item["kind"]],
+                    "Actual label row/range differs from full-log DATA")
+    _scope_need(seen == {"character", "title"}, "Original kind-label binding incomplete")
+    result.update(schema="rmtm-current267-original-full-log-profile-data-v1",
+                  status="PARSED_ORIGINAL_CONTAINERS_DATA_BUSINESS_UNBOUND",
+                  layout="CURRENT267_FIRST_LINE_PREFIX_CONTROL15_DATA_ONLY",
+                  profile=profile, container_ranges=actual_ranges,
+                  world_binding="NOT_CHECKED", business_pass=False,
+                  execute_time_identity_qualified=False,
+                  independent_original_AND=[
+                      "Actual execution-time full Later/current-heir/primary-heir identity",
+                      "Actual callback-entry/exit and private Native/Core/world binding",
+                      "Original three physical phases and original26 business consumer",
+                  ])
+    return result
+
+
+def read_current267_original_scope_full_log(source: dict, *,
+                                          profile: dict | None = None) -> dict:
+    """Read only an explicitly pinned complete log; no Game/SDK or execution.
+
+    Missing/truncated/duplicate original markers or unsupported layout raise
+    ScopeWitnessParseError. The caller must retain UNBOUND/PARTIAL, never fill
+    identities from the ordinary292B D3 fragment or another source/frame.
+    """
+    from pathlib import Path
+    _scope_need(type(source) is dict and set(source) == {"path", "bytes", "sha256"},
+                "Explicit original full-log reference required")
+    _scope_need(type(source["path"]) is str and bool(source["path"])
+                and "\x00" not in source["path"], "Original full-log path invalid")
+    _scope_need(type(source["bytes"]) is int and 0 <= source["bytes"] <= _SCOPE_LOG_LIMIT,
+                "Original full-log bound invalid")
+    path = Path(source["path"])
+    _scope_need(path.is_file(), "Original pinned log is unavailable")
+    before = path.stat()
+    raw = path.read_bytes()
+    after = path.stat()
+    _scope_need(before.st_size == after.st_size == len(raw)
+                and before.st_mtime_ns == after.st_mtime_ns,
+                "Original log changed during complete read")
+    _scope_file_pin(raw, source)
+    return parse_current267_original_scope_full_log(raw, source, profile=profile)
