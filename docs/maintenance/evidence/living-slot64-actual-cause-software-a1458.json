@@ -1,0 +1,176 @@
+{
+  "schema": "xar.current267.living.slot64.actual-refusal-and-necessary-software.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-11-24T06:38:14.601057+00:00",
+  "status": "ACTUAL_CAUSE_AND_NECESSARY_SOFTWARE_P_NATIVE_READY_JAVA_FROZEN_ARTIFACT_PENDING",
+  "observed_original_reason": "living_inventory_complete_arrays_unavailable;field=slots;issue=count_exceeds_bound;artifacts_read=1;artifacts_count=5;artifacts_capacity=6;artifacts_data_nonnull=1;artifacts_count_oob=0;artifacts_span_oob=0;slots_read=1;slots_count=36;slots_capacity=39;slots_data_nonnull=1;slots_count_oob=1;slots_span_oob=0",
+  "actual_original_typed_status": "unavailable",
+  "actual_effect_attempted": false,
+  "actual_cleanup_known": true,
+  "actual_current_actor": 36423,
+  "actual_current_date": 53144328,
+  "original_case_calls": {
+    "read": 2,
+    "Entry": 0,
+    "UI": 0,
+    "Date": 0,
+    "Save": 0
+  },
+  "original_a1440_and_a1452_requests_consumed_and_not_replayed": true,
+  "observed_cause": "Actual complete36-slot array exceeded our finite Raw bound32. Both arrays were readable; artifacts5/cap6 and slots36/cap39 had nonzero data, valid span, no negative or oversized capacity issue. Existing current859 array layout/order/signed capacity was correct. The correction raises the finite complete bound to64, without truncating or accepting unknown/partial arrays.",
+  "actual_Java_production": {
+    "leaves": 1,
+    "sites": 3,
+    "target": "CurrentLivingInventoryQuerySource.java",
+    "constructor_slots": "32 to64",
+    "decoder_slots": "32 to64",
+    "decoder_weapon_index": "31 to63",
+    "public_API_fields_signatures_or_request_unchanged": true,
+    "Transport_Main_UI_Entry_changed": false,
+    "UI_retention32_unchanged": true
+  },
+  "actual_necessary_qualification": {
+    "JavaDATA_methods": 3,
+    "new_real_CPP_response_roundtrips": 2,
+    "total_distinct": 5,
+    "method_runs": 5,
+    "all_Natural0": true,
+    "Job_active0": true,
+    "Job_terminated0": true,
+    "elapsed_seconds": 237.9879233999527,
+    "Job_peak_commit": 1721700352,
+    "first3_NT_compile": {
+      "production_sources": 591,
+      "test_sources": 119
+    },
+    "LS_selected_or_built": false,
+    "all_original_XML_retained_before_next_test": true,
+    "original58_and23_not_rerun": true
+  },
+  "actual_CPP": {
+    "response_counts": [
+      36,
+      64
+    ],
+    "actual_weapon_indices": [
+      35,
+      63
+    ],
+    "actual_encoded_bytes": [
+      3528,
+      4928
+    ],
+    "original_bodies_and_packets": 4,
+    "new_requests": 0,
+    "new_factory_inverses": 0,
+    "software_DATA_not_Game": true
+  },
+  "Native_qualified": {
+    "ON": 10,
+    "OFF": 1,
+    "Raw_and_serializer_two_targets": true,
+    "canonical_adoption_HEAD": "d06919e9f272d15d4df917508512d155f21439ef",
+    "NativeTree": "dc72e07438840844b65ac6ee8257fd9910ceab87",
+    "actual_runtime_artifact_pending": false,
+    "production_actual_graph": "969 total /2CL /967reuse; actual artifact Ready only, no Game credit."
+  },
+  "phase_plan": {
+    "compiler64": "Actual5-method qualification and FSI END; held4171280, remainingfuture0.",
+    "package96": "Exactly one NT-only final package; not yet executed at this cut.",
+    "freeze12": "Expected one new NT JAR and157 prior immutable identity reuses including LS; no old158 body CRC.",
+    "metadata1": "Only after actual new JavaReady and NativeReady; no future pins invented."
+  },
+  "new_Runtime_HELLO_original8_business": "NOT_RUN. Known bound correction and software P do not confer actual inventory/business/text or publication P.",
+  "actual_new_pair": null,
+  "actual_new_Java_runtime_manifest": null,
+  "actual_new_Native_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-living-slot64-production-a1458\\frozen-delivery-final.json",
+    "bytes": 4451,
+    "sha256": "ae4f46af284c634da5ec183320db5cd96953f544261fc7f34b5bccd829df4bf9"
+  },
+  "uploaded_SKUs": 14,
+  "strict_finite_complete_SKUs": 10,
+  "total_SKUs": 17,
+  "exact_external_refs": {
+    "actual_a1452_token": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-current267-inventory-repair-profile-a1452\\operations\\living-inventory-repair-a1452-case\\result\\living-inventory-initial\\read-result-token.json",
+      "bytes": 1200,
+      "sha256": "28b25c6d32109b2a4492e37298f62e6c8357395ed4ff92a5cae0578bd1b4f1ae"
+    },
+    "actual_a1452_normal_terminal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-current267-inventory-repair-profile-a1452\\owner\\terminal.json",
+      "bytes": 1074,
+      "sha256": "9c9ffff2f2113da561ffd1819d5045f866aebfadf097523839e2f679a2ba388d"
+    },
+    "original_a1440_consumer_review": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-a1440-initial-inventory-consumer-review-a01\\source-review-final.json",
+      "bytes": 17400,
+      "sha256": "66524a584b9fa27bc8cc90dfab7e9f3a2244a6b79696423ef1aae4362b34b291"
+    },
+    "Java_source_FD": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-slot64-source-a01\\delivery-final.json",
+      "bytes": 807,
+      "sha256": "afd723a6bb815c2778c549ac80e0601757b6eb1ce1ea1d5ca89ae1c87caedb72"
+    },
+    "Java_source_delta": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-slot64-source-a01\\exact-source-delta.json",
+      "bytes": 1407,
+      "sha256": "0ea48caca139b9406a76a27d9487823cc98644d3806f99bdcfd3d644f419e502"
+    },
+    "Java_qualification": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-slot64-build-a01\\affected-qualification-final.json",
+      "bytes": 2742,
+      "sha256": "9cdc00c73d22c9aef751cc4c1559d090c249d94df69a34872648d19b221dbe28"
+    },
+    "first3_before_next_test_XML_receipt": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-slot64-build-a01\\first3-qualified-originals.json",
+      "bytes": 1499,
+      "sha256": "ce5f682a0c100e2ed1a02c927fc1dcbd9a667241f52a8b1841aecbcb37709eff"
+    },
+    "Java_source_plan": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-slot64-build-a01\\source-plan-qualified.json",
+      "bytes": 2524,
+      "sha256": "be8dc353940f9e6096dd6b86b4f890b982df66b0f6da4b43e06b7524885058d9"
+    },
+    "actual_Cpp36_64_originals": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-slot64-nogame-a1458\\validation\\actual-Cpp36-64-originals.json",
+      "bytes": 2730,
+      "sha256": "35b3ab3512fb38c3a37953c4e05f249a276e72fe20cdec93c8047b3aca81455a"
+    },
+    "Native_qualified_Source": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-slot64-nogame-a1458\\validation\\qualified-Source.json",
+      "bytes": 5672,
+      "sha256": "bc3df4e04e0534da580e4115da573702c2f54c63e378d872d31a6186e0ead7cc"
+    },
+    "Native64_bound_contract": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-slot-capacity64-source-a1454\\query-slot-bound-contract-a03.json",
+      "bytes": 2281,
+      "sha256": "40327084f315d9de38b72c14ba0026b10c11a0c26000c9c60175c4ce451695ab"
+    },
+    "Native2_source_adoption": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-slot64-build-a01\\Native2-exact-adoption.json",
+      "bytes": 4612,
+      "sha256": "2b377299f220168466d9c45d409be0871c717b5f9c2cebba1b01943343114fb8"
+    },
+    "Native2_source_push": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-slot64-build-a01\\Native2-normal-push-and-read-window.json",
+      "bytes": 1273,
+      "sha256": "712fe0fa5dd0b0fac9563c7a249aa9370c2391d7e645415d0ca4627b0a12e91b"
+    },
+    "new_admission": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\Living-slot64-Native280-Java173-admission-a1458.json",
+      "bytes": 2429,
+      "sha256": "aed1d3fe32047e4fcf3601a55d245369b40e669ed9a627728e8070f7b17f330b"
+    },
+    "compiler64_END": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-slot64-build-a01\\compiler64-END.json",
+      "bytes": 1343,
+      "sha256": "8ec1de3d3abeadfa1fb61caa782c5c758eaa84f463f4be3c655971ad1e4e3f0f"
+    },
+    "actual_Native_ready": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-living-slot64-production-a1458\\frozen-delivery-final.json",
+      "bytes": 4451,
+      "sha256": "ae4f46af284c634da5ec183320db5cd96953f544261fc7f34b5bccd829df4bf9"
+    }
+  }
+}

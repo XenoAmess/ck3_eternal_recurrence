@@ -92,7 +92,7 @@ public record CurrentLivingInventoryQuerySource(long actorFullId, List<Artifact>
         CurrentLivingInventoryQuery.requireFullId(actorFullId);
         artifacts = List.copyOf(Objects.requireNonNull(artifacts)); slots = List.copyOf(Objects.requireNonNull(slots));
         fixedReferences = List.copyOf(Objects.requireNonNull(fixedReferences)); Objects.requireNonNull(weaponSlot);
-        StrictJson.require(completeInventory && sampledTwice && artifacts.size() <= 128 && slots.size() <= 32,
+        StrictJson.require(completeInventory && sampledTwice && artifacts.size() <= 128 && slots.size() <= 64,
                 "Complete double-sampled bounded physical inventory required");
         StrictJson.require(fixedReferences.size() == ReferenceRole.values().length, "Exactly six unfiltered fixed references required");
         for (int i = 0; i < fixedReferences.size(); i++)
@@ -151,7 +151,7 @@ public record CurrentLivingInventoryQuerySource(long actorFullId, List<Artifact>
                         CurrentLivingInventoryQuery.bool(a, "equipped"), numeric));
             }
             var slots = new ArrayList<Slot>();
-            for (var row : array(source.get("slots"), 32)) {
+            for (var row : array(source.get("slots"), 64)) {
                 var slot = StrictJson.object(row, Set.of("key", "artifact_full_id"));
                 slots.add(new Slot(CurrentLivingInventoryQuery.actualText(slot.get("key")), optionalId(slot.get("artifact_full_id"))));
             }
@@ -162,7 +162,7 @@ public record CurrentLivingInventoryQuerySource(long actorFullId, List<Artifact>
                         kind(ref.get("scope_kind")), optionalId(ref.get("artifact_full_id"))));
             }
             Optional<Integer> weapon = source.get("weapon_slot").isNull() ? Optional.empty()
-                    : Optional.of(NativeWire.integer(source.get("weapon_slot"), BigInteger.ZERO, BigInteger.valueOf(31)).intValueExact());
+                    : Optional.of(NativeWire.integer(source.get("weapon_slot"), BigInteger.ZERO, BigInteger.valueOf(63)).intValueExact());
             return new CurrentLivingInventoryQuerySource(CurrentLivingInventoryQuery.fullId(source.get("actor_full_id")), artifacts, slots, weapon, refs,
                     CurrentLivingInventoryQuery.bool(source, "complete_inventory"), CurrentLivingInventoryQuery.bool(source, "sampled_twice"));
         } catch (IllegalArgumentException | ArithmeticException invalid) {
