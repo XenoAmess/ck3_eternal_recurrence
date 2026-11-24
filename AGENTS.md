@@ -1,5 +1,19 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-24 当前Living0.1.3有限业务通过，正式67准备中，尚未上传
+
+Root a1498单Receiver实际完成66read＋Entry5＋UI14＝85，0Date／0Save并独立Natural0／Job0／cleanup／creator0。原库存36槽／5宝物、武器406装备、manage列表详情确认、真实条件显示子集、取消前后完整库存与numeric守恒、407–410四材料实际消耗与独立numeric读回、管理关闭后原instance absence及3个完整getter均有原件。Root另读实际“食性：甲胄”及common预览80；Main原两个false旗不改，独立全文业务AND通过。新fixed67 b33e实际挂载、after67全精确，9个本组无效modifier字段错误为0；其余stock／fixture／bookkeeping诊断保留，非全error.log通过。
+
+本切点只授current267有限原8业务；不授旧五PNG／像素、全异能诅咒rank、自然月度／五年／保存重载／全SDK或性能。正式SourceA／唯一新注释tag living-artifacts-v0.1.3与一次原builder正式67随后执行，旧0.1.2 tag／公开版本及552c保留；完整新Notes2763／eb3f、标题52／正文7909与五正文图保持Root实际接受字节，图库数量不由正文图数推断。0.1.3尚未上传，计数14/17上传／10/17严格不变；SDK／公开回读／下载／缓存后另记SourceC。[有限业务与正式前事实](docs/maintenance/evidence/living013-finite-release-SourceA-a1496.json)。下方保留软件阶段与历史切点。
+
+## 2026-11-24 当前Living：显示选项子集修复与新67／SDK配对已闭，喂养原8待实机
+
+a1486真实库存36槽／5宝物及武器406装备独立读回、manage列表／详情／确认与tutorial.12均已观察；open_tutorial真实DISPATCHED／returned／cleanup后，下一完整query_events为known unavailable／SourceNull／cleanuptrue，非动作UNKNOWN。24read／Entry4／UI3／0Date／0Save，独立Natural0／Job0／cleanup／creator0已闭；下一.10实际显示数和silent失败分支未导出，不追认唯一根因，旧六场claim均已消费不重放。
+
+最小修复保留完整authoredCount和实际显示rows的原index／唯一／range／Can／scope／双采；不再要求所有条件选项同时显示，缺fixed action不给lease，不造占位行、不加Mainpoll或扩大85。Java首3DATA＋唯一新Cpp响应往返共4方法各一次通过、两XML先封；Native25有限组通过。实际Source／正常Git已推，唯一NT-only package自然0，1新NT＋157不可变身份复用，LS／Main不重包、无旧158CRC。新六针`a8ab5daa…`绑定MF`203c033d…`／args`aff3867f…`及ND`39f133b5…`／DLL`73c5ad58…`，有效subset契约413949单列；Native实际BEGIN065771／Treeea084与Java214959分列，所有writer END／future0。
+
+产品9个真实无效modifier key按当前官方字段修复，原数值／IDs／季度机制保留。受影响10测试、generatorcheck／static及一次既有builder＋verify通过；新67候选MF`b33e9ee6…`只1运行叶不同，另66与旧552c精确，SourceCommit3c6253／tag null。新包尚未实际加载或正式化；喂养取消守恒、四rarity、全文／饮食和原8完整业务均待Root真实新场，14/17上传／10/17严格保持。[本次真实资格、产物与边界](docs/maintenance/evidence/living-displayed-subset-fixed67-frozen-pair-a1491.json)。下方保留此前切点。
+
 ## 2026-11-24 当前Living管理导航：13项软件通过，真实原8尚未完成
 
 a1480实际完整读取5宝物／36槽、库存打开及武器406装备独立读回通过；OPEN_LIST在写前known stale拒绝，16read／Entry2／UI2／0Date／0Save，随后独立Natural0／Job0／cleanup／creator0。该次Raw及7身份mask均0，Frame1536仅HUD535→537、witness717→719；新增两节点名称／父／type未导出，不能追认无害或唯一首因。原row-lifetime9项软件保留，本场未到detail，不授其实机修复或原8完成；五旧case已消费均不重放。

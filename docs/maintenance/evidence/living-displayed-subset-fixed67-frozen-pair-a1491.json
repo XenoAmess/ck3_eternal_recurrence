@@ -1,0 +1,246 @@
+{
+  "schema": "xar.living.displayed-subset-fixed67-frozen-pair.facts.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-24T10:32:13.869425+00:00",
+  "status": "SOFTWARE_FIXED67_CANDIDATE_AND_ACTUAL_NEW_PAIR_READY_NEW_GAME_BUSINESS_NOT_GRANTED",
+  "source_commits": {
+    "product9modifier_keys": "3c6253ce807789e7896c4179f0489c0f5f7008b8",
+    "Java_displayed_subset_DATA3": "6c423e965423700a55e15e534fa7324692c14638",
+    "Native3_adoption_and_actual_BEGIN": "0657712289463f4cbd8ce7ae0a4ac2070cb1bebe",
+    "Java_actual_Cpp1_and_qualified_package_CodeSource": "2149596256245db065e7f9c6f2aa1bed2662f17d",
+    "NativeTree": "ea0844eaaee9c46a95b9894ed34068a7cb3b0941"
+  },
+  "retained_actual_a1486": {
+    "Root_END": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\Living-navigation-detail-confirm-P-UI-query-unavailable-Natural0-END-a1487.json",
+      "bytes": 3775,
+      "sha256": "1e44cfd41e002f1475df456a92664c282529acc430c3a7dbc22b6e45afb3cb34"
+    },
+    "actual_inventory36_artifacts5_and_weapon406_independent_equip_PASS": true,
+    "management_list_detail_confirm_and_independent_readbacks_PASS": true,
+    "tutorial12_instance": 1,
+    "tutorial_action": "DISPATCHED_EFFECT_TRUE_RETURNED_TRUE_CLEANUP_TRUE",
+    "next_read": "KNOWN_UNAVAILABLE_SOURCE_NULL_CLEANUP_TRUE_NOT_ACTION_UNKNOWN",
+    "reason": "living_UI_complete_source_unavailable",
+    "actual_next_xalw10_or_displayed_count_or_silent_failure_branch": "NOT_OBSERVED",
+    "read_calls": 24,
+    "Entry_action_calls": 4,
+    "UI_action_calls": 3,
+    "Date_calls": 0,
+    "Save_calls": 0,
+    "Natural0_Job0_cleanup_creator0": true,
+    "case_consumed_no_replay": true,
+    "feeding_cancel_fourrarity_and_original8_business_PASS": false
+  },
+  "change": {
+    "Java_production_leaves": 1,
+    "Java_target": "java/ck3-control/native-transport/src/main/java/org/xar/ck3/control/nativebridge/CurrentLivingUiSource.java",
+    "complete_displayed_rows_not_required_equal_loaded_authored_count": true,
+    "original_authored_indices_unique_inrange_preserved": true,
+    "missing_fixed_actions_grant_no_lease": true,
+    "no_placeholder_rows_renumbering_or_truncation": true,
+    "Main_Transport_fields_schema14actions_or_submission85_changed": false,
+    "Main_poll_added": false,
+    "Native3_qualification": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-ui-displayed-options-nogame-a1492\\validation\\qualified-Source.json",
+      "bytes": 12886,
+      "sha256": "59b2cdc4802ff4598252a5548734d7821c8c0be981b6291f7dbefc4c1834d179"
+    },
+    "Native_sole_exact_apply": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-ui-displayed-options-nogame-a1492\\validation\\Native3-exact-CPP-apply.json",
+      "bytes": 3991,
+      "sha256": "ebfc2274f6b62bdac998c823c0d89fdc3ef36fa588e12617b4b3321ca3a43cda"
+    },
+    "Native25_groups_P": true,
+    "Native_actual_collection_effects_or_unique_a1486_root_cause_qualified": false,
+    "Native_first_RED_and_setup_refusals_preserved": true
+  },
+  "Java_software": {
+    "qualification": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-displayed-options-build-a01\\affected-qualification-final.json",
+      "bytes": 3726,
+      "sha256": "bab2008bb56dae4d6a2941a5249edddea66edccf1daebe4791acf2a797d9ffc6"
+    },
+    "actual_distinct_methods": 4,
+    "actual_method_runs": 4,
+    "first3_XML": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-displayed-options-build-a01\\qualified-report-originals\\TEST-org.xar.ck3.control.nativebridge.NativeCurrentLivingDisplayedOptionsDataTest.xml",
+      "bytes": 16809,
+      "sha256": "19be268a64368afc523968d171b2c99b6747a7dc65b460ba6edde59ef9083c4c"
+    },
+    "Cpp1_XML": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-displayed-options-build-a01\\qualified-report-originals\\TEST-org.xar.ck3.control.nativebridge.NativeCurrentLivingDisplayedOptions26785313ProducerTest.xml",
+      "bytes": 16484,
+      "sha256": "3558e60870e39196382d51c183dc5654f0b31913c7980f25bc35749a327d4d28"
+    },
+    "actual_elapsed_sum_seconds": 271.2040089999791,
+    "actual_Job_peak_commit": 1643372544,
+    "all_Natural0_Job_active0_terminated0": true,
+    "actual_first_NT_production_files_compiled": 591,
+    "actual_first_NT_test_files_compiled": 121,
+    "LS_not_selected": true,
+    "Cpp_actual_originals_receipt": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-ui-displayed-options-nogame-a1492\\validation\\actual-Cpp-displayed-subset-originals-receipt.json",
+      "bytes": 2458,
+      "sha256": "8dc706f0d61ba00c5119826eed6ebd94ae52069eea33061b7d3b1875e5272037"
+    },
+    "Cpp_authored_count": 10,
+    "Cpp_displayed_count": 4,
+    "Cpp_original_indices": [
+      0,
+      1,
+      4,
+      9
+    ],
+    "Cpp_fixed_actions": 3,
+    "Cpp_only_common_admissible": true,
+    "old3_5_13_23_58_or_full_matrix_repeated": false,
+    "new_request_factory_or_inverse": 0,
+    "original_XML_retention_cut_repeated": false
+  },
+  "new_fixed67_product": {
+    "delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-current267-fixed-modifiers-product-a1491\\fixed67-candidate-delivery-final.json",
+      "bytes": 3137,
+      "sha256": "4acb0dd5441c0c0cb7aad42cf40a0a45e051690c2cce2d47052b3941af5bf3d8"
+    },
+    "END": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-current267-fixed-modifiers-product-a1491\\product8-END.json",
+      "bytes": 826,
+      "sha256": "d0a4162e697c1a410b355741aa9aebeef6bb51821bfd06ca3c437ae74873d82f"
+    },
+    "runtime_manifest": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-current267-fixed-modifiers-product-a1491\\artifact\\mod_living_artifacts.manifest.json",
+      "bytes": 12448,
+      "sha256": "b33e9ee6669cd6ef09fc45f853398dd2c15179c0c3dc477606905f198b4d8db7"
+    },
+    "archive": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-current267-fixed-modifiers-product-a1491\\artifact\\mod_living_artifacts.zip",
+      "bytes": 675194,
+      "sha256": "f737dbf3aecfefd26647784973ed67021925260d113e5d2b19f2da6d3ccdf905"
+    },
+    "actual_affected_wholeclass_methods": 10,
+    "generator_check_and_static_PASS": true,
+    "one_builder_and_one_verify_Natural0": true,
+    "changed_runtime_paths": [
+      "common/modifiers/xalw_content_modifiers.txt"
+    ],
+    "other66_size_and_SHA_exact_old552c": true,
+    "nine_scalar_keys_fixed_original_numbers_IDs_quarterly_mechanics_and_other_runtime_preserved": true,
+    "old552c_and_nine_original_loader_errors_preserved": true,
+    "formal_tag_or_loaded_fixed_modifier_or_publication_PASS": false
+  },
+  "actual_pair": {
+    "actual_sixpins": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-displayed-options-pair-a01\\actual-six-pins.json",
+      "bytes": 1577,
+      "sha256": "a8ab5daabd58574b17a129f88c36d5fd4371b16cd2229bd387b2c9966b0c4d42"
+    },
+    "delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-displayed-options-pair-a01\\frozen-delivery-final.json",
+      "bytes": 10298,
+      "sha256": "1e57c66d53f35e6abdc67d67cba0bdeea96b3a1aecaaa62bfa293dd444f118ea"
+    },
+    "five_ref_sidecar": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-displayed-options-pair-a01\\native-pair-binding-final.json",
+      "bytes": 3921,
+      "sha256": "f0df5b2ad94354c0f587385a89767ff3816a61db31d1f03302e36bd2219348bb"
+    },
+    "operator_templates": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-displayed-options-pair-a01\\operator-templates.json",
+      "bytes": 5722,
+      "sha256": "b0d5446e27db407181a2f18d8f355de786e78bfa0f805964e1e7b515fcd33e3e"
+    },
+    "Java_runtime_ready": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-displayed-options-build-a01\\java-runtime-ready-before-native.json",
+      "bytes": 1614,
+      "sha256": "27693611413ef230485c2a2cb5a22723166f025dc430ae7e1043934b7670979b"
+    },
+    "runtime_manifest": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-living-displayed-options-a01\\runtime-manifest.json",
+      "bytes": 168877,
+      "sha256": "203c033d34539118586ea0c0423f82dd7b033511da6946298387eb66880075f0"
+    },
+    "classpath_args": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-living-displayed-options-a01\\cli-classpath.args",
+      "bytes": 16397,
+      "sha256": "aff3867fb6069f436141d6ed28eab6bb60f471e684444a767194ffa8ac945803"
+    },
+    "Native_delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-living-displayed-options-production-a1492\\frozen-delivery-final.json",
+      "bytes": 3902,
+      "sha256": "39f133b598b5c1fae57e4d26011c0ef17dca570aedced35783a0b88882b1670e"
+    },
+    "Native_refs": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-living-displayed-options-production-a1492\\ordinary-native-artifact-refs.json",
+      "bytes": 23097,
+      "sha256": "98a3136be56d1b0a64bddde93b60fc6ce7a4882060f0e4fcba19f0f2a9090384"
+    },
+    "effective_displayed_options_contract": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-ui-displayed-options-source-a1486\\displayed-options-effective-contract-a01.json",
+      "bytes": 2137,
+      "sha256": "413949252267d19f7ae0348ac2b011ad6550c5c19f41fde1594c6835e1f849e2"
+    },
+    "retained_effective_slot64_contract": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living-slot-capacity64-source-a1454\\query-slot-bound-contract-a03.json",
+      "bytes": 2281,
+      "sha256": "40327084f315d9de38b72c14ba0026b10c11a0c26000c9c60175c4ce451695ab"
+    },
+    "Native_actual969_3CL966reuse_698LIB_identity_registration_profile": true,
+    "new_NT_JARs": 1,
+    "immutable_reused_JARs": 157,
+    "all158_from_one_Git_tree": false,
+    "retained_LS_actual_CodeSource": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-original8-build-a1427\\source-code-commit.json",
+      "bytes": 377,
+      "sha256": "1ddfd214ccbc651cd941c6e6d20d8d573d078614e12a4c70c591b317e329aea5"
+    },
+    "old158_body_CRC_or_hash_sweep": 0,
+    "maximum_submissions": 85,
+    "Date_calls": 0,
+    "Save_calls": 0
+  },
+  "actual_phase_ENDs": {
+    "compiler64": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-displayed-options-build-a01\\compiler64-END.json",
+      "bytes": 1376,
+      "sha256": "5af200cd01f9ffaf6891c01f1960cb6dc2f0a2fda67d911d36123eea8d7d6a20"
+    },
+    "package96": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-displayed-options-build-a01\\package96-END.json",
+      "bytes": 1247,
+      "sha256": "278cbabe6648b47d000ee08120e6a5ac212de2a2f1f75ab2072816e2a3a764c4"
+    },
+    "freeze12": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-displayed-options-build-a01\\freeze12-END.json",
+      "bytes": 2088,
+      "sha256": "a8355f92c79e42485e674186b2a98400636e436a0142b7db3f76b12eb6d524cf"
+    },
+    "metadata1": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-displayed-options-pair-a01\\all-phases-END.json",
+      "bytes": 5696,
+      "sha256": "e529af6c26ebd17ba98c36ebbcee78f1dea6614c9d9efeef8b3a83f2f17276c0"
+    },
+    "all_Java_future_bytes": 0,
+    "package_elapsed_seconds": 34.16490299999714,
+    "package_Job_peak_commit": 669876224,
+    "package_NT_FSI_endpoint_positive": 0,
+    "package_metadata_FSI": 65536,
+    "package_held_forecast_upper_not_actual_sampled_peak": 39698432,
+    "changed_NT_allocated": 9363456,
+    "freeze_held_upper": 9585328,
+    "metadata_elapsed_seconds": 0.2827349999570288,
+    "metadata_FSI_after_END": 40960,
+    "metadata_held_upper": 65536,
+    "old_spent_held_refund": false
+  },
+  "boundaries": {
+    "actual_new_tuple_Game_original8_feeding_Cancel_numeric_text_render_and_formal_publication": "NOT_GRANTED_AT_THIS_DELIVERY",
+    "all_six_old_cases_claims_refusals_UNKNOWN_and_Frozen_preserved": true,
+    "RMTM_SourceA_tag_F_and_completed_release_unchanged": true,
+    "uploaded_products": 14,
+    "strict_finite_complete_products": 10,
+    "total_products": 17,
+    "new_Steam_HTTP_or_Game_operations": 0
+  }
+}

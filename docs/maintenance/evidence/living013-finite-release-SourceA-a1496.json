@@ -1,0 +1,138 @@
+{
+  "schema": "xar.living013.finite-release.SourceA-before-formal.v1",
+  "at_utc": "2026-11-24T10:54:01.333122+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "canonical_workshop_id": "3825237804",
+  "version": "0.1.3",
+  "status": "FINITE_BUSINESS_PASS_PREPARING_FORMAL_NOT_PUBLISHED",
+  "Root_finite_business": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\Living013-fixed67-current267-original8-finite-business-PASS-a1495.json",
+    "bytes": 10358,
+    "sha256": "f0d3206c3cbb50e7dc28dde62d78bdf16f214af540d7b7b300d2abc085b1409f"
+  },
+  "Root_formal_admission": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\Living013-formal8-admission-a1496.json",
+    "bytes": 1791,
+    "sha256": "a3b5a7a18df2124bb6ac11b1024631e4b2ef46eaa4c0f19ac512fcc0f91e10f8"
+  },
+  "Root_full_text_acceptance": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\Living013-full-player-text-a03-Root-ACCEPT-business-HOLD-a1490.json",
+    "bytes": 2843,
+    "sha256": "691b9ee5aa25be70ee0e481e631fce7abe04c6cb9115a12879097f93069c61c0"
+  },
+  "software_and_actual_pair_index": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\evidence\\living-displayed-subset-fixed67-frozen-pair-a1491.json",
+    "bytes": 12137,
+    "sha256": "8ca84d56cfad22d1c90a93c5a3328b51bae76dfd36c3191b672bd8b90013cbce"
+  },
+  "accepted_runtime_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\living-current267-fixed-modifiers-product-a1491\\artifact\\mod_living_artifacts.manifest.json",
+    "bytes": 12448,
+    "sha256": "b33e9ee6669cd6ef09fc45f853398dd2c15179c0c3dc477606905f198b4d8db7"
+  },
+  "actual_85": {
+    "read": 66,
+    "Entry": 5,
+    "UI": 14,
+    "Date": 0,
+    "Save": 0
+  },
+  "target_full_id": 406,
+  "consumed_material_full_ids": [
+    407,
+    408,
+    409,
+    410
+  ],
+  "numeric_observed_sequences": [
+    [
+      1,
+      92,
+      0,
+      0
+    ],
+    [
+      2,
+      72,
+      0,
+      1
+    ],
+    [
+      3,
+      72,
+      0,
+      2
+    ],
+    [
+      4,
+      272,
+      0,
+      3
+    ],
+    [
+      6,
+      572,
+      0,
+      5
+    ]
+  ],
+  "numeric_denominator": 100000,
+  "cancel_entire_inventory_and_numeric_conserved": true,
+  "actual_displayed_authored_indices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    9
+  ],
+  "complete_authored_count": 10,
+  "actual_diet_text": "食性：甲胄",
+  "actual_runtime_selector": "flag:armor",
+  "actual_common_preview_amount": 80,
+  "Main_original_false_flags_unchanged_Root_independent_AND": true,
+  "management_close_independent_absence_and_three_fullgetters": true,
+  "fixed67_afterGame_all_exact_and_own_unsupported_fields_zero": true,
+  "other_stock_fixture_bookkeeping_diagnostics_preserved": true,
+  "actual_Natural0_Job0_cleanup_creator0": true,
+  "unchanged_original_archive_sha256": "82178e0f4142b50e0d3d51914574eff8cccce84a187b4f622c80fd2c2c9e94b4",
+  "planned_formal_root": "D:\\ck3-state\\upgrade-20261118\\living013-formal-release-a1496",
+  "planned_new_annotated_tag": "living-artifacts-v0.1.3",
+  "actual_formal": null,
+  "retained_prior_tag_object": "4114a495faa8096bf303ac760cd04ed6fd85007d",
+  "retained_prior_tag_source_commit": "be9abc9928598b543bf10e0c4be8890cf337ad28",
+  "published_prior_version": "0.1.2",
+  "published_prior_changelog": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\release-changelogs\\living-artifacts\\0.1.2.md",
+    "bytes": 11555,
+    "sha256": "6d426ba39eb0e5f72ec0b04a1ed4a21cd866bcd075da9cdcee468ab42cc1b44d"
+  },
+  "full_reviewed_metadata": {
+    "title": {
+      "path": "D:/ck3-state/upgrade-20261118/living013-full-public-text-source-a01/title.txt",
+      "bytes": 52,
+      "sha256": "1e6311fba2e3c9f23c651257f87b2759a4bb3ffda0d6949e5c0654d511c42d16"
+    },
+    "description": {
+      "path": "D:/ck3-state/upgrade-20261118/living013-full-public-text-source-a01/description.bbcode",
+      "bytes": 7909,
+      "sha256": "bb41bb7d8c790485db760a6a547c47be52846193fd1aff5241c3d612069e9dc7"
+    },
+    "change_note": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\living013-full-public-text-source-a01\\a03\\change-notes.txt",
+      "bytes": 2763,
+      "sha256": "eb3fca111cf33233db92d549f5e47a39e02ff5dc9c13103610e207effa39d45c"
+    }
+  },
+  "old_1659_Notes_not_selected": true,
+  "cover_and_gallery_preserve_actual_before_after": "No alteration requested; additional count NOT_HELD, not inferred from five inline images.",
+  "publication_Upload_HTTP_Steam_or_cache_calls": 0,
+  "new_JVM_Native_tests_or_Game_runs": 0,
+  "old_refusals_UNKNOWN_and_six_consumed_claims_preserved": true,
+  "pixels_old5PNG_allranks_longterm_SaveReload_wholeSDK_or_performance": false,
+  "uploaded_products": 14,
+  "strict_finite_complete_products": 10,
+  "total_products": 17
+}
