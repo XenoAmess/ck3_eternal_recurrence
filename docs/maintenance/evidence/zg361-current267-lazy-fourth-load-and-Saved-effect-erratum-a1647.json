@@ -1,0 +1,308 @@
+{
+  "schema": "xar.zg361.current267.lazy-candidate-fourth-load-and-Saved-effect-erratum.permanent-index.v1",
+  "recorded_at_utc": "2026-11-24T23:21:31.701674+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "CK3_version": "1.21.0.3 Florin",
+  "build": 26785313,
+  "EXE_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28",
+  "source_context": {
+    "lazy_Source_HEAD": "7259302da5451315dfde0475c8fdf0feba5dcf7e",
+    "NativeTree": "c444a4e95a6379172aa9cea06ecf120f79a248b0",
+    "frozen_pair": "e90e48834fe68536c8e091aabce034d02474348da45274fd2421b4719fd9c2a2",
+    "Java_delivery_Source_HEAD": "8878687549e38c275bbcf127c8394a729a58a9b4",
+    "no_new_Java_Native_or_frozen_payload_changes": true
+  },
+  "prior_three_failure_index": {
+    "path": "D:/workspace/ck3_eternal_recurrence/docs/maintenance/evidence/zg361-current267-fixed-review-software-and-load-failures-a1639.json",
+    "bytes": 26635,
+    "sha256": "cc61ec6d1f159d021b1704985a36cbf3fb737b53dcbd26edf3c2521103277c5b"
+  },
+  "lazy_software_and_candidate": {
+    "Source_delivery": {
+      "path": "D:/ck3-state/upgrade-20261118/zg361-scoreboard-lazy-modal-source-a01/delivery-final.json",
+      "bytes": 2782,
+      "sha256": "216dc61e2bdaec0612d0b30c2265ed24835a65c728b557a1b41205176e7c31e5"
+    },
+    "source_qualification": {
+      "path": "D:/ck3-state/upgrade-20261118/zg361-scoreboard-lazy-host-integration-a01/source-checks-qualified.json",
+      "bytes": 2490,
+      "sha256": "59ad0769a14b5b2f4fafa285bc1545ae4055c1fe286ebb28a1e8ad23839c76d3"
+    },
+    "source_END": {
+      "path": "D:/ck3-state/upgrade-20261118/zg361-scoreboard-lazy-host-integration-a01/source2-END.json",
+      "bytes": 2186,
+      "sha256": "fe211d61e9b60b018b8c5430271a5adc0ba611bc504f6be7b37c7c87f51f37fd"
+    },
+    "existing_distinct_tests": 8,
+    "new_mirrored_tests": 0,
+    "generator_check_exit": 0,
+    "actual_only_generated_runtime": "gui/zg361_scoreboard.gui",
+    "generator": {
+      "bytes": 125775,
+      "sha256": "ce8d171b4572c119703b1457286e7e56e1283603e52cdd8b336a1d9527d748a3"
+    },
+    "GUI": {
+      "bytes": 970575,
+      "sha256": "c41aa698bbb58205220c2f3f19d7f8feecce70b3e5fe3ef2bb56d554173a0d81"
+    },
+    "change": "Current stock RepeatedItem/Select_int32 host uses the original complete visibility predicate. The complete original modal and outside bytes,161 portraits/322 bindings/160rows/detail/162close actions remain.",
+    "candidate_delivery": {
+      "path": "D:/ck3-state/upgrade-20261118/zg361-scoreboard-lazy-host-candidate-a01/candidate-delivery-final.json",
+      "bytes": 3703,
+      "sha256": "799eeccf83361798929693f6b3cdcbe71257a0f9da3b8ba8468a47af4fa9f9ad"
+    },
+    "runtime_manifest": {
+      "path": "D:/ck3-state/upgrade-20261118/zg361-scoreboard-lazy-host-candidate-a01/mod_zhongguo_style.manifest.json",
+      "bytes": 213461,
+      "sha256": "6e531510845a844c5d135d74ec70c7874a2650f1819fb6c511a795ad22f0caa3"
+    },
+    "archive": {
+      "path": "D:/ck3-state/upgrade-20261118/zg361-scoreboard-lazy-host-candidate-a01/mod_zhongguo_style.zip",
+      "bytes": 4440701,
+      "sha256": "1d354f5e0c0ea472292c3447955c909b109c214f2f8e1ea1c7f12c5b29d206a9"
+    },
+    "runtime_diff": {
+      "path": "D:/ck3-state/upgrade-20261118/zg361-scoreboard-lazy-host-candidate-a01/runtime1034-exact-diff.json",
+      "bytes": 2904,
+      "sha256": "b08d8ff803cc8e15ff5bfb2b7a23edafdfbcd29ef4503fd03db83c991b7630b0"
+    },
+    "archive1034_exact_proof": {
+      "path": "D:/ck3-state/upgrade-20261118/zg361-scoreboard-lazy-host-candidate-a01/archive1034-exact-proof.json",
+      "bytes": 717,
+      "sha256": "325c587721cc296c84bd73b601977a925e7d296d721e93b82b7268e27b0d697a"
+    },
+    "candidate_END": {
+      "path": "D:/ck3-state/upgrade-20261118/zg361-scoreboard-lazy-host-candidate-a01/candidate40-END.json",
+      "bytes": 1752,
+      "sha256": "acf9bd1b993aa01d1afe75426788d14f2f085df0b9f666e354b7b8a240abe42b"
+    },
+    "builder_calls": 1,
+    "verify_calls": 1,
+    "build_seconds": 15.55827069998486,
+    "verify_seconds": 1.9126828000298701,
+    "original_6bec_1034_unchanged_rows": 1031,
+    "original_6bec_changed_rows": "Only two preserved B1 prosperity accessor fixes and the lazy scoreboard GUI.",
+    "previous_B1_1f3140_unchanged_rows": 1033,
+    "previous_B1_changed_rows": 1,
+    "ordinary_candidate": true,
+    "git_tag": null,
+    "publication": false,
+    "load_memory_heap_open_close_or_business_PASS": false
+  },
+  "fourth_load_failure": {
+    "Root_END": {
+      "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/zgf-GUI-lazy-memory18-failure-END-a1647.json",
+      "bytes": 3345,
+      "sha256": "c1feecd8e3308155c5dbd01893aee67a382389084f3e11602c94de0cda34c87a"
+    },
+    "terminal": {
+      "path": "D:/ck3-state/upgrade-20261118/zgf/owner/terminal.json",
+      "bytes": 1049,
+      "sha256": "59096b0056f4dda854723b1d88afb1149a9bd0c3c9eeb96a983a7aff557a709d"
+    },
+    "creator_END": {
+      "path": "D:/ck3-state/upgrade-20261118/zgf/creator-end.json",
+      "bytes": 517,
+      "sha256": "e72cf8ef9cbedc9288838b147c7ba5e03b7177b7230b498c6f86c787ab2cbe02"
+    },
+    "Game_PID": 10792,
+    "Game_creation_filetime": "134400348674796695",
+    "Game_exit": -1073740791,
+    "elapsed_seconds": "153.8798509",
+    "Job_limit_bytes": 19327352832,
+    "peak_Job_bytes": 19327623168,
+    "stop_reason": "observed_job_peak_exceeded_limit",
+    "terminal_kind_reported": "NATURAL_EXIT",
+    "Natural0": false,
+    "Job_active_processes": 0,
+    "cleanup_proven": true,
+    "creator_actual_record": {
+      "at_utc": "2026-11-24T23:03:46.536600+00:00",
+      "begin_utc": "2026-11-24T23:01:02.243790+00:00",
+      "PID": 20444,
+      "creator_exit_code": 1,
+      "stdout": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zgf\\creator.stdout",
+        "bytes": 1534,
+        "sha256": "112737bea7e0f6b38bb0e2859931a8f010f885837317f3a1a653caf58c491ebc"
+      },
+      "stderr": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zgf\\creator.stderr",
+        "bytes": 237,
+        "sha256": "83411e193ac85584d81bc0764a66092e13eaa71df531bfa1e105607382185c85"
+      }
+    },
+    "Root_creator_session_collected": 23016,
+    "actual_scene_allocation": {
+      "actual_scene_held_allocation_bytes": 422037280,
+      "regular_files": 5293,
+      "unique_volume_FileID128_count": 5293,
+      "hardlink_alias_paths": 0,
+      "excluded_Root3M_Source_directories": [
+        "source-candidate-a01"
+      ],
+      "Source_allocation_deducted": false,
+      "allocation_method": "GetFileInformationByHandleEx.FileStandardInfo.AllocationSize; existing frozen_jar_refs._identity",
+      "identity_metadata_sha256": "dc101011fdd673e15ea8279720459a9d0c90552f1d4bac5734691630bc09c44d",
+      "body_hashes_or_compressed_size_calls": 0,
+      "directory_metadata_allocation_deducted": false
+    },
+    "held_upper_bytes": 422102816,
+    "remaining_scene_future_bytes": 0,
+    "Root_Core_or_combined_submitted": false,
+    "Root_Date_Save_pay_calls": 0,
+    "loader_diagnostic_counts": {
+      "development_level_invalidlink": 0,
+      "prosperity_level_invalidlink": 0,
+      "over250_path_warning": 0,
+      "texture_allocation_failure": 0,
+      "exact_enter_InGame_log": 0
+    },
+    "log_refs": {
+      "game": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zgf\\profile-states\\gui-07ddbd5b4d7b4b749190d27cdc87f4ec\\profile\\logs\\game.log",
+        "bytes": 3739689,
+        "sha256": "89fef46bc3ebbcdafa7bb32a38dffd4579344d17c7dc20ad274b368e6868ebb1"
+      },
+      "debug": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zgf\\profile-states\\gui-07ddbd5b4d7b4b749190d27cdc87f4ec\\profile\\logs\\debug.log",
+        "bytes": 4005613,
+        "sha256": "87b034c2305cca42a656b8f7481975aba774c91ec8116152ad82aa7bc1dbb233"
+      }
+    },
+    "memory_cause": "UNRESOLVED. Lazy GUI alone did not make this load fit18GiB. This is not evidence of zero GUI allocations, correct open/close destructor behavior, nor a unique memory root cause."
+  },
+  "critical_Saved_effect_scope_erratum": {
+    "applies_to": "All four owned failed loads; original first failure still retains its attempted Core attach and zero Native dispatch, while later loads had no Root Core or combined submission.",
+    "proven_zero_scope": "Only actual Root-issued Core/combined/typedpay/Date/Save dispatch scope, as individually recorded. Not every engine or Saved fixture effect.",
+    "fixture_automatic_effects": "UNKNOWN_NOT_OBSERVED",
+    "automatic_prepare_entry": "The registered Saved9 bridge can call the existing setup after GetPlayer.IsValid and its exact actor/date/rule/two-once guards, without any Root command or an IsInGame condition.",
+    "entry_guard": "actual authored character1128, human, alive, landed,1066.9.15,rule zg361_on and two once flags absent",
+    "temporal_guard": "Only GUI GetPlayer.IsValid; no source condition requiring map-visible, Native Core readiness or explicit Root command.",
+    "existing_setup_sequence": "set dispatched flag -> zga_ae2_prepare_effect -> set attempted flag -> change_government -> add1000treasury/gold -> choose one ordered direct landed vassal -> seed delivered input -> production freeze_current_result -> portfolio_open_next -> apply_stage ROUTE1 -> postcondition log.",
+    "marker_gap": "There was no BEGIN marker before change_government/funding/freezer/portfolio. Existing READY/FAIL markers follow these calls. Their absence cannot prove setup never entered, and cannot distinguish unentered from interrupted setup.",
+    "two_once_flags": "Set before heavy work, bounded authored protection; not proof that effects were unentered or completed in an actual failed load.",
+    "static_Source_does_not_prove": "Actual bridge execution, allocation count, call frequency, setup completion, all effects zero, or a unique OOM cause.",
+    "Source_a01_delivery": {
+      "path": "D:/ck3-state/upgrade-20261118/zg361-bridge-autoload-source-review-a01/delivery-final.json",
+      "bytes": 887,
+      "sha256": "814d860dbb6ecc7a9f94ccf20401b6909ec028acf2a52c6ed9f4f696d177446d"
+    },
+    "Source_a01_review": {
+      "path": "D:/ck3-state/upgrade-20261118/zg361-bridge-autoload-source-review-a01/READONLY-REVIEW.json",
+      "bytes": 5250,
+      "sha256": "aca12ff835c547fac1585b78febaf4f3a1284e1f817b43f259ba1bcf40c564ca"
+    },
+    "Source_a02_selected_delivery": {
+      "path": "D:/ck3-state/upgrade-20261118/zg361-bridge-autoload-source-review-a02/delivery-final-a02.json",
+      "bytes": 698,
+      "sha256": "133a0acc91f83df029fafcca5cdae4a4a8e04990f9fbca258630a1a689b11172"
+    },
+    "Source_a02_review": {
+      "path": "D:/ck3-state/upgrade-20261118/zg361-bridge-autoload-source-review-a02/READONLY-ENTRY-REVIEW.json",
+      "bytes": 5371,
+      "sha256": "9e75aa36755e81b00bc2c5c165996ba554ccf3ba8a3f89b51f76d59416344fff"
+    },
+    "Source_a02_line_index_erratum": {
+      "path": "D:/ck3-state/upgrade-20261118/zg361-bridge-autoload-source-review-a02/line-index-erratum.json",
+      "bytes": 2297,
+      "sha256": "0bf0c484a775f02df5b5eb15e32fc713070b616d73c7c84403c0cb053e73bdac"
+    },
+    "previous_records_not_rewritten": true
+  },
+  "public_metadata_before": {
+    "Root_review": {
+      "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/ZG361-042-actual-public-title-body-Root-review-a1646.json",
+      "bytes": 2029,
+      "sha256": "bc79e1300b2915dd6c37a3d96d0712f6b4c7781a72c8240fb81dc75fa59091a9"
+    },
+    "actual_public_fields": {
+      "path": "D:/ck3-state/upgrade-20261118/zg361-public-before-api-a1645/current-public-fields.json",
+      "bytes": 1447,
+      "sha256": "e200839b320fad5b940d2b32fa97e51b23bf904370c020398861e2ef0622d4bc"
+    },
+    "actual_title": {
+      "path": "D:/ck3-state/upgrade-20261118/zg361-public-before-api-a1645/public-title-full.txt",
+      "bytes": 36,
+      "sha256": "f058e87a2f50525931361671f6ea483ba559700354fc1823643b6fe63295f201"
+    },
+    "candidate_title": {
+      "path": "D:/ck3-state/upgrade-20261118/zg361-042-formal-metadata-source-a1604/workshop-title.candidate.txt",
+      "bytes": 36,
+      "sha256": "f058e87a2f50525931361671f6ea483ba559700354fc1823643b6fe63295f201"
+    },
+    "actual_title_exact": true,
+    "actual_old_body": {
+      "path": "D:/ck3-state/upgrade-20261118/zg361-public-before-api-a1645/public-description-full.bbcode",
+      "bytes": 7829,
+      "sha256": "849609396a728c1ff9346e58b80baaf0eb00158f5609034816e4925365dff15e"
+    },
+    "accepted_new_body": {
+      "path": "D:/ck3-state/upgrade-20261118/zg361-042-formal-metadata-source-a1604/workshop-description.candidate.bbcode",
+      "bytes": 7866,
+      "sha256": "b73d9949bc1e1fd81973d63173e8b2812003f6325b47468739fe02c997689927"
+    },
+    "complete_old_body_contiguous_suffix_exact": true,
+    "new_archive_prefix_bytes": 37,
+    "Root_title_and_body_accepted": true,
+    "Notes_draft_delivery": {
+      "path": "D:/ck3-state/upgrade-20261118/zg361-042-change-notes-draft-source-a1647/delivery-final.json",
+      "bytes": 1306,
+      "sha256": "076e0e906d5951e5e19d72babf6f514e5b78e91755ec519533529036e94ec6db"
+    },
+    "Notes_draft": {
+      "path": "D:/ck3-state/upgrade-20261118/zg361-042-change-notes-draft-source-a1647/change-notes.draft.txt",
+      "bytes": 2423,
+      "sha256": "78da2eb5d6e23bcd3688cfaf0a0e69c2e738e92265099584b501501a5d9b7d18"
+    },
+    "Notes_final_acceptance": false,
+    "Notes_published": false,
+    "actual_API_POST_calls": 1,
+    "Notes_GET_calls": 0,
+    "Steam_online_calls": 0,
+    "new_ZG_account_window": "Pending fresh coordination after final package and actual business qualification."
+  },
+  "retired_zg18_derived_inputs": {
+    "receipt": {
+      "path": "D:/ck3-state/upgrade-20261118/closed-zg18-derived-retirement-source-a1640/actual-two-target-result-a1643.json",
+      "bytes": 2181,
+      "sha256": "1ae429df2594efe335c1fe929a30c1a399bf5a1eb5033f7425407a700801d367"
+    },
+    "initial821_removed_bytes": 166551552,
+    "failed_shader_removed_bytes": 193708800,
+    "allocated_removed_bytes": 360260352,
+    "count": 4189,
+    "old_failed_selected_copies_now_unreadable": true,
+    "canonical821_master940_product_Source_logs_owner_claims_SDK_preserved": true,
+    "failed_memory18_history_unchanged": true,
+    "budget_refund": false,
+    "prior_index_ZG18_not_deleted": "Historical a1639 cut retained; this later actual a1643 retirement supersedes availability of exactly the selected initial/shader copies."
+  },
+  "current_followups": {
+    "product_only_same_Save_same18GiB_diagnostic": "Source preparation only at this cut; no execution result or product-only Game qualification claimed.",
+    "Saved_IsInGame_BEGIN_END_instrumentation": "Backup Source preparation only, not adopted or emitted.",
+    "Native_bounded_PSS": "Backup Source only; not compiled, not admitted or run.",
+    "four_additional_fixed_cleanup_classes": "Inventory work only at Root cut; no completed deletion, reclaimed-byte credit or availability claim.",
+    "normal_independent_work_continues": true,
+    "documentation_not_Game_gate": true
+  },
+  "current_ledger": {
+    "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/same-quota-zgf-memory18-END-review-a1647.json",
+    "bytes": 153692,
+    "sha256": "ecd60f1735069dd3e37a0244556ab1c2a0bc8146642ab9e63301be40809f3a7e"
+  },
+  "release_counts": {
+    "uploaded": 16,
+    "products": 17,
+    "strict_finite_closed": 10,
+    "pending_Notes_HTTP429": 6,
+    "no_automatic_Notes_GET_or_reupload": true,
+    "ZG042_new_formal_tag_or_upload": false
+  },
+  "documentation_only": {
+    "new_tests_or_build_or_JAR_or_package_or_Game_or_HTTP_or_Steam": 0,
+    "formal_tags_and_artifacts_modified": false,
+    "new_permanent_JSON_upper_bytes": 65536,
+    "Source_within_existing_Root3M": true
+  }
+}

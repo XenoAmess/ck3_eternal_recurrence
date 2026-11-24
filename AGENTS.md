@@ -1,5 +1,12 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-25 ZG361 lazy候选软件通过，第四次加载仍失败；Saved自动效果UNKNOWN
+
+lazy源码7259302已正常推送；8个既有受影响测试、generator check、一次普通candidate build／verify均通过。新1034 manifest6e531／FD799ee相对原6bec仅两B1修复＋GUI三叶变、1031精确保持，原modal内部／160行／detail／callbacks全保，e90 SDK不动。但Root zgf仍在18GiB Job上限以非零退出，Game10792峰19,327,623,168B／153.8798509秒，Job0／cleanup／creator20444 exit1且Root23016已收；不授load memory、heap／open-close或业务P。
+
+重要勘误：四次失败只按原件证明Root命令派发范围；Saved9桥在GetPlayer.IsValid后可能自动prepare，change_government／funding／freezer／portfolio都在READY／FAIL之前且无BEGIN，故无marker不能证明未进入，fixture自动效果仍UNKNOWN，不能写成全部GameEffects为0或确认内存首因。ZG18已选initial＋shader副本实际退役360,260,352B，原Save／940master／产品／SDK／日志／失败保；另四固定类仅inventory，未记删除。实际public-before完整title36与候选一致，oldbody7829为已接受7866正文完整后缀；Notes新稿未最终接受／发表。当前16／17上传、10／17严格、六项Notes429保持，无新Steam上线或Notes GET。[永久第四次失败与Saved效果勘误索引](docs/maintenance/evidence/zg361-current267-lazy-fourth-load-and-Saved-effect-erratum-a1647.json)。下方原切点按当时范围保留。
+
+
 ## 2026-11-25 ZG361 B1／新SDK软件已交付，三次加载失败未授业务
 
 B1两处无效development_level链接已最小修为当前官方prosperity_level；两原受影响方法与generator check通过，单次新候选1034中仅两运行叶变、1032精确保持，未formalTag或发布。新fixed review与显式combined v51共17个必要Java方法、真实Cpp响应／工厂与两次Native逆核通过；一次最终package、2新JAR＋156原件identity复用及实际e90配对已END。源码交付887868／NativeTreec444保持，单Receiver一次begin先review后原pay链，900秒／32提交／私有8effects；旧v49的7／24与v50独立只读语义保留。
