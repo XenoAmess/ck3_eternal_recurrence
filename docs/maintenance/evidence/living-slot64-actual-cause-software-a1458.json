@@ -2,7 +2,7 @@
   "schema": "xar.current267.living.slot64.actual-refusal-and-necessary-software.v1",
   "machine_id": "desktop-3fevhd2-1c74096080",
   "recorded_at_utc": "2026-11-24T06:38:14.601057+00:00",
-  "status": "ACTUAL_CAUSE_AND_NECESSARY_SOFTWARE_P_NATIVE_READY_JAVA_FROZEN_ARTIFACT_PENDING",
+  "status": "ACTUAL_SLOT64_JAVA_NATIVE_PAIR_READY_GAME_BUSINESS_NOT_RUN",
   "observed_original_reason": "living_inventory_complete_arrays_unavailable;field=slots;issue=count_exceeds_bound;artifacts_read=1;artifacts_count=5;artifacts_capacity=6;artifacts_data_nonnull=1;artifacts_count_oob=0;artifacts_span_oob=0;slots_read=1;slots_count=36;slots_capacity=39;slots_data_nonnull=1;slots_count_oob=1;slots_span_oob=0",
   "actual_original_typed_status": "unavailable",
   "actual_effect_attempted": false,
@@ -171,6 +171,141 @@
       "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-living-slot64-production-a1458\\frozen-delivery-final.json",
       "bytes": 4451,
       "sha256": "ae4f46af284c634da5ec183320db5cd96953f544261fc7f34b5bccd829df4bf9"
+    }
+  },
+  "prior_Source_qualification_cut_status": "ACTUAL_CAUSE_AND_NECESSARY_SOFTWARE_P_NATIVE_READY_JAVA_FROZEN_ARTIFACT_PENDING",
+  "later_artifact_completed_at_utc": "2026-11-24T06:48:59.393394+00:00",
+  "actual_artifact_cut": {
+    "configuration_schema": "xar.native-owner-snapshot-config/v48",
+    "mode": "current_living_original_case_once",
+    "maximum_submissions": 85,
+    "Date_calls": 0,
+    "Save_calls": 0,
+    "compiled_changed_NT_CodeSource_HEAD": "af760f67c253e83c01a453322e9e2f73da8dadb5",
+    "Native_actual_BEGIN_HEAD": "d06919e9f272d15d4df917508512d155f21439ef",
+    "NativeTree": "dc72e07438840844b65ac6ee8257fd9910ceab87",
+    "JARs_total": 158,
+    "new_NT_JARs": 1,
+    "immutable_reused_JARs": 157,
+    "LS_or_Main_rebuilt_or_copied": false,
+    "old158_body_CRC_or_hash_traversal": 0,
+    "NT_only_package_count": 1,
+    "package_elapsed_seconds": 33.628289000014775,
+    "package_Job_peak_commit": 668696576,
+    "package_Natural0": true,
+    "compiler_held_upper": 4171280,
+    "package_positive_endpoint": 65536,
+    "package_conservative_held_upper": 39698432,
+    "package_upper_is_forecast_not_measured_peak": true,
+    "freeze_allocated_with_own_metadata": 9568944,
+    "freeze_held_upper": 9585328,
+    "metadata_actual_elapsed_seconds": 0.16209019999951124,
+    "metadata_allocated_before_END": 32768,
+    "metadata_held_upper": 65536,
+    "all_Java_phase_future0": true,
+    "Native_graph": "969 total /2CL /967reuse",
+    "Native_standalone_identity_profile_and_library_consistency_exit0": true,
+    "effective_contract": "a03 complete slots64 and index63; original a02 retained as historical",
+    "new_Game_HELLO_original8_text_business": "NOT_RUN at this document cut; actual Root scene independent."
+  },
+  "actual_two_closed_initial_Save_retirement": {
+    "target_scope": "Only the initial saved copy in each closed a1440/a1452 profile; not shaders, SDK or source archive.",
+    "outcomes": [
+      {
+        "target": "D:\\ck3-state\\upgrade-20261118\\living-current267-original8-profile-a1440\\profile-states\\gui-342eb4c907664cd09e2b0bad80171292\\profile\\save games\\des-vanilla-1066-robert-day15.ck3",
+        "archive": "D:\\ck3-state\\upgrade-20261118\\des-vanilla-seed-current267-profile-a905\\checkpoints\\des-vanilla-1066-robert-day15.ck3",
+        "availability": "RETIRED_PROFILE_INPUT_UNREADABLE",
+        "allocated_removed": 166551552
+      },
+      {
+        "target": "D:\\ck3-state\\upgrade-20261118\\living-current267-inventory-repair-profile-a1452\\profile-states\\gui-9cc07c6f0002489e9b72dca59a725c0e\\profile\\save games\\des-vanilla-1066-robert-day15.ck3",
+        "archive": "D:\\ck3-state\\upgrade-20261118\\des-vanilla-seed-current267-profile-a905\\checkpoints\\des-vanilla-1066-robert-day15.ck3",
+        "availability": "RETIRED_PROFILE_INPUT_UNREADABLE",
+        "allocated_removed": 166551552
+      }
+    ],
+    "actual_FileStandardInfo_allocated_removed_bytes": 333103104,
+    "archives_unchanged": true,
+    "old_Ready_or_profile_input_reusable": false,
+    "old_spent_held_refund": false,
+    "first_derive_substring_ValueError_preserved": "Occurred before output/script/inventory/delete; actual-indent narrow correction followed one actual inventory and one actual execute, not a repeated delete.",
+    "actual_delete_identity_fullSHA_shortCAS_and_exclusive_FD": "Root actual receipts; no deletion by this docs job."
+  },
+  "later_actual_external_refs": {
+    "actual_Java_runtime_ready": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-slot64-build-a01\\java-runtime-ready-before-native.json",
+      "bytes": 1581,
+      "sha256": "a0d40b37832771f90e07c800117369a9cc48e33cf2a55eb0bf57803e14e28953"
+    },
+    "actual_new_Runtime_manifest": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-living-slot64-a01\\runtime-manifest.json",
+      "bytes": 168193,
+      "sha256": "fe2b66d016df6ace19fa8dac44b2e40fd8bf4c61a2cb5ac0ce906ce0762824f5"
+    },
+    "actual_new_classpath_argfile": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-living-slot64-a01\\cli-classpath.args",
+      "bytes": 16386,
+      "sha256": "dc46ec11891a92d6789c8bf8a2dedad1d45d8b71dc6fbed5b596ad1c012d4ae0"
+    },
+    "actual_new_sixpins": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-slot64-pair-a01\\actual-six-pins.json",
+      "bytes": 1510,
+      "sha256": "90a4ea7fe83fc2cb6b8e4611531fa9019c0d49bf74c47dcc61fbd408905e74e9"
+    },
+    "actual_final_delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-slot64-pair-a01\\frozen-delivery-final.json",
+      "bytes": 8928,
+      "sha256": "600fffe5688d9b8a3154005b4c53666150179d2687da5337b39bd93b21161d3c"
+    },
+    "actual_five_ref_sidecar": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-slot64-pair-a01\\native-pair-binding-final.json",
+      "bytes": 3458,
+      "sha256": "2d32f127390838c6b344b34d2eef3fc46b3ad877354b3905ad4e76d3a431a159"
+    },
+    "actual_operator_templates": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-slot64-pair-a01\\operator-templates.json",
+      "bytes": 5268,
+      "sha256": "6bcd431a00873a5dec24733d018b5e414d633d48cf07968b939ab5c666d38271"
+    },
+    "actual_metadata1_END": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-slot64-pair-a01\\all-phases-END.json",
+      "bytes": 5385,
+      "sha256": "2913a1755b69e6d55e53c9cc089906e82ae9cf14a20802adb910b3e4b247b9a0"
+    },
+    "actual_package96_END": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-slot64-build-a01\\package96-END.json",
+      "bytes": 1226,
+      "sha256": "b1a40e2ba17ef1da9e611bea72352bdd49d6f3df8c9b9fe77520c06869a39592"
+    },
+    "actual_freeze12_END": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-living-slot64-build-a01\\freeze12-END.json",
+      "bytes": 2022,
+      "sha256": "3f1ad1e14ef42a48660d58dc8bc5963b98383907e7a5029de14072864f27becb"
+    },
+    "actual_Native_delivery": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-living-slot64-production-a1458\\frozen-delivery-final.json",
+      "bytes": 4451,
+      "sha256": "ae4f46af284c634da5ec183320db5cd96953f544261fc7f34b5bccd829df4bf9"
+    },
+    "actual_Native_refs": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-living-slot64-production-a1458\\ordinary-native-artifact-refs.json",
+      "bytes": 20295,
+      "sha256": "149a78f184bcc4215004945f9f44e6716f3721ab4a3e77a1170c33641299bb3a"
+    },
+    "Root_actual_a1452_cause_and_Natural0": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\Living-actual36slots-known-refusal-Natural0-END-a1456.json",
+      "bytes": 3130,
+      "sha256": "888b9de1fc42f78fedfa83712d8276bf0abd5692616bae332f4cf5812e2ab78c"
+    },
+    "two_initial_Save_retirement_inventory": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\Living-two-closed-initial-Save-duplicates-a1457\\inventory.json",
+      "bytes": 5252,
+      "sha256": "2c5ddf3e8a221ce8bb66f3ae2ba0eabee692ab2d92b4087f0b40dd378bfe4c0a"
+    },
+    "two_initial_Save_retirement_actual_result": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\Living-two-closed-initial-Save-duplicates-a1457\\actual-result.json",
+      "bytes": 1314,
+      "sha256": "e06d0073593cc12fa494fad1023c387c16ed2f6d68d2d55a93c7bda6798bbead"
     }
   }
 }

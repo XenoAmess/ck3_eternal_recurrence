@@ -1,5 +1,14 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-24 当前Living完整槽位修复：新NT／Native已配对，原8实机待验证
+
+后继a1452真实诊断已证明：原5宝物／cap6、36槽／cap39均可读且跨度有效，仅本组32槽有限上限错误。两旧场都只2次read、0Entry／UI／Date／Save并正常Natural0／Job0／cleanup；已消费请求不重放。Native Raw与serializer完整上限同步为64，Java只改同一Source叶的三处32／32／31→64／64／63；布局、signed capacity、完整双采／身份／跨度守卫、UI retention32及Main／Transport／Entry／UI公开接口不改。
+
+仅NT增量首3项DATA及两个实际Cpp36／64响应往返共5项通过，两个XML原件均先保留；旧58／23不重跑。代码`af760f67…`正常推送；Native实际BEGIN仍`d06919e9…`／Tree`dc72e074…`。唯一NT-only package自然0，1个新NT JAR＋157旧身份复用，LS／Main不重包，无旧158 body CRC遍历。实际六pins`90a4ea7f…`绑定MF`fe2b66d0…`／args`dc46ec11…`及Native ND`ae4f46af…`／DLL`d02841aa…`，有效query契约a03明确完整64槽／index63；严格v48／85提交／0Date／0Save，软件与产物Ready仍不授实际HELLO、原8业务／文本或发布。
+
+Root已精确退役a1440与a1452各一份closed profile initialSave副本，实际FileStandardInfo回收333103104B；两旧副本UNREADABLE／旧Ready不可重用，源archive821全SHA／身份保持，非shader／SDK清理且不退旧spent／held。首derive substring错误发生在输出／inventory／delete前，原失败保留。仍14/17上传、10/17严格完成；Root独占后继新场，正常文档发表不作其启动门。[本次原因、软件、真实配对与退役映射](docs/maintenance/evidence/living-slot64-actual-cause-software-a1458.json)。下方保留此前切点。
+
+
 ## 2026-11-24 当前Living v48：58项软件与真实新配对已闭，原8实机尚未运行
 
 正式代码`d157f10c…`已正常推送；NativeTree`3cced9bd…`，Native初始实际BEGIN仍为`9b1527e6…`／Tree`0d5ac9ae…`。首22项DATA加真实Cpp消费36项为58个不同方法，实际运行59次因真实工厂packet缺陷后必要重验1项；13个原Cpp响应、23个真实Java工厂请求及原解析器逐body各一次逆核均通过。UI／Entry通过同一生产helper发严格revisionless8字段包，Inventory保留原legacy8／revision0。原8方法Surefire XML在mutable target被后继单方法覆盖的保留缺口明示，原首22收据／stdout／方法记录不改，不重跑旧矩阵补造原件。
