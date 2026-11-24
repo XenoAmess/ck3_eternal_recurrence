@@ -1,5 +1,12 @@
 # CK3 1.19.0.6 原版事件知识 Registry
 
+## 2026-11-24 current267：已分析的 `realm_maintenance.2001`
+
+本机1.21.0.3／build26785313的a1410实际D7捕获定义`realm_maintenance.2001`、instance3、recipient44132，完整窗口只有一个authored option0，实际Can=true、显示“皇帝万岁”，原通用首可用策略选择一次，独立完整census证明原instance消失，随后原流程完成8日。该事件来自当前原版头衔取得链的一日延迟提示；两段条件name属于同一个选项。当前定义、调用方和简中本地化的完整SHA／行号、immediate和option效果见[持久知识](evidence/realm-maintenance-2001-current267-a1410.json)。选项可能依实际状态开加冕活动或创建所需物品，不能概括为全局无效果。
+
+这是有版本来源的已分析知识；保留实际完整census／recipient／instance／nativeCan／最小可用authored index和专用策略优先。不新增Native role/key、专用selector、黑名单或净效果验收门，不追认旧a1390未捕获的弹窗身份，不重放旧动作。旧registry条目保留各自EXE范围。
+
+
 ## 2026-10-13：actual4 有界选择与材料比较增量
 
 原 G2-M2 三自然／两种多选的完成合同保留，不重开资格。新 `bookmark.1070.c` utility 明确采用“取得事件军队且不新增教宗／皇帝敌意”的我方目标；A/B/C 的原版 AI base 都是100，不能称 C 为原生偏好或最优。A/B/C 实际生成750/500/250混编兵；A每军最后25人为conrois，B/C为armored_horsemen。开窗 immediate 的六项 pressed claims 不计选项收益；这些选项均未宣战。

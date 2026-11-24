@@ -1,0 +1,123 @@
+{
+  "schema": "xar.rmtm042.actual-formal-SourceB.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-24T02:40:22.361884+00:00",
+  "status": "ACTUAL_FORMAL_READY_NOT_UPLOADED",
+  "source_commit": "5d091f9db21c4e51a12b28fcc3d3289c125891e2",
+  "git_tag": "reclaim-motherland-v0.4.2",
+  "tag_object": "a9e5b59d71616e5653d9dd9620f95999ab31f71a",
+  "formal_delivery": {
+    "path": "D:/ck3-state/upgrade-20261118/rmtm042-formal-release-a1412/formal-delivery-final.json",
+    "bytes": 5268,
+    "sha256": "415858719911f8fb933a6b5e4ebd481fbe3ce7f963f0d87b7d8b721199af8dfc"
+  },
+  "source_tag_CodeSource": {
+    "path": "D:/ck3-state/upgrade-20261118/rmtm042-formal-release-a1412/source-tag-record.json",
+    "bytes": 1380,
+    "sha256": "047ea6d4a5dc5b49e1ae9db000fb52a3ddf2ec72a11811f47000df3c7e4f5dfa"
+  },
+  "content_root": "D:/ck3-state/upgrade-20261118/rmtm042-formal-release-a1412/mod_reclaim_the_motherland",
+  "runtime_manifest": {
+    "path": "D:/ck3-state/upgrade-20261118/rmtm042-formal-release-a1412/mod_reclaim_the_motherland-v0.4.2.manifest.json",
+    "bytes": 6835,
+    "sha256": "93918f0a02c1ed0596a976326dda17e494ab69dbca42834d1bb2d232d96beede"
+  },
+  "archive": {
+    "path": "D:/ck3-state/upgrade-20261118/rmtm042-formal-release-a1412/mod_reclaim_the_motherland-v0.4.2.zip",
+    "bytes": 851018,
+    "sha256": "841f5b5e82bfff63182920f7e899938b766905c587b9aa15743c9eb404bf3b6a"
+  },
+  "accepted_runtime_manifest": {
+    "path": "D:/ck3-state/upgrade-20261118/rmtm-current267-preview-guard-product36-candidate-next/mod_reclaim_the_motherland.manifest.json",
+    "bytes": 6812,
+    "sha256": "86ffb8864e44b4684390d543af0bf06fa5936fa9a500f3b2f7659405dc82cc1f"
+  },
+  "metadata_file_refs": {
+    "title": {
+      "path": "D:/ck3-state/upgrade-20261118/rmtm042-formal-release-a1412/metadata/title.txt",
+      "bytes": 39,
+      "sha256": "60d3030d677aaf0be915fe6ec90da7302ce73633358af66f8b9a91b56c22dc17"
+    },
+    "description": {
+      "path": "D:/ck3-state/upgrade-20261118/rmtm042-formal-release-a1412/metadata/description.bbcode",
+      "bytes": 7965,
+      "sha256": "ff90219a742a6fd43b806bbad4cdf97b02384c8e550405de00aac1b24f9e20e7"
+    },
+    "change_note": {
+      "path": "D:/ck3-state/upgrade-20261118/rmtm042-formal-release-a1412/metadata/change-notes.txt",
+      "bytes": 3307,
+      "sha256": "1655b358cec20068d00c8bbbf151685b413738e45d679b2cf19ef572ba28ba8a"
+    }
+  },
+  "runtime_files": 36,
+  "formal36_and_ZIP_comparison": {
+    "path": "D:/ck3-state/upgrade-20261118/rmtm042-formal-release-a1412/formal36-and-ZIP-comparison.json",
+    "bytes": 8144,
+    "sha256": "47dc396b8136125604fb088a78edd2893c01814cd9209b6d0a356d0de69dd4bb"
+  },
+  "formal8_actual_END": {
+    "path": "D:/ck3-state/upgrade-20261118/rmtm042-formal-release-a1412/formal8-phase-END.json",
+    "bytes": 1668,
+    "sha256": "9d0ae51e210933e8b6f88142ddc5d59227692a1b1a6be721d43896e061c4fa73"
+  },
+  "actual_build_exit0": true,
+  "actual_verify_exit0": true,
+  "actual_build_seconds": 4.734718099993188,
+  "actual_verify_seconds": 0.5864453000249341,
+  "actual_Job_peak": 100921344,
+  "Natural0_Job0": true,
+  "formal8_held_upper": 1973104,
+  "formal8_remaining_future0": true,
+  "Root_finite_business": {
+    "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/RMTM-current267-original26-scope-physical-finite-PASS-a1412.json",
+    "bytes": 3797,
+    "sha256": "7550b8ad5b5c0bac0779f18ef2c1209f7b184a93df79921e52a94caf66172092"
+  },
+  "release_evidence": [
+    {
+      "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/RMTM-current267-original26-scope-physical-finite-PASS-a1412.json",
+      "bytes": 3797,
+      "sha256": "7550b8ad5b5c0bac0779f18ef2c1209f7b184a93df79921e52a94caf66172092"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/docs/maintenance/evidence/rmtm042-finite-release-SourceA-a1412.json",
+      "bytes": 4073,
+      "sha256": "2688506de658c75858b40760551fd968e724d550e5eb5169b117c9704cb7cdd6"
+    },
+    {
+      "path": "D:/ck3-state/upgrade-20261118/rmtm-real-D5-full-log-profile-a1410/delivery-final.json",
+      "bytes": 4126,
+      "sha256": "f372a8424fc4a9a6d687823a5f072c9f0eba459e83f844cea90c4a4ef317b80d"
+    },
+    {
+      "path": "D:/ck3-state/upgrade-20261118/rmtm-a1410-original26-and-typed-evidence-review-a01/delivery-final.json",
+      "bytes": 804,
+      "sha256": "96938f6dac68d9fb634eded28f3f9629d79feed96ecea530d8d2a8a042ad6b94"
+    },
+    {
+      "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/RMTM-independent-50-51-finite-PASS-a1349.json",
+      "bytes": 2715,
+      "sha256": "0afad7e6431f0ea95dcb0d529240b21b1b44ef79bc67d80aecd84741b1628571"
+    },
+    {
+      "path": "D:/ck3-state/upgrade-20261118/rmtm042-full-public-text-source-a01/delivery-final.json",
+      "bytes": 2421,
+      "sha256": "877ff09d60c46d8e79362ae8c67e8882e2236c1fc628e42941cf440a07590814"
+    }
+  ],
+  "public_title_description_Notes_exact_copied": true,
+  "old_public_0_4_1_preserved": {
+    "path": "D:/workspace/ck3_eternal_recurrence/docs/release-changelogs/reclaim-motherland/0.4.1-evidence/publication.json",
+    "bytes": 7823,
+    "sha256": "b7f41fec3aef43432299793d04b8f360656ff86494a3d550456b8c998f824a92"
+  },
+  "all_historical_UNKNOWN_refusals_and_native_false_null_preserved": true,
+  "original_ZIP_path_comparator_refusal_preserved": "Formal builder ZIP uses the product-root prefix; comparator was corrected without rebuilding or payload changes.",
+  "publication_SDK_HTTP_download_cache": "NOT_RUN_FOR_0_4_2_AT_THIS_SOURCEB_CUT",
+  "no_new_Maven_or_software_matrix_or_Game": true,
+  "distinct_products": {
+    "uploaded": 13,
+    "total": 17,
+    "strict": 9
+  }
+}

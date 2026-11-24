@@ -1,0 +1,165 @@
+{
+  "schema": "ck3.current267.observed-stock-event.knowledge-draft.v1",
+  "status": "SOURCE_END_IDENTIFIED_CURRENT_DEFINITION_NOT_NEW_NATIVE_ROLE_OR_BUSINESS_GATE",
+  "at_utc": "2026-11-24T02:15:54.052611+00:00",
+  "build": {
+    "version": "1.21.0.3",
+    "build": 26785313,
+    "EXE_SHA256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28"
+  },
+  "identity": {
+    "definition": "realm_maintenance.2001",
+    "type": "character_event",
+    "authored_option_count": 1,
+    "authored_option_index": 0,
+    "option_name_non_ceremonial": "realm_maintenance.2001.a",
+    "option_name_ceremonial": "realm_maintenance.2001.a.ceremonial_regent"
+  },
+  "actual_observation_from_Root": {
+    "scene": "a1410",
+    "day": 7,
+    "instance": 3,
+    "recipient_fullID": 44132,
+    "complete_census": true,
+    "visible_enabled": true,
+    "one_authored_option0_Can": true,
+    "role_key": null,
+    "observed_option_text": "皇帝万岁",
+    "choice_calls": 1,
+    "independent_absence": true,
+    "batch_completed_days": 8,
+    "qualification": "Root-reported actual finite observation only; no newGame/query/readback here. Original a1390 did not capture definition and remains UNKNOWN."
+  },
+  "full_source_pins": {
+    "event_file": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\realm_maintenance_events.txt",
+      "bytes": 10992,
+      "sha256": "a2f6e858247ba8ecdaf813873247fa4fdea5de86cf75cafb28aec00f6dc05c18"
+    },
+    "title_on_actions": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\title_on_actions.txt",
+      "bytes": 157405,
+      "sha256": "6e02c8a4370e6ba986f8b0bc742c459fdd998191baeb31f3a3124518736f630b"
+    },
+    "Chinese_localization": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\event_localization\\realm_maintenance_events_l_simp_chinese.yml",
+      "bytes": 5205,
+      "sha256": "045d23bd31b5e01d9a31e2c4a3c6025eac6ad192643385e5deca549c2f508fe6"
+    }
+  },
+  "definition_ranges": {
+    "complete_event": [
+      309,
+      451
+    ],
+    "event_trigger": [
+      368,
+      383
+    ],
+    "immediate": [
+      385,
+      415
+    ],
+    "complete_only_option": [
+      417,
+      450
+    ],
+    "cooldown": [
+      366,
+      366
+    ]
+  },
+  "trigger_semantics": "Actual event checks title tier>=empire, this primary_title==scope:title, previous_holder exists, no other held empire title, and excludes its e_japan/ceremonial_liege case. It has cooldown days1. This is stock eligibility, not a new observer gate.",
+  "trigger_origin": {
+    "hook": "on_title_gain",
+    "scope_contract_lines": [
+      330,
+      334
+    ],
+    "effect_line": 339,
+    "outer_tier_kingdom_lines": [
+      1482,
+      1485
+    ],
+    "enclosing_empire_branch_lines": [
+      1663,
+      1668
+    ],
+    "exact_event_dispatch_lines": [
+      2044,
+      2064
+    ],
+    "summary": "Current common/events exact definition search found this sole explicit dispatcher. New title holder is root; scope:title changed title; previous_holder may be dead. Within empire branch it additionally checks primary title, previous holder, no other held empire title and tgp_is_minister_title=no, then trigger_event id with days1. This identifies the installed stock route, not proof of every hidden engine source."
+  },
+  "option0_effect_semantics": {
+    "lines": [
+      427,
+      449
+    ],
+    "condition": "has_ach_dlc_trigger=yes AND has_realm_law=uncrowned AND not ceremonial regent AND NOT had_coronation_prompt.",
+    "proper_artifact_true": "Shows fund_inspiration.1001.b.coronation_ready tooltip and open_view_data activity_list_detail_host_window with activity_type:activity_coronation, player=root.",
+    "otherwise": "Shows court_maintenance.0011.coronation.tooltip and calls create_proper_coronation_artifact=yes.",
+    "immediate_context": "Immediate optionally calls coronation_reset_realm_law_effect for ACH, always adds had_coronation_prompt and assign_quirk_effect; may save murder scope value; show_as_tooltip get_title. Since it sets the prompt flag first, the option NOT-had flag normally fails unless state changes later. Do not claim globally effect-free or infer current net effects without observation."
+  },
+  "exact_option_script": {
+    "first_line": 417,
+    "last_line": 450,
+    "source": "    option = {\n        name = {\n        \ttext = realm_maintenance.2001.a\n        \ttrigger = { tgp_is_ceremonial_regent_trigger = no }\n        }\n        name = {\n        \ttext = realm_maintenance.2001.a.ceremonial_regent\n        \ttrigger = { tgp_is_ceremonial_regent_trigger = yes }\n        }\n        \n\t\tif = {\n\t\t\tlimit = {\n\t\t\t\thas_ach_dlc_trigger = yes\n\t\t\t\thas_realm_law = uncrowned\n\t\t\t\ttgp_is_ceremonial_regent_trigger = no\n\t\t\t\tNOT = { has_character_flag = had_coronation_prompt }\n\t\t\t}\n\t\t\tif = {\n\t\t\t\tlimit = {\n\t\t\t\t\tcoronation_has_proper_artifact_trigger = yes\n\t\t\t\t}\n\t\t\t\tcustom_tooltip = fund_inspiration.1001.b.coronation_ready\n\t\t\t\topen_view_data = {\n\t\t\t\t\tview = activity_list_detail_host_window\n\t\t\t\t\tdata = activity_type:activity_coronation\n\t\t\t\t\tplayer = root\n\t\t\t\t}\n\t\t\t}\n\t\t\telse = {\n\t\t\t\tcustom_tooltip = court_maintenance.0011.coronation.tooltip\n\t\t\t\tcreate_proper_coronation_artifact = yes\n\t\t\t}\n\t\t}\n    }"
+  },
+  "exact_immediate_script": {
+    "first_line": 385,
+    "last_line": 415,
+    "source": "    immediate = {\n\t\tif = {\n\t\t\tlimit = {\n\t\t\t\thas_ach_dlc_trigger = yes\n\t\t\t}\n\t\t\tcoronation_reset_realm_law_effect = yes #we need to reset the crown laws immediately, not wait for the next tick\n\t\t}\n\t\tadd_character_flag = had_coronation_prompt\n\t\tassign_quirk_effect = yes\n\t\tif = {\n    \t\tlimit = {\n    \t\t\tOR = {\n    \t\t\t\tany_secret = {\n    \t\t\t\t\ttype = secret_murder\n    \t\t\t\t\tsecret_target = scope:previous_holder\n    \t\t\t\t}\n    \t\t\t\tscope:previous_holder = {\n\t\t\t\t\t\tis_alive = no\n\t\t\t\t\t\tkiller ?= root\n\t\t\t\t\t}\n    \t\t\t}\n    \t\t}\n    \t\tsave_scope_value_as = {\n    \t\t\tname = murder\n    \t\t\tvalue = yes\n    \t\t}\n    \t}\n    \tshow_as_tooltip = {\n    \t\tget_title = scope:title\n    \t}\n    }"
+  },
+  "exact_dispatch_script": {
+    "first_line": 2044,
+    "last_line": 2064,
+    "source": "\t\t\t\t# You just inherited an Emperor title!!\n\t\t\t\tif = {\n\t\t\t\t\tlimit = {\n\t\t\t\t\t\tprimary_title = scope:title\n\t\t\t\t\t\texists = scope:previous_holder\n\t\t\t\t\t\tNOT = { #You don't already have an empire tier title\n\t\t\t\t\t\t\tany_held_title = {\n\t\t\t\t\t\t\t\ttitle_tier = empire\n\t\t\t\t\t\t\t\tthis != scope:title\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t\t# That isn't a part of the ministry\n\t\t\t\t\t\tscope:title = {\n\t\t\t\t\t\t\ttgp_is_minister_title = no\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t\ttrigger_event = {\n\t\t\t\t\t\tid = realm_maintenance.2001\n\t\t\t\t\t\tdays = 1\n\t\t\t\t\t}\n\t\t\t\t}"
+  },
+  "localization": {
+    "lines": [
+      34,
+      35
+    ],
+    "non_ceremonial_source": "[ROOT.Char.GetTitleAsNameNoTooltip]万岁！",
+    "meaning": "Runtime title plus localized suffix."
+  },
+  "knowledge_policy": {
+    "strategy": "Current first available ordinary policy remains applicable: use complete actual event/recipient/instance/options and nativeCan; this observed sole available option was chosen once, then absence independently observed.",
+    "do_not_add": "No dedicated Native role/key, special event selector, 13-entry blacklist, generic-event rejection, new net-effect acceptance gate, matrix or retry. Source recording alone must not change generic admission.",
+    "scope": "Do not map a1390 to this definition or upgrade priorUNKNOWN. Do not grant full26/threeScope/threePhysical or duplicate other owners conjunction work.",
+    "formal_owner": "Java may normally adopt this small knowledge JSON/evidence reference after Root consumption; no tracked file written here."
+  },
+  "operations": {
+    "Game_SDK_HTTP_compile_tests_Git_primary_writes": 0
+  },
+  "source_future_bytes": 0,
+  "persistent_adoption": {
+    "status": "PERSISTENT_CURRENT267_SOURCE_ANALYSIS_WITH_ACTUAL_A1410_OBSERVATION",
+    "original_draft": {
+      "path": "D:/ck3-state/upgrade-20261118/realm-maintenance-2001-current267-knowledge-source-a1410/knowledge-draft.json",
+      "bytes": 7475,
+      "sha256": "5b9f1f1862367eb8380cf698a32ca07eca5194b8f77831ddfb088725d7e9ef36"
+    },
+    "unicode_erratum": {
+      "path": "D:/ck3-state/upgrade-20261118/realm-maintenance-2001-current267-knowledge-source-a1410/unicode-text-erratum.json",
+      "bytes": 210,
+      "sha256": "9cdbf1e915b8f336f26f11aac0b694fcd70b543444e66fbacfb7306980eb3549"
+    },
+    "exact_three_text_fields_deep_merged": true,
+    "actual_summary": {
+      "path": "D:/ck3-state/upgrade-20261118/rmtm-current267-original-case-profile-a1410/operations/original-case-a1408/result/summary.json",
+      "bytes": 616851,
+      "sha256": "cef833eef16e539c8b4ddfcc4a0681b97f920a6421bac7192ea50271fbbd014f"
+    },
+    "actual_Root_finite_record": {
+      "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/RMTM-current267-original26-scope-physical-finite-PASS-a1412.json",
+      "bytes": 3797,
+      "sha256": "7550b8ad5b5c0bac0779f18ef2c1209f7b184a93df79921e52a94caf66172092"
+    },
+    "generic_first_actual_available_policy_unchanged": true,
+    "new_dedicated_role_key_blacklist_selector_or_acceptance_gate": false,
+    "old_a1390_popup_identity_not_retconned": true,
+    "new_tests_Game_HTTP_or_Native_frame": 0
+  }
+}

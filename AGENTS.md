@@ -1,4 +1,10 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
+## 2026-11-24 当前RMTM0.4.2：有限发布业务通过，正式36已封，尚未上传
+
+本机当前1.21.0.3／26785313的a1410原case完成8自然日、0Save：原26项以23脚本PASS＋3物理待定项和实际D5三scope／三独立物理realm_baseline观测合取通过；同一Later20377、原君40180、执行时heir44132、callback后实际holder44132。九席全ID存活保持、代表Budget／Offer打开取消独立hidden、原版`realm_maintenance.2001`一次选择及独立absence、Natural0／Job0／cleanup／creator0均有原件；独立50／51当前构建有限结果复用，不重跑。原summary／reader的false、null及全部旧失败／UNKNOWN不改，不授所有law路线、完整旧矩阵、全部外交理由／Send、自然五年、语言实机或性能。
+
+正式SourceA `5d091f9db21c4e51a12b28fcc3d3289c125891e2` 与唯一新注释tag `reclaim-motherland-v0.4.2` 已正常推送，tag对象`a9e5b59d…`；旧0.4.1不动。既有Python builder只正式构建／verify各一次0，完整36及带产品根目录ZIP与已验86ff候选精确一致；MF`93918f0a…`／ZIP`841f5b5e…`、完整中英元数据与四历史图已封，8MiB目的END/future0，无新Maven／测试矩阵／Game／Steam／HTTP。**0.4.2尚未上传**，SourceC后按Root真实SDK、公开全文、下载和缓存分别追加；计数仍13/17上传、9/17严格。[正式交付与边界](docs/release-changelogs/reclaim-motherland/0.4.2-evidence/formal.json)。原版事件已按原定义和UTF8三字段勘误补入持久知识，通用策略／权限保持。以下保留此前实际切点。
+
 ## 2026-11-24 当前 RMTM：后继事件软件与实际新配对已闭，实机场仍待新收据
 
 本机已正常推送 Java `f687274fe5aa393f287001689d76ec000153b199`；Native 实际编译 BEGIN 仍是 `81770ba8…`，NativeTree `6cfbadd6…`。原29项受影响软件、Native26组和原解析器一次真实 factory 逆核分别保留；另一个新64MiB目的只运行2个必要方法，证明同日 fresh role 必须先于普通事件查询/选择，选择后的最终独立 Core 再刷新 role 供 Date。两个方法均通过并自然 active0，旧128目的没有重开。原失败与 UNKNOWN 保持，不重旧矩阵。
