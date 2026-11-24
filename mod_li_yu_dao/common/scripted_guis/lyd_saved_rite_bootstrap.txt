@@ -4,6 +4,7 @@ lyd_saved_rite_bootstrap_gui = {
     is_shown = {
         is_ai = no
         is_alive = yes
+        exists = rite
         faith = faith:confucian_faith
         faith = { exists = main_rite }
         NOT = { has_global_variable = lyd_catalogue_013_bootstrapped }

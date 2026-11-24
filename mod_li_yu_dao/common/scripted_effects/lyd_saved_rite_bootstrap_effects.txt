@@ -4,156 +4,1620 @@ lyd_materialize_missing_catalogue_rites_effect = {
         limit = {
             is_ai = no
             is_alive = yes
+            exists = rite
             faith = faith:confucian_faith
             faith = { exists = main_rite }
             NOT = { has_global_variable = lyd_catalogue_013_bootstrapped }
         }
-        if = {
-            limit = { NOT = { exists = rite:lyd_rite_kongmen } }
-            create_rite_from_type = { type = lyd_rite_kongmen convert = no }
+        clear_saved_scope = lyd_bootstrap_original_rite
+        clear_saved_scope = lyd_bootstrap_original_faith
+        clear_saved_scope = lyd_bootstrap_original_main
+        rite = { save_scope_as = lyd_bootstrap_original_rite }
+        faith = {
+            save_scope_as = lyd_bootstrap_original_faith
+            main_rite = { save_scope_as = lyd_bootstrap_original_main }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_mengzi } }
-            create_rite_from_type = { type = lyd_rite_mengzi convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_kongmen }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_kongmen convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_kongmen }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_kongmen }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_xunzi } }
-            create_rite_from_type = { type = lyd_rite_xunzi convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_mengzi }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_mengzi convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_mengzi }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_mengzi }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_dongzhongshu } }
-            create_rite_from_type = { type = lyd_rite_dongzhongshu convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_xunzi }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_xunzi convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_xunzi }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_xunzi }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_guwen } }
-            create_rite_from_type = { type = lyd_rite_guwen convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_dongzhongshu }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_dongzhongshu convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_dongzhongshu }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_dongzhongshu }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_zhengxuan } }
-            create_rite_from_type = { type = lyd_rite_zhengxuan convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_guwen }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_guwen convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_guwen }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_guwen }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_wangsu } }
-            create_rite_from_type = { type = lyd_rite_wangsu convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_zhengxuan }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_zhengxuan convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_zhengxuan }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_zhengxuan }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_wangbi } }
-            create_rite_from_type = { type = lyd_rite_wangbi convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_wangsu }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_wangsu convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_wangsu }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_wangsu }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_guoxiang } }
-            create_rite_from_type = { type = lyd_rite_guoxiang convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_wangbi }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_wangbi convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_wangbi }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_wangbi }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_jingshu } }
-            create_rite_from_type = { type = lyd_rite_jingshu convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_guoxiang }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_guoxiang convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_guoxiang }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_guoxiang }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_hanyu } }
-            create_rite_from_type = { type = lyd_rite_hanyu convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_jingshu }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_jingshu convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_jingshu }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_jingshu }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_liao } }
-            create_rite_from_type = { type = lyd_rite_liao convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_hanyu }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_hanyu convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_hanyu }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_hanyu }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_zhoudunyi } }
-            create_rite_from_type = { type = lyd_rite_zhoudunyi convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_liao }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_liao convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_liao }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_liao }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_chengbrothers } }
-            create_rite_from_type = { type = lyd_rite_chengbrothers convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_zhoudunyi }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_zhoudunyi convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_zhoudunyi }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_zhoudunyi }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_zhangzai } }
-            create_rite_from_type = { type = lyd_rite_zhangzai convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_chengbrothers }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_chengbrothers convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_chengbrothers }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_chengbrothers }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_shaoyong } }
-            create_rite_from_type = { type = lyd_rite_shaoyong convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_zhangzai }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_zhangzai convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_zhangzai }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_zhangzai }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_wanganshi } }
-            create_rite_from_type = { type = lyd_rite_wanganshi convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_shaoyong }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_shaoyong convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_shaoyong }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_shaoyong }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_sushi } }
-            create_rite_from_type = { type = lyd_rite_sushi convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_wanganshi }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_wanganshi convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_wanganshi }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_wanganshi }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_huxiang } }
-            create_rite_from_type = { type = lyd_rite_huxiang convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_sushi }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_sushi convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_sushi }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_sushi }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_zhuxi } }
-            create_rite_from_type = { type = lyd_rite_zhuxi convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_huxiang }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_huxiang convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_huxiang }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_huxiang }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_lujiuyuan } }
-            create_rite_from_type = { type = lyd_rite_lujiuyuan convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_zhuxi }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_zhuxi convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_zhuxi }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_zhuxi }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_yongjia } }
-            create_rite_from_type = { type = lyd_rite_yongjia convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_lujiuyuan }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_lujiuyuan convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_lujiuyuan }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_lujiuyuan }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_yongkang } }
-            create_rite_from_type = { type = lyd_rite_yongkang convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_yongjia }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_yongjia convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_yongjia }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_yongjia }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_wucheng } }
-            create_rite_from_type = { type = lyd_rite_wucheng convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_yongkang }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_yongkang convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_yongkang }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_yongkang }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_chenxianzhang } }
-            create_rite_from_type = { type = lyd_rite_chenxianzhang convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_wucheng }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_wucheng convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_wucheng }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_wucheng }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_zhanruoshui } }
-            create_rite_from_type = { type = lyd_rite_zhanruoshui convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_chenxianzhang }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_chenxianzhang convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_chenxianzhang }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_chenxianzhang }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_wangyangming } }
-            create_rite_from_type = { type = lyd_rite_wangyangming convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_zhanruoshui }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_zhanruoshui convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_zhanruoshui }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_zhanruoshui }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_jiangyou } }
-            create_rite_from_type = { type = lyd_rite_jiangyou convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_wangyangming }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_wangyangming convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_wangyangming }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_wangyangming }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_taizhou } }
-            create_rite_from_type = { type = lyd_rite_taizhou convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_jiangyou }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_jiangyou convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_jiangyou }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_jiangyou }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_liuzongzhou } }
-            create_rite_from_type = { type = lyd_rite_liuzongzhou convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_taizhou }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_taizhou convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_taizhou }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_taizhou }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_donglin } }
-            create_rite_from_type = { type = lyd_rite_donglin convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_liuzongzhou }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_liuzongzhou convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_liuzongzhou }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_liuzongzhou }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_wangfuzhi } }
-            create_rite_from_type = { type = lyd_rite_wangfuzhi convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_donglin }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_donglin convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_donglin }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_donglin }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_yanli } }
-            create_rite_from_type = { type = lyd_rite_yanli convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_wangfuzhi }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_wangfuzhi convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_wangfuzhi }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_wangfuzhi }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_qianjia } }
-            create_rite_from_type = { type = lyd_rite_qianjia convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_yanli }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_yanli convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_yanli }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_yanli }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_changzhou } }
-            create_rite_from_type = { type = lyd_rite_changzhou convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_qianjia }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_qianjia convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_qianjia }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_qianjia }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { NOT = { exists = rite:lyd_rite_jingshi } }
-            create_rite_from_type = { type = lyd_rite_jingshi convert = no }
+            limit = {
+                NOT = { exists = rite:lyd_rite_changzhou }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_changzhou convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_changzhou }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_changzhou }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
         }
         if = {
-            limit = { lyd_catalogue_instances_ready_trigger = yes }
+            limit = {
+                NOT = { exists = rite:lyd_rite_jingshi }
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+            }
+            clear_saved_scope = lyd_bootstrap_created_rite
+            create_rite_from_type = { type = lyd_rite_jingshi convert = no save_scope_as = lyd_bootstrap_created_rite }
+            if = {
+                limit = { exists = scope:lyd_bootstrap_created_rite exists = rite:lyd_rite_jingshi }
+                if = {
+                    limit = {
+                        trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+
+    }
+    trigger_else = { always = no }
+                        scope:lyd_bootstrap_created_rite = { this = rite:lyd_rite_jingshi }
+                        rite = scope:lyd_bootstrap_created_rite
+                        NOT = { rite = scope:lyd_bootstrap_original_rite }
+                    }
+                    set_character_rite = scope:lyd_bootstrap_original_rite
+                }
+            }
+        }
+        if = {
+            limit = {
+                trigger_if = {
+        limit = {
+            exists = scope:lyd_bootstrap_original_rite
+            exists = scope:lyd_bootstrap_original_faith
+            exists = scope:lyd_bootstrap_original_main
+            exists = faith.main_rite
+        }
+        faith = scope:lyd_bootstrap_original_faith
+        faith = scope:lyd_bootstrap_original_rite.faith
+        faith = { main_rite = { this = scope:lyd_bootstrap_original_main } }
+        rite = scope:lyd_bootstrap_original_rite
+    }
+    trigger_else = { always = no }
+                lyd_catalogue_instances_ready_trigger = yes
+            }
             set_global_variable = { name = lyd_catalogue_013_bootstrapped value = yes }
         }
     }

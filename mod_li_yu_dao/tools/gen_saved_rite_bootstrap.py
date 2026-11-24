@@ -1,8 +1,9 @@
 """Bounded old-save catalogue materialization; Source does not qualify CK3 effects.
 
 Current859 create_rite_from_type creates within the scoped character's Faith.
-Thus the character must actually follow confucian_faith. convert=no preserves
-their current Rite; no adoption, teaching, head or NPC mutations are authored.
+The character must actually follow confucian_faith. convert=no did not preserve
+the caller Rite in a1528; capture actual original context and restore only a
+proved newly created target. Stock conversion callbacks are never suppressed.
 """
 from __future__ import annotations
 
@@ -46,23 +47,75 @@ def catalogue_ready_gate() -> str:
     trigger_else = {{ always = no }}'''
 
 
+
+ORIGINAL_RITE = 'lyd_bootstrap_original_rite'
+ORIGINAL_FAITH = 'lyd_bootstrap_original_faith'
+ORIGINAL_MAIN = 'lyd_bootstrap_original_main'
+CREATED_RITE = 'lyd_bootstrap_created_rite'
+
+
+def original_context_gate(*, require_rite: bool = True) -> str:
+    rite_guard = f'        rite = scope:{ORIGINAL_RITE}' if require_rite else ''
+    return f'''trigger_if = {{
+        limit = {{
+            exists = scope:{ORIGINAL_RITE}
+            exists = scope:{ORIGINAL_FAITH}
+            exists = scope:{ORIGINAL_MAIN}
+            exists = faith.main_rite
+        }}
+        faith = scope:{ORIGINAL_FAITH}
+        faith = scope:{ORIGINAL_RITE}.faith
+        faith = {{ main_rite = {{ this = scope:{ORIGINAL_MAIN} }} }}
+{rite_guard}
+    }}
+    trigger_else = {{ always = no }}'''
+
+
 def build_outputs() -> dict[str, bytes]:
     create_missing = '\n'.join(f'''        if = {{
-            limit = {{ NOT = {{ exists = rite:{r.script_id} }} }}
-            create_rite_from_type = {{ type = {r.script_id} convert = no }}
+            limit = {{
+                NOT = {{ exists = rite:{r.script_id} }}
+                {original_context_gate()}
+            }}
+            clear_saved_scope = {CREATED_RITE}
+            create_rite_from_type = {{ type = {r.script_id} convert = no save_scope_as = {CREATED_RITE} }}
+            if = {{
+                limit = {{ exists = scope:{CREATED_RITE} exists = rite:{r.script_id} }}
+                if = {{
+                    limit = {{
+                        {original_context_gate(require_rite=False)}
+                        scope:{CREATED_RITE} = {{ this = rite:{r.script_id} }}
+                        rite = scope:{CREATED_RITE}
+                        NOT = {{ rite = scope:{ORIGINAL_RITE} }}
+                    }}
+                    set_character_rite = scope:{ORIGINAL_RITE}
+                }}
+            }}
         }}''' for r in ACTIVE_RITES)
     effect = f'''lyd_materialize_missing_catalogue_rites_effect = {{
     if = {{
         limit = {{
             is_ai = no
             is_alive = yes
+            exists = rite
             faith = faith:{PARENT_FAITH}
             faith = {{ exists = main_rite }}
             NOT = {{ has_global_variable = {CHECKED} }}
         }}
+        clear_saved_scope = {ORIGINAL_RITE}
+        clear_saved_scope = {ORIGINAL_FAITH}
+        clear_saved_scope = {ORIGINAL_MAIN}
+        rite = {{ save_scope_as = {ORIGINAL_RITE} }}
+        faith = {{
+            save_scope_as = {ORIGINAL_FAITH}
+            main_rite = {{ save_scope_as = {ORIGINAL_MAIN} }}
+        }}
 {create_missing}
         if = {{
-            limit = {{ lyd_catalogue_instances_ready_trigger = yes }}
+            limit = {{
+                {original_context_gate()}
+                lyd_catalogue_instances_ready_trigger = yes
+            }}
             set_global_variable = {{ name = {CHECKED} value = yes }}
         }}
     }}
@@ -73,6 +126,7 @@ def build_outputs() -> dict[str, bytes]:
     is_shown = {{
         is_ai = no
         is_alive = yes
+        exists = rite
         faith = faith:{PARENT_FAITH}
         faith = {{ exists = main_rite }}
         NOT = {{ has_global_variable = {CHECKED} }}
