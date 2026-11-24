@@ -1,0 +1,27 @@
+[b]礼与道0.1.3 Alpha：Florin兼容与旧档学派入口[/b]
+相对已公开的0.1.2 Alpha，本次适配CK3 1.21.0.3 Florin，保留36种新增学派、36个专属行动和52条选择分支，以及各行动原有的费用、冷却与资格条件。
+
+已经信奉原版儒家的旧存档在载入时，会补齐缺失的新增学派礼仪，已有学派不重建。补齐后保持载入玩家原来的信仰、当前礼仪和原主礼仪。已知信条仍按原版礼仪创建与改宗规则更新；学会信条不会自动选择个人信条，也不等于已完成修习。
+
+常驻、个人与县域效果接入Florin现行规则：发展相关进度改用繁荣，控制力恢复采用当前基准线机制。保留数值与玩法意图，不将新旧机制视为完全相同。
+
+[b]本次有限验证范围[/b]
+入门欢迎已经核对。“礼乐合奏”已核对取消不改变资源、确认支付金币150与降低压力60，并在保存后核对外交经验400及冷却。“告天审政”已通过个人信念选择对应信条，核对支付虔诚200与获得威望250，并在保存后核对个人信条、修习效果和四年冷却。
+
+“问学与践行”已选择对应个人信条，实际菜单为“问学”“取消”。已核对“问学”支付金币100，并在保存后确认学识经验600、问学完成标记和一年冷却。本轮没有推进日期或执行隐藏的后续践行，也没有将这些代表路径当成全部36学派、52分支、个人效果叠加或长期制度链的完整验证。
+
+继续保持Alpha内部测试范围。原公开说明中的制度共识、继承保护、长期效果与多人兼容限制保留，历史B4继承保护失败未宣布修复。请使用独立测试档并备份重要存档。
+
+[b]Rites and the Way 0.1.3 Alpha: Florin compatibility and old-save school access[/b]
+Compared with the published 0.1.2 Alpha, this update targets CK3 1.21.0.3 Florin. It retains 36 added schools, 36 dedicated practices and 52 choice branches, with their existing costs, cooldowns and eligibility conditions.
+
+Loading an old save whose player already follows vanilla Confucianism fills missing added school rites without rebuilding existing schools. The loading player's faith, current rite and original main rite are retained afterward. Known tenets still update under vanilla rite-creation and conversion rules. Knowing a tenet does not automatically select it personally or complete a practice.
+
+Passive, personal and county effects follow current Florin rules. Development-related progress uses prosperity, and control recovery follows the current baseline system. Values and gameplay intentions are retained without claiming the old and new mechanics identical.
+
+[b]Limited checks in this update[/b]
+The enrollment welcome was checked. Convene Ritual and Music was checked for resource-preserving cancellation, a payment of 150 gold and a stress reduction of 60; its 400 diplomacy experience and cooldown were also checked after saving. Review the Mandate was checked after selecting its tenet through Personal Beliefs, including a payment of 200 piety and a gain of 250 prestige; its personal tenet, practice effect and four-year cooldown were checked after saving.
+
+Alternate Inquiry and Practice was checked after personal-tenet selection using the inquiry/cancel menu. The inquiry paid 100 gold; 600 learning experience, the inquiry-completed flag and a one-year cooldown were confirmed after saving. No date was advanced and the hidden later practice was not performed. These representative paths do not establish complete coverage of all 36 schools, 52 branches, personal-effect stacking or long-term institutional play.
+
+Alpha status remains. The earlier description's limits on institutional consent, succession protection, long-term effects and multiplayer remain; the historical B4 succession-protection failure is not declared fixed. Use separate test saves and back up important campaigns.
