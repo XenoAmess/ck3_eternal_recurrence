@@ -99,7 +99,8 @@ struct PersonalModelDiagnostic {
   LydPersonalSlot267V1 row;
   if(magic!=0x4744624F){
    d.stage="slot_empty_identity_or_personal";if(definition!=default_tenet||personal)return d.Fail(reason);
-   d.stage="slot_empty_type";if(!Typed(definition,b.module_base,lyd_personal_pins::kSTenetPrimaryVtableRva))return d.Fail(reason);
+   // The fixed engine default has TPdxNullObject<STenetType> primary.
+   d.stage="slot_empty_type";if(!Typed(definition,b.module_base,0x4FC7290))return d.Fail(reason);
    d.stage="slot_empty_proof";if(!Value(out.semantic_model,definition)||!Value(out.semantic_model,magic))return d.Fail(reason);
    row.is_empty=true;source.empty_slot_found=true;
   }else{
