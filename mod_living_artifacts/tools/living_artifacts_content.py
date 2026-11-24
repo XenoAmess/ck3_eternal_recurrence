@@ -701,11 +701,11 @@ def render_content_modifiers() -> str:
     for slot in range(1, 3):
         for rank, health, control, secrecy, spouse in ((1, "-0.4", "-0.2", -10, -15), (2, "-0.8", "-0.4", -20, -30), (3, "-1.2", "-0.7", -30, -50)):
             values.append(f"xalw_content_blood_{slot}_{rank}_modifier = {{ health = {health} }}")
-            values.append(f"xalw_content_control_{slot}_{rank}_modifier = {{ monthly_county_control_growth_add = {control} }}")
+            values.append(f"xalw_content_control_{slot}_{rank}_modifier = {{ monthly_control_change_when_below_baseline_add = {control} }}")
             values.append(f"xalw_content_secrecy_{slot}_{rank}_modifier = {{ owned_scheme_secrecy_add = {secrecy} }}")
             values.append(f"xalw_content_spouse_{slot}_{rank}_modifier = {{ spouse_opinion = {spouse} }}")
     for rank in range(1, 4):
-        values.append(f"xalw_content_realm_{rank}_modifier = {{ county_opinion_add = {(-15, -30, -50)[rank - 1]} }}")
+        values.append(f"xalw_content_realm_{rank}_modifier = {{ popular_opinion_add = {(-15, -30, -50)[rank - 1]} }}")
         for scale, factor in ((0, 1.0), (1, 0.9), (2, 0.8), (3, 0.7)):
             values.append(f"xalw_content_ink_{rank}_{scale}_modifier = {{ monthly_learning_lifestyle_xp_gain_mult = {rank * 0.05 * factor:.4f} }}")
             values.append(f"xalw_content_prima_{rank}_{scale}_modifier = {{ prowess_no_portrait = {int((rank + 1) * factor)} }}")

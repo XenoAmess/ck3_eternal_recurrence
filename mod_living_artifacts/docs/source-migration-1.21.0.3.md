@@ -11,3 +11,25 @@ Content 的 26 个已审原版来源与 Core 合为 27 个 SourcePatch，均经�
 `product.py` 的 GAME_VERSION/EXE_SHA256 仍为旧 1.20.0.4/98702 Native 身份，不能用脚本 descriptor1.21 或新 source pin 冒充新版 ABI/Full/Actor/协议/保存资格。prepare_fixture 仅改 ScriptEmitter descriptor 的 supported_version，原输入合同、身份、NOT_ASSESSED 和 game_started=false 不变。旧实机失败、成功与未知动作均不复用为新版资格。
 
 本候选的正式 ZIP/完整发布 builder、新 Native/GUI/真实装备/成长/喂养/AI/诅咒/冷载/保存/工坊发表均须另行验收；本次未执行，不据源码兼容外推通过。
+
+## a1480 actual content-modifier load errors (current267)
+
+The retained actual a1480 game.log and error.log report nine product-owned unknown
+modifier fields in xalw_content_modifiers.txt: three county_opinion_add and six
+monthly_county_control_growth_add. These are not fixture or vanilla warnings.
+The authoritative content renderer and its generated runtime definitions now use
+popular_opinion_add for the existing county opinion penalties (-15/-30/-50), and
+monthly_control_change_when_below_baseline_add for both artifact slots' existing
+control-growth penalties (-0.2/-0.4/-0.7). Current stock00_definitions defines these
+fields; ordinary county modifiers and the current overseer character trait supply
+actual source consumers. The latter is additive recovery below the current control
+baseline, not a multiplier or an above-baseline penalty. Florin's baseline system
+is not claimed identical to the old fixed control system in every state.
+
+IDs, curse ranks, equip/unequip projection/removal, quarterly chance/count limits,
+instant county-control losses, two-year local unrest and all other runtime files
+remain unchanged. Existing67 candidate, Frozen/runtime products, old profiles and
+all previous failures are preserved. The narrow tree/value/mutant regressions are
+Source only here; compilation/test/generator checks, rebuilt67 and actual fixed
+Game load must be reported separately. Current feeding/SDK business does not prove
+this repaired modifier file has been loaded. No old engine errors are erased.

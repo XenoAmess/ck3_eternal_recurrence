@@ -178,5 +178,40 @@ class ContentGenerationTests(unittest.TestCase):
         self.assertLess(debit.start, guest_record[0].start)
 
 
+    def assert_florin_penalty_payload(self, source: str) -> None:
+        # Compare the real generated definition tree to the retained gameplay
+        # contract: additive rank penalties, original IDs and both artifact slots.
+        # This does not evaluate CK3 or qualify an equipped/native effect.
+        script = Script(source)
+        expected = {
+            **{f"xalw_content_realm_{rank}_modifier": ("popular_opinion_add", value)
+               for rank, value in ((1, "-15"), (2, "-30"), (3, "-50"))},
+            **{f"xalw_content_control_{slot}_{rank}_modifier":
+               ("monthly_control_change_when_below_baseline_add", value)
+               for slot in (1, 2) for rank, value in ((1, "-0.2"), (2, "-0.4"), (3, "-0.7"))},
+        }
+        names = {block.key for block in script.blocks
+                 if block.key.startswith(("xalw_content_control_", "xalw_content_realm_"))}
+        self.assertEqual(names, set(expected))
+        for name, (field, value) in expected.items():
+            payload = script.scalars(script.named(name))
+            self.assertEqual(tuple((item.key, item.operator, item.value) for item in payload),
+                             ((field, "=", value),), name)
+
+    def test_florin_penalties_keep_all_nine_native_fields_and_original_rank_values(self) -> None:
+        self.assert_florin_penalty_payload(content.render_content_modifiers())
+
+    def test_retired_fields_or_changed_rank_penalties_cannot_pass_the_semantic_contract(self) -> None:
+        actual = content.render_content_modifiers()
+        for before, after in (("popular_opinion_add", "county_opinion_add"),
+                              ("monthly_control_change_when_below_baseline_add", "monthly_county_control_growth_add"),
+                              ("popular_opinion_add = -15", "popular_opinion_add = -14")):
+            self.assertIn(before, actual)
+            with self.subTest(before=before):
+                with self.assertRaises(AssertionError):
+                    self.assert_florin_penalty_payload(actual.replace(before, after, 1))
+
+
+
 if __name__ == "__main__":
     unittest.main()
