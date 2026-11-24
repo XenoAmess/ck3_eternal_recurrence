@@ -1,0 +1,81 @@
+{
+  "schema": "xar.rmtm042.finite-release-SourceA.actual-facts.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-24T02:30:22.826018+00:00",
+  "status": "FINITE_RELEASE_BUSINESS_PASS_FORMAL_BUILD_AND_PUBLICATION_PENDING",
+  "canonical_workshop_id": "3798404599",
+  "version": "0.4.2",
+  "CK3_version": "1.21.0.3",
+  "Steam_build": 26785313,
+  "EXE_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28",
+  "previous_public_0_4_1": {
+    "path": "D:/workspace/ck3_eternal_recurrence/docs/release-changelogs/reclaim-motherland/0.4.1-evidence/publication.json",
+    "bytes": 7823,
+    "sha256": "b7f41fec3aef43432299793d04b8f360656ff86494a3d550456b8c998f824a92"
+  },
+  "Root_finite_business_PASS": {
+    "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/RMTM-current267-original26-scope-physical-finite-PASS-a1412.json",
+    "bytes": 3797,
+    "sha256": "7550b8ad5b5c0bac0779f18ef2c1209f7b184a93df79921e52a94caf66172092"
+  },
+  "accepted_runtime_manifest": {
+    "path": "D:/ck3-state/upgrade-20261118/rmtm-current267-preview-guard-product36-candidate-next/mod_reclaim_the_motherland.manifest.json",
+    "bytes": 6812,
+    "sha256": "86ffb8864e44b4684390d543af0bf06fa5936fa9a500f3b2f7659405dc82cc1f"
+  },
+  "actual_D5_scope_and_ID_join": {
+    "path": "D:/ck3-state/upgrade-20261118/rmtm-real-D5-full-log-profile-a1410/delivery-final.json",
+    "bytes": 4126,
+    "sha256": "f372a8424fc4a9a6d687823a5f072c9f0eba459e83f844cea90c4a4ef317b80d"
+  },
+  "actual_original26_and_physical_review": {
+    "path": "D:/ck3-state/upgrade-20261118/rmtm-a1410-original26-and-typed-evidence-review-a01/delivery-final.json",
+    "bytes": 804,
+    "sha256": "96938f6dac68d9fb634eded28f3f9629d79feed96ecea530d8d2a8a042ad6b94"
+  },
+  "independent_50_51_reused": {
+    "path": "D:/ck3-state/upgrade-20261118/root-followthrough-a25/RMTM-independent-50-51-finite-PASS-a1349.json",
+    "bytes": 2715,
+    "sha256": "0afad7e6431f0ea95dcb0d529240b21b1b44ef79bc67d80aecd84741b1628571"
+  },
+  "metadata_original_Source": {
+    "path": "D:/ck3-state/upgrade-20261118/rmtm042-full-public-text-source-a01/delivery-final.json",
+    "bytes": 2421,
+    "sha256": "877ff09d60c46d8e79362ae8c67e8882e2236c1fc628e42941cf440a07590814"
+  },
+  "metadata_file_refs": {
+    "title": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rmtm042-full-public-text-source-a01\\title.txt",
+      "bytes": 39,
+      "sha256": "60d3030d677aaf0be915fe6ec90da7302ce73633358af66f8b9a91b56c22dc17"
+    },
+    "description": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rmtm042-full-public-text-source-a01\\description-a02.bbcode",
+      "bytes": 7965,
+      "sha256": "ff90219a742a6fd43b806bbad4cdf97b02384c8e550405de00aac1b24f9e20e7"
+    },
+    "change_note": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\rmtm042-full-public-text-source-a01\\change-note-a02.bbcode",
+      "bytes": 3307,
+      "sha256": "1655b358cec20068d00c8bbbf151685b413738e45d679b2cf19ef572ba28ba8a"
+    }
+  },
+  "full_CN_EN_and_four_existing_historical_images_retained": true,
+  "runtime_payload_change_in_this_SourceA": 0,
+  "software_matrix_repeated": false,
+  "Save_calls": 0,
+  "finite_scope": "Eight natural days, original26 markers plus actual same-title20377/heir44132 three-scope and three physical realm_baseline joins, nine incumbents, representative Budget/Offer Cancel, actual succession and one stock event/independent absence. Separate current-build50/51 finite result reused.",
+  "limits": [
+    "No full36 legacy matrix, all stock Offer arithmetic/Send outcomes, natural1825day expiry, multilingual live or all law-route qualification.",
+    "Original native/reader false/null and historical refusals/UNKNOWN remain unchanged.",
+    "No current0.4.2 formal artifact, Steam Submit/public readback/download/cache pass asserted at this SourceA cut."
+  ],
+  "formal_SourceA_or_tag_or_artifact": null,
+  "publication_status": "NOT_UPLOADED_0_4_2",
+  "distinct_product_counts": {
+    "uploaded": 13,
+    "total": 17,
+    "strict": 9
+  },
+  "SourceA_self_reference_not_invented": true
+}
