@@ -1,6 +1,19 @@
 // Source attachment: include in Readonly TU after existing LetterSet reader.
 #if defined(XAR_CK3_ENABLE_121003_26785313_ZG361_AE2_V1) && XAR_CK3_ENABLE_121003_26785313_ZG361_AE2_V1
 namespace {
+// Fixed current character_event scope, independently proven by zgq typed read.
+// Only this AE2 family changes; the generic LetterSet reader remains byteexact.
+bool Ae2CharacterSceneSample267V1(ReadonlyContext&q,const ck3_11906::MainThreadExecutionStampV1&s,const OwnerInvocationV1&i,
+ std::uint64_t wall,std::uint64_t mono,LetterSetFrame267V1&out,std::string&reason){
+ const auto valid=[&]{const auto t=std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();return wall&&mono&&t>0&&static_cast<std::uint64_t>(t)<wall&&GetTickCount64()<mono&&Owner(q,s,i);};
+ const auto fail=[&](const char*why){reason=why;return false;};if(!valid()||!Read(q,s,i)||!q.observation.available||q.observation.offline_fixture||!q.observation.main_owner_observed)return fail("zg361_ae2_character_actual_paused_living_core_unavailable");
+ out.core=q.observation.core;out.facts_verified=true;auto&e=out.scene.common;e.wall_deadline=wall;const auto image=q.bindings.module_base;std::uintptr_t app=0,vt=0,first=0;
+ if(!At(image,kJominiStateSlotRva,e.jomini)||!At(e.jomini,0x10,e.gfx)||!At(e.gfx,0,vt)||vt!=image+0x4B24748||!At(e.jomini,0x18,app)||!At(app,0,vt)||vt!=image+kGuiRootApplicationVtableRvaV1||!At(app,0x1B8,first)||!At(first,0x58,e.context)||!e.context||!At(e.context,0xD0,e.global))return fail("zg361_ae2_character_application_context_source_unavailable");
+ GuiWindowNodeV1 root,events,letter;std::unordered_set<std::uintptr_t>seen{e.global};std::size_t names=0;if(!GuiWindowNodeReadV1(image,e.global,e.context,0,root))return fail("zg361_ae2_character_global_widget_unavailable");out.witness.push_back(root);
+ const auto children=[&](const GuiWindowNodeV1&parent,std::string_view wanted,GuiWindowNodeV1&found,bool many=false){for(std::int32_t n=0;n<parent.child_count;++n){std::uintptr_t p=0;GuiWindowNodeV1 row;if(!valid()||out.witness.size()>=4096||!At(parent.children,static_cast<std::size_t>(n)*8,p)||!seen.insert(p).second||!GuiWindowNodeReadV1(image,p,e.context,parent.widget,row))return false;row.sibling_index=static_cast<std::uint32_t>(n);row.visible=row.visible&&parent.visible;row.enabled=row.enabled&&parent.enabled;names+=row.name.size();if(names>131072)return false;out.witness.push_back(row);if(row.name==wanted){if(many)out.scene.roots.push_back({row.widget,row.visible,row.enabled});else{if(found.widget)return false;found=row;}}}return true;};
+ if(!children(root,"events",events)||!events.widget)return fail("zg361_ae2_character_events_layer_missing_or_ambiguous");e.events=events.widget;
+ if(!children(events,"character_event",letter,true)||out.scene.roots.size()>32)return fail("zg361_ae2_character_set_complete_named_root_census_invalid");return valid();
+}
 bool Ae2ControlsSceneSample267V1(ReadonlyContext&q,const ck3_11906::MainThreadExecutionStampV1&s,const OwnerInvocationV1&i,std::uint64_t wall,std::uint64_t mono,zg361_ae2_control::Zg361Ae2ManageFrame267V1&out,std::string&reason){
  const auto valid=[&]{const auto n=std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();return wall&&mono&&n>0&&static_cast<std::uint64_t>(n)<wall&&GetTickCount64()<mono&&Owner(q,s,i);};const auto fail=[&](const char*why){reason=why;return false;};if(!valid()||!Read(q,s,i)||!q.observation.available||q.observation.offline_fixture||!q.observation.main_owner_observed)return fail("zg361_ae2_controls_actual_paused_living_core_unavailable");out.core=q.observation.core;out.facts_verified=true;auto&e=out.scene;const auto image=q.bindings.module_base;std::uintptr_t app=0,first=0,vt=0,back=0;
  if(!At(image,kJominiStateSlotRva,e.jomini)||!At(e.jomini,0,vt)||vt!=image+0x4B45FE0||!At(e.jomini,0x10,e.gfx)||!At(e.gfx,0,vt)||vt!=image+0x4B24748||!At(e.gfx,0x20,back)||back!=e.jomini||!At(e.gfx,0x88,e.handler)||!At(e.handler,0,vt)||vt!=image+0x4B22578||!At(e.handler,0x58,vt)||vt!=image+0x4B22558||!At(e.jomini,0x18,app)||!At(app,0,vt)||vt!=image+kGuiRootApplicationVtableRvaV1||!At(app,0x1B8,first)||!At(first,0x58,e.context)||!e.context||!At(e.context,0xD0,e.global))return fail("zg361_ae2_controls_actual_application_handler_context_unavailable");
@@ -72,9 +85,9 @@ bool ReadZg361Ae2FrameOnOwner267V1(const ReadonlyBindings&b,
    a.events.emplace();z.events.emplace();
    // Uses actual complete census DATA with this family's own executor/context.
    // The old LetterSet public owner wrapper/permission is never borrowed.
-   if(!LetterSetSceneSample267V1(q,s,invocation,r.deadline_unix_ms,mono,*a.events,why)||!world(a))return false;
+   if(!Ae2CharacterSceneSample267V1(q,s,invocation,r.deadline_unix_ms,mono,*a.events,why)||!world(a))return false;
    out.core=a.events->core;out.facts_verified=a.events->facts_verified;
-   if(!LetterSetSceneSample267V1(q,s,invocation,r.deadline_unix_ms,mono,*z.events,why)||!world(z)||
+   if(!Ae2CharacterSceneSample267V1(q,s,invocation,r.deadline_unix_ms,mono,*z.events,why)||!world(z)||
     !Same(a.events->core,z.events->core)||a.events->scene!=z.events->scene||a.events->witness!=z.events->witness)return false;
    z.core=z.events->core;z.facts_verified=z.events->facts_verified;
   }

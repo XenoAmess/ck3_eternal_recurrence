@@ -6,6 +6,7 @@
 #include "ck3_121003_zg361_review_requirements26785313_native_v1.inc"
 #include "ck3_121003_zg361_ae2_controls26785313_private_v1.inc"
 #include "ck3_121003_zg361_ae2_tooltip26785313_native_v1.inc"
+#include "ck3_121003_zg361_ae2_character_census26785313_private_v1.inc"
 namespace xar::ck3_121003::build26785313 {
 bool VerifyZg361Ae2Image267V1(std::uintptr_t image)noexcept{
 #if defined(XAR_CK3_ENABLE_121003_26785313_ZG361_AE2_V1) && XAR_CK3_ENABLE_121003_26785313_ZG361_AE2_V1
@@ -102,7 +103,7 @@ struct Zg361Ae2Raw267V1::State {
  friend bool operator==(const State&,const State&)=default;
 };
 #ifndef XAR_ZG361_AE2_PARENT_READ_CENSUS
-#define XAR_ZG361_AE2_PARENT_READ_CENSUS ReadLetterSetRaw267V1
+#define XAR_ZG361_AE2_PARENT_READ_CENSUS zg361_ae2_character_source::ReadComplete267V1
 #endif
 #ifndef XAR_ZG361_AE2_PARENT_FRESH
 #define XAR_ZG361_AE2_PARENT_FRESH RawFresh
