@@ -1,0 +1,204 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "at_utc": "2026-11-25T05:28:13.538670+00:00",
+  "run_id": "4-8e1c2f1861--financial-markets--R0084",
+  "source_commit": "e5725e35e8903c6a9c92accc35e4219222afcd49",
+  "run_context": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\gui-candidate02\\runs\\4-8e1c2f1861--financial-markets--R0084\\run-context.json",
+    "bytes": 1709,
+    "sha256": "96372751a68681fe2c0f19aef7f45f807c7c0629bb16cbb014ba0d7fb6ea31ce"
+  },
+  "observations": {
+    "sorting_label_and_coin_order_changed": [
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r84-market-before01.png",
+        "bytes": 1251930,
+        "sha256": "96c45340b8f20ee0f1cc36d02725bd288a8ad70fded938c3a7ca4ec8bb711837"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r84-sort01-after.png",
+        "bytes": 1244889,
+        "sha256": "31c1156e356ae8169a1d8aff3f06a2ecbd16a0a463fa33c9f86366faa9cafc2b"
+      }
+    ],
+    "filter_changed_to_empty_faith_then_all": [
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r84-type-filter01-after.png",
+        "bytes": 1203506,
+        "sha256": "17900a6fcdc165f1cc3dbd314edd191e103e9320df3fab4cc93f8f1aeef2624a"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r84-clear-filters01-after.png",
+        "bytes": 1251315,
+        "sha256": "edf347894185878b4b19936c5c913e106993e2231d51e1a96e202c299c24d1ea"
+      }
+    ],
+    "next_page_two_different_coins_then_previous_page_one": [
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r84-clear-filters01-after.png",
+        "bytes": 1251315,
+        "sha256": "edf347894185878b4b19936c5c913e106993e2231d51e1a96e202c299c24d1ea"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r84-next-page01-after.png",
+        "bytes": 1253117,
+        "sha256": "8fd9d153bb9431554dc4e90028ccd9f454535a11a7a3f35db233bbb19f56718d"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r84-previous-page01-after.png",
+        "bytes": 1247383,
+        "sha256": "ed73f00828546fb07ba93a97ee471233c8182e8ddae5a698277ccae411909ac2"
+      }
+    ],
+    "refresh_mouse_hit": [
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r84-refresh01-after.png",
+        "bytes": 1250681,
+        "sha256": "95a5613979e0c2ba17027eee1dd37feb28ddafb365c858865a924677e9e72320"
+      }
+    ],
+    "numeric_cell_selects_coin55_and_details_6_66": [
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r84-select-before01.png",
+        "bytes": 1250424,
+        "sha256": "6bb5a51d19327c6bed7e39e0e9bf23d01d178af30d57696f6efd9d19a88c5d0d"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r84-select-numeric-cell01-after.png",
+        "bytes": 1254453,
+        "sha256": "712f87c6d21cf42b683e2634d0c490b233d9c17b2d38d430ee74e84a929ada69"
+      }
+    ],
+    "all_six_tabs_reached": [
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r84-clear-filters01-after.png",
+        "bytes": 1251315,
+        "sha256": "edf347894185878b4b19936c5c913e106993e2231d51e1a96e202c299c24d1ea"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r84-tab-positions01-after.png",
+        "bytes": 1244758,
+        "sha256": "adb84e845b772509a6b3aa773cec532ccb18f256247bf0ec7fcf1c59cbac5f80"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r84-tab-orders01-after.png",
+        "bytes": 1210199,
+        "sha256": "59872d110f79550dfc999fd31ecea3e003866ff28b396a439063ce0385f6fc0f"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r84-tab-debts01-after.png",
+        "bytes": 1199173,
+        "sha256": "6b668778ab3b2d18160235f9591e793ffbc41c6008ac9914a8d6bc01b1d53486"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r84-tab-issuer01-after.png",
+        "bytes": 1186802,
+        "sha256": "a94ef6405ea9a8f415823e9f2665f6c90932e26f132ad6f45f0b6689a5409904"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r84-tab-news01-after.png",
+        "bytes": 1232305,
+        "sha256": "6e9db4610b72cbe7fbbb7494bfccd042c407b8a1eb0d47e8e0fd2f97a8f4c651"
+      }
+    ],
+    "futures_ticket_and_standard_wheel_reveal_bottom_controls": [
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r84-ticket-futures01-after.png",
+        "bytes": 1245138,
+        "sha256": "58cf6760d7f73280d2c426945f9dc9b8053a9d670d437ed6d1a801c3a5a3128f"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r84-ticket-scroll-down05-after.png",
+        "bytes": 1249474,
+        "sha256": "c9c3ce68c31fe9323127be7288a28abbaced50341232b5af526cc52739c6c09f"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r84-ticket-scroll-down06-after.png",
+        "bytes": 1246851,
+        "sha256": "40ddfbf2ef66cb2dcb59fc12a5b3c8b9de60e1b7fcbd4bc615312acb26015944"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r84-ticket-scroll-down07-after.png",
+        "bytes": 1244224,
+        "sha256": "6fa6e5ffb0d7523b2b0ecacf8c812d1cb7b3c21d05836ec9fab47f33c0f4e4fb"
+      }
+    ],
+    "paused_same_date_and_normal_quit": [
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r84-close-market01-after.png",
+        "bytes": 1331589,
+        "sha256": "dafe5e00f41638c5bd98b4a432f68202f77c2b8ca821f922aedff44277db5f70"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r84-escape-menu01-after.png",
+        "bytes": 1062636,
+        "sha256": "f9fb8acfec137e7a322ef71cf190b21a05ac7c27378624f5291f7c6abda7d789"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r84-quit-game01-after.png",
+        "bytes": 830075,
+        "sha256": "c9754556a7fe0f05ad27b331748e25195949b40a05834455ec2918bc8b2eea8b"
+      },
+      {
+        "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r84-quit-desktop01-after.png",
+        "bytes": 829785,
+        "sha256": "6e766cb2098383c630316027d8b1461fe53c09d9f50d0405bbe0312418293b25"
+      }
+    ]
+  },
+  "model_visual_result": "FAIL: bid and ask headings and first rows vertically misaligned with unequal quote counts",
+  "model_review": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\model-review02\\preliminary.md",
+    "bytes": 3047,
+    "sha256": "5fc2a2bb0721e18a295f2d37689083f439736762babb6e1b821222b79691d194"
+  },
+  "additional_issue": "Disabled main previous-page tooltip exposes raw missing-localization diagnostics",
+  "right_scroll_after_standard_wheel": "OBSERVED_SUCCESS; initial raw delta -5 did not prove a GUI defect",
+  "input_helper_failures_retained": [
+    "r84-ticket-scroll-down01: explicit reviewed move region missing, rejected before input",
+    "r84-ticket-scroll-down02: click-only max-age argument rejected before input",
+    "r84-ticket-scroll-down03/04: actual raw wheel -5, below one standard detent; not counted as scrolling proof"
+  ],
+  "actual_wheel_evidence": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r84-ticket-scroll-down05.actual.json",
+      "bytes": 3528,
+      "sha256": "afeb2344c4536f9946d0d61a60c397f4b95170cf79966c8674d36819ebbc43d1"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r84-ticket-scroll-down06.actual.json",
+      "bytes": 3528,
+      "sha256": "eedf5c073658e198bbf1ce80a296d48f3f317bb9774179b9882e66ff817fef5c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r84-ticket-scroll-down07.actual.json",
+      "bytes": 3550,
+      "sha256": "b49af57c296c1320395d63b2f3e14f09ede0c3ec0c6ec2df191f26031eb0b575"
+    }
+  ],
+  "normal_game_exit": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\gui-candidate02\\runs\\4-8e1c2f1861--financial-markets--R0084\\game-exit.json",
+    "bytes": 252,
+    "sha256": "faa1b79f41e2b887d53916aaad97111ad77a48fd5cb9c07acc2733142c68eba2"
+  },
+  "keeper": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\gui-candidate02\\runs\\4-8e1c2f1861--financial-markets--R0084\\keeper-report.json",
+    "bytes": 359,
+    "sha256": "efe468bcae5e6371e3b5f52b4bc12f712a7b1ce44d11c26368145849818101b9"
+  },
+  "screen_release": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\gui-candidate02\\runs\\4-8e1c2f1861--financial-markets--R0084\\screen-release.json",
+    "bytes": 1188,
+    "sha256": "97a9c811d38ddcd91c41e6d568d076611ea185ff5fd6b18500d6daf6d94e15a5"
+  },
+  "public_verify": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\gui-candidate02\\verify-partial01.stdout.json",
+    "bytes": 263,
+    "sha256": "155cd7ecf9d2719986b266e96ded0943e8e468555b460f9d87f23a950aadf35e"
+  },
+  "case_acceptance_pass": false,
+  "whole_product_pass": false,
+  "Native_injected": false,
+  "observed_date": "1067.6.7 at loaded map and before quit; no date advancement requested",
+  "save_on_exit_checkbox": "Visibly unchecked; no save requested"
+}
