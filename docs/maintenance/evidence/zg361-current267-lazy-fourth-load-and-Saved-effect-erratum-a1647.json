@@ -871,5 +871,287 @@
       "normal_docs_push_not_a_scene_gate": true,
       "Source_within_existing_Root3M": true
     }
+  },
+  "later_flag_only_new_SDK_fixture_present_and_absent_failures_a1701": {
+    "at_utc": "2026-11-25T03:47:54.242832+00:00",
+    "base_docs_HEAD": "35d58faf056986706d0488d80bd5ed0b49606a04",
+    "previous_sections_remain_historical": true,
+    "software_and_nonformal_candidate": {
+      "product_source_HEAD": "0a8174d2b561e006745bba34ee99b68307db5054",
+      "product_tree": "e134d51f42aab478226199cbcd8e95ee60cea372",
+      "candidate_delivery": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zg361-flag-only-candidate-a1677\\candidate-delivery-final.json",
+        "bytes": 3918,
+        "sha256": "4dfd217a2ff736b12bfe09817cd42153afbe7d9b2e0bfbf16d1b78b24311b03b"
+      },
+      "runtime_manifest": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zg361-flag-only-candidate-a1677\\mod_zhongguo_style.manifest.json",
+        "bytes": 213461,
+        "sha256": "875682b8237c8b8154843e370c67359130c3b90c3ff62ea8193101a3caa8e677"
+      },
+      "archive": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zg361-flag-only-candidate-a1677\\mod_zhongguo_style.zip",
+        "bytes": 4440684,
+        "sha256": "c5fc586917d35cbf510dd4a68303e1870c5648e31cebfc06058a596176c92dc9"
+      },
+      "runtime_files": 1034,
+      "GUI_sha256": "89b4e869139f856e8724c512f0e6f9c35191926ad3d69edf30f897db3e779644",
+      "runtime_diff": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zg361-flag-only-candidate-a1677\\runtime1034-exact-diff.json",
+        "bytes": 3283,
+        "sha256": "603b5e276b2baffbb151f2cd2c1d695c3f0c45b205dbac947bc67e87ec8001c8"
+      },
+      "formal_tag": null,
+      "Java_source_HEAD": "35d58faf056986706d0488d80bd5ed0b49606a04",
+      "NativeTree": "9e5d7dee007155a087b7bc9f4f68e555baf3f5da",
+      "Java_distinct_methods": 16,
+      "new_Java_methods": 15,
+      "affected_existing_Java_factory_methods": 1,
+      "Native_NoGame_finite_groups": 12,
+      "Native_parser_inverses": 3,
+      "Java_qualification": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-zg361-scoreboard-build-a1681\\software-qualified-source-final.json",
+        "bytes": 29396,
+        "sha256": "06e4597f57f182d1c51cb44042eca0846acb4e6943c3f24a523e2c72010a1efe"
+      },
+      "actual_six_pins": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-zg361-scoreboard-pair-a1691\\actual-six-pins.json",
+        "bytes": 1537,
+        "sha256": "66a461cd34f226346da3efc43f8ef1a49cb4771965b6bd743b736a9b0fd54e7a"
+      },
+      "Java_delivery": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-zg361-scoreboard-pair-a1691\\frozen-delivery-final.json",
+        "bytes": 19405,
+        "sha256": "376faaec7298118fae44627d3ee581277395049e367481383f1915a394a77961"
+      },
+      "Java_manifest": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-zg361-scoreboard-a1689\\runtime-manifest.json",
+        "bytes": 169830,
+        "sha256": "fb907df2d26c1f9003e063785f4655559879c072c909a9deda48727b9be8f1c4"
+      },
+      "Java_args": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-cli-runtime-zg361-scoreboard-a1689\\cli-classpath.args",
+        "bytes": 16391,
+        "sha256": "436a305423546f76a6aef2c0394de4ac1021058b21321b4af863914f79816a6d"
+      },
+      "Native_delivery": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-zg361-scoreboard-production-a1684\\frozen-delivery-final.json",
+        "bytes": 4357,
+        "sha256": "e61810ed6d50a53996eccce00e889310b77d5f7a49d37bcf850856e45a988f30"
+      },
+      "Native_refs": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-current267-zg361-scoreboard-production-a1684\\ordinary-native-artifact-refs.json",
+        "bytes": 31135,
+        "sha256": "66a5ca7e04f80884ae99bd2fdd9b2b85a4ff403da4500a11b567ab292de7676a"
+      },
+      "Java_pair": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-zg361-scoreboard-pair-a1691\\native-pair-binding-final.json",
+        "bytes": 3521,
+        "sha256": "1453b41b961921c63b95dbebbcfca00472d5dbbbf6f73ae9e5383674b584d001"
+      },
+      "new_JARs": 2,
+      "reused_JARs_without_copy": 156,
+      "software_does_not_grant_full_GUI_load_open_close_memory_heap_AE2_or_release": true
+    },
+    "zge_fixture_present_load_failure": {
+      "Root_END": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\zge-flag-only-full-load-FAILED-END-a1697.json",
+        "bytes": 3846,
+        "sha256": "e510ed64b0e69bbaf19b8e5d9ae87a7b99c4adab591dac7571fc10a3146d6fbd"
+      },
+      "ready": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zge\\ready.json",
+        "bytes": 6181,
+        "sha256": "c89d6cbc77deddae22b68c4e9d32213938abb8a31ac0e3924a6dc49e7cdf9d35"
+      },
+      "independent_terminal": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zge\\owner\\terminal.json",
+        "bytes": 1049,
+        "sha256": "25ca8a46f2ef2bbcd44156420a9ec9ef75eef52740e0c59bfba98e28f5dee15e"
+      },
+      "creator_END": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zge\\creator-end.json",
+        "bytes": 517,
+        "sha256": "b4d38eb18cf0efa2b634172873c3bc2c3471102a29c5dd82b0022063251f049a"
+      },
+      "Game": {
+        "creation_filetime_decimal": "134400503148706951",
+        "executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+        "pid": 14704
+      },
+      "exit_code": -1073740791,
+      "elapsed_seconds_decimal": "172.9245523",
+      "peak_Job_memory_bytes": 19327631360,
+      "Job_limit_bytes": 19327352832,
+      "Job_active_processes": 0,
+      "cleanup_proven": true,
+      "raw_NATURAL_EXIT": true,
+      "Natural0": false,
+      "creator_PID": 14104,
+      "creator_exit_code": 1,
+      "fixture_mounted": true,
+      "UI_case_invocations": 0,
+      "AE2_case_invocations": 0,
+      "Date_Save_calls": 0,
+      "source_save_after": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-vanilla-seed-current267-profile-a905\\checkpoints\\des-vanilla-1066-robert-day15.ck3",
+        "bytes": 166551273,
+        "sha256": "82178e0f4142b50e0d3d51914574eff8cccce84a187b4f622c80fd2c2c9e94b4"
+      },
+      "profile_save_after_historical_path": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zge\\profile-states\\flag-only-full\\profile\\save games\\des-vanilla-1066-robert-day15.ck3",
+        "bytes": 166551273,
+        "sha256": "82178e0f4142b50e0d3d51914574eff8cccce84a187b4f622c80fd2c2c9e94b4"
+      },
+      "source_and_copy_full_SHA_unchanged": true,
+      "actual_scene_held_allocation_bytes": 417858208,
+      "remaining_scene_future_bytes": 0,
+      "budget_refund": false,
+      "Core_execution": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zge\\operations\\zge-a1693-core-a01\\execution.json",
+        "bytes": 834,
+        "sha256": "80f4d4a0d7e82ddf5598550e41e5c90cc3f2b249f983938c663d9c51fe2e51c9"
+      },
+      "Core_stderr": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zge\\operations\\zge-a1693-core-a01\\stderr",
+        "bytes": 761,
+        "sha256": "1efe161a9ab3ba21b858d83e732d0f00ba1d7441c0a97dd55a127fe38d42077b"
+      },
+      "Core_status": "ONE_CORE_PREFIX_READ_FAILED_Unknown_NO_RETRY_NO_SUMMARY",
+      "Core_effect_or_dispatch_conclusion": "NOT_INFERRED_FROM_MISSING_SUMMARY",
+      "summary": "ABSENT; not proof of no Core dispatch or no automatic fixture effects",
+      "controlled_fixture_automatic_effects": "NOT_PROVEN_ENTERED_OR_ABSENT",
+      "profile_path_availability_after_a1698": "UNREADABLE_MOVED; use permanent mapping"
+    },
+    "zgh_same_product_new_SDK_fixture_absent_load_failure": {
+      "Root_END": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\zgh-flag-only-product-only-load-FAILED-END-a1701.json",
+        "bytes": 3505,
+        "sha256": "809d6d617e072f745d8a48992ddc1e945e26581ee5deaf619de8a1dbc419ab57"
+      },
+      "ready": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zgh\\ready.json",
+        "bytes": 6229,
+        "sha256": "575ed1df0fe07e4020ead1f140bc225cb19e4f4f36e047dc26cd14c243d518dc"
+      },
+      "independent_terminal": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zgh\\owner\\terminal.json",
+        "bytes": 1049,
+        "sha256": "a8316fca93f56366bc5a55807165fe516b3bb8b94aca03d43c03a3331c1bb0dc"
+      },
+      "creator_END": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zgh\\creator-end.json",
+        "bytes": 517,
+        "sha256": "c3b97648beeec40cced2f2d278a7efc7abc6de8ab3e278c300d96b72368626ba"
+      },
+      "Game": {
+        "creation_filetime_decimal": "134400516406700013",
+        "executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+        "pid": 24924
+      },
+      "exit_code": -1073740791,
+      "elapsed_seconds_decimal": "132.0664295",
+      "peak_Job_memory_bytes": 19327811584,
+      "Job_limit_bytes": 19327352832,
+      "Job_active_processes": 0,
+      "cleanup_proven": true,
+      "raw_NATURAL_EXIT": true,
+      "Natural0": false,
+      "creator_PID": 26208,
+      "creator_exit_code": 1,
+      "fixture_mounted": false,
+      "UI_case_invocations": 0,
+      "AE2_case_invocations": 0,
+      "Date_Save_calls": 0,
+      "source_save_after": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-vanilla-seed-current267-profile-a905\\checkpoints\\des-vanilla-1066-robert-day15.ck3",
+        "bytes": 166551273,
+        "sha256": "82178e0f4142b50e0d3d51914574eff8cccce84a187b4f622c80fd2c2c9e94b4"
+      },
+      "profile_save_after_historical_path": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zgh\\profile-states\\product-only\\profile\\save games\\des-vanilla-1066-robert-day15.ck3",
+        "bytes": 166551273,
+        "sha256": "82178e0f4142b50e0d3d51914574eff8cccce84a187b4f622c80fd2c2c9e94b4"
+      },
+      "source_and_copy_full_SHA_unchanged": true,
+      "actual_scene_held_allocation_bytes": 417371936,
+      "remaining_scene_future_bytes": 0,
+      "budget_refund": false,
+      "Core_invocations": 0,
+      "quit_invocations": 0,
+      "inactive_fixture_files": 9,
+      "all1034_product_files_exact_same_candidate": true,
+      "candidate_projection": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zgh\\source\\candidate-restoration-proof.json",
+        "bytes": 8025,
+        "sha256": "47d6cf87657b7f6001f75c221c69fe0ebd1695ba82a87453ee0807249d411799"
+      },
+      "automatic_product_effects": "NOT_OBSERVED_NO_ZERO_EFFECT_INFERENCE",
+      "boundary": "No-fixture failure excludes fixture as sole sufficient cause, not exact allocator/portrait cause. Does not qualify flag-only fix, UI/payment/performance/release. Preserve all previous failures."
+    },
+    "permanent_zge_to_zgh_profile_handover": {
+      "mapping": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zgh\\Root-profile-handover-a1698\\handover-map.json.gz",
+        "bytes": 392190,
+        "sha256": "1d727f18262c3b0002704ecc710bb5c31bd2a25e3cb4c0c37c6120d2fc59540b"
+      },
+      "intent": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zgh\\Root-profile-handover-a1698\\handover-intent.json.gz",
+        "bytes": 364960,
+        "sha256": "86ffdf8dbebeababa445323e9b224c0372369b62ab0669a1dcbf9692e3e16e15"
+      },
+      "old_profile": "D:\\ck3-state\\upgrade-20261118\\zge\\profile-states\\flag-only-full\\profile",
+      "new_profile": "D:\\ck3-state\\upgrade-20261118\\zgh\\profile-states\\product-only\\profile",
+      "old_logs": "D:\\ck3-state\\upgrade-20261118\\zge\\profile-states\\flag-only-full\\profile\\logs",
+      "new_logs": "D:\\ck3-state\\upgrade-20261118\\zge\\flag-only-profile-logs-preserved",
+      "old_profile_availability": "UNREADABLE_MOVED",
+      "old_logs_availability": "UNREADABLE_MOVED",
+      "actual_files": 5253,
+      "FileStandardInfo_allocation_bytes": 405929472,
+      "all_full_SHA_and_FileStandardInfo_FileID128_equal": true,
+      "payload_copies": 0,
+      "payload_deletions": 0,
+      "original_failed_logs_and_status_preserved": true,
+      "mapping_is_move_time_equality_not_claim_of_no_later_profile_changes": true
+    },
+    "conclusions": {
+      "flag_only_host_not_load_fix_PASS": true,
+      "no_fixture_failure_excludes_fixture_as_sole_sufficient_cause": true,
+      "exact_memory_allocator_or_portrait_cause": "NOT_PROVEN",
+      "automatic_fixture_and_product_effects_not_inferred_zero": true,
+      "SDK_not_inferred_absent_from_missing_Core_summary": true,
+      "scoreboard_v52_invocations": 0,
+      "AE2_invocations": 0,
+      "Date_Save_calls": 0,
+      "no_Game_queries_or_actions_retried": true,
+      "new_UI_open_close_memory_heap_business_or_release_PASS": false
+    },
+    "next_zgi_asof_Root_cut": {
+      "no_portrait_projection": "SOURCE_PREPARATION_ONLY",
+      "prepared_or_launched": false,
+      "new_runtime_qualification": false,
+      "not_a_fix_or_cause_PASS": true
+    },
+    "release_counts": {
+      "uploaded": 16,
+      "products": 17,
+      "strict_finite_closed": 10,
+      "pending_Notes_HTTP429": 6,
+      "Steam": "OFFLINE",
+      "new_Notes_GET": 0,
+      "new_online_publication": 0,
+      "no_reupload_or_auto_GET": true
+    },
+    "documentation_only": {
+      "own_modified_files": 3,
+      "tests_build_Maven_package_SDK_product_change_or_Game_HTTP_Steam_calls": 0,
+      "formal_tag_changes": 0,
+      "within_existing_Root_Source3MiB": true
+    },
+    "previous_index_snapshot": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\evidence\\zg361-current267-lazy-fourth-load-and-Saved-effect-erratum-a1647.json",
+      "bytes": 42932,
+      "sha256": "2aa94b302369f6cdce08d5fe8a0c24db4e43efca39c5d242841d2c192861388e"
+    }
   }
 }
