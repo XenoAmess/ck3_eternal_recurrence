@@ -1,0 +1,59 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "run_id": "4-8e1c2f1861--financial-markets--R0085",
+  "source": "bf188a123a42ec4c04f5f465d87ca31389f495e1",
+  "actual_exit": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\gui-candidate03\\runs\\4-8e1c2f1861--financial-markets--R0085\\game-exit.json",
+    "bytes": 253,
+    "sha256": "ba231c3ca23a567f64fc467587f5fa829ac225baac568a04287c06606c5317c3"
+  },
+  "keeper": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\gui-candidate03\\runs\\4-8e1c2f1861--financial-markets--R0085\\keeper-report.json",
+    "bytes": 359,
+    "sha256": "d08448131406a04956a15cf5edd9cd5081d2ee638a309dba4570524dad29d5a7"
+  },
+  "release": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\gui-candidate03\\runs\\4-8e1c2f1861--financial-markets--R0085\\screen-release.json",
+    "bytes": 1189,
+    "sha256": "328c8c7b65cfee91e60eac1252637bc14bf4e2375864c5675002b66fca098a6d"
+  },
+  "process_returncode": 0,
+  "window_close_requested": true,
+  "process_pass": false,
+  "observed_mouse_subcases": [
+    "sort",
+    "type filter",
+    "clear filter",
+    "refresh",
+    "next page 2",
+    "previous page 1",
+    "numeric cell selects coin55 at6.66",
+    "six tabs",
+    "futures scroll to stops and save"
+  ],
+  "main_and_futures_visual": "LIMITED_PASS; model reports retained",
+  "issuer_controls": "NOT_OBSERVED despite actual standard wheel; repeated nested scrollbox identified in source",
+  "model_report": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\model-review03\\final-visual-review.md",
+    "bytes": 5283,
+    "sha256": "bb10d963b223a8710a91b9cbaa53a0c4e271e8315e76a48df28a8ec6e4eceb5f"
+  },
+  "issuer_actual": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r85-issuer-scroll-down04-after.png",
+    "bytes": 1202171,
+    "sha256": "3fb00f4ddab2d688269c9c1bc8a95232222c1b8b5c43572864db574d4611680c"
+  },
+  "normal_quit_not_credited": true,
+  "case_pass": false,
+  "published": false,
+  "prior_all_software_pass_not_mouse_or_closure_pass": true,
+  "preinput_failures_retained": [
+    "numeric-cell01 stale screenshot rejected before input",
+    "quit-desktop01 stale screenshot rejected before input"
+  ],
+  "actual_quit_click": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r85-quit-desktop02.actual.json",
+    "bytes": 3104,
+    "sha256": "fc1eeb95ee9b529a95c147b3ef20830c2d396833f8aeb1307ecb2382346ec0e4"
+  }
+}

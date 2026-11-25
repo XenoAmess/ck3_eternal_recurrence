@@ -36,13 +36,5 @@
         }
         button_standard = { name = "xfm_market_cancel_failed_supply" size = { 720 34 } text = "xfm_market_cancel_failed_supply" enabled = "[GetScriptedGui( 'xfm_market_cancel_failed_supply_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_cancel_failed_supply_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" }
     }
-    type xfm_market_issuer_panel = vbox {
-        layoutpolicy_horizontal = expanding
-        layoutpolicy_vertical = expanding
-        scrollbox = {
-            layoutpolicy_horizontal = expanding
-            layoutpolicy_vertical = expanding
-            blockoverride "scrollbox_content" { xfm_market_issuer_content = {} }
-        }
-    }
+    type xfm_market_issuer_panel = xfm_market_issuer_content { }
 }
