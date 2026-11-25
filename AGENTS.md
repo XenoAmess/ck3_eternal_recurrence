@@ -1,5 +1,10 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-25 本机ZG3610.4.2原夹具有限业务通过，进入正式化
+
+仅`desktop-3fevhd2-1c74096080`：Root以原1034／原受控夹具9／821存档和新character-root SDK完成四条条件全文、实际instance1／42／15,16,17三hover、一次付款及完整事件缺席／条件账目守恒有限合取；19读取含9查询＋7动作＝26提交，0Date／Save，Game14900／creator14992独立Natural0／Job0／cleanup。原Main false／Core PARTIAL／quitfalse、earlyCore不可用、旧加载失败、UNKNOWN和error.log未全绿保持；zgm只授有限modal开闭，不授所有行／头像／FPS／长期或wholeproduct。现在正常SourceA／新注释tag／一次正式1034 builder＋verify，尚未上传；16／17上传、10／17严格、六Notes429和Steam离线保持，Root独占后继账号窗口／SDK／实机。见[0.4.2有限事实](docs/release-changelogs/zhongguo-361/0.4.2-evidence/finite-business.json)。下方保留历史切点；其他机器授权不变。
+
+
 ## 2026-11-25 本机后续任务允许使用前台
 
 用户明确：“我允许你在这台机器 后续的所有任务中 使用前台。注意，是这台机器。”此授权仅适用于当前已核 `machine_id: 4-8e1c2f1861`，覆盖本机此前始终最小化／禁止恢复、前台输入与截图的限制；不外推到 `desktop-3fevhd2-1c74096080` 或其他机器。后续可按任务需要使用前台、真实鼠标及截图，不必为同一授权重复询问。继续核对进程与窗口归属，不接管未确认的用户会话，不设置无必要的 topmost；测试结束正常退出。Steam离线、独立profile、存储及真实验收边界仍按各自要求执行。

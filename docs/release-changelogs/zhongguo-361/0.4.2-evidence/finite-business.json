@@ -1,0 +1,159 @@
+{
+  "schema": "xar.zg361042.current267.finite-business.SourceA-evidence.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-11-25T10:18:02.799435+00:00",
+  "version": "0.4.2",
+  "canonical_workshop_id": "3792585972",
+  "target_build": "1.21.0.3/26785313",
+  "actual_Root_finite_business": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\zgt-original-fixture-finite-review-AE2-Root-PASS-END-a1778.json",
+    "bytes": 11910,
+    "sha256": "242a037d40c001e43b18381fa3fa5f31595e8f2e14538c41b35f366f80d8abc9"
+  },
+  "accepted_runtime_manifest": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\zg361-row-template-candidate-a1706\\mod_zhongguo_style.manifest.json",
+    "bytes": 213461,
+    "sha256": "b96a32fa49bdc1aa339261d81735935bc0d196687bbf4015254480c3fa98f870"
+  },
+  "all1034_runtime_and_original_fixture9_after_exact": true,
+  "fixture_in_formal_product": false,
+  "actual_runtime_pair": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\java-current267-zg361-ae2-character-root-pair-a1764\\actual-six-pins.json",
+    "bytes": 1583,
+    "sha256": "42637891cdbc49bb095e8332a6e78b1ec11a76019314d5903ca1f145879b93bc"
+  },
+  "read_calls": 19,
+  "query_calls": 9,
+  "action_calls": 7,
+  "total_submissions": 26,
+  "full_four_requirements_checked_by_Root": [
+    "当前没有正在进行的年度考核。",
+    "本自然年尚未发起或完成考核。",
+    "上一轮考核的关联案卷与后续事务已办结。",
+    "至少有一名在任、在世的直属有地官员可参加考核。"
+  ],
+  "actual_event": {
+    "instance": 1,
+    "definition": "zg361comp.1",
+    "recipient": 36423,
+    "authored_options": 42,
+    "displayed_original_indices": [
+      15,
+      16,
+      17
+    ],
+    "full_three_tooltips_checked": true,
+    "single_pay_dispatch": "selection_dispatched",
+    "complete_same_character_census_after_pay": {
+      "ae2": null,
+      "census": [],
+      "census_complete": true
+    }
+  },
+  "wallet_statement_business_evidence": {
+    "source": "Actual original fixture conditional verifier, not an invented Native wallet API.",
+    "verifier_actual_PASS": true,
+    "actual_conditional_values": {
+      "gross": 25,
+      "treasury_debit": 18,
+      "personal_debit": 7,
+      "recipient_credit": 25,
+      "statement_owed": 0,
+      "statement_conserved": 1,
+      "case_receipts": "M281/M282 consumed owner/subject/cycle/case match"
+    },
+    "direct_native_numeric_wallet_carrier": false,
+    "debug_log": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\zgt\\profile-states\\original-fixture-ae2\\profile\\logs\\debug.log",
+      "bytes": 4029077,
+      "sha256": "ab0f51ca004905ad624ffcbd4e485d694bdd841704d43a52ffe1d81864072207"
+    },
+    "verifier_source": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\zgt\\profile-states\\original-fixture-ae2\\profile\\mod-content\\fixture\\common\\scripted_effects\\zga_ae2_fixture_effects.txt",
+      "bytes": 11536,
+      "sha256": "2fb6fd08c8e125ed1689b9d40bb475013eda7e597258d7751aaae0e86180774d"
+    }
+  },
+  "Main_false_flags_retained": {
+    "payment_confirmed": false,
+    "fixture_verifier_pass": false,
+    "actual_wallet_deltas_observed": false,
+    "business_contract_pass": false,
+    "wholeproduct_pass": false,
+    "four_localized_labels_observed": false
+  },
+  "Core_kind": "PARTIAL",
+  "complete_snapshot": false,
+  "quit_normal_exit_confirmed": false,
+  "actual_independent_terminal": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\zgt\\owner\\terminal.json",
+    "bytes": 1009,
+    "sha256": "148221155cd3c5dddcaba9eb91aff0a29e8ce14d45784508c4eff97372a9e851"
+  },
+  "creator_END": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\zgt\\creator-end.json",
+    "bytes": 515,
+    "sha256": "23619b7b67486dafbbf6193f62f28143c64d9f5f4f8d04837544f8b294a5d2f5"
+  },
+  "terminal_NATURAL0_Job0_cleanup": true,
+  "zero_Date_Save": true,
+  "original_821_and_profile_copy_after": {
+    "source": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-vanilla-seed-current267-profile-a905\\checkpoints\\des-vanilla-1066-robert-day15.ck3",
+      "bytes": 166551273,
+      "sha256": "82178e0f4142b50e0d3d51914574eff8cccce84a187b4f622c80fd2c2c9e94b4"
+    },
+    "copy": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\zgt\\profile-states\\original-fixture-ae2\\profile\\save games\\des-vanilla-1066-robert-day15.ck3",
+      "bytes": 166551273,
+      "sha256": "82178e0f4142b50e0d3d51914574eff8cccce84a187b4f622c80fd2c2c9e94b4"
+    }
+  },
+  "independent_modal_transition": {
+    "proof": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\zgm-finite-target-UI-open-close-END-a1743.json",
+      "bytes": 8813,
+      "sha256": "a19c1ee5288fae29291289a5c32d880acc79bec297aca3666375198d5a9c8c77"
+    },
+    "scope": "Earlier independent finite physical modal open/close only; no all80+80 bindings/portraits/text/heap/FPS or wholeproduct claim."
+  },
+  "preserved_boundaries": {
+    "error_log": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\zgt\\profile-states\\original-fixture-ae2\\profile\\logs\\error.log",
+      "bytes": 3498561,
+      "sha256": "772018c02e5b7ec3817b14eeeed22c3137c716f9e079acda4a918ff43089c701"
+    },
+    "all_error_log_green": false,
+    "error_scope": "Unused/never-set static diagnostics and fixture current_date/character_var_equal debug-localization errors remain; no prosperity_level error observed. Actual conditional verifier PASS is preserved independently.",
+    "original_early_Core_unavailable": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\zgt\\operations\\zgt-a1777-core-a01\\result\\summary.json",
+      "bytes": 9522,
+      "sha256": "2a6a040ab7d009026ece01b7267bbe3b214c190bd676ab553f66bf4d36de5df4"
+    },
+    "prior_load_failures_and_unknown_automatic_fixture_effects": true,
+    "deferred90_180day_natural_annual_SaveReload_all160_portrait_binding_FPS_wholeSDK_or_longterm_PASS": false
+  },
+  "release_state_at_SourceA": {
+    "formal_builder_not_yet_run": true,
+    "new_annotated_tag_registration_is_next": true,
+    "new_publication_download_public_readback_cache": "NOT_RUN",
+    "uploaded_products": 16,
+    "strict_products": 10,
+    "total_products": 17,
+    "pending_Notes429": 6,
+    "Steam_offline_and_no_new_HTTP": true
+  },
+  "metadata_acceptance": {
+    "title_body": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\ZG361-042-actual-public-title-body-Root-review-a1646.json",
+      "bytes": 2029,
+      "sha256": "bc79e1300b2915dd6c37a3d96d0712f6b4c7781a72c8240fb81dc75fa59091a9"
+    },
+    "Notes": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\ZG361-042-Notes-Root-text-review-a1730.json",
+      "bytes": 1292,
+      "sha256": "5af3f95291e982a4fc4ca9eb8509295048e4125511a69550a4a85da6cd0fbb4d"
+    }
+  },
+  "formal_identity_location": "The later immutable formal FD/source-tag-record records actual SourceA/tag/MF/ZIP; no artifact or publication is minted by this SourceA evidence file."
+}

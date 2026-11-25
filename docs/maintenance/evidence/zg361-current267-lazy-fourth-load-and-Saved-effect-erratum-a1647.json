@@ -1288,5 +1288,17 @@
       },
       "actual_future_candidate_manifest": null
     }
+  },
+  "original_fixture_finite_review_AE2_Root_PASS_a1778": {
+    "status": "FINITE_ORIGINAL_FIXTURE_REVIEW_AND_AE2_PAYMENT_ROOT_INDEPENDENT_PASS",
+    "Root_END": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\zgt-original-fixture-finite-review-AE2-Root-PASS-END-a1778.json",
+      "bytes": 11910,
+      "sha256": "242a037d40c001e43b18381fa3fa5f31595e8f2e14538c41b35f366f80d8abc9"
+    },
+    "permanent_finite_evidence": "docs/release-changelogs/zhongguo-361/0.4.2-evidence/finite-business.json",
+    "release_changelog": "docs/release-changelogs/zhongguo-361/0.4.2.md",
+    "prior_false_failures_and_unknowns_retained": true,
+    "formal_and_publication": "NEXT_SEPARATE_ARTIFACT_AND_SDK_PHASES_NOT_MINTED_BY_THIS_DOC"
   }
 }
