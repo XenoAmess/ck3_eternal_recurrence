@@ -1,7 +1,7 @@
 ﻿l_simp_chinese:
  xfm_issuer_unnamed:0 "未命名发行项目"
  xfm_issuer_charter_title:0 "发行项目与章程"
- xfm_issuer_charter_desc:0 "本窗口绑定币 #[SCOPE.ScriptValue('xfm_charter_coin_id')|0]、主付款／收款账户 #[SCOPE.ScriptValue('xfm_charter_payer_id')|0]。切换市场选择不改变本窗口目标；打开新章程会使旧窗口的操作失效。执行时重新检查现行权限、账户和资产条件。\n\n永久币号：[SCOPE.ScriptValue('xfm_charter_coin_id')|0]；总供应：[SCOPE.ScriptValue('xfm_charter_supply')|0] 枚。创始人尚未解锁：[SCOPE.ScriptValue('xfm_charter_locked')|0] 枚；实际认购：[SCOPE.ScriptValue('xfm_charter_raised')|2] 金；维护欠费：[SCOPE.ScriptValue('xfm_charter_maintenance')|2] 金。\n\n初始 15,000 枚：公开认购 10,000、真实做市库存 2,500、创始分配 2,500（锁定 365 日）。每手 100 枚；发行价由实际募资目标决定。认购失败返还原买家的冻结金币，已提供的登记服务不退款。\n\n登记、上市服务、维护托管、履约保证金、做市资本分别入账。维护托管在服务发生后才转成费用；保证金只能按对应义务处理；做市资本承担交易风险。它们都不是保本承诺。\n\n家族、宗族、政权或教团更换负责人时，币号、持有人及既有债务不变。政治背书不等于无限担保。宣传只改变认知，买盘仍需对手方真实付款。当前声誉：[SCOPE.ScriptValue('xfm_charter_reputation')|0]。"
+ xfm_issuer_charter_desc:0 "本窗口绑定币 [SCOPE.ScriptValue('xfm_charter_coin_id')|0]、主付款／收款账户 [SCOPE.ScriptValue('xfm_charter_payer_id')|0]。切换市场选择不改变本窗口目标；打开新章程会使旧窗口的操作失效。执行时重新检查现行权限、账户和资产条件。\n\n永久币号：[SCOPE.ScriptValue('xfm_charter_coin_id')|0]；总供应：[SCOPE.ScriptValue('xfm_charter_supply')|0] 枚。创始人尚未解锁：[SCOPE.ScriptValue('xfm_charter_locked')|0] 枚；实际认购：[SCOPE.ScriptValue('xfm_charter_raised')|2] 金；维护欠费：[SCOPE.ScriptValue('xfm_charter_maintenance')|2] 金。\n\n初始 15,000 枚：公开认购 10,000、真实做市库存 2,500、创始分配 2,500（锁定 365 日）。每手 100 枚；发行价由实际募资目标决定。认购失败返还原买家的冻结金币，已提供的登记服务不退款。\n\n登记、上市服务、维护托管、履约保证金、做市资本分别入账。维护托管在服务发生后才转成费用；保证金只能按对应义务处理；做市资本承担交易风险。它们都不是保本承诺。\n\n家族、宗族、政权或教团更换负责人时，币号、持有人及既有债务不变。政治背书不等于无限担保。宣传只改变认知，买盘仍需对手方真实付款。当前声誉：[SCOPE.ScriptValue('xfm_charter_reputation')|0]。"
  xfm_issuer_complete:0 "按真实认购完成分配和上市"
  xfm_issuer_abort:0 "撤回募集，退还未结认购款"
  xfm_issuer_promote:0 "支付 1 金宣传（七日冷却）"

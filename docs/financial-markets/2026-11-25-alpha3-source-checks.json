@@ -1,0 +1,48 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "at_utc": "2026-11-25T05:07:20.907188+00:00",
+  "candidate_version": "0.1.0-alpha.3",
+  "focused_tests": 71,
+  "full_tests": 717,
+  "full_suites": 57,
+  "focused_evidence": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\software02\\focused.actual.json",
+    "bytes": 2176,
+    "sha256": "0f3f3cfc77351605ec8a3c5cd6e72c0b10eacc163620112346b6665d25a281f9"
+  },
+  "full_evidence": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\software02\\full.actual.json",
+    "bytes": 17021,
+    "sha256": "8f5a9d7659d38e6fd1475e21d696c8a92bd6af2155479b67f0aeb5bf766ee6d1"
+  },
+  "source_unchanged_during_maven": true,
+  "existing_target_cache_reused": true,
+  "enabled_onclick_checks": [
+    {
+      "file": "xfm_market_window.gui",
+      "enabled_onclick_expressions": 71,
+      "unchanged": true
+    },
+    {
+      "file": "xfm_market_rows.gui",
+      "enabled_onclick_expressions": 13,
+      "unchanged": true
+    },
+    {
+      "file": "xfm_market_spot_ticket.gui",
+      "enabled_onclick_expressions": 14,
+      "unchanged": true
+    },
+    {
+      "file": "xfm_market_futures.gui",
+      "enabled_onclick_expressions": 44,
+      "unchanged": true
+    }
+  ],
+  "backend_and_save_fields_changed": false,
+  "prior_R83_actual_gui_result": "FAIL; retained, no rewrite",
+  "candidate_actual_gui_acceptance": "NOT_RUN",
+  "mouse_or_render_pass": false,
+  "published": false,
+  "whole_financial_product_pass": false
+}

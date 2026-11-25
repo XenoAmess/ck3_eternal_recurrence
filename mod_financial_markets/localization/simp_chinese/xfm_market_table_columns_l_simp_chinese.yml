@@ -1,0 +1,11 @@
+﻿l_simp_chinese:
+ xfm_market_column_identity:0 "币号与名称"
+ xfm_market_column_last:0 "最新价"
+ xfm_market_column_bid:0 "买一"
+ xfm_market_column_ask:0 "卖一"
+ xfm_market_column_volume:0 "日量（币）"
+ xfm_market_cell_identity:0 "[Scope.Var( 'xfm_coin_id' ).GetValue|0] · [Localize( Concatenate( 'xfm_market_coin_name_', IntToString( FixedPointToInt( Scope.Var( 'xfm_entity_type' ).GetValue ) ) ) )]"
+ xfm_market_cell_last:0 "[Divide_CFixedPoint( Scope.Var( 'xfm_last_price_cents' ).GetValue, '(CFixedPoint)100' )|2]"
+ xfm_market_cell_bid:0 "[Divide_CFixedPoint( Scope.Var( 'xfm_best_bid_cents' ).GetValue, '(CFixedPoint)100' )|2]"
+ xfm_market_cell_ask:0 "[Divide_CFixedPoint( Scope.Var( 'xfm_best_ask_cents' ).GetValue, '(CFixedPoint)100' )|2]"
+ xfm_market_cell_volume:0 "[Scope.Var( 'xfm_day_volume_units' ).GetValue|0]"

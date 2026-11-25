@@ -1,12 +1,55 @@
 ﻿types FinancialMarketRows {
     type xfm_market_coin_row = button_standard_list {
         name = "xfm_market_coin_row"
-        size = { 740 38 }
-        text = "xfm_market_coin_row_text"
+        size = { 766 38 }
+        layoutpolicy_horizontal = expanding
         enabled = "[GetScriptedGui( 'xfm_market_select_coin_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_row_id', MakeScopeValue( Scope.Var( 'xfm_coin_id' ).GetValue ) ).End )]"
         onclick = "[GetScriptedGui( 'xfm_market_select_coin_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'xfm_ui_row_id', MakeScopeValue( Scope.Var( 'xfm_coin_id' ).GetValue ) ).End )]"
         tooltip = "xfm_market_coin_row_tooltip"
+        down = "[And( GetScriptedGui( 'xfm_market_coin_selected_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End ), EqualTo_CFixedPoint( Scope.Var( 'xfm_coin_id' ).GetValue, GetPlayer.MakeScope.Var( 'xfm_selected_coin' ).Var( 'xfm_coin_id' ).GetValue ) )]"
+        buttonText = { text_single = { visible = no alwaystransparent = yes } }
+        text_single = {
+            name = "xfm_market_coin_cell_identity"
+            parentanchor = top|left position = { 10 0 } size = { 280 38 }
+            text = "xfm_market_cell_identity"
+            align = left|nobaseline autoresize = no
+            default_format = "#clickable"
+            alwaystransparent = yes
+        }
+        text_single = {
+            name = "xfm_market_coin_cell_last"
+            parentanchor = top|left position = { 298 0 } size = { 110 38 }
+            text = "xfm_market_cell_last"
+            align = right|nobaseline autoresize = no
+            default_format = "#clickable"
+            alwaystransparent = yes
+        }
+        text_single = {
+            name = "xfm_market_coin_cell_bid"
+            parentanchor = top|left position = { 416 0 } size = { 110 38 }
+            text = "xfm_market_cell_bid"
+            align = right|nobaseline autoresize = no
+            default_format = "#clickable"
+            alwaystransparent = yes
+        }
+        text_single = {
+            name = "xfm_market_coin_cell_ask"
+            parentanchor = top|left position = { 534 0 } size = { 110 38 }
+            text = "xfm_market_cell_ask"
+            align = right|nobaseline autoresize = no
+            default_format = "#clickable"
+            alwaystransparent = yes
+        }
+        text_single = {
+            name = "xfm_market_coin_cell_volume"
+            parentanchor = top|left position = { 652 0 } size = { 104 38 }
+            text = "xfm_market_cell_volume"
+            align = right|nobaseline autoresize = no
+            default_format = "#clickable"
+            alwaystransparent = yes
+        }
     }
+
     type xfm_market_account_row = button_standard_list {
         name = "xfm_market_account_row"
         size = { 730 30 }

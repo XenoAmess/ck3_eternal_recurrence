@@ -24,6 +24,8 @@ public final class ContentValidator {
                          List<String> runtimeFiles) { }
     private static final Set<String> ROOTS = Set.of("common", "events", "gui", "localization", "gfx");
     private static final Pattern LOC_KEY = Pattern.compile("^\\s+([A-Za-z0-9_.-]+):[0-9]*\\s+\".*\"\\s*$");
+    // A literal '#' immediately before a numeric interpolation becomes an invalid format tag after evaluation.
+    private static final Pattern NUMERIC_LOCALIZATION_FORMAT_TAG = Pattern.compile("#\\[[^\\r\\n\\]]*\\bGetValue\\b[^\\r\\n\\]]*\\]");
     private static final Pattern SCRIPTED_GUI = Pattern.compile("GetScriptedGui\\(\\s*'(?<id>xfm_[A-Za-z0-9_]+)'\\s*\\)");
     private static final Pattern WIDGET_REGISTRATION = Pattern.compile("(?m)^\\s*(gui/[A-Za-z0-9_./-]+\\.gui)\\s*=\\s*(xfm_[A-Za-z0-9_]+)\\s*$");
     private static final byte[] BOM = {(byte) 0xef, (byte) 0xbb, (byte) 0xbf};
@@ -58,6 +60,8 @@ public final class ContentValidator {
                     for (String line : text.lines().toList()) {
                         var match = LOC_KEY.matcher(line);
                         if (match.matches()) {
+                            require(!NUMERIC_LOCALIZATION_FORMAT_TAG.matcher(line).find(),
+                                    "numeric localization label cannot begin with a formatting tag: " + name + ":" + match.group(1));
                             require(keys.add(match.group(1)), "duplicate localization: " + match.group(1));
                             collectScriptedGuis(line, guiCalls);
                         }

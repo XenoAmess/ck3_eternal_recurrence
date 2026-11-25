@@ -130,6 +130,26 @@ final class BuildContractTest {
         assertEquals(1, ContentValidator.validate(source).effects());
     }
 
+    @Test void rejectsNumericLocalizationFormatTagsAndAcceptsCorrectedDynamicLabels() throws Exception {
+        Path source = fixture();
+        String number = "[Scope.Var( 'xfm_account_id' ).GetValue|0]";
+        String price = "[Divide_CFixedPoint( Scope.Var( 'xfm_free_cents' ).GetValue, '(CFixedPoint)100' )|2]";
+        String corrected = "No. " + number + " - #high " + price + "#!";
+        for (int index : List.of(2, 3)) {
+            String language = index == 2 ? "simp_chinese" : "english";
+            String prefix = "l_" + language + ":\n xfm_test:0 \"";
+            for (String bad : List.of("Account #" + number, "Price #" + price)) {
+                bom(source.resolve(FILES.get(index)), prefix + bad + "\"\n");
+                assertTrue(assertThrows(IOException.class, () -> ContentValidator.validate(source))
+                        .getMessage().contains("numeric localization label"));
+            }
+            bom(source.resolve(FILES.get(index)), prefix + corrected + "\"\n");
+        }
+        var report = ContentValidator.validate(source);
+        assertEquals(1, report.localizationKeys());
+        assertEquals("STATIC_ONLY_NOT_ENGINE_OR_BUSINESS_PASS", report.boundary());
+    }
+
     private Path fixture() throws IOException {
         Path source = Files.createDirectory(temporary.resolve("source"));
         bom(source.resolve(FILES.get(0)), "name=\"Test\"\nversion=\"0.0.0\"\n");

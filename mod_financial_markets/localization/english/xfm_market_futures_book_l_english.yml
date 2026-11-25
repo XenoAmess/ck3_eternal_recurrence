@@ -1,7 +1,7 @@
 ﻿l_english:
  xfm_market_futures_book_refresh:0 "Refresh selected futures book"
  xfm_market_futures_book_missing:0 "No selected-series book. Select a contract and refresh."
- xfm_market_futures_book_header:0 "Contract #[GetPlayer.MakeScope.Var('xfm_ui_futures_book_contract').Var('xfm_contract_id').GetValue|0] · Snapshot day [GetPlayer.MakeScope.Var('xfm_ui_futures_book_day').GetValue|0]"
+ xfm_market_futures_book_header:0 "Contract [GetPlayer.MakeScope.Var('xfm_ui_futures_book_contract').Var('xfm_contract_id').GetValue|0] · Snapshot day [GetPlayer.MakeScope.Var('xfm_ui_futures_book_day').GetValue|0]"
  xfm_market_futures_book_spot_reference:0 "Spot last: [Divide_CFixedPoint(GetPlayer.MakeScope.Var('xfm_selected_coin').Var('xfm_last_price_cents').GetValue,'(CFixedPoint)100')|2] gold/lot (not a futures fill)"
  xfm_market_futures_book_model_reference:0 "Cash-settled Mod index; no spot trade or physical redemption. P/L = gold quote change x lots; leverage changes margin, not lot size. New index face is 1/100 of legacy; existing index units stay unchanged."
  xfm_market_futures_book_reference:0 "Reference index [Divide_CFixedPoint(GetPlayer.MakeScope.Var('xfm_selected_coin').Var('xfm_index_cents').GetValue,'(CFixedPoint)100')|2] · Settlement mark [Divide_CFixedPoint(GetPlayer.MakeScope.Var('xfm_selected_coin').Var('xfm_mark_cents').GetValue,'(CFixedPoint)100')|2]; neither is this contract's execution price."
@@ -10,6 +10,6 @@
  xfm_market_futures_book_bids:0 "Opening long bids · Funded remaining [GetPlayer.MakeScope.Var('xfm_ui_futures_bid_lots').GetValue|0] lots"
  xfm_market_futures_book_asks:0 "Opening short asks · Funded remaining [GetPlayer.MakeScope.Var('xfm_ui_futures_ask_lots').GetValue|0] lots"
  xfm_market_futures_book_empty:0 "No eligible orders (zero depth)."
- xfm_market_futures_book_row:0 "#[Scope.Var('xfm_order_id').GetValue|0] · [Divide_CFixedPoint(Scope.Var('xfm_limit_cents').GetValue,'(CFixedPoint)100')|2] gold/lot × [Scope.Var('xfm_remaining_lots').GetValue|0] lots"
+ xfm_market_futures_book_row:0 "[Scope.Var('xfm_order_id').GetValue|0] · [Divide_CFixedPoint(Scope.Var('xfm_limit_cents').GetValue,'(CFixedPoint)100')|2] gold/lot × [Scope.Var('xfm_remaining_lots').GetValue|0] lots"
  xfm_market_futures_book_notice:0 "Top five independent funded opening orders per side, price then order ID; individual orders, not aggregated levels. Closing and own/related orders are excluded. Refresh explicitly; matching rechecks funds, positions and permissions."
  xfm_market_futures_ticket_limit:0 "Futures limit [Divide_CFixedPoint(GetPlayer.MakeScope.Var('xfm_futures_limit_cents').GetValue,'(CFixedPoint)100')|2] gold/lot"
