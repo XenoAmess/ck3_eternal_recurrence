@@ -85,7 +85,7 @@ final class NativeCurrentZg361Ae2DataTest {
             assertTrue(decoded.expectedRevision().isEmpty()); assertTrue(decoded.expectedSnapshotRevision().isEmpty());
             assertThrows(IllegalArgumentException.class,()->CurrentZg361Ae2.request(core(-2),action,query?ONE:ZERO,query?ONE:ZERO));
         }
-        assertEquals(3,queries);
+        assertEquals(4,queries);
         assertThrows(IllegalArgumentException.class,()->CurrentZg361Ae2.request(core(0),CurrentZg361Ae2.Action.CONFIRM_PRESENT,MAX.add(ONE),ONE));
         var invalidLocal = new CoreFrame.Partial(ExactCk3Build.CK3_121003_STEAM_26785313,
                 new CoreFrame.Prefix(0,3,true,-1,true,true,0,true));

@@ -5979,12 +5979,29 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     // Fixed AE2 finite0day case: only authentic private observations convey custody.
     private CoreReceived zg361Ae2InitialCore;
     private boolean zg361Ae2CombinedCase;
+    private boolean zg361ScoreboardCase,zg361ScoreboardOpenConfirmed;
     private AckReceived zg361Ae2LastAction;
     private Unknown unresolvedZg361Ae2;
     private boolean zg361Ae2PresentConfirmed,zg361Ae2PayAbsenceConfirmed;
     private Zg361Ae2Prepared zg361Ae2PayOriginal;
     private final Set<CoreReceived> zg361Ae2QueryCores=java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<>());
     private final Set<String> zg361Ae2Attempted=new HashSet<>();
+
+    /** Independent fixed scoreboard lifecycle; no payment/review scope or caller capacity. */
+    public synchronized void beginCurrentZg361ScoreboardCase(CoreReceived actual)throws IOException {
+        if(hello==null||!hello.capabilities().containsAll(Set.of(CurrentZg361Ae2.SCOREBOARD_QUERY_CAPABILITY,
+                CurrentZg361Ae2.SCOREBOARD_COMMAND_CAPABILITY)))
+            throw new IOException("Actual fixed scoreboard query/open-close capabilities are unavailable");
+        beginCurrentZg361Ae2Case(actual);
+        zg361ScoreboardCase=true;
+    }
+    private void requireZg361ScoreboardActionScope(CurrentZg361Ae2.Action action)throws IOException {
+        if(action==null)return; // Preserve the original query/admission null guards.
+        boolean scoreboard=action==CurrentZg361Ae2.Action.QUERY_SCOREBOARD
+                ||action==CurrentZg361Ae2.Action.OPEN_SCOREBOARD||action==CurrentZg361Ae2.Action.CLOSE_SCOREBOARD;
+        if(scoreboard!=zg361ScoreboardCase)
+            throw new IOException("Independent scoreboard scope and original AE2/review scopes cannot be mixed");
+    }
 
     /** Fixed combined workflow only; no caller-selected capacity or authority boolean. */
     public synchronized void beginCurrentZg361Ae2CombinedCase(CoreReceived actual)throws IOException {
@@ -6076,7 +6093,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     }
     private static CurrentZg361Ae2Result.Status zg361Ae2DispatchStatus(CurrentZg361Ae2.Action action)throws IOException {
         return switch(action) {
-            case OPEN_CONTROLS_LIST,OPEN_PRESENT_DETAIL,OPEN_VERIFY_DETAIL,OPEN_REVIEW_DETAIL->CurrentZg361Ae2Result.Status.NAVIGATION_DISPATCHED;
+            case OPEN_CONTROLS_LIST,OPEN_PRESENT_DETAIL,OPEN_VERIFY_DETAIL,OPEN_REVIEW_DETAIL,OPEN_SCOREBOARD,CLOSE_SCOREBOARD->CurrentZg361Ae2Result.Status.NAVIGATION_DISPATCHED;
             case CHOOSE_PAY_NOW->CurrentZg361Ae2Result.Status.SELECTION_DISPATCHED;
             case CONFIRM_PRESENT,CONFIRM_VERIFY->CurrentZg361Ae2Result.Status.CONFIRMATION_DISPATCHED;
             default->throw new IOException("Readonly AE2 action cannot dispatch");
@@ -6098,7 +6115,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     }
     private void requireZg361Ae2Original(Zg361Ae2Received query,Instant until)throws IOException {
         if(query==null||query.issuer!=this||query!=latestZg361Ae2||query.attempted)throw new IOException("Original unused private AE2 query required");
-        requireZg361Ae2Scope(query.before,until);
+        requireZg361Ae2Scope(query.before,until);requireZg361ScoreboardActionScope(query.frame.action());
         if(until.isAfter(query.until)||!chronologyClock.instant().isBefore(query.until))throw new IOException("Original AE2 query deadline expired or extended");
         requireZg361Ae2Custody(query.original,query.custody,query.before.custody,query.until);
         var actual=CurrentZg361Ae2Result.decodeOutcome(query.original);requireZg361Ae2Frame(actual,query.frame.action(),query.before);
@@ -6115,7 +6132,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         if(unresolvedZg361Ae2!=null)return new Zg361Ae2Unavailable(unresolvedZg361Ae2,"Original AE2 family UNKNOWN");
         String id="zg361-ae2-query-"+UUID.randomUUID().toString().replace("-","");DispatchOutcome out=null;
         try {
-            requireZg361Ae2Scope(before,deadline);
+            requireZg361Ae2Scope(before,deadline);requireZg361ScoreboardActionScope(action);
             if(action==null||!action.queryOnly()||zg361Ae2QueryCores.contains(before)||!hello.capabilities().contains(action.capability())||sentRequestIds.size()>=maximumSubmissions)
                 throw new IOException("Fresh original Core and actual AE2 query capability required");
             Instant until=readDeadline(deadline);byte[] packet=zg361Ae2Packet(id,action,before,BigInteger.ZERO,BigInteger.ZERO,until);
@@ -6133,8 +6150,11 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         return action==CurrentZg361Ae2.Action.OPEN_CONTROLS_LIST?action.wire()+(zg361Ae2PayAbsenceConfirmed?":after-pay":":before-present"):action.wire();
     }
     private void requireZg361Ae2Admission(Zg361Ae2Received query,CurrentZg361Ae2.Action action)throws IOException {
+        requireZg361ScoreboardActionScope(action);
         if(action==null||action.queryOnly()||action.sourceKind()!=query.frame.action().sourceKind()||!query.frame.source().orElseThrow().actionAdmissible(action))
             throw new IOException("Actual complete same-kind AE2 query does not admit this fixed action");
+        if(action==CurrentZg361Ae2.Action.CLOSE_SCOREBOARD&&!zg361ScoreboardOpenConfirmed)
+            throw new IOException("Fixed scoreboard Close requires THIS Receiver successful Open NAV ACK");
         if(action==CurrentZg361Ae2.Action.CHOOSE_PAY_NOW&&!zg361Ae2PresentConfirmed)
             throw new IOException("AE2 payment requires THIS Receiver's original fixed presentation ACK");
         if(action==CurrentZg361Ae2.Action.CHOOSE_PAY_NOW
@@ -6176,6 +6196,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                     throw new IOException("AE2 dispatch rebound immutable actual beforeSource/Core/query lease");
                 prepared.latest=frame;zg361Ae2LastAction=ack;
                 if(frame.status()==zg361Ae2DispatchStatus(prepared.action)) {
+                    if(prepared.action==CurrentZg361Ae2.Action.OPEN_SCOREBOARD)zg361ScoreboardOpenConfirmed=true;
                     if(prepared.action==CurrentZg361Ae2.Action.CONFIRM_PRESENT)zg361Ae2PresentConfirmed=true;
                     if(prepared.action==CurrentZg361Ae2.Action.CHOOSE_PAY_NOW)zg361Ae2PayOriginal=prepared;
                 }

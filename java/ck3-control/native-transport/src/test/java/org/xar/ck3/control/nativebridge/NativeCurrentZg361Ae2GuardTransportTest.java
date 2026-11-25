@@ -17,6 +17,9 @@ import org.xar.ck3.control.contracts.PythonOnlyUInt64;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFrame;
 import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFramePublicCodec;
+import org.xar.ck3.control.nativebridge.capabilities.registry.GuiRootIndexFrame;
+import org.xar.ck3.control.nativebridge.capabilities.registry.GuiWindowFrame;
+import org.xar.ck3.control.nativebridge.capabilities.registry.GuiWindowFramePublicCodec;
 
 /** Generated Java DATA only: tests real transport authority, never C++/Game/fee evidence. */
 final class NativeCurrentZg361Ae2GuardTransportTest {
@@ -216,23 +219,131 @@ final class NativeCurrentZg361Ae2GuardTransportTest {
         }
     }
 
+    /** Self-owned Java DATA exercises the actual typed transport, never Game/C++ evidence. */
+    private static CurrentZg361Ae2Source scoreboardSource(DataPort port) {
+        boolean opened=port.scoreboardOpened;
+        var source=new CurrentZg361Ae2Source.Scoreboard(true,true,true,true,opened,opened,opened,
+                7,opened?3:0,Optional.of("zg361_scoreboard_entry_managed"),!opened,opened);
+        return new CurrentZg361Ae2Source(CurrentZg361Ae2Source.Kind.SCOREBOARD,Optional.empty(),Optional.empty(),Optional.empty(),Optional.of(source));
+    }
+    private static CurrentZg361Ae2Source changedScoreboardSource(CurrentZg361Ae2Source source) {
+        var s=source.scoreboard().orElseThrow();
+        var changed=new CurrentZg361Ae2Source.Scoreboard(s.complete(),s.windowFound(),s.windowVisible(),s.windowEnabled(),
+                s.modalFound(),s.modalVisible(),s.modalEnabled(),s.windowNodes()+1,s.modalChildren(),s.openEntry(),s.openAdmissible(),s.closeAdmissible());
+        return new CurrentZg361Ae2Source(CurrentZg361Ae2Source.Kind.SCOREBOARD,Optional.empty(),Optional.empty(),Optional.empty(),Optional.of(changed));
+    }
+    private static GuiWindowFrame.Partial scoreboardMiddleData(DataPort port) {
+        var nodes=new ArrayList<GuiWindowFrame.Node>();
+        nodes.add(new GuiWindowFrame.Node(0,java.util.OptionalInt.empty(),0,0,"middle",port.scoreboardOpened?1:0,true,true));
+        if(port.scoreboardOpened)nodes.add(new GuiWindowFrame.Node(1,java.util.OptionalInt.of(0),0,1,"zg361_scoreboard_modal",0,true,true));
+        return new GuiWindowFrame.Partial(new CoreFrame.Partial(BUILD,port.prefix()),"middle",
+                List.of(new GuiWindowFrame.TopLevel("middle",true,true)),Optional.of(new GuiWindowFrame.Window(nodes)),
+                new GuiRootIndexFrame.OwnerWitness(T,BigInteger.valueOf(20),BigInteger.valueOf(30),7));
+    }
+    private static NativeGameTransport.Zg361Ae2Received scoreboardQuery(NativeGameTransport t,NativeGameTransport.CoreReceived c)throws Exception {
+        return assertInstanceOf(NativeGameTransport.Zg361Ae2Received.class,
+                t.readCurrentZg361Ae2(c,CurrentZg361Ae2.Action.QUERY_SCOREBOARD,c.validUntil()));
+    }
+    private static NativeGameTransport.Zg361Ae2Prepared scoreboardAction(NativeGameTransport t,NativeGameTransport.Zg361Ae2Received q,CurrentZg361Ae2.Action action)throws Exception {
+        var p=t.prepareCurrentZg361Ae2(q,action);assertSame(p,t.prepareCurrentZg361Ae2(q,action));
+        var ack=assertInstanceOf(NativeActionPort.AckReceived.class,t.submitCurrentZg361Ae2(p));
+        assertSame(ack,t.submitCurrentZg361Ae2(p));
+        assertEquals(CurrentZg361Ae2Result.Status.NAVIGATION_DISPATCHED,p.latestFrame().orElseThrow().status());
+        assertFalse(p.latestFrame().orElseThrow().nativeHandled());return p;
+    }
+    @Test void scoreboardTwelveSubmissionsUseOneReceiverAndIndependentMiddleReadsWithTwoOnceEffects()throws Exception {
+        var port=new DataPort("scoreboard-normal");try(var t=transport(port)) {
+            var firstCore=core(t);t.beginCurrentZg361ScoreboardCase(firstCore);
+            var initial=scoreboardQuery(t,firstCore);
+            assertFalse(initial.frame().source().orElseThrow().scoreboard().orElseThrow().modalVisible());
+            var open=scoreboardAction(t,initial,CurrentZg361Ae2.Action.OPEN_SCOREBOARD);
+            var openCore=core(t);var openMiddle=assertInstanceOf(NativeGameTransport.GuiWindowReceived.class,
+                    t.readGuiWindowReceived(openCore,"middle",openCore.validUntil()));
+            var openTree=assertInstanceOf(GuiWindowFrame.Partial.class,openMiddle.frame());
+            assertEquals(2,openTree.window().orElseThrow().nodes().size());
+            assertEquals("zg361_scoreboard_modal",openTree.window().orElseThrow().nodes().get(1).name());
+            assertEquals(openTree,GuiWindowFramePublicCodec.decodeOutcome(openMiddle.original()));
+            var closeCore=core(t);var closeQuery=scoreboardQuery(t,closeCore);
+            assertTrue(closeQuery.frame().source().orElseThrow().scoreboard().orElseThrow().modalVisible());
+            var close=scoreboardAction(t,closeQuery,CurrentZg361Ae2.Action.CLOSE_SCOREBOARD);
+            var afterCore=core(t);var afterMiddle=assertInstanceOf(NativeGameTransport.GuiWindowReceived.class,
+                    t.readGuiWindowReceived(afterCore,"middle",afterCore.validUntil()));
+            var afterTree=assertInstanceOf(GuiWindowFrame.Partial.class,afterMiddle.frame());
+            assertEquals(1,afterTree.window().orElseThrow().nodes().size());
+            assertEquals(afterTree,GuiWindowFramePublicCodec.decodeOutcome(afterMiddle.original()));
+            var finalCore=core(t);var finalQuery=scoreboardQuery(t,finalCore);t.requireCurrentZg361Ae2ZeroDay(finalCore);
+            assertFalse(finalQuery.frame().source().orElseThrow().scoreboard().orElseThrow().modalVisible());
+            assertThrows(IOException.class,()->t.prepareCurrentZg361Ae2(finalQuery,CurrentZg361Ae2.Action.OPEN_SCOREBOARD));
+            assertSame(open,t.prepareCurrentZg361Ae2(initial,CurrentZg361Ae2.Action.OPEN_SCOREBOARD));
+            assertSame(close,t.prepareCurrentZg361Ae2(closeQuery,CurrentZg361Ae2.Action.CLOSE_SCOREBOARD));
+            assertEquals(5,port.scoreboardCoreReads);assertEquals(2,port.scoreboardMiddleReads);
+            assertEquals(5,port.familyWrites);assertEquals(2,port.effectWrites);
+            assertEquals(12,port.scoreboardCoreReads+port.scoreboardMiddleReads+port.familyWrites);
+            assertEquals(1,port.scoreboardOpens);assertEquals(1,port.scoreboardCloses);
+            assertEquals(0,port.pays);assertEquals(0,port.verifies);assertFalse(port.present);
+        }
+    }
+    @Test void scoreboardScopeMissingCapabilitiesAndCloseBeforeThisOpenCannotBorrowPublicData()throws Exception {
+        var old=new DataPort("scoreboard-normal");try(var t=transport(old)) {
+            begin(t);var c=core(t);
+            assertInstanceOf(NativeGameTransport.Zg361Ae2Unavailable.class,t.readCurrentZg361Ae2(c,CurrentZg361Ae2.Action.QUERY_SCOREBOARD,c.validUntil()));
+            assertThrows(IOException.class,()->t.beginCurrentZg361ScoreboardCase(core(t)));
+            assertEquals(0,old.familyWrites);assertEquals(0,old.effectWrites);
+        }
+        for(String mode:List.of("scoreboard-no-caps","scoreboard-query-only")) {
+            var port=new DataPort(mode);try(var t=transport(port)) {
+                assertThrows(IOException.class,()->t.beginCurrentZg361ScoreboardCase(core(t)));
+                assertEquals(0,port.familyWrites);assertEquals(0,port.effectWrites);
+            }
+        }
+        var port=new DataPort("scoreboard-normal");port.scoreboardOpened=true;
+        var foreign=new DataPort("scoreboard-normal");try(var t=transport(port);var other=transport(foreign)) {
+            var first=core(t);t.beginCurrentZg361ScoreboardCase(first);
+            var otherCore=core(other);other.beginCurrentZg361ScoreboardCase(otherCore);
+            var q=scoreboardQuery(t,first);assertTrue(q.frame().source().orElseThrow().scoreboard().orElseThrow().closeAdmissible());
+            assertThrows(IOException.class,()->t.prepareCurrentZg361Ae2(q,CurrentZg361Ae2.Action.CLOSE_SCOREBOARD));
+            assertThrows(IOException.class,()->other.prepareCurrentZg361Ae2(q,CurrentZg361Ae2.Action.CLOSE_SCOREBOARD));
+            assertThrows(IOException.class,()->q.requireOriginal(t,q.validUntil().plusMillis(1)));
+            var c=core(t);assertInstanceOf(NativeGameTransport.Zg361Ae2Unavailable.class,t.readCurrentZg361Ae2(c,CurrentZg361Ae2.Action.QUERY_CONTROLS,c.validUntil()));
+            assertThrows(IOException.class,()->t.beginCurrentZg361Ae2Case(core(t)));
+            assertEquals(0,port.effectWrites);assertEquals(0,foreign.effectWrites);
+        }
+    }
+    @Test void scoreboardLostAckAndWholeSourceCoreOrLeaseDriftStayUnknownWithoutReplay()throws Exception {
+        for(String mode:List.of("scoreboard-lost-result","scoreboard-changed-source","scoreboard-changed-core","scoreboard-changed-lease","scoreboard-changed-ack")) {
+            var port=new DataPort(mode);try(var t=transport(port)) {
+                var c=core(t);t.beginCurrentZg361ScoreboardCase(c);var q=scoreboardQuery(t,c);
+                var p=t.prepareCurrentZg361Ae2(q,CurrentZg361Ae2.Action.OPEN_SCOREBOARD);
+                var out=assertInstanceOf(NativeActionPort.Unknown.class,t.submitCurrentZg361Ae2(p));assertSame(out,t.submitCurrentZg361Ae2(p));
+                int writes=port.familyWrites;var fresh=core(t);
+                var blocked=assertInstanceOf(NativeGameTransport.Zg361Ae2Unavailable.class,t.readCurrentZg361Ae2(fresh,CurrentZg361Ae2.Action.QUERY_SCOREBOARD,fresh.validUntil()));
+                assertSame(out,blocked.original());assertEquals(writes,port.familyWrites);assertEquals(1,port.effectWrites);
+                assertTrue(port.scoreboardOpens<=1);assertEquals(0,port.scoreboardCloses);assertEquals(0,port.pays);
+                assertThrows(IOException.class,()->t.prepareCurrentZg361Ae2(q,CurrentZg361Ae2.Action.CLOSE_SCOREBOARD));
+            }
+        }
+    }
+
     private static final class DataPort implements NativePacketPort {
         final String mode;final ArrayDeque<byte[]> packets=new ArrayDeque<>();boolean closed,list,detail,present,event,paid;
         int actor=-2,sequence,effectWrites,familyWrites,listOpens,pays,verifies,selectedAuthored=-1;
         CurrentZg361Ae2Source.Control selected;CurrentZg361Ae2Source before;
         final boolean reviewData;boolean reviewOpened,reviewHasRequirements;String reviewDescription="";int reviewOpens;
+        final boolean scoreboardData;boolean scoreboardOpened;int scoreboardOpens,scoreboardCloses,scoreboardCoreReads,scoreboardMiddleReads;
         DataPort(String mode)throws IOException{this(mode,false);}
         DataPort(String mode,boolean reviewData)throws IOException{
-            this.reviewData=reviewData;if(reviewData)list=true;
+            this.reviewData=reviewData;if(reviewData)list=true;this.scoreboardData=mode.startsWith("scoreboard-");
             this.mode=mode;var h=StrictJson.object().put("type","hello").put("protocol_version",1).put("pid",42).put("connection_generation",T)
                     .put("bridge_version","zg361-ae2-DATA").put("expected_ck3_version",BUILD.version()).put("expected_ck3_sha256",BUILD.executableSha256())
                     .put("game_adapter_id",BUILD.coreFrameAdapterId()).put("game_adapter_status","ready").put("ck3_build_match",true);
             var caps=h.putArray("capabilities");caps.add(CoreFrame.CAPABILITY);caps.add(CurrentZg361Ae2.QUERY_CAPABILITY);caps.add(CurrentZg361Ae2.CONTROLS_CAPABILITY);caps.add(CurrentZg361Ae2.PAY_CAPABILITY);
             if(reviewData&&!mode.equals("review-no-caps")){caps.add(CurrentZg361Ae2.REVIEW_QUERY_CAPABILITY);if(!mode.equals("review-query-only"))caps.add(CurrentZg361Ae2.REVIEW_DETAIL_CAPABILITY);}
+            if(scoreboardData&&!mode.equals("scoreboard-no-caps")){caps.add(CurrentZg361Ae2.SCOREBOARD_QUERY_CAPABILITY);if(!mode.equals("scoreboard-query-only"))caps.add(CurrentZg361Ae2.SCOREBOARD_COMMAND_CAPABILITY);}
             packets.add(NativeWire.packet(StrictJson.canonical(h)));
         }
         CoreFrame.Prefix prefix(){return new CoreFrame.Prefix(-240,3,true,1,true,true,actor,true);}
         CurrentZg361Ae2Source source(CurrentZg361Ae2.Action action){
+            if(scoreboardData&&action.sourceKind()==CurrentZg361Ae2Source.Kind.SCOREBOARD)return scoreboardSource(this);
             if(action.sourceKind()==CurrentZg361Ae2Source.Kind.REVIEW)return reviewSource(this);
             if(action.sourceKind()==CurrentZg361Ae2Source.Kind.CONTROLS){
                 var rows=new ArrayList<CurrentZg361Ae2Source.ControlRow>();
@@ -255,7 +366,8 @@ final class NativeCurrentZg361Ae2GuardTransportTest {
         public byte[] readPacket(Instant deadline)throws IOException{verify();if(packets.isEmpty())throw new IOException("Java DATA intentionally lost original result");return packets.removeFirst();}
         public void writePacket(byte[] bytes,Instant deadline)throws IOException{
             verify();var request=NativeWire.decodeExecuteRequest(bytes);ObjectNode result;
-            if(request.step().equals(CoreFrame.STEP))result=NativeWire.object(NativeWire.parse(CoreFramePublicCodec.encode(new CoreFrame.Partial(BUILD,prefix())).bytes()));
+            if(request.step().equals(CoreFrame.STEP)){if(scoreboardData)scoreboardCoreReads++;result=NativeWire.object(NativeWire.parse(CoreFramePublicCodec.encode(new CoreFrame.Partial(BUILD,prefix())).bytes()));}
+            else if(scoreboardData&&request.step().equals(GuiWindowFrame.STEP)){scoreboardMiddleReads++;result=NativeWire.object(NativeWire.parse(GuiWindowFramePublicCodec.encode(scoreboardMiddleData(this)).bytes()));}
             else {
                 familyWrites++;var claim=NativeWire.parse(request.normalizedAdditionalFields().value()).get("arguments").get("zg361_ae2");var action=CurrentZg361Ae2.Action.parse(claim.get("action").textValue());boolean query=action.queryOnly();var source=query?source(action):before;
                 var provider=query?O:new BigInteger(claim.get("provider_generation").textValue());var seq=query?BigInteger.valueOf(++sequence):new BigInteger(claim.get("query_sequence").textValue());var status=CurrentZg361Ae2Result.Status.AVAILABLE;Optional<String> why=Optional.empty();Optional<CurrentZg361Ae2Source> observed=Optional.of(source);var facts=prefix();boolean attempted=!query,returned=!query;BigInteger consumed=Z;
@@ -264,6 +376,7 @@ final class NativeCurrentZg361Ae2GuardTransportTest {
                     effectWrites++;consumed=BigInteger.valueOf(effectWrites);
                     if(mode.equals("lost-result"))return;
                     if(reviewData&&mode.equals("review-lost-result"))return;
+                    if(scoreboardData&&mode.equals("scoreboard-lost-result"))return;
                     if(mode.equals("known-stale")){status=CurrentZg361Ae2Result.Status.STALE_SOURCE;attempted=returned=false;consumed=Z;observed=Optional.empty();why=Optional.of("Java DATA original known prewrite stale");facts=new CoreFrame.Prefix(-240,3,true,1,true,true,42,true);}
                     else {
                         switch(action){
@@ -274,6 +387,8 @@ final class NativeCurrentZg361Ae2GuardTransportTest {
                             case OPEN_VERIFY_DETAIL->{selected=CurrentZg361Ae2Source.Control.VERIFY;detail=true;status=CurrentZg361Ae2Result.Status.NAVIGATION_DISPATCHED;}
                             case CONFIRM_VERIFY->{verifies++;status=CurrentZg361Ae2Result.Status.CONFIRMATION_DISPATCHED;}
                             case OPEN_REVIEW_DETAIL->{reviewOpened=true;detail=true;reviewOpens++;status=CurrentZg361Ae2Result.Status.NAVIGATION_DISPATCHED;}
+                            case OPEN_SCOREBOARD->{scoreboardOpened=true;scoreboardOpens++;status=CurrentZg361Ae2Result.Status.NAVIGATION_DISPATCHED;}
+                            case CLOSE_SCOREBOARD->{scoreboardOpened=false;scoreboardCloses++;status=CurrentZg361Ae2Result.Status.NAVIGATION_DISPATCHED;}
                             default->throw new IOException("No arbitrary action in generated Java DATA");
                         }
                         if(mode.equals("changed-before-source")){
@@ -287,10 +402,17 @@ final class NativeCurrentZg361Ae2GuardTransportTest {
                     if(mode.equals("review-changed-core"))facts=new CoreFrame.Prefix(-240,3,true,1,true,true,42,true);
                     if(mode.equals("review-changed-lease"))seq=seq.add(O);
                 }
+                if(!query&&scoreboardData){
+                    if(mode.equals("scoreboard-changed-source"))observed=Optional.of(changedScoreboardSource(source));
+                    if(mode.equals("scoreboard-changed-core"))facts=new CoreFrame.Prefix(-240,3,true,1,true,true,42,true);
+                    if(mode.equals("scoreboard-changed-lease"))seq=seq.add(O);
+                }
                 var owner=new CurrentLetterResult.OwnerWitness(T,BigInteger.valueOf(20),BigInteger.valueOf(30),7);
                 var frame=new CurrentZg361Ae2Result(action,status,attempted,returned,true,provider,seq,consumed,Optional.of(facts),Optional.of(owner),observed,why);result=NativeWire.object(NativeWire.parse(frame.encode().bytes()));
             }
-            var envelope=StrictJson.object().put("type","command_result").put("protocol_version",1).put("request_id",request.requestId()).put("ok",request.step().equals(CoreFrame.STEP)||result.path("source_available").asBoolean());envelope.set("result",result);packets.add(NativeWire.packet(StrictJson.canonical(envelope)));
+            var envelope=StrictJson.object().put("type","command_result").put("protocol_version",1).put("request_id",request.requestId()).put("ok",request.step().equals(CoreFrame.STEP)||(scoreboardData&&request.step().equals(GuiWindowFrame.STEP))||result.path("source_available").asBoolean());
+            if(scoreboardData&&mode.equals("scoreboard-changed-ack")&&request.step().equals(CurrentZg361Ae2.STEP)&&!result.path("action").asText().startsWith("query"))envelope.put("request_id","scoreboard-java-data-foreign-ack");
+            envelope.set("result",result);packets.add(NativeWire.packet(StrictJson.canonical(envelope)));
         }
         public void close(){closed=true;}
     }

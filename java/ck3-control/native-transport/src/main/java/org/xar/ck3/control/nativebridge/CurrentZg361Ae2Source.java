@@ -12,9 +12,9 @@ import java.util.Set;
 import org.xar.ck3.control.contracts.StrictJson;
 
 /** Exact AE2 observation DATA, with no invented public case values or action authority. */
-public record CurrentZg361Ae2Source(Kind kind, Optional<Controls> controls, Optional<Events> events, Optional<Review> review) {
+public record CurrentZg361Ae2Source(Kind kind, Optional<Controls> controls, Optional<Events> events, Optional<Review> review, Optional<Scoreboard> scoreboard) {
     public enum Kind {
-        CONTROLS("controls"), EVENTS("events"), REVIEW("review");
+        CONTROLS("controls"), EVENTS("events"), REVIEW("review"), SCOREBOARD("scoreboard");
         private final String wire;
         Kind(String wire) { this.wire = wire; }
         public String wire() { return wire; }
@@ -246,16 +246,63 @@ public record CurrentZg361Ae2Source(Kind kind, Optional<Controls> controls, Opti
         }
     }
 
+    /** Complete physical scoreboard DATA only; no private open/close claim is created. */
+    public record Scoreboard(boolean complete, boolean windowFound, boolean windowVisible, boolean windowEnabled,
+            boolean modalFound, boolean modalVisible, boolean modalEnabled, int windowNodes, int modalChildren,
+            Optional<String> openEntry, boolean openAdmissible, boolean closeAdmissible) {
+        public Scoreboard {
+            Objects.requireNonNull(openEntry);
+            StrictJson.require(complete && windowNodes >= 0 && windowNodes <= 4096
+                    && modalChildren >= 0 && modalChildren <= 4096, "Complete bounded physical scoreboard census required");
+            StrictJson.require(windowFound == (windowNodes > 0), "Scoreboard window presence/count differ");
+            if (!windowFound) StrictJson.require(!windowVisible && !windowEnabled && !modalFound,
+                    "Absent scoreboard window cannot expose its physical flags/modal");
+            if (!modalFound) StrictJson.require(!modalVisible && !modalEnabled && modalChildren == 0,
+                    "Absent scoreboard modal cannot expose its physical flags/children");
+            openEntry.ifPresent(entry -> StrictJson.require(Set.of("zg361_scoreboard_entry_managed",
+                    "zg361_scoreboard_entry_received", "zg361_scoreboard_entry_system").contains(entry),
+                    "Only an actual fixed scoreboard entry name is public DATA"));
+            if (openAdmissible) StrictJson.require(windowFound && windowVisible && windowEnabled
+                    && !modalVisible && openEntry.isPresent(), "Scoreboard open necessary physical conditions differ");
+            if (closeAdmissible) StrictJson.require(windowFound && windowVisible && windowEnabled
+                    && modalFound && modalVisible && modalEnabled, "Scoreboard close necessary physical conditions differ");
+        }
+        static Scoreboard decode(JsonNode node) throws IOException {
+            var r = StrictJson.object(node,Set.of("complete","window_found","window_visible","window_enabled",
+                    "modal_found","modal_visible","modal_enabled","window_nodes","modal_children","open_entry",
+                    "open_admissible","close_admissible"));
+            return new Scoreboard(b(r,"complete"),b(r,"window_found"),b(r,"window_visible"),b(r,"window_enabled"),
+                    b(r,"modal_found"),b(r,"modal_visible"),b(r,"modal_enabled"),
+                    CurrentLivingInventoryQuery.i32(r.get("window_nodes")),CurrentLivingInventoryQuery.i32(r.get("modal_children")),
+                    r.get("open_entry").isNull()?Optional.empty():Optional.of(NativeWire.text(r.get("open_entry"))),
+                    b(r,"open_admissible"),b(r,"close_admissible"));
+        }
+        ObjectNode encode() {
+            var r = StrictJson.object().put("complete",complete).put("window_found",windowFound)
+                    .put("window_visible",windowVisible).put("window_enabled",windowEnabled)
+                    .put("modal_found",modalFound).put("modal_visible",modalVisible).put("modal_enabled",modalEnabled)
+                    .put("window_nodes",windowNodes).put("modal_children",modalChildren)
+                    .put("open_admissible",openAdmissible).put("close_admissible",closeAdmissible);
+            if (openEntry.isPresent()) r.put("open_entry",openEntry.orElseThrow()); else r.putNull("open_entry");
+            return r;
+        }
+    }
+
+    public CurrentZg361Ae2Source(Kind kind, Optional<Controls> controls, Optional<Events> events, Optional<Review> review) {
+        this(kind,controls,events,review,Optional.empty());
+    }
+
     public CurrentZg361Ae2Source(Kind kind, Optional<Controls> controls, Optional<Events> events) {
-        this(kind,controls,events,Optional.empty());
+        this(kind,controls,events,Optional.empty(),Optional.empty());
     }
 
     public CurrentZg361Ae2Source {
-        Objects.requireNonNull(kind); Objects.requireNonNull(controls); Objects.requireNonNull(events); Objects.requireNonNull(review);
+        Objects.requireNonNull(kind); Objects.requireNonNull(controls); Objects.requireNonNull(events); Objects.requireNonNull(review); Objects.requireNonNull(scoreboard);
         StrictJson.require(switch (kind) {
-            case CONTROLS -> controls.isPresent() && events.isEmpty() && review.isEmpty();
-            case EVENTS -> controls.isEmpty() && events.isPresent() && review.isEmpty();
-            case REVIEW -> controls.isEmpty() && events.isEmpty() && review.isPresent();
+            case CONTROLS -> controls.isPresent() && events.isEmpty() && review.isEmpty() && scoreboard.isEmpty();
+            case EVENTS -> controls.isEmpty() && events.isPresent() && review.isEmpty() && scoreboard.isEmpty();
+            case REVIEW -> controls.isEmpty() && events.isEmpty() && review.isPresent() && scoreboard.isEmpty();
+            case SCOREBOARD -> controls.isEmpty() && events.isEmpty() && review.isEmpty() && scoreboard.isPresent();
         }, "Exact AE2 Source union required");
     }
 
@@ -270,6 +317,8 @@ public record CurrentZg361Ae2Source(Kind kind, Optional<Controls> controls, Opti
             case CONFIRM_PRESENT -> controls.orElseThrow().row(Control.PRESENT).map(ControlRow::confirmAdmissible).orElse(false);
             case CONFIRM_VERIFY -> controls.orElseThrow().row(Control.VERIFY).map(ControlRow::confirmAdmissible).orElse(false);
             case OPEN_REVIEW_DETAIL -> review.orElseThrow().openDetailAdmissible();
+            case OPEN_SCOREBOARD -> scoreboard.orElseThrow().openAdmissible();
+            case CLOSE_SCOREBOARD -> scoreboard.orElseThrow().closeAdmissible();
             case CHOOSE_PAY_NOW -> events.orElseThrow().ae2().map(Ae2::payNowAdmissible).orElse(false);
             default -> false;
         };
@@ -280,8 +329,10 @@ public record CurrentZg361Ae2Source(Kind kind, Optional<Controls> controls, Opti
             var object = NativeWire.object(node);
             Kind kind = Kind.parse(NativeWire.text(object.get("kind")));
             var r = StrictJson.object(object,kind == Kind.REVIEW ? Set.of("schema","kind","review")
+                    : kind == Kind.SCOREBOARD ? Set.of("schema","kind","scoreboard")
                     : Set.of("schema","kind","controls","events"));
             CurrentLivingInventoryQuery.identity(r,"schema",CurrentZg361Ae2.SOURCE_SCHEMA);
+            if (kind == Kind.SCOREBOARD) return new CurrentZg361Ae2Source(kind,Optional.empty(),Optional.empty(),Optional.empty(),Optional.of(Scoreboard.decode(r.get("scoreboard"))));
             if (kind == Kind.REVIEW) return new CurrentZg361Ae2Source(kind,Optional.empty(),Optional.empty(),Optional.of(Review.decode(r.get("review"))));
             return new CurrentZg361Ae2Source(kind,
                     r.get("controls").isNull() ? Optional.empty() : Optional.of(Controls.decode(r.get("controls"))),
@@ -290,6 +341,7 @@ public record CurrentZg361Ae2Source(Kind kind, Optional<Controls> controls, Opti
     }
     public ObjectNode encode() {
         var r = StrictJson.object().put("schema",CurrentZg361Ae2.SOURCE_SCHEMA).put("kind",kind.wire());
+        if (kind == Kind.SCOREBOARD) { r.set("scoreboard",scoreboard.orElseThrow().encode()); return r; }
         if (kind == Kind.REVIEW) { r.set("review",review.orElseThrow().encode()); return r; }
         if (controls.isPresent()) r.set("controls",controls.orElseThrow().encode()); else r.putNull("controls");
         if (events.isPresent()) r.set("events",events.orElseThrow().encode()); else r.putNull("events"); return r;

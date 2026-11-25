@@ -24,6 +24,8 @@ public final class CurrentZg361Ae2 {
     public static final String PAY_CAPABILITY = "game.command.current-zg361-ae2-pay-now.v1";
     public static final String REVIEW_QUERY_CAPABILITY = "game.query.current-zg361-review-requirements.v1";
     public static final String REVIEW_DETAIL_CAPABILITY = "game.command.current-zg361-review-detail.v1";
+    public static final String SCOREBOARD_QUERY_CAPABILITY = "game.query.current-zg361-scoreboard.v1";
+    public static final String SCOREBOARD_COMMAND_CAPABILITY = "game.command.current-zg361-scoreboard-open-close.v1";
     public static final String REVIEW_DEFINITION = "zg361_review_now_decision";
     public static final String EVENT_DEFINITION = "zg361comp.1";
     public static final int AUTHORED_COUNT = 42;
@@ -38,7 +40,10 @@ public final class CurrentZg361Ae2 {
         OPEN_VERIFY_DETAIL("open_verify_detail", CurrentZg361Ae2Source.Kind.CONTROLS, false),
         CONFIRM_VERIFY("confirm_verify", CurrentZg361Ae2Source.Kind.CONTROLS, false),
         QUERY_REVIEW_REQUIREMENTS("query_review_requirements", CurrentZg361Ae2Source.Kind.REVIEW, true),
-        OPEN_REVIEW_DETAIL("open_review_detail", CurrentZg361Ae2Source.Kind.REVIEW, false);
+        OPEN_REVIEW_DETAIL("open_review_detail", CurrentZg361Ae2Source.Kind.REVIEW, false),
+        QUERY_SCOREBOARD("query_scoreboard", CurrentZg361Ae2Source.Kind.SCOREBOARD, true),
+        OPEN_SCOREBOARD("open_scoreboard", CurrentZg361Ae2Source.Kind.SCOREBOARD, false),
+        CLOSE_SCOREBOARD("close_scoreboard", CurrentZg361Ae2Source.Kind.SCOREBOARD, false);
 
         private final String wire;
         private final CurrentZg361Ae2Source.Kind sourceKind;
@@ -51,6 +56,8 @@ public final class CurrentZg361Ae2 {
         public boolean queryOnly() { return queryOnly; }
         public String step() { return STEP; }
         public String capability() {
+            if (this == QUERY_SCOREBOARD) return SCOREBOARD_QUERY_CAPABILITY;
+            if (this == OPEN_SCOREBOARD || this == CLOSE_SCOREBOARD) return SCOREBOARD_COMMAND_CAPABILITY;
             if (this == QUERY_REVIEW_REQUIREMENTS) return REVIEW_QUERY_CAPABILITY;
             if (this == OPEN_REVIEW_DETAIL) return REVIEW_DETAIL_CAPABILITY;
             return queryOnly ? QUERY_CAPABILITY : this == CHOOSE_PAY_NOW ? PAY_CAPABILITY : CONTROLS_CAPABILITY;
