@@ -47,10 +47,17 @@ struct GuiWindowDiagnostic267V1 {
  n.name.assign(text.data(),static_cast<std::size_t>(n.name_size));n.visible=(n.flags&0x18)==0;n.enabled=(n.flags&0x06)==0;
  out=std::move(n);return true;
 }
+// Fixed product target only. The carrier retains its actual middle ancestor;
+// public v11 emits a target-local view without changing physical identities.
+[[maybe_unused]]bool ReadFixedScoreboardTarget267V1(ReadonlyContext&,
+ const ck3_11906::MainThreadExecutionStampV1&,const ck3_1210::CoreSnapshotPrefix&,
+ GuiWindowV1&,const OwnerInvocationV1&,GuiWindowDiagnostic267V1*) noexcept;
 bool ReadGuiWindowV1([[maybe_unused]]ReadonlyContext &q,
  [[maybe_unused]]const ck3_11906::MainThreadExecutionStampV1 &stamp,
  [[maybe_unused]]const ck3_1210::CoreSnapshotPrefix &core,[[maybe_unused]]GuiWindowV1 &out,
  [[maybe_unused]]const OwnerInvocationV1 &invocation={},[[maybe_unused]]GuiWindowDiagnostic267V1*diagnostic=nullptr) noexcept {
+ if(q.gui_window_request&&q.gui_window_request->window_name=="zg361_scoreboard_window")
+  return ReadFixedScoreboardTarget267V1(q,stamp,core,out,invocation,diagnostic);
 #if !defined(XAR_CK3_ENABLE_121003_26785313_GUI_WINDOW_V1)
  return false;
 #else
@@ -208,5 +215,77 @@ struct GuiWindowName267V1 {
   }
   if(!valid())return fail("target_window_final_owner_or_deadline");out=std::move(v);return true;
  }catch(...){return fail("target_window_capture_exception");}
+#endif
+}
+
+// Only the actual layer=middle fixed scoreboard root is descended. Global and
+// middle direct-child name inventories remain bounded/unique; unrelated branch
+// descendant arrays are never read.4096 counts the physical middle binding plus
+// the complete selected subtree; rejection never publishes a prefix.
+[[maybe_unused]]bool ReadFixedScoreboardTarget267V1(ReadonlyContext&q,
+ const ck3_11906::MainThreadExecutionStampV1&stamp,const ck3_1210::CoreSnapshotPrefix&core,
+ GuiWindowV1&out,const OwnerInvocationV1&invocation,GuiWindowDiagnostic267V1*diagnostic) noexcept {
+#if !defined(XAR_CK3_ENABLE_121003_26785313_GUI_WINDOW_V1)
+ (void)q;(void)stamp;(void)core;(void)out;(void)invocation;(void)diagnostic;return false;
+#else
+ try{
+  const auto stage=[&](const char*name,const char*scope){if(diagnostic){diagnostic->stage=name;diagnostic->scope=scope;}};
+  const auto valid=[&](){const auto wall=std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();return q.gui_window_request&&wall>=0&&static_cast<std::uint64_t>(wall)<q.gui_window_request->deadline_unix_ms&&Owner(q,stamp,invocation);};
+  stage("fixed_request","request");
+  if(!q.gui_window_request||!q.gui_window_request->connection_generation||!valid()||!Same(q.gui_window_request->expected_core,core)||
+    (q.gui_window_request->window_name!="middle"&&q.gui_window_request->window_name!="zg361_scoreboard_window")||!VerifyGuiWindowImageV1(q.bindings.module_base))return false;
+  const bool public_target=q.gui_window_request->window_name=="zg361_scoreboard_window";
+  const auto base=q.bindings.module_base;GuiWindowV1 v;std::uintptr_t vt=0;
+  v.requested_name=q.gui_window_request->window_name;v.connection_generation=q.gui_window_request->connection_generation;
+  v.ticket_sequence=q.ticket.sequence;v.pump_epoch=stamp.pump_epoch;v.owner_thread_id=stamp.thread_id;
+  stage("fixed_application_root","global");
+  if(!At(reinterpret_cast<std::uintptr_t>(q.bindings.core.jomini_state_slot),0,v.logical_owner)||
+   !At(v.logical_owner,0x18,v.application)||!At(v.application,0,vt)||vt!=base+kGuiRootApplicationVtableRvaV1||
+   !At(v.application,0x1B8,v.first)||!At(v.first,0x58,v.context)||!v.context||
+   !At(v.context,0xD0,v.global_root)||!GuiWindowNodeReadV1(base,v.global_root,v.context,0,v.root,diagnostic))return false;
+  std::unordered_set<std::uintptr_t>seen{v.global_root};std::size_t names=v.root.name.size();std::optional<GuiWindowNodeV1>middle;
+  stage("fixed_middle_locator","global");
+  for(std::int32_t i=0;i<v.root.child_count;++i){std::uintptr_t p=0;GuiWindowNodeV1 n;
+   if(!valid()||!At(v.root.children,static_cast<std::size_t>(i)*8,p)||!seen.insert(p).second||!GuiWindowNodeReadV1(base,p,v.context,v.global_root,n,diagnostic))return false;
+   n.sibling_index=static_cast<std::uint32_t>(i);n.visible=n.visible&&v.root.visible;n.enabled=n.enabled&&v.root.enabled;
+   names+=n.name.size();if(names>131072)return false;
+   if(n.name=="middle"){if(middle){stage("fixed_middle_ambiguous","global");return false;}middle=n;}
+   v.top_level.push_back(std::move(n));
+  }
+  if(!middle){stage("fixed_middle_missing","global");return false;}
+  v.tree.push_back(*middle);std::optional<GuiWindowName267V1>target;std::uint32_t sibling=0;
+  stage("fixed_target_locator","middle");
+  for(std::int32_t i=0;i<middle->child_count;++i){std::uintptr_t p=0;GuiWindowName267V1 n;
+   if(!valid()||!At(middle->children,static_cast<std::size_t>(i)*8,p)||!seen.insert(p).second||
+     !GuiWindowNameRead267V1(base,p,v.context,middle->widget,n)||(n.flags&1)!=0)return false;
+   names+=n.name.size();if(names>131072)return false;
+   if(n.name=="zg361_scoreboard_window"){if(target){stage("fixed_target_ambiguous","middle");return false;}target=n;sibling=static_cast<std::uint32_t>(i);}
+  }
+  v.window_found=!public_target||target.has_value();
+  if(target){GuiWindowNodeV1 selected;stage("fixed_target_header","target");
+   if(!GuiWindowNodeReadV1(base,target->widget,v.context,middle->widget,selected,diagnostic)||!GuiWindowNameMatches267V1(*target,selected))return false;
+   selected.parent_index=0;selected.depth=1;selected.sibling_index=sibling;
+   selected.visible=selected.visible&&middle->visible;selected.enabled=selected.enabled&&middle->enabled;
+   v.tree.push_back(std::move(selected));std::vector<std::size_t>todo{1};
+   while(!todo.empty()){const auto index=todo.back();todo.pop_back();const auto parent=v.tree[index];
+    stage("fixed_target_owner_or_depth","target");
+    if(diagnostic){diagnostic->nodes=v.tree.size();diagnostic->names=names;diagnostic->depth=parent.depth;diagnostic->count=parent.child_count;diagnostic->capacity=parent.child_capacity;diagnostic->count_known=diagnostic->capacity_known=true;diagnostic->flags=parent.flags;diagnostic->flags_known=true;}
+    if(!valid()||(parent.depth>=kGuiWindowMaxDepthV1&&parent.child_count))return false;
+    for(std::int32_t i=0;i<parent.child_count;++i){std::uintptr_t p=0;GuiWindowNodeV1 n;
+     if(diagnostic)diagnostic->nodes=v.tree.size();
+     if(v.tree.size()>=kGuiWindowMaxNodesV1){stage("tree_node_budget","fixed_target");return false;}
+     stage("fixed_target_node","target");
+     if(!At(parent.children,static_cast<std::size_t>(i)*8,p)||!seen.insert(p).second||!GuiWindowNodeReadV1(base,p,v.context,parent.widget,n,diagnostic))return false;
+     n.parent_index=static_cast<std::int32_t>(index);n.depth=parent.depth+1;n.sibling_index=static_cast<std::uint32_t>(i);
+     n.visible=n.visible&&parent.visible;n.enabled=n.enabled&&parent.enabled;
+     names+=n.name.size();if(names>131072){stage("fixed_target_names","target");return false;}
+     todo.push_back(v.tree.size());v.tree.push_back(std::move(n));
+    }
+   }
+  }
+  stage("fixed_final_owner","final");if(!valid())return false;
+  if(diagnostic){diagnostic->nodes=v.tree.size();diagnostic->names=names;diagnostic->stage="complete";}
+  out=std::move(v);return true;
+ }catch(...){if(diagnostic)diagnostic->stage="fixed_cpp_exception";return false;}
 #endif
 }

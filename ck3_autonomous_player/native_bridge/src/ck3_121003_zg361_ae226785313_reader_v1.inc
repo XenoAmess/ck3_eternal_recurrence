@@ -49,7 +49,7 @@ bool ReadZg361Ae2FrameOnOwner267V1(const ReadonlyBindings&b,
     request.deadline_unix_ms=r.deadline_unix_ms;request.expected_core=f.core;request.window_name="middle";
     q.gui_window_request=request;f.scoreboard.emplace();
     if(!request.connection_generation)return failed("connection");
-    if(!ReadGuiWindowV1(q,s,f.core,*f.scoreboard,invocation,&gui))return failed("middle");
+    if(!ReadFixedScoreboardTarget267V1(q,s,f.core,*f.scoreboard,invocation,&gui))return failed("middle");
     if(!f.scoreboard->window_found)return failed("middle_missing");
     if(!world(f))return failed("world");
     return true;
