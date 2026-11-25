@@ -1,0 +1,70 @@
+{
+  "schema": "xfm-real-mouse-visual-negative-v1",
+  "machine_id": "4-8e1c2f1861",
+  "run_id": "4-8e1c2f1861--financial-markets--R0083",
+  "at_utc": "2026-11-25T04:46:36.209994+00:00",
+  "runtime": "Public gui_only; actualCK3 1.21.0.3; no Native injection",
+  "payload": "Exact publishedAlpha2 236 files copied into isolated profile",
+  "desktop": [
+    1024,
+    768
+  ],
+  "settings_fullscreen_resolution": "2560x1440; capture reflects actual1024x768 desktop, no resolution normalization claim",
+  "physical_positive": {
+    "coin_row_selection": "Mouse at[415,395] changed selectedcoin7/0.53 to coin13/0.87 and limit0.87",
+    "before": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\market-before01.png",
+      "bytes": 1181066,
+      "sha256": "8c6516b3ac8d01e525990a3451246e572c285e7f7c83f1f31f23c144c0970f3b"
+    },
+    "after": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\coin13-select01-after.png",
+      "bytes": 1176815,
+      "sha256": "0d90cecdb05b311f62f6ed2094d61f71e4928a3c984114e1016f83d2fbf4dce9"
+    },
+    "input": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\coin13-select01.actual.json",
+      "bytes": 3026,
+      "sha256": "bbd1e3d310ca4f9c12b0445c45056ffb03ef4b17e459b34c030e1209f8a72a5c"
+    },
+    "close_market": "Mouse at[831,90] closed market and revealed paused map"
+  },
+  "model_visual_result": "FAIL: six tabs absent; wallet controls absent/large blank; filter and navigation overlap list; list columns unclear; orderbook columns poorly aligned",
+  "model_report": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\model-review01\\visual-review.md",
+    "bytes": 3574,
+    "sha256": "1f967550f524a2058332ed49502a4b11aaf9e9b3e5fdb628cddfe9ac444a2f16"
+  },
+  "whole_gui_acceptance": false,
+  "normal_quit": {
+    "reviewed_source": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\quit-game01-after.png",
+      "bytes": 830522,
+      "sha256": "56d6097f9a392eb135d7c19786b53252df9b1768ff0581016f7e41aab568b135"
+    },
+    "mouse_input": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\quit-desktop01.actual.json",
+      "bytes": 3024,
+      "sha256": "aa533e4f49883a32b19a5e7ab294e161e83d54e3c8eb2117d31bfba5cba3c500"
+    },
+    "autosave_checkbox": "Visibly unchecked; no Save requested",
+    "original_exit": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\gui-runtime-preparation01\\runs\\4-8e1c2f1861--financial-markets--R0083\\game-exit.json",
+      "bytes": 253,
+      "sha256": "10dd730537816c0ad0a4bb6c9334ad4e79a62e0e05331b760f37349de8d3f51e"
+    },
+    "keeper": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\gui-runtime-preparation01\\runs\\4-8e1c2f1861--financial-markets--R0083\\keeper-report.json",
+      "bytes": 369,
+      "sha256": "9495e1d6b2567fb58e2284511a222538b24c04a1e7f3a92f374459a4192d2381"
+    },
+    "release": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\gui-runtime-preparation01\\runs\\4-8e1c2f1861--financial-markets--R0083\\screen-release.json",
+      "bytes": 1189,
+      "sha256": "b2c888d6e43bd904960868344ec113f7fecb0f03bbfd49c5be1996615245b53f"
+    }
+  },
+  "no_new_Date_observed": "Loaded and exit paused map remained1067.6.7; no game date advancement requested",
+  "no_native_or_full_financial_business_credit": true,
+  "earlier_helper_failures": "Capture synchronous no-op window call waited during load; changed to conditional async; first Escape guard failed GBK bus decoding before input, next child-only PYTHONUTF8 call succeeded. Original failures retained; no key/mouse replay of unknown action."
+}
