@@ -7,16 +7,40 @@
         hbox = { spacing = 10 button_standard = { name = "xfm_market_buy" size = { 190 34 } text = "xfm_market_buy" enabled = "[GetScriptedGui( 'xfm_market_buy_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" tooltip = "[GetScriptedGui( 'xfm_market_buy_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_buy_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" } button_standard = { name = "xfm_market_sell" size = { 190 34 } text = "xfm_market_sell" enabled = "[GetScriptedGui( 'xfm_market_sell_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" tooltip = "[GetScriptedGui( 'xfm_market_sell_gui' ).IsValidTooltip( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" onclick = "[GetScriptedGui( 'xfm_market_sell_gui' ).Execute( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" } }
         text_multi = { text = "xfm_market_spot_terms_brief" tooltip = "xfm_market_spot_terms" max_width = 410 autoresize = yes default_format = "#weak" }
         text_label_left = { text = "xfm_market_book_title" }
-        hbox = { size = { 400 150 } layoutpolicy_horizontal = expanding layoutpolicy_vertical = fixed spacing = 8
-            vbox = { size = { 192 150 } layoutpolicy_vertical = fixed spacing = 4
-                text_single = { text = "xfm_market_bid" }
-                vbox = { layoutpolicy_horizontal = expanding datamodel = "[GetPlayer.MakeScope.GetList( 'xfm_ui_bids' )]" item = { text_single = { text = "xfm_market_book_row" } } }
-                expand = { layoutpolicy_vertical = growing }
+        widget = {
+            name = "xfm_market_spot_book"
+            size = { 400 150 } layoutpolicy_horizontal = expanding layoutpolicy_vertical = fixed
+            text_single = {
+                name = "xfm_market_spot_bid_heading"
+                parentanchor = top|left widgetanchor = top|left position = { 0 0 } size = { 192 24 }
+                text = "xfm_market_bid" align = center|nobaseline autoresize = no
             }
-            vbox = { size = { 192 150 } layoutpolicy_vertical = fixed spacing = 4
-                text_single = { text = "xfm_market_ask" }
-                vbox = { layoutpolicy_horizontal = expanding datamodel = "[GetPlayer.MakeScope.GetList( 'xfm_ui_asks' )]" item = { text_single = { text = "xfm_market_book_row" } } }
-                expand = { layoutpolicy_vertical = growing }
+            widget = {
+                name = "xfm_market_spot_bid_quotes"
+                parentanchor = top|left widgetanchor = top|left position = { 0 28 } size = { 192 120 }
+                fixedgridbox = {
+                    name = "xfm_market_spot_bid_grid"
+                    parentanchor = top|left widgetanchor = top|left
+                    datamodel = "[GetPlayer.MakeScope.GetList( 'xfm_ui_bids' )]"
+                    addcolumn = 192 addrow = 24 datamodel_wrap = 1 maxhorizontalslots = 1 flipdirection = yes
+                    item = { text_single = { size = { 192 24 } text = "xfm_market_book_row" align = center|nobaseline autoresize = no } }
+                }
+            }
+            text_single = {
+                name = "xfm_market_spot_ask_heading"
+                parentanchor = top|left widgetanchor = top|left position = { 208 0 } size = { 192 24 }
+                text = "xfm_market_ask" align = center|nobaseline autoresize = no
+            }
+            widget = {
+                name = "xfm_market_spot_ask_quotes"
+                parentanchor = top|left widgetanchor = top|left position = { 208 28 } size = { 192 120 }
+                fixedgridbox = {
+                    name = "xfm_market_spot_ask_grid"
+                    parentanchor = top|left widgetanchor = top|left
+                    datamodel = "[GetPlayer.MakeScope.GetList( 'xfm_ui_asks' )]"
+                    addcolumn = 192 addrow = 24 datamodel_wrap = 1 maxhorizontalslots = 1 flipdirection = yes
+                    item = { text_single = { size = { 192 24 } text = "xfm_market_book_row" align = center|nobaseline autoresize = no } }
+                }
             }
         }
         text_multi = { visible = "[GetScriptedGui( 'xfm_market_receipt_gui' ).IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]" text = "xfm_market_last_receipt" max_width = 400 autoresize = yes }

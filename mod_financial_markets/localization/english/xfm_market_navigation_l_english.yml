@@ -1,0 +1,3 @@
+﻿l_english:
+ xfm_market_previous_page_tooltip:0 "Show the previous page. Unavailable on page 1."
+ xfm_market_next_page_tooltip:0 "Show the next page. Unavailable when there are no more results."

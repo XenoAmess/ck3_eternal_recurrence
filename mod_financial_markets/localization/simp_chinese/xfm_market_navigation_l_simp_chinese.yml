@@ -1,0 +1,3 @@
+﻿l_simp_chinese:
+ xfm_market_previous_page_tooltip:0 "返回上一页；第 1 页时不可用。"
+ xfm_market_next_page_tooltip:0 "查看下一页；已无更多结果时不可用。"
