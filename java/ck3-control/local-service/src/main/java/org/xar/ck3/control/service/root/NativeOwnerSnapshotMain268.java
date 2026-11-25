@@ -4056,7 +4056,7 @@ if(riteDraftCosts) {
             throw new IOException("Actual fixed scoreboard DATA refuses this action; no retry or UNKNOWN promotion");
     }
     static GuiWindowFrame.Partial requireCurrentZg361ScoreboardMiddle(GuiWindowFrame frame,CoreFrame.Prefix expected,java.math.BigInteger connection)throws IOException {
-        if(!(frame instanceof GuiWindowFrame.Partial partial)||!"middle".equals(partial.requestedWindow())
+        if(!(frame instanceof GuiWindowFrame.Partial partial)||!"zg361_scoreboard_window".equals(partial.requestedWindow())
                 ||!partial.ownerWitness().connectionGeneration().equals(connection))throw new IOException("Actual middle Source/session unavailable or changed");
         requireCurrentZg361Ae2SameCore(expected,requireCurrentRiteCreateCore(partial.coreFrame()));
         return partial; // A valid partial/windowAvailable=false is retained DATA.
@@ -4070,7 +4070,7 @@ if(riteDraftCosts) {
     }
     private static void readCurrentZg361ScoreboardMiddle(Zg361Ae2Run run,String label)throws IOException,InterruptedException {
         var before=run.core(label);stage="ZG361_SCOREBOARD_INDEPENDENT_MIDDLE";
-        var read=run.transport.readGuiWindowReceived(before,"middle",run.until(before));run.archive(label,read.original());
+        var read=run.transport.readGuiWindowReceived(before,"zg361_scoreboard_window",run.until(before));run.archive(label,read.original());
         run.result.put("read_calls",run.result.path("read_calls").intValue()+1).put("query_calls",run.result.path("query_calls").intValue()+1);
         if(!(read instanceof NativeGameTransport.GuiWindowReceived received))throw new IOException("Actual independent middle result unavailable; no replacement or retry");
         received.requireOriginal(run.transport,received.validUntil());var ack=received.original();

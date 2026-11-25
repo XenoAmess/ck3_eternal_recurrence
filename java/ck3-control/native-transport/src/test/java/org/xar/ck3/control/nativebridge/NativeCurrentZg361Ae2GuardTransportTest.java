@@ -234,10 +234,10 @@ final class NativeCurrentZg361Ae2GuardTransportTest {
     }
     private static GuiWindowFrame.Partial scoreboardMiddleData(DataPort port) {
         var nodes=new ArrayList<GuiWindowFrame.Node>();
-        nodes.add(new GuiWindowFrame.Node(0,java.util.OptionalInt.empty(),0,0,"middle",port.scoreboardOpened?1:0,true,true));
+        nodes.add(new GuiWindowFrame.Node(0,java.util.OptionalInt.empty(),0,0,"zg361_scoreboard_window",port.scoreboardOpened?1:0,true,true));
         if(port.scoreboardOpened)nodes.add(new GuiWindowFrame.Node(1,java.util.OptionalInt.of(0),0,1,"zg361_scoreboard_modal",0,true,true));
-        return new GuiWindowFrame.Partial(new CoreFrame.Partial(BUILD,port.prefix()),"middle",
-                List.of(new GuiWindowFrame.TopLevel("middle",true,true)),Optional.of(new GuiWindowFrame.Window(nodes)),
+        return new GuiWindowFrame.Partial(new CoreFrame.Partial(BUILD,port.prefix()),"zg361_scoreboard_window",
+                List.of(new GuiWindowFrame.TopLevel("zg361_scoreboard_window",true,true)),Optional.of(new GuiWindowFrame.Window(nodes)),
                 new GuiRootIndexFrame.OwnerWitness(T,BigInteger.valueOf(20),BigInteger.valueOf(30),7));
     }
     private static NativeGameTransport.Zg361Ae2Received scoreboardQuery(NativeGameTransport t,NativeGameTransport.CoreReceived c)throws Exception {
@@ -258,7 +258,7 @@ final class NativeCurrentZg361Ae2GuardTransportTest {
             assertFalse(initial.frame().source().orElseThrow().scoreboard().orElseThrow().modalVisible());
             var open=scoreboardAction(t,initial,CurrentZg361Ae2.Action.OPEN_SCOREBOARD);
             var openCore=core(t);var openMiddle=assertInstanceOf(NativeGameTransport.GuiWindowReceived.class,
-                    t.readGuiWindowReceived(openCore,"middle",openCore.validUntil()));
+                    t.readGuiWindowReceived(openCore,"zg361_scoreboard_window",openCore.validUntil()));
             var openTree=assertInstanceOf(GuiWindowFrame.Partial.class,openMiddle.frame());
             assertEquals(2,openTree.window().orElseThrow().nodes().size());
             assertEquals("zg361_scoreboard_modal",openTree.window().orElseThrow().nodes().get(1).name());
@@ -267,7 +267,7 @@ final class NativeCurrentZg361Ae2GuardTransportTest {
             assertTrue(closeQuery.frame().source().orElseThrow().scoreboard().orElseThrow().modalVisible());
             var close=scoreboardAction(t,closeQuery,CurrentZg361Ae2.Action.CLOSE_SCOREBOARD);
             var afterCore=core(t);var afterMiddle=assertInstanceOf(NativeGameTransport.GuiWindowReceived.class,
-                    t.readGuiWindowReceived(afterCore,"middle",afterCore.validUntil()));
+                    t.readGuiWindowReceived(afterCore,"zg361_scoreboard_window",afterCore.validUntil()));
             var afterTree=assertInstanceOf(GuiWindowFrame.Partial.class,afterMiddle.frame());
             assertEquals(1,afterTree.window().orElseThrow().nodes().size());
             assertEquals(afterTree,GuiWindowFramePublicCodec.decodeOutcome(afterMiddle.original()));
@@ -367,7 +367,7 @@ final class NativeCurrentZg361Ae2GuardTransportTest {
         public void writePacket(byte[] bytes,Instant deadline)throws IOException{
             verify();var request=NativeWire.decodeExecuteRequest(bytes);ObjectNode result;
             if(request.step().equals(CoreFrame.STEP)){if(scoreboardData)scoreboardCoreReads++;result=NativeWire.object(NativeWire.parse(CoreFramePublicCodec.encode(new CoreFrame.Partial(BUILD,prefix())).bytes()));}
-            else if(scoreboardData&&request.step().equals(GuiWindowFrame.STEP)){scoreboardMiddleReads++;result=NativeWire.object(NativeWire.parse(GuiWindowFramePublicCodec.encode(scoreboardMiddleData(this)).bytes()));}
+            else if(scoreboardData&&request.step().equals(GuiWindowFrame.STEP)){assertEquals("zg361_scoreboard_window",GuiWindowFramePublicCodec.decodeRequestPacket(bytes).windowName());scoreboardMiddleReads++;result=NativeWire.object(NativeWire.parse(GuiWindowFramePublicCodec.encode(scoreboardMiddleData(this)).bytes()));}
             else {
                 familyWrites++;var claim=NativeWire.parse(request.normalizedAdditionalFields().value()).get("arguments").get("zg361_ae2");var action=CurrentZg361Ae2.Action.parse(claim.get("action").textValue());boolean query=action.queryOnly();var source=query?source(action):before;
                 var provider=query?O:new BigInteger(claim.get("provider_generation").textValue());var seq=query?BigInteger.valueOf(++sequence):new BigInteger(claim.get("query_sequence").textValue());var status=CurrentZg361Ae2Result.Status.AVAILABLE;Optional<String> why=Optional.empty();Optional<CurrentZg361Ae2Source> observed=Optional.of(source);var facts=prefix();boolean attempted=!query,returned=!query;BigInteger consumed=Z;

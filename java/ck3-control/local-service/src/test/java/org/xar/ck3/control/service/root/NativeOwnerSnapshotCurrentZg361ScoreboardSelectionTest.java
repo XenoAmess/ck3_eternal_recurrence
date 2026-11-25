@@ -56,12 +56,21 @@ class NativeOwnerSnapshotCurrentZg361ScoreboardSelectionTest {
         var prefix=new CoreFrame.Prefix(-240,3,true,1,true,true,-2,true);
         var core=new CoreFrame.Partial(ExactCk3Build.CK3_121003_STEAM_26785313,prefix);
         var witness=new GuiRootIndexFrame.OwnerWitness(BigInteger.TWO,BigInteger.valueOf(20),BigInteger.valueOf(30),7);
-        var missingWindow=new GuiWindowFrame.Partial(core,"middle",List.of(),Optional.empty(),witness);
+        var missingWindow=new GuiWindowFrame.Partial(core,"zg361_scoreboard_window",List.of(),Optional.empty(),witness);
         assertSame(missingWindow,NativeOwnerSnapshotMain268.requireCurrentZg361ScoreboardMiddle(missingWindow,prefix,BigInteger.TWO));
         assertFalse(missingWindow.windowAvailable());assertEquals(missingWindow,GuiWindowFrame.decode(GuiWindowFramePublicCodec.encode(missingWindow)));
         assertThrows(IOException.class,()->NativeOwnerSnapshotMain268.requireCurrentZg361ScoreboardMiddle(missingWindow,prefix,BigInteger.ONE));
         var drift=new CoreFrame.Prefix(-239,3,true,1,true,true,-2,true);
         assertThrows(IOException.class,()->NativeOwnerSnapshotMain268.requireCurrentZg361ScoreboardMiddle(missingWindow,drift,BigInteger.TWO));
+        var layer=new GuiWindowFrame.Partial(core,"middle",List.of(),Optional.empty(),witness);
+        assertThrows(IOException.class,()->NativeOwnerSnapshotMain268.requireCurrentZg361ScoreboardMiddle(layer,prefix,BigInteger.TWO));
+        var root=new GuiWindowFrame.Node(0,java.util.OptionalInt.empty(),0,0,"zg361_scoreboard_window",1,true,true);
+        var modal=new GuiWindowFrame.Node(1,java.util.OptionalInt.of(0),0,1,"zg361_scoreboard_modal",0,false,false);
+        var complete=new GuiWindowFrame.Partial(core,"zg361_scoreboard_window",List.of(new GuiWindowFrame.TopLevel("zg361_scoreboard_window",true,true)),Optional.of(new GuiWindowFrame.Window(List.of(root,modal))),witness);
+        assertSame(complete,NativeOwnerSnapshotMain268.requireCurrentZg361ScoreboardMiddle(complete,prefix,BigInteger.TWO));
+        assertEquals(complete,GuiWindowFrame.decode(GuiWindowFramePublicCodec.encode(complete)));
+        var truncated=new GuiWindowFrame.Node(0,java.util.OptionalInt.empty(),0,0,"zg361_scoreboard_window",2,true,true);
+        assertThrows(IllegalArgumentException.class,()->new GuiWindowFrame.Window(List.of(truncated,modal)));
         var other=new GuiWindowFrame.Partial(core,"other_window",List.of(),Optional.empty(),witness);
         assertThrows(IOException.class,()->NativeOwnerSnapshotMain268.requireCurrentZg361ScoreboardMiddle(other,prefix,BigInteger.TWO));
     }
