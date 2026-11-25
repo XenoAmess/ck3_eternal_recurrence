@@ -2321,6 +2321,81 @@ def render_scripted_guis() -> bytes:
     return encoded("\n".join(lines))
 
 
+def _row_model_index(depth: int) -> str:
+    widget = "PdxGuiWidget" + ".AccessParent" * depth
+    return (
+        f"Min_int32( Max_int32( {widget}.GetIndexInDataModel, '(int32)0' ), "
+        f"'(int32){SLOT_COUNT - 1}' )"
+    )
+
+def _row_model_slot_text(depth: int) -> str:
+    index = _row_model_index(depth)
+    return (
+        f"Concatenate( Select_CString( LessThan_int32( {index}, '(int32)9' ), '0', '' ), "
+        f"IntToString( Add_int32( {index}, '(int32)1' ) ) )"
+    )
+
+def _row_model_key(prefix: str, field: str, depth: int) -> str:
+    return f"JoinText( {_row_model_slot_text(depth)}, 'zg361_sb_{prefix}_', '_{field}' )"
+
+def _row_model_binding_depth(prefix: str, line: str) -> int | None:
+    base = f"zg361_sb_{prefix}_01_"
+    if f'name = "zg361_scoreboard_detail_button_{prefix}_01"' in line:
+        return 1
+    if f"'{base}available_gui'" in line or f"'{base}char'" in line:
+        return 0
+    if any(f"'{base}{field}'" in line for field in ("rank", "kpi", "values", "grade", "streak")):
+        return 3
+    if any(f"'{base}{field}'" in line for field in ("title", "title_available_gui", "promotion_gui", "pip_gui")):
+        return 4
+    if base in line:
+        raise ValueError(f"Unmapped scoreboard row binding: {line}")
+    return None
+
+def _row_model_bindings(prefix: str, source_lines: list[str]) -> list[str]:
+    if prefix not in ("m", "r"):
+        raise ValueError("Fixed managed/received row source required")
+    pattern = re.compile(rf"(Var|GetScriptedGui)\('zg361_sb_{prefix}_01_([a-zA-Z0-9_]+)'\)")
+    result = []
+    for source_index, source_line in enumerate(source_lines):
+        depth = _row_model_binding_depth(prefix, source_line)
+        line = source_line
+        if depth is not None:
+            line = pattern.sub(lambda m: f"{m.group(1)}({_row_model_key(prefix, m.group(2), depth)})", line)
+        line = line.replace(
+            f'name = "zg361_scoreboard_detail_button_{prefix}_01"',
+            f'name = "zg361_scoreboard_detail_button_{prefix}_row"',
+        )
+        result.append(line)
+        if source_index == 0:
+            if line != "hbox = {":
+                raise ValueError("Existing row hbox root required")
+            result.append(f'\tname = "zg361_scoreboard_model_row_{prefix}"')
+    return result
+
+def _row_model_gui(prefix: str, page_visible: str, source_lines: list[str]) -> list[str]:
+    source = "managed" if prefix == "m" else "received"
+    if prefix not in ("m", "r") or not (page_visible.startswith("[") and page_visible.endswith("]")):
+        raise ValueError("Existing fixed scoreboard page visibility required")
+    shown = f"GetPlayer.MakeScope.Var('zg361_scoreboard_{source}_shown_n').GetValue"
+    legacy = f"GetPlayer.MakeScope.Var('zg361_scoreboard_{source}_n').GetValue"
+    count = (
+        f"Min_int32( Max_int32( Select_int32( "
+        f"GetScriptedGui('zg361_scoreboard_{source}_shown_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), "
+        f"FixedPointToInt( {shown} ), FixedPointToInt( {legacy} ) ), '(int32)0' ), '(int32){SLOT_COUNT}' )"
+    )
+    active = f"And( GetVariableSystem.Exists('zg361_scoreboard_open'), {page_visible[1:-1]} )"
+    lines = [
+        "vbox = {",
+        f'\tname = "zg361_scoreboard_rows_{source}"',
+        "\tlayoutpolicy_horizontal = expanding spacing = 8",
+        f'\tdatamodel = "[RepeatedItem( Select_int32( {active}, {count}, \'(int32)0\' ) )]"',
+        "\titem = {",
+    ]
+    lines.extend("\t\t" + line for line in _row_model_bindings(prefix, source_lines))
+    lines.extend(["\t}", "}"])
+    return lines
+
 def row_gui(prefix: str, slot: int) -> list[str]:
     available = f"zg361_sb_{prefix}_{slot:02d}_available_gui"
     title_available = f"zg361_sb_{prefix}_{slot:02d}_title_available_gui"
@@ -2448,8 +2523,7 @@ def tab_gui(prefix: str) -> list[str]:
             "\t\t\t\tzg361_scoreboard_columns = {}",
         ]
     )
-    for slot in range(1, SLOT_COUNT + 1):
-        lines.extend("\t\t\t\t" + line for line in row_gui(prefix, slot))
+    lines.extend("\t\t\t\t" + line for line in _row_model_gui(prefix, visible, row_gui(prefix, 1)))
     lines.extend(["\t\t\t}", "\t\t}", "\t}", "}"])
     return lines
 

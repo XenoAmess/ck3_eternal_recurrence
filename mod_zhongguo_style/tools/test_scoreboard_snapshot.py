@@ -70,6 +70,9 @@ from gen_scoreboard_snapshot import (
     read_checked_in_scoreboard_effects,
     received_case_fields,
     row_gui,
+    _row_model_bindings,
+    _row_model_index,
+    _row_model_key,
     scoreboard_effect_purpose,
     validate_scoreboard_effect_call_arguments,
 )
@@ -1025,7 +1028,7 @@ class ScoreboardSnapshotTests(unittest.TestCase):
 
     def test_character_and_dossier_controls_are_siblings(self) -> None:
         for prefix in ("m", "r"):
-            row = row_gui(prefix, 1)
+            row = _row_model_bindings(prefix, row_gui(prefix, 1))
             character_index = next(
                 index
                 for index, line in enumerate(row)
@@ -1034,7 +1037,7 @@ class ScoreboardSnapshotTests(unittest.TestCase):
             detail_index = next(
                 index
                 for index, line in enumerate(row)
-                if f'name = "zg361_scoreboard_detail_button_{prefix}_01"' in line
+                if f'name = "zg361_scoreboard_detail_button_{prefix}_row"' in line
             )
             self.assertGreater(detail_index, character_index)
             self.assertTrue(row[character_index].startswith("\t"))
@@ -1044,8 +1047,8 @@ class ScoreboardSnapshotTests(unittest.TestCase):
                 "button_standard = {",
                 "\n".join(row[character_index:detail_index]),
             )
-        self.assertIn("zg361_sb_m_01_select_gui", "\n".join(row_gui("m", 1)))
-        received_row = "\n".join(row_gui("r", 1))
+        self.assertIn("'_select_gui'", "\n".join(_row_model_bindings("m", row_gui("m", 1))))
+        received_row = "\n".join(_row_model_bindings("r", row_gui("r", 1)))
         self.assertIn("zg361_sb_self_select_gui", received_row)
         self.assertIn("Character.IsPlayer", received_row)
 
@@ -1061,7 +1064,36 @@ class ScoreboardSnapshotTests(unittest.TestCase):
                 self.assertIn(f"zg361_sb_{prefix}_{slot:02d}_title", effects)
                 self.assertIn(f"zg361_sb_{prefix}_{slot:02d}_promotion", effects)
                 self.assertIn(f"zg361_sb_{prefix}_{slot:02d}_pip", effects)
-                self.assertIn(f"zg361_sb_{prefix}_{slot:02d}_char", gui)
+        # Resolve only model key expressions and model-local names. The
+        # unchanged original row producer remains the independent frozen-slot
+        # reference; this does not execute GUI expressions or qualify runtime
+        # AccessParent behavior.
+        depths = {"available_gui": 0, "char": 0, "rank": 3, "kpi": 3,
+                  "values": 3, "grade": 3, "streak": 3, "title": 4,
+                  "title_available_gui": 4, "promotion_gui": 4,
+                  "pip_gui": 4, "select_gui": 1}
+        for prefix in ("m", "r"):
+            template = "\n".join(_row_model_bindings(prefix, row_gui(prefix, 1)))
+            self.assertIn(f'name = "zg361_scoreboard_model_row_{prefix}"', gui)
+            for depth in (0, 1, 3, 4):
+                model_index = _row_model_index(depth)
+                self.assertIn("'(int32)0'", model_index)
+                self.assertIn("'(int32)79'", model_index)
+                self.assertIn("PdxGuiWidget" + ".AccessParent" * depth
+                              + ".GetIndexInDataModel", model_index)
+            for slot in range(1, SLOT_COUNT + 1):
+                resolved = template
+                for field, depth in depths.items():
+                    expression = _row_model_key(prefix, field, depth)
+                    resolved = resolved.replace(expression,
+                                                repr(f"zg361_sb_{prefix}_{slot:02d}_{field}"))
+                resolved = resolved.replace(
+                    f'\n\tname = "zg361_scoreboard_model_row_{prefix}"', "")
+                resolved = resolved.replace(f'detail_button_{prefix}_row',
+                                            f'detail_button_{prefix}_{slot:02d}')
+                self.assertEqual(resolved, "\n".join(row_gui(prefix, slot)))
+            self.assertIn(_row_model_key(prefix, "char", 0), gui)
+        self.assertEqual(gui.count("portrait_head_small = {"), 3)
         self.assertNotIn("GetList('zg361_scoreboard_managed')", gui)
         self.assertNotIn("Character.MakeScope.Var('zg361_kpi')", gui)
         self.assertNotIn("Character.MakeScope.Var('zg361_rank')", gui)
@@ -1069,7 +1101,7 @@ class ScoreboardSnapshotTests(unittest.TestCase):
         self.assertNotIn("GetScriptedGui('zg361_scoreboard_promotion_gui')", gui)
         self.assertNotIn("GetScriptedGui('zg361_scoreboard_pip_gui')", gui)
         self.assertNotIn("zg361_scoreboard_former_official", gui)
-        self.assertIn(".Var('zg361_sb_m_01_title').Title", gui)
+        self.assertIn("'_title' )).Title", gui)
         self.assertIn("zg361_scoreboard_managed_shown_n", gui)
         self.assertIn("zg361_scoreboard_received_shown_n", gui)
         self.assertEqual(
@@ -1516,10 +1548,10 @@ class ScoreboardSnapshotTests(unittest.TestCase):
             "Not(GetScriptedGui('zg361_scoreboard_received_available_gui')",
             toggle_body,
         )
-        self.assertEqual(gui.count("button_tertiary = {"), SLOT_COUNT * 2)
+        self.assertEqual(gui.count("button_tertiary = {"), 2)
         self.assertEqual(
             gui.count('onclick = "[DefaultOnCharacterClick(Character.GetID)]"'),
-            SLOT_COUNT * 2,
+            2,
         )
         # Every row opens the frozen character, then dismisses the modal.
         row_pattern = re.compile(
@@ -1528,7 +1560,19 @@ class ScoreboardSnapshotTests(unittest.TestCase):
             r"onclick\s*=\s*\"\[GetVariableSystem.Clear\('zg361_scoreboard_open'\)\]\"",
             re.S,
         )
-        self.assertEqual(len(row_pattern.findall(gui)), SLOT_COUNT * 2)
+        self.assertEqual(len(row_pattern.findall(gui)), 2)
+        # Two authored row templates retain80 independently bound slots
+        # each; a shown count of zero must not fall back to the legacy total.
+        for source in ("managed", "received"):
+            model = gui.split(f'name = "zg361_scoreboard_rows_{source}"', 1)[1]
+            model = model.split("\n", 3)[2]
+            self.assertIn("RepeatedItem(", model)
+            self.assertIn("GetVariableSystem.Exists('zg361_scoreboard_open')", model)
+            self.assertIn(f"zg361_scoreboard_{source}_shown_available_gui", model)
+            self.assertIn(f"zg361_scoreboard_{source}_shown_n", model)
+            self.assertIn(f"zg361_scoreboard_{source}_n", model)
+            self.assertIn("Min_int32( Max_int32( Select_int32(", model)
+            self.assertIn("'(int32)0' ), '(int32)80'", model)
         for tab in ("managed", "received", "system"):
             self.assertIn(
                 f"onclick = \"[GetVariableSystem.Set('zg361_scoreboard_tab', '{tab}')]\"",
@@ -1585,7 +1629,7 @@ class ScoreboardSnapshotTests(unittest.TestCase):
     def test_row_content_cannot_intercept_the_character_button(self) -> None:
         # The character portion of the row is one button. Every rendered leaf
         # passes pointer input through to it; the dossier control is its sibling.
-        row = row_gui("m", 1)
+        row = _row_model_bindings("m", row_gui("m", 1))
         interactive_leaves = [
             line
             for line in row

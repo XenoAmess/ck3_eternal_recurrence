@@ -1153,5 +1153,140 @@
       "bytes": 42932,
       "sha256": "2aa94b302369f6cdce08d5fe8a0c24db4e43efca39c5d242841d2c192861388e"
     }
+  },
+  "later_zgi_no_portrait_finite_load_diagnostic_PASS_a1705": {
+    "at_utc": "2026-11-25T04:13:06.874474+00:00",
+    "Root_END": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\zgi-no-portrait-finite-load-PASS-END-a1705.json",
+      "bytes": 4690,
+      "sha256": "5ce5ed557cf44072c91954cc7190017a0d74037c5d8868a0ec8223d67c94ebdc"
+    },
+    "status": "FINITE_PORTRAIT_ONLY_DIAGNOSTIC_SAVED_LOAD_NORMAL_EXIT_PASS_NOT_PRODUCTION_FIX",
+    "ready": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\zgi\\ready.json",
+      "bytes": 6228,
+      "sha256": "ecfad3a4cdf0c58448ea125cdbb6301c6bee0e467b9d79a6e81ecb04d9d0b64d"
+    },
+    "diagnostic_projection": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\zgi\\source\\candidate-restoration-proof.json",
+      "bytes": 8947,
+      "sha256": "f8ef5061c71ee8cf80df71ef2c91b9b6f36cd141b16bfe7e306a9473481af407"
+    },
+    "derived_diagnostic_manifest": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\zgi\\source\\no-portrait-derived-runtime-manifest.json",
+      "bytes": 214396,
+      "sha256": "78f3589d2d308f752df0cea9b3128d6feb48227efa545b19c0b31063d260cea5"
+    },
+    "actual_original_pair_sha256": "66a461cd34f226346da3efc43f8ef1a49cb4771965b6bd743b736a9b0fd54e7a",
+    "source_Save_sha256": "82178e0f4142b50e0d3d51914574eff8cccce84a187b4f622c80fd2c2c9e94b4",
+    "fixture_mounted": false,
+    "only_diagnostic_GUI_changed": true,
+    "actual_portrait_components_replaced_by_empty_85x90_widgets": 161,
+    "other1033_full_product_files_exact": true,
+    "registered_scoreboard_widget_unchanged": true,
+    "actual_core_prefix": {
+      "date_raw": 53144328,
+      "speed": 3,
+      "paused": true,
+      "local_player_id": 1,
+      "map_ready": true,
+      "has_played_character": true,
+      "played_character_id": 36423,
+      "played_character_alive": true
+    },
+    "core_summary": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\zgi\\operations\\zgi-a1704-core-a01\\result\\summary.json",
+      "bytes": 9446,
+      "sha256": "6ce4b9787f296ac89d08fe790980609f1c4edf292cdb8bf1a0e6d53f39691a5e"
+    },
+    "quit_summary": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\zgi\\operations\\zgi-a1704-quit-a02\\result\\summary.json",
+      "bytes": 13872,
+      "sha256": "5cac07cd5557a5f75cf93b431fc96888b7991e5245e525a0cbcee5b7a897f6ce"
+    },
+    "core_frame_kind_raw": "PARTIAL",
+    "complete_snapshot_raw": false,
+    "quit_normal_exit_confirmed_raw": false,
+    "independent_terminal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\zgi\\owner\\terminal.json",
+      "bytes": 1008,
+      "sha256": "fd4ce6cc6887ff00172171affd4ed4d9f464c0d3525546a1763c5d8cb363571e"
+    },
+    "creator_END": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\zgi\\creator-end.json",
+      "bytes": 515,
+      "sha256": "61e882d3241b40cfff9195e778c7d8d9cef164ecb723da6416ba4891cbe2dd37"
+    },
+    "Root_creator_session_collected": 56939,
+    "actual_terminal": {
+      "accounting": {
+        "active_processes": 0,
+        "limit_flags": 8704,
+        "memory_limit_bytes": 19327352832,
+        "peak_job_memory_bytes": 12019539968
+      },
+      "elapsed_seconds_decimal": "176.227854",
+      "exit_code": 0,
+      "identity": {
+        "creation_filetime_decimal": "134400527939197042",
+        "executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+        "pid": 26132
+      },
+      "stop_reason": null
+    },
+    "Job_active_processes": 0,
+    "cleanup_proven": true,
+    "Natural0": true,
+    "Core_reads": 1,
+    "normal_quit_calls": 1,
+    "Date_Save_or_product_business_calls": 0,
+    "source_and_copy_full_SHA_unchanged": true,
+    "actual_scene_held_allocation_bytes": 419026032,
+    "remaining_scene_future_bytes": 0,
+    "budget_refund": false,
+    "boundary": "161portraitinstancesreplacedwith85x90emptywidgets; alloutsidebytes/inverseexact. Thiscontrolledloadsuccessprioritizesportraitcomponentconstructionpath, notpreciseallocator/rootcause/longtermperformance. DiagnosticremovesvisualfeatureandMUSTNOTbepublished; productionmustretainallportraits/80+80rowfunctionalityandbeindependentlyqualified.",
+    "production_fix_or_GUI_openclose_or_AE2_or_memory_allocator_cause_or_longterm_performance_PASS": false,
+    "diagnostic_projection_MUST_NOT_BE_PUBLISHED": true,
+    "full_function_portrait_row_template": "Production Source now adopted and seven directly affected existing methods plus generatorcheck passed; actual dynamic GUI binding/openclose/memory/business and publication remain NOT_RUN.",
+    "previous_failure_sections_preserved": true,
+    "release_counts": {
+      "uploaded": 16,
+      "products": 17,
+      "strict_finite_closed": 10,
+      "pending_Notes_HTTP429": 6,
+      "Steam": "OFFLINE",
+      "new_Notes_GET_or_publication": 0
+    },
+    "documentation_calls_do_not_read_Save_bodies_or_operate_Game": true,
+    "production_Source_followup_software": {
+      "Source_delivery": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zg361-scoreboard-small-row-template-source-a01\\delivery-final.json",
+        "bytes": 1964,
+        "sha256": "415a853d1b528fc049af0f3662ed38ea42a7e32c35f0c57d93b9ea02d7f3a99b"
+      },
+      "qualification": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zg361-row-template-integration-a1706\\source-qualified.json",
+        "bytes": 3336,
+        "sha256": "e5f3be4c5bd76fdb3c659d0a30ee4ce168c5d08d297fd53229e32044c68e68d1"
+      },
+      "actual_existing_methods": 7,
+      "new_test_methods": 0,
+      "actual_generator": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_zhongguo_style\\tools\\gen_scoreboard_snapshot.py",
+        "bytes": 129296,
+        "sha256": "ab50432d40516674f6d7eeeef733aec87442dc4585d9cb72bdae273c244f2780"
+      },
+      "actual_GUI": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_zhongguo_style\\gui\\zg361_scoreboard.gui",
+        "bytes": 162016,
+        "sha256": "2f119ae65bb7644acce961ee2c6dd3d72c45e6f1d6890698f31a7146c6c25312"
+      },
+      "actual_test_source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_zhongguo_style\\tools\\test_scoreboard_snapshot.py",
+        "bytes": 80269,
+        "sha256": "bbb58ce5cb387a20d5b3c716e6336c350aca3c5cc2dc0a5cf9c2a78a086a86dd"
+      },
+      "actual_future_candidate_manifest": null
+    }
   }
 }
