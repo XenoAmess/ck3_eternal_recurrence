@@ -304,5 +304,314 @@
     "formal_tags_and_artifacts_modified": false,
     "new_permanent_JSON_upper_bytes": 65536,
     "Source_within_existing_Root3M": true
+  },
+  "later_fifth_sixth_and_PSS_update_a1661": {
+    "at_utc": "2026-11-25T00:42:55.338009+00:00",
+    "base_docs_HEAD": "298ac5819b3bc37ea1d7a362fe1ad71936ffca6d",
+    "prior_index_bytes_SHA_at_298ac581": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\evidence\\zg361-current267-lazy-fourth-load-and-Saved-effect-erratum-a1647.json",
+      "bytes": 15738,
+      "sha256": "3d1d2da86ca141008fdfdd3c33eeb3eb7985ae25e3214d19cd352a33a2274009"
+    },
+    "prior_sections_are_historical_cut": true,
+    "fifth_product_only_failure": {
+      "Root_END": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\zgp-product-only-memory18-failure-END-a1653.json",
+        "bytes": 3455,
+        "sha256": "4f636dbc2ce4d4b88d14f4b0456c8285047d8f7567c65c33ad832e6752aa2fca"
+      },
+      "terminal": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zgp\\owner\\terminal.json",
+        "bytes": 1039,
+        "sha256": "4d4617a9651e3b6715e925c1aef09995817485e3f5658226b41cd1e4b5d02434"
+      },
+      "creator_END": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zgp\\creator-end.json",
+        "bytes": 515,
+        "sha256": "33d058055d294f409a429e6c53e1399ee1280a40bf5966dc96d9287956dc990c"
+      },
+      "actual_terminal": {
+        "accounting": {
+          "active_processes": 0,
+          "limit_flags": 8704,
+          "memory_limit_bytes": 19327352832,
+          "peak_job_memory_bytes": 19328143360
+        },
+        "elapsed_seconds_decimal": "149.5363401",
+        "exit_code": 1,
+        "identity": {
+          "creation_filetime_decimal": "134400374609551770",
+          "executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+          "pid": 15180
+        },
+        "stop_reason": "observed_job_peak_exceeded_limit"
+      },
+      "reported_terminal_kind": "NATURAL_EXIT",
+      "NATURAL0": false,
+      "Job_active_processes": 0,
+      "cleanup_proven": true,
+      "fixture_mounted": false,
+      "actual_product_files": 1034,
+      "actual_profile_files": 5193,
+      "Root_creator_session_collected": 23194,
+      "Root_Core_business_Date_Save_calls": 0,
+      "actual_scene_allocation": {
+        "actual_scene_held_allocation_bytes": 432920600,
+        "regular_files": 5271,
+        "unique_volume_FileID128_count": 5271,
+        "hardlink_alias_paths": 0,
+        "excluded_Root3M_Source_directories": [
+          "source-candidate-a01",
+          "source-candidate-a02"
+        ],
+        "Source_allocation_deducted": false,
+        "allocation_method": "GetFileInformationByHandleEx.FileStandardInfo.AllocationSize; existing frozen_jar_refs._identity",
+        "identity_metadata_sha256": "efc71537c9a4a6a2d307d148f3075a0d2fc9767f06f2cb0402893ea02a99c2a7",
+        "body_hashes_or_compressed_size_calls": 0,
+        "directory_metadata_allocation_deducted": false
+      },
+      "held_upper_bytes": 432986136,
+      "remaining_scene_future_bytes": 0,
+      "exact_InGame_marker_count": 0,
+      "original_preparation_postcheck_failure": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zgp\\Root-prepare-a1652.stderr",
+        "bytes": 991,
+        "sha256": "426b9e641ace27684eb92088d1ad410c8e1da53585d58d16c34efc6bbe3754df"
+      },
+      "actual_postcheck_recovery": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zgp\\source\\shader-copy-exact-a02.json",
+        "bytes": 1658,
+        "sha256": "b4c0ba6262089d403073fc2b0afb143cdfbc32145ce742dddb2948d9eabb841a"
+      },
+      "original_inner_prepare": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zgp\\source\\public-prepare-execution.json",
+        "bytes": 692,
+        "sha256": "925a2577971c959078685bdfd9acc54559fde83559ed74e961de43155cd9b85a"
+      },
+      "causal_scope": "Removal of allSaved9fixture didnoteliminate same18G loadingfailure; fixture notsolecause. Actualallocationpath stillUNRESOLVED. Do notadoptgatedfixtureasprovenmemoryfix.",
+      "product_engine_initialization_effects": "NOT_OBSERVED; zero Root commands does not mean zero all Game effects."
+    },
+    "sixth_same18G_two_sample_failure": {
+      "Root_END": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\zgs-same18G-two-PSS-samples-END-a1661.json",
+        "bytes": 3848,
+        "sha256": "b6d2906e25e2c9e205db9ea032313649d0026f16fa1705f92dfd4a55c16903c0"
+      },
+      "terminal": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zgs\\owner\\terminal.json",
+        "bytes": 1039,
+        "sha256": "04b2ac4a90c3e9909544c137f272646af3a3b57ff9263465d0a0b2514927e296"
+      },
+      "creator_END": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zgs\\creator-end.json",
+        "bytes": 517,
+        "sha256": "0aa41c87f61b89cb4c84252fe7f14f575cad8898f69b56cce00e30abdcd7c567"
+      },
+      "actual_terminal": {
+        "accounting": {
+          "active_processes": 0,
+          "limit_flags": 8704,
+          "memory_limit_bytes": 19327352832,
+          "peak_job_memory_bytes": 19328151552
+        },
+        "elapsed_seconds_decimal": "160.6558893",
+        "exit_code": 1,
+        "identity": {
+          "creation_filetime_decimal": "134400395355461294",
+          "executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+          "pid": 27004
+        },
+        "stop_reason": "observed_job_peak_exceeded_limit"
+      },
+      "reported_terminal_kind": "NATURAL_EXIT",
+      "NATURAL0": false,
+      "Job_active_processes": 0,
+      "cleanup_proven": true,
+      "fixture_mounted": false,
+      "actual_product_files": 1034,
+      "actual_profile_files": 5193,
+      "Root_creator_session_collected": 27509,
+      "Root_Core_business_Date_Save_calls": 0,
+      "actual_scene_allocation": {
+        "actual_scene_held_allocation_bytes": 434079000,
+        "regular_files": 5296,
+        "unique_volume_FileID128_count": 5296,
+        "hardlink_alias_paths": 0,
+        "excluded_Root3M_Source_directories": [
+          "source-candidate-a01",
+          "source-candidate-a02"
+        ],
+        "Source_allocation_deducted": false,
+        "allocation_method": "GetFileInformationByHandleEx.FileStandardInfo.AllocationSize; existing frozen_jar_refs._identity",
+        "identity_metadata_sha256": "7c7f0ff61552f501bca25f8571e1ee4b0e4c18fbdbfe6d487cd359ca388e00e0",
+        "body_hashes_or_compressed_size_calls": 0,
+        "directory_metadata_allocation_deducted": false
+      },
+      "held_upper_bytes": 434144536,
+      "remaining_scene_future_bytes": 0,
+      "Root_sampler_driver_session_collected": 65253,
+      "bridge_module_presence": "Actually observed inboth module tables; noRootCore doesnotmean noSDKloaded. Executioncausalitystillunproven.",
+      "actual_capture_count": 2,
+      "capture_threads": [
+        109,
+        109
+      ],
+      "capture_stack_complete_counts": [
+        109,
+        109
+      ]
+    },
+    "PSS_capture_and_independent_decode": {
+      "original_capture_END": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zgs\\PSS-two-samples-a1659\\END.json",
+        "bytes": 1822,
+        "sha256": "e9c70f694ed580e167efd47321baf91be8cc3c892b3e908958ef4d007c524f1a"
+      },
+      "first_independent_decode_END": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zgs\\PSS-two-samples-a1659\\first-independent-decode-END-a1660.json",
+        "bytes": 897,
+        "sha256": "53d3c299d94b0b1bad47ab07b9f25d81d8bd732101fdbac113af58355bc4a79c"
+      },
+      "samples": [
+        {
+          "label": 120,
+          "capture_execution": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\zgs\\PSS-two-samples-a1659\\sample-120.execution.json",
+            "bytes": 1742,
+            "sha256": "6db442265f1f5f2c376bab9c3bc161521beeb49dad76bf6002e8aca16e2a04e9"
+          },
+          "capture_exit": 0,
+          "capture_elapsed_seconds": 1.5699003000045195,
+          "capture_helper_preclose_active": 1,
+          "capture_natural_flag": false,
+          "capture_own_job_close_nonNatural": true,
+          "independent_first_decode_execution": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\zgs\\PSS-two-samples-a1659\\first-decode-120.execution.json",
+            "bytes": 2337,
+            "sha256": "043ef8a829b4814d1ff90ea1ddfb7bd50f100257d4ab1122906d2ac3d1afe878"
+          },
+          "independent_first_decode_exit": 0,
+          "independent_first_decode_elapsed_seconds": 0.755215999961365,
+          "independent_first_decode_preclose_active": 0,
+          "independent_first_decode_natural_flag": true,
+          "raw_ref_from_original_capture": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\zgs\\PSS-two-samples-a1659\\stack-120.xars",
+            "bytes": 446416,
+            "sha256": "d9393e79f9ac742a82a1623bfffeceb2e8adaaddc6f10776a2737b17d4a8a997"
+          },
+          "decoded_ref_from_original_decode": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\zgs\\PSS-two-samples-a1659\\stack-120.json",
+            "bytes": 142658,
+            "sha256": "62bd74f4231a04bab92187034b056d88a75e5babf4d97fdd21255cbae0835c85"
+          },
+          "original_capture_nonNatural_flag_preserved": true,
+          "body_rehash_or_decode_or_capture_during_docs": 0
+        },
+        {
+          "label": 135,
+          "capture_execution": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\zgs\\PSS-two-samples-a1659\\sample-135.execution.json",
+            "bytes": 1743,
+            "sha256": "3122b07c6738810be2178290f95f34278f7aa34cd1de951778de78c122458f30"
+          },
+          "capture_exit": 0,
+          "capture_elapsed_seconds": 1.0806622999953106,
+          "capture_helper_preclose_active": 1,
+          "capture_natural_flag": false,
+          "capture_own_job_close_nonNatural": true,
+          "independent_first_decode_execution": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\zgs\\PSS-two-samples-a1659\\first-decode-135.execution.json",
+            "bytes": 2338,
+            "sha256": "4a611f7c61f8dc8cecc15b45e029025ce83bd88d983094f2390f66252a983389"
+          },
+          "independent_first_decode_exit": 0,
+          "independent_first_decode_elapsed_seconds": 0.33321120002074167,
+          "independent_first_decode_preclose_active": 0,
+          "independent_first_decode_natural_flag": true,
+          "raw_ref_from_original_capture": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\zgs\\PSS-two-samples-a1659\\stack-135.xars",
+            "bytes": 411080,
+            "sha256": "b2d77e8a9d8e6cd3db3a0c341925745089f9aaa67cebb688a4d483cdbff27ca0"
+          },
+          "decoded_ref_from_original_decode": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\zgs\\PSS-two-samples-a1659\\stack-135.json",
+            "bytes": 125307,
+            "sha256": "065daf635980ad2d03640c26c74bc3291a81a366779f885786feeda57e70ebaa"
+          },
+          "original_capture_nonNatural_flag_preserved": true,
+          "body_rehash_or_decode_or_capture_during_docs": 0
+        }
+      ],
+      "context_and_live_stack_NONATOMIC": true,
+      "no_capture_replay": true,
+      "actual_raw_and_decoded_refs_not_newly_read_or_rehashed": true,
+      "actual_independent_decoders_Natural0_Job0": true,
+      "original_capture_helpers_Natural0": false,
+      "original_capture_helpers_preclose_active": [
+        1,
+        1
+      ],
+      "original_capture_helpers_natural_flags": [
+        false,
+        false
+      ],
+      "original_capture_closures_not_reclassified": true,
+      "original_capture_process_exit_codes": [
+        0,
+        0
+      ],
+      "unwound_frames_or_heap_cause_P": false,
+      "bridge_DLL": "Actually present in both captured module tables. Zero Root Core dispatch does not prove the SDK was absent or uninvolved; no code-execution or allocation causality is established by module presence."
+    },
+    "actual_retirement": {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-zgp-derived-retirement-source-a1654\\a02\\actual-three-target-result-a1657.json",
+        "bytes": 2779,
+        "sha256": "17db10d1cef075c333b8a9e5221f68342ec8394d5b027d8fd76d05ffa17419e0"
+      },
+      "count": 5191,
+      "FileStandardInfo_allocated_removed_bytes": 392971544,
+      "initial_removed_bytes": 166551552,
+      "shader_removed_bytes": 191316736,
+      "product_removed_bytes": 35103256,
+      "selected_derived_copies_now_unreadable": true,
+      "original_archives_master940_Source_logs_owner_claims_preparedRefs_count_failure_recovery_all_candidates_retained_a1593_and_SDK_preserved": true,
+      "old_effect_UNKNOWN_unchanged": true,
+      "metadata_files": 84,
+      "metadata_FSI_allocation": 2336888,
+      "metadata_held_upper": 2402424,
+      "budget_refund": false
+    },
+    "conclusions": {
+      "six_owned_loads_failed": true,
+      "fixture_removal_did_not_eliminate_same18G_failure": true,
+      "fixture_not_proven_sole_cause": true,
+      "actual_memory_allocation_path_or_unique_root_cause": "UNRESOLVED",
+      "no_product_memory_load_openclose_payment_or_four_requirements_lines_PASS": true,
+      "no_new_SDK_or_runtime_payload_changes": true,
+      "no_new_publication": true,
+      "Root_commands_zero_scope": "As recorded individually, only Root Core/business/Date/Save dispatch. Automatic product initialization and effects are not thereby proven zero.",
+      "old_Saved_fixture_effect_UNKNOWN_preserved": true,
+      "latest_Native_analysis": "Pending separate sourced review; no root cause inferred by this document."
+    },
+    "final_Root_ledger": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\same-quota-zgs-sampling-END-review-a1661.json",
+      "bytes": 156093,
+      "sha256": "493379f18a6a0f6a1f8fd059f6441d96ed00f57b3ca0992f2bb0548d9d8b3e77"
+    },
+    "scene_actual_held_allocation_bytes": 434079000,
+    "scene_held_upper_bytes": 434144536,
+    "remaining_scene_future_bytes": 0,
+    "release_counts": {
+      "uploaded": 16,
+      "products": 17,
+      "strict_finite_closed": 10,
+      "pending_Notes_HTTP429": 6,
+      "no_reupload_or_automatic_Notes_GET": true
+    },
+    "documentation_only": {
+      "no_new_Maven_test_build_package_tag_SDK_Game_or_HTTP": true,
+      "small_Source_within_existing_Root3M": true
+    }
   }
 }

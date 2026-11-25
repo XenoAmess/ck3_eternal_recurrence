@@ -1,5 +1,12 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-25 ZG361第5／6次产品only加载失败，PSS原捕获与独立解码范围保持
+
+完整1034产品、无fixture的zgp与同产品zgs均在原18GiB Job上限非零退出；分别149.5363401／160.6558893秒，Job0／cleanup／creator已收，0 RootCore／业务／Date／Save。移除Saved9仍失败只能排除fixture为唯一充分解释，不能证明全部GameEffects为0；产品初始化效果与内存首因未观察。zgs两份PSS各109线程完整数据已取，原helper虽exit0但preclose active1／naturalfalse必须保；首次独立decode两次Natural0／Job0，不重取样、NONATOMIC，不据此授unwind／heap根因。桥接DLL实际存在于两份module表，无RootCore不能说SDK未参与。
+
+zgp已选initial／shader／product派生共5191文件、392,971,544B实际allocated退役，原Save／940master／Source／日志／失败／UNKNOWN／全部候选和SDK保。当前仍16／17上传、10／17严格、六项Notes429；新分析／后继场另据原件，不因本文新增编测或发布。[现有永久索引的第5／6次与PSS追加](docs/maintenance/evidence/zg361-current267-lazy-fourth-load-and-Saved-effect-erratum-a1647.json)。下方保留各历史切点。
+
+
 ## 2026-11-25 ZG361 lazy候选软件通过，第四次加载仍失败；Saved自动效果UNKNOWN
 
 lazy源码7259302已正常推送；8个既有受影响测试、generator check、一次普通candidate build／verify均通过。新1034 manifest6e531／FD799ee相对原6bec仅两B1修复＋GUI三叶变、1031精确保持，原modal内部／160行／detail／callbacks全保，e90 SDK不动。但Root zgf仍在18GiB Job上限以非零退出，Game10792峰19,327,623,168B／153.8798509秒，Job0／cleanup／creator20444 exit1且Root23016已收；不授load memory、heap／open-close或业务P。
