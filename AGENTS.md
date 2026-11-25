@@ -4,6 +4,11 @@
 
 仅`desktop-3fevhd2-1c74096080`：Root以原1034／原受控夹具9／821存档和新character-root SDK完成四条条件全文、实际instance1／42／15,16,17三hover、一次付款及完整事件缺席／条件账目守恒有限合取；19读取含9查询＋7动作＝26提交，0Date／Save，Game14900／creator14992独立Natural0／Job0／cleanup。原Main false／Core PARTIAL／quitfalse、earlyCore不可用、旧加载失败、UNKNOWN和error.log未全绿保持；zgm只授有限modal开闭，不授所有行／头像／FPS／长期或wholeproduct。现在正常SourceA／新注释tag／一次正式1034 builder＋verify，尚未上传；16／17上传、10／17严格、六Notes429和Steam离线保持，Root独占后继账号窗口／SDK／实机。见[0.4.2有限事实](docs/release-changelogs/zhongguo-361/0.4.2-evidence/finite-business.json)。下方保留历史切点；其他机器授权不变。
 
+## 2026-11-25 金融市场 Alpha.3 已实测并更新原条目
+
+本机 `4-8e1c2f1861` 的 SourceA `aef95de6b5d7680356412646438338ee7e5962d7`／tag `financial-markets-v0.1.0-alpha.3` 已对 canonical `3844765196` 唯一 SDK 更新 ER1，真实下载 240 文件逐一精确，外层 descriptor 仅更新版本。R0086 完成14项真实鼠标、最终画面与独立模型有限GUI通过，发行页空白及盘口错列已修，正常原始退出0／无窗口关闭兜底，keeper与租约已释放。717项软件／57组通过；Steam已实际恢复离线，未改播放集。
+
+R83/R84失败、R85发行未见及timeout/WM_CLOSE、第四候选描述文件换行拒绝与首次发布空闲拒绝均保留。仅本轮GUI有限资格，不授全部金融业务、20危机完整矩阵、4096或长期性能。公开全文本次无新HTTP，旧429保持NOT_OBSERVED，不称严格完整公开release closed；后续不重传同一更新。用户本机后续任务前台授权继续有效，不能外推其他机器。详见[Alpha.3真实记录](docs/release-evidence/financial-markets/0.1.0-alpha.3.json)。
 
 ## 2026-11-25 本机后续任务允许使用前台
 

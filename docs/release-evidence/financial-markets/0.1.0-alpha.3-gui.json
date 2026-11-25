@@ -1,0 +1,285 @@
+{
+  "run_id": "4-8e1c2f1861--financial-markets--R0086",
+  "case": "market-mouse-visual-candidate04",
+  "reviewer": "/root actual mouse and direct screenshots, independent /root/model_gui_review",
+  "direct_image_review": true,
+  "passed": true,
+  "normal_gui_quit": true,
+  "normal_quit_evidence": [
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-quit-game01-after.png",
+      "bytes": 829396,
+      "sha256": "f0b35e5d805ecc8bedfc3f25cfb2499806b24d9f1273759263c7839e6672c151"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-quit-desktop01.actual.json",
+      "bytes": 3100,
+      "sha256": "5738835316203e6fd75169e0b78623e22c6a140d1e0d1118379f6547ed2d42bb"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\gui-candidate04\\runs\\4-8e1c2f1861--financial-markets--R0086\\game-exit.json",
+      "bytes": 253,
+      "sha256": "7a63759394bb127cf6e519f8f38f5c79f4528b2a3433510574b2b66e5e444dcb"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\gui-candidate04\\runs\\4-8e1c2f1861--financial-markets--R0086\\keeper-report.json",
+      "bytes": 359,
+      "sha256": "cf0aab8fe81c53e371079c5fd31305821d7b8ebdd72f99acb632a01025b3927e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\gui-candidate04\\runs\\4-8e1c2f1861--financial-markets--R0086\\screen-release.json",
+      "bytes": 1189,
+      "sha256": "681a1935651ee2a8f122b2a9fe5b861304ec2b3b83c6584b29d2b0a286aa6bbf"
+    }
+  ],
+  "facts": {
+    "source_payload_candidate_exact": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\gui-candidate04\\payload-after-game.actual.json",
+          "bytes": 526,
+          "sha256": "4cb90cd82d294e465bcd6d21a319f3165c422aab6fb78772a4429d7bbe81fbd5"
+        },
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\gui-candidate04\\staging01\\manifest.json",
+          "bytes": 42581,
+          "sha256": "c78b9ca22b7a3815bc76bf9069e489ea6b28e2cd53618217e86e88bfa4be8133"
+        },
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\gui-candidate04\\prepare02\\prepared-case.json",
+          "bytes": 174840,
+          "sha256": "2932e76fe51a80babe658304024c0f0e6b0d0f300da7d3a570f0283e163bf950"
+        }
+      ]
+    },
+    "saved_world_loaded_paused": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-close-market01-after.png",
+          "bytes": 1331265,
+          "sha256": "1e5084785ad57d9011830d3335cbbcbdf720f7377db32a59d060f6cc217d6d0e"
+        }
+      ]
+    },
+    "sort_changes_visible_label": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-tab-market01-after.png",
+          "bytes": 1244335,
+          "sha256": "c9070d016f69639e3dc4da21cec8561540e8dc38a0ae5be641e5500056a65019"
+        },
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-sort01-after.png",
+          "bytes": 1245265,
+          "sha256": "2ff33ac6d3375d21aba53a63c976d4f9c2b146f0b935311cb250ad1fc285e02d"
+        }
+      ]
+    },
+    "refresh_receives_mouse_click": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-refresh01-after.png",
+          "bytes": 1250255,
+          "sha256": "7762dfa3380b9e061c34fbc49ae297591818895298fdd3c5028c60ea224b6993"
+        },
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-refresh01.actual.json",
+          "bytes": 3074,
+          "sha256": "4ddbdb6ade51e34d78a56b88a753ff1616f005809ff4dd934670eef0d238789a"
+        }
+      ]
+    },
+    "next_page_shows_different_coins": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-clear-filters01-after.png",
+          "bytes": 1250912,
+          "sha256": "337f5b9ba8867cab80f00853119df9541c72e495ae7fce59b24504a3d21d0af0"
+        },
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-next-page01-after.png",
+          "bytes": 1252739,
+          "sha256": "c34b53d69e29e8072793c44c0b3d491d0e52e3f77ca2ec3f957936fb1ce66d4a"
+        }
+      ]
+    },
+    "previous_page_returns": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-next-page01-after.png",
+          "bytes": 1252739,
+          "sha256": "c34b53d69e29e8072793c44c0b3d491d0e52e3f77ca2ec3f957936fb1ce66d4a"
+        },
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-previous-page01-after.png",
+          "bytes": 1252272,
+          "sha256": "3bbed8a31634bde0717f6c22a9cb5934fbd6f4cff8b115c6ece8e0a478fac10a"
+        }
+      ]
+    },
+    "coin_row_updates_details": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-refresh01-after.png",
+          "bytes": 1250255,
+          "sha256": "7762dfa3380b9e061c34fbc49ae297591818895298fdd3c5028c60ea224b6993"
+        },
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-select-numeric-cell01-after.png",
+          "bytes": 1254311,
+          "sha256": "ff6c69f505c5bfef96f53757f3fab3ec718f0244ad8055876163098103972eb3"
+        }
+      ]
+    },
+    "filters_operate": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-type-filter01-after.png",
+          "bytes": 1203093,
+          "sha256": "f4af5a6487682b228cf285f8c20637c0350d89977df70c65cd3629950e135342"
+        },
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-clear-filters01-after.png",
+          "bytes": 1250912,
+          "sha256": "337f5b9ba8867cab80f00853119df9541c72e495ae7fce59b24504a3d21d0af0"
+        }
+      ]
+    },
+    "six_tabs_reachable": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-tab-market01-after.png",
+          "bytes": 1244335,
+          "sha256": "c9070d016f69639e3dc4da21cec8561540e8dc38a0ae5be641e5500056a65019"
+        },
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-tab-positions01-after.png",
+          "bytes": 1243535,
+          "sha256": "d7a3737d84c94b5c0d6db7d1b30316cbe4d7b72a580ef1c4536fa5316980504e"
+        },
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-tab-orders01-after.png",
+          "bytes": 1210787,
+          "sha256": "28c3b9490e51e98b5434d9c494a73e7bc4af8f3c968f7c52fa79671061b0d046"
+        },
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-tab-debts01-after.png",
+          "bytes": 1199523,
+          "sha256": "4480ff0124cf2f84d9c5d5c351fa454373540483c8374c4d76cf9e0dd08a947f"
+        },
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-tab-issuer01-after.png",
+          "bytes": 1253106,
+          "sha256": "38d72c86b13be95926ffd45e8a5767b4c101b774d699fed711601b689537a1b2"
+        },
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-tab-news01-after.png",
+          "bytes": 1232824,
+          "sha256": "c013b04e75a6e16559a7ccb601a2c000bd28d65a8fa408f411e9503aae6e33be"
+        }
+      ]
+    },
+    "trade_form_visible_and_scrollable": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-ticket-futures01-after.png",
+          "bytes": 1245511,
+          "sha256": "26e85f0b96eecce56f08f277dbbdccd907dd949fac0a923a648c37b3f26ef154"
+        },
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-ticket-scroll-down04-after.png",
+          "bytes": 1245194,
+          "sha256": "454336fe9fb633ab259c9f0e613b78564d0eeda44089873ad819c5af5ca6fb4c"
+        },
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-ticket-scroll-down04.actual.json",
+          "bytes": 3526,
+          "sha256": "7b46ade6fc21da08b1e832fbedf8901564091eeb13ff7f12875c5ad0afd6bd2f"
+        }
+      ]
+    },
+    "no_clipped_or_overlapping_essential_controls": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-tab-market01-after.png",
+          "bytes": 1244335,
+          "sha256": "c9070d016f69639e3dc4da21cec8561540e8dc38a0ae5be641e5500056a65019"
+        },
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-ticket-scroll-down04-after.png",
+          "bytes": 1245194,
+          "sha256": "454336fe9fb633ab259c9f0e613b78564d0eeda44089873ad819c5af5ca6fb4c"
+        },
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-issuer-scroll-down08-after.png",
+          "bytes": 1256673,
+          "sha256": "0bb37e7a739713879bcfb99422053a379b663ecb29e58ca491240a24af60247b"
+        }
+      ]
+    },
+    "model_visual_layout_reasonable": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\model-review04\\final-visual-review.md",
+          "bytes": 6119,
+          "sha256": "ad199938050a9f38d15cb41247c3b18b862a89d570066c0d33a3b6e8207afcdd"
+        }
+      ]
+    },
+    "order_book_columns_aligned": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-tab-market01-after.png",
+          "bytes": 1244335,
+          "sha256": "c9070d016f69639e3dc4da21cec8561540e8dc38a0ae5be641e5500056a65019"
+        }
+      ]
+    },
+    "issuer_controls_visible_and_scrollable": {
+      "passed": true,
+      "evidence": [
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-tab-issuer01-after.png",
+          "bytes": 1253106,
+          "sha256": "38d72c86b13be95926ffd45e8a5767b4c101b774d699fed711601b689537a1b2"
+        },
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-issuer-tier01-after.png",
+          "bytes": 1254835,
+          "sha256": "3b17b3d4d57a502e8aca4f66ad8ef43260c83c407b33b1780241ce88ce3a4662"
+        },
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-issuer-target-up01-after.png",
+          "bytes": 1253473,
+          "sha256": "c69477a5b6d2162d3f598698ae3e0cc7dae69ca7e3b7565b3597f38fab6330e2"
+        },
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-issuer-scroll-down08-after.png",
+          "bytes": 1256673,
+          "sha256": "0bb37e7a739713879bcfb99422053a379b663ecb29e58ca491240a24af60247b"
+        },
+        {
+          "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\screens\\r86-issuer-scroll-down08.actual.json",
+          "bytes": 3540,
+          "sha256": "986767fc74fa3f92450ff5ed999ea1e13237256c253bd0b585bbccaa43c1b406"
+        }
+      ]
+    }
+  },
+  "qualification": "FINITE_GUI_ONLY; NO_FINANCIAL_BUSINESS_CAPACITY_OR_PERFORMANCE_CREDIT",
+  "observed_date": "1067.6.7 before quit, paused; no date advance requested",
+  "save_requested": false
+}

@@ -1,0 +1,133 @@
+{
+  "schema": "xfm.alpha3-real-gui-and-publication.v1",
+  "at_utc": "2026-11-25T11:00:49.539742+00:00",
+  "machine_id": "4-8e1c2f1861",
+  "version": "0.1.0-alpha.3",
+  "workshop_item_id": "3844765196",
+  "sourceA": "aef95de6b5d7680356412646438338ee7e5962d7",
+  "annotated_tag": "financial-markets-v0.1.0-alpha.3",
+  "tag_object": "2f734bcc45228b12a78eafd64027121efcf3e2be",
+  "payload_manifest": {
+    "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\gui-candidate04\\staging01\\manifest.json",
+    "bytes": 42581,
+    "sha256": "c78b9ca22b7a3815bc76bf9069e489ea6b28e2cd53618217e86e88bfa4be8133"
+  },
+  "runtime_files": 240,
+  "software_checks": {
+    "distinct_tests": 717,
+    "suites": 57,
+    "evidence": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\software04\\full.actual.json",
+      "bytes": 17021,
+      "sha256": "5870637303a8b8e62fc173359c0e245a7b5ff3c9ce4f81ee46d31f6b675ebd58"
+    }
+  },
+  "actual_GUI": {
+    "run": "4-8e1c2f1861--financial-markets--R0086",
+    "case": "market-mouse-visual-candidate04",
+    "facts_passed": 14,
+    "direct_model_visual_result": "PASS, finite GUI only",
+    "normal_original_exit0": true,
+    "window_close_fallback": false,
+    "verify": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\gui-candidate04\\verify-final01.stdout.json",
+      "bytes": 10142,
+      "sha256": "ec2c46701fde393427abcabea23f9f2d75cffbfe6fbd554decb99df910282ca9"
+    },
+    "review": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\release-evidence\\financial-markets\\0.1.0-alpha.3-gui.json",
+      "bytes": 12502,
+      "sha256": "99f06103a4554434fca58fcfc6944c093da90296ec333192c7d5d2b17a5bac31"
+    },
+    "model": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\release-evidence\\financial-markets\\0.1.0-alpha.3-visual-review.md",
+      "bytes": 6119,
+      "sha256": "ad199938050a9f38d15cb41247c3b18b862a89d570066c0d33a3b6e8207afcdd"
+    },
+    "images": [
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\release-evidence\\financial-markets\\0.1.0-alpha.3-assets\\market.png",
+        "bytes": 1244335,
+        "sha256": "c9070d016f69639e3dc4da21cec8561540e8dc38a0ae5be641e5500056a65019"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\release-evidence\\financial-markets\\0.1.0-alpha.3-assets\\issuer-top.png",
+        "bytes": 1253473,
+        "sha256": "c69477a5b6d2162d3f598698ae3e0cc7dae69ca7e3b7565b3597f38fab6330e2"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\release-evidence\\financial-markets\\0.1.0-alpha.3-assets\\issuer-bottom.png",
+        "bytes": 1256673,
+        "sha256": "0bb37e7a739713879bcfb99422053a379b663ecb29e58ca491240a24af60247b"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\release-evidence\\financial-markets\\0.1.0-alpha.3-assets\\futures-bottom.png",
+        "bytes": 1245194,
+        "sha256": "454336fe9fb633ab259c9f0e613b78564d0eeda44089873ad819c5af5ca6fb4c"
+      }
+    ]
+  },
+  "actual_publish": {
+    "EResult": 1,
+    "Submit_count": 1,
+    "CreateItem_count": 0,
+    "mutation_retries": 0,
+    "receipt": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\alpha3-publication-source04\\UPDATE.receipt.json",
+      "bytes": 663,
+      "sha256": "874d4fef9e99df45d1cb381d7a265e52abc7cd5dcf4fe6c5059350aa3e176c2f"
+    },
+    "controller": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\alpha3-publication-source04\\ROOT02-CONTROLLER-RESULT.actual.json",
+      "bytes": 13435,
+      "sha256": "93c4f86ef638c82938413b6d32bd249ec4c1b06d6389e513f87700a555553494"
+    }
+  },
+  "actual_download": {
+    "files_exact": 240,
+    "bytes": 1097900,
+    "cache_root": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\1158310\\3844765196",
+    "copied_from_staging": false,
+    "evidence": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\alpha3-publication-source04\\actual-download-cache-exact.actual.json",
+      "bytes": 83053,
+      "sha256": "edc90a29775b8feb8ef22007f16cc52778b39153ff65250377b921d3e5076269"
+    },
+    "cache_Game_load_performed": false
+  },
+  "outer_descriptor": {
+    "before": {
+      "path": "C:\\Users\\Administrator\\Documents\\Paradox Interactive\\Crusader Kings III\\mod\\ugc_3844765196.mod",
+      "bytes": 254,
+      "sha256": "a5d38c0bed7d5bc6b8a185e647bcdb7edf58fc72ad109a45c3967d69e16459a2"
+    },
+    "after": {
+      "path": "C:\\Users\\Administrator\\Documents\\Paradox Interactive\\Crusader Kings III\\mod\\ugc_3844765196.mod",
+      "bytes": 254,
+      "sha256": "291fe01c69eb372fc21ccf48d3cf2f7f477fc6be0064e709553064814bf6ab0a"
+    },
+    "change": "Version only; path, remote_file_id and every other byte preserved",
+    "playset_changed": false
+  },
+  "Steam_offline": {
+    "observed": true,
+    "evidence": {
+      "path": "C:\\workspace\\ck3-market-task-20261118\\mouse-visual-20261125\\alpha3-publication-source04\\root02-offline-proof-2.actual.json",
+      "bytes": 2433,
+      "sha256": "8ad6160c06593b7292263f675c7157fd248b0c759af02cb5897d549a994a9a16"
+    }
+  },
+  "Game_running": false,
+  "public_full_title_description_Notes": "NOT_OBSERVED; no new HTTP request. Prior Alpha2 HTTP429 remains retained, not a content mismatch or strict full public closure.",
+  "metadata_media": "Title/tags/visibility kept; new Alpha3 description and Notes submitted. Cover/gallery setters omitted, no new exact-current media-readback claim.",
+  "retained_failures": [
+    "R83 actual GUI failure",
+    "R84 mouse successes and quote visual failure",
+    "R85 main/futures partial, issuer absent and timeout/WM_CLOSE",
+    "candidate04 passive descriptor newline rejection before Game",
+    "Root01 mode idle rejection before Submit, import-path proof failures",
+    "Root02 early SDK startup probes and first offline proof unavailable"
+  ],
+  "whole_financial_product_pass": false,
+  "full_20_crisis_4096_scale_long_term_performance_pass": false
+}

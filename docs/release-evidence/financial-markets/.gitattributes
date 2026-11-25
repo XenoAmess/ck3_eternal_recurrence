@@ -1,0 +1,2 @@
+# Preserve the real GUI review bytes pinned by the Alpha.3 delivery record.
+0.1.0-alpha.3-gui.json -text whitespace=cr-at-eol

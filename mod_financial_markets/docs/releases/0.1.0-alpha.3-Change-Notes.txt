@@ -1,0 +1,21 @@
+0.1.0-alpha.3 — 金融市场界面修正 / Financial Markets UI corrections
+
+【中文】
+• 调整市场主窗口的布局约束，让账户区、筛选区、币列表和翻页区按顺序排列。
+• 六个主标签页使用明确的尺寸与标签内容，统一导航位置。
+• 行情列表改为五列：币种、最新价、买一、卖一、日成交量；文字不拦截鼠标，整行保留选币入口。
+• 币详情与交易区继续使用竖向滚动布局，并整理现货买卖盘口的对齐方式。
+• 修正中英文动态编号文本中的“#”格式，避免编号被识别为文本样式指令。
+
+• 改善主行情分页按钮禁用时提示文字的可读性。
+
+• 移除发行与经营页面的内层嵌套滚动，使发行控制随外层内容排列，便于找到发行按钮与其他选项。
+
+【English】
+• Constrain the market layout so accounts, filters, coin rows and pagination follow a consistent flow.
+• Give all six main tabs explicit dimensions and labels.
+• Split quotes into five columns: coin, last, bid, ask and daily volume. Text passes mouse input through to the selectable row.
+• Retain the vertically scrollable details and trading panel and align the spot order book.
+• Correct dynamic ID formatting in Chinese and English so IDs are not interpreted as text style commands.
+• Improve the readability of disabled pagination hints in the main market browser.
+• Remove the nested inner scroller in issuance and management so issuance controls follow the outer content and remain reachable.
