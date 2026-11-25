@@ -1213,6 +1213,32 @@ class ScoreboardSnapshotTests(unittest.TestCase):
             self.assertIn(gate, body)
         self.assertIn("using = Animation_ShowHide_Quick", body)
 
+        # Instance creation uses the local open flag only; eligibility and
+        # overlay suppression remain on the original modal visibility.
+        host = gui.split('name = "zg361_scoreboard_lazy_modal_host"', 1)[1]
+        host = host.split("\n\t\titem = {", 1)[0]
+        model_match = re.search(r'datamodel\s*=\s*"([^"]+)"', host)
+        self.assertIsNotNone(model_match)
+        model = model_match.group(1) if model_match else ""
+        self.assertIn("RepeatedItem(", model)
+        self.assertIn("Select_int32(", model)
+        self.assertIn("GetVariableSystem.Exists('zg361_scoreboard_open')", model)
+        for eager_query in ("GetScriptedGui", "GetPlayer", "IsShown", "IsGameViewOpen"):
+            self.assertNotIn(eager_query, model)
+        modal = gui.split('name = "zg361_scoreboard_modal"', 1)[1]
+        visible_match = re.search(r'visible\s*=\s*"([^"]+)"', modal)
+        self.assertIsNotNone(visible_match)
+        visible = visible_match.group(1) if visible_match else ""
+        for eligibility in (
+            "zg361_scoreboard_managed_available_gui",
+            "zg361_scoreboard_received_available_gui",
+            "zg361_mechanism_ledger_available_gui",
+            "Not(IsPauseMenuShown)", "IsDefaultGUIMode",
+            "Not(IsRightWindowOpen)", "Not(IsGameViewOpen('outliner'))",
+            "Not(IsGameViewOpen('barbershop'))",
+        ):
+            self.assertIn(eligibility, visible)
+
         # CK3 lays this HUD out in a 1920x1080 reference space. The toggle's
         # right edge stays 60 units left of the screen, clearing the native
         # 50-unit main-tab rail; 1440p scales the same safe rectangle by 4/3.

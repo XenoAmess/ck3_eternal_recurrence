@@ -2679,7 +2679,7 @@ def render_gui() -> bytes:
         "\thbox = {",
         "\t\tname = \"zg361_scoreboard_lazy_modal_host\" size = { 100% 100% }",
         "\t\talwaystransparent = yes",
-        f"\t\tdatamodel = \"[RepeatedItem( Select_int32( And(And(GetVariableSystem.Exists('zg361_scoreboard_open'), {any_surface}), {overlay_gate}), '(int32)1', '(int32)0' ) )]\"",
+        "\t\tdatamodel = \"[RepeatedItem( Select_int32( GetVariableSystem.Exists('zg361_scoreboard_open'), '(int32)1', '(int32)0' ) )]\"",
         "\t\titem = {",
         "\twidget = {",
         "\t\tname = \"zg361_scoreboard_modal\" size = { 100% 100% }",

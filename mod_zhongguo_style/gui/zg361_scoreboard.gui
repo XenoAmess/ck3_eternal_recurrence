@@ -29,7 +29,7 @@ window = {
 	hbox = {
 		name = "zg361_scoreboard_lazy_modal_host" size = { 100% 100% }
 		alwaystransparent = yes
-		datamodel = "[RepeatedItem( Select_int32( And(And(GetVariableSystem.Exists('zg361_scoreboard_open'), Or(Or(GetScriptedGui('zg361_scoreboard_managed_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End), GetScriptedGui('zg361_scoreboard_received_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)), GetScriptedGui('zg361_mechanism_ledger_available_gui').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))), And(And(And(And(And(And(Not(IsPauseMenuShown), IsDefaultGUIMode), Not(IsGameViewOpen('struggle'))), Not(GreaterThan_CFixedPoint(GetPlayer.MakeScope.Var('hide_ui_main_tabs').GetValue, '(CFixedPoint)0'))), Not(IsRightWindowOpen)), Not(IsGameViewOpen('outliner'))), Not(IsGameViewOpen('barbershop')))), '(int32)1', '(int32)0' ) )]"
+		datamodel = "[RepeatedItem( Select_int32( GetVariableSystem.Exists('zg361_scoreboard_open'), '(int32)1', '(int32)0' ) )]"
 		item = {
 	widget = {
 		name = "zg361_scoreboard_modal" size = { 100% 100% }
