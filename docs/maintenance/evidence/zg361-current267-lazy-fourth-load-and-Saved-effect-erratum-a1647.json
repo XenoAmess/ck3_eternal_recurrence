@@ -613,5 +613,263 @@
       "no_new_Maven_test_build_package_tag_SDK_Game_or_HTTP": true,
       "small_Source_within_existing_Root3M": true
     }
+  },
+  "later_zero_mod_baseline_and_profile_handover_a1673": {
+    "at_utc": "2026-11-25T01:14:15.235329+00:00",
+    "base_docs_HEAD": "720388d8740978e14ae781f09d7ce1b9398f4dae",
+    "previous_index_snapshot": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\evidence\\zg361-current267-lazy-fourth-load-and-Saved-effect-erratum-a1647.json",
+      "bytes": 29944,
+      "sha256": "c98987253e69cb5ae2721eda0ee0d4c08d784468f1990a80cdf307880edcc0e9"
+    },
+    "prior_sections_preserved_as_historical_cuts": true,
+    "finite_baseline": {
+      "Root_END": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\zgb-no-mod-same821-e90-18G-finite-load-PASS-END-a1672.json",
+        "bytes": 3920,
+        "sha256": "2e40e6243bec3aa68d5383574dd2894ccba50e26b4b31735621f77c450c799b5"
+      },
+      "ready": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zgb\\ready.json",
+        "bytes": 6183,
+        "sha256": "3643fba459c4da9627401bf3ceb5588e6f734dd7002eb4a4b9b08d5d6087654a"
+      },
+      "core_summary": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zgb\\operations\\zgb-a1668-core-a01\\result\\summary.json",
+        "bytes": 9437,
+        "sha256": "26ad234a9c75bdc0b36c0afc3f75e2032e7b02ed9503d97459b89666b04b6036"
+      },
+      "quit_summary": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zgb\\operations\\zgb-a1668-quit-a02\\result\\summary.json",
+        "bytes": 13850,
+        "sha256": "68449bee199e7689690a75958b953432c56bc9626249c9fd9cf219d5582bd172"
+      },
+      "independent_terminal": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zgb\\owner\\terminal.json",
+        "bytes": 1007,
+        "sha256": "ae7a3ee08d25730e92a6fbc15f23c4a69f7276cc1ea27b0623ce14c52b11f170"
+      },
+      "creator_END": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zgb\\creator-end.json",
+        "bytes": 515,
+        "sha256": "84f7d928c7a0f1efb2606a85e7503743fe50d855ade56619c3e3370d30649560"
+      },
+      "actual_terminal": {
+        "accounting": {
+          "active_processes": 0,
+          "limit_flags": 8704,
+          "memory_limit_bytes": 19327352832,
+          "peak_job_memory_bytes": 11649048576
+        },
+        "elapsed_seconds_decimal": "207.6112436",
+        "exit_code": 0,
+        "identity": {
+          "creation_filetime_decimal": "134400417929038103",
+          "executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+          "pid": 4156
+        },
+        "stop_reason": null
+      },
+      "creator_PID": 18020,
+      "Root_creator_session_collected": 74681,
+      "zero_enabled_mods": true,
+      "production_roots": [],
+      "fixture_mounted": false,
+      "actual_Core_prefix": {
+        "date_raw": 53144328,
+        "speed": 3,
+        "paused": true,
+        "local_player_id": 1,
+        "map_ready": true,
+        "has_played_character": true,
+        "played_character_id": 36423,
+        "played_character_alive": true
+      },
+      "core_frame_kind": "PARTIAL",
+      "complete_snapshot_raw": false,
+      "quit_normal_exit_confirmed_raw": false,
+      "independent_terminal_NATURAL0": true,
+      "Job_active_processes": 0,
+      "cleanup_proven": true,
+      "Core_reads": 1,
+      "normal_quit_calls": 1,
+      "Date_Save_or_product_business_calls": 0,
+      "protected_original_Save_ref_from_actual_END": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\des-vanilla-seed-current267-profile-a905\\checkpoints\\des-vanilla-1066-robert-day15.ck3",
+        "bytes": 166551273,
+        "sha256": "82178e0f4142b50e0d3d51914574eff8cccce84a187b4f622c80fd2c2c9e94b4"
+      },
+      "original_profile_Save_ref_at_baseline_END": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zgb\\profile-states\\vanilla-baseline\\profile\\save games\\des-vanilla-1066-robert-day15.ck3",
+        "bytes": 166551273,
+        "sha256": "82178e0f4142b50e0d3d51914574eff8cccce84a187b4f622c80fd2c2c9e94b4"
+      },
+      "original_and_profile_full_SHA_unchanged_at_END": true,
+      "actual_scene_allocation": {
+        "actual_scene_held_allocation_bytes": 371349688,
+        "regular_files": 4304,
+        "unique_volume_FileID128_count": 4304,
+        "hardlink_alias_paths": 0,
+        "excluded_Root3M_Source_directories": [
+          "source-candidate-a01"
+        ],
+        "Source_allocation_deducted": false,
+        "allocation_method": "GetFileInformationByHandleEx.FileStandardInfo.AllocationSize; existing frozen_jar_refs._identity",
+        "identity_metadata_sha256": "2e6f01e1ea8f874fc0993fecde6e6ebdd19b23c8bbb1ddf5253ea0a6990d944b",
+        "body_hashes_or_compressed_size_calls": 0,
+        "directory_metadata_allocation_deducted": false
+      },
+      "remaining_scene_future_bytes": 0,
+      "boundary": "Same821/e90/940/config and18GiB with zero enabled mods finitely loaded, observed Core8 and exited naturally. Full1034 prior failures remain. No individual GUI/script/allocator cause, product fix, product business or long-term/performance qualification follows."
+    },
+    "permanent_profile_handover_identity_mapping": {
+      "map_archive": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zgd\\Root-profile-handover-a1673\\handover-map.json.gz",
+        "bytes": 302696,
+        "sha256": "d3e4630dec35d3848cd9693ddd0d53348dcb934f59a685e3d2b7771220b73598"
+      },
+      "intent_archive": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zgd\\Root-profile-handover-a1673\\handover-intent.json.gz",
+        "bytes": 280902,
+        "sha256": "ad010ae05bafb7dae637ea002d246cd1c9dcc94546912f24fd80e90fb0128aa7"
+      },
+      "mapping_schema": "Root.closed-profile.same-volume-handover.v1",
+      "Root_handover_session_collected": 4800,
+      "actual_files": 4204,
+      "all_before_after_full_SHA_FileStandardInfo_and_FileID128_equal": true,
+      "old_profile": "D:\\ck3-state\\upgrade-20261118\\zgb\\profile-states\\vanilla-baseline\\profile",
+      "new_profile": "D:\\ck3-state\\upgrade-20261118\\zgd\\profile-states\\scoreboard-omitted\\profile",
+      "old_logs": "D:\\ck3-state\\upgrade-20261118\\zgb\\profile-states\\vanilla-baseline\\profile\\logs",
+      "new_logs": "D:\\ck3-state\\upgrade-20261118\\zgb\\baseline-profile-logs-preserved",
+      "old_profile_availability": "UNREADABLE_MOVED",
+      "old_logs_availability": "UNREADABLE_MOVED",
+      "every_old_file_path_status": "Historical old paths are unreadable after the corresponding same-volume move; they are not still-readable aliases. Read current copies only through the exact map.",
+      "profile_file_mapping_count": 4188,
+      "log_file_mapping_count": 16,
+      "complete_per_file_mapping_JSON_pointer": "/files",
+      "complete_per_file_mapping_fields": [
+        "old FilePin",
+        "new FilePin",
+        "before_identity",
+        "after_identity"
+      ],
+      "mapping_archive_is_required_provenance": "Retain this exact compressed4204-row mapping and intent for baseline evidence and downstream profile provenance; no second payload was made.",
+      "current_moved_profile_Save_mapping": {
+        "old": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\zgb\\profile-states\\vanilla-baseline\\profile\\save games\\des-vanilla-1066-robert-day15.ck3",
+          "bytes": 166551273,
+          "sha256": "82178e0f4142b50e0d3d51914574eff8cccce84a187b4f622c80fd2c2c9e94b4"
+        },
+        "new": {
+          "path": "D:\\ck3-state\\upgrade-20261118\\zgd\\profile-states\\scoreboard-omitted\\profile\\save games\\des-vanilla-1066-robert-day15.ck3",
+          "bytes": 166551273,
+          "sha256": "82178e0f4142b50e0d3d51914574eff8cccce84a187b4f622c80fd2c2c9e94b4"
+        },
+        "before_identity": {
+          "volume_serial": 7220568048185129294,
+          "FileID128": "fe744e00000009000000000000000000",
+          "allocation_bytes": 166551552,
+          "logical_bytes": 166551273,
+          "mtime_ns": 1795568067039349500
+        },
+        "after_identity": {
+          "volume_serial": 7220568048185129294,
+          "FileID128": "fe744e00000009000000000000000000",
+          "allocation_bytes": 166551552,
+          "logical_bytes": 166551273,
+          "mtime_ns": 1795568067039349500
+        }
+      },
+      "actual_profile_FSI_before_bytes": 359843192,
+      "no_payload_copy_or_delete": true,
+      "all_baseline_logs_preserved": true,
+      "old_baseline_End_FilePins_are_historical": "The old profile Save/log paths recorded in baseline END are now UNREADABLE_MOVED; use this mapping to resolve their new paths and unchanged identities.",
+      "actual_handover_metadata_allocation_bytes": 585728,
+      "remaining_handover_metadata_future_bytes": 0,
+      "original_Save_archive_candidates_SDK_and_failure_records_preserved": true
+    },
+    "actual_zgs_retirement": {
+      "receipt": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\closed-zgs-derived-retirement-source-a1664\\actual-three-target-result-a1667.json",
+        "bytes": 4321,
+        "sha256": "0fd304087c279e024586171ed871c3ccca6264dffca821b240d1be3b9a8ebbe4"
+      },
+      "actual_retired_files": 5191,
+      "actual_FileStandardInfo_allocated_removed_bytes": 392971544,
+      "targets": [
+        {
+          "target": "zgs-initial821",
+          "inventory": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\closed-zgs-derived-retirement-source-a1664\\actual-zgs-initial821\\inventory-index.json",
+            "bytes": 2768,
+            "sha256": "d1d7bdc0b53902eb14c7df78b1c1e6df31b7cc0c437bfff836224fd0d9975a3c"
+          },
+          "actual_files": 1,
+          "actual_allocated_removed": 166551552
+        },
+        {
+          "target": "zgs-shader",
+          "inventory": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\closed-zgs-derived-retirement-source-a1664\\actual-zgs-shader\\inventory-index.json",
+            "bytes": 3379,
+            "sha256": "d6f54e91b78d64ff2219ad649d284459d96146846687a1dbec0c209f3fc516cd"
+          },
+          "actual_files": 4156,
+          "actual_allocated_removed": 191316736
+        },
+        {
+          "target": "zgs-product",
+          "inventory": {
+            "path": "D:\\ck3-state\\upgrade-20261118\\closed-zgs-derived-retirement-source-a1664\\actual-zgs-product\\inventory-index.json",
+            "bytes": 2717,
+            "sha256": "d0e1428dbab18e8675e8889d97dbdef1f9f26671b83d96dddb00e4cc3a5f1e7c"
+          },
+          "actual_files": 1034,
+          "actual_allocated_removed": 35103256
+        }
+      ],
+      "PSS_raw_decoded_Source_logs_owner_claims_failed_history_preserved": true,
+      "canonical821_master940_candidates_currentSDK_retained_a1593_preserved": true,
+      "retired_original_paths": "UNREADABLE_NO_REPLACEMENT",
+      "metadata_allocation_bytes": 2268008,
+      "metadata_held_upper_bytes": 2333544,
+      "remaining_metadata_future_bytes": 0,
+      "budget_refund": false
+    },
+    "existing_analysis_indexes": {
+      "Native_PSS_and_startup_diff_delivery": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\native-zg361-loading-pss-analysis-a1660\\delivery-final.json",
+        "bytes": 12812,
+        "sha256": "3a59af865f15efb78d021a86e653e9fcd211d1bbb48791cdbac27b375e1000f5"
+      },
+      "AUB_stock_map_resource_delivery": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zg361-stock-map-resource-source-review-a01\\delivery-final.json",
+        "bytes": 852,
+        "sha256": "a1cc3e9c799c8b2b013ae0ca5a77ddfbdd8700f6ddeedeb8f45e11e803aa5817"
+      },
+      "most_specific_observed_activity": "Original stock TGA reading. Product has no override or reference to that stock resource; this is activity evidence, not proof it causes the18GiB failure.",
+      "startup_boundaries": "Five original SDK initialization entry bodies equal the retained baseline, but the new capability adds vector/pin/slot registration. Do not describe startup as zero initialization or infer no SDK execution from no Root Core.",
+      "no_PSS_raw_redecode_or_module_or_product_rescan_by_docs": true,
+      "unique_memory_cause": "UNRESOLVED"
+    },
+    "next_diagnostic_asof_Root_cut": {
+      "status": "SOURCE_ONLY_NOT_PREPARED_BOUND_OR_LAUNCHED",
+      "plan": "Place full1034 candidate in the moved profile and omit only scoreboard GUI plus its sole widgets registration for diagnosis; retain other1032 files,three bridges and all scripts.",
+      "same_single_variable_conditions": "NOT_CLAIMED. The inherited profile carries warm caches and four restored configuration files; their exact facts belong to the separately prepared next scene.",
+      "specific_GUI_cause_or_product_fix_or_business_PASS": false
+    },
+    "release_counts": {
+      "uploaded": 16,
+      "products": 17,
+      "strict_finite_closed": 10,
+      "pending_Notes_HTTP429": 6,
+      "Steam_offline": true,
+      "no_new_GET_or_upload": true
+    },
+    "documentation_only": {
+      "no_new_build_test_SDK_package_tag_Game_HTTP_or_payload_move": true,
+      "normal_docs_push_not_a_scene_gate": true,
+      "Source_within_existing_Root3M": true
+    }
   }
 }

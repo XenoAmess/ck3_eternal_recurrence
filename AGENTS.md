@@ -1,5 +1,12 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-25 同821／e90零mod有限baseline正常退出，profile实际同卷移交已索引
+
+Root zgb在同821／e90／940／config与18GiB下零mod、无fixture载入，Core8观察Robert36423／raw53144328／mapready／pausedalive，1Core／1quit／0DateSave业务；Game4156独立Natural0／Job0／cleanup，creator18020与Root74681收0，峰11,649,048,576B／207.6112436秒。Main仍PARTIAL／complete_snapshotfalse，quit normal_exit_confirmedfalse保；退出结论来自独立terminal，不改原旗。此前完整1034失败、PSS NONATOMIC／原helper非Natural事实保持，不据baseline授具体GUI／allocator根因或产品P。
+
+closed baseline先将旧logs移至zgb/baseline-profile-logs-preserved，再将profile同卷移至zgd/profile-states/scoreboard-omitted/profile；4204文件完整SHA／FSI／FileID128前后相同，无payload copy／delete。旧profile／logs与旧文件路径现UNREADABLE_MOVED，不再当可读别名；永久索引保存302696B gzip映射d3e4630d与intent及每文件新旧身份，原Save归档不变。zgs三类5191派生实际392,971,544B allocated退役，PSSraw／decoded与Source／日志／owner保护。现有分析最具体是原版TGA读取，产品无覆盖／引用但不授因果；SDK五原入口相等仍有新增vector／pin／slot登记，不称零初始化。后继停scoreboard诊断仅Source，warmcache／四config恢复另核，不冒纯单变量或已运行；16／17上传、10／17严格、六429与离线保持。[现有永久索引的baseline及新旧身份映射追加](docs/maintenance/evidence/zg361-current267-lazy-fourth-load-and-Saved-effect-erratum-a1647.json)。
+
+
 ## 2026-11-25 ZG361第5／6次产品only加载失败，PSS原捕获与独立解码范围保持
 
 完整1034产品、无fixture的zgp与同产品zgs均在原18GiB Job上限非零退出；分别149.5363401／160.6558893秒，Job0／cleanup／creator已收，0 RootCore／业务／Date／Save。移除Saved9仍失败只能排除fixture为唯一充分解释，不能证明全部GameEffects为0；产品初始化效果与内存首因未观察。zgs两份PSS各109线程完整数据已取，原helper虽exit0但preclose active1／naturalfalse必须保；首次独立decode两次Natural0／Job0，不重取样、NONATOMIC，不据此授unwind／heap根因。桥接DLL实际存在于两份module表，无RootCore不能说SDK未参与。
