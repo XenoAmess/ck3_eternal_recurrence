@@ -1,3 +1,11 @@
+// Optional private telemetry only. Default-null callers keep their original
+// acceptance predicates, memory reads, order, outputs and public schema.
+struct GuiWindowDiagnostic267V1 {
+ const char*stage="not_started";const char*scope="none";
+ std::size_t nodes=0,names=0,depth=0;std::int32_t count=0,capacity=0;
+ std::uint64_t name_size=0,name_capacity=0;std::uint8_t flags=0;
+ bool count_known=false,capacity_known=false,name_size_known=false,name_capacity_known=false,flags_known=false;
+};
 // Included in the current reader private namespace; only bounded fixed copies, never native GUI calls.
 [[maybe_unused]]bool GuiWindowTypeV1(std::uintptr_t image,std::uintptr_t widget,std::uintptr_t &vtable) noexcept {
  const auto inside=[&](std::uintptr_t p,std::size_t n){return p>=image&&n<=kImageSize&&p-image<=kImageSize-n;};
@@ -17,71 +25,89 @@
  return false;
 }
 [[maybe_unused]]bool GuiWindowNodeReadV1(std::uintptr_t image,std::uintptr_t widget,std::uintptr_t context,
-    std::uintptr_t parent,GuiWindowNodeV1 &out) {
+    std::uintptr_t parent,GuiWindowNodeV1 &out,GuiWindowDiagnostic267V1*diagnostic=nullptr) {
  GuiWindowNodeV1 n;n.widget=widget;std::array<char,kGuiWindowMaxNameBytesV1+1> text{};
- if(!widget||!GuiWindowTypeV1(image,widget,n.vtable)||!At(widget,0xD0,n.flags)||(n.flags&1)!=0||
-    !At(widget,0xD8,n.context)||n.context!=context||!At(widget,0xE8,n.parent)||n.parent!=parent||
-    !At(widget,0xF0,n.children)||!At(widget,0xF8,n.child_capacity)||!At(widget,0xFC,n.child_count)||
+ bool count_known=false,capacity_known=false,name_size_known=false,name_capacity_known=false,flags_known=false;
+ const auto remember=[](bool read,bool&known){known=read;return read;};
+ const auto fail=[&](const char*stage){if(diagnostic){diagnostic->stage=stage;diagnostic->count=n.child_count;diagnostic->capacity=n.child_capacity;diagnostic->name_size=n.name_size;diagnostic->name_capacity=n.name_capacity;diagnostic->flags=n.flags;diagnostic->count_known=count_known;diagnostic->capacity_known=capacity_known;diagnostic->name_size_known=name_size_known;diagnostic->name_capacity_known=name_capacity_known;diagnostic->flags_known=flags_known;}return false;};
+ if(!widget||!GuiWindowTypeV1(image,widget,n.vtable))return fail("node_type");
+ if(!remember(At(widget,0xD0,n.flags),flags_known)||(n.flags&1)!=0)return fail("node_flags");
+ if(!At(widget,0xD8,n.context)||n.context!=context)return fail("node_context");
+ if(!At(widget,0xE8,n.parent)||n.parent!=parent)return fail("node_parent");
+ if(!At(widget,0xF0,n.children)||!remember(At(widget,0xF8,n.child_capacity),capacity_known)||!remember(At(widget,0xFC,n.child_count),count_known)||
     n.child_count<0||n.child_capacity<n.child_count||static_cast<std::size_t>(n.child_count)>kGuiWindowMaxNodesV1||
-    (n.child_count&&!n.children)||!At(widget,0x1C8,n.name_size)||!At(widget,0x1D0,n.name_capacity)||
-    n.name_size>kGuiWindowMaxNameBytesV1||n.name_capacity<n.name_size||n.name_capacity>0x1000000)return false;
- if(n.name_capacity<=15) {if(n.name_capacity!=15||n.name_size>15)return false;n.name_data=widget+0x1B8;}
- else if(!At(widget,0x1B8,n.name_data)||!n.name_data)return false;
+    (n.child_count&&!n.children))return fail("node_children");
+ if(!remember(At(widget,0x1C8,n.name_size),name_size_known)||!remember(At(widget,0x1D0,n.name_capacity),name_capacity_known)||
+    n.name_size>kGuiWindowMaxNameBytesV1||n.name_capacity<n.name_size||n.name_capacity>0x1000000)return fail("node_name_header");
+ if(n.name_capacity<=15) {if(n.name_capacity!=15||n.name_size>15)return fail("node_name_sso");n.name_data=widget+0x1B8;}
+ else if(!At(widget,0x1B8,n.name_data)||!n.name_data)return fail("node_name_pointer");
  if(!Copy(reinterpret_cast<const void*>(n.name_data),text.data(),static_cast<std::size_t>(n.name_size)+1)||
-    text[n.name_size]!=0||std::memchr(text.data(),0,static_cast<std::size_t>(n.name_size)))return false;
- if(n.name_size&&MultiByteToWideChar(CP_UTF8,MB_ERR_INVALID_CHARS,text.data(),static_cast<int>(n.name_size),nullptr,0)==0)return false;
+    text[n.name_size]!=0||std::memchr(text.data(),0,static_cast<std::size_t>(n.name_size)))return fail("node_name_copy");
+ if(n.name_size&&MultiByteToWideChar(CP_UTF8,MB_ERR_INVALID_CHARS,text.data(),static_cast<int>(n.name_size),nullptr,0)==0)return fail("node_name_utf8");
  n.name.assign(text.data(),static_cast<std::size_t>(n.name_size));n.visible=(n.flags&0x18)==0;n.enabled=(n.flags&0x06)==0;
  out=std::move(n);return true;
 }
 bool ReadGuiWindowV1([[maybe_unused]]ReadonlyContext &q,
  [[maybe_unused]]const ck3_11906::MainThreadExecutionStampV1 &stamp,
  [[maybe_unused]]const ck3_1210::CoreSnapshotPrefix &core,[[maybe_unused]]GuiWindowV1 &out,
- [[maybe_unused]]const OwnerInvocationV1 &invocation={}) noexcept {
+ [[maybe_unused]]const OwnerInvocationV1 &invocation={},[[maybe_unused]]GuiWindowDiagnostic267V1*diagnostic=nullptr) noexcept {
 #if !defined(XAR_CK3_ENABLE_121003_26785313_GUI_WINDOW_V1)
  return false;
 #else
  try {
+  const auto stage=[&](const char*name,const char*scope){if(diagnostic){diagnostic->stage=name;diagnostic->scope=scope;}};
+  stage("request_gate","request");
   const auto valid=[&](){const auto wall=std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();return q.gui_window_request&&wall>=0&&static_cast<std::uint64_t>(wall)<q.gui_window_request->deadline_unix_ms&&Owner(q,stamp,invocation);};
   if(!q.gui_window_request||!q.gui_window_request->connection_generation||!valid()||
      !Same(q.gui_window_request->expected_core,core)||q.gui_window_request->window_name.empty()||
      q.gui_window_request->window_name.size()>kGuiWindowMaxNameBytesV1||!VerifyGuiWindowImageV1(q.bindings.module_base))return false;
+  stage("application_root","global");
   const auto base=q.bindings.module_base;GuiWindowV1 v;std::uintptr_t vt=0;
   v.requested_name=q.gui_window_request->window_name;v.connection_generation=q.gui_window_request->connection_generation;
   v.ticket_sequence=q.ticket.sequence;v.pump_epoch=stamp.pump_epoch;v.owner_thread_id=stamp.thread_id;
   if(!At(reinterpret_cast<std::uintptr_t>(q.bindings.core.jomini_state_slot),0,v.logical_owner)||
      !At(v.logical_owner,0x18,v.application)||!At(v.application,0,vt)||vt!=base+kGuiRootApplicationVtableRvaV1||
      !At(v.application,0x1B8,v.first)||!At(v.first,0x58,v.context)||!v.context||
-     !At(v.context,0xD0,v.global_root)||!GuiWindowNodeReadV1(base,v.global_root,v.context,0,v.root))return false;
+     !At(v.context,0xD0,v.global_root)||!GuiWindowNodeReadV1(base,v.global_root,v.context,0,v.root,diagnostic))return false;
   std::unordered_set<std::uintptr_t> unique{v.global_root};std::uintptr_t selected=0;std::size_t name_bytes=v.root.name.size();
+  stage("top_census","top");
   for(std::int32_t i=0;i<v.root.child_count;++i) {
    std::uintptr_t p=0;GuiWindowNodeV1 n;
    if(!valid()||!At(v.root.children,static_cast<std::size_t>(i)*8,p)||!unique.insert(p).second||
-      !GuiWindowNodeReadV1(base,p,v.context,v.global_root,n))return false;
+      !GuiWindowNodeReadV1(base,p,v.context,v.global_root,n,diagnostic))return false;
    n.sibling_index=static_cast<std::uint32_t>(i);n.visible=n.visible&&v.root.visible;n.enabled=n.enabled&&v.root.enabled;name_bytes+=n.name.size();
-   if(n.name==v.requested_name){if(selected)return false;selected=p;}
+   if(n.name==v.requested_name){if(selected){stage("selected_ambiguous","top");return false;}selected=p;}
    v.top_level.push_back(std::move(n));
   }
-  if(name_bytes>131072)return false;
+  if(diagnostic){diagnostic->nodes=v.top_level.size();diagnostic->names=name_bytes;}
+  if(name_bytes>131072){stage("top_name_budget","top");return false;}
   if(selected) {
    const auto found=std::find_if(v.top_level.begin(),v.top_level.end(),[&](const auto&n){return n.widget==selected;});
    v.tree.push_back(*found);v.window_found=true;
    struct Pending{std::size_t index;};std::vector<Pending> todo{{0}};
    while(!todo.empty()) {
     const auto index=todo.back().index;todo.pop_back();const auto parent_node=v.tree[index];
+    stage("owner_or_depth","child");
+    if(diagnostic){diagnostic->nodes=v.tree.size();diagnostic->names=name_bytes;diagnostic->depth=parent_node.depth;diagnostic->count=parent_node.child_count;diagnostic->capacity=parent_node.child_capacity;diagnostic->flags=parent_node.flags;diagnostic->count_known=diagnostic->capacity_known=diagnostic->flags_known=true;}
     if(!valid()||(parent_node.depth>=kGuiWindowMaxDepthV1&&parent_node.child_count))return false;
     for(std::int32_t i=0;i<parent_node.child_count;++i) {
      std::uintptr_t p=0;GuiWindowNodeV1 n;
-     if(v.tree.size()>=kGuiWindowMaxNodesV1||!At(parent_node.children,static_cast<std::size_t>(i)*8,p)||!unique.insert(p).second||
-        !GuiWindowNodeReadV1(base,p,v.context,parent_node.widget,n))return false;
+     if(diagnostic)diagnostic->nodes=v.tree.size();
+     if(v.tree.size()>=kGuiWindowMaxNodesV1){stage("tree_node_budget","child");return false;}
+     stage("child_identity","child");
+     if(!At(parent_node.children,static_cast<std::size_t>(i)*8,p)||!unique.insert(p).second||
+        !GuiWindowNodeReadV1(base,p,v.context,parent_node.widget,n,diagnostic))return false;
      n.parent_index=static_cast<std::int32_t>(index);n.depth=parent_node.depth+1;n.sibling_index=static_cast<std::uint32_t>(i);
      n.visible=n.visible&&parent_node.visible;n.enabled=n.enabled&&parent_node.enabled;
-     name_bytes+=n.name.size();if(name_bytes>131072)return false;
+     name_bytes+=n.name.size();if(diagnostic)diagnostic->names=name_bytes;if(name_bytes>131072){stage("tree_name_budget","child");return false;}
      todo.push_back({v.tree.size()});v.tree.push_back(std::move(n));
     }
    }
   }
-  if(!valid())return false;out=std::move(v);return true;
- }catch(...){return false;}
+  stage("final_owner","final");
+  if(!valid())return false;if(diagnostic){diagnostic->nodes=v.tree.size();diagnostic->names=name_bytes;diagnostic->stage="complete";}
+  out=std::move(v);return true;
+ }catch(...){if(diagnostic)diagnostic->stage="cpp_exception";return false;}
 #endif
 }
 
