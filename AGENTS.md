@@ -1,5 +1,9 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-25 本机后续任务允许使用前台
+
+用户明确：“我允许你在这台机器 后续的所有任务中 使用前台。注意，是这台机器。”此授权仅适用于当前已核 `machine_id: 4-8e1c2f1861`，覆盖本机此前始终最小化／禁止恢复、前台输入与截图的限制；不外推到 `desktop-3fevhd2-1c74096080` 或其他机器。后续可按任务需要使用前台、真实鼠标及截图，不必为同一授权重复询问。继续核对进程与窗口归属，不接管未确认的用户会话，不设置无必要的 topmost；测试结束正常退出。Steam离线、独立profile、存储及真实验收边界仍按各自要求执行。
+
 ## 2026-11-25 ZG361 flag-only＋新SDK两次加载仍失败，软件范围保持
 
 Source0a8174／productTreee134、完整1034 manifest875682／GUI89b4e及16个必要Java方法、12组Native、3个原parser逆核的软件资格保持；新六针66a461由2新JAR＋156身份复用配对。Root zge含受控Saved9于172.9245523秒／peak19,327,631,360B触18GiB非零退出，唯一Core响应读取Unknown／无summary，不推无派发或无fixture自动效果；v52／AE2／DateSave均未调用。zgh同包同SDK仅卸fixture仍于132.0664295秒／peak19,327,811,584B失败，0Core／quit／v52／AE2／DateSave，两场Job0／cleanup且creator各exit1；不授flag-only加载、开闭、内存或业务修复P。
