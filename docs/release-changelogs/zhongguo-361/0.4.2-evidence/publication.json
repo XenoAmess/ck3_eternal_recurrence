@@ -1,0 +1,270 @@
+{
+  "schema": "xar.zg361042.permanent-publication-and-finite-cache-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "version": "0.4.2",
+  "canonical_workshop_id": "3792585972",
+  "app_id": 1158310,
+  "status": "PUBLISHED_DOWNLOAD1034_PUBLIC_API_AND_FINITE_REAL_CACHE_PASS_NOTES_NOT_OBSERVED",
+  "formal_delivery": {
+    "path": "D:\\ck3-state\\upgrade-20261118\\zg361-042-formal-release-a1778\\frozen-delivery-final.json",
+    "bytes": 9096,
+    "sha256": "5c01b7ddb1e702b42a9cb89897f8da02e2a692efed3d8c1ba506ff84ec1474a8"
+  },
+  "formal": {
+    "source_commit": "0c8a06cb10f57469dadadf507da8759e61eb4c71",
+    "git_tag": "zhongguo-361-v0.4.2",
+    "tag_object": "2d9443da03b4e4c441fc7caef124206ba0fa0a66",
+    "runtime_manifest": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\zg361-042-formal-release-a1778\\mod_zhongguo_style-v0.4.2.manifest.json",
+      "bytes": 213478,
+      "sha256": "fe69f02fd06856be45dfb1919f93af4d0bdef7caa7aa8ab29af0a3ad27c40a2f"
+    },
+    "accepted_runtime_manifest": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\zg361-row-template-candidate-a1706\\mod_zhongguo_style.manifest.json",
+      "bytes": 213461,
+      "sha256": "b96a32fa49bdc1aa339261d81735935bc0d196687bbf4015254480c3fa98f870"
+    },
+    "archive": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\zg361-042-formal-release-a1778\\mod_zhongguo_style-v0.4.2.zip",
+      "bytes": 4428279,
+      "sha256": "ded6d2dbf301f3e001d1eb19d4c20a5ac6ea7d4ae87e7ff94f343d228a389d30"
+    },
+    "metadata_file_refs": {
+      "title": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zg361-042-formal-release-a1778\\metadata\\workshop-title.txt",
+        "bytes": 36,
+        "sha256": "f058e87a2f50525931361671f6ea483ba559700354fc1823643b6fe63295f201"
+      },
+      "description": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zg361-042-formal-release-a1778\\metadata\\workshop-description.bbcode",
+        "bytes": 7866,
+        "sha256": "b73d9949bc1e1fd81973d63173e8b2812003f6325b47468739fe02c997689927"
+      },
+      "change_note": {
+        "path": "D:\\ck3-state\\upgrade-20261118\\zg361-042-formal-release-a1778\\metadata\\change-notes.txt",
+        "bytes": 2063,
+        "sha256": "b7c00cf7c49ba1c901b75e54da542e619d71aec9d32e532a4d79bf151da9e921"
+      }
+    }
+  },
+  "SourceA_finite_qualification_unchanged": "docs/release-changelogs/zhongguo-361/0.4.2-evidence/finite-business.json",
+  "actual_evidence": {
+    "upload": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\ZG361042-actual-upload1034-download-offline-END-a1792.json",
+      "bytes": 3767,
+      "sha256": "f78d49bc2e5aaa3e6ab28717dfd7c5e70e05a6d7cc75b18dc2ac36895abfe94d"
+    },
+    "public_API": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\zg361042-public-readback-a1792\\actual-API-full-delivery.json",
+      "bytes": 1087,
+      "sha256": "e8a7633b7435c8a18c16ba5aefb349f35f3dc92ad8742163f6ca9effdc16cda0"
+    },
+    "notes_refusal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\zg361042-public-readback-a1792\\notes-a01\\http-refusal.json",
+      "bytes": 521,
+      "sha256": "82d37e1643179a4311e3d1a9259a67174c39d0bdfd1c756632735d5e930b6cad"
+    },
+    "first_attempt": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\ZG361042-first-preSubmit-native-probe-mapping-failure-END-a1787.json",
+      "bytes": 5652,
+      "sha256": "46d84bb681221000b94c59dcfe8a01a038a91f0310af264b53dc7834aaea7319"
+    },
+    "first_cause_erratum": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\ZG361042-first-probe-failure-cause-erratum-a1790.json",
+      "bytes": 2196,
+      "sha256": "3b5b75d88022d7304676ed02006cdef3d61fe2b132d805b49c0034a0d2643367"
+    },
+    "short_online_diagnostic": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\zg361042-online-diagnostic-a1789\\END.json",
+      "bytes": 732,
+      "sha256": "68b6a96348996ebf63cca5632a64db30d46d6980f0bd36a03e4b52983f80d8a9"
+    },
+    "theoretical_fix_withdrawal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\steam-offline-observed-mode-fix-a1784\\unproven-fix-withdrawal.json",
+      "bytes": 2091,
+      "sha256": "c19dc3875422cb35718f23a7e485ea2da1c04e2cc3eae9d37a4905d4400d6982"
+    },
+    "Steam_TMP_restoration": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\zg361042-Steam-temp-restoration-a1791\\END.json",
+      "bytes": 1522,
+      "sha256": "a3da7e08c2744e7e0fc9497658d404dd75f40cbfaeca45e262c8225330ce1bcd"
+    },
+    "cache": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\ZG361042-actual-canonical-cache-Core-Natural0-PASS-END-a1795.json",
+      "bytes": 6170,
+      "sha256": "b1260856fc979b8f8367146630dcdd9813506189e0362c5c7e1d0125c38256e5"
+    }
+  },
+  "publication": {
+    "receipt": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\zg361-042-formal-release-a1778\\zg361042-native-publish-receipt-a02.json",
+      "bytes": 643,
+      "sha256": "59a682d76ffa6e93d22a7e5815658ca02bb0c2de4412423a75c55d1f6ada7806"
+    },
+    "result": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\zg361042-publication-a1790\\operator-zg361042-f726948a4575\\publication-result.json",
+      "bytes": 2216,
+      "sha256": "775a48d8c24855fb6890baec13a9560572cb3f7513b81e549f670700f4e40602"
+    },
+    "steam_result": 1,
+    "submitted_at_utc": "2026-11-25T10:56:59.244772+00:00",
+    "successful_request_to_fresh_offline_seconds": 94.88535669998964,
+    "this_is_not_total_turn_online_time": true,
+    "multiple_online_windows_preserved": true,
+    "fresh_offline_probe": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\zg361042-publication-a1790\\operator-zg361042-f726948a4575\\observed-offline-1795604280533329500.json",
+      "bytes": 1305,
+      "sha256": "f6341ef73542666ef16f5a1cd6f98ce8c5955528a7bd58efc160bd5ffaf2639a"
+    },
+    "fresh_offline_at_utc": "2026-11-25T10:58:00.216898Z",
+    "download": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\zg361042-publication-a1790\\operator-zg361042-f726948a4575\\zg361042-download-native.json",
+      "bytes": 1249,
+      "sha256": "969e80c6f0fe4f7873f7312aa71dfcd599fe442a9081ba97c48eee63fd7c5a2c"
+    },
+    "download1034_exact": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\zg361042-publication-a1790\\operator-zg361042-f726948a4575\\zg361042-download-exact.json",
+      "bytes": 760,
+      "sha256": "7b525a0e53c3793dba0bcf8be7bf38dd33288e3b07881a1886aaeaaf7f9cd73c"
+    },
+    "gallery_preserved": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\zg361042-publication-a1790\\operator-zg361042-f726948a4575\\zg361042-gallery-preserved.json",
+      "bytes": 311,
+      "sha256": "c768acded6d8ef679b7c74373bca240238ad89d8466b27bd3031a71d546f528c"
+    },
+    "actual_SDK_additional_gallery_count": 8,
+    "all_ordered_gallery_entries_exact": true,
+    "body_inline_images": 8,
+    "body_URLs": 9,
+    "inline_images_and_SDK_gallery_are_separate_facts": true,
+    "API_title_body_creator_and_cover_fields": "PASS",
+    "single_actual_Submit": true
+  },
+  "public_Notes": {
+    "status": "NOT_OBSERVED",
+    "http_status": 429,
+    "Retry_After": null,
+    "GET_calls": 1,
+    "refusal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\zg361042-public-readback-a1792\\notes-a01\\http-refusal.json",
+      "bytes": 521,
+      "sha256": "82d37e1643179a4311e3d1a9259a67174c39d0bdfd1c756632735d5e930b6cad"
+    },
+    "automatic_followup_GET": false,
+    "reupload": false,
+    "full_Notes_exact": false,
+    "public_reader_exit1_reason": "Notes HTTP refusal, not title/body text mismatch"
+  },
+  "actual_SDK_cache": {
+    "root": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3792585972",
+    "files": 1034,
+    "formal_manifest": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\zg361-042-formal-release-a1778\\mod_zhongguo_style-v0.4.2.manifest.json",
+      "bytes": 213478,
+      "sha256": "fe69f02fd06856be45dfb1919f93af4d0bdef7caa7aa8ab29af0a3ad27c40a2f"
+    },
+    "direct_mount_no_stage_copy": true,
+    "after_Game_all1034_exact": true,
+    "fixture_mounted": false,
+    "inactive_D_product1034_and_original_fixture9_exact": true,
+    "production_roots": [
+      "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3792585972"
+    ],
+    "actual_Core_prefix": {
+      "date_raw": 53144328,
+      "speed": 3,
+      "paused": true,
+      "local_player_id": 1,
+      "map_ready": true,
+      "has_played_character": true,
+      "played_character_id": 36423,
+      "played_character_alive": true
+    },
+    "Core_frame_kind_raw": "PARTIAL",
+    "complete_snapshot_raw": false,
+    "quit_normal_exit_confirmed_raw": false,
+    "actual_Core_calls": 1,
+    "actual_quit_calls": 1,
+    "business_Date_Save_calls": 0,
+    "source_save_after": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\des-vanilla-seed-current267-profile-a905\\checkpoints\\des-vanilla-1066-robert-day15.ck3",
+      "bytes": 166551273,
+      "sha256": "82178e0f4142b50e0d3d51914574eff8cccce84a187b4f622c80fd2c2c9e94b4"
+    },
+    "profile_save_after": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\zgv\\profile-states\\canonical-cache\\profile\\save games\\des-vanilla-1066-robert-day15.ck3",
+      "bytes": 166551273,
+      "sha256": "82178e0f4142b50e0d3d51914574eff8cccce84a187b4f622c80fd2c2c9e94b4"
+    },
+    "source_and_copy_SHA_unchanged": true,
+    "terminal": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\zgv\\owner\\terminal.json",
+      "bytes": 1006,
+      "sha256": "a4bc89d7aa4ff2da01c77c8250653a32b881893af6d37614c8fe3f44f0ea4d4f"
+    },
+    "creator_END": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\zgv\\creator-end.json",
+      "bytes": 515,
+      "sha256": "14a8ee57b4e2a58499e46ce30ff6e79c6f6443da904011818b57b3a676b35395"
+    },
+    "Root_creator_session_collected": 76794,
+    "Game_PID": 18572,
+    "Game_birth_FILETIME": "134400783839754175",
+    "NATURAL0": true,
+    "Jobactive0": true,
+    "cleanup_proven": true,
+    "exit_code": 0,
+    "elapsed_seconds": "160.5914105",
+    "peak_commit_bytes": 11882061824,
+    "fresh_offline": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\ZG361042-cache-after-fresh-offline-a1795.json",
+      "bytes": 2532,
+      "sha256": "167d1065acb7c56dc61fb7a45c6a4c2f89cebc6f085509d2f8593646ff510a88"
+    }
+  },
+  "preserved_failures_and_corrections": {
+    "first_attempt": "Online state observation timed out before SDK client/probe/publish entrypoints; no Submit. Original admitted intent/plan/freeze remain unchanged.",
+    "first_online_cause": "NOT_OBSERVED; original per-round native/fallback diagnostics were not retained. Line521 root-cause attribution was withdrawn.",
+    "existing_CEF_path": "Short later diagnostic observed online with exact source/PID/endpoint/nonce-bound double false getters; Native remains qualified only for positive offline.",
+    "unproven_521_and_two_mock_draft": "Precisely withdrawn; zero tests and zero commits; original source restored.",
+    "diagnostic_TMP": "Root disclosed the temporary child routing, normally shut down and restored the established separate D persistent128MiB purpose; no global environment change.",
+    "old_UNKNOWN_consumed_claims_load_failures_and_Main_false_flags": true,
+    "cache_pre_freeze_setup_refusals": "Root wrong SourceFD key/rich-pin assertion and old-held threshold refusals occurred before the new freeze; original scripts/exceptions retained. No new business replay or upload."
+  },
+  "finite_scope": {
+    "original_fixture_finite_review_three_tooltips_once_payment_and_verifier": "Inherited SourceA; not replayed in cache",
+    "numeric_direct_native_wallet_carrier": false,
+    "all160_row_text_portrait_binding_long_term_FPS_wholeproduct_PASS": false,
+    "Core_PARTIAL_and_complete_snapshot_false_retained": true,
+    "quit_normal_exit_confirmed_false_retained": true,
+    "no_Date_Save_or_business_replay_in_actual_cache": true,
+    "error_log_all_green": false
+  },
+  "progress_at_this_cut": {
+    "uploaded": 17,
+    "total": 17,
+    "uploaded_percent": 100,
+    "strict_finite_complete": 10,
+    "strict_percent": 58.8,
+    "ZG361_strict_complete": false,
+    "pending_Notes429": 7,
+    "prior_six_Notes_pending_unchanged": true
+  },
+  "this_SourceC_actions": {
+    "documentation_and_normal_Git_only": true,
+    "new_tests_build_JVM_Game_SDK_Steam_HTTP": 0,
+    "SourceA_formal_tag_payload_Native_and_frozen_Java_unchanged": true
+  },
+  "prior_profile_handover": {
+    "mapping": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\zgv\\Root-profile-handover-a1783\\handover-map.json.gz",
+      "bytes": 393862,
+      "sha256": "c8f8efe8f250399dc183ef384005111e06629259863c0208e1a3780830a14e96"
+    },
+    "files": 5269,
+    "same_D_volume_FileID_FSI_and_fullSHA_retained": true,
+    "payload_copy_or_delete": 0,
+    "old_profile_and_logs_paths": "UNREADABLE_MOVED",
+    "logs_preserved_at": "D:\\ck3-state\\upgrade-20261118\\zgt\\original-fixture-ae2-profile-logs-preserved"
+  }
+}

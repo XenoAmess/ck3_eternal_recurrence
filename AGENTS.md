@@ -1,5 +1,12 @@
 # 琉焰卿的永恒轮回（AGENTS 指南）
 
+## 2026-11-25 本机17产品已上传，ZG361真实SDK缓存有限加载通过
+
+仅`desktop-3fevhd2-1c74096080`：ZG3610.4.2原canonical一次实际Submit取得ER1，1034下载精确，公开完整title／body／creator／cover P，SDK图库8项序列保持。真实canonical cache为唯一生产根、无fixture，1Core／1quit／0业务／DateSave，退出后全部输入精确；Game18572／creator16096独立Natural0／Job0／cleanup。原Main PARTIAL／completefalse／quitfalse和旧失败／UNKNOWN保留，不授全行头像／长期性能或wholeproduct。
+
+当前17／17已上传100%，严格仍10／17，七Notes429未核、停止自动GET与重传。成功窗口94.885秒不是全轮在线时间；首次0Submit失败、短在线对照、撤回未证521归因／理论草稿及恢复原D persistent Steam TMP均保原。SourceA0c8a／tag2d9443／正式MFfe69／ZIPded6不改，Steam已fresh offline。本条不新增现场、编测或线上授权，其他机器权限原文不变。[永久发布与缓存索引](docs/release-changelogs/zhongguo-361/0.4.2-evidence/publication.json)。下方保留历史切点。
+
+
 ## 2026-11-25 本机ZG3610.4.2原夹具有限业务通过，进入正式化
 
 仅`desktop-3fevhd2-1c74096080`：Root以原1034／原受控夹具9／821存档和新character-root SDK完成四条条件全文、实际instance1／42／15,16,17三hover、一次付款及完整事件缺席／条件账目守恒有限合取；19读取含9查询＋7动作＝26提交，0Date／Save，Game14900／creator14992独立Natural0／Job0／cleanup。原Main false／Core PARTIAL／quitfalse、earlyCore不可用、旧加载失败、UNKNOWN和error.log未全绿保持；zgm只授有限modal开闭，不授所有行／头像／FPS／长期或wholeproduct。现在正常SourceA／新注释tag／一次正式1034 builder＋verify，尚未上传；16／17上传、10／17严格、六Notes429和Steam离线保持，Root独占后继账号窗口／SDK／实机。见[0.4.2有限事实](docs/release-changelogs/zhongguo-361/0.4.2-evidence/finite-business.json)。下方保留历史切点；其他机器授权不变。

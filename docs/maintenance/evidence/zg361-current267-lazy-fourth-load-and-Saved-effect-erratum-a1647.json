@@ -1300,5 +1300,43 @@
     "release_changelog": "docs/release-changelogs/zhongguo-361/0.4.2.md",
     "prior_false_failures_and_unknowns_retained": true,
     "formal_and_publication": "NEXT_SEPARATE_ARTIFACT_AND_SDK_PHASES_NOT_MINTED_BY_THIS_DOC"
+  },
+  "published042_and_actual_canonical_cache_finite_PASS_a1795": {
+    "status": "PUBLISHED_DOWNLOAD1034_PUBLIC_API_AND_FINITE_REAL_CACHE_PASS_NOTES_NOT_OBSERVED",
+    "permanent_publication": "docs/release-changelogs/zhongguo-361/0.4.2-evidence/publication.json",
+    "Root_upload_END": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\ZG361042-actual-upload1034-download-offline-END-a1792.json",
+      "bytes": 3767,
+      "sha256": "f78d49bc2e5aaa3e6ab28717dfd7c5e70e05a6d7cc75b18dc2ac36895abfe94d"
+    },
+    "Root_cache_END": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\ZG361042-actual-canonical-cache-Core-Natural0-PASS-END-a1795.json",
+      "bytes": 6170,
+      "sha256": "b1260856fc979b8f8367146630dcdd9813506189e0362c5c7e1d0125c38256e5"
+    },
+    "cause_erratum": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\root-followthrough-a25\\ZG361042-first-probe-failure-cause-erratum-a1790.json",
+      "bytes": 2196,
+      "sha256": "3b5b75d88022d7304676ed02006cdef3d61fe2b132d805b49c0034a0d2643367"
+    },
+    "profile_handover_map": {
+      "path": "D:\\ck3-state\\upgrade-20261118\\zgv\\Root-profile-handover-a1783\\handover-map.json.gz",
+      "bytes": 393862,
+      "sha256": "c8f8efe8f250399dc183ef384005111e06629259863c0208e1a3780830a14e96"
+    },
+    "old_paths": "UNREADABLE_MOVED",
+    "progress": {
+      "uploaded": 17,
+      "total": 17,
+      "uploaded_percent": 100,
+      "strict_finite_complete": 10,
+      "strict_percent": 58.8,
+      "ZG361_strict_complete": false,
+      "pending_Notes429": 7,
+      "prior_six_Notes_pending_unchanged": true
+    },
+    "prior_failures_UNKNOWN_and_false_flags_preserved": true,
+    "SourceA_and_annotated_tag_and_formal1034_unchanged": true,
+    "new_tests_build_or_online_by_SourceC": 0
   }
 }
