@@ -3,6 +3,7 @@
 #include "xar_bridge/ck3_121003_zg361_ae2_controls26785313_private_v1.hpp"
 #include "xar_bridge/ck3_121003_letter_set26785313_owner_v1.hpp"
 #include "xar_bridge/game_adapter.hpp"
+#include "xar_bridge/ck3_121003_zg361_scoreboard26785313_private_v1.hpp"
 #include <memory>
 namespace xar::ck3_121003::build26785313 {
 struct Zg361Ae2Frame267V1 {
@@ -11,6 +12,7 @@ struct Zg361Ae2Frame267V1 {
  bool facts_verified=false;
  std::optional<zg361_ae2_control::Zg361Ae2ManageFrame267V1>controls;
  std::optional<LetterSetFrame267V1>events;
+ std::optional<GuiWindowV1>scoreboard;
 };
 class Zg361Ae2Raw267V1 {
  public:Zg361Ae2Source267V1 source;

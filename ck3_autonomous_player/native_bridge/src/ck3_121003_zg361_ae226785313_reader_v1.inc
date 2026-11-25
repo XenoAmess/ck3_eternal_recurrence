@@ -30,7 +30,18 @@ bool ReadZg361Ae2FrameOnOwner267V1(const ReadonlyBindings&b,
     At(b.module_base,kJominiStateSlotRva,f.jomini)&&f.jomini&&
     At(b.module_base,kCharacterStorageSlotRva,f.character_storage)&&f.character_storage;};
   Zg361Ae2Frame267V1 a,z;
-  if(Zg361Ae2KindFor267V1(r.action)!=Zg361Ae2Kind267V1::events){
+  if(Zg361Ae2KindFor267V1(r.action)==Zg361Ae2Kind267V1::scoreboard){
+   const auto sample=[&](Zg361Ae2Frame267V1&f){
+    if(!Read(q,s,invocation)||!q.observation.available||q.observation.offline_fixture||!q.observation.main_owner_observed)return false;
+    f.core=q.observation.core;f.facts_verified=true;
+    GuiWindowRequestV1 request;request.connection_generation=static_cast<const Zg361Ae2Context267V1*>(context)->connection_generation;
+    request.deadline_unix_ms=r.deadline_unix_ms;request.expected_core=f.core;request.window_name="middle";
+    q.gui_window_request=request;f.scoreboard.emplace();
+    return request.connection_generation&&ReadGuiWindowV1(q,s,f.core,*f.scoreboard,invocation)&&f.scoreboard->window_found&&world(f);
+   };
+   if(!sample(a))return false;out.core=a.core;out.facts_verified=a.facts_verified;
+   if(!sample(z)||!Same(a.core,z.core)||*a.scoreboard!=*z.scoreboard)return false;
+  }else if(Zg361Ae2KindFor267V1(r.action)!=Zg361Ae2Kind267V1::events){
    a.controls.emplace();z.controls.emplace();
    const auto conn=static_cast<const Zg361Ae2Context267V1*>(context)->connection_generation;
    a.controls->scene.connection_generation=z.controls->scene.connection_generation=conn;

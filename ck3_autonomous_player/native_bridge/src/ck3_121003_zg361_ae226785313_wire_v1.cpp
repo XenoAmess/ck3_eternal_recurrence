@@ -148,8 +148,25 @@ Zg361Ae2Status267V1 Dispatched(Zg361Ae2Action267V1 a)noexcept{
  if(a==A::confirm_present||a==A::confirm_verify)return T::confirmation_dispatched;
  return T::navigation_dispatched;
 }
+bool Scoreboard(const Zg361Scoreboard267V1&s)noexcept{
+ if(!s.complete||s.window_nodes>4096||s.modal_children>4096)return false;
+ if(s.window_found!=(s.window_nodes>0)||(!s.window_found&&(s.window_visible||s.window_enabled||s.modal_found)))return false;
+ if(!s.modal_found&&(s.modal_visible||s.modal_enabled||s.modal_children))return false;
+ if(s.open_entry&&std::find(kZg361ScoreboardEntries267V1.begin(),kZg361ScoreboardEntries267V1.end(),*s.open_entry)==kZg361ScoreboardEntries267V1.end())return false;
+ return (!s.open_admissible||(s.window_found&&s.window_visible&&s.window_enabled&&!s.modal_visible&&s.open_entry))&&
+  (!s.close_admissible||(s.window_found&&s.window_visible&&s.window_enabled&&s.modal_found&&s.modal_visible&&s.modal_enabled));
+}
 void Source(Json&j,const Zg361Ae2Source267V1&s){
  j.data+="{\"schema\":";String(j.data,kZg361Ae2SourceSchema267V1);
+ if(s.kind==Zg361Ae2Kind267V1::scoreboard){
+  j.str("kind","scoreboard");j.key("scoreboard");const auto&r=*s.scoreboard;
+  j.data+="{\"complete\":";j.data+=r.complete?"true":"false";
+  j.flag("window_found",r.window_found);j.flag("window_visible",r.window_visible);j.flag("window_enabled",r.window_enabled);
+  j.flag("modal_found",r.modal_found);j.flag("modal_visible",r.modal_visible);j.flag("modal_enabled",r.modal_enabled);
+  j.num("window_nodes",r.window_nodes);j.num("modal_children",r.modal_children);
+  j.key("open_entry");if(r.open_entry)String(j.data,*r.open_entry);else j.data+="null";
+  j.flag("open_admissible",r.open_admissible);j.flag("close_admissible",r.close_admissible);j.data+="}}";return;
+ }
  if(s.kind==Zg361Ae2Kind267V1::review){
   j.str("kind","review");j.key("review");const auto&r=*s.review;
   j.data+="{\"definition_key\":";String(j.data,kZg361ReviewKey267V1);
@@ -179,11 +196,11 @@ void Source(Json&j,const Zg361Ae2Source267V1&s){
 } // namespace
 
 const char*Zg361Ae2ActionName267V1(Zg361Ae2Action267V1 a)noexcept{
- constexpr const char*names[]{"query_controls","open_controls_list","open_present_detail","confirm_present","query_ae2","choose_pay_now","open_verify_detail","confirm_verify","query_review_requirements","open_review_detail"};
+ constexpr const char*names[]{"query_controls","open_controls_list","open_present_detail","confirm_present","query_ae2","choose_pay_now","open_verify_detail","confirm_verify","query_review_requirements","open_review_detail","query_scoreboard","open_scoreboard","close_scoreboard"};
  const auto n=static_cast<unsigned>(a);return n<std::size(names)?names[n]:"invalid";
 }
-bool Zg361Ae2Query267V1(Zg361Ae2Action267V1 a)noexcept{return a==Zg361Ae2Action267V1::query_controls||a==Zg361Ae2Action267V1::query_ae2||a==Zg361Ae2Action267V1::query_review_requirements;}
-Zg361Ae2Kind267V1 Zg361Ae2KindFor267V1(Zg361Ae2Action267V1 a)noexcept{if(a==Zg361Ae2Action267V1::query_review_requirements||a==Zg361Ae2Action267V1::open_review_detail)return Zg361Ae2Kind267V1::review;return a==Zg361Ae2Action267V1::query_ae2||a==Zg361Ae2Action267V1::choose_pay_now?Zg361Ae2Kind267V1::events:Zg361Ae2Kind267V1::controls;}
+bool Zg361Ae2Query267V1(Zg361Ae2Action267V1 a)noexcept{return a==Zg361Ae2Action267V1::query_controls||a==Zg361Ae2Action267V1::query_ae2||a==Zg361Ae2Action267V1::query_review_requirements||a==Zg361Ae2Action267V1::query_scoreboard;}
+Zg361Ae2Kind267V1 Zg361Ae2KindFor267V1(Zg361Ae2Action267V1 a)noexcept{if(a==Zg361Ae2Action267V1::query_scoreboard||a==Zg361Ae2Action267V1::open_scoreboard||a==Zg361Ae2Action267V1::close_scoreboard)return Zg361Ae2Kind267V1::scoreboard;if(a==Zg361Ae2Action267V1::query_review_requirements||a==Zg361Ae2Action267V1::open_review_detail)return Zg361Ae2Kind267V1::review;return a==Zg361Ae2Action267V1::query_ae2||a==Zg361Ae2Action267V1::choose_pay_now?Zg361Ae2Kind267V1::events:Zg361Ae2Kind267V1::controls;}
 bool Zg361Ae2RequestShape267V1(const Zg361Ae2Request267V1&q)noexcept{
  return q.request_id_size<=96&&Id(q.id())&&q.deadline_unix_ms&&Prefix(q.expected)&&std::string_view(Zg361Ae2ActionName267V1(q.action))!="invalid"&&(Zg361Ae2Query267V1(q.action)?(!q.provider_generation&&!q.query_sequence):(q.provider_generation&&q.query_sequence));
 }
@@ -196,7 +213,8 @@ bool ParseZg361Ae2Request267V1(std::string_view packet,Zg361Ae2Request267V1&out)
  }c.Space();if(seen!=255||c.pos!=packet.size()||!Zg361Ae2RequestShape267V1(q))return false;out=q;return true;
 }
 bool Zg361Ae2SourceShape267V1(const Zg361Ae2Source267V1&s)noexcept{
- if(static_cast<unsigned>(s.controls.has_value())+static_cast<unsigned>(s.events.has_value())+static_cast<unsigned>(s.review.has_value())!=1)return false;
+ if(static_cast<unsigned>(s.controls.has_value())+static_cast<unsigned>(s.events.has_value())+static_cast<unsigned>(s.review.has_value())+static_cast<unsigned>(s.scoreboard.has_value())!=1)return false;
+ if(s.kind==Zg361Ae2Kind267V1::scoreboard)return s.scoreboard&&Scoreboard(*s.scoreboard);
  if(s.kind==Zg361Ae2Kind267V1::controls)return s.controls&&Controls(*s.controls);
  if(s.kind==Zg361Ae2Kind267V1::events)return s.events&&Events(*s.events);
  if(s.kind==Zg361Ae2Kind267V1::review)return s.review&&Review(*s.review);
@@ -206,6 +224,8 @@ bool Zg361Ae2PublicAdmissible267V1(const Zg361Ae2Source267V1&s,Zg361Ae2Action267
  using A=Zg361Ae2Action267V1;
  if(std::string_view(Zg361Ae2ActionName267V1(a))=="invalid"||s.kind!=Zg361Ae2KindFor267V1(a)||!Zg361Ae2SourceShape267V1(s))return false;
  if(Zg361Ae2Query267V1(a))return true;
+ if(a==A::open_scoreboard)return s.scoreboard->open_admissible;
+ if(a==A::close_scoreboard)return s.scoreboard->close_admissible;
  if(a==A::open_review_detail)return s.review->open_detail_admissible;
  if(a==A::choose_pay_now)return s.events->ae2&&s.events->ae2->pay_now_admissible;
  const auto&c=*s.controls;if(a==A::open_controls_list)return c.open_list_admissible;

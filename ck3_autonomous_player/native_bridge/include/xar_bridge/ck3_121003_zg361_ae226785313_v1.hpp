@@ -16,10 +16,10 @@ inline constexpr std::array<std::string_view,3>kZg361Ae2Capabilities267V1{
  "game.query.current-zg361-ae2.v1","game.command.current-zg361-ae2-fixed-controls.v1","game.command.current-zg361-ae2-pay-now.v1"};
 enum class Zg361Ae2Action267V1:std::uint8_t{
  query_controls,open_controls_list,open_present_detail,confirm_present,
- query_ae2,choose_pay_now,open_verify_detail,confirm_verify,query_review_requirements,open_review_detail};
-inline constexpr std::array<std::string_view,10>kZg361Ae2Actions267V1{
+ query_ae2,choose_pay_now,open_verify_detail,confirm_verify,query_review_requirements,open_review_detail,query_scoreboard,open_scoreboard,close_scoreboard};
+inline constexpr std::array<std::string_view,13>kZg361Ae2Actions267V1{
  "query_controls","open_controls_list","open_present_detail","confirm_present",
- "query_ae2","choose_pay_now","open_verify_detail","confirm_verify","query_review_requirements","open_review_detail"};
+ "query_ae2","choose_pay_now","open_verify_detail","confirm_verify","query_review_requirements","open_review_detail","query_scoreboard","open_scoreboard","close_scoreboard"};
 // review is private census/dispatch identity; old public controls remain exactly present/verify.
 enum class Zg361Ae2Control267V1:std::uint8_t{present,verify,review};
 inline constexpr std::string_view kZg361ReviewKey267V1="zg361_review_now_decision";
@@ -32,7 +32,14 @@ inline constexpr std::int32_t kZg361Ae2AuthoredCount267V1=42;
 inline constexpr std::array<std::int32_t,3>kZg361Ae2AuthoredIndices267V1{15,16,17};
 inline constexpr std::array<std::string_view,3>kZg361Ae2OptionKeys267V1{
  "zg361comp.1.ae2.r1","zg361comp.1.ae2.r2","zg361comp.1.ae2.r3"};
-enum class Zg361Ae2Kind267V1:std::uint8_t{controls,events,review};
+inline constexpr std::array<std::string_view,2>kZg361ScoreboardCapabilities267V1{
+ "game.query.current-zg361-scoreboard.v1","game.command.current-zg361-scoreboard-open-close.v1"};
+inline constexpr std::string_view kZg361ScoreboardWindow267V1="zg361_scoreboard_window";
+inline constexpr std::string_view kZg361ScoreboardModal267V1="zg361_scoreboard_modal";
+inline constexpr std::string_view kZg361ScoreboardClose267V1="zg361_scoreboard_header_close";
+inline constexpr std::array<std::string_view,3>kZg361ScoreboardEntries267V1{
+ "zg361_scoreboard_entry_managed","zg361_scoreboard_entry_received","zg361_scoreboard_entry_system"};
+enum class Zg361Ae2Kind267V1:std::uint8_t{controls,events,review,scoreboard};
 enum class Zg361Ae2Status267V1:std::uint8_t{
  unavailable,expired,stale_source,claim_consumed,available,navigation_dispatched,
  selection_dispatched,confirmation_dispatched,indeterminate};
@@ -96,11 +103,21 @@ struct Zg361Review267V1{
  std::optional<std::string>requirements_description;
  friend bool operator==(const Zg361Review267V1&,const Zg361Review267V1&)=default;
 };
+// Read-only physical GUI DATA. No pointers, arbitrary selectors or action tokens.
+struct Zg361Scoreboard267V1{
+ bool complete=false,window_found=false,window_visible=false,window_enabled=false;
+ bool modal_found=false,modal_visible=false,modal_enabled=false;
+ std::uint32_t window_nodes=0,modal_children=0;
+ std::optional<std::string>open_entry;
+ bool open_admissible=false,close_admissible=false;
+ friend bool operator==(const Zg361Scoreboard267V1&,const Zg361Scoreboard267V1&)=default;
+};
 struct Zg361Ae2Source267V1{
  Zg361Ae2Kind267V1 kind=Zg361Ae2Kind267V1::controls;
  std::optional<Zg361Ae2Controls267V1>controls;
  std::optional<Zg361Ae2Events267V1>events;
  std::optional<Zg361Review267V1>review;
+ std::optional<Zg361Scoreboard267V1>scoreboard;
  friend bool operator==(const Zg361Ae2Source267V1&,const Zg361Ae2Source267V1&)=default;
 };
 struct Zg361Ae2Result267V1{

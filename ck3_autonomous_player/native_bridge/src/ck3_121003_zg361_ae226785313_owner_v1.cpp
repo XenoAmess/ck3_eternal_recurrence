@@ -24,7 +24,8 @@ using A=Zg361Ae2Action267V1;using Status=Zg361Ae2Status267V1;
 }
 [[maybe_unused]]bool World(const Zg361Ae2Frame267V1&a,const Zg361Ae2Frame267V1&z){return a.facts_verified&&z.facts_verified&&Core(a.core,z.core)&&a.game&&a.game==z.game&&a.jomini&&a.jomini==z.jomini&&a.character_storage&&a.character_storage==z.character_storage;}
 [[maybe_unused]]bool Frame(const Zg361Ae2Frame267V1&a,const Zg361Ae2Frame267V1&z){
- if(!World(a,z)||a.controls.has_value()!=z.controls.has_value()||a.events.has_value()!=z.events.has_value())return false;
+ if(!World(a,z)||a.controls.has_value()!=z.controls.has_value()||a.events.has_value()!=z.events.has_value()||a.scoreboard.has_value()!=z.scoreboard.has_value())return false;
+ if(a.scoreboard)return *a.scoreboard==*z.scoreboard;
  if(a.controls)return a.controls->facts_verified&&z.controls->facts_verified&&Core(a.controls->core,z.controls->core)&&a.controls->scene==z.controls->scene&&a.controls->witness==z.controls->witness;
  return a.events&&a.events->facts_verified&&z.events->facts_verified&&Core(a.events->core,z.events->core)&&a.events->scene==z.events->scene&&a.events->witness==z.events->witness;
 }
@@ -94,8 +95,9 @@ struct Zg361Ae2Session267V1::State {
  std::atomic_bool unknown{false};std::mutex mutex;
  std::uint64_t generation=GetTickCount64()?GetTickCount64():1,query=0,claim=0,connection=0;
  std::uint32_t thread=0;std::optional<Zg361Ae2Frame267V1>initial;std::optional<Lease>latest;
- std::array<bool,10>once{};std::array<bool,2>list_once{};
+ std::array<bool,13>once{};std::array<bool,2>list_once{};
  bool present_sent=false,pay_sent=false,original_instance_absent=false,verify_sent=false;
+ bool scoreboard_scope=false;
  std::optional<Zg361Ae2EventIdentity267V1>event;
  std::vector<std::pair<std::string,std::uint64_t>>claims;
 };
@@ -134,6 +136,14 @@ bool ExecuteZg361Ae2Inner267V1(Zg361Ae2Context267V1&q,[[maybe_unused]]const ck3_
    const auto why=q.result.reason;return reject(Time(q)?Status::unavailable:Status::expired,why.empty()?"zg361_ae2_complete_source_unavailable":why.c_str());
   };
   const auto phase_admits=[&](A a){
+   const bool board=Zg361Ae2KindFor267V1(a)==Zg361Ae2Kind267V1::scoreboard;
+   if(board){
+    if(!state.scoreboard_scope||state.present_sent||state.pay_sent||state.verify_sent)return false;
+    if(a==A::open_scoreboard)return !state.once[static_cast<unsigned>(A::open_scoreboard)]&&!state.once[static_cast<unsigned>(A::close_scoreboard)];
+    if(a==A::close_scoreboard)return state.once[static_cast<unsigned>(A::open_scoreboard)]&&!state.once[static_cast<unsigned>(A::close_scoreboard)];
+    return Zg361Ae2Query267V1(a);
+   }
+   if(state.scoreboard_scope)return false;
    const auto index=static_cast<unsigned>(a);
    if(!Zg361Ae2Query267V1(a)&&a!=A::open_controls_list&&
     (index>=state.once.size()||state.once[index]))return false;
@@ -154,12 +164,17 @@ bool ExecuteZg361Ae2Inner267V1(Zg361Ae2Context267V1&q,[[maybe_unused]]const ck3_
      r.open_detail_admissible&=phase_admits(present?A::open_present_detail:A::open_verify_detail);
      r.confirm_admissible&=phase_admits(present?A::confirm_present:A::confirm_verify);}}
    if(source.review)source.review->open_detail_admissible&=phase_admits(A::open_review_detail);
+   if(source.scoreboard){source.scoreboard->open_admissible&=phase_admits(A::open_scoreboard);source.scoreboard->close_admissible&=phase_admits(A::close_scoreboard);}
    if(source.events&&source.events->ae2){auto&a=*source.events->ae2;
     const bool same=state.event&&state.event->instance_id==a.instance_id&&state.event->recipient_character_id==a.recipient_character_id&&state.event->definition_key==a.definition_key;
     a.pay_now_admissible&=phase_admits(A::choose_pay_now)&&same;}
    return source;
   };
   if(Zg361Ae2Query267V1(q.request.action)){
+   if(Zg361Ae2KindFor267V1(q.request.action)==Zg361Ae2Kind267V1::scoreboard){
+    if(!state.scoreboard_scope&&(state.query||state.claim))return reject(Status::stale_source,"zg361_scoreboard_requires_independent_receiver_scope");
+    state.scoreboard_scope=true;
+   }else if(state.scoreboard_scope)return reject(Status::stale_source,"zg361_scoreboard_scope_does_not_authorize_other_family_actions");
    state.latest.reset();Zg361Ae2Frame267V1 frame;Zg361Ae2Raw267V1 raw;
    if(!capture(frame,raw))return failed();
    if(state.query>=32)return reject(Status::claim_consumed,"zg361_ae2_finite_query_capacity");

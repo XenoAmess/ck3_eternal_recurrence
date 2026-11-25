@@ -1,3 +1,4 @@
+#include "xar_bridge/ck3_121003_zg361_scoreboard26785313_private_v1.hpp"
 #include "xar_bridge/ck3_121003_gui_controls26785313_v2.hpp"
 #include "xar_bridge/ck3_121003_gui_controls26785313_pins_v2.hpp"
 #include "xar_bridge/ck3_121003_core_route26785313_v1.hpp"
@@ -154,8 +155,8 @@ GuiControlImage267V2 BindGuiControlImage267V2(std::uintptr_t image,std::string_v
  if(!core.exact_image_admitted||!VerifyGuiControlImage267V2(image))return {};
  return {image,true};
 }
-bool CaptureGuiControlWindow267V2([[maybe_unused]]const GuiControlImage267V2 &b,[[maybe_unused]]const GuiWindowV1 &frame,
- [[maybe_unused]]GuiControlCaptureV1 &out,[[maybe_unused]]std::string &reason) noexcept {
+static bool CaptureGuiControlWindowImpl267V2([[maybe_unused]]const GuiControlImage267V2 &b,[[maybe_unused]]const GuiWindowV1 &frame,
+ [[maybe_unused]]GuiControlCaptureV1 &out,[[maybe_unused]]std::string &reason,[[maybe_unused]]bool scoreboard) noexcept {
  out={};
 #if !defined(XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2) || !XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2 || !XAR_CK3_ENABLE_121003_26785313_GUI_CONTROLS_V2
  reason="current_gui_controls_opt_in_disabled";return false;
@@ -167,8 +168,8 @@ bool CaptureGuiControlWindow267V2([[maybe_unused]]const GuiControlImage267V2 &b,
   // ticket/TLS/paused guards, repeated whole captures and single-use semantics.
   if(!b.exact_image_admitted||!VerifyGuiControlImage267V2(b.module_base)||!frame.window_found||frame.tree.empty()||
     !frame.connection_generation||!frame.ticket_sequence||!frame.pump_epoch||!frame.owner_thread_id||
-    frame.tree.size()>kGuiControlMaximumRowsV1||frame.tree.front().name!=frame.requested_name||
-    (frame.requested_name!="faith_window"&&frame.requested_name!="rite_creation_window"&&frame.requested_name!="hud_layer"&&frame.requested_name!="windows_layer"&&!NavigationRoot267V2(frame.requested_name)))return fail("current_gui_window_source_required");
+    frame.tree.size()>(scoreboard?kGuiWindowMaxNodesV1:kGuiControlMaximumRowsV1)||frame.tree.front().name!=frame.requested_name||
+    (scoreboard?frame.requested_name!="middle":(frame.requested_name!="faith_window"&&frame.requested_name!="rite_creation_window"&&frame.requested_name!="hud_layer"&&frame.requested_name!="windows_layer"&&!NavigationRoot267V2(frame.requested_name))))return fail("current_gui_window_source_required");
    if(!frame.ancestors.empty()) {
     if(frame.ancestors.size()>kGuiWindowMaxDepthV1||
        (frame.requested_name!="faith_window"&&frame.requested_name!="rite_creation_window"))
@@ -215,7 +216,9 @@ bool CaptureGuiControlWindow267V2([[maybe_unused]]const GuiControlImage267V2 &b,
     if(!row.row.child_path.empty())row.row.child_path+='/';row.row.child_path+=std::to_string(node.sibling_index);
    }
    std::uintptr_t slot=0;if(!Load(node.vtable,13*8,slot))return fail("current_gui_input_slot_unavailable");
-   if(slot==b.module_base+0x406DB30){bool proven=true;
+   const bool fixed_name=row.row.runtime_name=="zg361_scoreboard_entry_managed"||row.row.runtime_name=="zg361_scoreboard_entry_received"||
+    row.row.runtime_name=="zg361_scoreboard_entry_system"||row.row.runtime_name=="zg361_scoreboard_header_close";
+   if(slot==b.module_base+0x406DB30&&(!scoreboard||fixed_name)){bool proven=true;
     if(!CallbackGroup(b,node.widget,0x4B8,row.callbacks,proven)||!CallbackGroup(b,node.widget,0x3F8,row.callbacks,proven))return fail("current_gui_callback_source_unavailable");
     for(const auto&callback:row.callbacks){++callback_count;callback_bytes+=callback.native_source.size()+callback.binding.size()+callback.object_header.size();}
     if(callback_count>1024||callback_bytes>4*1024*1024)return fail("current_gui_callback_source_budget_exhausted");
@@ -224,12 +227,52 @@ bool CaptureGuiControlWindow267V2([[maybe_unused]]const GuiControlImage267V2 &b,
    }
    out.widgets.push_back(std::move(row));
   }
-  RestrictNavigationRows267V2(out);
+  if(!scoreboard)RestrictNavigationRows267V2(out);
+  else {
+   std::optional<std::size_t>root;
+   for(std::size_t i=0;i<frame.tree.size();++i)if(frame.tree[i].name=="zg361_scoreboard_window"){
+    if(root)return fail("zg361_scoreboard_root_ambiguous");root=i;}
+   const auto inside=[&](std::size_t n){return root&&Ancestor(frame,frame.tree[*root].widget,n);};
+   for(std::size_t i=0;i<out.widgets.size();++i)out.widgets[i].row.clickable&=inside(i);
+  }
   // complete is deliberately false until the real current owner wrapper also
   // supplies its Core/source identity and repeated capture. No fake Full proof.
   reason.clear();return true;
  }catch(...){out={};reason="current_gui_capture_exception";return false;}
 #endif
+}
+
+
+bool CaptureGuiControlWindow267V2(const GuiControlImage267V2&b,const GuiWindowV1&f,
+ ck3_1210::GuiControlCaptureV1&out,std::string&why)noexcept{
+ return CaptureGuiControlWindowImpl267V2(b,f,out,why,false);
+}
+bool CaptureFixedScoreboardControls267V1(const GuiControlImage267V2&b,const GuiWindowV1&f,
+ ck3_1210::GuiControlCaptureV1&out,std::string&why)noexcept{
+ // Revalidate every captured physical header/name, not only the callback objects.
+ // The existing v11 limit remains4096; no new subtree resolver or raised read cap.
+ try{
+  const auto current=[&](const GuiWindowNodeV1&n){
+   std::uintptr_t vt=0,parent=0,context=0,children=0,name=0;std::uint8_t flags=0;
+   std::int32_t count=0,cap=0;std::uint64_t size=0,capacity=0;
+   if(!Load(n.widget,0,vt)||vt!=n.vtable||!Load(n.widget,0xD0,flags)||flags!=n.flags||
+    !Load(n.widget,0xE8,parent)||parent!=n.parent||!Load(n.widget,0xD8,context)||context!=n.context||
+    !Load(n.widget,0xF0,children)||children!=n.children||!Load(n.widget,0xF8,cap)||cap!=n.child_capacity||
+    !Load(n.widget,0xFC,count)||count!=n.child_count||!Load(n.widget,0x1C8,size)||size!=n.name_size||
+    !Load(n.widget,0x1D0,capacity)||capacity!=n.name_capacity)return false;
+   if(capacity<=15)name=n.widget+0x1B8;else if(!Load(n.widget,0x1B8,name))return false;
+   std::array<char,kGuiWindowMaxNameBytesV1+1>text{};
+   return name==n.name_data&&size<=kGuiWindowMaxNameBytesV1&&
+    Bytes(name,text.data(),static_cast<std::size_t>(size)+1)&&
+    text[size]==0&&std::string_view(text.data(),static_cast<std::size_t>(size))==n.name;
+  };
+  std::array<unsigned char,86>input_pin{};
+  if(!Bytes(b.module_base+0x406E560,input_pin.data(),input_pin.size())||input_pin!=kZg361ScoreboardInputPin267V1)return false;
+  if(f.requested_name!="middle"||!f.ancestors.empty()||!current(f.root))return false;
+  for(const auto&n:f.top_level)if(!current(n))return false;
+  for(const auto&n:f.tree)if(!current(n))return false;
+  return CaptureGuiControlWindowImpl267V2(b,f,out,why,true);
+ }catch(...){out={};why="zg361_scoreboard_physical_capture_unavailable";return false;}
 }
 
 namespace {
@@ -383,5 +426,28 @@ bool ExecuteGuiControlsOnOwner267V2(void *opaque,const ck3_11906::MainThreadExec
  if(!opaque)return false;auto&q=*static_cast<GuiControlsContext267V2*>(opaque);
  __try {return ExecuteGuiControlsInner267V2(q,stamp);}
  __except(EXCEPTION_EXECUTE_HANDLER){if(q.session)q.session->provider.valid=false;q.result.status=q.result.effect_attempted?ck3_1210::GuiControlStatusV1::indeterminate:ck3_1210::GuiControlStatusV1::unavailable;q.result.unavailable_reason="current_gui_native_exception_no_retry";return true;}
+}
+bool InvokeFixedScoreboardControl267V1(const GuiControlImage267V2&b,
+ const ck3_1210::GuiControlCaptureV1&capture,std::uintptr_t widget,bool&handled,bool&entered)noexcept{
+ handled=false;entered=false;
+ std::array<unsigned char,86>input_pin{};
+ if(!Bytes(b.module_base+0x406E560,input_pin.data(),input_pin.size())||input_pin!=kZg361ScoreboardInputPin267V1)return false;
+ if(!b.exact_image_admitted||!VerifyGuiControlImage267V2(b.module_base)||!capture.complete||
+  capture.root_name!="middle"||!capture.shortcut_manager||!widget)return false;
+ const GuiControlIdentityV1*target=nullptr;
+ for(const auto&r:capture.widgets)if(r.widget==widget){if(target)return false;target=&r;}
+ if(!target||!target->row.clickable||target->callbacks.empty())return false;
+ const auto&name=target->row.runtime_name;
+ if(name!="zg361_scoreboard_entry_managed"&&name!="zg361_scoreboard_entry_received"&&
+  name!="zg361_scoreboard_entry_system"&&name!="zg361_scoreboard_header_close")return false;
+ alignas(void*)std::array<std::byte,0x20>text{};const std::uint64_t capacity=15;std::memcpy(text.data()+0x18,&capacity,8);
+ alignas(void*)std::array<std::byte,0x50>pimpl{};std::memcpy(pimpl.data()+0x48,&widget,8);
+ // Exactly the already pinned engine mode0 input path: dispatch all authored
+ // callbacks. Never invoke a partial ScriptedGui/variable expression directly.
+ entered=true;
+#ifndef XAR_ZG361_SCOREBOARD_NATIVE_INVOKE
+#define XAR_ZG361_SCOREBOARD_NATIVE_INVOKE ControlsNativeInvoke267V2
+#endif
+ return XAR_ZG361_SCOREBOARD_NATIVE_INVOKE(b.module_base+0x4089380,capture.shortcut_manager,text.data(),pimpl.data(),handled);
 }
 } // namespace

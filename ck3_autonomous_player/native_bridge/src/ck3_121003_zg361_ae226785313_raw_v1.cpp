@@ -52,6 +52,7 @@ namespace tooltip=zg361_ae2_source;
  __try{return ck3_1210::ReadCoreSnapshot(b.core,core)&&RawCore(core,f.core);}
  __except(EXCEPTION_EXECUTE_HANDLER){return false;}
 }
+#include "ck3_121003_zg361_scoreboard26785313_private_v1.inc"
 [[maybe_unused]]Zg361Ae2Controls267V1 ControlData(const control::Zg361Ae2ManageRaw267V1&r){
  const auto&s=r.source;Zg361Ae2Controls267V1 out;
  out.resident_available=r.list||r.detail||r.nav_widget;out.list_visible=s.list_visible;
@@ -97,6 +98,7 @@ namespace tooltip=zg361_ae2_source;
 struct Zg361Ae2Raw267V1::State {
  std::optional<control::Zg361Ae2ManageRaw267V1>controls;
  std::optional<LetterSetRaw267V1>events;
+ std::optional<ScoreboardRaw>scoreboard;
  friend bool operator==(const State&,const State&)=default;
 };
 #ifndef XAR_ZG361_AE2_PARENT_READ_CENSUS
@@ -112,7 +114,11 @@ bool ReadZg361Ae2Raw267V1(const ReadonlyBindings&b,const Zg361Ae2Frame267V1&f,
  try{
   if(!XAR_ZG361_AE2_PARENT_FRESH(b,f,q,mono))return false;
   auto state=std::make_shared<Zg361Ae2Raw267V1::State>();out.source.kind=Zg361Ae2KindFor267V1(q.action);
-  if(out.source.kind!=Zg361Ae2Kind267V1::events){
+  if(out.source.kind==Zg361Ae2Kind267V1::scoreboard){
+   state->scoreboard.emplace();
+   if(!ScoreboardRead(b,f,*state->scoreboard,why))return false;
+   out.source.scoreboard=state->scoreboard->source;
+  }else if(out.source.kind!=Zg361Ae2Kind267V1::events){
    if(!f.controls||!f.controls->facts_verified||!RawCore(f.controls->core,f.core))return false;
    state->controls.emplace();
    const bool good=XAR_ZG361_REVIEW_READ_MANAGE(b,f.core,f.controls->scene,mono,*state->controls,why,out.source.kind==Zg361Ae2Kind267V1::review);
@@ -171,7 +177,7 @@ bool ReadZg361Ae2Raw267V1(const ReadonlyBindings&b,const Zg361Ae2Frame267V1&f,
 }
 bool SameZg361Ae2Raw267V1(const Zg361Ae2Raw267V1&a,const Zg361Ae2Raw267V1&b)noexcept{
  try{return a.cleanup_known&&b.cleanup_known&&a.state_&&b.state_&&a.source==b.source&&
-  a.state_->events==b.state_->events&&a.state_->controls.has_value()==b.state_->controls.has_value()&&
+  a.state_->events==b.state_->events&&a.state_->scoreboard==b.state_->scoreboard&&a.state_->controls.has_value()==b.state_->controls.has_value()&&
   (!a.state_->controls||SameControl(*a.state_->controls,*b.state_->controls));}catch(...){return false;}
 }
 // Implemented in the owner TU from complete captured copies only.
@@ -182,7 +188,8 @@ bool SameZg361Ae2LeaseFrame267V1(Zg361Ae2Action267V1 action,const Zg361Ae2Frame2
 struct Zg361Ae2CallAccess267V1 {
  static bool LeaseFrame(Zg361Ae2Action267V1 action,const Zg361Ae2Frame267V1&a,
   const Zg361Ae2Raw267V1&ra,const Zg361Ae2Frame267V1&b,const Zg361Ae2Raw267V1&rb){
-  if(!SameWorld(a,b)||a.controls.has_value()!=b.controls.has_value()||a.events.has_value()!=b.events.has_value())return false;
+  if(!SameWorld(a,b)||a.controls.has_value()!=b.controls.has_value()||a.events.has_value()!=b.events.has_value()||a.scoreboard.has_value()!=b.scoreboard.has_value())return false;
+  if(a.scoreboard)return ScoreboardLeaseWindow(*a.scoreboard)==ScoreboardLeaseWindow(*b.scoreboard);
   if(a.events)return a.events->scene==b.events->scene&&a.events->witness==b.events->witness;
   if(!a.controls||!b.controls)return false;
   if(action==Zg361Ae2Action267V1::open_controls_list&&ra.state_&&rb.state_&&ra.state_->controls&&rb.state_->controls){
@@ -200,6 +207,16 @@ struct Zg361Ae2CallAccess267V1 {
    Zg361Ae2Raw267V1 actual;std::string why;
    if(!ReadZg361Ae2Raw267V1(b,f,q,mono,actual,why)||!SameZg361Ae2Raw267V1(actual,issued)){
     out.cleanup_known=actual.cleanup_known;return out;}
+   if(Zg361Ae2KindFor267V1(q.action)==Zg361Ae2Kind267V1::scoreboard){
+    if(!actual.state_->scoreboard||!RawFresh(b,f,q,mono))return out;
+    const auto&v=*actual.state_->scoreboard;const bool open=q.action==Zg361Ae2Action267V1::open_scoreboard;
+    if(!(open?v.source.open_admissible:v.source.close_admissible))return out;
+    bool handled=false,entered=false;
+    const bool returned=InvokeFixedScoreboardControl267V1(BindGuiControlImage267V2(b.module_base,kExecutableSha256),v.capture,open?v.open:v.close,handled,entered);
+    out={entered,returned,!entered||returned};
+    if(returned&&!RawFresh(b,f,q,mono))out.cleanup_known=false;
+    return out;
+   }
    if(q.action!=Zg361Ae2Action267V1::choose_pay_now){
     if(!f.controls||!actual.state_->controls)return out;
     using A=Zg361Ae2Action267V1;control::Zg361Ae2ManageAction267V1 action;
