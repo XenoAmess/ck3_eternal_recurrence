@@ -278,3 +278,9 @@ ref as part of delivery rather than as a later cleanup project.
 11:06 UTC，剩余继承人分支的补丁清单已逐项与主线对照。`a2a423d6ba` 补齐已移植的 Root 协作停止测试的严格类型覆盖，55 项回归通过。`192a4a9446` 接通 DES 验收实际需要的 campaign-root 能力，修复其离线测试的子进程输出等待，3 项产品验收测试及 Quarkus 构建通过。`2bc37bc628` 把当前 HELLO 的攻城能力值传到 Python 兼容入口，常规和优化模式各 8 项通过，相邻 18 项通过。旧场次专属 Java 执行工具依赖未入库的类型，孤立编译可复现失败。公开帝国恢复仍缺真实 S1 及有效原生 Title 证据，Decisions 同帧兼容代码继续核对。远端仍为两条引用，开放 PR 为 0。
 
 `d037addd4d` 移植旧 R28 已复现的 Decisions 可见性读取。原公开 revision 上已有成功 claim 时，使用本次实际可见树返回读取结果。原 UNKNOWN 阻断及原 v1 文件保留，旧分支的同 revision 关闭再开缺少当帧关闭原件。固定 CI 依赖下 156 项通过、4 项预计跳过，另有 31 项消费方回归通过。`ea2a17731d` 修复 Steam 离线配置夹具的两处严格类型失败，183 次相关离线测试通过。最后继承人分支的精确原 tip `c3e46759b397f2f1950b6b46066a67c2df631dcb` 已在原 bundle。官方 CI 尚在运行，公开帝国恢复缺原件的状态保留。
+
+13:16 UTC，远端回读仍为两条分支，开放 PR 为 0。已在独立 bare 仓库还原原 bundle 中的 27 条引用，逐字节比对最后继承人分支的 5 个关键文件。15 个前置对象均可从主线取得。还原回执为 `D:/ck3-state/ck3-master-integration-20261126/dynastic-c3e-isolated-audit/bundle-restore.json`。
+
+最后分支的旧开局夹具只能生成拜占庭 S0。公开帝国恢复仍缺实际付费操作和独立实机回执、后继 S1 物理存档及对应头衔持有者状态。旧注册表将两条恢复 case 设为 ready，但两条操作合同均仍缺存档身份和日期。主线保留已验的离线消费者，现有原生持有者查询只接受 int32 范围。旧容量与执行工具依赖仓库外冻结类。独立 recorder 样例以原源码通过 40 项离线检查，主线现行录制路径和原回执格式消费者已覆盖其有用行为，未发现需要新增该工具的生产调用。DES 旧 reactor 改动已由根 `pom.xml` 的正式按模块构建覆盖，发布 workflow 的步骤名称用现行投影术语。
+
+本地 common-dir 审计起始为 66 条分支，43 条有工作树。另退役未检出的 `holy-order-source-condition30-first-20261006`。8 个提交补丁相同，剩余 mapper 提交除 CMake include 位置外等价于 `700406a4d6`，该 include 在绿色主线中已核对。退役后余 65 条。原 tip 已在 `D:/ck3-state/ck3-master-integration-20261126/local-residue-4bfc/holy-order-source-condition30-first.bundle`，SHA-256 为 `0f77bce1340a13869fcda64e067eb89c8f2d7183960293d2a812bf17a2e9e08f`。Z 盘用户工作树上的两个提交已通过补丁等价核对，工作树有未提交修改。[已覆盖主线 CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39957553119) [DES 专项 CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/45801837726)

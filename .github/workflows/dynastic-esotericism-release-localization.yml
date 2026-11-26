@@ -38,7 +38,7 @@ jobs:
         run: mvn --batch-mode --no-transfer-progress -f pom.xml -pl :dynastic-esotericism-tools -am -Dsave.build.root="%RUNNER_TEMP%/ck3-save-core-build" -Drrf.build.root="%RUNNER_TEMP%/rrf-build" -Ddes.build.root="%RUNNER_TEMP%/dynastic-esotericism-release-build" verify
       - name: Certify the actual nine-language release source format
         run: java -jar "%RUNNER_TEMP%/dynastic-esotericism-release-build/dynastic-esotericism-tools/quarkus-app/quarkus-run.jar" validate --release-localization
-      - name: Build and read back the actual 24-file release projection twice
+      - name: Build and read back the release projection twice
         run: java -jar "%RUNNER_TEMP%/dynastic-esotericism-release-build/dynastic-esotericism-tools/quarkus-app/quarkus-run.jar" check --release-localization --output "%RUNNER_TEMP%/dynastic-esotericism-release-check"
       - name: Preserve release format and build evidence
         if: always()
