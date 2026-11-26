@@ -1,5 +1,7 @@
 package org.xar.ck3.control.application.driver;
 
+import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -73,7 +75,12 @@ public final class DriverSnapshotFacts {
                 StrictJson.require(value.driverVersion()==stamp.driverVersion()
                         && value.episodeEpoch()==stamp.episodeEpoch()
                         && value.transport().game().equals(stamp.game()),"semantic facts crossed Driver version");
-                StrictJson.require(java.util.Arrays.equals(value.driver().encode(), driver.encode()), "semantic facts crossed Driver version");
+                // All other Driver fields own immutable data. A custom integer may change its encoding.
+                boolean repeatableDriver = driver.session().actorId().getClass() == BigInteger.class;
+                if (!repeatableDriver || value.driver() != driver) {
+                    StrictJson.require(Arrays.equals(value.driver().encode(), repeatableDriver ? driverBytes : driver.encode()),
+                            "semantic facts crossed Driver version");
+                }
             });
         }
     }
