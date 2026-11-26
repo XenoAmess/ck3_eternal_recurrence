@@ -174,7 +174,8 @@ public sealed interface DriverStateSnapshot permits DriverStateSnapshot.Complete
     private static void put(ObjectNode row, String key, Slot slot) { switch (slot) { case Missing ignored -> { } case NullValue ignored -> row.putNull(key); case Value value -> row.set(key,parse(value.json)); } }
     private static byte[] checked(byte[] raw) {
         var scope = Complete.CONSTRUCTION.get();
-        if (raw != null && scope != null && scope.remove(raw) == raw) return raw.clone();
+        // The consumed capability owns the private encoder's fresh result array.
+        if (raw != null && scope != null && scope.remove(raw) == raw) return raw;
         JsonNode value=parse(raw); StrictJson.require(!value.isNull(),"null has its own explicit Driver slot"); return bytes(value);
     }
     private static long historyIndex(Value value) {
