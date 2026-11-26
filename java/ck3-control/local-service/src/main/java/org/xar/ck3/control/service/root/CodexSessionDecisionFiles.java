@@ -112,6 +112,11 @@ public final class CodexSessionDecisionFiles {
     /** Legacy v1 requires an explicit existing original command reference; no command is synthesized or deadline renewed. */
     public static PendingRequest readWithOriginalCommand(Path requestFile, String expectedRequestSha256, Path materialRoot,
             ExactRef suppliedOriginal, Clock clock) throws IOException {
+        return checkedRead(requestFile, expectedRequestSha256, materialRoot, suppliedOriginal, clock, null);
+    }
+
+    private static PendingRequest checkedRead(Path requestFile, String expectedRequestSha256, Path materialRoot,
+            ExactRef suppliedOriginal, Clock clock, PendingRequest reviewed) throws IOException {
         Objects.requireNonNull(clock); requireSha(expectedRequestSha256);
         Path file = Objects.requireNonNull(requestFile).toAbsolutePath().normalize();
         StrictJson.require(file.getFileName().toString().equals("request.json") && file.getParent() != null,
@@ -156,6 +161,17 @@ public final class CodexSessionDecisionFiles {
         StrictJson.require(suppliedOriginal == null || suppliedOriginal.equals(originalRef), "supplied original differs from v2 command reference");
         var commandDocument = exact(originalRef, materials, ActionCodec.MAX_COMMAND_BYTES);
         byte[] commandBytes = commandDocument.bytes();
+        if (reviewed != null) {
+            var payloadDocument = exact(ExactRef.fromJson(row.get("payload")), materials, FullJsonTree.MAXIMUM_BYTES);
+            // The first read validated the complete command and review task. Match the original
+            // FileIDs and bytes before reusing that validation for this response.
+            StrictJson.require(requestDocument.pin().equals(reviewed.requestPin)
+                    && commandDocument.pin().equals(reviewed.commandPin) && payloadDocument.pin().equals(reviewed.payloadPin)
+                    && Arrays.equals(envelope, reviewed.envelope) && Arrays.equals(commandBytes, reviewed.originalCommand)
+                    && Arrays.equals(payloadDocument.bytes(), reviewed.payload), "reviewed material changed before response");
+            requireRemaining(clock, deadline, nanoEnd);
+            return reviewed;
+        }
         ActionCommand command = ActionCodec.decodeCommand(commandBytes);
         StrictJson.require(command.actionId().equals(StrictJson.text(row.get("proposal_id")))
                 && ActionCodec.sha256(commandBytes).equals(StrictJson.text(row.get("body_sha256")))
@@ -203,10 +219,7 @@ public final class CodexSessionDecisionFiles {
     public static ExactRef respond(PendingRequest request, Selection selection) throws IOException {
         Objects.requireNonNull(request); Objects.requireNonNull(selection);
         requireRemaining(request.clock, request.deadline, request.nanoEnd);
-        PendingRequest current = readWithOriginalCommand(request.file, request.requestSha256, request.materialsRoot, request.commandPin.reference(), request.clock);
-        current.requireCustody(request.custody());
-        StrictJson.require(Arrays.equals(request.payload, current.payload) && Arrays.equals(request.originalCommand, current.originalCommand),
-                "reviewed material changed before response");
+        checkedRead(request.file, request.requestSha256, request.materialsRoot, request.commandPin.reference(), request.clock, request);
         Selection identity = request.selection(selection.decision(), selection.reason());
         StrictJson.require(identity.equals(selection), "selection crossed original proposal identity");
         var row = FullJsonTree.parse(request.envelope, MAX_REQUEST_BYTES);

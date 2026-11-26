@@ -231,16 +231,21 @@ final class CodexFileDecisionSelectorTest {
         Path file = awaitRequest(queue); byte[] original = read(file); String sha = ActionCodec.sha256(original);
         Path materials = directory.resolve("materials");
         var pending = CodexSessionDecisionFiles.read(file, sha, materials, Clock.systemUTC());
-        var envelope = tree(file); Path payload = Path.of(envelope.path("payload").path("path").textValue());
-        Path retained = payload.resolveSibling("retained-review.json");
-        Files.move(payload, retained); Files.copy(retained, payload, java.nio.file.StandardCopyOption.COPY_ATTRIBUTES);
-        assertArrayEquals(read(retained), read(payload));
-        var changed = CodexSessionDecisionFiles.read(file, sha, materials, Clock.systemUTC());
-        assertThrows(RuntimeException.class, () -> changed.requireCustody(pending.custody()));
-        assertThrows(RuntimeException.class, () -> CodexSessionDecisionFiles.respond(pending,
-                pending.selection(CodexSessionDecisionFiles.Decision.SELECT_PROPOSAL, "same bytes cannot replace original")));
-        assertFalse(Files.exists(file.getParent().resolve("response.json")));
-        Files.delete(payload); Files.move(retained, payload);
+        var envelope = tree(file);
+        for (String field : List.of("payload", "original_command")) {
+            Path originalFile = Path.of(envelope.path(field).path("path").textValue());
+            Path retained = originalFile.resolveSibling("retained-" + field + ".json");
+            Files.move(originalFile, retained);
+            Files.copy(retained, originalFile, java.nio.file.StandardCopyOption.COPY_ATTRIBUTES);
+            assertArrayEquals(read(retained), read(originalFile));
+            var changed = CodexSessionDecisionFiles.read(file, sha, materials, Clock.systemUTC());
+            assertThrows(RuntimeException.class, () -> changed.requireCustody(pending.custody()));
+            assertThrows(RuntimeException.class, () -> CodexSessionDecisionFiles.respond(pending,
+                    pending.selection(CodexSessionDecisionFiles.Decision.SELECT_PROPOSAL, "same bytes cannot replace original")), field);
+            assertFalse(Files.exists(file.getParent().resolve("response.json")));
+            Files.delete(originalFile);
+            Files.move(retained, originalFile);
+        }
         CodexSessionDecisionFiles.respond(pending, pending.selection(CodexSessionDecisionFiles.Decision.WAIT, "original restored, wait"));
         assertEquals(OrdinaryDecisionSelector.Choice.WAIT, running.get(5, TimeUnit.SECONDS).choice());
     }
