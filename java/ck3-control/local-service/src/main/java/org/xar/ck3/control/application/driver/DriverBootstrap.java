@@ -14,6 +14,7 @@ import org.xar.ck3.control.application.action.ActionPorts;
 import org.xar.ck3.control.application.action.ActionReceipt;
 import org.xar.ck3.control.application.action.ActionReceiptCodec;
 import org.xar.ck3.control.application.action.ActionSnapshotReader;
+import org.xar.ck3.control.application.action.NativeActionPort;
 import org.xar.ck3.control.application.action.NativeObservationPort;
 import org.xar.ck3.control.application.action.RawJson;
 import org.xar.ck3.control.application.checkpoint.DriverCheckpointStore;
@@ -26,7 +27,9 @@ import org.xar.ck3.control.continuity.ContinuityJson;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.g2.common.G2Source;
+import org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort;
 import org.xar.ck3.control.nativebridge.NativeGameTransport;
+import org.xar.ck3.control.nativebridge.NativeWire;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 import org.xar.ck3.control.application.history.LegacyResumeNormalizer;
 import org.xar.ck3.control.application.history.LegacyResumeMigration;
@@ -39,6 +42,55 @@ import org.xar.ck3.control.wave3.governance.lifecycle.SuccessionLifecycleBinding
 /** Concrete local-service assembly. Source imports and hello/frame ACKs grant no action or readiness authority. */
 public final class DriverBootstrap {
     private DriverBootstrap() { }
+
+    /** Describes the already completed read without refining its authority or issuing another request. */
+    static NativeFreshSnapshotPort.Received requireIndependentFullRead(NativeFreshSnapshotPort.Result result,
+            String unavailableMessage) throws IOException {
+        if (result instanceof NativeFreshSnapshotPort.Received received) return received;
+        var unavailable = (NativeFreshSnapshotPort.Unavailable) result;
+        var dispatch = unavailable.dispatch();
+        var kind = switch (dispatch) {
+            case NativeActionPort.AckReceived ack -> "ACK/native_ok=" + ack.nativeOk();
+            case NativeActionPort.RejectedBeforeDispatch ignored -> "REJECTED_BEFORE_DISPATCH";
+            case NativeActionPort.Unknown ignored -> "UNKNOWN";
+        };
+        var detail = new StringBuilder(unavailableMessage).append("; kind=").append(kind)
+                .append("; request_id=").append(boundedReadDetail(dispatch.requestId()))
+                .append("; reason=").append(boundedReadDetail(unavailable.reason()));
+        if (dispatch instanceof NativeActionPort.AckReceived ack && !ack.nativeOk()) {
+            appendOriginalFullReadDiagnostics(detail, ack);
+        } else if (dispatch instanceof NativeActionPort.Unknown unknown) {
+            unknown.failureCause().ifPresent(cause -> detail.append("; transport_failure=")
+                    .append(cause.kind()).append('/').append(cause.stage()));
+        }
+        throw new IOException(detail.toString());
+    }
+
+    private static String boundedReadDetail(String value) {
+        return value.substring(0, Math.min(value.length(), 256)).replaceAll("\\p{Cntrl}", " ");
+    }
+
+    private static void appendOriginalFullReadDiagnostics(StringBuilder detail, NativeActionPort.AckReceived ack) {
+        if (ack.originalFrame().byteLength() > 4096) return;
+        byte[] packet = ack.originalPacket();
+        if (packet.length != ack.originalFrame().byteLength() + 4) return;
+        try {
+            if (!(NativeWire.decode(packet) instanceof NativeWire.CommandResult original)
+                    || original.nativeOk() || !original.requestId().equals(ack.requestId())
+                    || !Arrays.equals(original.payload().value(), ack.originalFrame().bytes())) return;
+            var wire = NativeWire.object(NativeWire.parse(original.payload().value()));
+            var error = wire.path("error").asText("");
+            if (error.matches("fresh_full_state_[a-z_]{1,64}")) detail.append("; native_error=").append(error);
+            var diagnostic = wire.path("fresh_full_state_diagnostic");
+            var stage = diagnostic.path("stage").asText("");
+            if (diagnostic.path("schema").asText("").equals("xar.native.fresh-full-state-diagnostic/v1")
+                    && com.fasterxml.jackson.databind.node.BooleanNode.FALSE.equals(diagnostic.path("fresh_available"))
+                    && stage.matches("[a-z][a-z_]{0,63}")) detail.append("; native_stage=").append(stage);
+        } catch (IOException | IllegalArgumentException ignored) {
+            // The unchanged transport outcome remains the error if diagnostic data cannot be decoded.
+        }
+    }
+
     /** Exact original first-connection refusal. Generic IO, custody and source failures never use this type. */
     public static final class OriginalAdoptionRefused extends IOException {
         private static final long serialVersionUID=1L;
@@ -905,8 +957,8 @@ public final class DriverBootstrap {
                     if(kind!=AdoptionKind.UNCLASSIFIED)transport.startHandshake(ioDeadline);
                     Optional<NativeObservationPort.ObservedFrame> firstRaw=resolvedRaw;
                     if(cleanRestart.isPresent()) {
-                        var read=transport.readFreshFullState(ioDeadline);
-                        if(!(read instanceof org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort.Received received))throw new IOException("clean restart independent native full-state read is unavailable");
+                        var received = requireIndependentFullRead(transport.readFreshFullState(ioDeadline),
+                                "clean restart independent native full-state read is unavailable");
                         firstRaw=Optional.of(received.originalFrame());
                     }
                     DriverObservationAssembler.Complete first;
@@ -1009,10 +1061,8 @@ public final class DriverBootstrap {
 
         // Obtain independent full state on existing transport using fresh operation deadline and only read paths
         transport.startHandshake(deadline);
-        var result = transport.readFreshFullState(deadline);
-        if (!(result instanceof org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort.Received received)) {
-            throw new IOException("unresolved same-Game independent native full-state read unavailable");
-        }
+        var received = requireIndependentFullRead(transport.readFreshFullState(deadline),
+                "unresolved same-Game independent native full-state read unavailable");
         var raw = received.originalFrame();
         StrictJson.require(raw.session().equals(current), "unresolved same-Game received another current connection");
 
@@ -1295,9 +1345,8 @@ public final class DriverBootstrap {
             StrictJson.require(!readDeadline.isAfter(deadline),"post-RETAIN EVENT READ cannot exceed its original preparation envelope");
         }
         transport.startHandshake(readDeadline);
-        var result=transport.readFreshFullState(readDeadline);
-        if(!(result instanceof org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort.Received received))
-            throw new IOException("settled continuation independent native full-state read unavailable");
+        var received = requireIndependentFullRead(transport.readFreshFullState(readDeadline),
+                "settled continuation independent native full-state read unavailable");
         var raw=received.originalFrame();
         StrictJson.require(raw.session().equals(current),"settled continuation received another current connection");
         var first=authority.withFrozenRawObservation(raw,same,frozen->{
@@ -1490,9 +1539,8 @@ public final class DriverBootstrap {
         var held=new HeldDriverObservationPort(transport,authority,
                 frame->borrowedArchive(archive,actual::activeSession).preserveNativeFrame(frame),
                 new DriverObservationAssembler(),retainedFrames);
-        var result=transport.readFreshFullState(deadline);
-        if(!(result instanceof org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort.Received received))
-            throw new IOException("initial recovery independent native full-state read unavailable");
+        var received = requireIndependentFullRead(transport.readFreshFullState(deadline),
+                "initial recovery independent native full-state read unavailable");
         var raw=received.originalFrame();
         StrictJson.require(raw.session().equals(current),"initial recovery received another current connection");
         var first=authority.withFrozenRawObservation(raw,same,frozen->{
