@@ -1035,7 +1035,12 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
                 if(snapshot.identity().equals(LedgerFiles.identity(layout.snapshot()))) {
                     java.nio.file.Path next=layout.event(Math.addExact(retained.state().sequence(),1));
                     if(!java.nio.file.Files.exists(next,java.nio.file.LinkOption.NOFOLLOW_LINKS)) {
-                        LedgerFiles.requireAbsent(next);retainedHead=retained;retainedHeadHistoryVerified=historyVerified;return retained;
+                        LedgerFiles.requireAbsent(next);
+                        if (store.verifyRetainedBaselineBegins(retained)) {
+                            retainedHead = retained;
+                            retainedHeadHistoryVerified = historyVerified;
+                            return retained;
+                        }
                     }
                 }
             }

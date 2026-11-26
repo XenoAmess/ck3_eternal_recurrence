@@ -195,9 +195,56 @@ final class EpisodeWindowWriterTest {
     @Test void generalCanonicalHeadReaderRejectsReplacementOfTheBeginPinAlreadyRetainedByBaseline()throws Exception{
         Fixture f=new Fixture(temporary.resolve("general-head-file-id"));var begin=f.begin();f.firstSaveConfirmed.set(true);
         f.writer.locked(s->s.baselineEpisodeWindow(f.baseline(begin)));
-        Path event=Path.of(begin.eventRef().path()),original=event.resolveSibling("original-before-replacement.json");
-        Files.move(event,original);Files.write(event,Files.readAllBytes(original));
+        replaceBeginWithIdenticalBytes(begin);
         assertThrows(ContractViolationException.class,()->f.writer.locked(ContinuityStorePort.Session::head));
         assertFalse(Files.exists(f.files.layout.event(4)));
+    }
+
+    @Test void generalCanonicalHeadRejectsReplacementBetweenReadsInOneHeldSession() throws Exception {
+        Fixture fixture = new Fixture(temporary.resolve("same-session-begin-file-id"));
+        var begin = fixture.begin();
+        fixture.firstSaveConfirmed.set(true);
+        fixture.writer.locked(s -> s.baselineEpisodeWindow(fixture.baseline(begin)));
+        fixture.writer.locked(s -> {
+            assertEquals(3, s.head().state().sequence());
+            replaceBeginWithIdenticalBytes(begin);
+            assertThrows(ContractViolationException.class, s::head);
+            return null;
+        });
+        assertFalse(Files.exists(fixture.layout.event(4)));
+    }
+
+    @Test void generalCanonicalHeadRejectsOlderBeginReplacementOnIncrementalRead() throws Exception {
+        Fixture fixture = new Fixture(temporary.resolve("incremental-older-begin-file-id"));
+        var first = fixture.begin();
+        fixture.firstSaveConfirmed.set(true);
+        fixture.writer.locked(s -> s.baselineEpisodeWindow(fixture.baseline(first)));
+
+        var lifecycle = fixture.writer.commit(fixture.writer.preview(marker("fixture.lifecycle", "next-lifecycle")));
+        var lifecyclePin = LedgerFiles.read(fixture.layout.event(lifecycle.head().sequence()), ContinuityJson.LEDGER_MAX_BYTES).pin();
+        fixture.begin = new EpisodeWindow.Begin("next-2", fixture.begin.after(),
+                identity(789, "133000000000000003", "third-session", "third-episode", 2, 44, 300),
+                2, 3, "parent-next-2", lifecycle.head().sequence(), lifecycle.eventIdentity(),
+                lifecyclePin.reference(), fixture.driver, List.of());
+        var second = fixture.begin();
+        fixture.writer.locked(s -> s.baselineEpisodeWindow(fixture.baseline(second)));
+        assertEquals(6, fixture.writer.locked(ContinuityStorePort.Session::head).state().sequence());
+
+        var successor = fixture.newWriter(WriterFaultProbe.NONE);
+        successor.commit(successor.preview(WriterFixture.settled("legitimate-successor", 324, 1)));
+        replaceBeginWithIdenticalBytes(first);
+        assertThrows(ContractViolationException.class, () -> fixture.writer.locked(ContinuityStorePort.Session::head));
+        assertTrue(Files.exists(fixture.layout.event(7)));
+        assertFalse(Files.exists(fixture.layout.event(8)));
+    }
+
+    private static void replaceBeginWithIdenticalBytes(EpisodeWindow.CommittedBegin begin) throws IOException {
+        Path event = Path.of(begin.eventRef().path());
+        Path original = event.resolveSibling("original-before-replacement.json");
+        Files.move(event, original);
+        Files.write(event, Files.readAllBytes(original));
+        Pin replacement = LedgerFiles.read(event, ContinuityJson.LEDGER_MAX_BYTES).pin();
+        assertEquals(begin.eventPin().reference(), replacement.reference());
+        assertNotEquals(begin.eventPin().identity().fileIdDecimal(), replacement.identity().fileIdDecimal());
     }
 }

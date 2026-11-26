@@ -17,8 +17,13 @@ import static org.xar.ck3.control.continuity.writer.WriterContracts.*;
 
 /** Reads the existing finite anchor/event/snapshot chain. It never enumerates or rewrites history. */
 final class ContinuityStore {
+    private static final String BASELINE_BEGIN_PIN_REQUIRED =
+            "BASELINE original BEGIN must retain its actual captured Win32 file identity, not only equal bytes";
+
+    private record RetainedHead(Head head, List<Pin> baselineBeginPins) { }
+
     private final Layout layout;
-    private volatile Head retainedHead;
+    private volatile RetainedHead retainedHead;
     ContinuityStore(Layout layout) { this.layout = layout; }
     Head head() throws IOException {
         Head fast = incrementalHead();
@@ -63,11 +68,13 @@ final class ContinuityStore {
         }
         StrictJson.require(projection.events().size() == capturedEventPins.size(),
                 "bounded continuity projection must summarize every captured event");
+        List<Pin> baselineBeginPins = new ArrayList<>();
         for (int index = 0; index < projection.events().size(); index++) {
             ContinuityHistory.EventSummary event = projection.events().get(index);
             if (event.baselineBeginPin().isPresent()) {
-                StrictJson.require(pins.contains(event.baselineBeginPin().orElseThrow()),
-                        "BASELINE original BEGIN must retain its actual captured Win32 file identity, not only equal bytes");
+                Pin begin = event.baselineBeginPin().orElseThrow();
+                StrictJson.require(pins.contains(begin), BASELINE_BEGIN_PIN_REQUIRED);
+                baselineBeginPins.add(begin);
             }
             pins.add(capturedEventPins.get(index));
             Path indexPath = layout.sourceIndex(event.sourceKey());
@@ -83,9 +90,24 @@ final class ContinuityStore {
         for (Pin original : pins) LedgerFiles.verify(original);
         for (Path path : absent) LedgerFiles.requireAbsent(path);
         Head result = new Head(projection.head(), pins, absent, repairs, projection.snapshotNeedsRecovery());
-        retainedHead = result;
+        retainedHead = new RetainedHead(result, List.copyOf(baselineBeginPins));
         return result;
     }
+
+    boolean verifyRetainedBaselineBegins(Head head) throws IOException {
+        RetainedHead retained = retainedHead;
+        if (retained == null || retained.head() != head) return false;
+        requireBaselineBeginPins(retained.baselineBeginPins());
+        return true;
+    }
+
+    private static void requireBaselineBeginPins(List<Pin> baselineBeginPins) throws IOException {
+        for (Pin begin : baselineBeginPins) {
+            var actual = LedgerFiles.read(Path.of(begin.reference().path()), ContinuityJson.LEDGER_MAX_BYTES);
+            StrictJson.require(actual.pin().equals(begin), BASELINE_BEGIN_PIN_REQUIRED);
+        }
+    }
+
     /** Read-only recapture after an actual historical-read failure; no repair is published. */
     Head refreshHead() throws IOException {
         retainedHead = null;
@@ -93,13 +115,16 @@ final class ContinuityStore {
     }
     /** Same writer lock: project only one next committed edge after a clean captured head. */
     private Head incrementalHead() throws IOException {
-        Head previous = retainedHead;
-        if (previous == null || previous.snapshotNeedsRecovery() || !previous.indexRepairs().isEmpty()) return null;
+        RetainedHead retained = retainedHead;
+        if (retained == null) return null;
+        Head previous = retained.head();
+        if (previous.snapshotNeedsRecovery() || !previous.indexRepairs().isEmpty()) return null;
         var snapshot = LedgerFiles.read(layout.snapshot(), ContinuityJson.LEDGER_MAX_BYTES);
         Path next = layout.event(Math.addExact(previous.state().sequence(), 1));
         if (snapshot.pin().equals(previous.documents().get(1))) {
             if (Files.exists(next, java.nio.file.LinkOption.NOFOLLOW_LINKS)) return null;
             LedgerFiles.requireAbsent(next);
+            requireBaselineBeginPins(retained.baselineBeginPins());
             return previous;
         }
         ContinuityState stored = state(snapshot.bytes());
@@ -122,12 +147,13 @@ final class ContinuityStore {
         Path absent = layout.event(Math.addExact(event.sequence(), 1));
         if (Files.exists(absent, java.nio.file.LinkOption.NOFOLLOW_LINKS)) return null;
         LedgerFiles.requireAbsent(absent);
+        requireBaselineBeginPins(retained.baselineBeginPins());
         List<Pin> pins = new ArrayList<>(previous.documents());
         pins.set(1, snapshot.pin());
         pins.add(document.orElseThrow().pin());
         pins.add(sourceIndex.orElseThrow().pin());
         Head result = new Head(stored, pins, List.of(absent), List.of(), false);
-        retainedHead = result;
+        retainedHead = new RetainedHead(result, retained.baselineBeginPins());
         return result;
     }
     Optional<ContinuityEvent> duplicate(Request request, Head head) throws IOException {
