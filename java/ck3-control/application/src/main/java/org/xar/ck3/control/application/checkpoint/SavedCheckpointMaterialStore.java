@@ -55,7 +55,11 @@ public final class SavedCheckpointMaterialStore implements SavedAttachmentAuthor
     }
     /** Actual pre-dispatch basis check. It grants no replacement, raw frame, reducer commit or material authority. */
     void requireRestorePredecessor(ContinuityStorePort.Session same,SavedCheckpointMaterial material)throws IOException {
-        requireOwn(material);material.requirePhysical(same);String head=same.head().digest();
+        requireOwn(material);
+        StrictJson.require(!SavedAttachmentSourceStore.requiresPhysicalSaveWitness(material.pair())
+                        ||material instanceof SavedAttachmentSourceStore.SavedMaterial,
+                "restore of an oversized physical SAVE requires the ordinary saved material witness");
+        material.requirePhysical(same);String head=same.head().digest();
         if(material instanceof SavedAttachmentSourceStore.SavedMaterial saved){
             var originalBasis=ordinary.basis(same.head().state(),saved);
             SavedContinuityAttachment.requireOrdinaryPredecessor(same.head().state(),

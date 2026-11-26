@@ -484,7 +484,15 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
             RestoreCheckpointService.NativeCandidate restored,DriverStateSnapshot.Complete saved) throws IOException {
         SavedMaterial material=load(request.pair());
         StrictJson.require(request.savedMaterial().witness().equals(material.witness()),"request must retain its original ordinary material");
-        return prepareMaterial(request,restored,saved,material,basis(sessions.current().head().state(),material),SavedAttachmentAuthority.KIND);
+        return prepareMaterial(request,restored,saved,material,basis(sessions.current().head().state(),material),
+                SavedAttachmentAuthority.KIND,ordinaryPhysicalSaveWitness(material.pair()));
+    }
+    /** The bound applies to raw writer pins. Oversized physical saves keep their exact typed file witness. */
+    public static boolean requiresPhysicalSaveWitness(CheckpointPair pair) {
+        return pair.save().reference().bytes()>WriterContracts.MAX_PIN_BYTES;
+    }
+    static Optional<FileWitness> ordinaryPhysicalSaveWitness(CheckpointPair pair) {
+        return requiresPhysicalSaveWitness(pair)?Optional.of(pair.save()):Optional.empty();
     }
     /** Explicit ordinary loaded-replacement source: physical SAVE identity stays outside bounded Writer artifact pins. */
     public RestoreCheckpointService.Attachment prepareLoaded(RestoreCheckpointService.Request request,
@@ -528,18 +536,23 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
         ExactRef openingRef=immutable(directory.resolve("opening.json"),metadataBytes(opening));
         ExactRef progress=immutable(directory.resolve("progress.json"),metadataBytes(progress(predecessor)));
         Sources sources=new Sources(material.kind(),material.witness(),basis,gameRef,openingRef,progress,restored.originalNativePacket(),physicalSaveWitness);
-        ObjectNode details=StrictJson.object();details.put("evidence_id",request.requestId());details.put("source","java_saved_checkpoint_restore_v1");
-        details.put("new_ordinary_cycle_credit",0);details.put("game_day_credit",0);details.put("original_actions_replayed",false);details.put("window_origin_reset",false);
-        details.set(SavedAttachmentAuthority.PAIR_DETAIL,StrictJson.parse(CheckpointPairCodec.encode(request.pair())));details.set(SOURCES_DETAIL,sources.toJson());
-        var evidence=new LinkedHashSet<>(sources.references());evidence.add(request.pair().nativeAckRef());
-        evidence.add(request.pair().driver().reference());if(physicalSaveWitness.isEmpty())evidence.add(request.pair().save().reference());evidence.addAll(materialEvidence(material));
-        var action=new WriterContracts.Request(kind,metadataBytes(details),List.copyOf(evidence));
+        var action=attachmentRequest(kind,request.requestId(),request.pair(),sources,materialEvidence(material));
         SavedAttachmentAuthority.Loaded loaded=loadMaterial(predecessor,action,material,actualBasis);
         return new RestoreCheckpointService.Attachment(action,loaded.input(),material);
     }
-    /** Internal namespace only: an actual loaded capture has its own immutable originals. */
-    static String restoreDirectoryKey(String requestId,ExactRef originalNativePacket,boolean loaded) {
-        if(!loaded)return DriverCheckpointStore.sha256(requestId.getBytes(StandardCharsets.UTF_8));
+    static WriterContracts.Request attachmentRequest(String kind,String requestId,CheckpointPair pair,Sources sources,List<ExactRef> originalSemanticEvidence) {
+        if(sources.physicalSaveWitness().isPresent())StrictJson.require(sources.physicalSaveWitness().orElseThrow().equals(pair.save()),
+                "physical SAVE witness must be the exact original pair file");
+        ObjectNode details=StrictJson.object();details.put("evidence_id",requestId);details.put("source","java_saved_checkpoint_restore_v1");
+        details.put("new_ordinary_cycle_credit",0);details.put("game_day_credit",0);details.put("original_actions_replayed",false);details.put("window_origin_reset",false);
+        details.set(SavedAttachmentAuthority.PAIR_DETAIL,StrictJson.parse(CheckpointPairCodec.encode(pair)));details.set(SOURCES_DETAIL,sources.toJson());
+        var evidence=new LinkedHashSet<>(sources.references());evidence.add(pair.nativeAckRef());
+        evidence.add(pair.driver().reference());if(sources.physicalSaveWitness().isEmpty())evidence.add(pair.save().reference());evidence.addAll(originalSemanticEvidence);
+        return new WriterContracts.Request(kind,metadataBytes(details),List.copyOf(evidence));
+    }
+    /** Internal namespace only: a physical SAVE witness capture has its own immutable originals. */
+    static String restoreDirectoryKey(String requestId,ExactRef originalNativePacket,boolean physicalSaveWitness) {
+        if(!physicalSaveWitness)return DriverCheckpointStore.sha256(requestId.getBytes(StandardCharsets.UTF_8));
         var key=StrictJson.object();key.put("request_id",requestId);
         key.set("original_native_packet",Objects.requireNonNull(originalNativePacket).toJson());
         return DriverCheckpointStore.sha256(StrictJson.canonical(key));

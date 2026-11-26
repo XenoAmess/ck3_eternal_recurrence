@@ -298,7 +298,9 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
         SavedCheckpointMaterial material=requireRetainedSource(borrowed,savedSources,request,saved);
         files.verify(material.witness());
         StrictJson.require(Arrays.equals(saved.encode(),drivers.readVerifiedOriginal(request.pair(),saved.session()).encode()),"cold source differs from the actual physical saved Driver");
-        if(coldPrevious!=null&&coldPrevious.loadedReplacement().isPresent())files.verify(request.pair().save());
+        boolean physicalSaveWitness=(coldPrevious!=null&&coldPrevious.loadedReplacement().isPresent())
+                ||SavedAttachmentSourceStore.requiresPhysicalSaveWitness(request.pair());
+        if(physicalSaveWitness)files.verify(request.pair().save());
         else pin(borrowed,request.pair().save().reference(),WriterContracts.MAX_PIN_BYTES,pins);
         pin(borrowed,request.pair().driver().reference(),DRIVER_LIMIT,pins);
         pin(borrowed,material.reference(),DOCUMENT_LIMIT,pins);
@@ -384,7 +386,7 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
                 replacement.nativeTransport().pipeName(),actual.actual().snapshotId(),actual.actual().nativeRevision(),saved,abandoned.driver(),nativeState,
                 control,lifecycleOriginal,actual.originalNativePacket(),Optional.of(before.semantic()));
         material.requireRetained(borrowed);files.verify(material.witness());drivers.verifyOriginal(request.pair(),saved.session());
-        if(actualLoaded)files.verify(request.pair().save());
+        if(physicalSaveWitness)files.verify(request.pair().save());
         for(var pin:pins)borrowed.verifyPin(pin);return new Originals(input,auxiliary,material.witness(),pins);
     }
     /** Same configured aggregate and original issuer only. Retained source validation grants no replacement Game or physical reload. */

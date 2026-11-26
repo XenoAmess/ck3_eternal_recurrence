@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -295,6 +296,15 @@ final class CheckpointMaterialRestoreCompositionTest {
             h.f.actual.writer.locked(same->{
                 var material=h.request.savedMaterial();var original=material.session();
                 var attachment=h.f.materials.prepare(h.request,candidate,material.savedDriver());
+                var small=attachment.request().detailsObject().get(SavedAttachmentSourceStore.SOURCES_DETAIL);
+                assertEquals(SavedAttachmentSourceStore.SOURCES_SCHEMA,small.get("schema").textValue());
+                assertTrue(attachment.request().evidence().contains(h.pair.save().reference()));
+                assertTrue(SavedAttachmentSourceStore.Sources.decode(small).physicalSaveWitness().isEmpty());
+                var loadedAttachment=h.f.sources.prepareLoaded(h.request,candidate,material.savedDriver());
+                var alwaysWitnessed=loadedAttachment.request().detailsObject().get(SavedAttachmentSourceStore.SOURCES_DETAIL);
+                assertEquals(SavedAttachmentSourceStore.SOURCES_SCHEMA_PHYSICAL_SAVE_WITNESS,alwaysWitnessed.get("schema").textValue());
+                assertEquals(Optional.of(h.pair.save()),SavedAttachmentSourceStore.Sources.decode(alwaysWitnessed).physicalSaveWitness());
+                assertFalse(loadedAttachment.request().evidence().contains(h.pair.save().reference()));
                 var prepared=same.preview(attachment.request());var committed=same.commit(prepared);
                 assertNotEquals(WriterContracts.Disposition.NO_CHANGE,committed.disposition());
                 assertNotEquals(original.game(),candidate.actual().session().game());

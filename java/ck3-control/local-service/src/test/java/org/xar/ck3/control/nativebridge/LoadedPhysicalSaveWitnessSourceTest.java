@@ -51,7 +51,7 @@ final class LoadedPhysicalSaveWitnessSourceTest {
                 document,ref,ref,ref,ref,ref,Optional.of(physical)));
         files.verify(document);files.verify(physical);
     }
-    @Test void realSparseSaveAboveWriterPinBoundPreviewsV4AndRejectsWrongWitnessAndStreamTampering()throws Exception {
+    @Test void realSparseSaveAboveWriterPinBoundPreviewsV4ForOrdinaryAndLoadedAndRejectsTampering()throws Exception {
         // Physical Game inputs have a separate profile root; the Writer's finite whole-root plan covers only its actual small writes.
         Path root=temporary.resolve("actual-software-save"),profile=temporary.resolve("physical-profile"),save=profile.resolve("save games/xar_checkpoint.ck3");
         long logicalBytes=Math.addExact((long)WriterContracts.MAX_PIN_BYTES,1);
@@ -93,19 +93,20 @@ final class LoadedPhysicalSaveWitnessSourceTest {
                 assertEquals(pair.frame().frame().identity().nativeRevision(),savedEnvelope.revision());
                 assertEquals("native:"+savedEnvelope.revision(),savedEnvelope.snapshotId(),"the original software packet carries the saved-frame identity before capture");
                 var material=f.materials.currentPhysical(same,pair);assertEquals(SavedCheckpointMaterial.Kind.ORDINARY,material.kind());
-                var request=new RestoreCheckpointService.Request("loaded-sparse-save-source",pair,current,before,Instant.now().plusSeconds(30),material);
-                Path restoreParent=Path.of(material.reference().path()).getParent().getParent().resolve("restores")
-                        .resolve(org.xar.ck3.control.application.action.ActionCodec.sha256(request.requestId().getBytes(java.nio.charset.StandardCharsets.UTF_8)));
-                assertTrue(restoreParent.startsWith(root.resolve("saved-material")));assertFalse(Files.exists(restoreParent));
+                var request=new RestoreCheckpointService.Request("sparse-save-source",pair,current,before,Instant.now().plusSeconds(30),material);
+                Path restoreRoot=Path.of(material.reference().path()).getParent().getParent().resolve("restores");
+                assertTrue(restoreRoot.startsWith(root.resolve("saved-material")));assertFalse(Files.exists(restoreRoot));
                 long chargedBefore=f.materialOutputGuard.accounting().roots().stream().mapToLong(rootAccounting->rootAccounting.measuredChargedUpperBytes()).sum();
-                var attachment=f.sources.prepareLoaded(request,candidate,material.savedDriver());
-                assertTrue(Files.isDirectory(restoreParent));
+                var attachment=f.materials.prepare(request,candidate,material.savedDriver());
+                assertEquals(f.owner,attachment.material().session());
                 var accounting=f.materialOutputGuard.accounting();
                 assertEquals(org.xar.ck3.control.service.root.RootRuntimeStorageGuard.Status.ADMITTED,accounting.status());
                 assertEquals(0,accounting.unresolvedWrites());
                 assertTrue(accounting.roots().stream().allMatch(rootAccounting->rootAccounting.outstandingPeakBytes()==0));
                 assertTrue(accounting.roots().stream().mapToLong(rootAccounting->rootAccounting.measuredChargedUpperBytes()).sum()>chargedBefore);
                 var sources=SavedAttachmentSourceStore.Sources.decode(attachment.request().detailsObject().get(SavedAttachmentSourceStore.SOURCES_DETAIL));
+                Path restoreParent=Path.of(sources.basis().path()).getParent();
+                assertTrue(restoreParent.startsWith(restoreRoot));assertTrue(Files.isDirectory(restoreParent));
                 assertEquals(pair.save(),sources.physicalSaveWitness().orElseThrow());
                 assertFalse(attachment.request().evidence().contains(pair.save().reference()));
                 assertTrue(attachment.request().evidence().contains(pair.nativeAckRef()));
@@ -138,10 +139,16 @@ final class LoadedPhysicalSaveWitnessSourceTest {
                     assertEquals(before,same.head().digest());assertEquals(sequence,same.head().state().sequence());
                 }
 
-                var old=f.sources.prepare(request,candidate,material.savedDriver());
-                assertEquals(SavedAttachmentSourceStore.SOURCES_SCHEMA,old.request().detailsObject().get(SavedAttachmentSourceStore.SOURCES_DETAIL).get("schema").textValue());
-                assertTrue(old.request().evidence().contains(pair.save().reference()));
-                assertThrows(IOException.class,()->same.preview(old.request()),"the unchanged v3 raw artifact path must retain the Writer pin bound");
+                var loaded=f.sources.prepareLoaded(request,candidate,material.savedDriver());
+                assertArrayEquals(attachment.request().details(),loaded.request().details());
+                assertEquals(attachment.request().evidence(),loaded.request().evidence());
+                var legacySources=new SavedAttachmentSourceStore.Sources(sources.kind(),sources.material(),sources.basis(),sources.game(),
+                        sources.opening(),sources.progress(),sources.restoredNative());
+                var legacyDetails=attachment.request().detailsObject().deepCopy();
+                legacyDetails.set(SavedAttachmentSourceStore.SOURCES_DETAIL,legacySources.toJson());
+                var legacyEvidence=new java.util.LinkedHashSet<>(attachment.request().evidence());legacyEvidence.add(pair.save().reference());
+                var legacy=new WriterContracts.Request(attachment.request().kind(),StrictJson.canonical(legacyDetails),List.copyOf(legacyEvidence));
+                assertThrows(IOException.class,()->same.preview(legacy),"the unchanged v3 raw artifact path must retain the Writer pin bound");
 
                 var other=f.files.createNew(root.resolve("different-save.ck3"),new byte[]{9,8,7});
                 var wrongSources=new SavedAttachmentSourceStore.Sources(sources.kind(),sources.material(),sources.basis(),sources.game(),
