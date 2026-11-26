@@ -5,20 +5,28 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Proxy;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.zip.GZIPInputStream;
 import org.junit.jupiter.api.Test;
 import org.xar.ck3.control.application.action.ActionCodec;
+import org.xar.ck3.control.application.action.ActionContinuityAuthority;
+import org.xar.ck3.control.application.action.ActionJournal;
+import org.xar.ck3.control.application.action.ActionReceiptCodec;
+import org.xar.ck3.control.application.action.ActionRecord;
+import org.xar.ck3.control.application.action.ActionRecordCodec;
 import org.xar.ck3.control.application.action.CompositeOperatorQuarantineRequest;
 import org.xar.ck3.control.application.action.CompositeOperatorQuarantineSource;
 import org.xar.ck3.control.application.action.RawJson;
 import org.xar.ck3.control.application.checkpoint.CheckpointPairCodec;
+import org.xar.ck3.control.application.checkpoint.SavedAttachmentAuthority;
 import org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive;
 import org.xar.ck3.control.application.action.ActionReceipt;
 import org.xar.ck3.control.application.action.ActionState;
@@ -27,6 +35,7 @@ import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
 import org.xar.ck3.control.continuity.ContinuityJson;
 import org.xar.ck3.control.continuity.ContinuityState;
 import org.xar.ck3.control.continuity.OriginalWindowReducer;
+import org.xar.ck3.control.continuity.SavedContinuityAttachment;
 import org.xar.ck3.control.continuity.SavedContinuityBootstrap;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 import org.xar.ck3.control.continuity.writer.PortableRecoveryDataArchive;
@@ -34,7 +43,9 @@ import org.xar.ck3.control.continuity.writer.WriterContracts;
 import org.xar.ck3.control.contracts.ContractViolationException;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.FullJsonTree;
+import org.xar.ck3.control.contracts.GameGeneration;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.g2.planning.ProposalLifecycleCodec;
 
 /** Recovery04 through the original imported-save admission; the Driver payload and full event history are separate evidence. */
 final class ImportedSavedInterruptedLifeRecoveryDataTest {
@@ -78,6 +89,106 @@ final class ImportedSavedInterruptedLifeRecoveryDataTest {
             return null;
         });
         assertEquals(HEAD_SHA,ActionCodec.sha256(fixture.originalHead));
+    }
+
+    @Test void committedV5DriverRetirementProofKeepsTheOriginalPositiveResumeUnknown() throws IOException {
+        var fixture = new Fixture();
+        fixture.locked(same -> {
+            var source = fixture.softwareExitedSource(same);
+            var parent = ContinuityActionJournal.lookup(fixture.state, source.request().parentActionId(), fixture.archive).orElseThrow();
+            var oldActionHead = ContinuityActionJournal.recordHead(fixture.state).orElseThrow();
+            var materials = new HashMap<ExactRef, RawJson>();
+            var records = new HashMap<ExactRef, ActionRecord>();
+            var receiptReferences = new HashMap<ActionReceipt, ExactRef>();
+            var archive = (OutcomeArchive) Proxy.newProxyInstance(getClass().getClassLoader(), new Class<?>[]{OutcomeArchive.class},
+                    (proxy, method, arguments) -> {
+                        switch (method.getName()) {
+                            case "withSession" -> {
+                                fixture.requireSession((ContinuityStorePort.Session) arguments[0]);
+                                return proxy;
+                            }
+                            case "preserveMaterial" -> {
+                                var raw = (RawJson) arguments[0];
+                                var ref = Fixture.reference(ActionCodec.sha256(raw.bytes()), raw.bytes());
+                                materials.put(ref, raw);
+                                return ref;
+                            }
+                            case "materialReferenceOf" -> {
+                                for (var entry : materials.entrySet()) if (entry.getValue().equals(arguments[0])) return entry.getKey();
+                            }
+                            case "materialReference" -> {
+                                for (var ref : materials.keySet())
+                                    if (ref.sha256().equals(arguments[0]) && ref.bytes() == (Long) arguments[1]) return ref;
+                            }
+                            case "loadMaterial" -> {
+                                if (materials.containsKey(arguments[0])) return materials.get(arguments[0]);
+                            }
+                            case "loadRecord" -> {
+                                if (records.containsKey(arguments[0])) return records.get(arguments[0]);
+                            }
+                            case "receiptReferenceOf" -> {
+                                if (receiptReferences.containsKey(arguments[0])) return receiptReferences.get(arguments[0]);
+                            }
+                            default -> { }
+                        }
+                        try { return method.invoke(fixture.archive, arguments); }
+                        catch (InvocationTargetException failure) { throw failure.getCause(); }
+                    });
+            var observation = source.capture(same, parent, archive);
+            long terminalSequence = Math.addExact(fixture.state.sequence(), 1);
+            var terminal = new ActionReceipt(parent.version(), terminalSequence, parent.command(), parent.bodySha256(),
+                    new ActionState.CompositeOperatorQuarantined(((ActionState.CompositeUnknown) parent.state()).execution(), observation));
+            source.verify(same, same.head(), terminal, archive);
+            byte[] terminalBytes = ActionReceiptCodec.encodeReceipt(terminal, archive);
+            receiptReferences.put(terminal, Fixture.reference("terminal-receipt", terminalBytes));
+            var record = new ActionRecord(terminal, Optional.of(oldActionHead));
+            var recordRef = Fixture.reference("terminal-record", ActionRecordCodec.encode(record, archive));
+            records.put(recordRef, record);
+            var terminalDetails = StrictJson.object().put("evidence_id", parent.command().actionId() + ":" + terminalSequence);
+            terminalDetails.set("source", ProposalLifecycleCodec.source(parent.command().source()));
+            terminalDetails.set("receipt_ref", recordRef.toJson());
+            var retirement = new WriterContracts.Request(ContinuityActionJournal.KIND, ContinuityJson.canonical(terminalDetails), List.of(recordRef, observation));
+            var actionAuthority = new ActionContinuityAuthority("offline-imported-driver", archive,
+                    (head, command) -> { throw Fixture.unavailable(); }, (head, receipt) -> { throw Fixture.unavailable(); }, Clock.systemUTC());
+            var retired = actionAuthority.reduce(fixture.state, retirement).toJson().put("sequence", terminalSequence)
+                    .put("last_event_identity", retirement.identity());
+            fixture.state = ContinuityState.fromJson(retired, fixture.owner.machineId());
+            var predecessor = same.head();
+
+            // Every physical pair/source coordinate is copied byte-for-byte from the prior dual-writer
+            // production material builder. The replacement attachment and administrative events are software DATA.
+            var sources = fixtureData("source56-imported-v5-attachment.json.gz");
+            var request = new WriterContracts.Request(SavedAttachmentAuthority.KIND, binary(sources.get("details")), List.of());
+            var reduced = SavedContinuityAttachment.reduce(new SavedContinuityAttachment.Input(fixture.state,
+                    request.details(), binary(sources.get("basis")), binary(sources.get("game")),
+                    binary(sources.get("opening")), binary(sources.get("progress"))));
+            var prepared = new WriterContracts.Prepared(predecessor, request, List.of(), List.of(), reduced, "a".repeat(64));
+            var attached = reduced.toJson().put("sequence", Math.addExact(terminalSequence, 1)).put("last_event_identity", request.identity());
+            fixture.state = ContinuityState.fromJson(attached, fixture.owner.machineId());
+            var committed = new WriterContracts.Receipt(WriterContracts.Disposition.COMMITTED, fixture.state, request.identity(), 1, false);
+            var raw = ContinuityActionJournal.receipts(fixture.state, archive);
+            var snapshot = new ActionJournal.Snapshot(fixture.state.sequence(), same.head().digest(), raw,
+                    new ActionJournal.BoundHistoryBasis(ExactRef.fromJson(attached.get(WriterContracts.DRIVER_HISTORY_BASELINE_FIELD))));
+            var game = GameGeneration.fromJson(attached.get("game_binding"));
+            String session = StrictJson.text(attached.get("latest_binding").get("session_id"));
+            var replacement = new SessionIdentity(fixture.owner.machineId(), game, session);
+            assertThrows(IOException.class, () -> ContinuityActionJournal.committedImportedRestoreRetirement(
+                    same, prepared, committed, snapshot, archive, replacement));
+            fixture.committedPreparation = prepared;
+            fixture.committedAttachment = committed;
+            var admitted = ContinuityActionJournal.committedImportedRestoreRetirement(same, prepared, committed, snapshot, archive, replacement).orElseThrow();
+            var resume = admitted.retainedResume(same, snapshot, archive).orElseThrow();
+            assertEquals(55, resume.sequence());
+            assertInstanceOf(ActionState.Unknown.class, resume.state());
+            assertTrue(resume.ack().orElseThrow().nativeOk());
+            assertEquals(raw, ContinuityActionJournal.receipts(fixture.state, archive));
+            assertEquals(predecessor.state().settledDateRaw(), fixture.state.settledDateRaw());
+            assertEquals(predecessor.state().settledCycles(), fixture.state.settledCycles());
+            var foreign = new SessionIdentity(fixture.owner.machineId(), game, "different-software-game-session");
+            assertThrows(ContractViolationException.class, () -> ContinuityActionJournal.committedImportedRestoreRetirement(
+                    same, prepared, committed, snapshot, archive, foreign));
+            return null;
+        });
     }
 
     @Test void theHistoricalReaderRejectsAnotherBasisOrAnUninterruptedBatch() throws IOException {
@@ -215,12 +326,18 @@ final class ImportedSavedInterruptedLifeRecoveryDataTest {
         private boolean held;
         private int driverReads;
         private ContinuityState state;
+        private WriterContracts.Prepared committedPreparation;
+        private WriterContracts.Receipt committedAttachment;
 
         private final Session same = (Session) Proxy.newProxyInstance(getClass().getClassLoader(), new Class<?>[]{Session.class},
                 (proxy, method, args) -> {
                     requireSession((Session) proxy);
                     if (method.getName().equals("head"))
                         return new WriterContracts.Head(state, List.of(), List.of(), List.of(), false);
+                    if (method.getName().equals("requireCommitted")) {
+                        if (args[0] == committedPreparation && args[1] == committedAttachment) return null;
+                        throw new IOException("software fixture has no matching committed attachment");
+                    }
                     throw new AssertionError("test archive prefix cannot perform " + method.getName());
                 });
 
