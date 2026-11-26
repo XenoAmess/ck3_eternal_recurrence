@@ -235,6 +235,21 @@ final class NativeOutcomeArchivePhysicalContractsTest {
             assertEquals(retained, f.store.retainedNativeBytes()); assertEquals(0, f.sequence());
         }
     }
+    @Test void retainedNativePacketLookupUsesItsDigestAndExtent() throws IOException {
+        try (Fixture f = fixture("retained-native-packet")) {
+            byte[] body = ("{\"protocol_version\":1,\"type\":\"state_snapshot\",\"snapshot_id\":\"native:9\","
+                    + "\"revision\":9,\"state\":{}}").getBytes(StandardCharsets.UTF_8);
+            byte[] packet = java.nio.ByteBuffer.allocate(body.length + Integer.BYTES)
+                    .order(java.nio.ByteOrder.LITTLE_ENDIAN).putInt(body.length).put(body).array();
+            ExactRef original = f.raw(packet);
+            var cold = f.cold();
+            assertEquals(original, cold.nativeFrameReference(original.sha256(), original.bytes()));
+            assertArrayEquals(packet, cold.loadNativeFrame(original));
+            assertThrows(RuntimeException.class, () -> cold.nativeFrameReference(original.sha256(), original.bytes() + 1));
+            assertThrows(RuntimeException.class, () -> cold.materialReference(original.sha256(), original.bytes()));
+        }
+    }
+
     @Test void actualArchiveProducerThenClosedWriterFeedsTheSoleReadonlyDataParser() throws IOException {
         ExactRef original; PlanningReadReceipt retained; byte[] ledger; Path snapshot; long files;
         try (Fixture f = fixture("readonly-read")) {

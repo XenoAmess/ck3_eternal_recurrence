@@ -1666,17 +1666,9 @@ public final class DriverBootstrap {
             StrictJson.require(manifestBytes.length==manifestRef.bytes()&&manifestRef.sha256().equals(DriverJson.sha256(manifestBytes)),
                     "retained saved observation manifest bytes/SHA differ");
             var manifestMaterial=org.xar.ck3.control.application.action.RawJson.fullMaterial(manifestBytes);
-            var manifestRow=DriverJson.object(manifestMaterial.bytes(),DriverJson.MAX_NATIVE_BYTES);
-            var packetSha=OpportunityJson.text(manifestRow.get("native_packet_sha256"),"native_packet_sha256");
-            var packetBytes=OpportunityJson.integer(manifestRow.get("native_packet_bytes"),"native_packet_bytes").longValueExact();
-            var nativePin=archive.artifactStore().referenceOf(packetSha,packetBytes,Math.min(DriverJson.MAX_NATIVE_BYTES+4,WriterContracts.MAX_PIN_BYTES));
-            var nativeRef=nativePin.reference();
-            byte[] nativePacket=archive.withSession(same).loadNativeFrame(nativeRef);
-            StrictJson.require(nativePacket.length==packetBytes&&nativeRef.sha256().equals(DriverJson.sha256(nativePacket)),
-                    "retained saved archived native packet bytes/SHA differ");
             StrictJson.require(DriverObservationEvidenceReader.currentDriverReference(manifestRef,manifestMaterial).equals(fullDriverRef),
                     "retained saved observation names another exact canonical Driver reference");
-            var archivedFrame=DriverObservationEvidenceReader.nativeFrame(manifestRef,manifestMaterial,nativePacket);
+            var archivedFrame=DriverObservationEvidenceReader.retainedNativeFrame(manifestRef,manifestMaterial,archive.withSession(same));
             var decodedFacts=DriverObservationEvidenceReader.decode(manifestRef,manifestMaterial,
                     org.xar.ck3.control.application.action.RawJson.fullMaterial(fullBytes),archivedFrame);
             replayedObservation=Optional.of(decodedFacts);

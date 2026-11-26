@@ -17,6 +17,7 @@ import java.util.Set;
 import java.util.Optional;
 import org.xar.ck3.control.contracts.semantic.FlorinPlayerArmies;
 import org.xar.ck3.control.contracts.semantic.FlorinPlayerArmies.ObservationMode;
+import org.xar.ck3.control.application.action.ActionPorts;
 import org.xar.ck3.control.application.action.NativeObservationPort;
 import org.xar.ck3.control.application.action.RawJson;
 import org.xar.ck3.control.application.checkpoint.DriverStateSnapshot;
@@ -333,6 +334,13 @@ public final class DriverObservationEvidenceReader {
     /** Reconstructs the original received frame using exact token byte offsets; lexical numeric tokens are retained. */
     public static NativeObservationPort.ObservedFrame nativeFrame(ExactRef manifestReference,RawJson manifest,byte[] framedNative) {
         return nativeFrame(checkedManifest(manifestReference,manifest),framedNative);
+    }
+    /** Reopens the exact packet named by an archived Driver manifest. */
+    public static NativeObservationPort.ObservedFrame retainedNativeFrame(ExactRef manifestReference,RawJson manifest,
+            ActionPorts.OutcomeArchive archive) {
+        var row=checkedManifest(manifestReference,manifest);
+        var original=archive.nativeFrameReference(string(row,"native_packet_sha256"),longInteger(row,"native_packet_bytes",5));
+        return nativeFrame(row,archive.loadNativeFrame(original));
     }
     /** Optional same-call DATA parse candidate; framing, fresh hash and token checks are unchanged. */
     public static NativeObservationPort.ObservedFrame nativeFrame(ExactRef manifestReference,RawJson manifest,byte[] framedNative,

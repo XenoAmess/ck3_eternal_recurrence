@@ -256,6 +256,10 @@ public final class ActionPorts {
         ExactRef materialReferenceOf(RawJson original);
         ExactRef preserveNativeFrame(NativeObservationPort.ObservedFrame original);
         byte[] loadNativeFrame(ExactRef original);
+        /** Resolves the retained packet named by a Driver manifest. Load it as a snapshot before consuming it. */
+        default ExactRef nativeFrameReference(String sha256,long bytes) {
+            throw new UnsupportedOperationException("retained Native frame lookup is unavailable");
+        }
         /** Exact retained native wire bytes, including HELLO. This is read access, never source or domain qualification.
          * Implementations must bind the actual owning writer Session and enforce original pin, role, identity and byte bounds.
          * Historical adapters without this distinct capability fail explicitly; JSON material decoding is not a substitute.

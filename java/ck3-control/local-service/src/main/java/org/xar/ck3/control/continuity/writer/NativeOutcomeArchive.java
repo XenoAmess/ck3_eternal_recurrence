@@ -2521,6 +2521,10 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
             if (!(NativeWire.decode(bytes) instanceof NativeWire.Snapshot)) throw new IOException("original archived state_snapshot required"); return bytes;
         });
     }
+    @Override public ExactRef nativeFrameReference(String sha256,long bytes) {
+        return unchecked(() -> writing(() -> artifacts.referenceOf(sha256,bytes,
+                Math.min(DriverJson.MAX_NATIVE_BYTES+4,WriterContracts.MAX_PIN_BYTES)).reference()));
+    }
     /** Original HELLO/Snapshot/HEARTBEAT packet custody only; no source, runtime or observer qualification. */
     @Override public byte[] readOriginalPacket(ExactRef original) {
         return unchecked(() -> writing(() -> {
