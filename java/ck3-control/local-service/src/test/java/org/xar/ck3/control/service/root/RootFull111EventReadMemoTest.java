@@ -22,6 +22,7 @@ import org.xar.ck3.control.contracts.semantic.NativeFull111OrdinaryEvent;
 import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector;
 import org.xar.ck3.control.g2.common.G2Source;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
+import org.xar.ck3.control.nativebridge.CurrentFull111EventRenderer;
 import org.xar.ck3.control.nativebridge.NativeGameTransport;
 import org.xar.ck3.control.nativebridge.NativeGoalObservationFixture;
 import org.xar.ck3.control.nativebridge.NativePacketPort;
@@ -97,6 +98,17 @@ final class RootFull111EventReadMemoTest {
             assertEquals(Optional.of(replacement), memo.observe(subject, now,
                     () -> Optional.of(new RootFull111EventRead.VerifiedRead(now.plusSeconds(5), replacement))));
         }
+    }
+
+    @Test void exactVisibleRendererLabelSurvivesWithoutUsingItsDisabledReason() {
+        String label = "愿守旧约";
+        var visible = new CurrentFull111EventRenderer.Option(4, true, true, true, label, "separate tooltip text");
+        var hidden = new CurrentFull111EventRenderer.Option(4, true, false, true, label, "");
+        var oversized = new CurrentFull111EventRenderer.Option(4, true, true, true, "界".repeat(171), "");
+        var empty = new CurrentFull111EventRenderer.Option(4, true, true, true, "", "separate tooltip text");
+        assertEquals(Optional.of(label), RootFull111EventRead.displayedOption(visible).displayLabel());
+        for (var unavailable : List.of(hidden, oversized, empty))
+            assertTrue(RootFull111EventRead.displayedOption(unavailable).displayLabel().isEmpty());
     }
 
     private static RootFull111EventRead.ReadSubject subject(NativeGameTransport.AcceptedSnapshotRevision original) {

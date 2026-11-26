@@ -345,9 +345,9 @@ final class RegisteredEventCoreIntegrationTest {
             var captured = new ArrayList<OpportunityJson.Obj>();
             var policies = registryEventPolicies((actual, plan) -> captured.add(plan));
             var renderer = new RegisteredEventCore.Full111RendererObservation(SOURCE, List.of(
-                    new RegisteredEventCore.Full111RenderedOption(2, true, false, true),
-                    new RegisteredEventCore.Full111RenderedOption(1, true, true, firstEnabled),
-                    new RegisteredEventCore.Full111RenderedOption(0, true, true, true)));
+                    new RegisteredEventCore.Full111RenderedOption(2, true, false, true, Optional.of("Hidden option")),
+                    new RegisteredEventCore.Full111RenderedOption(1, true, true, firstEnabled, Optional.of("Keep the agreement")),
+                    new RegisteredEventCore.Full111RenderedOption(0, true, true, true, Optional.of("Later choice"))));
             var observation = new RegisteredEventCore.Full111EventObservation(17, "bookmark.1070",
                     SOURCE, SOURCE, SOURCE, Optional.empty(), Optional.of(renderer));
             var proposed = new ArrayList<ActionCommand>();
@@ -370,11 +370,14 @@ final class RegisteredEventCoreIntegrationTest {
                 assertEquals(1, proposed.size());
                 assertEquals(proposed.getFirst(), result.trace().finalPlan().orElseThrow().command().orElseThrow());
                 assertEquals(OrdinaryPolicy.Purpose.WORLD_ACTION, result.trace().finalPlan().orElseThrow().purpose());
+                assertEquals(new OpportunityJson.Text("Keep the agreement"),
+                        result.trace().finalPlan().orElseThrow().detail().get("selected_option_label"));
                 assertTrue(captured.isEmpty());
             } else {
                 assertInstanceOf(PlanningResult.ReadOnlyWait.class, result);
                 assertTrue(proposed.isEmpty());
                 assertFalse(captured.isEmpty());
+                assertNull(result.trace().finalPlan().orElseThrow().detail().get("selected_option_label"));
             }
         }
     }

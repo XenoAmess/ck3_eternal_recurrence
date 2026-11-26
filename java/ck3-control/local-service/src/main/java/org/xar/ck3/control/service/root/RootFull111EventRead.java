@@ -160,13 +160,17 @@ final class RootFull111EventRead implements Full111EventRead {
             var expected = ((CoreFrame.Partial) core.frame()).prefix();
             var observed = foregroundRenderer(previous, expected, ack, subject.foreground(), definitionKey);
             if (observed.isEmpty()) return Optional.empty();
-            var flags = observed.orElseThrow().options().stream().map(option -> new Full111RenderedOption(
-                    option.authoredOptionIndex(), option.nativeCanSelect(), option.widgetVisible(), option.widgetEnabled())).toList();
+            var options = observed.orElseThrow().options().stream().map(RootFull111EventRead::displayedOption).toList();
             var original = context.archive().withSession(same).preserve(ack);
-            return Optional.of(new RenderedEvent(observed.orElseThrow().definitionKey(), new Full111RendererObservation(original, flags)));
+            return Optional.of(new RenderedEvent(observed.orElseThrow().definitionKey(), new Full111RendererObservation(original, options)));
         } catch (IOException | UncheckedIOException | ContractViolationException unavailable) {
             return Optional.empty();
         }
+    }
+
+    static Full111RenderedOption displayedOption(CurrentFull111EventRenderer.Option option) {
+        return new Full111RenderedOption(option.authoredOptionIndex(), option.nativeCanSelect(), option.widgetVisible(),
+                option.widgetEnabled(), Optional.of(option.text()));
     }
 
     static Optional<CurrentFull111EventRenderer.Source> foregroundRenderer(AckReceived previous, CoreFrame.Prefix expected,

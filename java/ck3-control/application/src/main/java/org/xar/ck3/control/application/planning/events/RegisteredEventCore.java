@@ -1,6 +1,7 @@
 package org.xar.ck3.control.application.planning.events;
 
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -75,9 +76,22 @@ public final class RegisteredEventCore implements OrdinaryCorePolicy.CoreProduce
 
     /** A stock widget observation preserves each flag independently and carries no selection role. */
     public record Full111RenderedOption(int authoredOptionIndex, boolean nativeCanSelect, boolean widgetVisible,
-            boolean widgetEnabled) {
+            boolean widgetEnabled, Optional<String> displayLabel) {
+        public static final String SELECTED_LABEL_FIELD = "selected_option_label";
+        private static final int MAX_DISPLAY_LABEL_BYTES = 512;
+
+        public Full111RenderedOption(int authoredOptionIndex, boolean nativeCanSelect, boolean widgetVisible, boolean widgetEnabled) {
+            this(authoredOptionIndex, nativeCanSelect, widgetVisible, widgetEnabled, Optional.empty());
+        }
+
         public Full111RenderedOption {
             StrictJson.require(authoredOptionIndex >= 0 && authoredOptionIndex < 64, "Actual authored option index required");
+            displayLabel = Objects.requireNonNull(displayLabel).filter(label -> widgetVisible && boundedDisplayLabel(label));
+        }
+
+        public static boolean boundedDisplayLabel(String label) {
+            return label.length() <= MAX_DISPLAY_LABEL_BYTES && !label.isBlank()
+                    && label.getBytes(StandardCharsets.UTF_8).length <= MAX_DISPLAY_LABEL_BYTES;
         }
         OpportunityJson.Obj diagnostic() {
             return new OpportunityJson.Obj(Map.of(
@@ -252,6 +266,8 @@ public final class RegisteredEventCore implements OrdinaryCorePolicy.CoreProduce
                             .with("selected_step", new OpportunityJson.Text(command.operation().value()))
                             .with("selected_authored_option_index",
                                     new OpportunityJson.IntegerValue(BigInteger.valueOf(firstVisible.orElseThrow().authoredOptionIndex())));
+                    var label = firstVisible.orElseThrow().displayLabel();
+                    if (label.isPresent()) detail = detail.with(Full111RenderedOption.SELECTED_LABEL_FIELD, new OpportunityJson.Text(label.orElseThrow()));
                     return new OrdinaryPolicy.Replace(new OrdinaryPolicy.Draft("one-life-turn-v1", phase,
                             reason, OrdinaryPolicy.Kind.FOREGROUND, selection, OrdinaryPolicy.Purpose.WORLD_ACTION,
                             Optional.of(Domain.diplomacy), detail), reason);

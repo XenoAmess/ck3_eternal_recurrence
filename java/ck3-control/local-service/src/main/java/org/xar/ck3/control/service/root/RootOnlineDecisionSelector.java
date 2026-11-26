@@ -32,6 +32,7 @@ import org.xar.ck3.control.application.action.RawJson;
 import org.xar.ck3.control.application.capabilities.NativeActionSteps;
 import org.xar.ck3.control.application.planning.OrdinaryDecisionSelector;
 import org.xar.ck3.control.application.planning.PlanningRequest;
+import org.xar.ck3.control.application.planning.events.RegisteredEventCore.Full111RenderedOption;
 import org.xar.ck3.control.application.planning.PlanningResult;
 import org.xar.ck3.control.contracts.ExactCk3Build;
 import org.xar.ck3.control.contracts.ExactRef;
@@ -763,6 +764,10 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
         var rendered=data.putObject("rendered_event").put("instance_id",instance).put("definition_key",StrictJson.text(args.get("definition_key")));
         rendered.set("original_renderer",rendererRef.toJson());
         rendered.set("options",projectedOptions);
+        if (chosen.detail().get(Full111RenderedOption.SELECTED_LABEL_FIELD) instanceof OpportunityJson.Text label
+                && Full111RenderedOption.boundedDisplayLabel(label.value()))
+            rendered.put(Full111RenderedOption.SELECTED_LABEL_FIELD,label.value());
+        else rendered.putNull(Full111RenderedOption.SELECTED_LABEL_FIELD);
         for(String field:List.of("original_full","original_semantic","original_core_read"))
             rendered.set(field,exactEventOriginal(OpportunityJson.toNode(evidence.get(field))).toJson());
         return encodeModelInput(data,FULL111_EVENT_ADMISSION_POLICY);

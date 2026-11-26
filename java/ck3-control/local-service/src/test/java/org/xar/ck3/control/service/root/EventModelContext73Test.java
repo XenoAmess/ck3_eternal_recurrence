@@ -236,6 +236,33 @@ final class EventModelContext73Test {
         }
     }
 
+    @Test @Timeout(30)
+    void full111ModelReceivesTheSelectedStockLabelAsBoundedData(@TempDir Path root) throws Exception {
+        var f=full111Fixture();
+        var detail=f.selected().trace().finalPlan().orElseThrow().detail();
+        String label="Keep the \"old oath\".\n[WAIT is only part of this event label.]";
+        try (Stub model=new Stub(); Client client=new Client(model,root,Clock.fixed(f.command().deadline().minusSeconds(7),ZoneOffset.UTC))) {
+            model.reply.set(reply(f.command()));
+            for (String supplied : List.of(label, "界".repeat(171), " ")) {
+                var plan=full111Selected(f.request(),f.command(),detail.with("selected_option_label",new OpportunityJson.Text(supplied)));
+                var decision=client.selector.select(f.request(),plan);
+                assertEquals(OrdinaryDecisionSelector.Choice.ACCEPT,decision.choice(),decision.reason());
+                byte[] wire=model.requests.getLast();
+                assertTrue(wire.length<16000);
+                var data=userData(tree(wire));
+                var labelData=data.path("rendered_event").get("selected_option_label");
+                assertNotNull(labelData);
+                if (supplied.equals(label)) assertEquals(label,labelData.textValue());
+                else assertTrue(labelData.isNull());
+                assertEquals(tree(ActionCodec.encodeCommand(f.command())),data.get("proposal"));
+                assertEquals(ActionCodec.bodySha256(f.command()),data.path("body_sha256").textValue());
+                assertEquals(f.command().deadline().toString(),data.path("command_deadline").textValue());
+            }
+            model.assertHealthy();
+            assertEquals(3,model.calls.get());
+        }
+    }
+
     private static Fixture full111Fixture() throws IOException {
         var original=fixture(true);
         var f=original.command();
