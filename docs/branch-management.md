@@ -274,3 +274,5 @@ ref as part of delivery rather than as a later cleanup project.
 两条 DES 分支的可用原件及离线工具已陆续进入主线。两阶段罪行 fixture 在 `c0a2c51fd3` 通过 13 项 Save Core、22 项 DES 和 Quarkus 打包。仍在分支内的公开帝国恢复接线需要真实原版 UI S1 与持有者快照，旧编排工具依赖冻结场次和仓库外类。现行 v4 和金融存档的重复检查维持原合同。对应分支继续保存，完整官方主线检查仍在运行。
 
 10:37 UTC，`work/dynastic-product-reactor-20261030` 已退役。它与继承人分支自 `4680f73aea` 分叉后仅有两个独有提交。其类型检查环境已由主线的完整 DES CI 步骤覆盖，别名回归由 `b0a5305979` 和 `399c31ec15` 覆盖。共享历史仍由 `work/dynastic-heir-stock-input-20261025` 保留，退役前两条完整引用仍在 bundle。远端现为 `master` 与这一条待验分支，本地为 66 条。[DES CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/45801837726) [线性历史](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/45801837661)
+
+11:06 UTC，剩余继承人分支的补丁清单已逐项与主线对照。`a2a423d6ba` 补齐已移植的 Root 协作停止测试的严格类型覆盖，55 项回归通过。`192a4a9446` 接通 DES 验收实际需要的 campaign-root 能力，修复其离线测试的子进程输出等待，3 项产品验收测试及 Quarkus 构建通过。`2bc37bc628` 把当前 HELLO 的攻城能力值传到 Python 兼容入口，常规和优化模式各 8 项通过，相邻 18 项通过。旧场次专属 Java 执行工具依赖未入库的类型，孤立编译可复现失败。公开帝国恢复仍缺真实 S1 及有效原生 Title 证据，Decisions 同帧兼容代码继续核对。远端仍为两条引用，开放 PR 为 0。
