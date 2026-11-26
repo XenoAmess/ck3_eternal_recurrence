@@ -1,14 +1,20 @@
 package org.xar.ck3.control.service.root;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import org.xar.ck3.control.application.action.ActionReceipt;
 import org.xar.ck3.control.application.action.ActionPorts;
+import org.xar.ck3.control.application.driver.DriverObservationAssembler.Complete;
+import org.xar.ck3.control.application.session.OrdinaryCycleTransitions.ImportedOpeningAdvance;
+import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
 import org.xar.ck3.control.application.planning.governance.GovernanceObservationSupplier.OpeningStage;
 import org.xar.ck3.control.continuity.ContinuityState;
+import org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session;
+import org.xar.ck3.control.planning.opportunity.OpportunityJson.Bool;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
 import org.xar.ck3.control.application.planning.governance.GovernanceOpeningDocument;
 import org.xar.ck3.control.application.planning.governance.GovernanceObservationSupplier.OpeningGate;
@@ -38,7 +44,14 @@ public final class RootGovernanceOpeningInputs implements RootPlanningInputsFact
                 Optional<ActionReceipt> action=actualAction(context,borrowed,document);
                 action.ifPresent(receipt->StrictJson.require(receipt.command().before().equals(document.observed())
                         && receipt.command().source().equals(document.source()),"opening ordinary consumer changed its original command"));
-                return openingGate(document,document.observed(),action);
+                if (!canProjectOpeningDate(document, request.before(), action)) return openingGate(document, request.before(), action);
+                return context.collector().borrowCurrent(borrowed, request.before(), request.deadline(), lease -> {
+                    var current = lease.frame();
+                    StrictJson.require(current.identity().equals(request.before()) && current.source().equals(request.source())
+                            && current.sessionId().equals(request.sessionId()), "opening projection crossed its actual current planning request");
+                    return openingGate(document, current.identity(), action,
+                            importedOpeningAdvance(context, borrowed, document, current, request.deadline()));
+                });
             } catch(InterruptedException interrupted) {
                 Thread.currentThread().interrupt();throw new IllegalStateException("actual opening restoration check interrupted",interrupted);
             } catch(IOException unavailable) {throw new IllegalStateException("actual opening body unavailable",unavailable);}
@@ -63,7 +76,13 @@ public final class RootGovernanceOpeningInputs implements RootPlanningInputsFact
                     && receipt.command().source().equals(document.source()),"opening pending receipt is not its exact original action/source");
             document.checkpoint().ifPresent(checkpoint->StrictJson.require(checkpoint.actionId().equals(receipt.command().actionId()),"opening checkpoint/action differs"));
         });
-        OpeningGate gate=openingGate(document,actual,action);
+        Optional<ImportedOpeningAdvance> advance = Optional.empty();
+        if (canProjectOpeningDate(document, actual, action)) {
+            context.collector().requireHeldFrame(capture.session(), capture.frame());
+            advance = importedOpeningAdvance(context, capture.session(), document, capture.frame(), capture.deadline());
+            advance.ifPresent(value -> originals.addAll(value.evidence()));
+        }
+        OpeningGate gate=openingGate(document,actual,action,advance);
         StrictJson.require(head.equals(capture.session().persistedHead()),"opening input reads changed the writer head");
         return new RootPlanningInputsFactory.OpeningObservation(new RootPlanningInputsFactory.FieldSource(actual,capture.frame().source(),
                 capture.frame().sessionId(),originals.stream().distinct().toList()),gate);
@@ -113,10 +132,49 @@ public final class RootGovernanceOpeningInputs implements RootPlanningInputsFact
                 org.xar.ck3.control.application.action.ActionCodec.encodeCommand(canonical.orElseThrow().command())),"opening pending command crossed its canonical receipt");
         return canonical;
     }
+    private static Optional<ImportedOpeningAdvance> importedOpeningAdvance(RootRuntimeContext context, Session same,
+            GovernanceOpeningDocument.Document document, Complete current, Instant deadline) throws IOException {
+        context.requireCurrent(deadline);
+        if (!new Bool(true).equals(current.semantic().get("paused"))
+                || !new Bool(true).equals(current.semantic().get("map_ready"))) return Optional.empty();
+        StrictJson.require(context.actions() instanceof RootApplicationSession,
+                "opening date projection requires the actual Root cycle owner");
+        var session = (RootApplicationSession) context.actions();
+        var owner = new SessionIdentity(current.identity().machineId(), current.identity().game(), current.sessionId());
+        var advance = session.cycles().importedOpeningAdvance(same, owner, document.observed(), current.source(), current.identity());
+        context.requireCurrent(deadline);
+        return advance;
+    }
+
+    static boolean canProjectOpeningDate(GovernanceOpeningDocument.Document document, ObservationIdentity current,
+            Optional<ActionReceipt> action) {
+        var anchor = document.observed();
+        return document.stage() == OpeningStage.AWAIT_SUBMIT && document.preparedCommand().isEmpty()
+                && document.actionReceipt().isEmpty() && document.checkpoint().isEmpty() && action.isEmpty()
+                && anchor.game().equals(current.game())
+                && anchor.frame().identity().dateRaw().compareTo(current.frame().identity().dateRaw()) < 0
+                && document.existingObserved().map(existing ->
+                        existing.game().equals(current.game())
+                        && existing.frame().identity().dateRaw().equals(current.frame().identity().dateRaw())
+                        && existing.frame().identity().nativeRevision().compareTo(current.frame().identity().nativeRevision()) <= 0)
+                    .orElse(true);
+    }
+
     static OpeningGate openingGate(GovernanceOpeningDocument.Document document,ObservationIdentity current,Optional<ActionReceipt> action) {
+        return openingGate(document, current, action, Optional.empty());
+    }
+
+    static OpeningGate openingGate(GovernanceOpeningDocument.Document document, ObservationIdentity current,
+            Optional<ActionReceipt> action, Optional<ImportedOpeningAdvance> advance) {
         boolean preparedOnly=document.stage()==OpeningStage.AWAIT_RECEIPT&&document.preparedCommand().isPresent()
                 &&document.actionReceipt().isEmpty()&&document.checkpoint().isEmpty()&&action.isEmpty();
-        return new OpeningGate(current.frame().episodeRunId(),document.observed().frame().identity().dateRaw(),
+        var date = document.observed().frame().identity().dateRaw();
+        if (advance.isPresent()) {
+            StrictJson.require(canProjectOpeningDate(document, current, action),
+                    "only an unissued imported opening can use its actual settled Life date");
+            date = advance.orElseThrow().semantic().frame().frame().identity().dateRaw();
+        }
+        return new OpeningGate(current.frame().episodeRunId(),date,
                 preparedOnly?OpeningStage.AWAIT_SUBMIT:document.stage(),action,document.checkpoint());
     }
 

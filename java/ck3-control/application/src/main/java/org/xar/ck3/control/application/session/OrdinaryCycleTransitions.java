@@ -34,12 +34,14 @@ import org.xar.ck3.control.application.lifecycle.LifecycleProofMaterialJson;
 import org.xar.ck3.control.continuity.ContinuityJson;
 import org.xar.ck3.control.continuity.ContinuityState;
 import org.xar.ck3.control.continuity.OriginalWindowReducer;
+import org.xar.ck3.control.continuity.SavedContinuityBootstrap;
 import org.xar.ck3.control.continuity.EpisodeWindow;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 import org.xar.ck3.control.continuity.writer.WriterContracts;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.GameGeneration;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.g2.common.G2Source;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
 import org.xar.ck3.control.g2.planning.ProposalLifecycleCodec;
 import static org.xar.ck3.control.application.session.SessionPorts.*;
@@ -1086,6 +1088,75 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         requireProofFrame(head.state(), state, checked);
         return Optional.of(new CompletedCycleProof(state.completedCycles(), semantic, ContinuityJson.digest(state.toJson())));
     }
+    /** Read-only DATA for the original imported opening. This is not a SAVE or dispatch proof. */
+    public record ImportedOpeningAdvance(ExactRef cycleRecord, ExactRef lifeReceipt, SemanticEvidence semantic) {
+        public ImportedOpeningAdvance {
+            Objects.requireNonNull(cycleRecord); Objects.requireNonNull(lifeReceipt); Objects.requireNonNull(semantic);
+        }
+        public List<ExactRef> evidence() {
+            var refs = new ArrayList<>(List.of(cycleRecord, lifeReceipt));
+            refs.addAll(semantic.references());
+            return List.copyOf(refs);
+        }
+    }
+
+    /** The first eligible Life SETTLE in the imported branch can explain one changed opening date. */
+    public Optional<ImportedOpeningAdvance> importedOpeningAdvance(ContinuityStorePort.Session same, SessionIdentity owner,
+            ObservationIdentity originalOpening, G2Source source, ObservationIdentity current) throws IOException {
+        Objects.requireNonNull(originalOpening); Objects.requireNonNull(source); Objects.requireNonNull(current);
+        if (active.get() == null)
+            return withLocked(same, () -> importedOpeningAdvance(same, owner, originalOpening, source, current));
+        StrictJson.require(active.get() == same, "opening date projection requires its original writer Session");
+        sessionAuthority.require(same);
+        var head = same.head();
+        var retained = head.state();
+        var whole = retained.toJson();
+        if (retained.status() != ContinuityState.Status.RUNNING || !whole.hasNonNull(SavedContinuityBootstrap.FIELD)
+                || !whole.hasNonNull(STATE_FIELD) || whole.hasNonNull(WriterContracts.GAMEPLAY_ENTRY_FIELD)
+                || whole.hasNonNull(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD)) return Optional.empty();
+
+        var imported = SavedContinuityBootstrap.request(ContinuityJson.object(whole.get(SavedContinuityBootstrap.FIELD))).detailsObject();
+        if (!owner.equals(sessionFromJson(imported.get("session")))
+                || !originalOpening.equals(ProposalLifecycleCodec.decodeObservation(imported.get("opening")))
+                || !ContinuityJson.same(imported.get("source"), ProposalLifecycleCodec.source(source))
+                || !ContinuityJson.same(whole.get("game_binding"), owner.game().toJson())
+                || !ContinuityJson.same(whole.get(WriterContracts.DRIVER_HISTORY_BASELINE_FIELD), imported.get("full_driver"))
+                || retained.settledDateRaw() != number(imported, "saved_date_raw")
+                || retained.settledCycles() != number(imported, "saved_completed_cycles")) return Optional.empty();
+        requireOwner(retained, owner);
+        requireSameOwner(originalOpening, current);
+        CycleState cycle = state(retained, owner);
+        if (cycle.pending().isPresent() || cycle.head().isEmpty() || cycle.originFrame().isPresent()
+                || cycle.episodeOrigin().isPresent() || cycle.basisCycles() != retained.settledCycles()
+                || cycle.completedCycles() != Math.addExact(cycle.basisCycles(), 1)) return Optional.empty();
+        requireLegacyPendingClear(retained, cycle);
+        ExactRef recordRef = cycle.head().orElseThrow();
+        CycleRecord record = load(recordRef);
+        if (!record.session().equals(owner) || record.previous().isPresent() || record.completedCycles() != cycle.completedCycles()
+                || record.classification() != Classification.ELIGIBLE_ADVANCE) return Optional.empty();
+        // While the opening is still unissued, its completed Life is the latest canonical action.
+        var actionHead = ContinuityActionJournal.recordHead(retained);
+        if (actionHead.isEmpty()) return Optional.empty();
+        ActionReceipt life = archive.loadRecord(actionHead.orElseThrow()).receipt();
+        if (!archive.receiptReferenceOf(life).equals(record.receipt())
+                || life.sequence() > retained.sequence()
+                || !(life.command().origin() instanceof CommandOrigin.Gameplay)
+                || !life.command().sessionId().equals(owner.sessionId())
+                || life.outcome() != ActionReceipt.Outcome.APPLIED_CONFIRMED) return Optional.empty();
+        ObservationIdentity before = life.command().before();
+        if (!life.command().operation().value().equals("life-advance") || !life.command().source().equals(source)
+                || !life.eligibleAdvance() || !before.frame().identity().dateRaw().equals(originalOpening.frame().identity().dateRaw()))
+            return Optional.empty();
+        var after = life.applied().orElseThrow().observation().after();
+        if (!after.frame().identity().dateRaw().equals(current.frame().identity().dateRaw())) return Optional.empty();
+        requireSavedContinuation(originalOpening, before);
+        requireSavedContinuation(after, record.semantic().frame());
+        requireSavedContinuation(record.semantic().frame(), current);
+        freshAfter(life, record.semantic().frame(), record.semantic().observedAt());
+        StrictJson.require(head.digest().equals(same.head().digest()), "opening date evidence changed the actual writer head");
+        return Optional.of(new ImportedOpeningAdvance(recordRef, record.receipt(), record.semantic()));
+    }
+
     /** Qualify only current ordinary submission; this value cannot serve as a SAVE/cycle proof. */
     public void validateOrdinarySubmission(ContinuityStorePort.Session session, SessionIdentity owner, SemanticEvidence semantic) throws IOException {
         Objects.requireNonNull(session); Objects.requireNonNull(owner); Objects.requireNonNull(semantic);
