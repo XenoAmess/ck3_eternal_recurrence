@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.ByteBuffer;
 import org.xar.ck3.control.contracts.NativeCharacterId;
 import java.util.ArrayList;
 import java.util.List;
@@ -116,29 +117,35 @@ public sealed interface DriverStateSnapshot permits DriverStateSnapshot.Complete
                 size = Math.addExact(size, ownedSlotBytes("rollback_war_failures", rollbackWarFailures));
             } catch (ArithmeticException unprovenLength) { return legacyEncode(); }
             if (size > DriverCheckpointStore.MAX_DRIVER_BYTES) return legacyEncode();
-            var output = new java.io.ByteArrayOutputStream((int) size);
-            output.write(header, 0, header.length - 1); ownedField(output, "command_history"); output.write(0x5b);
+            // The measured length is exact, so this new output array needs no final copy.
+            ByteBuffer output = ByteBuffer.allocate((int) size);
+            output.put(header, 0, header.length - 1);
+            ownedField(output, "command_history");
+            output.put((byte) '[');
             for (int index = 0; index < commandHistory.size(); index++) {
-                if (index != 0) output.write(0x2c);
-                output.writeBytes(commandHistory.get(index).originalRow().json);
+                if (index != 0) output.put((byte) ',');
+                output.put(commandHistory.get(index).originalRow().json);
             }
-            output.write(0x5d);
+            output.put((byte) ']');
             putOwned(output,"last_checkpoint",lastCheckpoint); putOwned(output,"rollback_war_failure",rollbackWarFailure); putOwned(output,"managed_restore_transaction",managedRestoreTransaction);
             putOwned(output,"succession_expectation",successionExpectation); putOwned(output,"succession_lifecycle",successionLifecycle); putOwned(output,"campaign_goal",campaignGoal); putOwned(output,"rollback_war_failures",rollbackWarFailures);
-            output.write(0x7d);
-            return output.toByteArray();
+            output.put((byte) '}');
+            StrictJson.require(!output.hasRemaining(), "exact owned Driver output length required");
+            return output.array();
         }
         private static long ownedSlotBytes(String name, Slot slot) {
             return slot instanceof Missing ? 0L : name.length() + 4L + (slot instanceof Value value ? value.json.length : 4L);
         }
-        private static void ownedField(java.io.ByteArrayOutputStream output, String name) {
-            output.write(0x2c); output.write(0x22); output.writeBytes(name.getBytes(java.nio.charset.StandardCharsets.US_ASCII)); output.write(0x22); output.write(0x3a);
+        private static void ownedField(ByteBuffer output, String name) {
+            output.put((byte) ',').put((byte) '"');
+            output.put(name.getBytes(java.nio.charset.StandardCharsets.US_ASCII));
+            output.put((byte) '"').put((byte) ':');
         }
-        private static void putOwned(java.io.ByteArrayOutputStream output, String name, Slot slot) {
+        private static void putOwned(ByteBuffer output, String name, Slot slot) {
             if (slot instanceof Missing) return;
             ownedField(output, name);
-            if (slot instanceof Value value) output.writeBytes(value.json);
-            else { output.write(0x6e); output.write(0x75); output.write(0x6c); output.write(0x6c); }
+            if (slot instanceof Value value) output.put(value.json);
+            else output.put((byte) 'n').put((byte) 'u').put((byte) 'l').put((byte) 'l');
         }
         private byte[] legacyEncode() {
             ObjectNode row = com.fasterxml.jackson.databind.node.JsonNodeFactory.instance.objectNode(); row.put("format_version", 2); row.put("pipe_name", session.pipeName()); row.put("bridge_pid", session.bridgePid());
