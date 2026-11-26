@@ -182,8 +182,12 @@ final class OwnedHistoryProjection62Test {
         f.writer.locked(session->f.archive.inSession(session,bound->{
             var first=f.loader.loadFull(original.basis(),bound);var firstRows=f.loader.projectOwnedHistoryRows(first.facts().driver());
             var other=f.loader.decodeCompleteDriverBytes(driver(1));var otherRows=f.loader.projectOwnedHistoryRows(other);
-            assertEquals(firstRows,otherRows);assertNotSame(firstRows.getFirst(),otherRows.getFirst());
-            var returned=f.loader.projectOwnedHistoryRows(first.facts().driver());assertEquals(firstRows,returned);assertNotSame(firstRows.getFirst(),returned.getFirst());
+            assertNotSame(first.facts().driver(), other);
+            assertEquals(firstRows, otherRows);
+            assertSame(firstRows.getFirst(), otherRows.getFirst(), "exact immutable rows can be shared within this writer scope");
+            var returned = f.loader.projectOwnedHistoryRows(first.facts().driver());
+            assertEquals(firstRows, returned);
+            assertSame(firstRows.getFirst(), returned.getFirst());
             f.loader.discardHistoryProjection();var discarded=f.loader.projectOwnedHistoryRows(first.facts().driver());
             assertEquals(firstRows,discarded);assertNotSame(returned.getFirst(),discarded.getFirst());
             for(int i=2;i<=5;i++)f.loader.decodeCompleteDriverBytes(driver(i));
