@@ -148,6 +148,13 @@ public final class ActionPorts {
         T read(OutcomeArchive archive) throws java.io.IOException;
     }
 
+    /** Original locators returned together for a single action record publication. */
+    public record PreservedActionRecord(ExactRef receiptReference, ExactRef recordReference) {
+        public PreservedActionRecord {
+            Objects.requireNonNull(receiptReference);
+            Objects.requireNonNull(recordReference);
+        }
+    }
     /** Keeps full native packets outside bounded canonical ledger metadata, with original evidence and byte integrity. */
     public interface OutcomeArchive extends org.xar.ck3.control.contracts.presentation.PresentationOriginals {
         /** Pure DATA decoding only; no original-byte, receipt or writer authority is inferred.
@@ -271,6 +278,10 @@ public final class ActionPorts {
         default byte[] readOriginalPacket(ExactRef original) {
             throw new IllegalStateException("exact retained native packet reading is unavailable");
         }
+    }
+    /** Archive support for publishing the receipt and its linked record together under the same writer. */
+    public interface ActionRecordPublicationArchive extends OutcomeArchive {
+        PreservedActionRecord preserveRecordWithReceipt(ActionRecord original);
     }
     /** Decode and bind retained original evidence using the fixed domain registry; constructors do not grant writer qualification. */
     @FunctionalInterface public interface RecordedEvidenceVerifier { void verify(org.xar.ck3.control.continuity.writer.WriterContracts.Head actualLockedHead, ActionReceipt proposed); }

@@ -14,6 +14,7 @@ import java.nio.file.StandardOpenOption;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -57,7 +58,9 @@ final class NativeOutcomeArchiveClosureTest {
         final ImmutableArtifactStore store;
         final ContinuityWriter writer;
         final NativeOutcomeArchive archive;
-        Fixture(Path root, boolean reopen) throws IOException {
+        final List<Request> validatedActions = new ArrayList<>();
+        Fixture(Path root, boolean reopen) throws IOException { this(root, reopen, false); }
+        Fixture(Path root, boolean reopen, boolean actionEvents) throws IOException {
             this.root = root;
             if (!reopen) {
                 Files.createDirectory(root); byte[] initial = ContinuityJson.canonical(state());
@@ -74,11 +77,28 @@ final class NativeOutcomeArchiveClosureTest {
             storageScopes.add(storage);
             store = new ImmutableArtifactStore(new ImmutableArtifactStore.Config(root.resolve("artifacts"), layout.lock(), 8 * 1024 * 1024), storage);
             assertSame(storage, store.storageGuard());
+            var actions = new AtomicReference<ActionContinuityAuthority>();
+            Clock clock = Clock.fixed(NOW, ZoneOffset.UTC);
             writer = new ContinuityWriter(layout, List.of(source), new TransitionAuthority() {
                 @Override public String revalidate(ContinuityState before, Request request) { return ContinuityJson.digest(request.detailsObject()); }
-                @Override public ContinuityState reduce(ContinuityState before, Request request) { throw new IllegalStateException("archive fixture must not commit"); }
-            }, Clock.fixed(NOW, ZoneOffset.UTC), new ContinuityWriter.Extensions(List.of(), Optional.of(store), Optional.empty()), storage);
+                @Override public String revalidate(Head before, Request request) {
+                    if (!actionEvents) return revalidate(before.state(), request);
+                    String proof = actions.get().revalidate(before, request);
+                    validatedActions.add(request);
+                    return proof;
+                }
+                @Override public ContinuityState reduce(ContinuityState before, Request request) {
+                    if (!actionEvents) throw new IllegalStateException("archive fixture must not commit");
+                    return actions.get().reduce(before, request);
+                }
+            }, clock, new ContinuityWriter.Extensions(List.of(), Optional.of(store), Optional.empty()), storage);
             archive = new NativeOutcomeArchive(store, writer);
+            if (actionEvents) {
+                actions.set(new ActionContinuityAuthority("fixture-authority", archive,
+                        (head, command) -> { throw new AssertionError("archive fixture does not submit to Native"); },
+                        (head, receipt) -> assertTrue(receipt.state() instanceof ActionState.IntentDurable
+                                || receipt.state() instanceof ActionState.Submitting), clock));
+            }
         }
         G2Source source() { return new G2Source(MACHINE, NOW.toString(), "1.20.0.4", source); }
         ExactRef packet(byte[] bytes) throws IOException {
@@ -123,6 +143,74 @@ final class NativeOutcomeArchiveClosureTest {
         var attempt = new ActionState.Attempt("never-replay", NOW, guard, new NativeRequest("pause-map", "timeline-control", raw("{}")));
         return new ActionReceipt(1, 1, command, ActionCodec.bodySha256(command),
                 new ActionState.Unknown(Optional.of(attempt), Optional.empty(), "unknown must remain unresolved", List.of()));
+    }
+
+    @Test void appendRetainsExactV1RecordAndAllEventPinsAndRejectsForeignGuard() throws IOException {
+        Fixture f = new Fixture(temp.resolve("writer-append"), false, true);
+        ActionCommand command = command(f);
+        String digest = ActionCodec.bodySha256(command);
+        GuardEvidence original = f.guard(command.operation());
+        var journal = new ContinuityActionJournal(f.writer, f.archive);
+        journal.locked(locked -> locked.append(command, digest, new ActionState.IntentDurable()));
+        var before = f.writer.locked(ContinuityStorePort.Session::head);
+        ExactRef previous = ContinuityActionJournal.recordHead(before.state()).orElseThrow();
+        var prepared = new NativeRequest("pause-map", "timeline-control", raw("{}"));
+        var wrongGuard = new GuardEvidence(original.origin(), original.source(), original.sessionId(), original.connectionGeneration(),
+                original.operation(), original.nativeEvidence(), original.capabilityEvidence(), original.authorityId(), original.observedAt(),
+                original.validUntil(), List.of(f.source));
+        var invalid = new ActionState.Submitting(new ActionState.Attempt("fixture-submitting", NOW, wrongGuard, prepared));
+        assertThrows(UncheckedIOException.class, () -> journal.locked(locked -> locked.append(command, digest, invalid)));
+        assertEquals(before.digest(), f.writer.locked(ContinuityStorePort.Session::head).digest());
+        assertFalse(Files.exists(f.layout.event(2)));
+
+        var submitting = new ActionState.Submitting(new ActionState.Attempt("fixture-submitting", NOW, original, prepared));
+        var actual = journal.locked(locked -> locked.append(command, digest, submitting));
+        f.writer.locked(same -> {
+            var head = same.head();
+            assertEquals(2, head.state().sequence());
+            ExactRef recordRef = ContinuityActionJournal.recordHead(head.state()).orElseThrow();
+            ExactRef receiptRef = f.archive.receiptReferenceOf(actual);
+            var expected = StrictJson.object().put("schema", "xar.java-action-record/v1");
+            expected.set("receipt_ref", receiptRef.toJson());
+            expected.set("previous", previous.toJson());
+            assertArrayEquals(StrictJson.canonical(expected), f.archive.readArtifact(same, recordRef, WriterContracts.MAX_PIN_BYTES));
+            assertEquals(new ActionRecord(actual, Optional.of(previous)), f.archive.loadRecord(recordRef));
+            ExactRef requestRef = f.archive.requestReferenceOf(prepared);
+            List<ExactRef> expectedReferences = List.of(recordRef, receiptRef, previous, original.nativeEvidence(),
+                    original.capabilityEvidence(), original.supportingEvidence().getFirst(), requestRef);
+            var published = f.validatedActions.stream()
+                    .filter(request -> request.detailsObject().path("evidence_id").asText().equals(command.actionId() + ":2")).toList();
+            assertFalse(published.isEmpty());
+            assertTrue(published.stream().allMatch(request -> request.evidence().equals(expectedReferences)));
+            var event = head.documents().stream().filter(pin -> Path.of(pin.reference().path()).equals(f.layout.event(2)))
+                    .findFirst().orElseThrow();
+            assertEquals(recordRef, ExactRef.fromJson(StrictJson.parse(same.readPinned(event, WriterContracts.MAX_PIN_BYTES))
+                    .path("details").get("receipt_ref")));
+            return null;
+        });
+        Fixture reopened = new Fixture(f.root, true, true);
+        assertEquals(actual, new ContinuityActionJournal(reopened.writer, reopened.archive)
+                .locked(locked -> locked.find(command.actionId())).orElseThrow());
+    }
+
+    @Test void pairedPublicationRequiresAnActualLocalPreviousActionRecord() throws IOException {
+        Fixture local = fixture("pair-local"), foreign = fixture("pair-foreign");
+        var candidate = pending(local, local.guard(command(local).operation()));
+        var foreignCommand = command(foreign);
+        var foreignIntent = new ActionReceipt(1, 1, foreignCommand, ActionCodec.bodySha256(foreignCommand),
+                new ActionState.IntentDurable());
+        ExactRef foreignPrevious = foreign.archive.preserveRecord(new ActionRecord(foreignIntent, Optional.empty()));
+        var foreignChain = new ActionRecord(candidate, Optional.of(foreignPrevious));
+        assertThrows(UncheckedIOException.class, () -> local.archive.preserveRecordWithReceipt(foreignChain));
+        assertThrows(UncheckedIOException.class, () -> local.archive.recordReferenceOf(foreignChain));
+
+        ExactRef localReceipt = local.archive.receiptReferenceOf(candidate);
+        var wrongRole = new ActionRecord(candidate, Optional.of(localReceipt));
+        assertThrows(IllegalArgumentException.class, () -> local.archive.preserveRecordWithReceipt(wrongRole));
+        assertThrows(UncheckedIOException.class, () -> local.archive.recordReferenceOf(wrongRole));
+        long sequence = local.writer.locked(same -> same.head().state().sequence());
+        assertEquals(0L, sequence);
+        assertFalse(Files.exists(local.layout.event(1)));
     }
 
     @Test void evolvedUnknownRoundtripsPhysicalClosureAndReopensWithoutChangingPendingLedger() throws IOException {

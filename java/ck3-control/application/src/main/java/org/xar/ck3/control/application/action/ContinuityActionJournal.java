@@ -82,9 +82,12 @@ public final class ContinuityActionJournal implements ActionJournal {
                         }
                     }
                     ActionReceipt candidate = new ActionReceipt(1, Math.addExact(head.state().sequence(), 1), command, bodySha256, next);
-                    var receiptRef = archive.preserveReceipt(candidate);
                     ActionRecord record = new ActionRecord(candidate, recordHead(head.state()));
-                    var recordRef = archive.preserveRecord(record);
+                    ActionPorts.PreservedActionRecord preserved = archive instanceof ActionPorts.ActionRecordPublicationArchive publication
+                            ? publication.preserveRecordWithReceipt(record)
+                            : new ActionPorts.PreservedActionRecord(archive.preserveReceipt(candidate), archive.preserveRecord(record));
+                    var receiptRef = preserved.receiptReference();
+                    var recordRef = preserved.recordReference();
                     ObjectNode details = StrictJson.object(); details.put("evidence_id", command.actionId() + ":" + candidate.sequence());
                     details.set("source", ProposalLifecycleCodec.source(command.source()));
                     details.set("receipt_ref", recordRef.toJson());

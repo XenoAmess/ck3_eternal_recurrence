@@ -89,7 +89,7 @@ import static org.xar.ck3.control.continuity.writer.WriterContracts.Pin;
 /** One physical immutable archive, installed in the composition host, never a second ledger writer.
  * Native packets and JSON tokens are separate original-byte artifacts. Only small typed metadata is canonicalized.
  */
-public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
+public final class NativeOutcomeArchive implements ActionPorts.ActionRecordPublicationArchive {
     private static final int META_LIMIT = StrictJson.EXPLICIT_MAX_BYTES;
     private static final String DISPATCH_SCHEMA = "xar.native-dispatch-archive/v1";
     private static final String DISPATCH_WITH_OUTBOUND_SCHEMA = "xar.native-dispatch-archive/v2";
@@ -1611,6 +1611,15 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
         return unchecked(() -> writing(() -> {
             Objects.requireNonNull(original); preserveReceipt(original.receipt()); original.previous().ifPresent(this::loadRecord);
             return publish(ActionRecordCodec.encode(original, this), META_LIMIT);
+        }));
+    }
+    @Override public ActionPorts.PreservedActionRecord preserveRecordWithReceipt(ActionRecord original) {
+        return unchecked(() -> writing(() -> {
+            Objects.requireNonNull(original);
+            ExactRef receipt = preserveReceipt(original.receipt());
+            original.previous().ifPresent(this::loadRecord);
+            ExactRef record = publish(ActionRecordCodec.encodeReferences(receipt, original.previous()), META_LIMIT);
+            return new ActionPorts.PreservedActionRecord(receipt, record);
         }));
     }
     @Override public ActionRecord loadRecord(ExactRef original) { return unchecked(() -> ActionRecordCodec.decode(readBytes(original, META_LIMIT), this)); }

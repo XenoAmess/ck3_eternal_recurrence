@@ -9,9 +9,15 @@ import org.xar.ck3.control.g2.planning.ProposalLifecycleCodec;
 public final class ActionRecordCodec {
     private ActionRecordCodec() { }
     public static byte[] encode(ActionRecord record, ActionPorts.OutcomeArchive archive) {
-        var row = StrictJson.object(); row.put("schema", "xar.java-action-record/v1");
-        row.set("receipt_ref", archive.receiptReferenceOf(record.receipt()).toJson());
-        if (record.previous().isPresent()) row.set("previous", record.previous().orElseThrow().toJson()); else row.putNull("previous");
+        return encodeReferences(archive.receiptReferenceOf(record.receipt()), record.previous());
+    }
+    /** Pure v1 encoding. The publishing archive owns receipt validation and custody. */
+    public static byte[] encodeReferences(ExactRef receipt, Optional<ExactRef> previous) {
+        var row = StrictJson.object();
+        row.put("schema", "xar.java-action-record/v1");
+        row.set("receipt_ref", receipt.toJson());
+        if (previous.isPresent()) row.set("previous", previous.orElseThrow().toJson());
+        else row.putNull("previous");
         return StrictJson.canonical(row);
     }
     public static ActionRecord decode(byte[] raw, ActionPorts.OutcomeArchive archive) {
