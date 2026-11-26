@@ -18,6 +18,8 @@ import org.xar.ck3.control.application.action.*;
 import org.xar.ck3.control.application.planning.*;
 import org.xar.ck3.control.application.planning.events.*;
 import org.xar.ck3.control.contracts.*;
+import org.xar.ck3.control.contracts.semantic.NativeFull111OrdinaryEvent;
+import org.xar.ck3.control.contracts.semantic.NativeSemanticNormalizer;
 import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector;
 import org.xar.ck3.control.g2.common.G2Source;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.*;
@@ -185,6 +187,71 @@ final class RegisteredEventCoreIntegrationTest {
         var realm=new org.xar.ck3.control.application.planning.campaign.M7CampaignPolicies.RealmLifecycle(SOURCE);
         policies.put(PlanningStage.REALM_MEMBERSHIP_PUBLICATION,realm);
         return new OrdinaryPlanner(new ArrayList<>(policies.values()),java.time.Clock.fixed(NOW,java.time.ZoneOffset.UTC),realm);
+    }
+
+    @Test void full111AuthoredEventRetainsItsOriginalIdentityAndStopsAtTheReadOnlyIncident() throws Exception {
+        for (Set<OperationKey> steps : List.of(Set.<OperationKey>of(), Set.of(new OperationKey(RegisteredEventCore.EVENT_QUERY),
+                new OperationKey("select-event-option-1")))) {
+            var input = full111ActiveEvent(steps);
+            var incidents = new ArrayList<OpportunityJson.Obj>();
+            var policies = registryEventPolicies((actual, plan) -> {
+                assertSame(input, actual);
+                incidents.add(plan);
+            });
+            var registry = core((actual, operation, args, detail, purpose, domain) -> {
+                throw new AssertionError("authored Full111 option count cannot prepare " + operation.value());
+            });
+            var lower = new AtomicInteger();
+            var stopped = assertInstanceOf(PlanningResult.ReadOnlyWait.class,
+                    registryPlanner(registry, policies.get(1), policies.get(2), lower).plan(input));
+            assertEquals(0, lower.get());
+            var draft = stopped.trace().finalPlan().orElseThrow();
+            assertEquals(OrdinaryPolicy.Purpose.READ_ONLY, draft.purpose());
+            assertTrue(draft.command().isEmpty());
+            var event = OpportunityJson.toNode(draft.detail()).get("active_event");
+            assertEquals(17, event.get("instance_id").intValue());
+            assertEquals(3, event.get("authored_option_count").intValue());
+            assertTrue(event.get("option_count").isNull());
+            assertTrue(event.get("selected_option_number").isNull());
+            assertEquals(1, incidents.size());
+            var diagnostic = OpportunityJson.toNode(incidents.getFirst()).get("unhandled_native_window_diagnostic");
+            assertEquals(17, diagnostic.get("current_event_instance_id").intValue());
+            assertTrue(diagnostic.get("event_definition_key").isNull());
+            assertTrue(diagnostic.get("context").isNull());
+            assertTrue(diagnostic.get("selection").isNull());
+            assertEquals(OpportunityJson.toNode(input.observations().snapshot()).get("active_event"),
+                    diagnostic.path("snapshot").get("active_event"));
+        }
+    }
+
+    private static PlanningRequest full111ActiveEvent(Set<OperationKey> steps) throws Exception {
+        byte[] original;
+        try (var input = RegisteredEventCoreIntegrationTest.class.getResourceAsStream("/current267-lyd-cpp-a749/full111-ordinary-snapshot-event.json")) {
+            assertNotNull(input);
+            original = input.readAllBytes();
+        }
+        // The exact C++ software summary is joined to a software Full111 frame. It is not a live event receipt.
+        assertEquals("650d91f09a4959a8fc9bea7a548d009c3ea6feeed437b11ef31963cd81208da4", ActionCodec.sha256(original));
+        var fromCpp = StrictJson.parse(original);
+        var build = ExactCk3Build.CK3_121003_STEAM_26785313_FULL111;
+        var tuple = StrictJson.object().put("game_version", build.version()).put("executable_sha256", build.executableSha256())
+                .put("adapter_id", build.coreFullAdapterId()).put("backend", build.coreFullBackend());
+        var raw = tuple.deepCopy().put("schema", NativeSemanticNormalizer.FLORIN_SCHEMA)
+                .put("date_raw", 53179944).put("paused", true).put("map_ready", true);
+        raw.set("played_character", tuple.deepCopy().put("schema", "ck3_1210_played_character_v1").put("character_id", 73).put("alive", true));
+        raw.set("active_event", fromCpp);
+        raw.putArray("active_wars"); raw.putArray("player_armies");
+        var snapshot = NativeSemanticNormalizer.normalize(NativeSemanticNormalizer.original(raw), "native:1", BigInteger.ONE).semantic();
+        snapshot.put("native_revision", 1).put("episode_run_id", "full111-event-software");
+        var frame = new JointBudgetSelector.ProposalFrame(new JointBudgetSelector.Frame(BigInteger.valueOf(73), BigInteger.ONE,
+                BigInteger.valueOf(53179944)), "native:1", BigInteger.ONE, "full111-event-software");
+        var owner = new ObservationIdentity("fixture-machine-1", new GameGeneration(123,
+                new PythonOnlyUInt64(new BigInteger("134000000000000001"))), frame, 1);
+        var capabilities = steps.isEmpty() ? Set.of(NativeFull111OrdinaryEvent.CAPABILITY)
+                : Set.of(NativeFull111OrdinaryEvent.CAPABILITY, EventWindowRead.CAPABILITY, "game.command.select-event-option-N");
+        return new PlanningRequest(owner, new G2Source(owner.machineId(), NOW.toString(), build.executableSha256(), SOURCE),
+                "event-session", NOW.plusSeconds(60), new PlanningObservation(object(snapshot), List.of(), steps,
+                capabilities, Optional.empty(), List.of(), Optional.empty(), Optional.empty(), false));
     }
 
     @Test void actualKnownRegistryProducerRetainsExactOptionAndScalarPlanThroughTheSoleCommandAdapter() throws Exception {

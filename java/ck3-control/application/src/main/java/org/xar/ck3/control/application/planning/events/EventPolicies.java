@@ -314,6 +314,8 @@ public final class EventPolicies {
         if (previous.command().isPresent()) return new OrdinaryPolicy.Keep("the existing dedicated selected action has priority");
         ObjectNode snapshot = snapshot(request); JsonNode event = snapshot.get("active_event"), pending = snapshot.get("pending_character_interaction");
         if (event != null && event.isObject()) {
+            if (RegisteredEventCore.full111OrdinaryEvent(request).isPresent())
+                return diagnosticWait(request, null, RegisteredEventCore.FULL111_OPTIONS_UNAVAILABLE, incidentCapture);
             if (previous.detail().get("dedicated_policy_blocked") instanceof OpportunityJson.Bool blocked && blocked.value())
                 return new OrdinaryPolicy.Wait("the actual dedicated event policy is blocked; retain its full native evidence");
             Optional<ObjectNode> context = RegisteredEventCore.currentContext(request, previous, contextValidator)

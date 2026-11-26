@@ -22,7 +22,9 @@ import org.xar.ck3.control.application.planning.PlanningObservation;
 import org.xar.ck3.control.application.planning.PlanningRequest;
 import org.xar.ck3.control.application.planning.PlanningResult;
 import org.xar.ck3.control.application.planning.warentry.WarEntryCollector;
+import org.xar.ck3.control.contracts.ExactCk3Build;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.semantic.NativeFull111OrdinaryEvent;
 import org.xar.ck3.control.contracts.FullJsonTree;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 import org.xar.ck3.control.wave2.events.registered.BookmarkRaiktorPolicy;
@@ -40,6 +42,7 @@ import org.xar.ck3.control.wave2.events.unhandledevent.RetainedJson.*;
  */
 public final class RegisteredEventCore implements OrdinaryCorePolicy.CoreProducer {
     public static final String EVENT_QUERY = "query-current-event-window-context-v1";
+    static final String FULL111_OPTIONS_UNAVAILABLE = "Full111 reports the active event while its displayed options are unavailable";
     private static final String EVENT_SCOPE_CAPABILITY = "game.command.query-war-entry-assessments-raiktor-bookmark-saved-scope-v1";
     @FunctionalInterface public interface ReadContracts {
         Optional<EventReadBinding<?>> contract(OperationKey operation);
@@ -102,10 +105,43 @@ public final class RegisteredEventCore implements OrdinaryCorePolicy.CoreProduce
         };
     }
 
+    /** Full111's normalized snapshot identifies an event without qualifying its displayed options. */
+    static Optional<NativeFull111OrdinaryEvent> full111OrdinaryEvent(PlanningRequest request) {
+        var snapshot = request.observations().snapshot();
+        var build = ExactCk3Build.CK3_121003_STEAM_26785313_FULL111;
+        if (!(snapshot.get("active_event") instanceof OpportunityJson.Obj event)
+                || !new OpportunityJson.Text(build.coreFullAdapterId()).equals(snapshot.get("adapter_id"))
+                || !(snapshot.get("game_version") instanceof OpportunityJson.Text version)
+                || !(snapshot.get("executable_sha256") instanceof OpportunityJson.Text executable)
+                || !build.matches(version.value(), executable.value())) return Optional.empty();
+        StrictJson.require(request.observations().bridgeCapabilities().contains(NativeFull111OrdinaryEvent.CAPABILITY)
+                && request.observations().paused() && request.observations().mapReady()
+                && new OpportunityJson.Bool(true).equals(OpportunityJson.object(snapshot.get("played_character"), "Full111 actor").get("alive"))
+                && new OpportunityJson.Text("native").equals(event.get("source"))
+                && event.get("option_count") == OpportunityJson.Nil.INSTANCE
+                && event.get("title") == OpportunityJson.Nil.INSTANCE
+                && OpportunityJson.array(event.get("options"), "Full111 event options").isEmpty(),
+                "Full111 active event must retain its exact native summary without displayed options");
+        return Optional.of(new NativeFull111OrdinaryEvent(
+                OpportunityJson.integer(event.get("instance_id"), "Full111 event instance").intValueExact(),
+                OpportunityJson.integer(event.get("authored_option_count"), "Full111 authored option count").intValueExact()));
+    }
+
     @Override public OrdinaryPolicy.Decision evaluate(PlanningRequest request, OrdinaryPolicy.Draft previous) {
         Objects.requireNonNull(request); Objects.requireNonNull(previous);
         if (previous.command().isPresent() && previous.kind() == OrdinaryPolicy.Kind.FOREGROUND)
             return new OrdinaryPolicy.Keep("the selected foreground command retains its original priority");
+        var full111 = full111OrdinaryEvent(request);
+        if (full111.isPresent()) {
+            var event = full111.orElseThrow();
+            var summary = object(Map.of("instance_id", number(event.instanceId()),
+                    "authored_option_count", number(event.authoredOptionCount()), "option_count", RetainedJson.NULL,
+                    "selected_option_number", RetainedJson.NULL, "selected_option_index", RetainedJson.NULL));
+            var observed = plan("active_event_window_query_unavailable", FULL111_OPTIONS_UNAVAILABLE, summary);
+            return new OrdinaryPolicy.Replace(new OrdinaryPolicy.Draft("one-life-turn-v1", text(observed.get("phase")),
+                    FULL111_OPTIONS_UNAVAILABLE, OrdinaryPolicy.Kind.FOREGROUND, Optional.empty(), OrdinaryPolicy.Purpose.READ_ONLY,
+                    Optional.empty(), opportunity(observed)), "retain the actual Full111 event for the continuation diagnosis");
+        }
         ObjectValue snapshot = retained(request.observations().snapshot());
         Value rawEvent = snapshot.contains("active_event") ? snapshot.get("active_event") : snapshot.get("current_event");
         if (!(rawEvent instanceof ObjectValue event)) return new OrdinaryPolicy.NotApplicable("the actual snapshot has no active event");
