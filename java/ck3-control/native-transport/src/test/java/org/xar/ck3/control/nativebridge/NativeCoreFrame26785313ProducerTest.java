@@ -21,6 +21,7 @@ import org.xar.ck3.control.contracts.ExactCk3Build;
 import org.xar.ck3.control.contracts.GameGeneration;
 import org.xar.ck3.control.contracts.PythonOnlyUInt64;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.nativebridge.capabilities.frontend_rules.FrontendRulesData;
 import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFrame;
 import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFramePublicCodec;
 
@@ -144,7 +145,11 @@ final class NativeCoreFrame26785313ProducerTest {
         assertTrue(ExactCk3Build.florinCoreFrameBuild(BUILD.version(),BUILD.executableSha256()).isPresent());
         assertTrue(ExactCk3Build.florinCoreFullBuild(BUILD.version(),BUILD.executableSha256()).isEmpty());
         assertThrows(IllegalStateException.class,BUILD::coreFullAdapterId);
-        assertThrows(IllegalArgumentException.class,()->org.xar.ck3.control.nativebridge.capabilities.frontend_rules.FrontendRulesData.Build.require(BUILD.version(),BUILD.executableSha256()));
+        var frontendIdentity = FrontendRulesData.Build.require(BUILD.version(), BUILD.executableSha256());
+        assertEquals(FrontendRulesData.Build.CK3_121003_STEAM_26785313, frontendIdentity);
+        assertThrows(IllegalArgumentException.class, frontendIdentity::requireFrontend);
+        assertThrows(IllegalArgumentException.class, frontendIdentity::requireRules);
+        assertThrows(IllegalArgumentException.class, frontendIdentity::requireLoadedFeatures);
         var advertised=hello();
         advertised.withArray("capabilities").add("game.state.snapshot").add(NativeFreshSnapshotPort.CAPABILITY)
                 .add("game.query.personal-gold.v1");
