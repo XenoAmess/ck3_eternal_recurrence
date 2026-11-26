@@ -73,7 +73,7 @@ final class CheckpointOriginalQueryCompositionTest {
             assertFalse(retained.settled(),"first actual stable-file observation remains pending");
             assertEquals(1,f.actual.nativeActionWrites());
             assertFalse(clock.instant().isBefore(originalDeadline));
-            Instant readDeadline=clock.instant().plusSeconds(30);
+            Instant readDeadline=clock.instant().plusSeconds(15);
             int originalFreshWrites=f.actual.softwareFreshWrites179();
             var confirmed=assertInstanceOf(CheckpointResult.Confirmed.class,
                     f.service.queryOriginal(unknown.actionId(),readDeadline));
@@ -85,6 +85,8 @@ final class CheckpointOriginalQueryCompositionTest {
             assertEquals(originalFreshWrites+1,f.actual.softwareFreshWrites179(),
                     "late original reconciliation uses the actual independent Fresh source");
             assertTrue(observedInHeldScope.get(),"the original SAVE postcondition consumes the held reconciliation scope");
+            assertEquals(readDeadline,f.lastCheckpointObservationDeadline.get(),
+                    "the explicit query cutoff reaches the actual Root reconciliation observation");
             assertInstanceOf(SeedAdoption.Available.class,confirmed.seedAdoption());
             f.drivers.verify(confirmed.pair());
             assertEquals(confirmed.pair(),CheckpointPairCodec.decode(CheckpointPairCodec.encode(confirmed.pair())));

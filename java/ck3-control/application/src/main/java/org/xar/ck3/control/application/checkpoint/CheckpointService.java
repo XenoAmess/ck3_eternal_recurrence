@@ -135,7 +135,7 @@ public final class CheckpointService implements ActionPorts.PostconditionPort {
         ActionReceipt receipt=null;originalQuery.set(new OriginalQuery(context,bounded));
         try {
             if(Thread.interrupted())throw new InterruptedException("original SAVE query interrupted before collection");
-            receipt=actions.reconcile(originalActionId);
+            receipt=ActionObservationWindow.reconcileBefore(actions,originalActionId,bounded);
             if(!clock.instant().isBefore(bounded))return new CheckpointResult.Unknown(originalActionId,"original SAVE read window expired during collection; zero dispatch",Optional.of(receipt));
             return withinOriginalReadWindow(materialized(context,receipt),bounded);
         } catch(IOException|IllegalArgumentException failure) {

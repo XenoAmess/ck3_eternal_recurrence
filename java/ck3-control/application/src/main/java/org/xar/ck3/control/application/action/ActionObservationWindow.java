@@ -12,6 +12,7 @@ public final class ActionObservationWindow {
     public static final Duration MAXIMUM_WINDOW = Duration.ofMinutes(2);
     private record Window(String actionId, Instant deadline) { }
     private static final ThreadLocal<Window> CURRENT = new ThreadLocal<>();
+    private static final ThreadLocal<Window> RECONCILIATION_LIMIT = new ThreadLocal<>();
     private ActionObservationWindow() { }
     public static Instant deadline(ActionCommand original) {
         Objects.requireNonNull(original); Window current = CURRENT.get();
@@ -36,9 +37,31 @@ public final class ActionObservationWindow {
         CURRENT.set(new Window(actionId,until));
         try{return work.get();}finally{CURRENT.set(previous);}
     }
+    /** Cap the coordinator's read of this exact original action for the duration of the call. */
+    public static ActionReceipt reconcileBefore(ActionCoordinatorPort actions, String actionId, Instant deadline) {
+        Objects.requireNonNull(actions);
+        StrictJson.text(actionId);
+        Objects.requireNonNull(deadline);
+        Window previous = RECONCILIATION_LIMIT.get();
+        if (previous != null && previous.actionId().equals(actionId) && previous.deadline().isBefore(deadline)) {
+            deadline = previous.deadline();
+        }
+        RECONCILIATION_LIMIT.set(new Window(actionId, deadline));
+        try {
+            return actions.reconcile(actionId);
+        } finally {
+            if (previous == null) RECONCILIATION_LIMIT.remove();
+            else RECONCILIATION_LIMIT.set(previous);
+        }
+    }
+
     static <T> T reconcile(String actionId, Clock clock, Supplier<T> work) {
         Window previous = CURRENT.get(); Instant deadline = clock.instant().plus(MAXIMUM_WINDOW);
         if (previous != null && previous.deadline().isBefore(deadline)) deadline = previous.deadline();
+        Window limit = RECONCILIATION_LIMIT.get();
+        if (limit != null && limit.actionId().equals(actionId) && limit.deadline().isBefore(deadline)) {
+            deadline = limit.deadline();
+        }
         CURRENT.set(new Window(actionId, deadline));
         try { return work.get(); } finally { if (previous == null) CURRENT.remove(); else CURRENT.set(previous); }
     }
