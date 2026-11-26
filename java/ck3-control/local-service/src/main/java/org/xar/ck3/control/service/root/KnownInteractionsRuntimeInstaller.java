@@ -158,14 +158,14 @@ public final class KnownInteractionsRuntimeInstaller {
                         throw new IllegalStateException("incomplete actual known pending after frame: "+String.join(",",missing.reasons()));
                     return (Complete)projected;
                 });
-                RootAdvanceInfrastructureFactory.verifyFreshSnapshotQuery(actualProof,complete,archive);
+                RootAdvanceInfrastructureFactory.verifyFreshSnapshotQuery(actualProof,complete,archive,context.frameLoader());
                 context.writer().requireSession(same);
                 StrictJson.require(context.clock().instant().isBefore(deadline),"known pending fresh projection exceeded observation deadline");
                 proof.set(actualProof);return Optional.of(complete);
             });
             var pair=snapshots.read(command,attempt);
             var actualProof=Objects.requireNonNull(proof.get(),"known pending fresh after proof is unavailable");
-            RootAdvanceInfrastructureFactory.verifyFreshSnapshotQuery(actualProof,pair.after(),archive);
+            RootAdvanceInfrastructureFactory.verifyFreshSnapshotQuery(actualProof,pair.after(),archive,context.frameLoader());
             return new KnownPendingInteractionEffects.Observation(pair,actualProof);
         });
     }

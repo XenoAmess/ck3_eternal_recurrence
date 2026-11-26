@@ -238,7 +238,7 @@ public final class RootLifeRuntimeFactory {
                 }else basis=new ObservationProvenance.PreparedCleanupWatch(prepared.parentReference(),prepared.reference(),captureReference);
                 var provenance=new ObservationProvenance.FreshSnapshotQuery(captured.freshSnapshotAck().requestId(),archive.referenceOf(captured.freshSnapshotAck()),
                         captured.snapshotReceived(),basis);
-                RootAdvanceInfrastructureFactory.verifyFreshSnapshotQuery(provenance,complete,archive);
+                RootAdvanceInfrastructureFactory.verifyFreshSnapshotQuery(provenance,complete,archive,context.frameLoader());
                 var ending=new AdvanceObservationPort.Frame(complete.identity(),complete.source(),complete.sessionId(),complete.semantic(),provenance,
                         complete.observedAt(),complete.originalEvidence());
                 var starting=replay.read(prepared.parentReceipt().command(),((ActionState.CompositeUnknown)prepared.parentReceipt().state()).execution().guard(),archive).orElseThrow();

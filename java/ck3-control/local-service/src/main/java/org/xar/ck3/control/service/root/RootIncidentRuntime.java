@@ -664,7 +664,7 @@ public final class RootIncidentRuntime implements RootPlanningInputsFactory.Offl
         org.xar.ck3.control.application.action.ObservationProvenance provenance=fresh.<org.xar.ck3.control.application.action.ObservationProvenance>map(value->value)
                 .orElseGet(()->new org.xar.ck3.control.application.action.ObservationProvenance.Push(after.identity().frame().snapshotId(),
                         after.identity().frame().identity().nativeRevision(),after.originalEvidence()));
-        fresh.ifPresent(query->RootAdvanceInfrastructureFactory.verifyFreshSnapshotQuery(query,after,bound));
+        fresh.ifPresent(query->RootAdvanceInfrastructureFactory.verifyFreshSnapshotQuery(query,after,bound,context.frameLoader()));
         var snapshot=new org.xar.ck3.control.application.planning.events.NativeEventPostconditionPort.BoundSnapshot(
                 after.identity(),after.source(),after.sessionId(),after.semantic(),provenance,after.observedAt(),after.originalEvidence());
         var projected=fresh.isPresent()

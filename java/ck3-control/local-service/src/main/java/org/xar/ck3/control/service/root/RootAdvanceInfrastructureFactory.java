@@ -363,7 +363,7 @@ public final class RootAdvanceInfrastructureFactory {
                     requireFrameBinding(parent,complete);
                     if(warm) {
                         var proof=(ObservationProvenance.PhysicalAfterAcknowledgement)current.provenance();
-                        verifyPhysicalAfterAcknowledgement(proof,complete,archive);
+                        verifyPhysicalAfterAcknowledgement(proof,complete,archive,context.frameLoader());
                         var recorded=TimelinePhysicalAfterAckEvidence.decode(archive.loadMaterial(proof.occurrenceEvidence()));
                         var basisParent=archive.loadReceipt(recorded.runningParentReceipt());
                         var basisExecution=((ActionState.CompositeRunning)basisParent.state()).execution();
@@ -383,7 +383,7 @@ public final class RootAdvanceInfrastructureFactory {
                     } else {
                         require(current.provenance() instanceof ObservationProvenance.FreshSnapshotQuery,
                                 "physical Life Status requires its actual independent current READ");
-                        verifyFreshSnapshotQuery((ObservationProvenance.FreshSnapshotQuery)current.provenance(),complete,archive);
+                        verifyFreshSnapshotQuery((ObservationProvenance.FreshSnapshotQuery)current.provenance(),complete,archive,context.frameLoader());
                     }
                     var pins=List.of(same.capturePin(current.originalEvidence(),org.xar.ck3.control.continuity.writer.WriterContracts.MAX_PIN_BYTES),
                             same.capturePin(facts,org.xar.ck3.control.continuity.writer.WriterContracts.MAX_PIN_BYTES));
@@ -529,14 +529,13 @@ public final class RootAdvanceInfrastructureFactory {
             return AdvancePrimitives.prepareRequest(command,profile);
     }
     private static NativeRequest canonicalPreparationFromGuard(ActionCommand command,ActionState.Attempt attempt,
-            ActionPorts.OutcomeArchive archive,Optional<NativeEffectEvidence.FrameLoader> originalFrames) {
+            ActionPorts.OutcomeArchive archive,NativeEffectEvidence.FrameLoader originalFrames) {
         if(!explicitFull111Clock(command))return AdvancePrimitives.prepareRequest(command);
         var guard=attempt.guard();
         require(command.origin().acceptsGuard(guard.origin())&&guard.observed().equals(command.before())
                 &&guard.source().equals(command.source())&&guard.sessionId().equals(command.sessionId())
                 &&guard.operation().equals(command.operation()),"original Full preparation guard differs");
-        var complete=RootGuardEvidence.loadFrame(guard,archive,freshFrameLoader(originalFrames.orElseThrow(()->
-                new IllegalStateException("actual original Driver frame loader required for Full111 preparation replay"))));
+        var complete=RootGuardEvidence.loadFrame(guard,archive,originalFrames);
         require(complete.identity().equals(command.before()),"original Full preparation lost its complete Driver before frame");
         return canonicalPreparationFromVerifiedFull(command,complete.originalEvidence(),archive);
     }
@@ -553,23 +552,20 @@ public final class RootAdvanceInfrastructureFactory {
                     ActionPorts.OutcomeArchive archive) { return actual.load(basis, archive); }
             @Override public void verifyPhysicalAfterAcknowledgement(ObservationProvenance.PhysicalAfterAcknowledgement proof,
                     DriverObservationAssembler.Complete complete,ActionPorts.OutcomeArchive archive) {
-                RootAdvanceInfrastructureFactory.verifyPhysicalAfterAcknowledgement(proof,complete,archive,Optional.of(actual));
+                RootAdvanceInfrastructureFactory.verifyPhysicalAfterAcknowledgement(proof,complete,archive,actual);
             }
             @Override public void verifyFreshSnapshotQuery(ObservationProvenance.FreshSnapshotQuery proof,
                     DriverObservationAssembler.Complete complete, ActionPorts.OutcomeArchive archive) {
-                RootAdvanceInfrastructureFactory.verifyFreshSnapshotQuery(proof, complete, archive,Optional.of(actual));
+                RootAdvanceInfrastructureFactory.verifyFreshSnapshotQuery(proof,complete,archive,actual);
             }
         };
     }
 
     /** Original DATA validation only: this cannot issue a source session, Received, or writer permission. */
     static void verifyFreshSnapshotQuery(ObservationProvenance.FreshSnapshotQuery proof,
-            DriverObservationAssembler.Complete complete,ActionPorts.OutcomeArchive archive) {
-        verifyFreshSnapshotQuery(proof,complete,archive,Optional.empty());
-    }
-    private static void verifyFreshSnapshotQuery(ObservationProvenance.FreshSnapshotQuery proof,
             DriverObservationAssembler.Complete complete,ActionPorts.OutcomeArchive archive,
-            Optional<NativeEffectEvidence.FrameLoader> originalFrames) {
+            NativeEffectEvidence.FrameLoader originalFrames) {
+        Objects.requireNonNull(originalFrames);
         if(proof.basis() instanceof ObservationProvenance.PreparedCleanupSuccessorWatch watch){
             var prepared=org.xar.ck3.control.application.advance.PreparedCleanupSuccessorEvidence.loadPreparedOriginals(watch.preparationReference(),archive);
             var captured=org.xar.ck3.control.application.advance.PreparedCleanupEvidence.loadPostAckCapturedOriginals(watch.captureReference(),archive);
@@ -757,14 +753,11 @@ public final class RootAdvanceInfrastructureFactory {
     }
 
     /** Archive DATA only; a recorded occurrence never issues a receiver token or dispatch permission. */
-    static void verifyPhysicalAfterAcknowledgement(ObservationProvenance.PhysicalAfterAcknowledgement proof,
-            DriverObservationAssembler.Complete complete,ActionPorts.OutcomeArchive archive) {
-        verifyPhysicalAfterAcknowledgement(proof,complete,archive,Optional.empty());
-    }
     private static void verifyPhysicalAfterAcknowledgement(ObservationProvenance.PhysicalAfterAcknowledgement proof,
             DriverObservationAssembler.Complete complete,ActionPorts.OutcomeArchive archive,
-            Optional<NativeEffectEvidence.FrameLoader> originalFrames) {
+            NativeEffectEvidence.FrameLoader originalFrames) {
         Objects.requireNonNull(proof);Objects.requireNonNull(complete);Objects.requireNonNull(archive);
+        Objects.requireNonNull(originalFrames);
         try {
             proof.validate(complete.identity(),complete.originalEvidence());
             var evidence=archive.loadMaterial(proof.occurrenceEvidence());
@@ -1212,7 +1205,7 @@ public final class RootAdvanceInfrastructureFactory {
                             complete.originalEvidence(),archive.preserve(ack),archive.preserveReceipt(setter),archive.preserveReceipt(parent));
                     var reference=TimelinePhysicalAfterAckEvidence.preserve(recorded,archive);
                     var proof=new ObservationProvenance.PhysicalAfterAcknowledgement(actual.snapshotId(),actual.nativeRevision(),complete.originalEvidence(),reference);
-                    verifyPhysicalAfterAcknowledgement(proof,complete,archive);
+                    verifyPhysicalAfterAcknowledgement(proof,complete,archive,context.frameLoader());
                     require(context.clock().instant().isBefore(deadline),"physical full-frame projection exceeded its original deadline");
                     return new Frame(complete.identity(),complete.source(),complete.sessionId(),complete.semantic(),proof,
                             complete.observedAt(),complete.originalEvidence());
@@ -1260,7 +1253,7 @@ public final class RootAdvanceInfrastructureFactory {
                 return (DriverObservationAssembler.Complete)projected;
             });
             requireFrameBinding(parent,complete);
-            verifyFreshSnapshotQuery(proof,complete,archive);
+            verifyFreshSnapshotQuery(proof,complete,archive,context.frameLoader());
             require(context.clock().instant().isBefore(deadline),"actual fresh projection exceeded its original deadline");
             return new Frame(complete.identity(),complete.source(),complete.sessionId(),complete.semantic(),proof,
                     complete.observedAt(),complete.originalEvidence());
