@@ -3117,7 +3117,10 @@ public final class ControlBuild {
             } catch (ScratchEnumerationChanged changed) {
                 // Discard this partial total and all entry counters. A fresh complete
                 // census must succeed; a missing subtree is never a successful zero.
-                if (attempt == 2) throw changed;
+                if (attempt == 2) {
+                    if (changed.getCause() instanceof AccessDeniedException denied) throw denied;
+                    throw changed;
+                }
             }
         }
         throw new IOException("Scratch census retry limit: " + root);
@@ -3150,7 +3153,7 @@ public final class ControlBuild {
     private static final class ScratchEnumerationChanged extends IOException {
         private static final long serialVersionUID = 1L;
         ScratchEnumerationChanged(Path path, IOException original) {
-            super("Mutable scratch directory disappeared or independently reached empty enumeration: " + path, original);
+            super("Mutable scratch enumeration could not complete: " + path, original);
         }
     }
 
@@ -3380,10 +3383,19 @@ public final class ControlBuild {
                 if (scratchDescendant(file) && error instanceof AccessDeniedException) {
                     try {
                         AtomicLong attempt = new AtomicLong();
-                        BasicFileAttributes attributes = CiBootstrap.rereadScratchMetadata(true, active, () -> {
-                            if (attempt.getAndIncrement() == 0) throw error;
-                            return access.io().attributes(file);
-                        });
+                        BasicFileAttributes attributes;
+                        try {
+                            attributes = CiBootstrap.rereadScratchMetadata(true, active, () -> {
+                                if (attempt.getAndIncrement() == 0) throw error;
+                                return access.io().attributes(file);
+                            });
+                        } catch (AccessDeniedException denied) {
+                            // A delete-pending scratch entry can outlast the local metadata retry.
+                            // Re-measure every surviving entry without treating denial as disappearance.
+                            if (!file.toString().equals(denied.getFile()) || denied.getOtherFile() != null
+                                    || !confirmedScratchParents(file, denied)) throw denied;
+                            throw new ScratchEnumerationChanged(file, denied);
+                        }
                         if (!attributes.isDirectory()) return visitFile(file, attributes);
                         if (preVisitDirectory(file, attributes) == FileVisitResult.SKIP_SUBTREE) return FileVisitResult.CONTINUE;
                         // This directory has not yielded any children yet. Open only it;
