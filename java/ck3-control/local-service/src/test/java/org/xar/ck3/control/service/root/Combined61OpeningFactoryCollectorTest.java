@@ -78,7 +78,7 @@ final class Combined61OpeningFactoryCollectorTest {
                 Optional.empty(),(Obj)parse(StrictJson.canonical(plan.get("detail"))));
         // Reuse the production pure projection on already replayed actual Current DATA, with no I/O or authority construction.
         var project=OpeningReadProfile.class.getDeclaredMethod("projectCurrent",PlanningRequest.class,OpeningReadProfile.Data.class);
-        project.setAccessible(true); var query=(Obj)parse(StrictJson.canonical((com.fasterxml.jackson.databind.JsonNode)project.invoke(null,request,data)));
+        project.setAccessible(true); var query=(Obj)parse(StrictJson.canonical((com.fasterxml.jackson.databind.JsonNode)project.invoke(combined,request,data)));
         return new Fixture(request,previous,query,ExactRef.fromJson(inputs().get("current_read")));
     }
     @SuppressWarnings("unchecked") private static <T> T unused(Class<T> type) {
