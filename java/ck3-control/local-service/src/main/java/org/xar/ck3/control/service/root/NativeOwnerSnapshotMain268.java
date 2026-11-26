@@ -6297,6 +6297,7 @@ if(riteDraftCosts) {
         stage="HELD_DATE_SENTINEL_STATUS";
         var dispatch=transport.readHeldDateSentinelStatus(core,deadline);
         originals.set("date_status_dispatch",saveDispatch(Files.createDirectory(output.resolve("date-status")),dispatch));
+        result.put("read_calls",2);
         if(!(dispatch instanceof NativeActionPort.AckReceived ack)||!ack.nativeOk())
             throw new IOException("held Date status did not return a successful original ACK: "+dispatch.getClass().getSimpleName());
         var basis=core.original().custody().orElseThrow(()->new IOException("Core ACK custody unavailable"));
