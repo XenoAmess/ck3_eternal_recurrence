@@ -5,6 +5,7 @@ import java.io.UncheckedIOException;
 import java.math.BigInteger;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -90,12 +91,16 @@ final class RootFull111EventOptionEffects implements NativeEffectRegistry.Observ
             var deadline = selectedCustody.responseReceived().observedAt().plus(ActionObservationWindow.MAXIMUM_WINDOW);
             if (!context.clock().instant().isBefore(deadline))
                 return pending(attempt, "Full111 queue observation window expired after SELECT");
-            if (!(transport.readFreshFullState(deadline) instanceof NativeFreshSnapshotPort.Received fresh))
-                return pending(attempt, "Full111 independent post-SELECT snapshot unavailable");
+            var snapshot = transport.readFreshFullState(deadline);
+            if (snapshot instanceof NativeFreshSnapshotPort.Unavailable unavailable)
+                return pendingAfterRead(attempt, "Full111 independent post-SELECT snapshot unavailable: " + unavailable.reason(),
+                        archive, unavailable);
+            var fresh = (NativeFreshSnapshotPort.Received) snapshot;
             NativeFreshSnapshotPort.verifyAfter(selected, fresh);
             var proof = transport.readFull111EventQueue(attempt, selected, deadline);
             if (proof.isEmpty() || proof.orElseThrow().after() != fresh.originalFrame())
-                return pending(attempt, "Full111 independent complete queue did not verify the selected instance absent");
+                return pendingAfterRead(attempt, "Full111 independent complete queue did not verify the selected instance absent",
+                        archive, fresh);
             var queue = proof.orElseThrow();
             var before = RootGuardEvidence.loadFrame(attempt.guard(), archive, context.frameLoader());
             return context.remainingDomains().lifecycle().physical().withReceivedSnapshot(same, deadline, fresh.originalFrame(), lease -> {
@@ -370,6 +375,19 @@ final class RootFull111EventOptionEffects implements NativeEffectRegistry.Observ
 
     private static NativeEffectRegistry.Projected pending(ActionState.Attempt attempt, String reason) {
         return NativeEffectRegistry.Projected.pending(reason, List.of(attempt.guard().nativeEvidence()));
+    }
+
+    static NativeEffectRegistry.Projected pendingAfterRead(ActionState.Attempt attempt, String reason, OutcomeArchive archive,
+            NativeFreshSnapshotPort.Result read) {
+        var evidence = new LinkedHashSet<ExactRef>();
+        evidence.add(attempt.guard().nativeEvidence());
+        evidence.add(archive.preserve(read.dispatch()));
+        var frame = switch (read) {
+            case NativeFreshSnapshotPort.Received received -> Optional.of(received.originalFrame());
+            case NativeFreshSnapshotPort.Unavailable unavailable -> unavailable.originalFrame();
+        };
+        frame.map(archive::preserveNativeFrame).ifPresent(evidence::add);
+        return NativeEffectRegistry.Projected.pending(reason, List.copyOf(evidence));
     }
 
     record Originals(ExactRef selected, ExactRef fresh, NativeRequestChronology.Event snapshotReceived, ExactRef queue) {

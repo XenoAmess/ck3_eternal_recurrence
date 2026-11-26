@@ -346,7 +346,7 @@ public final class RootReconciliationAuthority {
         if(full111Event && !clock.instant().isBefore(observationDeadline))
             throw new RawUnavailable("Full111 SELECT reconciliation reached its unchanged ordinary deadline",List.of(attempt.guard().nativeEvidence()));
         require(clock.instant().isBefore(observationDeadline),"actual ARM observation window expired after read-only preparation");
-        return physical.withReconciliationSnapshot(same,observationDeadline,freshRead,captured->{
+        RootLifecycleAuthority.SnapshotWork<T> reconcileFrame = captured -> {
             captured.assertCurrent(same);
             if(full111Event && (!canReadFull111EventSelection(same,original,attempt)
                     || captured.fullSnapshot().actual().nativeRevision().compareTo(before.identity().frame().identity().nativeRevision())<=0))
@@ -391,7 +391,12 @@ public final class RootReconciliationAuthority {
             var scope=new Scope(same,lease,observation,same.head().digest(),observationDeadline);active.set(scope);
             try {assertScope(scope,same,observationDeadline);T result=observer.apply(lease);assertScope(scope,same,observationDeadline);return result;}
             finally {active.remove();}
-        });
+        };
+        if (full111Event) {
+            return physical.withFull111EventReconciliationSnapshot(same, observationDeadline, attempt,
+                    original.ack().orElseThrow(), reconcileFrame);
+        }
+        return physical.withReconciliationSnapshot(same, observationDeadline, freshRead, reconcileFrame);
     }
 
     private static boolean isFull111EventSelection(ActionReceipt receipt) {

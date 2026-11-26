@@ -1,10 +1,14 @@
 package org.xar.ck3.control.service.root;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
+import java.lang.reflect.Proxy;
 import java.math.BigInteger;
 import java.time.Instant;
 import java.util.List;
@@ -14,6 +18,7 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.xar.ck3.control.application.action.ActionCodec;
 import org.xar.ck3.control.application.action.ActionCommand;
+import org.xar.ck3.control.application.action.ActionPorts;
 import org.xar.ck3.control.application.action.ActionReceipt;
 import org.xar.ck3.control.application.action.ActionState;
 import org.xar.ck3.control.application.action.ActionState.Attempt;
@@ -114,6 +119,35 @@ final class RootFull111EventOptionEffectsTest {
         var differentAcknowledgement = selectAck(request(Action.SELECT, BASE.plusSeconds(30)), 4, 13);
         assertThrows(ContractViolationException.class, () ->
                 RootFull111EventOptionEffects.requirePendingOriginal(pending, command, proof.attempt(), differentAcknowledgement));
+    }
+
+    @Test void failedIndependentReadKeepsItsActualAckAndOptionalFrameAsPendingEvidence() throws Exception {
+        var proof = fixture(13);
+        var pendingArchive = (ActionPorts.OutcomeArchive) Proxy.newProxyInstance(
+                ActionPorts.OutcomeArchive.class.getClassLoader(), new Class<?>[]{ActionPorts.OutcomeArchive.class},
+                (proxy, method, arguments) -> switch (method.getName()) {
+                    case "preserve" -> {
+                        assertSame(proof.fresh(), arguments[0]);
+                        yield ref(4);
+                    }
+                    case "preserveNativeFrame" -> {
+                        assertSame(proof.after(), arguments[0]);
+                        yield ref(5);
+                    }
+                    default -> throw new AssertionError(method);
+                });
+        var originalFailure = new NativeFreshSnapshotPort.Unavailable(proof.fresh(), "original frame missing at ACK");
+        var missing = RootFull111EventOptionEffects.pendingAfterRead(proof.attempt(), originalFailure.reason(), pendingArchive, originalFailure);
+        assertEquals(List.of(proof.attempt().guard().nativeEvidence(), ref(4)),
+                assertInstanceOf(ActionPorts.Pending.class, missing.result()).evidence());
+        assertTrue(missing.compatibleResult().isEmpty());
+
+        var invalidFrame = new NativeFreshSnapshotPort.Unavailable(proof.fresh(), "original frame rejected",
+                Optional.of(proof.after()), Optional.of(proof.received()));
+        var withFrame = RootFull111EventOptionEffects.pendingAfterRead(proof.attempt(), invalidFrame.reason(), pendingArchive, invalidFrame);
+        assertEquals(List.of(proof.attempt().guard().nativeEvidence(), ref(4), ref(5)),
+                assertInstanceOf(ActionPorts.Pending.class, withFrame.result()).evidence());
+        assertTrue(withFrame.compatibleResult().isEmpty());
     }
 
     @Test void preservesDistinctReferencesAndTheExactIndependentOccurrence() {

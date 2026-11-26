@@ -42,6 +42,9 @@ public final class RootLifecycleAuthority {
     }
     @FunctionalInterface public interface CheckedWork<T> { T apply(Lease actual) throws IOException; }
     @FunctionalInterface public interface SnapshotWork<T> { T apply(SnapshotLease actual) throws IOException; }
+    @FunctionalInterface private interface FreshSnapshotRead {
+        NativeFreshSnapshotPort.Result read(Instant deadline) throws IOException, InterruptedException;
+    }
     @FunctionalInterface public interface ActualDriverAuthority {
         /** Root resolves its actually adopted Driver at use time; no pre-adoption repository or substitute is legal. */
         DriverStateAssembler resolve(ContinuityStorePort.Session borrowed) throws IOException;
@@ -311,15 +314,22 @@ public final class RootLifecycleAuthority {
 
     /** No planning input, capability projection, onObserved domain hook, publication or second Native observe. */
     public <T>T withSnapshot(ContinuityStorePort.Session borrowed,Instant callerDeadline,SnapshotWork<T> work) throws IOException {
-        return withSnapshot(borrowed,callerDeadline,Optional.empty(),work,freshness,false);
+        return withSnapshot(borrowed,callerDeadline,Optional.empty(),work,freshness);
     }
     /** Only original UNKNOWN reconciliation gets a longer read-only physical lease. */
     public <T>T withReconciliationSnapshot(ContinuityStorePort.Session borrowed,Instant callerDeadline,SnapshotWork<T> work)throws IOException {
-        return withSnapshot(borrowed,callerDeadline,Optional.empty(),work,Duration.ofMinutes(2),false);
+        return withSnapshot(borrowed,callerDeadline,Optional.empty(),work,Duration.ofMinutes(2));
     }
     /** Fresh SAVE reconciliation: actual independent read, never replay. */
     public <T>T withReconciliationSnapshot(ContinuityStorePort.Session borrowed,Instant callerDeadline,boolean freshRead,SnapshotWork<T> work)throws IOException {
-        return withSnapshot(borrowed,callerDeadline,Optional.empty(),work,Duration.ofMinutes(2),freshRead);
+        return withSnapshot(borrowed,callerDeadline,Optional.empty(),work,Duration.ofMinutes(2),
+                freshRead ? Optional.of(transport::readFreshFullState) : Optional.empty());
+    }
+
+    <T> T withFull111EventReconciliationSnapshot(ContinuityStorePort.Session same, Instant deadline, ActionState.Attempt attempt,
+            NativeActionPort.AckReceived selected, SnapshotWork<T> work) throws IOException {
+        return withSnapshot(same, deadline, Optional.empty(), work, Duration.ofMinutes(2),
+                Optional.of(limit -> transport.readFreshFullStateAfterFull111Selection(attempt, selected, limit)));
     }
 
     /** Pure custody check against the same receiver that will perform the physical read. */
@@ -344,13 +354,15 @@ public final class RootLifecycleAuthority {
     }
     private <T>T withSnapshot(ContinuityStorePort.Session borrowed,Instant callerDeadline,
             Optional<NativeObservationPort.ObservedFrame> received,SnapshotWork<T> work,Duration effectiveFreshness)throws IOException {
-        return withSnapshot(borrowed,callerDeadline,received,work,effectiveFreshness,false);
+        return withSnapshot(borrowed,callerDeadline,received,work,effectiveFreshness,Optional.empty());
     }
     private <T>T withSnapshot(ContinuityStorePort.Session borrowed,Instant callerDeadline,
-            Optional<NativeObservationPort.ObservedFrame> received,SnapshotWork<T> work,Duration effectiveFreshness,boolean freshRead)throws IOException {
+            Optional<NativeObservationPort.ObservedFrame> received,SnapshotWork<T> work,Duration effectiveFreshness,
+            Optional<FreshSnapshotRead> freshReader)throws IOException {
         Objects.requireNonNull(work);Objects.requireNonNull(effectiveFreshness);
         require(!effectiveFreshness.isZero()&&!effectiveFreshness.isNegative()
                 &&effectiveFreshness.compareTo(Duration.ofMinutes(2))<=0,"bounded physical observation window required");
+        boolean freshRead = freshReader.isPresent();
         Instant deadline=deadline(callerDeadline,effectiveFreshness);Scope existing=active.get();
         if(existing!=null){
             if(freshRead) throw new IOException("fresh reconciliation read cannot borrow an existing physical scope");
@@ -372,7 +384,7 @@ public final class RootLifecycleAuthority {
                 freshResult=Optional.empty();
             }else if(freshRead) {
                 NativeFreshSnapshotPort.Result readResult;
-                try { transport.awaitHello(deadline);transport.verifyHeld(deadline);readResult=transport.readFreshFullState(deadline); }
+                try { transport.awaitHello(deadline);transport.verifyHeld(deadline);readResult=freshReader.orElseThrow().read(deadline); }
                 catch(InterruptedException failure){Thread.currentThread().interrupt();var interrupted=new InterruptedIOException("actual fresh reconciliation read interrupted");interrupted.initCause(failure);throw interrupted;}
                 if(readResult instanceof NativeFreshSnapshotPort.Unavailable unavailable) {
                     var outcome=unavailable.dispatch();
