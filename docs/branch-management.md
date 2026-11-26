@@ -247,3 +247,14 @@ ref as part of delivery rather than as a later cleanup project.
 ### 2026-10-05：短路径仍可能超出Windows默认长度
 
 后台第二批从master3e2737b5创建Z:/gbr2时，两个新跟踪的docs/li-yu-dao深层claim路径出现`Filename too long`，Git随后无法reset index并自动回收失败worktree。短路径并不保证所有仓库文件都低于默认路径长度。此真实RED用`git -c core.longpaths=true worktree add --detach <short-absolute-path> <exact-head>`修复；只对本次Git命令启用，不改全机设置、不清理旧树。新checkout后核.git、exact HEAD和clean status再分配owner。原工具回执和未宣称完整log保全的纠正记录在Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/CHECKOUT-RED-RECEIPT.json；六树登记见同目录lanes.json。
+
+## 2026-11-26 主线收口
+
+机器 `xenoamess-full-tower-eb9d2c1186`。起始远端 33 条分支，主 common-dir 有 148 条本地分支。来源包括旧场次冻结候选、已通过等价补丁进入主线的产品分支，以及 Dependabot 请求。
+
+- #789–#797 全部以 rebase 进入 `master`，远端回读为 `MERGED`，开放请求为 0。六条旧 CI 失败记录涉及以前的共享 Java 或验收用例，分别核查失败步骤并补跑当前依赖的对应测试。Jackson 存档核心 23 项通过，Pillow 使用当前包通过 27 项媒体和图像测试以及 DDS 打包产物读回。
+- 8 条 `campaign/*`、2 条 `runtime/*` 的当前实现已由主线生产提交覆盖，两个旧 1.20.0.4 实验仍可通过 `1ab7c74222` 的证据和补丁追溯。再核对 `research/e04-r217-runtime-8faa99b`、`work/episode04-r186-fixture-d05b0c780` 的 5 个等价补丁。所有对应工作都由 [95df3809be 官方 CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39957553119) 覆盖，12 个远端引用已退役，10 个同名本地引用和另外 5 个主线祖先引用也已退役。
+- 后续主线独立移植了过期 keeper 锁内重验 `b2755053c6`、Dynastic Esotericism 可选礼仪引用 `6d6cee99af`、公开运行前的协作停止 `1ce9b5f2e6` 与 Florin 自定义战争计时 `adfdbb324c`。其中过期 keeper 覆盖相关 CI 步骤的 74 项测试，协作停止的 55 项锁内测试及测试文件严格类型检查通过，战争计时覆盖安装目录只读依赖与 75 项静态测试。官方 CI 的 Crisis20 联合类型修复 `8b0fa04304` 通过该步骤和相邻离线用例。
+- 5 条金融市场分支与 4 条交付分支的补丁已在 `master`。2 条旧 DES 分支还有存档检查和验收工具待接入，4 条已合并的 bot 引用仍在。按实际主线 CI 结果继续退役，已检出的本地引用先核对工作树所有权。
+
+退役前的 27 条远端引用与原始对象已保存在可验证的 Git bundle，前置对象由主线提供。原始 GitHub 回读和 Git inventories 在 `D:/ck3-state/ck3-master-integration-20261126`。Bundle SHA-256 为 `ee9aa54f202a25b40afb5f15e74eba5f0e6846d52ab6547f1d41c4dae9bf9970`。本轮只删除 Git 引用，场次目录与已绑定工作树保留。
