@@ -12,6 +12,8 @@ import java.nio.file.StandardCopyOption;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -19,6 +21,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
@@ -26,6 +29,7 @@ import org.junit.jupiter.api.io.TempDir;
 import org.xar.ck3.control.application.action.ActionCodec;
 import org.xar.ck3.control.application.action.ActionCommand;
 import org.xar.ck3.control.application.action.OperationKey;
+import org.xar.ck3.control.contracts.ContractViolationException;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.FullJsonTree;
 import org.xar.ck3.control.contracts.GameGeneration;
@@ -47,6 +51,19 @@ import org.xar.ck3.control.service.root.RootOrdinaryRuntimeConfiguration;
 final class CodexFileDecisionSelectorTest {
     @TempDir Path directory;
     private record Input(PlanningRequest request, PlanningResult.ActionSelected proposal) { }
+
+    private static final class FixtureClock extends Clock {
+        private final AtomicReference<Instant> now;
+        private final ZoneId zone;
+
+        FixtureClock(Instant now) { this(new AtomicReference<>(now), ZoneOffset.UTC); }
+        private FixtureClock(AtomicReference<Instant> now, ZoneId zone) { this.now = now; this.zone = zone; }
+
+        void set(Instant value) { now.set(value); }
+        @Override public Instant instant() { return now.get(); }
+        @Override public ZoneId getZone() { return zone; }
+        @Override public Clock withZone(ZoneId value) { return new FixtureClock(now, value); }
+    }
 
     @Test @Timeout(20)
     void exactCodexReplyUsesFullArchivedPayloadAndOriginalParserWithoutAnHttpClient() throws Exception {
@@ -101,15 +118,20 @@ final class CodexFileDecisionSelectorTest {
     @Test @Timeout(20)
     void deadlineRemainsFiniteAndLateReplyCannotTransferToANewOriginalRequest() throws Exception {
         Input input = input("deadline-context"); Path queue = directory.resolve("late");
-        var first = selector(queue, Duration.ofMillis(180)).select(input.request(), input.proposal());
+        var clock = new FixtureClock(Instant.now());
+        var initialSelector = selector(queue, Duration.ofSeconds(12), clock);
+        var pending = CompletableFuture.supplyAsync(() -> initialSelector.select(input.request(), input.proposal()));
+        Path original = awaitRequest(queue); JsonNode old = tree(original);
+        clock.set(deadline(old));
+        var first = pending.get(5, TimeUnit.SECONDS);
         assertEquals(OrdinaryDecisionSelector.Choice.WAIT, first.choice());
-        Path original = onlyRequest(queue); JsonNode old = tree(original);
+        assertEquals("model_decision_deadline_exhausted", first.reason());
         writeResponse(original, response(old, Files.readAllBytes(original), "SELECT_PROPOSAL"));
         var responder = respond(queue, Set.of(original.getParent().getFileName().toString()), response -> {
             response.put("request_id", old.path("request_id").textValue());
             response.put("request_sha256", ActionCodec.sha256(read(original)));
         }, "SELECT_PROPOSAL");
-        var second = selector(queue, Duration.ofSeconds(5)).select(input.request(), input.proposal());
+        var second = selector(queue, Duration.ofSeconds(8), clock).select(input.request(), input.proposal());
         responder.get(5, TimeUnit.SECONDS);
         assertEquals(OrdinaryDecisionSelector.Choice.WAIT, second.choice());
         assertTrue(Files.isRegularFile(original.getParent().resolve("archived.json")));
@@ -198,27 +220,31 @@ final class CodexFileDecisionSelectorTest {
         assertArrayEquals(originalRequest, read(file));
     }
 
-    @Test @Timeout(20)
+    @Test @Timeout(30)
     void publicConsumerCannotReplyAfterOriginalWallOrMonotonicDeadline() throws Exception {
         for (boolean rollback : List.of(false, true)) {
             Input input = input("expiry context"); Path queue = directory.resolve("public-expiry-" + rollback);
-            var selector = selector(queue, Duration.ofMillis(1200));
+            var requesterClock = new FixtureClock(Instant.now());
+            var selector = selector(queue, Duration.ofSeconds(20), requesterClock);
             var running = CompletableFuture.supplyAsync(() -> selector.select(input.request(), input.proposal()));
             Path file = awaitRequest(queue); byte[] bytes = read(file);
-            var clock = new java.util.concurrent.atomic.AtomicReference<>(Instant.now());
-            Clock mutable = new Clock() {
-                @Override public java.time.ZoneId getZone() { return java.time.ZoneOffset.UTC; }
-                @Override public Clock withZone(java.time.ZoneId zone) { return this; }
-                @Override public Instant instant() { return clock.get(); }
-            };
-            var pending = CodexSessionDecisionFiles.read(file, ActionCodec.sha256(bytes), directory.resolve("materials"), mutable);
+            Instant originalDeadline = deadline(FullJsonTree.parse(bytes, 16384));
+            var reviewInterval = Duration.ofSeconds(5);
+            var reviewerClock = new FixtureClock(originalDeadline.minus(reviewInterval));
+            var pending = CodexSessionDecisionFiles.read(file, ActionCodec.sha256(bytes), directory.resolve("materials"), reviewerClock);
+            assertEquals(originalDeadline, pending.deadline());
             if (rollback) {
-                clock.set(clock.get().minusSeconds(30));
-                Thread.sleep(1300); // Original monotonic interval expires despite wall-clock rollback.
-            } else clock.set(pending.deadline());
-            assertThrows(RuntimeException.class, () -> CodexSessionDecisionFiles.respond(pending,
+                reviewerClock.set(reviewerClock.instant().minusSeconds(30));
+                // Let the reader's monotonic interval expire while the requester is still pending.
+                TimeUnit.NANOSECONDS.sleep(reviewInterval.toNanos());
+                assertTrue(reviewerClock.instant().isBefore(originalDeadline));
+            } else reviewerClock.set(originalDeadline);
+            assertFalse(Files.exists(file.getParent().resolve("archived.json")), "expiry must be checked independently of archival");
+            var failure = assertThrows(ContractViolationException.class, () -> CodexSessionDecisionFiles.respond(pending,
                     pending.selection(CodexSessionDecisionFiles.Decision.SELECT_PROPOSAL, "too late")));
+            assertEquals("original Codex request deadline expired", failure.getMessage());
             assertFalse(Files.exists(file.getParent().resolve("response.json")));
+            requesterClock.set(originalDeadline);
             assertEquals(OrdinaryDecisionSelector.Choice.WAIT, running.get(5, TimeUnit.SECONDS).choice());
         }
     }
@@ -274,24 +300,34 @@ final class CodexFileDecisionSelectorTest {
         assertEquals(OrdinaryDecisionSelector.Choice.WAIT, running.get(5, TimeUnit.SECONDS).choice());
     }
 
-    @Test @Timeout(20)
+    @Test @Timeout(30)
     void lateOrOversizedResponsesWithoutAnArchivedPhysicalPinAreNeverReclaimed() throws Exception {
         for (boolean oversized : List.of(false, true)) {
             Input input = input("unarchived response custody"); Path queue = directory.resolve("unarchived-response-" + oversized);
-            var firstSelector = selector(queue, Duration.ofMillis(500));
+            var clock = new FixtureClock(Instant.now());
+            var firstSelector = selector(queue, Duration.ofSeconds(12), clock);
             var first = CompletableFuture.supplyAsync(() -> firstSelector.select(input.request(), input.proposal()));
             Path request = awaitRequest(queue); Path responseFile = request.getParent().resolve("response.json");
+            JsonNode originalRequest = tree(request);
             if (oversized) Files.write(responseFile, new byte[262145]);
+            else clock.set(deadline(originalRequest));
             assertEquals(OrdinaryDecisionSelector.Choice.WAIT, first.get(5, TimeUnit.SECONDS).choice());
-            if (!oversized) writeResponse(request, response(tree(request), read(request), "SELECT_PROPOSAL"));
+            clock.set(deadline(originalRequest));
+            if (!oversized) writeResponse(request, response(originalRequest, read(request), "SELECT_PROPOSAL"));
             String original = ActionCodec.sha256(read(responseFile));
             for (int n = 0; n < 31; n++) Files.createDirectory(queue.resolve("codex-" + UUID.randomUUID()));
-            var next = selector(queue, Duration.ofSeconds(2)).select(input.request(), input.proposal());
+            var nextSelector = selector(queue, Duration.ofSeconds(8), clock);
+            var reader = oversized ? null : respond(queue, Set.of(originalRequest.path("request_id").textValue()), row -> { }, "WAIT");
+            var next = nextSelector.select(input.request(), input.proposal());
             assertEquals(OrdinaryDecisionSelector.Choice.WAIT, next.choice());
             if (oversized) {
+                var receipt = tree(Path.of(next.evidence().orElseThrow().path()));
+                var attempt = tree(Path.of(receipt.path("attempts").get(0).path("path").textValue()));
+                assertEquals("IOException:Codex queue is full of unarchived original requests", attempt.path("failure").textValue());
                 assertTrue(Files.isRegularFile(request));
                 assertEquals(original, ActionCodec.sha256(read(responseFile)), "unarchivable oversized response remains untouched");
             } else {
+                reader.get(5, TimeUnit.SECONDS);
                 assertFalse(Files.exists(request), "complete expired response evidence releases a slot after archival");
                 try (var materials = Files.list(directory.resolve("materials"))) {
                     var evidence = materials.map(CodexFileDecisionSelectorTest::read)
@@ -343,14 +379,21 @@ final class CodexFileDecisionSelectorTest {
     }
 
     private RootOnlineDecisionSelector selector(Path queue, Duration timeout) {
+        return selector(queue, timeout, Clock.systemUTC());
+    }
+
+    private RootOnlineDecisionSelector selector(Path queue, Duration timeout, Clock clock) {
         return new RootOnlineDecisionSelector(new RootOrdinaryRuntimeConfiguration.DecisionProvider(
-                queue.toUri(), "codex-session", timeout, 1, Duration.ZERO), Clock.systemUTC(), raw -> {
+                queue.toUri(), "codex-session", timeout, 1, Duration.ZERO), clock, raw -> {
             byte[] bytes = raw.bytes(); String sha = ActionCodec.sha256(bytes);
             Path root = directory.resolve("materials"); Files.createDirectories(root); Path file = root.resolve(sha + ".json");
             if (!Files.exists(file)) Files.write(file, bytes);
             return new ExactRef(file.toAbsolutePath().toString(), bytes.length, sha);
         });
     }
+
+    private static Instant deadline(JsonNode request) { return Instant.parse(request.path("deadline_utc").textValue()); }
+
     private static Input input(String context) {
         OperationKey operation = new OperationKey("fixture-source-selected-query");
         var snapshot = new OpportunityJson.Obj(Map.ofEntries(
@@ -416,10 +459,5 @@ final class CodexFileDecisionSelectorTest {
     private static JsonNode tree(Path path) throws Exception { return FullJsonTree.parse(Files.readAllBytes(path), 64 * 1024 * 1024); }
     private static byte[] read(Path path) {
         try { return Files.readAllBytes(path); } catch (Exception failure) { throw new IllegalStateException(failure); }
-    }
-    private static Path onlyRequest(Path root) throws Exception {
-        try (var entries = Files.list(root)) {
-            return entries.filter(Files::isDirectory).map(path -> path.resolve("request.json")).filter(Files::isRegularFile).findFirst().orElseThrow();
-        }
     }
 }
