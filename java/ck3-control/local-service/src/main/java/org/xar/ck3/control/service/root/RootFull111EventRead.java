@@ -9,16 +9,21 @@ import java.util.Objects;
 import java.util.Optional;
 import org.xar.ck3.control.application.action.ActionCodec;
 import org.xar.ck3.control.application.action.NativeActionPort.AckReceived;
+import org.xar.ck3.control.application.action.NativeObservationPort.ObservedFrame;
 import org.xar.ck3.control.application.planning.PlanningRequest;
 import org.xar.ck3.control.application.planning.events.RegisteredEventCore.Full111EventObservation;
 import org.xar.ck3.control.application.planning.events.RegisteredEventCore.Full111EventRead;
 import org.xar.ck3.control.application.readiness.ReadinessAuthority.LeaseSnapshot;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session;
 import org.xar.ck3.control.contracts.ContractViolationException;
+import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.semantic.NativeFull111OrdinaryEvent;
+import org.xar.ck3.control.g2.common.G2Source;
+import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
 import org.xar.ck3.control.nativebridge.CurrentLyd;
 import org.xar.ck3.control.nativebridge.CurrentLydResult;
 import org.xar.ck3.control.nativebridge.NativeGameTransport;
+import org.xar.ck3.control.nativebridge.NativeGameTransport.AcceptedSnapshotRevision;
 import org.xar.ck3.control.nativebridge.NativeWire;
 import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFrame;
 
@@ -28,6 +33,7 @@ final class RootFull111EventRead implements Full111EventRead {
     private static final BigInteger MAX_INT = BigInteger.valueOf(Integer.MAX_VALUE);
     private final RootRuntimeContext context;
     private final NativeGameTransport transport;
+    private final HeldReadMemo reads = new HeldReadMemo();
 
     RootFull111EventRead(RootRuntimeContext context, NativeGameTransport transport) {
         this.context = Objects.requireNonNull(context);
@@ -58,17 +64,26 @@ final class RootFull111EventRead implements Full111EventRead {
             return Optional.empty();
         var originals = lease.semantic();
         var full = context.collector().activeOriginalNativeFrame(same, lease);
-        var raw = NativeWire.object(NativeWire.parse(full.state().bytes()));
         var bound = originals.originalNativePacket();
-        byte[] rawPacket = full.originalPacket();
-        if (!originals.frame().equals(frame.identity()) || !bound.equals(frame.originalEvidence())
-                || bound.bytes() != rawPacket.length
-                || !bound.sha256().equals(ActionCodec.sha256(rawPacket))
-                || !NativeFull111OrdinaryEvent.read(raw).filter(foreground::equals).isPresent())
+        if (!originals.frame().equals(frame.identity()) || !bound.equals(frame.originalEvidence()))
             return Optional.empty();
         Instant deadline = earlier(actual.deadline(), lease.validUntil());
         var accepted = transport.acceptedSnapshotRevision(full);
         accepted.requireOriginal(transport.currentSnapshot(deadline));
+        Instant now = context.clock().instant();
+        if (!now.isBefore(deadline)) return Optional.empty();
+        var subject = new ReadSubject(accepted, frame.identity(), frame.source(), bound, originals.semantic(), foreground);
+        return reads.observe(subject, now, () -> query(same, full, subject, deadline));
+    }
+
+    private Optional<VerifiedRead> query(Session same, ObservedFrame full, ReadSubject subject, Instant deadline)
+            throws IOException {
+        var raw = NativeWire.object(NativeWire.parse(full.state().bytes()));
+        byte[] packet = full.originalPacket();
+        if (subject.full().bytes() != packet.length || !subject.full().sha256().equals(ActionCodec.sha256(packet))
+                || NativeFull111OrdinaryEvent.read(raw).filter(subject.foreground()::equals).isEmpty())
+            return Optional.empty();
+        var accepted = subject.occurrence();
 
         try {
             if (!(transport.readCoreFrameReceived(deadline) instanceof NativeGameTransport.CoreReceived core)
@@ -83,15 +98,39 @@ final class RootFull111EventRead implements Full111EventRead {
             if (!(transport.readFull111OrdinaryEvents(core, deadline) instanceof AckReceived ack) || !ack.nativeOk())
                 return Optional.empty();
             accepted.requireOriginal(transport.currentSnapshot(deadline));
-            var key = foregroundDefinition(core.original(), partial.prefix(), ack, foreground);
+            var key = foregroundDefinition(core.original(), partial.prefix(), ack, subject.foreground());
             if (key.isEmpty()) return Optional.empty();
 
             var archive = context.archive().withSession(same);
-            return Optional.of(new Full111EventObservation(foreground.instanceId(), key.orElseThrow(),
-                    bound, originals.semantic(), archive.preserve(core.original()), archive.preserve(ack)));
+            var evidence = new Full111EventObservation(subject.foreground().instanceId(), key.orElseThrow(),
+                    subject.full(), subject.semantic(), archive.preserve(core.original()), archive.preserve(ack));
+            return Optional.of(new VerifiedRead(core.validUntil(), evidence));
         } catch (InterruptedException interrupted) {
             Thread.currentThread().interrupt();
             return Optional.empty();
+        }
+    }
+
+    record ReadSubject(AcceptedSnapshotRevision occurrence, ObservationIdentity before, G2Source source,
+            ExactRef full, ExactRef semantic, NativeFull111OrdinaryEvent foreground) { }
+    record VerifiedRead(Instant validUntil, Full111EventObservation evidence) { }
+    @FunctionalInterface interface EventReadAttempt {
+        Optional<VerifiedRead> read() throws IOException;
+    }
+
+    /** Accessed under the one Root writer. The receipt is DATA bound to a single accepted snapshot occurrence. */
+    static final class HeldReadMemo {
+        private record Entry(ReadSubject subject, VerifiedRead observed) { }
+        private Entry retained;
+
+        Optional<Full111EventObservation> observe(ReadSubject actual, Instant now, EventReadAttempt attempt)
+                throws IOException {
+            if (retained != null && retained.subject().equals(actual) && now.isBefore(retained.observed().validUntil()))
+                return Optional.of(retained.observed().evidence());
+            retained = null;
+            var recovered = attempt.read();
+            recovered.ifPresent(read -> retained = new Entry(actual, read));
+            return recovered.map(VerifiedRead::evidence);
         }
     }
 
