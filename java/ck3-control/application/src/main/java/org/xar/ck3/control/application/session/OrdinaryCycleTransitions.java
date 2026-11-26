@@ -1176,7 +1176,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         }
     }
 
-    /** Consecutive settled Life cycles can explain the current date of an unissued imported opening. */
+    /** Settled Life cycles and date-neutral controls can explain the current date of an unissued imported opening. */
     public Optional<ImportedOpeningAdvance> importedOpeningAdvance(ContinuityStorePort.Session same, SessionIdentity owner,
             ObservationIdentity originalOpening, G2Source source, ObservationIdentity current) throws IOException {
         Objects.requireNonNull(originalOpening); Objects.requireNonNull(source); Objects.requireNonNull(current);
@@ -1211,43 +1211,50 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         CycleRecord record = load(recordRef);
         if (!record.semantic().frame().frame().identity().dateRaw().equals(current.frame().identity().dateRaw()))
             return Optional.empty();
-        // An unissued opening may read through its canonical Life prefix only.
         var actionHead = ContinuityActionJournal.recordHead(retained);
         if (actionHead.isEmpty()) return Optional.empty();
-        ActionReceipt life = archive.loadRecord(actionHead.orElseThrow()).receipt();
-        if (!archive.receiptReferenceOf(life).equals(record.receipt())) return Optional.empty();
-        var latest = new ImportedOpeningAdvance(recordRef, record.receipt(), record.semantic());
+        ActionReceipt receipt = archive.loadRecord(actionHead.orElseThrow()).receipt();
         long followingSequence = retained.sequence() + 1;
         ObservationIdentity following = current;
-        for (long remaining = advances; remaining > 0; remaining--) {
+        ImportedOpeningAdvance latestLife = null;
+        long remaining = advances;
+        for (int visited = 0; visited < MAX_RECORDS; visited++) {
+            boolean advance = record.classification() == Classification.ELIGIBLE_ADVANCE;
+            boolean controlOnly = record.classification() == Classification.CONTROL_ONLY;
             if (!record.session().equals(owner) || record.completedCycles() != cycle.basisCycles() + remaining
-                    || record.classification() != Classification.ELIGIBLE_ADVANCE
-                    || !LifeAdvanceComposite.accepts(life.command().operation().value())
-                    || !life.command().source().equals(source) || life.sequence() >= followingSequence
-                    || !matchesCycleRecordReceipt(record, life, owner)) return Optional.empty();
-            var before = life.command().before();
-            var after = life.applied().orElseThrow().observation().after();
-            if (before.frame().identity().dateRaw().compareTo(after.frame().identity().dateRaw()) >= 0
+                    || (!advance && !controlOnly)
+                    || (advance && (remaining == 0 || !LifeAdvanceComposite.accepts(receipt.command().operation().value())))
+                    || !receipt.command().source().equals(source) || receipt.sequence() >= followingSequence
+                    || !matchesCycleRecordReceipt(record, receipt, owner)) return Optional.empty();
+            var before = receipt.command().before();
+            var terminal = terminal(receipt);
+            var after = terminal.frame();
+            int dateChange = after.frame().identity().dateRaw().compareTo(before.frame().identity().dateRaw());
+            if ((advance ? dateChange <= 0 : dateChange != 0)
                     || !after.frame().identity().dateRaw().equals(following.frame().identity().dateRaw()))
                 return Optional.empty();
             requireSavedContinuation(after, record.semantic().frame());
             requireSavedContinuation(record.semantic().frame(), following);
-            freshAfter(life, record.semantic().frame(), record.semantic().observedAt());
-            if (remaining == 1) {
-                if (record.previous().isPresent()
+            freshAfter(receipt, terminal, record.semantic().frame(), record.semantic().observedAt());
+            if (advance) {
+                remaining--;
+                if (latestLife == null) latestLife = new ImportedOpeningAdvance(recordRef, record.receipt(), record.semantic());
+            }
+            if (record.previous().isEmpty()) {
+                if (!advance || remaining != 0
                         || !before.frame().identity().dateRaw().equals(originalOpening.frame().identity().dateRaw()))
                     return Optional.empty();
                 requireSavedContinuation(originalOpening, before);
-            } else {
-                if (record.previous().isEmpty()) return Optional.empty();
-                following = before;
-                followingSequence = life.sequence();
-                record = load(record.previous().orElseThrow());
-                life = archive.loadReceipt(record.receipt());
+                StrictJson.require(head.digest().equals(same.head().digest()), "opening date evidence changed the actual writer head");
+                return Optional.of(latestLife);
             }
+            following = before;
+            followingSequence = receipt.sequence();
+            recordRef = record.previous().orElseThrow();
+            record = load(recordRef);
+            receipt = archive.loadReceipt(record.receipt());
         }
-        StrictJson.require(head.digest().equals(same.head().digest()), "opening date evidence changed the actual writer head");
-        return Optional.of(latest);
+        return Optional.empty();
     }
 
     /** Qualify only current ordinary submission; this value cannot serve as a SAVE/cycle proof. */
@@ -2310,7 +2317,11 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         freshAfter(receipt, semantic.frame(), semantic.observedAt());
     }
     private void freshAfter(ActionReceipt receipt, ObservationIdentity frame, Instant observedAt) {
-        Terminal terminal = terminal(receipt); requireSameOwner(receipt.command().before(), frame); requireSameOwner(terminal.frame(), frame);
+        freshAfter(receipt, terminal(receipt), frame, observedAt);
+    }
+    private static void freshAfter(ActionReceipt receipt, Terminal terminal, ObservationIdentity frame, Instant observedAt) {
+        requireSameOwner(receipt.command().before(), frame);
+        requireSameOwner(terminal.frame(), frame);
         StrictJson.require(observedAt.isAfter(terminal.observedAt()), "the cycle SEM must be collected after the actual terminal observation");
         StrictJson.require(frame.frame().identity().nativeRevision().compareTo(terminal.frame().frame().identity().nativeRevision()) >= 0
                 && frame.frame().identity().dateRaw().compareTo(terminal.frame().frame().identity().dateRaw()) >= 0,
