@@ -53,6 +53,40 @@ final class MilitaryPeacetimeRuntimeTest {
         assertFalse(run.plan().phase().equals("m5_joint_query_only_red"));
     }
 
+    @Test void knownNonFeudalRootDoesNotDiscardIndependentlyLegalBuilding() throws Exception {
+        Scenario scenario = new Scenario("known-empty-faction", false, false);
+        // Rebind only government for this software frame, using the key from the original gift-route out-of-scope case.
+        Obj context = object(scenario.root.get("campaign_root_context"));
+        scenario.root = scenario.root.with("campaign_root_context", context.with("government",
+                object(context.get("government")).with("key", new Text("clan_government"))));
+        scenario.request = request(scenario.original.initialSnapshot(), List.of(scenario.rootHistory()));
+
+        Run run = scenario.run();
+        assertEquals(List.of(FinanceReadContracts.Query.ROOT), scenario.reads);
+        assertEquals(PeacetimeAssembly.FactionStatus.CONSUMER_DISABLED, scenario.captured.status());
+        assertEquals(new Text("government_out_of_scope"), scenario.captured.originalCandidate().get("reason"));
+        assertEquals(new Text("consumer_disabled"), run.collection().get("producer_faction_status"));
+        assertEquals(BUILDING, run.selected());
+        assertEquals(1, scenario.buildingRoutes);
+        assertEquals(0, scenario.giftRoutes);
+    }
+
+    @Test void unknownGovernmentOrStaleNonFeudalRootCannotDisableTheFactionFence() throws Exception {
+        Scenario scenario = new Scenario("known-empty-faction", false, false);
+        Obj root = scenario.root;
+        Obj context = object(root.get("campaign_root_context"));
+        Obj nonFeudal = context.with("government", obj("key", new Text("clan_government")));
+        for (Obj rejected : List.of(context.with("government", Nil.INSTANCE),
+                context.with("government", obj("key", new Text(" "))),
+                context.with("government", obj("key", new Bool(false))),
+                nonFeudal.with("snapshot_revision", n(16)), nonFeudal.with("player_character_id", n(999)))) {
+            scenario.root = root.with("campaign_root_context", rejected);
+            assertThrows(IllegalArgumentException.class, () -> MilitaryPeacetimeRuntime.captureFaction(
+                    scenario.request, true, scenario::read));
+        }
+        assertEquals(java.util.Collections.nCopies(5, FinanceReadContracts.Query.ROOT), scenario.reads);
+    }
+
     @Test void knownEmptyRootAndNoBuildingKeepTheLegalOrdinaryAdvance() throws Exception {
         Scenario scenario = new Scenario("empty-domains", true, false);
         Run run = scenario.run();
@@ -246,7 +280,7 @@ final class MilitaryPeacetimeRuntimeTest {
             var outcome = policy.evaluate(request, draft);
             var changed = outcome instanceof OrdinaryPolicy.Replace replace ? replace.draft()
                     : assertInstanceOf(OrdinaryPolicy.Annotate.class, outcome).retained();
-            assertNotNull(captured);
+            assertNotNull(captured, changed::reason);
             assertTrue(changed.command().isEmpty(), "software owning endpoints do not mint action authority");
             return new Run(changed, captured);
         }

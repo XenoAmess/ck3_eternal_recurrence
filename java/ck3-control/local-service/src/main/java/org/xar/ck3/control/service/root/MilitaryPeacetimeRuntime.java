@@ -111,6 +111,11 @@ public final class MilitaryPeacetimeRuntime implements M5PeacetimePolicy.SourceC
         var current=new FactionCandidatePolicy.Frame(identity.nativeRevision(),identity.dateRaw(),identity.player());
         var view=FactionCandidatePolicy.latestSameFrameRoot(new FactionCandidatePolicy.RootSearch(Optional.of(current),
                 List.of(new FactionCandidatePolicy.RootHistory(new Text("available").equals(result.get("status")),root))));
+        var government=root.governmentKey().filter(key->!key.isBlank());
+        if(view.status()==FactionCandidatePolicy.RootStatus.GOVERNMENT_OUT_OF_SCOPE&&government.isPresent())
+            return new PeacetimeAssembly.Faction(PeacetimeAssembly.FactionStatus.CONSUMER_DISABLED,
+                    OrdinaryFinanceCollector.obj("status",new Text("consumer_disabled"),"reason",new Text(view.status().wire()),
+                            "government_key",new Text(government.orElseThrow())));
         if(view.status()==FactionCandidatePolicy.RootStatus.KNOWN_EMPTY)
             return new PeacetimeAssembly.Faction(PeacetimeAssembly.FactionStatus.KNOWN_EMPTY,
                     OrdinaryFinanceCollector.obj("status",new Text("known_empty"),"reason",new Text("same_frame_public_targeting_count_zero"),
