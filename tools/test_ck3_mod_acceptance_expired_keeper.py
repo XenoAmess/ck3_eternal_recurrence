@@ -1,5 +1,7 @@
 """Offline failed-live resource recovery, preserving unknown keeper/CK3 exits."""
 from pathlib import Path
+from collections.abc import Iterator
+import contextlib
 import hashlib
 import json
 import sys
@@ -10,6 +12,8 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import ck3_mod_acceptance_allocate as allocation
+from ck3_mod_acceptance_background_types import JsonObject, json_object
+from ck3_mod_acceptance_fresh_machine_bootstrap import MachineBinding
 
 
 class ExpiredKeeperResourceClosureTests(unittest.TestCase):
@@ -188,6 +192,97 @@ class ExpiredKeeperResourceClosureTests(unittest.TestCase):
             with self.assertRaises(RouteReached):allocation.allocate_and_keep(selection,args)
             self.bundle.pop('closure_kind');self.save()
             with self.assertRaises(FileNotFoundError):allocation.allocate_and_keep(selection,args)
+
+    def writer_fixture(self, label: str) -> tuple[MachineBinding, SimpleNamespace, SimpleNamespace, JsonObject]:
+        source=Path(allocation.__file__).resolve().parents[1]
+        consumer=allocation.pin(source/'tools/ck3_mod_acceptance_allocate.py')
+        index=self.write(self.root/(label+'-source-index.json'),{
+            'schema':'ck3-common-source-index-v1','machine_id':self.machine,
+            'files':{'tools/ck3_mod_acceptance_allocate.py':{
+                'bytes':consumer['bytes'],'sha256':consumer['sha256']}}})
+        manifest={'source_root':{'path':str(source)},'machine_id':self.machine,'source_index':index}
+        manifest_path=self.root/(label+'-manifest.json');self.write(manifest_path,manifest)
+        runtime={'allocation':{'lease_repo':str(source),'task_bus':{
+            'path':str(self.bus_dir/'bin/codex_task_bus.py'),'sha256':'0'*64}}}
+        runtime_path=self.root/(label+'-runtime.json');self.write(runtime_path,runtime)
+        products_path=self.root/(label+'-products.json');self.write(products_path,{})
+        selection=SimpleNamespace(runtime=runtime,manifest=manifest,runtime_path=runtime_path,
+            manifest_path=manifest_path,products={},products_path=products_path,
+            state_dir=self.root/(label+'-next/state'),
+            prepared_path=Path(self.bundle['original_evidence']['prepared_case']['path']),
+            manifest_path_key=lambda reference:Path(reference['path']),preflight=lambda:{'blockers':[]})
+        args=SimpleNamespace(previous_live=self.run,previous_keeper=self.keeper,
+            previous_failure_close=self.close_path,previous_release=self.release_path)
+        binding=MachineBinding(machine_id=self.machine,state_root=str(self.root/'ids'),
+            admission_root=str(self.root/(label+'-admissions')))
+        closure=json_object(self.check());closure['release']=allocation.pin(self.release_path)
+        return binding,selection,args,closure
+
+    @contextlib.contextmanager
+    def observed_writer(self, binding: MachineBinding, *, appearing_pid: int | None = None) -> Iterator[list[str]]:
+        import ck3_live_run_id as ids
+        original_lock=ids._exclusive_file_lock
+        original_reducer=allocation.previous_failed_live_resource_closure
+        active=[False];events:list[str]=[]
+        admission=Path(binding['admission_root'])
+        @contextlib.contextmanager
+        def locked(path: Path) -> Iterator[None]:
+            with original_lock(path):
+                active[0]=True;events.append('locked')
+                if appearing_pid is not None:self.live={appearing_pid}
+                try:yield
+                finally:active[0]=False;events.append('unlocked')
+        def screen_absent(lease_repo: Path, bus_dir: Path, bus_sha: str, audit_dir: Path) -> JsonObject:
+            self.assertTrue(active[0]);events.append('current-screen')
+            self.assertFalse((admission/'machine.json').exists())
+            self.assertEqual(list(admission.glob('[0-9]*')),[])
+            return json_object(self.bus)
+        def reducer(previous: Path, freeze: dict[str,object], close: Path, keeper: Path,
+                release: Path, packet: dict[str,object]) -> dict[str,object]:
+            self.assertTrue(active[0]);events.append('original-reducer')
+            return original_reducer(previous,freeze,close,keeper,release,packet)
+        with patch.object(ids,'_exclusive_file_lock',locked),\
+             patch.object(allocation,'current_screen_absent',screen_absent),\
+             patch.object(allocation,'previous_failed_live_resource_closure',reducer),\
+             patch.dict(sys.modules,{'psutil':self.psutil}),\
+             patch.object(allocation,'runtime_process_inventory',return_value={'blockers':[]}):
+            yield events
+
+    def test_expired_keeper_revalidates_real_reducer_under_writer_lock_before_intent(self) -> None:
+        binding,selection,args,closure=self.writer_fixture('expired-writer')
+        with self.observed_writer(binding) as events:
+            record=allocation.claim_machine_admission(binding,selection,args,closure)
+        self.assertEqual(events,['locked','current-screen','original-reducer','unlocked'])
+        intent=allocation.read_json(record/'intent.json')
+        self.assertEqual(intent['closure']['mode'],'previous-shared-failed-live-expired-keeper-resource-closed')
+        for key in ('normal_close_qualified','typed_normal_exit_proven','business_pass','release_pass',
+                    'original_keeper_wait_proven'):
+            self.assertIs(intent['closure']['failure_cleanup'][key],False)
+        self.assertEqual(intent['closure']['failure_cleanup']['original_evidence'],
+                         closure['failure_cleanup']['original_evidence'])
+
+    def test_host_appearing_under_writer_lock_refuses_before_identity_or_intent(self) -> None:
+        binding,selection,args,closure=self.writer_fixture('expired-raced-host')
+        original_close=allocation.pin(self.close_path)
+        with self.observed_writer(binding,appearing_pid=11) as events:
+            with self.assertRaisesRegex(ValueError,'original process still present: host'):
+                allocation.claim_machine_admission(binding,selection,args,closure)
+        self.assertEqual(events,['locked','current-screen','original-reducer','unlocked'])
+        admission=Path(binding['admission_root'])
+        self.assertFalse((admission/'machine.json').exists())
+        self.assertEqual(list(admission.glob('[0-9]*')),[])
+        self.assertEqual(allocation.pin(self.close_path),original_close)
+
+    def test_existing_failed_live_mode_still_revalidates_and_rejects_changed_mode(self) -> None:
+        binding,selection,args,closure=self.writer_fixture('existing-failed-mode')
+        closure['mode']='previous-shared-failed-live-resource-closed'
+        with self.observed_writer(binding) as events:
+            with self.assertRaisesRegex(ValueError,'closure changed under original writer lock'):
+                allocation.claim_machine_admission(binding,selection,args,closure)
+        self.assertEqual(events,['locked','current-screen','original-reducer','unlocked'])
+        admission=Path(binding['admission_root'])
+        self.assertFalse((admission/'machine.json').exists())
+        self.assertEqual(list(admission.glob('[0-9]*')),[])
 
 
 if __name__=='__main__':unittest.main(verbosity=2)
