@@ -15,6 +15,36 @@ inline constexpr char kOpeningCurrentStep56[]="query-current-lifestyle-state-267
 inline constexpr char kOpeningCurrentCapability56[]="game.query.current-lifestyle-state.26757580.v1";
 inline constexpr char kOpeningCurrentSchema56[]="xar.ck3.lifestyle-current.26757580.v1";
 enum class OpeningReadKind56 {government_scope,current_lifestyle};
+inline constexpr char kOpeningScopeStep26785313[]="query-current-lifestyle-scope-26785313-v1";
+inline constexpr char kOpeningScopeCapability26785313[]="game.query.current-lifestyle-scope.26785313.v1";
+inline constexpr char kOpeningScopeSchema26785313[]="xar.ck3.lifestyle-scope.26785313.v1";
+inline constexpr char kOpeningCurrentStep26785313[]="query-current-lifestyle-state-26785313-v1";
+inline constexpr char kOpeningCurrentCapability26785313[]="game.query.current-lifestyle-state.26785313.v1";
+inline constexpr char kOpeningCurrentSchema26785313[]="xar.ck3.lifestyle-current.26785313.v1";
+
+struct OpeningReadWireProfile56 {
+ ImageBuildV1 build;
+ OpeningReadKind56 kind;
+ std::string_view step, capability, schema, profile_id;
+};
+inline constexpr std::array<OpeningReadWireProfile56,4> kOpeningReadWireProfiles56{{
+ {ImageBuildV1::hotfix26757580,OpeningReadKind56::government_scope,kOpeningScopeStep56,
+   kOpeningScopeCapability56,kOpeningScopeSchema56,"ck3-26757580-lifestyle-scope-v1"},
+ {ImageBuildV1::hotfix26757580,OpeningReadKind56::current_lifestyle,kOpeningCurrentStep56,
+   kOpeningCurrentCapability56,kOpeningCurrentSchema56,"ck3-26757580-lifestyle-current-v1"},
+ {ImageBuildV1::full11126785313,OpeningReadKind56::government_scope,kOpeningScopeStep26785313,
+   kOpeningScopeCapability26785313,kOpeningScopeSchema26785313,"ck3-26785313-lifestyle-scope-v1"},
+ {ImageBuildV1::full11126785313,OpeningReadKind56::current_lifestyle,kOpeningCurrentStep26785313,
+   kOpeningCurrentCapability26785313,kOpeningCurrentSchema26785313,"ck3-26785313-lifestyle-current-v1"}
+}};
+constexpr const OpeningReadWireProfile56 *FindOpeningReadWireProfile56(std::string_view step) noexcept {
+ for(const auto &profile:kOpeningReadWireProfiles56)if(profile.step==step)return &profile;
+ return nullptr;
+}
+constexpr const OpeningReadWireProfile56 *FindOpeningReadWireProfile56(ImageBuildV1 build,OpeningReadKind56 kind) noexcept {
+ for(const auto &profile:kOpeningReadWireProfiles56)if(profile.build==build && profile.kind==kind)return &profile;
+ return nullptr;
+}
 using OpeningCopy56=bool(*)(void*,const void*,void*,std::size_t) noexcept;
 using OpeningAdmission56=bool(*)(void*) noexcept;
 using OpeningObjectGetter56=const void*(*)(const void*);

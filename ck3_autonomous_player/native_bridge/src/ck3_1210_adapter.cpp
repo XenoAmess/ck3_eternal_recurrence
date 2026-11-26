@@ -565,6 +565,9 @@ const AdapterDescriptor &Ck3_121003Full111AdapterDescriptor() noexcept {
 #if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1
     ,ck3_121003::full111::kOrdinaryEventCapabilityV1
 #endif
+#if defined(XAR_CK3_ENABLE_26785313_OPENING_READONLY56)
+    ,ck3_1210::kOpeningScopeCapability26785313,ck3_1210::kOpeningCurrentCapability26785313
+#endif
   };
 #else
   static constexpr std::array<std::string_view,0> caps{};

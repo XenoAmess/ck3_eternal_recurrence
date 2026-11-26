@@ -647,6 +647,40 @@ int TestFlorinReadWireIdentity() {
       MatchReadWireResultIdentityV1(build, kReadWireContractsV1[1].step,
           kReadWireContractsV1[0].schema) != Match::wrong_schema)
     return Fail("version/cross-domain serializer accepted as another new read result");
+  const auto &bb3 = xar::game::Ck3_1210Hotfix26757580AdapterDescriptor();
+  const auto &full111 = xar::game::Ck3_121003Full111AdapterDescriptor();
+  for (const auto &profile : kOpeningReadWireProfiles56) {
+    const bool current = profile.build == ImageBuildV1::full11126785313;
+    const auto &opening_descriptor = current ? full111 : bb3;
+    const ReadWireBuildIdentityV1 opening_build{opening_descriptor.adapter_id, opening_descriptor.game_version, opening_descriptor.executable_sha256};
+    const auto contract = FindReadWireContractV1(opening_build, profile.step);
+    if (!contract || contract->capability != profile.capability ||
+        contract->step_location != ReadWireStepLocationV1::original_outbound ||
+        MatchReadWireResultIdentityV1(opening_build, profile.step, profile.schema) != Match::exact_contract)
+      return Fail("Opening lost the exact versioned outbound identity");
+    auto opening = opening_descriptor;
+    const std::array opening_capabilities{profile.capability};
+    opening.capabilities = opening_capabilities;
+    StubAdapter enabled_opening(opening, true), disabled_opening(opening, false), compiled_opening(opening_descriptor, true);
+    if (!enabled_opening.supports_step(profile.step) || disabled_opening.supports_step(profile.step) ||
+        compiled_opening.supports_step(profile.step) != compiled_opening.supports(profile.capability))
+      return Fail("Opening step did not require its independently enabled read capability");
+    for (unsigned field = 0; field < 3; ++field) {
+      auto cross_build = opening;
+      const auto &foreign = current ? bb3 : full111;
+      if (field == 0) cross_build.adapter_id = foreign.adapter_id;
+      else if (field == 1) cross_build.game_version = foreign.game_version;
+      else cross_build.executable_sha256 = foreign.executable_sha256;
+      StubAdapter injected(cross_build, true);
+      if (injected.supports_step(profile.step) || injected.supports(profile.capability))
+        return Fail("Opening capabilities crossed a mixed version tuple");
+    }
+    const auto *foreign_schema = FindOpeningReadWireProfile56(
+        current ? ImageBuildV1::hotfix26757580 : ImageBuildV1::full11126785313, profile.kind);
+    if (!foreign_schema || MatchReadWireResultIdentityV1(opening_build, profile.step,
+        foreign_schema->schema) != Match::wrong_schema)
+      return Fail("Opening result accepted another build's schema");
+  }
   const auto decision = FindReadWireContractV1(build, "query-decision-candidates-readonly-1210-v1");
   if (!decision || decision->step_location != ReadWireStepLocationV1::original_outbound ||
       !decision->schema_member.empty())

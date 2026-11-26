@@ -9,7 +9,7 @@
 #if defined(XAR_CK3_ENABLE_1210_ACTIVE_WARS_IDENTITY_V1) || defined(XAR_CK3_ENABLE_26757580_WAR_IDENTITY58)
 #include "xar_bridge/ck3_1210_active_wars_frame_v1.hpp"
 #endif
-#if defined(XAR_CK3_ENABLE_26757580_OPENING_READONLY56)
+#if defined(XAR_CK3_ENABLE_26757580_OPENING_READONLY56) || defined(XAR_CK3_ENABLE_26785313_OPENING_READONLY56)
 #include "xar_bridge/ck3_1210_opening_frame56.hpp"
 #endif
 #if defined(XAR_CK3_ENABLE_26757580_COUNCIL_OBSERVATION67)
@@ -186,7 +186,7 @@ bool Read(PersonalGoldMailboxContextV1 &q,
 #endif
   }
   if(q.kind==ActorObservationKindV1::opening_readonly56) {
-#if defined(XAR_CK3_ENABLE_26757580_OPENING_READONLY56)
+#if defined(XAR_CK3_ENABLE_26757580_OPENING_READONLY56) || defined(XAR_CK3_ENABLE_26785313_OPENING_READONLY56)
     return ExecuteOpeningOnActorOwner56(q,s);
 #else
     return true;

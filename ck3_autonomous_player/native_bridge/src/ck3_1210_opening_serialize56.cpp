@@ -1,5 +1,6 @@
 #include "xar_bridge/ck3_1210_opening_frame56.hpp"
 #include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
+#include "xar_bridge/ck3_121003_full_profile111.hpp"
 #include "xar_bridge/opening_provenance56.hpp"
 #include <limits>
 namespace xar::ck3_1210 {namespace {
@@ -26,8 +27,10 @@ bool Valid(const OpeningMailboxContext56&q) noexcept {
 }
 }
 std::string SerializeOpeningReadonlyData56(const OpeningMailboxContext56&q){
+ const auto *profile=FindOpeningReadWireProfile56(q.bindings.core.image_build,q.kind);
+ if(!profile)return "{\"status\":\"unavailable\",\"unavailable_reason\":\"opening_profile_unavailable\",\"read_only\":true,\"action_ready\":false}";
  const bool gov=q.kind==OpeningReadKind56::government_scope,available=Valid(q);
- std::string s="{\"schema\":";Quote(s,gov?kOpeningScopeSchema56:kOpeningCurrentSchema56);
+ std::string s="{\"schema\":";Quote(s,profile->schema);
  s+=",\"status\":";Quote(s,available?"available":"unavailable");s+=",\"unavailable_reason\":";
  if(available)s+="null";else Quote(s,q.observation.unavailable_reason.empty()?"opening_frame_unqualified":q.observation.unavailable_reason);
  s+=",\"read_only\":true,\"full_governance_ready\":false,\"action_ready\":false,\"native_revision\":";
@@ -55,11 +58,13 @@ std::string SerializeOpeningReadonlyData56(const OpeningMailboxContext56&q){
  s+=",\"pump_epoch\":";s+=q.pump_epoch?std::to_string(q.pump_epoch):"null";
  s+=",\"thread_id\":";s+=q.thread_id?std::to_string(q.thread_id):"null";
  s+=",\"main_owner_observed\":";s+=q.application_main_observed&&!q.offline_fixture?"true":"false";s+='}';
- s+=",\"provenance\":{\"profile_id\":";Quote(s,gov?"ck3-26757580-lifestyle-scope-v1":"ck3-26757580-lifestyle-current-v1");
- s+=",\"adapter_id\":";Quote(s,hotfix26757580::kAdapterId);s+=",\"game_version\":";Quote(s,kGameVersion);
- s+=",\"executable_sha256\":";Quote(s,hotfix26757580::kExecutableSha256);
- s+=",\"reader_source_sha256\":";Quote(s,opening_provenance56::kReaderSha);
- s+=",\"abi_manifest_sha256\":";Quote(s,opening_provenance56::kAbiSha);s+="}}";return s;
+ const bool current=profile->build==ImageBuildV1::full11126785313;
+ s+=",\"provenance\":{\"profile_id\":";Quote(s,profile->profile_id);
+ s+=",\"adapter_id\":";Quote(s,current?ck3_121003::full111::kAdapterId:hotfix26757580::kAdapterId);
+ s+=",\"game_version\":";Quote(s,current?ck3_121003::full111::kGameVersion:kGameVersion);
+ s+=",\"executable_sha256\":";Quote(s,current?ck3_121003::full111::kExecutableSha256:hotfix26757580::kExecutableSha256);
+ s+=",\"reader_source_sha256\":";Quote(s,current?opening_provenance56::kFull111ReaderSha:opening_provenance56::kReaderSha);
+ s+=",\"abi_manifest_sha256\":";Quote(s,current?opening_provenance56::kFull111AbiSha:opening_provenance56::kAbiSha);s+="}}";return s;
 }
 std::string SerializeOpeningReadonlyCommand56(std::string_view id,const OpeningMailboxContext56&q){
  std::string s="{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";Quote(s,id);

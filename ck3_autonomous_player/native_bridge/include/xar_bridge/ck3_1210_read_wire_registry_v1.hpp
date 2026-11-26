@@ -1,5 +1,6 @@
 #pragma once
 #include "xar_bridge/ck3_1210.hpp"
+#include "xar_bridge/ck3_121003_full_profile111.hpp"
 #include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210_opening_readonly56.hpp"
 #include "xar_bridge/ck3_1210_military_production58.hpp"
@@ -35,10 +36,12 @@ inline constexpr std::array<ReadWireContractV1, 7> kReadWireContractsV1{{
     {"query-actor-resource-leaf-v2", "game.query.actor-resource-leaf.v2",
      "ck3_1210_actor_resource_leaf_v2", ""},
 }};
-inline constexpr std::array<ReadWireContractV1,2> kOpeningReadWireContracts56{{
- {kOpeningScopeStep56,kOpeningScopeCapability56,kOpeningScopeSchema56,"",ReadWireStepLocationV1::original_outbound},
- {kOpeningCurrentStep56,kOpeningCurrentCapability56,kOpeningCurrentSchema56,"",ReadWireStepLocationV1::original_outbound}
-}};
+constexpr std::optional<ReadWireContractV1> FindOpeningReadWireContract56(
+    ImageBuildV1 build,std::string_view step) noexcept {
+  const auto *profile=FindOpeningReadWireProfile56(step);
+  if(!profile || profile->build!=build)return std::nullopt;
+  return ReadWireContractV1{profile->step,profile->capability,profile->schema,"",ReadWireStepLocationV1::original_outbound};
+}
 inline constexpr ReadWireContractV1 kMilitaryReadWireContract58{
  kActiveWarsHotfixStep58,kActiveWarsHotfixCapability58,kActiveWarsHotfixSchema58,""};
 constexpr std::optional<ReadWireContractV1> FindReadWireContractV1(
@@ -48,9 +51,11 @@ constexpr std::optional<ReadWireContractV1> FindReadWireContractV1(
     if(step==kMilitaryReadWireContract58.step)return kMilitaryReadWireContract58;
     if(step=="query-war-cash-current-resources-v2")
       for(const auto &contract:kReadWireContractsV1)if(contract.step==step)return contract;
-    for(const auto &contract:kOpeningReadWireContracts56)if(contract.step==step)return contract;
-    return std::nullopt;
+    return FindOpeningReadWireContract56(ImageBuildV1::hotfix26757580,step);
   }
+  if(build.adapter_id==ck3_121003::full111::kAdapterId && build.game_version==ck3_121003::full111::kGameVersion &&
+     build.executable_sha256==ck3_121003::full111::kExecutableSha256)
+    return FindOpeningReadWireContract56(ImageBuildV1::full11126785313,step);
   if (build.adapter_id != kAdapterId || build.game_version != kGameVersion ||
       build.executable_sha256 != kExecutableSha256) return std::nullopt;
   for (const auto &contract : kReadWireContractsV1)

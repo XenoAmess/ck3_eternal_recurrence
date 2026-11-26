@@ -12768,6 +12768,8 @@ public:
 #endif
        || game_->supports(xar::ck3_1210::kOpeningScopeCapability56)
        || game_->supports(xar::ck3_1210::kOpeningCurrentCapability56)
+       || game_->supports(xar::ck3_1210::kOpeningScopeCapability26785313)
+       || game_->supports(xar::ck3_1210::kOpeningCurrentCapability26785313)
        )
       executors[count++]=&xar::ck3_1210::ExecutePersonalGoldMailboxV1;
     if(observer_ != nullptr && game_->supports_snapshot())
@@ -16077,23 +16079,24 @@ std::string RunCouncilProgressPrivateQuery70(const xar::game::GameAdapter &game,
 std::string RunOpeningReadonlyQuery56(const xar::game::GameAdapter &game,
     WorkerState &state,std::string_view id,std::string_view step,std::string_view payload) {
   using namespace xar::ck3_1210;
-  const bool gov=step==kOpeningScopeStep56;
-  const auto capability=gov?kOpeningScopeCapability56:kOpeningCurrentCapability56;
+  const auto *profile=FindOpeningReadWireProfile56(step);
   ActorReadonlyRequestV1 request{};
-  if((!gov && step!=kOpeningCurrentStep56) ||
+  if(!profile ||
      !ParseActorReadonlyRequestV1(payload,step,ActorReadonlyRevisionV1::positive,request) || request.request_id!=id)
     return CommandResultFrame(id,step,false,"opening_request_invalid");
-  if(!game.enabled() || !xar::game::IsCk3_1210Hotfix26757580Descriptor(game.descriptor()) ||
-     !game.supports(capability) || !game.supports_snapshot() || !game.supports("game.query.fresh-full-state.v1"))
+  if(!game.enabled() || xar::game::Ck3_1210BasicBuild(game.descriptor())!=profile->build ||
+     !game.supports(profile->capability) || !game.supports_snapshot() || !game.supports("game.query.fresh-full-state.v1"))
     return CommandResultFrame(id,step,false,"opening_profile_unavailable");
-#if defined(XAR_CK3_ENABLE_26757580_OPENING_READONLY56)
+#if defined(XAR_CK3_ENABLE_26757580_OPENING_READONLY56) || defined(XAR_CK3_ENABLE_26785313_OPENING_READONLY56)
   if(request.expected_revision!=state.state_revision || !state.previous_snapshot || !state.previous_snapshot->paused)
     return CommandResultFrame(id,step,false,"opening_revision_or_full_unavailable");
-  OpeningMailboxContext56 query{};query.kind=gov?OpeningReadKind56::government_scope:OpeningReadKind56::current_lifestyle;
+  OpeningMailboxContext56 query{};query.kind=profile->kind;
   query.expected_native_revision=request.expected_revision;query.current_published_revision=&state.state_revision;
   query.expected_full=*state.previous_snapshot;query.native_full_adapter=&xar::ck3_12002::NativeAdapter12002(game);
   const auto module=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
   query.bindings=BindOpeningReadImage56(module,game.descriptor().executable_sha256);
+  if(!query.bindings.exact_build_admitted || query.bindings.core.image_build!=profile->build)
+    return CommandResultFrame(id,step,false,"opening_profile_unavailable");
   PersonalGoldMailboxContextV1 actor{};actor.kind=ActorObservationKindV1::opening_readonly56;actor.opening56=&query;
   actor.game=&game;actor.image_base=module;actor.mailbox=&g_main_thread_query_mailbox_v1;
   actor.bindings.core=query.bindings.core;actor.bindings.exact_build_admitted=query.bindings.exact_build_admitted;
@@ -17523,7 +17526,7 @@ void RunConnectedSession(
           early_step_dispatched=true;
         }
 #endif
-        if(!early_step_dispatched && (step==xar::ck3_1210::kOpeningScopeStep56 || step==xar::ck3_1210::kOpeningCurrentStep56)) {
+        if(!early_step_dispatched && xar::ck3_1210::FindOpeningReadWireProfile56(step)) {
           connected=write_frame(pipe,RunOpeningReadonlyQuery56(game,state,request_id,step,incoming.payload));
           early_step_dispatched=true;
         }

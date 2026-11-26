@@ -1,6 +1,5 @@
 #include "xar_bridge/ck3_1210_opening_readonly56.hpp"
-#include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
-#include "xar_bridge/opening_readonly_profile56.hpp"
+#include "xar_bridge/ck3_121003_opening_readonly26785313_pins.hpp"
 #include <algorithm>
 #include <cstring>
 #include <limits>
@@ -11,6 +10,24 @@
 #endif
 namespace xar::ck3_1210 {namespace {
 using namespace opening_profile56;
+const ImageProfile *Profile(ImageBuildV1 build) noexcept {
+ switch(build){
+ case ImageBuildV1::hotfix26757580:return &kHotfix26757580;
+ case ImageBuildV1::full11126785313:return &kFull11126785313;
+ default:return nullptr;
+ }
+}
+bool BuildEnabled(ImageBuildV1 build) noexcept {
+ switch(build){
+#if defined(XAR_CK3_ENABLE_26757580_OPENING_READONLY56)
+ case ImageBuildV1::hotfix26757580:return true;
+#endif
+#if defined(XAR_CK3_ENABLE_26785313_OPENING_READONLY56)
+ case ImageBuildV1::full11126785313:return true;
+#endif
+ default:return false;
+ }
+}
 bool LocalCopy(void*,const void *source,void *dest,std::size_t size) noexcept {
  if(!source || !dest)return false;
 #if defined(_MSC_VER)
@@ -95,7 +112,7 @@ bool Utf8(std::string_view v) noexcept {
 }
 struct Cell {std::uintptr_t address=0;std::vector<std::byte> bytes;friend bool operator==(const Cell&,const Cell&)=default;};
 struct Sample {
- const OpeningReadBindings56 &b;const CoreSnapshotPrefix &expected;OpeningReadAccess56 access;
+ const OpeningReadBindings56 &b;const ImageProfile &profile;const CoreSnapshotPrefix &expected;OpeningReadAccess56 access;
  std::size_t &calls;std::vector<Cell> cells;std::size_t string_bytes=0;
  std::string_view reason="opening_source_unavailable";
  OpeningGovernment56 government;OpeningLifestyle56 life;
@@ -158,7 +175,7 @@ struct Sample {
   const void *owned=nullptr,*owned_government=nullptr;
   if(!Read(actor,0x1c0,owned) || !owned || !Read(owned,0x428,owned_government) || !owned_government || owned_government==fallback){
    reason="opening_owned_government_required";return false;}
-  if(!Before(b.government,kGovernmentPin) || !Object(b.government,actor,selected) || !After())return false;
+  if(!Before(b.government,profile.government.pin) || !Object(b.government,actor,selected) || !After())return false;
   if(!selected || selected==fallback || selected!=owned_government){reason="opening_government_not_observed";return false;}
   std::uintptr_t vt=0;std::uint32_t tag=0;const void *ids=nullptr;
   if(!Read(selected,0,vt) || !Read(selected,0x38,tag) || vt!=b.government_vtable || tag!=0x4744624fU ||
@@ -172,7 +189,7 @@ struct Sample {
    if(!Read(ids,static_cast<std::size_t>(i)*4,id) || id<0 || id<prior || id>bound ||
      !Read(table,static_cast<std::size_t>(id)*sizeof(void*),table_name) || !table_name){reason="opening_government_identifier_invalid";return false;}
    prior=id;
-   if(!Before(b.identifier_name,kNamePin) || !Name(b.identifier_name,id,name) || !After())return false;
+   if(!Before(b.identifier_name,profile.identifier_name.pin) || !Name(b.identifier_name,id,name) || !After())return false;
    if(!name || name==b.identifier_missing_string || name!=table_name){reason="opening_government_name_unavailable";return false;}
    std::string text;if(!String(name,0,text))return false;government.flags.push_back(std::move(text));
   }
@@ -185,11 +202,11 @@ struct Sample {
   const void *focus_owner=nullptr,*source_focus=nullptr;
   if(!Read(living,0x280,focus_owner) || !focus_owner || !Read(focus_owner,8,source_focus) || !source_focus || source_focus==fallback){
    reason="opening_focus_absence_progress_unverified";return false;}
-  if(!Before(b.focus,kFocusPin) || !Object(b.focus,actor,selected) || !After())return false;
+  if(!Before(b.focus,profile.focus.pin) || !Object(b.focus,actor,selected) || !After())return false;
   if(!selected || selected==fallback || selected!=source_focus){reason="opening_focus_absence_progress_unverified";return false;}
   std::uintptr_t focus_type=0,style_type=0;const void *associated=nullptr;
   if(!Read(selected,0,focus_type) || focus_type!=b.focus_vtable || !String(selected,0x18,life.focus_key) || !Read(selected,0x5c8,associated))return false;
-  if(!Before(b.lifestyle,kLifestylePin) || !Object(b.lifestyle,actor,style) || !After())return false;
+  if(!Before(b.lifestyle,profile.lifestyle.pin) || !Object(b.lifestyle,actor,style) || !After())return false;
   if(!style || style!=associated || !Read(style,0,style_type) || style_type!=b.lifestyle_vtable ||
     !String(style,0x18,life.lifestyle_key) || !Read(style,0xc8,life.xp_per_level) || life.xp_per_level<1){reason="opening_current_lifestyle_unavailable";return false;}
   const void *rows=nullptr;std::int32_t count=0,capacity=0;
@@ -201,11 +218,11 @@ struct Sample {
    if(row_style==style){if(found){reason="opening_xp_duplicate_style";return false;}found=true;expected_raw=raw;}
   }
   if(expected_raw<0 || expected_raw/100000>(std::numeric_limits<std::int32_t>::max)()){reason="opening_xp_native_narrowing_unqualified";return false;}
-  if(!Before(b.xp,kXpPin) || !Xp(b.xp,actor,style,false,life.xp_total_raw) || !After() ||
+  if(!Before(b.xp,profile.xp.pin) || !Xp(b.xp,actor,style,false,life.xp_total_raw) || !After() ||
     life.xp_total_raw!=expected_raw){reason="opening_xp_total_abi_or_source_mismatch";return false;}
-  if(!Before(b.xp,kXpPin) || !Xp(b.xp,actor,style,true,life.xp_within_level_raw) || !After() ||
+  if(!Before(b.xp,profile.xp.pin) || !Xp(b.xp,actor,style,true,life.xp_within_level_raw) || !After() ||
     life.xp_within_level_raw!=expected_raw%(static_cast<std::int64_t>(life.xp_per_level)*100000)){reason="opening_xp_within_abi_or_source_mismatch";return false;}
-  if(!Before(b.points,kPointsPin) || !Points(b.points,actor,style,life.unspent_perk_points) || !After() ||
+  if(!Before(b.points,profile.points.pin) || !Points(b.points,actor,style,life.unspent_perk_points) || !After() ||
     life.unspent_perk_points<0 || life.unspent_perk_points!=expected_raw/100000/life.xp_per_level){reason="opening_points_abi_or_source_mismatch";return false;}
   const void *owned=nullptr;std::int32_t owned_count=0;
   if(!Read(living,0x220,owned) || !Read(living,0x22c,owned_count) || owned_count<0 || owned_count>512 || (owned_count && !owned)){
@@ -215,7 +232,7 @@ struct Sample {
    if(!Read(owned,static_cast<std::size_t>(i)*sizeof(void*),perk) || !perk || !Read(perk,0x390,perk_style))return false;
    if(perk_style==style)++used;
   }
-  if(!Before(b.used,kUsedPin) || !Points(b.used,actor,style,life.used_perk_points) || !After() ||
+  if(!Before(b.used,profile.used.pin) || !Points(b.used,actor,style,life.used_perk_points) || !After() ||
     life.used_perk_points<0 || life.used_perk_points!=used){reason="opening_used_counter_abi_or_source_mismatch";return false;}
   // No owned-perk keys, membership completeness or action permission is emitted.
   return After();
@@ -224,23 +241,32 @@ struct Sample {
 }
 OpeningReadBindings56 BindOpeningReadImage56(std::uintptr_t base,std::string_view sha) noexcept {
  OpeningReadBindings56 b{};b.core=BindCoreImage(base,sha);
- if(!b.core.enabled || b.core.image_build!=ImageBuildV1::hotfix26757580 || sha!=hotfix26757580::kExecutableSha256)return b;
- b.government=reinterpret_cast<OpeningObjectGetter56>(base+kGovernmentRva);
- b.identifier_name=reinterpret_cast<OpeningNameGetter56>(base+kNameRva);
- b.focus=reinterpret_cast<OpeningObjectGetter56>(base+kFocusRva);b.lifestyle=reinterpret_cast<OpeningObjectGetter56>(base+kLifestyleRva);
- b.xp=reinterpret_cast<OpeningXpGetter56>(base+kXpRva);b.points=reinterpret_cast<OpeningPointsGetter56>(base+kPointsRva);b.used=reinterpret_cast<OpeningPointsGetter56>(base+kUsedRva);
- b.government_fallback_slot=reinterpret_cast<void**>(base+0x6a689a8);b.identifier_manager_slot=reinterpret_cast<void**>(base+0x6a65400);
- b.focus_fallback_slot=reinterpret_cast<void**>(base+0x6a689a0);b.identifier_missing_string=reinterpret_cast<const void*>(base+0x6b15510);
- b.government_vtable=base+0x4ffb0c8;b.focus_vtable=base+0x5013c50;b.lifestyle_vtable=base+0x5016058;
+ const auto *profile=Profile(b.core.image_build);
+ if(!b.core.enabled || !profile || !BuildEnabled(b.core.image_build))return b;
+ b.government=reinterpret_cast<OpeningObjectGetter56>(base+profile->government.rva);
+ b.identifier_name=reinterpret_cast<OpeningNameGetter56>(base+profile->identifier_name.rva);
+ b.focus=reinterpret_cast<OpeningObjectGetter56>(base+profile->focus.rva);
+ b.lifestyle=reinterpret_cast<OpeningObjectGetter56>(base+profile->lifestyle.rva);
+ b.xp=reinterpret_cast<OpeningXpGetter56>(base+profile->xp.rva);
+ b.points=reinterpret_cast<OpeningPointsGetter56>(base+profile->points.rva);
+ b.used=reinterpret_cast<OpeningPointsGetter56>(base+profile->used.rva);
+ b.government_fallback_slot=reinterpret_cast<void**>(base+profile->government_fallback);
+ b.identifier_manager_slot=reinterpret_cast<void**>(base+profile->identifier_manager);
+ b.focus_fallback_slot=reinterpret_cast<void**>(base+profile->focus_fallback);
+ b.identifier_missing_string=reinterpret_cast<const void*>(base+profile->missing_identifier);
+ b.government_vtable=base+profile->government_vtable;
+ b.focus_vtable=base+profile->focus_vtable;
+ b.lifestyle_vtable=base+profile->lifestyle_vtable;
  b.exact_build_admitted=true;return b;
 }
 bool ReadOpeningReadonly56(const OpeningReadBindings56 &b,const CoreSnapshotPrefix &expected,OpeningReadKind56 kind,
  OpeningReadObservation56 &out,OpeningReadAccess56 access) noexcept {
  out={};out.kind=kind;std::size_t calls=0;std::string_view reason="opening_exact_binding_unavailable";
  try {
-  if(!b.exact_build_admitted || !b.core.enabled || b.core.image_build!=ImageBuildV1::hotfix26757580 ||
+  const auto *profile=Profile(b.core.image_build);
+  if(!b.exact_build_admitted || !b.core.enabled || !profile ||
     !b.integration_native_calls_permitted || !b.native_call_admission){out.unavailable_reason=reason;return false;}
-  Sample first{b,expected,access,calls},second{b,expected,access,calls};
+  Sample first{b,*profile,expected,access,calls},second{b,*profile,expected,access,calls};
   const auto read=[&](Sample &s){return kind==OpeningReadKind56::government_scope?s.Government():s.Lifestyle();};
   if(!read(first)){reason=first.reason;}else if(!read(second)){reason=second.reason;}
   else if(first.cells!=second.cells || first.selected!=second.selected || first.style!=second.style ||

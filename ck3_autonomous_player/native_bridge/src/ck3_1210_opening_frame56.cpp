@@ -1,5 +1,6 @@
 #include "xar_bridge/ck3_1210_opening_frame56.hpp"
 #include "xar_bridge/ck3_1210_adapter.hpp"
+#include "xar_bridge/ck3_121003_readonly26785313_v1.hpp"
 #include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include <intrin.h>
 #include <windows.h>
@@ -8,10 +9,10 @@ bool SameCoreBindings(const CoreBindings&a,const CoreBindings&b) noexcept {
  return a.enabled && b.enabled && a.image_build==b.image_build && a.game_state_slot==b.game_state_slot &&
  a.jomini_state_slot==b.jomini_state_slot && a.character_storage_slot==b.character_storage_slot && a.get_local_player==b.get_local_player;
 }
-bool Cap(const game::GameAdapter *a,OpeningReadKind56 k) noexcept {
- return a && a->enabled() && game::IsCk3_1210Hotfix26757580Descriptor(a->descriptor()) &&
- a->supports(k==OpeningReadKind56::government_scope?kOpeningScopeCapability56:kOpeningCurrentCapability56) &&
- a->supports_snapshot() && a->supports("game.query.fresh-full-state.v1");
+bool Cap(const game::GameAdapter *a,ImageBuildV1 build,OpeningReadKind56 k) noexcept {
+ const auto *profile=FindOpeningReadWireProfile56(build,k);
+ return a && profile && a->enabled() && game::Ck3_1210BasicBuild(a->descriptor())==build &&
+ a->supports(profile->capability) && a->supports_snapshot() && a->supports("game.query.fresh-full-state.v1");
 }
 bool Targets(const PersonalGoldMailboxContextV1&p,const OpeningMailboxContext56&q,
  const ck3_11906::MainThreadExecutionStampV1&s) noexcept {
@@ -23,6 +24,9 @@ bool Targets(const PersonalGoldMailboxContextV1&p,const OpeningMailboxContext56&
 #endif
  const auto base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
  const auto exact=BindOpeningReadImage56(base,p.game->descriptor().executable_sha256);const auto &b=q.bindings;
+ const bool current=exact.core.image_build==ImageBuildV1::full11126785313;
+ const auto tls_flag=current?ck3_121003::build26785313::kTlsFlagRva:hotfix26757580::kTlsFlag;
+ const auto tls_getter=current?ck3_121003::build26785313::kTlsGetterRva:hotfix26757580::kTlsGetter;
  if(q.read_access.copy || q.read_access.context || !base || p.image_base!=base || m.module_base!=base || !exact.exact_build_admitted ||
  !SameCoreBindings(b.core,exact.core) || !SameCoreBindings(p.bindings.core,exact.core) ||
  b.government!=exact.government || b.identifier_name!=exact.identifier_name || b.focus!=exact.focus ||
@@ -32,8 +36,8 @@ bool Targets(const PersonalGoldMailboxContextV1&p,const OpeningMailboxContext56&
  b.government_vtable!=exact.government_vtable || b.focus_vtable!=exact.focus_vtable || b.lifestyle_vtable!=exact.lifestyle_vtable ||
  m.game_state_slot!=reinterpret_cast<std::uintptr_t>(exact.core.game_state_slot) ||
  m.jomini_state_slot!=reinterpret_cast<std::uintptr_t>(exact.core.jomini_state_slot) ||
- m.tls_initialized_flag!=base+hotfix26757580::kTlsFlag || s.tls_initialized_flag_address!=m.tls_initialized_flag ||
- reinterpret_cast<std::uintptr_t>(m.tls_context_getter)!=base+hotfix26757580::kTlsGetter)return false;
+ m.tls_initialized_flag!=base+tls_flag || s.tls_initialized_flag_address!=m.tls_initialized_flag ||
+ reinterpret_cast<std::uintptr_t>(m.tls_context_getter)!=base+tls_getter)return false;
  // Read only the already-warm embedded TLS context; never invoke its lazy getter.
  if(*reinterpret_cast<const std::uint8_t*>(m.tls_initialized_flag)!=1)return false;
  const auto slots=reinterpret_cast<void**>(__readgsqword(0x58));if(!slots || !slots[0])return false;
@@ -43,7 +47,9 @@ bool Targets(const PersonalGoldMailboxContextV1&p,const OpeningMailboxContext56&
 }
 bool OwnerInner(const PersonalGoldMailboxContextV1&p,const OpeningMailboxContext56&q,
  const ck3_11906::MainThreadExecutionStampV1&s) noexcept {
- if(p.kind!=ActorObservationKindV1::opening_readonly56 || p.opening56!=&q || !Cap(p.game,q.kind) || !Cap(q.native_full_adapter,q.kind) ||
+ const auto build=q.bindings.core.image_build;
+ if(p.kind!=ActorObservationKindV1::opening_readonly56 || p.opening56!=&q || !Cap(p.game,build,q.kind) ||
+ !Cap(q.native_full_adapter,build,q.kind) ||
  !p.mailbox || !p.ticket.sequence || !p.bindings.exact_build_admitted || !q.bindings.exact_build_admitted ||
  !SameCoreBindings(p.bindings.core,q.bindings.core) || q.bindings.integration_native_calls_permitted ||
  q.bindings.native_call_admission || q.bindings.native_call_admission_context || q.expected_native_revision==0 || !q.current_published_revision)return false;
