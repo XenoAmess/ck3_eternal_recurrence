@@ -18,9 +18,11 @@ import org.xar.ck3.control.application.driver.*;
 import org.xar.ck3.control.application.driver.DriverObservationAssembler.Complete;
 import org.xar.ck3.control.application.effects.*;
 import org.xar.ck3.control.application.readiness.NativeReadinessCollector.SourceQualification;
+import org.xar.ck3.control.continuity.ContinuityState;
 import org.xar.ck3.control.continuity.writer.*;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.nativebridge.CurrentFull111EventOption;
 import org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort;
 import org.xar.ck3.control.nativebridge.NativeWire;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
@@ -309,6 +311,10 @@ public final class RootReconciliationAuthority {
         Instant preparationDeadline=preparedUntil.orElse(deadline);
         require(clock.instant().isBefore(preparationDeadline),"reconciliation deadline expired before any Native I/O");
         ActionState.Attempt attempt=pending.requirePending(same,original);
+        boolean full111Event=isFull111EventSelection(original);
+        if(full111Event && !canReadFull111EventSelection(same,original,attempt))
+            throw new RawUnavailable("Full111 SELECT reconciliation requires its original running batch and retained same-receiver positive ACK",
+                    List.of(attempt.guard().nativeEvidence()));
         var bound=archive.withSession(same);
         RootGuardEvidence.requireHistory(attempt.guard(),bound,same);
         Complete before=RootGuardEvidence.loadFrame(attempt.guard(),bound,frames);
@@ -321,6 +327,7 @@ public final class RootReconciliationAuthority {
                     "ordinary 1210 CANCEL cold observation requires its real original preflight and exact positive ACK");
         boolean freshRead = (original.command().operation().value().equals("save-checkpoint")
                 || original.command().operation().value().equals("resume-map")
+                || full111Event
                 || org.xar.ck3.control.application.session.ContinuityBatchJournal.isReadOnlyKnownPendingRecovery(original)
                 || org.xar.ck3.control.application.session.ContinuityBatchJournal.isReadOnlyEventRecovery(original)
                 || isPositiveAckClockArm(original)
@@ -333,10 +340,18 @@ public final class RootReconciliationAuthority {
             Instant until=physical.originalArmReadPreparationDeadline(same,original).orElseThrow();
             Instant local=clock.instant().plus(ActionObservationWindow.MAXIMUM_WINDOW);
             observationDeadline=until.isBefore(local)?until:local;
+        }else if(full111Event && original.command().deadline().isBefore(deadline)) {
+            observationDeadline=original.command().deadline();
         }else observationDeadline=deadline;
+        if(full111Event && !clock.instant().isBefore(observationDeadline))
+            throw new RawUnavailable("Full111 SELECT reconciliation reached its unchanged ordinary deadline",List.of(attempt.guard().nativeEvidence()));
         require(clock.instant().isBefore(observationDeadline),"actual ARM observation window expired after read-only preparation");
         return physical.withReconciliationSnapshot(same,observationDeadline,freshRead,captured->{
             captured.assertCurrent(same);
+            if(full111Event && (!canReadFull111EventSelection(same,original,attempt)
+                    || captured.fullSnapshot().actual().nativeRevision().compareTo(before.identity().frame().identity().nativeRevision())<=0))
+                throw new RawUnavailable("Full111 SELECT reconciliation lost its retained receiver or later Full",
+                        List.of(attempt.guard().nativeEvidence(),captured.fullSnapshot().originalEvidence()));
             if(captured.ordinary().isEmpty()) {
                 captured.assertCurrent(same);
                 throw new RawUnavailable("actual current player is missing, dead or changed; unresolved primitive has no same-actor reconciliation data",
@@ -379,6 +394,18 @@ public final class RootReconciliationAuthority {
         });
     }
 
+    private static boolean isFull111EventSelection(ActionReceipt receipt) {
+        return CurrentFull111EventOption.Action.SELECT.step().equals(receipt.command().operation().value());
+    }
+
+    private boolean canReadFull111EventSelection(ContinuityStorePort.Session same,ActionReceipt receipt,
+            ActionState.Attempt attempt)throws IOException {
+        return same.head().state().status()==ContinuityState.Status.RUNNING
+                && (receipt.state() instanceof ActionState.AckReceived || receipt.state() instanceof ActionState.Unknown)
+                && receipt.command().expected().observerSchema().equals(RootFull111EventOptionEffects.SCHEMA)
+                && receipt.ack().filter(ack->physical.canConfirmFull111EventSelection(attempt,ack)).isPresent();
+    }
+
     /** Classification of existing canonical DATA only; it supplies no dispatch or settlement permission. */
     static boolean isPositiveAckClockArm(ActionReceipt original) {
         if(original.settled()||!(original.state() instanceof ActionState.Unknown||original.state() instanceof ActionState.AckReceived)
@@ -399,6 +426,7 @@ public final class RootReconciliationAuthority {
             ActionReceipt original,ActionState.Attempt attempt,ExactRef originalReceipt,ActionPorts.OutcomeArchive bound)throws IOException {
         require((original.command().operation().value().equals("save-checkpoint")
                 || original.command().operation().value().equals("resume-map")
+                || isFull111EventSelection(original)
                 || org.xar.ck3.control.application.session.ContinuityBatchJournal.isReadOnlyKnownPendingRecovery(original)
                 || org.xar.ck3.control.application.session.ContinuityBatchJournal.isReadOnlyEventRecovery(original)
                 || isPositiveAckClockArm(original)
@@ -435,7 +463,7 @@ public final class RootReconciliationAuthority {
         if(save.session().equals(read.session()) && save.custodyEpoch().equals(read.custodyEpoch())) {
             NativeFreshSnapshotPort.verifyAfter(saveAck,fresh);
         } else {
-            require(save.session().machineId().equals(read.session().machineId())
+            require(!isFull111EventSelection(original) && save.session().machineId().equals(read.session().machineId())
                     && save.session().game().equals(read.session().game()) && save.session().sessionId().equals(read.session().sessionId())
                     && read.session().connectionGeneration().compareTo(save.session().connectionGeneration())>=0,
                     "cold READ crossed the original machine/Game/session or regressed its connection");
@@ -518,13 +546,17 @@ public final class RootReconciliationAuthority {
             // requires Pending when no physical observer was entered; no semantic lease/effect is invented.
             if(negative.getSuppressed().length!=0 || negative.getCause()!=null) throw negative;
             store.requireSession(same);
+            boolean full111Event=isFull111EventSelection(original);
             require(active.get()==null && publicWindowSnapshot.get()==null
                     && (original.command().operation().value().equals("resume-map") && original.state() instanceof ActionState.Unknown
+                        || full111Event
                         || org.xar.ck3.control.application.advance.FullSnapshotSentinelCancellation.isPositiveAckCancellation(original, archive.withSession(same)))
                     && original.ack().isPresent() && original.ack().orElseThrow().nativeOk()
                     && original.ack().orElseThrow().outbound().isPresent() && negative.matches(original.command()),
                     "negative fresh READ does not bind this exact original acknowledged control reconciliation");
-            pending.requirePending(same,original);
+            var attempt=pending.requirePending(same,original);
+            require(!full111Event || canReadFull111EventSelection(same,original,attempt),
+                    "negative Full111 READ lost its actual retained same-receiver SELECT ACK");
             return new ActionPorts.Pending("postcondition unavailable:"+negative.getMessage(),
                     List.of(negative.acknowledgement(),negative.outbound()));
         }

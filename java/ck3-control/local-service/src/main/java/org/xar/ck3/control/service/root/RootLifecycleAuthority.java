@@ -321,6 +321,11 @@ public final class RootLifecycleAuthority {
     public <T>T withReconciliationSnapshot(ContinuityStorePort.Session borrowed,Instant callerDeadline,boolean freshRead,SnapshotWork<T> work)throws IOException {
         return withSnapshot(borrowed,callerDeadline,Optional.empty(),work,Duration.ofMinutes(2),freshRead);
     }
+
+    /** Pure custody check against the same receiver that will perform the physical read. */
+    boolean canConfirmFull111EventSelection(ActionState.Attempt attempt,NativeActionPort.AckReceived selected) {
+        return transport.canConfirmFull111EventSelection(attempt,selected);
+    }
     /**
      * Qualifies the exact original already accepted by the same transport's bounded wait. This branch
      * neither samples nor reads Native again, and DATA equality alone never bypasses the original full qualifier.

@@ -92,9 +92,14 @@ final class RootReconciliationAuthorityIntegrationTest {
             this(root,queryEnabled,actualKind,replaceSource,false);
         }
         Harness(Path root,boolean queryEnabled,RootReconciliationAuthority.QueryKind actualKind,boolean replaceSource,boolean decoderBoundary)throws IOException{
+            this(root,queryEnabled,actualKind,replaceSource,decoderBoundary,false);
+        }
+        Harness(Path root,boolean queryEnabled,RootReconciliationAuthority.QueryKind actualKind,boolean replaceSource,
+                boolean decoderBoundary,boolean full111Selection)throws IOException{
             this.queryEnabled=queryEnabled;
             this.decoderBoundary=decoderBoundary;kind=actualKind;
-            actualAction=actualKind==RootReconciliationAuthority.QueryKind.PENDING_SUCCESSOR_CLOSE_TIMELINE
+            actualAction=full111Selection?new OperationKey(CurrentFull111EventOption.Action.SELECT.step())
+                    :actualKind==RootReconciliationAuthority.QueryKind.PENDING_SUCCESSOR_CLOSE_TIMELINE
                     ?new OperationKey(org.xar.ck3.control.wave2.governance.succession.NativeTimelineBlocker12004.CLOSE_STEP)
                     :!decoderBoundary?ACTION:new OperationKey(actualKind==RootReconciliationAuthority.QueryKind.ORDINARY_INTERACTION
                     ?OrdinaryInteractionCodec.INITIATE_STEP:ChildEducationFocus.SUBMIT_STEP);
@@ -156,7 +161,8 @@ final class RootReconciliationAuthorityIntegrationTest {
                         ?RootUnknownSentinelReadProfileTest.statusResult():raw("{\"software_read_only_observed\":true}");
             },decoderBoundary?Optional.of(Build.CROZIER4.version()):Optional.empty(),
                     actualKind==RootReconciliationAuthority.QueryKind.UNKNOWN_SENTINEL_STATUS?Set.of(ClockStatusRead.STATUS_CAP):Set.of());
-            var action=new ActionWriterIntegrationFixture.SoftwareActionScenario(actualAction,"game.command.pause-map",(original,attempt,dispatch)->{
+            var action=new ActionWriterIntegrationFixture.SoftwareActionScenario(actualAction,
+                    full111Selection?CurrentFull111EventOption.Action.SELECT.capability():"game.command.pause-map",(original,attempt,dispatch)->{
                 if(!ActionReconciliationScope.activeFor(original))
                     return new ActionPorts.Pending("original ACK is not independently observed business",List.of(attempt.guard().nativeEvidence()));
                 try{
@@ -427,6 +433,43 @@ final class RootReconciliationAuthorityIntegrationTest {
             });
             assertEquals(nativeBefore,transport.latestObservedSnapshot(),"refusal must happen before another Native observation");
             assertEquals(sourceChecks,h.sourceChecks.get());assertEquals(queries,h.actual.scenarioReadWrites());assertEquals(actions,h.actual.nativeActionWrites());
+        }
+    }
+
+    @Test void full111OriginalWithoutRetainedAcknowledgementCannotReadOrEnterTheObserver()throws Exception {
+        try(var h=new Harness(temporary.resolve("full111-selection-without-ack"),false,
+                RootReconciliationAuthority.QueryKind.COMMANDER_CANDIDATES,false,false,true)) {
+            var dry=h.actual.command("software-full111-guard",Duration.ofSeconds(90));
+            var rejected=h.actual.coordinator.execute(dry);
+            assertInstanceOf(ActionState.RejectedBeforeDispatch.class,rejected.state());
+            var originalGuard=ActionTransitions.attempt(rejected.state()).orElseThrow();
+            var expected=new org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedPostcondition(1,dry.before(),dry.source(),
+                    "xar.ck3.full111-event-queue-postcondition/v2",dry.expected().values());
+            var command=new ActionCommand("software-full111-unacknowledged",dry.before(),dry.source(),dry.sessionId(),dry.operation(),
+                    dry.arguments(),expected,dry.claims(),dry.deadline());
+            var attempt=new ActionState.Attempt(RequestIds.forCommand(command),Instant.now(),originalGuard.guard(),originalGuard.preparedRequest());
+            var digest=ActionCodec.bodySha256(command);
+            // Exercise the real current writer's unresolved input, with no endpoint dispatch or synthetic successful acknowledgement.
+            var original=h.actual.journal.locked(locked->{
+                locked.append(command,digest,new ActionState.IntentDurable());
+                locked.append(command,digest,new ActionState.Submitting(attempt));
+                return locked.append(command,digest,new ActionState.Unknown(Optional.of(attempt),Optional.empty(),
+                        "software original ACK absent",List.of(attempt.guard().nativeEvidence())));
+            });
+            var transport=h.actual.physicalInputs().transport();
+            var accepted=transport.latestObservedSnapshot();
+            int sourceChecks=h.sourceChecks.get(),reads=h.actual.nativeReadWrites();
+            var outcome=h.actual.coordinator.reconcile(command.actionId());
+            var unknown=assertInstanceOf(ActionState.Unknown.class,outcome.state());
+            assertTrue(unknown.reason().contains("retained same-receiver positive ACK"),unknown.reason());
+            assertEquals(original.command(),outcome.command());
+            assertEquals(Optional.of(attempt),unknown.attempt());
+            assertTrue(outcome.ack().isEmpty());
+            assertEquals(accepted,transport.latestObservedSnapshot());
+            assertEquals(sourceChecks,h.sourceChecks.get());
+            assertEquals(reads,h.actual.nativeReadWrites());
+            assertEquals(0,h.scopeCalls.get());
+            assertEquals(0,h.actual.nativeActionWrites());
         }
     }
     @Test void aReadWithTheSameOperationAndProfileButAnotherSourceCannotReplaceTheActualInstalledCatalogInstance()throws Exception{
