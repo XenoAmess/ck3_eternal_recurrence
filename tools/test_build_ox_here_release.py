@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Unit tests for the standalone Ox Here! release builder."""
+"""Static checks for Ox Here! and its standalone release builder."""
 
 from __future__ import annotations
 
@@ -11,12 +11,14 @@ import unittest
 import zipfile
 from contextlib import contextmanager
 from pathlib import Path, PurePosixPath
+from textwrap import dedent
 from unittest import mock
 
 
 sys.dont_write_bytecode = True
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import build_ox_here_release as release  # noqa: E402
+import ck3_text_projection as projection  # noqa: E402
 
 
 REVISION = "a" * 40
@@ -26,6 +28,57 @@ DESCRIPTOR = (
     b'supported_version="1.20.*"\r\n'
     b"tags={ \"Gameplay\" \"1.20 'Crozier'\" }\r\n"
 )
+
+
+class OxHereSalaryTests(unittest.TestCase):
+    def test_flagged_champion_is_free_and_other_champions_use_florin_salary(self):
+        fixture_path = Path(__file__).with_name("fixtures") / "ox_here_salary_1_21_0_3.json"
+        fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+        stock = fixture["block"]
+        self.assertEqual(fixture["block_sha256"], projection.digest(stock))
+        stock_definition = projection.blocks(stock)[0]
+        self.assertEqual("champion_total_salary_value", stock_definition.key)
+
+        values = release.DEFAULT_SOURCE / "common/script_values/ox_here_values.txt"
+        script = projection.normalize(values.read_text(encoding="utf-8-sig"))
+        definitions = [block for block in projection.blocks(script) if block.key == stock_definition.key]
+        self.assertEqual(1, len(definitions))
+        definition = definitions[0]
+        salary = script[definition.opening + 1:definition.end - 1]
+        free = projection.blocks(salary)[0]
+        self.assertEqual("if", free.key)
+        self.assertEqual("", projection.masked(salary[:free.start]).strip())
+        self.assertEqual(
+            [
+                "if = {",
+                "limit = {",
+                "scope:liege = {",
+                "employs_court_position = champion_court_position",
+                "any_court_position_holder = {",
+                "type = champion_court_position",
+                "has_character_flag = ox_here_free_champion",
+                "}",
+                "}",
+                "}",
+                "multiply = {",
+                "value = 0",
+                "desc = free_court_position",
+                "}",
+                "}",
+            ],
+            [line.strip() for line in salary[free.start:free.end].splitlines()],
+        )
+
+        tail = salary[free.end:]
+        fallback = projection.blocks(tail)[0]
+        self.assertEqual("else", fallback.key)
+        self.assertEqual("", projection.masked(tail[:fallback.start] + tail[fallback.end:]).strip())
+        expected = dedent(stock[stock_definition.opening + 1:stock_definition.end - 1]).strip()
+        actual = dedent(tail[fallback.opening + 1:fallback.end - 1]).strip()
+        self.assertEqual(
+            [line.rstrip() for line in expected.splitlines()],
+            [line.rstrip() for line in actual.splitlines()],
+        )
 
 
 class OxHereReleaseTests(unittest.TestCase):

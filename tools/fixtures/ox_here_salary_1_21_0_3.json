@@ -1,0 +1,10 @@
+{
+  "schema": "ox-here-native-champion-salary-v1",
+  "game_version": "1.21.0.3",
+  "steam_build_id": "26785313",
+  "exe_sha256": "859f0d380098adcb130eb9d453458222749fcdf6d46126ad0ed99d78f9a0aa28",
+  "source_path": "game/common/script_values/00_court_position_values.txt",
+  "source_sha256": "f991eefc663125fdfe2080890c85c1d9f667c5c4af154143e357a396f2d2d6c6",
+  "block_sha256": "d1e80839994d23f9ca23d1bac72c89f7c574e7a057c34ceb2a7e0b5c076817a7",
+  "block": "champion_total_salary_value = {\n\t#You're working with LAAMPS now\n\tif = {\n\t\tlimit = { \n\t\t\tscope:liege ?= { government_has_flag = government_is_landless_adventurer }\n\t\t}\n\t\tmultiply = {\n\t\t\tvalue = 0\n\t\t\tdesc = court_position_laamps_free\n\t\t\tformat = \"BASE_VALUE_FORMAT_DECIMALS_MINUS_POSITIVE\"\n\t\t}\n\t}\n\t# Set to 0 with Dynasty Perk Inner Circle\n\telse_if = {\n\t\tlimit = { court_position_inner_circle_salary_trigger = { POS = champion } }\n\t\tmultiply = {\n\t\t\tvalue = 0\n\t\t\tdesc = inner_circle_salary_mod\n\t\t\tformat = \"BASE_VALUE_FORMAT_DECIMALS_MINUS_POSITIVE\"\n\t\t}\n\t}\n\telse = {\n\t\tvalue = minor_court_position_salary # Update X_salary_tooltip if script_value is changed\n\t\t# Halved via obligation hook\n\t\tif = {\n\t\t\tlimit = {\n\t\t\t\tcourt_position_obligation_hook_salary_trigger = {\n\t\t\t\t\tPOS = champion\n\t\t\t\t\tLIEGE = scope:liege\n\t\t\t\t}\n\t\t\t}\n\t\t\tmultiply = {\n\t\t\t\tvalue = 0.5\n\t\t\t\tdesc = obligation_hook_salary\n\t\t\t\tformat = \"BASE_VALUE_FORMAT_DECIMALS_MINUS_POSITIVE\"\n\t\t\t}\n\t\t}\n\t\t# Halved salary\n\t\tif = {\n\t\t\tlimit = {\n\t\t\t\tcourt_position_halved_salary_trigger = { POS = champion }\n\t\t\t}\n\t\t\tmultiply = {\n\t\t\t\tvalue = 0.5\n\t\t\t\tdesc = court_position_halved_salary\n\t\t\t\tformat = \"BASE_VALUE_FORMAT_DECIMALS_MINUS_POSITIVE\"\n\t\t\t}\n\t\t}\n\t\t# Increased salary\n\t\tif = {\n\t\t\tlimit = {\n\t\t\t\tcourt_position_increased_salary_trigger = { POS = champion }\n\t\t\t}\n\t\t\tmultiply = {\n\t\t\t\tvalue = 1.5\n\t\t\t\tdesc = court_position_increased_salary\n\t\t\t\tformat = \"BASE_VALUE_FORMAT_DECIMALS_MINUS_POSITIVE\"\n\t\t\t}\n\t\t}\n\t}\n}\n"
+}
