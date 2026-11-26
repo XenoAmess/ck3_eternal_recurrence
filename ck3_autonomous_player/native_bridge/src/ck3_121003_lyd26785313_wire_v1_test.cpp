@@ -22,6 +22,53 @@ auto Decision(bool hidden=false,bool selected=false){LydSource267V1 v;v.kind=Lyd
 auto Events(){LydSource267V1 v;v.kind=LydKind267V1::events;v.events.emplace();v.events->census_complete=true;v.events->named_root_count=1;LydEventRow267V1 row;row.instance_id=7;row.recipient_character_id=Core().played_character_id;row.authored_option_count=2;row.definition_key="lyd.1002";row.opening="礼乐";row.description="\x15" "Y原样文本\x15!";row.named_root_bound=row.window_visible=row.window_enabled=true;row.options.push_back({0,true,"支付","",std::string("lyd_play_ritual_music_option_0"),LydEventRole267V1::ritual_music_pay});row.options.push_back({1,true,"取消","",std::string("lyd_play_cancel"),LydEventRole267V1::ritual_music_cancel});v.events->events.push_back(row);return v;}
 auto Personal(bool modal=false){LydSource267V1 v;v.kind=LydKind267V1::personal;v.personal.emplace();auto&s=*v.personal;s.resident_available=s.named_root_bound=s.window_visible=s.window_enabled=s.actor_bound=s.is_adding=s.model_materialized=s.slots_complete=s.groups_complete=s.empty_slot_found=s.actual_personal_complete=true;s.native_window_visible=true;s.slot_count=1;s.group_count=1;s.slots.push_back({true,false,{}});s.rows.push_back({1,std::string(kLydPersonalKeys267V1[0]),"lyd.native.row.a",true,false,!modal,true});s.rows.push_back({1,std::string(kLydPersonalKeys267V1[1]),"lyd.native.row.b",true,false,!modal,true});if(modal){s.blocked_by_visible_modal=true;s.add_modal={true,true,true,false,LydPersonal267V1::reverent_heaven,true,true};}return v;}
 auto Result(A a,const LydSource267V1&source,S status=S::available){LydResult267V1 r;r.action=a;r.status=status;r.facts_available=r.source_available=true;r.facts=Core();r.source=source;r.connection_generation=r.ticket_sequence=r.pump_epoch=r.provider_generation=r.query_sequence=(std::numeric_limits<std::uint64_t>::max)();r.thread_id=73;if(!LydQueryAction267V1(a)){r.effect_attempted=r.native_returned=true;r.claim_sequence=1;}return r;}
+std::string RendererRequest(LydRequest267V1 q) {
+ std::string request=Encode(q,xar::ck3_121003::full111::kAdapterId);
+ const auto old_step=kLydSteps267V1[static_cast<std::size_t>(q.action)];
+ request.replace(request.find(old_step),old_step.size(),kFull111EventRendererStep267V1);
+ return request;
+}
+LydResult267V1 RendererResult() {
+ auto r=Result(A::query_events,Events());
+ r.instance_id=7;
+ r.renderer=Full111EventRendererSource267V1{7,Core().played_character_id,6,"bookmark.1070",
+  {{4,false,false,true,"Native hidden","Stock" " disabled reason"},
+   {1,true,true,false,"Native visible",""}}};
+ return r;
+}
+void RendererTests() {
+ using xar::ck3_121003::full111::kAdapterId;
+ auto q=Request(A::query_events);
+ const auto old=Encode(q,kAdapterId);
+ LydRequest267V1 parsed;
+ Require(ParseFull111LydEventRequest267V1(old,parsed)&&!ParseFull111EventRendererRequest267V1(old,parsed),
+     "old Full111 step was reinterpreted as a renderer read");
+ Require(!ParseFull111EventRendererRequest267V1(RendererRequest(q),parsed),"renderer query skipped a target event");
+ q.instance_id=7;
+ const auto request=RendererRequest(q);
+ Require(ParseFull111EventRendererRequest267V1(request,parsed)&&parsed.instance_id==7&&
+     !ParseFull111LydEventRequest267V1(request,parsed)&&!ParseLydRequest267V1(request,parsed),
+     "exact renderer target was accepted by the wrong profile or step");
+ Require(!ParseFull111LydEventRequest267V1(Encode(q,kAdapterId),parsed),"old census accepted renderer target form");
+ q.instance_id=0;
+ Require(!ParseFull111EventRendererRequest267V1(RendererRequest(q),parsed),"zero renderer target accepted");
+ q.instance_id=7;q.query_sequence=1;
+ Require(!ParseFull111EventRendererRequest267V1(RendererRequest(q),parsed),"renderer read accepted a lease");
+ q=Request(A::choose_known_event_option);q.event_role=LydEventRole267V1::ritual_music_pay;q.instance_id=7;
+ Require(!ParseFull111EventRendererRequest267V1(RendererRequest(q),parsed),"renderer read accepted a choice action");
+ auto r=RendererResult();
+ const auto wire=SerializeFull111EventRendererResult267V1(q.id(),r);
+ const auto hidden=wire.find(R"("authored_option_index":4,"native_can_select":false,"widget_visible":false,"widget_enabled":true)");
+ const auto disabled=wire.find(R"("authored_option_index":1,"native_can_select":true,"widget_visible":true,"widget_enabled":false)");
+ Require(wire.find(R"("ok":true)")!=std::string::npos&&hidden!=std::string::npos&&disabled!=std::string::npos&&hidden<disabled&&
+     wire.find(R"("claim_sequence")")==std::string::npos,"renderer response lost stock order or emitted a claim");
+ r.renderer->recipient_character_id+=1;
+ Require(SerializeFull111EventRendererResult267V1(q.id(),r).find(R"("source":null)")!=std::string::npos,
+     "renderer passed a different event recipient");
+ r=RendererResult();r.renderer->options[1].authored_option_index=4;
+ Require(SerializeFull111EventRendererResult267V1(q.id(),r).find(R"("source":null)")!=std::string::npos,
+     "duplicate renderer option identity was accepted");
+}
 void Full111Tests(){
  namespace full111=xar::ck3_121003::full111;
  auto q=Request(A::query_events);
@@ -60,6 +107,17 @@ void Tests(){
 void Write(const std::filesystem::path&root,std::string_view name,std::string_view bytes){const auto p=root/std::string(name);Require(!std::filesystem::exists(p),"genuine file already exists");std::ofstream out(p,std::ios::binary);Require(bool(out),"output unavailable");out.write(bytes.data(),static_cast<std::streamsize>(bytes.size()));Require(bool(out),"output incomplete");}
 void Emit(const std::filesystem::path&root){Require(std::filesystem::is_directory(root),"genuine output directory missing");const auto emit=[&](std::string_view name,const LydResult267V1&r){Write(root,name,SerializeLydResult267V1("lyd-native-real-producer",r));};
  emit("decisions-query.json",Result(A::query_decisions,Decision()));auto r=Result(A::open_detail,Decision(),S::selection_dispatched);r.decision=LydDecision267V1::entry;emit("decision-detail.json",r);r=Result(A::confirm_decision,Decision(false,true),S::confirmation_dispatched);r.decision=LydDecision267V1::entry;emit("decision-confirm.json",r);emit("decisions-hidden.json",Result(A::query_decisions,Decision(true)));r=Result(A::open_list,Decision(true),S::navigation_dispatched);r.native_handled=false;emit("decisions-open-list.json",r);
+ auto renderer_query=Request(A::query_events);renderer_query.instance_id=7;
+ Write(root,"full111-ordinary-event-renderer.request.json",RendererRequest(renderer_query));
+ Write(root,"full111-ordinary-event-renderer.json",SerializeFull111EventRendererResult267V1(
+     renderer_query.id(),RendererResult()));
+ auto renderer_unavailable=RendererResult();
+ renderer_unavailable.status=S::unavailable;
+ renderer_unavailable.reason="current111_renderer_complete_widget_context_unavailable";
+ renderer_unavailable.source_available=false;
+ renderer_unavailable.renderer.reset();
+ Write(root,"full111-ordinary-event-renderer-unavailable.json",SerializeFull111EventRendererResult267V1(
+     renderer_query.id(),renderer_unavailable));
  Write(root,"full111-ordinary-event-query.request.json",Encode(Request(A::query_events),xar::ck3_121003::full111::kAdapterId));
  Write(root,"full111-ordinary-event-query.json",SerializeFull111LydEventResult267V1("lyd-native-real-producer",Result(A::query_events,Events())));
  auto queue_unavailable=Result(A::query_events,Events(),S::unavailable);
@@ -76,15 +134,17 @@ void Emit(const std::filesystem::path&root){Require(std::filesystem::is_director
 }
 int main(int argc,char**argv){try{
  const std::string_view operation=argc==3?argv[1]:"";
- if(operation=="--validate-request"||operation=="--validate-full111-request"){
+ if(operation=="--validate-request"||operation=="--validate-full111-request"||
+     operation=="--validate-full111-renderer-request"){
   std::ifstream in(argv[2],std::ios::binary);Require(bool(in),"request unavailable");
   const std::string bytes((std::istreambuf_iterator<char>(in)),{});LydRequest267V1 q;
-  const bool accepted=operation=="--validate-full111-request"
+  const bool accepted=operation=="--validate-full111-renderer-request"
+    ?ParseFull111EventRendererRequest267V1(bytes,q):operation=="--validate-full111-request"
     ?ParseFull111LydEventRequest267V1(bytes,q):ParseLydRequest267V1(bytes,q);
   Require(accepted,"actual request parser refused");
   std::cout<<"PASS actual LYD request parser\n";return 0;
  }
- Tests();
+ Tests();RendererTests();
  if(operation=="--emit")Emit(argv[2]);else Require(argc==1,"unsupported arguments");
  std::cout<<"PASS finite LYD actual parser/serializer and meaningful source/permission negatives; no Game\n";
  return 0;

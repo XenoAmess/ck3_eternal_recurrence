@@ -40,6 +40,15 @@ bool ReadFull111LydEventRaw267V1(const ReadonlyBindings&,const ck3_1210::CoreSna
  }
  out.source=fixture::ordinary();return true;
 }
+bool ReadFull111EventRendererOnOwner267V1(const ReadonlyBindings&,ck3_11906::MainThreadQueryMailboxV1*,
+ const ck3_11906::MainThreadQueryTicketV1&,const ck3_11906::MainThreadExecutionStampV1&,void*,
+ const LydFrame267V1&,const LydRequest267V1&request,std::uint64_t,Full111EventRendererSource267V1&out,
+ bool &entered,bool &cleanup,std::string&reason)noexcept{
+ ++fixture::observations;entered=false;cleanup=true;
+ if(request.instance_id!=1){reason="current111_renderer_expected_foreground_changed";return false;}
+ out={1,fixture::core().played_character_id,6,"bookmark.1070",{{4,true,true,false,"Visible",""}}};
+ return true;
+}
 void TokenizeLydRaw267V1(LydRaw267V1&,std::uint64_t,std::uint64_t){}
 bool SameLydRawForLease267V1(const LydRaw267V1&a,const LydRaw267V1&b)noexcept{return a==b;}
 bool LydRawAdmissible267V1(const LydRaw267V1&r,const LydRequest267V1&q)noexcept{return LydPublicAdmissible267V1(r.source,q);}
@@ -106,6 +115,18 @@ int main(){using namespace fixture;VerifyQueueWitness();LydSession267V1 session;
  require(ExecuteLydInner267V1(observed_event,stamp)&&observed_event.result.status==LydStatus267V1::unavailable&&
     !observed_event.result.source_available&&effects==0,"unsupported queue emitted Full111 source DATA");
  full_read_available=true;
+ auto renderer=request(LydAction267V1::query_events,21);
+ renderer.request.personal.reset();renderer.request.instance_id=1;
+ renderer.full111_ordinary_events_only=renderer.full111_event_renderer=true;
+ require(ExecuteLydInner267V1(renderer,stamp)&&renderer.result.status==LydStatus267V1::available&&
+    renderer.result.renderer&&renderer.result.renderer->options.front().authored_option_index==4&&
+    !renderer.result.claim_sequence&&effects==0,"exact owner renderer did not publish independent read-only data");
+ renderer.request.instance_id=2;
+ require(ExecuteLydInner267V1(renderer,stamp)&&renderer.result.status==LydStatus267V1::unavailable&&
+    !renderer.result.renderer&&effects==0,"renderer query acquired different standing instance");
+ renderer.request.instance_id=1;renderer.full111_ordinary_events_only=false;
+ require(ExecuteLydInner267V1(renderer,stamp)&&renderer.result.status==LydStatus267V1::unavailable&&
+    !renderer.result.renderer&&effects==0,"core owner accepted Full111 renderer");
  auto query=request(LydAction267V1::query_personal,21);require(ExecuteLydInner267V1(query,stamp)&&query.result.status==LydStatus267V1::available,"actual owner query fixture failed");
  auto select=request(LydAction267V1::select_personal_candidate,21);select.request.provider_generation=query.result.provider_generation;select.request.query_sequence=query.result.query_sequence;select.request.choice_token="lyd.private.fixture";require(ExecuteLydInner267V1(select,stamp)&&select.result.status==LydStatus267V1::selection_dispatched&&effects==1,"actual owner select custody failed");
  auto wrong=request(LydAction267V1::query_add_confirmation,22);const auto before=observations;require(ExecuteLydInner267V1(wrong,stamp)&&wrong.result.status==LydStatus267V1::stale_source&&!wrong.result.source_available&&!wrong.result.effect_attempted&&!wrong.result.claim_sequence&&observations==before&&effects==1,"new connection acquired pending selection");

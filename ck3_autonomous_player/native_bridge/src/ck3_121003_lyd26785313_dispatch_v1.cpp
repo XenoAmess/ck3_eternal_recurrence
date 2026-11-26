@@ -8,6 +8,10 @@ bool LydStepEnabled267V1([[maybe_unused]]const game::AdapterDescriptor&d,[[maybe
 #if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1
  if(game::IsCk3_121003Full111Descriptor(d)) {
   const auto index=kLydEventQueryIndex267V1;
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1
+  if(step==kFull111EventRendererStep267V1)
+   return std::find(d.capabilities.begin(),d.capabilities.end(),kFull111EventRendererCapability267V1)!=d.capabilities.end();
+#endif
   return step==kLydSteps267V1[index]&&
       std::find(d.capabilities.begin(),d.capabilities.end(),kLydCapabilities267V1[index])!=d.capabilities.end();
  }
@@ -26,22 +30,32 @@ std::string DispatchLydRequest267V1(const game::GameAdapter&game,std::uint64_t c
 #if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1
  q.full111_ordinary_events_only=game::IsCk3_121003Full111Descriptor(game.descriptor());
  if(q.full111_ordinary_events_only)q.result.action=LydAction267V1::query_events;
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1
+ q.full111_event_renderer=q.full111_ordinary_events_only&&step==kFull111EventRendererStep267V1;
+#endif
 #endif
  const auto emit=[&]{
 #if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1
+  if(q.full111_event_renderer)return SerializeFull111EventRendererResult267V1(id,q.result);
+#endif
   if(q.full111_ordinary_events_only)return SerializeFull111LydEventResult267V1(id,q.result);
 #endif
   return SerializeLydResult267V1(id,q.result);
  };
  bool parsed=false;
 #if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1
+ if(q.full111_event_renderer)parsed=ParseFull111EventRendererRequest267V1(payload,q.request);
+ else
+#endif
  if(q.full111_ordinary_events_only)parsed=ParseFull111LydEventRequest267V1(payload,q.request);
  else
 #endif
  parsed=ParseLydRequest267V1(payload,q.request);
  if(!parsed||q.request.id()!=id)return emit();
  q.result.action=q.request.action;q.result.provider_generation=q.request.provider_generation;q.result.query_sequence=q.request.query_sequence;q.result.decision=q.request.decision;q.result.personal=q.request.personal;q.result.event_role=q.request.event_role;q.result.instance_id=q.request.instance_id;
- const auto index=static_cast<std::size_t>(q.request.action);if(index>=kLydSteps267V1.size())return emit();const auto wanted=kLydSteps267V1[index];
+ const auto index=static_cast<std::size_t>(q.request.action);if(index>=kLydSteps267V1.size())return emit();const auto wanted=q.full111_event_renderer?kFull111EventRendererStep267V1:kLydSteps267V1[index];
  if(step!=wanted||!game.enabled()||!connection||!LydStepEnabled267V1(game.descriptor(),step)||!game.supports_step(step))return emit();
  auto&retained=RetainedLydSession267V1();q.session=&retained;q.connection_generation=connection;q.mailbox=&mailbox;ArmLydDeadline267V1(q);
  if(!q.monotonic_deadline_ms){q.result.status=LydStatus267V1::expired;q.result.reason="lyd_original_deadline_expired";return emit();}
@@ -54,6 +68,7 @@ std::string DispatchLydRequest267V1(const game::GameAdapter&game,std::uint64_t c
  if(wait!=ck3_11906::MainThreadQueryWaitResultV1::completed||reclaim!=ck3_11906::MainThreadQueryReclaimResultV1::reclaimed){
   if(q.result.effect_attempted||q.native_observation_entered)BlockLydUnknown267V1(retained);
   q.result.status=(q.result.effect_attempted||q.native_observation_entered)?LydStatus267V1::indeterminate:LydStatus267V1::unavailable;q.result.reason="lyd_original_owner_completion_unavailable";
+  if(q.full111_event_renderer&&q.result.status==LydStatus267V1::indeterminate)q.result.cleanup_known=false;
  }return emit();
 }
 }

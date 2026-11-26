@@ -43,10 +43,14 @@ if(WIN32 AND TARGET xar_ck3_bridge AND XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EV
 endif()
 
 if(WIN32 AND TARGET xar_ck3_bridge AND XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1)
- foreach(_source IN ITEMS ck3_1210_adapter.cpp ck3_121003_readonly26785313_v1.cpp)
+ foreach(_source IN ITEMS ck3_1210_adapter.cpp ck3_121003_readonly26785313_v1.cpp
+     ck3_121003_lyd26785313_dispatch_v1.cpp ck3_121003_lyd26785313_owner_v1.cpp)
   set_property(SOURCE "${_xar_courtier_root}/src/${_source}" APPEND PROPERTY COMPILE_DEFINITIONS
     "$<$<STREQUAL:$<TARGET_PROPERTY:NAME>,xar_ck3_12002_runtime>:XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1=1>")
  endforeach()
+ set_property(SOURCE "${_xar_courtier_root}/src/bridge.cpp" "${_xar_courtier_root}/src/game_adapter.cpp"
+   APPEND PROPERTY COMPILE_DEFINITIONS
+   "$<$<STREQUAL:$<TARGET_PROPERTY:NAME>,xar_ck3_bridge>:XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1=1>")
 endif()
 
 if(BUILD_TESTING AND WIN32)
@@ -54,7 +58,9 @@ if(BUILD_TESTING AND WIN32)
  add_executable(xar_ck3_current_lyd_off_test EXCLUDE_FROM_ALL "${_xar_courtier_root}/src/ck3_121003_lyd26785313_raw_v1.cpp" "${_xar_courtier_root}/src/ck3_121003_lyd26785313_owner_v1.cpp" "${_xar_courtier_root}/src/ck3_121003_lyd26785313_off_v1_test.cpp")
  add_executable(xar_ck3_current_lyd_native_call_test EXCLUDE_FROM_ALL "${_xar_courtier_root}/src/ck3_121003_lyd26785313_native_call_v1_test.cpp")
  add_executable(xar_ck3_current_lyd_route_test EXCLUDE_FROM_ALL "${_xar_courtier_root}/src/ck3_121003_lyd26785313_route_v1_test.cpp")
- foreach(t xar_ck3_current_lyd_wire_test xar_ck3_current_lyd_off_test xar_ck3_current_lyd_native_call_test xar_ck3_current_lyd_route_test)
+ add_executable(xar_ck3_full111_event_renderer_test EXCLUDE_FROM_ALL "${_xar_courtier_root}/src/ck3_121003_full111_event_renderer_v1_test.cpp")
+ foreach(t xar_ck3_current_lyd_wire_test xar_ck3_current_lyd_off_test xar_ck3_current_lyd_native_call_test
+     xar_ck3_current_lyd_route_test xar_ck3_full111_event_renderer_test)
   target_include_directories(${t} PRIVATE "${_xar_courtier_root}/include" "${_xar_courtier_root}/src")
   target_compile_features(${t} PRIVATE cxx_std_20)
   target_compile_definitions(${t} PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
@@ -72,7 +78,8 @@ if(BUILD_TESTING AND WIN32)
  add_executable(xar_ck3_current_lyd_session_test EXCLUDE_FROM_ALL "${_xar_courtier_root}/src/ck3_121003_lyd26785313_session_v1_test.cpp")
  target_include_directories(xar_ck3_current_lyd_session_test PRIVATE "${_xar_courtier_root}/include" "${_xar_courtier_root}/src")
  target_compile_features(xar_ck3_current_lyd_session_test PRIVATE cxx_std_20)
- target_compile_definitions(xar_ck3_current_lyd_session_test PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN XAR_CK3_ENABLE_121003_26785313_LYD_V1=1)
+ target_compile_definitions(xar_ck3_current_lyd_session_test PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN
+   XAR_CK3_ENABLE_121003_26785313_LYD_V1=1 XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1=1)
  if(MSVC)
   target_compile_options(xar_ck3_current_lyd_session_test PRIVATE /W4 /WX /permissive- /EHsc)
  endif()
@@ -91,7 +98,8 @@ if(BUILD_TESTING AND WIN32)
    target_compile_definitions(${t} PRIVATE XAR_CK3_ENABLE_121003_26785313_LYD_V1=1 XAR_LYD_STEP_TEST_EXPECT_ENABLED=1)
   elseif(state STREQUAL "full111")
    target_compile_definitions(${t} PRIVATE XAR_CK3_ENABLE_121003_26785313_LYD_V1=1
-     XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1=1 XAR_LYD_STEP_TEST_EXPECT_ENABLED=1)
+     XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1=1
+     XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1=1 XAR_LYD_STEP_TEST_EXPECT_ENABLED=1)
   elseif(state STREQUAL "off")
    target_compile_definitions(${t} PRIVATE XAR_CK3_ENABLE_121003_26785313_LYD_V1=0 XAR_CK3_ENABLE_121003_26785313_SUPERMAN_HEALTH_V1=0)
   else()

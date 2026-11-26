@@ -95,22 +95,32 @@ bool RoleMatches(const LydEventRow267V1&row,const LydEventOption267V1&option)noe
 std::optional<LydDecision267V1>ParseLydDecisionKey267V1(std::string_view text)noexcept{for(std::size_t n=0;n<kLydDecisionKeys267V1.size();++n)if(kLydDecisionKeys267V1[n]==text)return static_cast<LydDecision267V1>(n);return{};}
 LydKind267V1 LydKindForAction267V1(LydAction267V1 action)noexcept{const auto n=static_cast<unsigned>(action);return n<=3?LydKind267V1::decisions:n<=5?LydKind267V1::events:n<=11?LydKind267V1::personal:LydKind267V1::readback;}
 bool LydQueryAction267V1(LydAction267V1 action)noexcept{return action==LydAction267V1::query_decisions||action==LydAction267V1::query_events||action==LydAction267V1::query_personal||action==LydAction267V1::query_add_confirmation||action==LydAction267V1::query_readback;}
-bool LydRequestShape267V1(const LydRequest267V1&q)noexcept{
+namespace {
+bool RequestShape(const LydRequest267V1&q,bool renderer)noexcept{
+ if(renderer&&(q.action!=LydAction267V1::query_events||!q.instance_id||*q.instance_id<=0))return false;
  const auto a=static_cast<unsigned>(q.action);if(a>=13||!Id(q.id())||!q.deadline_unix_ms||!Prefix(q.expected)||(q.decision&&static_cast<unsigned>(*q.decision)>=5)||(q.personal&&static_cast<unsigned>(*q.personal)>=2)||(q.event_role&&static_cast<unsigned>(*q.event_role)>=7))return false;
  if(LydQueryAction267V1(q.action)){if(q.provider_generation||q.query_sequence)return false;}else if(!q.provider_generation||!q.query_sequence)return false;
  if(a<=3)return !q.personal&&!q.event_role&&!q.instance_id&&q.choice_token.empty()&&((a<=1)?!q.decision:q.decision.has_value())&&!(a==3&&q.decision==LydDecision267V1::begin_readonly);
- if(a<=5)return !q.decision&&!q.personal&&q.choice_token.empty()&&(a==4?(!q.event_role&&!q.instance_id):(q.event_role&&q.instance_id&&*q.instance_id>0));
+ if(a<=5)return !q.decision&&!q.personal&&q.choice_token.empty()&&(a==4?(!q.event_role&&(renderer||!q.instance_id)):(q.event_role&&q.instance_id&&*q.instance_id>0));
  if(a<=11)return !q.decision&&!q.event_role&&!q.instance_id&&q.personal&&(a==9?KeyText(q.choice_token,96):q.choice_token.empty());
  return !q.decision&&!q.personal&&!q.event_role&&!q.instance_id&&q.choice_token.empty();
 }
-namespace {
-bool ParseRequest(std::string_view text,LydRequest267V1&out,std::string_view adapter)noexcept{
+bool ParseRequest(std::string_view text,LydRequest267V1&out,std::string_view adapter,bool renderer=false)noexcept{
  out={};if(text.size()>16384)return false;Cursor c{text};LydRequest267V1 q;std::string_view step;if(!c.Take('{'))return false;unsigned seen=0;bool first=true;
  while(!c.Take('}')){if(!first&&!c.Take(','))return false;first=false;std::string_view key,value;if(!c.String(key)||!c.Take(':'))return false;unsigned bit=0;bool good=false;std::uint64_t n=0;
   if(key=="type"){bit=1;good=c.Identity("execute_step");}else if(key=="protocol_version"){bit=2;good=c.Number(n)&&n==1;}else if(key=="request_id"){bit=4;good=c.String(value)&&Id(value);if(good){std::copy(value.begin(),value.end(),q.request_id.begin());q.request_id_size=static_cast<std::uint8_t>(value.size());}}else if(key=="step"){bit=8;good=c.String(step);}else if(key=="expected_revision"){bit=16;good=c.Number(n)&&n==0;}else if(key=="arguments"){bit=32;good=c.Take('{')&&c.Take('}');}else if(key=="lyd"){bit=64;good=Claim(c,q,adapter);}else if(key=="core_control_deadline_unix_ms"){bit=128;good=c.Number(q.deadline_unix_ms)&&q.deadline_unix_ms;}
   if(!bit||!good||(seen&bit))return false;seen|=bit;
- }c.Space();if(seen!=255||c.pos!=text.size()||!LydRequestShape267V1(q)||step!=kLydSteps267V1[static_cast<std::size_t>(q.action)])return false;out=std::move(q);return true;
+ }c.Space();
+ if(seen!=255||c.pos!=text.size()||!RequestShape(q,renderer))return false;
+ const auto expected_step=renderer?kFull111EventRendererStep267V1:kLydSteps267V1[static_cast<std::size_t>(q.action)];
+ if(step!=expected_step)return false;
+ out=std::move(q);return true;
 }
+}
+bool LydRequestShape267V1(const LydRequest267V1&q)noexcept{return RequestShape(q,false);}
+bool Full111EventRendererRequestShape267V1(const LydRequest267V1&q)noexcept{return RequestShape(q,true);}
+bool ParseFull111EventRendererRequest267V1(std::string_view text,LydRequest267V1&out)noexcept{
+ return ParseRequest(text,out,full111::kAdapterId,true);
 }
 bool ParseLydRequest267V1(std::string_view text,LydRequest267V1&out)noexcept{
  return ParseRequest(text,out,kAdapterId);
@@ -195,6 +205,10 @@ void WriteSource(Json&j,const LydSource267V1&s,bool include_event_permissions){
 }
 }
 namespace {
+void WriteFactsAndOwner(Json&j,const LydResult267V1&r,bool facts){
+ j.key("facts_before");if(facts){const auto&p=r.facts;j.data+="{\"date_raw\":"+std::to_string(p.clock.date_raw);j.num("speed",p.clock.speed);j.flag("paused",p.clock.paused);j.num("local_player_id",p.local_player_id);j.flag("map_ready",p.map_ready);j.flag("has_played_character",p.has_played_character);j.num("played_character_id",p.played_character_id);j.flag("played_character_alive",p.played_character_alive);j.data+='}';}else j.data+="null";
+ j.key("owner");if(facts){j.data+="{\"connection_generation\":";String(j.data,std::to_string(r.connection_generation));j.u64("ticket_sequence",r.ticket_sequence);j.u64("pump_epoch",r.pump_epoch);j.num("thread_id",r.thread_id);j.data+='}';}else j.data+="null";
+ }
 std::string SerializeResult(std::string_view id,const LydResult267V1&r,std::string_view adapter){
  const bool full111_events_only=adapter==full111::kAdapterId;
  const auto a=static_cast<std::size_t>(r.action);const bool facts=r.facts_available&&Prefix(r.facts)&&r.connection_generation&&r.ticket_sequence&&r.pump_epoch&&r.thread_id;
@@ -213,8 +227,7 @@ std::string SerializeResult(std::string_view id,const LydResult267V1&r,std::stri
  Json j;j.data=R"({"type":"command_result","protocol_version":1,"request_id":)";String(j.data,id);j.data+=ok?R"(,"ok":true,"result":{"schema":)":R"(,"ok":false,"result":{"schema":)";String(j.data,kLydResultSchema267V1);
  j.str("game_version",kGameVersion);j.str("executable_sha256",kExecutableSha256);j.str("backend",kLydBackend267V1);j.str("adapter_id",adapter);j.str("action",a<13?kLydActionNames267V1[a]:"invalid");j.str("status",Status(status));j.flag("source_available",source);j.flag("effect_attempted",r.effect_attempted);j.flag("native_returned",r.native_returned);j.flag("native_handled",r.native_handled);j.flag("cleanup_known",r.cleanup_known);j.u64("provider_generation",r.provider_generation);j.u64("query_sequence",r.query_sequence);j.u64("claim_sequence",r.claim_sequence);
  Enum(j,"decision_key",kLydDecisionKeys267V1,r.decision);Enum(j,"personal_key",kLydPersonalKeys267V1,r.personal);Enum(j,"event_role",kLydEventRoleNames267V1,r.event_role);j.nullable("instance_id",r.instance_id);
- j.key("facts_before");if(facts){const auto&p=r.facts;j.data+="{\"date_raw\":"+std::to_string(p.clock.date_raw);j.num("speed",p.clock.speed);j.flag("paused",p.clock.paused);j.num("local_player_id",p.local_player_id);j.flag("map_ready",p.map_ready);j.flag("has_played_character",p.has_played_character);j.num("played_character_id",p.played_character_id);j.flag("played_character_alive",p.played_character_alive);j.data+='}';}else j.data+="null";
- j.key("owner");if(facts){j.data+="{\"connection_generation\":";String(j.data,std::to_string(r.connection_generation));j.u64("ticket_sequence",r.ticket_sequence);j.u64("pump_epoch",r.pump_epoch);j.num("thread_id",r.thread_id);j.data+='}';}else j.data+="null";
+ WriteFactsAndOwner(j,r,facts);
  j.key("source");if(source)WriteSource(j,*r.source,!full111_events_only);else j.data+="null";
  j.flag("addresses_redacted",true);j.flag("event_closed",false);j.flag("personal_applied",false);j.flag("gold_paid",false);j.flag("piety_paid",false);j.flag("modifiers_applied",false);j.flag("new_date_observed",false);j.flag("physical_save_confirmed",false);j.key("unavailable_reason");if(ok)j.data+="null";else String(j.data,r.reason.empty()?"current_lyd_source_unavailable":r.reason);j.data+="}}";return j.data;
 }
@@ -224,5 +237,64 @@ std::string SerializeLydResult267V1(std::string_view id,const LydResult267V1&r){
 }
 std::string SerializeFull111LydEventResult267V1(std::string_view id,const LydResult267V1&r){
  return SerializeResult(id,r,full111::kAdapterId);
+}
+namespace {
+bool RendererSourceShape(const Full111EventRendererSource267V1 &source) noexcept {
+ if(source.instance_id<=0||source.recipient_character_id==-1||source.authored_option_count<=0||
+     source.authored_option_count>64||!KeyText(source.definition_key,256)||source.options.empty()||
+     source.options.size()>static_cast<std::size_t>(source.authored_option_count))return false;
+ std::array<bool,64>seen{};
+ for(const auto &row:source.options){
+  if(row.authored_option_index<0||row.authored_option_index>=source.authored_option_count||
+      row.text.size()>16384||row.disabled_reason.size()>16384)return false;
+  const auto index=static_cast<std::size_t>(row.authored_option_index);
+  if(seen[index])return false;
+  seen[index]=true;
+ }
+ return true;
+}
+void WriteRendererSource(Json &j,const Full111EventRendererSource267V1 &source){
+ j.data+="{\"instance_id\":"+std::to_string(source.instance_id);
+ j.num("recipient_character_id",source.recipient_character_id);
+ j.str("definition_key",source.definition_key);
+ j.num("authored_option_count",source.authored_option_count);
+ j.key("options");j.data+='[';
+ for(std::size_t i=0;i<source.options.size();++i){
+  if(i)j.data+=',';
+  const auto &row=source.options[i];
+  j.data+="{\"authored_option_index\":"+std::to_string(row.authored_option_index);
+  j.flag("native_can_select",row.native_can_select);
+  j.flag("widget_visible",row.widget_visible);j.flag("widget_enabled",row.widget_enabled);
+  j.str("text",row.text);j.str("disabled_reason",row.disabled_reason);j.data+='}';
+ }
+ j.data+="]}";
+}
+}
+std::string SerializeFull111EventRendererResult267V1(std::string_view id,const LydResult267V1 &r){
+ using StatusType=LydStatus267V1;
+ const bool facts=r.facts_available&&Prefix(r.facts)&&r.connection_generation&&r.ticket_sequence&&r.pump_epoch&&r.thread_id;
+ const bool ok=facts&&r.cleanup_known&&r.source_available&&r.renderer&&RendererSourceShape(*r.renderer)&&
+     r.action==LydAction267V1::query_events&&r.status==StatusType::available&&r.provider_generation&&r.query_sequence&&
+     !r.claim_sequence&&!r.effect_attempted&&!r.native_returned&&!r.native_handled&&
+     r.instance_id==r.renderer->instance_id&&r.renderer->recipient_character_id==r.facts.played_character_id;
+ auto status=StatusType::unavailable;
+ if(ok)status=StatusType::available;
+ else if(r.status==StatusType::expired||r.status==StatusType::stale_source||r.status==StatusType::indeterminate)status=r.status;
+ Json j;
+ j.data=R"({"type":"command_result","protocol_version":1,"request_id":)";
+ String(j.data,id);
+ j.data+=ok?R"(,"ok":true,"result":{"schema":)":R"(,"ok":false,"result":{"schema":)";
+ String(j.data,kFull111EventRendererResultSchema267V1);
+ j.str("game_version",kGameVersion);j.str("executable_sha256",kExecutableSha256);
+ j.str("backend",kLydBackend267V1);j.str("adapter_id",full111::kAdapterId);
+ j.str("action","query_events");j.str("status",Status(status));
+ j.flag("source_available",ok);j.flag("cleanup_known",r.cleanup_known);
+ j.u64("provider_generation",ok?r.provider_generation:0);j.u64("query_sequence",ok?r.query_sequence:0);
+ WriteFactsAndOwner(j,r,facts);
+ j.key("source");if(ok)WriteRendererSource(j,*r.renderer);else j.data+="null";
+ j.flag("addresses_redacted",true);
+ j.key("unavailable_reason");if(ok)j.data+="null";
+ else String(j.data,r.reason.empty()?"current111_renderer_source_unavailable":r.reason);
+ j.data+="}}";return j.data;
 }
 }

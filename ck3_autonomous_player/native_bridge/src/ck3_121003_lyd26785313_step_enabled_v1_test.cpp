@@ -36,8 +36,22 @@ int main(){try{
    "Full111 must grant at most the one actual read-only action");
  full.capabilities={};
  require(!LydStepEnabled267V1(full,kLydSteps267V1[kLydEventQueryIndex267V1]),"Full111 missing read capability");
+ constexpr bool renderer_enabled=
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1
+ true;
+#else
+ false;
+#endif
+ const std::array renderer_caps{kLydCapabilities267V1[kLydEventQueryIndex267V1],kFull111EventRendererCapability267V1};
  full.capabilities=kLydCapabilities267V1;
+ require(!LydStepEnabled267V1(full,kFull111EventRendererStep267V1),"legacy LYD capability authorizes renderer");
+ full.capabilities=renderer_caps;
+ require(LydStepEnabled267V1(full,kFull111EventRendererStep267V1)==renderer_enabled,"actual Full111 renderer capability differs");
+ require(LydStepEnabled267V1(full,kLydSteps267V1[kLydEventQueryIndex267V1])==full111_enabled,"renderer hid legacy event read");
+ const xar::game::AdapterDescriptor core{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",renderer_caps};
+ require(!LydStepEnabled267V1(core,kFull111EventRendererStep267V1),"core profile acquired renderer");
  full.executable_sha256="wrong-executable";
+ require(!LydStepEnabled267V1(full,kFull111EventRendererStep267V1),"renderer accepted a wrong executable");
  require(!LydStepEnabled267V1(full,kLydSteps267V1[kLydEventQueryIndex267V1]),"Full111 wrong executable");
  std::cout<<"PASS actual linked LydStepEnabled, expected="<<enabled<<", checks="<<checked<<", no transport/owner/native calls\n";return 0;
  }catch(const std::exception&e){std::cerr<<e.what()<<'\n';return 1;}}
@@ -49,6 +63,8 @@ namespace xar::ck3_121003::build26785313 {
 bool ParseLydRequest267V1(std::string_view,LydRequest267V1&)noexcept{std::abort();}
 bool ParseFull111LydEventRequest267V1(std::string_view,LydRequest267V1&)noexcept{std::abort();}
 std::string SerializeFull111LydEventResult267V1(std::string_view,const LydResult267V1&){std::abort();}
+bool ParseFull111EventRendererRequest267V1(std::string_view,LydRequest267V1&)noexcept{std::abort();}
+std::string SerializeFull111EventRendererResult267V1(std::string_view,const LydResult267V1&){std::abort();}
 std::string SerializeLydResult267V1(std::string_view,const LydResult267V1&){std::abort();}
 LydSession267V1&RetainedLydSession267V1(){std::abort();}
 void BlockLydUnknown267V1(LydSession267V1&)noexcept{std::abort();}

@@ -129,5 +129,6 @@ bool ReadFull111OrdinaryEventOnOwnerV1(const ReadonlyBindings &bindings,
      full111_event_queue::Capture(bindings,game,final_queue) && final_queue==out.queue &&
      unexpired() && still_owned(owner_context);
 }
+#include "ck3_121003_full111_event_renderer_reader_v1.inc"
 #endif
 #endif

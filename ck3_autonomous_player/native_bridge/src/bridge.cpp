@@ -17214,8 +17214,12 @@ void RunConnectedSession(
 #endif
 #if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1
         if(!early_step_dispatched&&xar::game::IsCk3_121003Full111Descriptor(game.descriptor())&&
-            step==xar::ck3_121003::build26785313::kLydSteps267V1[
-                xar::ck3_121003::build26785313::kLydEventQueryIndex267V1]){
+            (step==xar::ck3_121003::build26785313::kLydSteps267V1[
+                xar::ck3_121003::build26785313::kLydEventQueryIndex267V1]
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1
+             ||step==xar::ck3_121003::build26785313::kFull111EventRendererStep267V1
+#endif
+            )){
           connected=write_frame(pipe,xar::ck3_121003::build26785313::DispatchLydRequest267V1(
               game,state.connection_generation,request_id,step,incoming.payload,g_main_thread_query_mailbox_v1));
           early_step_dispatched=true;

@@ -18,7 +18,7 @@ struct LydContext267V1{
  ReadonlyBindings bindings{};ck3_11906::MainThreadQueryMailboxV1*mailbox=nullptr;ck3_11906::MainThreadQueryTicketV1 ticket{};
  LydRequest267V1 request{};LydResult267V1 result{};LydSession267V1*session=nullptr;
  std::uint64_t connection_generation=0,monotonic_deadline_ms=0;
- bool native_observation_entered=false,full111_ordinary_events_only=false;
+ bool native_observation_entered=false,full111_ordinary_events_only=false,full111_event_renderer=false;
 };
 LydSession267V1&RetainedLydSession267V1();
 void ArmLydDeadline267V1(LydContext267V1&)noexcept;
@@ -28,6 +28,10 @@ bool ExecuteLydOnOwner267V1(void*,const ck3_11906::MainThreadExecutionStampV1&)n
 bool ReadLydFrameOnOwner267V1(const ReadonlyBindings&,ck3_11906::MainThreadQueryMailboxV1*,
  const ck3_11906::MainThreadQueryTicketV1&,const ck3_11906::MainThreadExecutionStampV1&,void*,
  LydKind267V1,std::uint64_t,std::uint64_t,LydFrame267V1&,std::string&)noexcept;
+bool ReadFull111EventRendererOnOwner267V1(const ReadonlyBindings&, ck3_11906::MainThreadQueryMailboxV1*,
+ const ck3_11906::MainThreadQueryTicketV1&, const ck3_11906::MainThreadExecutionStampV1&, void*,
+ const LydFrame267V1&, const LydRequest267V1&, std::uint64_t, Full111EventRendererSource267V1&,
+ bool &native_read_entered, bool &cleanup_known, std::string&) noexcept;
 bool LydStepEnabled267V1(const game::AdapterDescriptor&,std::string_view)noexcept;
 std::string DispatchLydRequest267V1(const game::GameAdapter&,std::uint64_t,std::string_view,std::string_view,std::string_view,ck3_11906::MainThreadQueryMailboxV1&);
 }

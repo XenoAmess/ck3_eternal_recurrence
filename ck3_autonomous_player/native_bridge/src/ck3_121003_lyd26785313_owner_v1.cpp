@@ -19,6 +19,18 @@ std::uint64_t Wall()noexcept{const auto t=std::chrono::duration_cast<std::chrono
 }
 [[maybe_unused]]bool Observe(LydContext267V1&q,const LydFrame267V1&frame,const ck3_11906::MainThreadExecutionStampV1 &stamp,
  const std::optional<LydSelectionAssociation267V1>&pending,LydRaw267V1&raw){std::string reason;
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1
+ if(q.full111_event_renderer){
+  Full111EventRendererSource267V1 renderer;
+  bool entered=false;
+  const bool good=ReadFull111EventRendererOnOwner267V1(q.bindings,q.mailbox,q.ticket,stamp,&q,
+      frame,q.request,q.monotonic_deadline_ms,renderer,entered,q.result.cleanup_known,reason);
+  q.native_observation_entered=q.native_observation_entered||entered;
+  if(!good){q.result.reason=reason;return false;}
+  q.result.renderer=std::move(renderer);
+  q.result.source_available=true;return Time(q);
+ }
+#endif
  const bool good=q.full111_ordinary_events_only
      ?ReadFull111LydEventRaw267V1(q.bindings,q.request.expected,frame.scene,q.monotonic_deadline_ms,
          q.request,stamp.game_state,raw,reason)
@@ -53,7 +65,10 @@ bool ExecuteLydInner267V1(LydContext267V1&q,[[maybe_unused]]const ck3_11906::Mai
  try{using S=LydStatus267V1;const auto reject=[&](S status,const char*why){q.result.status=status;q.result.reason=why;return true;};
   if(q.full111_ordinary_events_only&&q.request.action!=LydAction267V1::query_events)
    return reject(S::unavailable,"current111_ordinary_event_query_only");
-  if(!q.session||!LydRequestShape267V1(q.request))return reject(S::unavailable,"lyd_actual_request_or_retained_session_unavailable");auto&state=*q.session->state_;std::scoped_lock lock(state.mutex);
+  const bool request_valid=q.full111_event_renderer
+   ?q.full111_ordinary_events_only&&Full111EventRendererRequestShape267V1(q.request)
+   :LydRequestShape267V1(q.request);
+  if(!q.session||!request_valid)return reject(S::unavailable,"lyd_actual_request_or_retained_session_unavailable");auto&state=*q.session->state_;std::scoped_lock lock(state.mutex);
   for(const auto&claim:state.claims)if(claim.id==q.request.id()){q.result.claim_sequence=claim.sequence;return reject(S::claim_consumed,"lyd_original_effect_id_retained_no_replay");}
   if(state.unknown.load(std::memory_order_acquire)){q.result.cleanup_known=false;return reject(S::indeterminate,"lyd_prior_native_completion_unknown_no_retry");}
   if(!Time(q))return reject(S::expired,"lyd_original_deadline_expired");
@@ -70,7 +85,7 @@ bool ExecuteLydInner267V1(LydContext267V1&q,[[maybe_unused]]const ck3_11906::Mai
    if(!q.full111_ordinary_events_only)state.latest.reset();
    const auto before=frame;LydRaw267V1 raw;if(!Observe(q,frame,s,state.pending,raw))return failed();
    if(!Frame(q,s,frame)||!SameFrame(before,frame)){
-    if(q.full111_ordinary_events_only){q.result.source_available=false;q.result.source.reset();}
+    if(q.full111_ordinary_events_only){q.result.source_available=false;q.result.source.reset();q.result.renderer.reset();}
     return reject(S::stale_source,"lyd_actual_core_or_gui_changed_after_read");
    }
    const auto sequence=++state.query_sequence;
@@ -100,7 +115,9 @@ bool ExecuteLydInner267V1(LydContext267V1&q,[[maybe_unused]]const ck3_11906::Mai
   }
   if(q.request.action==LydAction267V1::confirm_personal_add){state.pending.reset();state.pending_connection=0;}
   q.result.status=q.request.action==LydAction267V1::confirm_decision||q.request.action==LydAction267V1::choose_known_event_option||q.request.action==LydAction267V1::confirm_personal_add?S::confirmation_dispatched:q.request.action==LydAction267V1::open_detail||q.request.action==LydAction267V1::select_personal_candidate?S::selection_dispatched:S::navigation_dispatched;q.result.reason.clear();return true;
- }catch(...){if(q.session&&(q.native_observation_entered||q.result.effect_attempted))BlockLydUnknown267V1(*q.session);q.result.status=q.native_observation_entered||q.result.effect_attempted?LydStatus267V1::indeterminate:LydStatus267V1::unavailable;q.result.source_available=false;q.result.source.reset();q.result.reason="lyd_exception_original_claim_retained";}
+ }catch(...){if(q.session&&(q.native_observation_entered||q.result.effect_attempted))BlockLydUnknown267V1(*q.session);q.result.status=q.native_observation_entered||q.result.effect_attempted?LydStatus267V1::indeterminate:LydStatus267V1::unavailable;q.result.source_available=false;q.result.source.reset();q.result.reason="lyd_exception_original_claim_retained";
+  if(q.full111_event_renderer&&q.result.status==LydStatus267V1::indeterminate)q.result.cleanup_known=false;
+ }
 #endif
  return true;
 }

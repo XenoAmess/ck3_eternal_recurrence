@@ -105,6 +105,19 @@ struct LydSource267V1{
 };
 bool LydPublicSourceShape267V1(const LydSource267V1&)noexcept;
 bool LydPublicAdmissible267V1(const LydSource267V1&,const LydRequest267V1&)noexcept;
+inline constexpr std::string_view kFull111EventRendererStep267V1 = "query-current-ordinary-event-renderer-26785313-v1";
+inline constexpr std::string_view kFull111EventRendererCapability267V1 = "game.query.current-ordinary-event-renderer.26785313.v1";
+inline constexpr std::string_view kFull111EventRendererResultSchema267V1 = "ck3.full111.ordinary_event_renderer_result.v1";
+struct Full111RenderedOption267V1 {
+ std::int32_t authored_option_index = -1;
+ bool native_can_select = false, widget_visible = false, widget_enabled = false;
+ std::string text, disabled_reason;
+};
+struct Full111EventRendererSource267V1 {
+ std::int32_t instance_id = 0, recipient_character_id = -1, authored_option_count = 0;
+ std::string definition_key;
+ std::vector<Full111RenderedOption267V1> options;
+};
 struct LydResult267V1{
  LydAction267V1 action=LydAction267V1::query_decisions;LydStatus267V1 status=LydStatus267V1::unavailable;
  bool source_available=false,effect_attempted=false,native_returned=false,native_handled=false,cleanup_known=true,facts_available=false;
@@ -112,11 +125,15 @@ struct LydResult267V1{
  std::uint32_t thread_id=0;ck3_1210::CoreSnapshotPrefix facts{};std::optional<LydDecision267V1>decision;
  std::optional<LydPersonal267V1>personal;std::optional<LydEventRole267V1>event_role;std::optional<std::int32_t>instance_id;
  std::optional<LydSource267V1>source;std::string reason;
+ std::optional<Full111EventRendererSource267V1>renderer;
 };
 bool LydRequestShape267V1(const LydRequest267V1&)noexcept;
 inline constexpr auto kLydEventQueryIndex267V1=static_cast<std::size_t>(LydAction267V1::query_events);
 bool ParseLydRequest267V1(std::string_view,LydRequest267V1&)noexcept;
 bool ParseFull111LydEventRequest267V1(std::string_view,LydRequest267V1&)noexcept;
+bool ParseFull111EventRendererRequest267V1(std::string_view,LydRequest267V1&)noexcept;
+bool Full111EventRendererRequestShape267V1(const LydRequest267V1&)noexcept;
+std::string SerializeFull111EventRendererResult267V1(std::string_view,const LydResult267V1&);
 std::string SerializeLydResult267V1(std::string_view,const LydResult267V1&);
 std::string SerializeFull111LydEventResult267V1(std::string_view,const LydResult267V1&);
 }

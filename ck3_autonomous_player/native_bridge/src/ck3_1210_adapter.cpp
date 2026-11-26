@@ -564,6 +564,7 @@ const AdapterDescriptor &Ck3_121003Full111AdapterDescriptor() noexcept {
 #endif
 #if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1
     ,ck3_121003::full111::kOrdinaryEventCapabilityV1
+    ,ck3_121003::build26785313::kFull111EventRendererCapability267V1
 #endif
 #if defined(XAR_CK3_ENABLE_26785313_OPENING_READONLY56)
     ,ck3_1210::kOpeningScopeCapability26785313,ck3_1210::kOpeningCurrentCapability26785313
