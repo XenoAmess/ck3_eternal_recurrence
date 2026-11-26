@@ -146,13 +146,17 @@ final class MappedSavedPolicyTest {
         var loaded=RootSavedRuntimeConfigurationInputs.readLoaded(configuration,f.plan());
         var equal=NativeLaunchPlanCodec.fromJson(NativeLaunchPlanCodec.toJson(NativeLaunchPlanCodec.describe(f.plan()))).accept();
         assertSame(f.plan(),loaded.retainBoundLaunchPlan(equal));loaded.initialPolicy().requireSavedHistory(f.plan());
+        // The explicit original route reads this policy and its actual saved clone before same-Game recovery.
+        RootLoadedSavedResumeMain250.requirePolicyRoute(loaded.initialPolicy(),3);
+        try(var held=NativeSavedGameClone.qualify(f.plan(),f.original())) {
+            loaded.initialPolicy().requireInitialSavedProjection(f.plan(),f.original(),held.observation());
+        }
         Files.writeString(f.actual(),"SDK-save-after-token",StandardOpenOption.TRUNCATE_EXISTING);
         var source=RootSavedRuntimeConfigurationInputs.readSource(configuration);
         var actual=source.retainBoundLaunchPlan(equal);source.initialPolicy().requireSavedHistory(actual);
         assertTrue(source.initialPolicy().isMaterializedSaved());files.verify(f.original());
-        // Configuration DATA cannot reopen the unsupported retained/native3 or generic recovery path.
+        // Configuration DATA alone does not restore the mapped clone or admit the legacy retained route.
         assertThrows(IOException.class,()->RootLoadedSavedResumeMain250.requirePolicyRoute(source.initialPolicy(),0));
-        assertThrows(IOException.class,()->RootLoadedSavedResumeMain250.requirePolicyRoute(source.initialPolicy(),3));
         RootLoadedSavedResumeMain250.requirePolicyRoute(source.initialPolicy(),1);
         RootLoadedSavedResumeMain250.requirePolicyRoute(source.initialPolicy(),2);
         RootLoadedSavedResumeMain250.requirePolicyRoute(source.initialPolicy(),4);

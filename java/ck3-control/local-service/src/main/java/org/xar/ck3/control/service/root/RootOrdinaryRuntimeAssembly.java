@@ -818,6 +818,22 @@ public final class RootOrdinaryRuntimeAssembly {
             return opened.finishConfirmedSaved(adoption.driver(),Optional.of(adoption.source()),deadline);
         }
 
+        /** Reopens the original Saved ledger and the same attached Game, without a new Saved admission. */
+        public Running openOriginalLoadedSavedRecovery(org.xar.ck3.control.platform.RootProcessAttach.LoadedCustody custody,Instant deadline)
+                throws IOException,InterruptedException {
+            Objects.requireNonNull(custody);Objects.requireNonNull(deadline);
+            var source=originalSavedRecoverySource;
+            var actual=custody.game();
+            if(source==null||actual.launchPlan()!=plan||!custody.pair().equals(source.pair()))
+                throw new IOException("original Saved recovery requires its exact retained pair and attached Saved plan");
+            custody.requireCurrent();
+            if(config.initialPolicy().isMaterializedSaved())
+                config.initialPolicy().requireInitialSavedProjection(plan,source.pair().save(),custody.savedClone());
+            var running=openSameGameBootstrapOpened(open(actual),actual,Optional.empty(),deadline,false);
+            custody.releasePreparation();
+            return running;
+        }
+
         public synchronized Running openConfirmedSaved(JavaGameLifecycle.Started started,
                 RootJavaSavedBootstrap.ConfirmedSource confirmed,Instant deadline)throws IOException,InterruptedException {
             Objects.requireNonNull(started);Objects.requireNonNull(confirmed);Objects.requireNonNull(deadline);
@@ -1250,6 +1266,7 @@ public Running openExistingSameGameRecovery(ManagedGameSession actual, Optional<
 }
 
 private Running openSameGameBootstrapInternal(ManagedGameSession actual, Optional<ContinuityBatchJournal.CleanRestartTicket> pointer, Instant deadline, boolean allowObservedInitial) throws IOException, InterruptedException {
+    if(originalSavedRecoverySource!=null)throw new IOException("original Saved recovery must consume its actual loaded custody");
     return openSameGameBootstrapOpened(open(actual),actual,pointer,deadline,allowObservedInitial);
 }
 

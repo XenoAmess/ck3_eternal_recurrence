@@ -182,11 +182,9 @@ public final class RootLoadedSavedResumeMain250 {
             if(passive) {
                 result=capturePassive(attached,custody,evidenceRoot,clock);
             }else {
-            if(originalRecovery)custody.requireCurrent();
-            running = originalRecovery?newPrepared.openExistingSameGameRecovery(attached,java.util.Optional.empty(),clock.instant().plus(Duration.ofMinutes(10)))
+            running = originalRecovery?newPrepared.openOriginalLoadedSavedRecovery(custody,clock.instant().plus(Duration.ofMinutes(10)))
                     :preentry?newPrepared.openLoadedSaved(attached,source,custody,clock.instant().plus(Duration.ofMinutes(10)))
                     :newPrepared.openRetainedLoadedSaved(attached, source, custody, clock.instant().plus(Duration.ofMinutes(10)));
-            if(originalRecovery){custody.requireCurrent();custody.releasePreparation();}
             var adoptedHead = running.core().writer().locked(same -> same.head());
             ObjectNode adopted = event(clock,originalRecovery?"SAVED_ORIGINAL_RECOVERY_ADOPTED":"SAVED_ENTRY_ADOPTED");
             adopted.set("game", attached.generation().toJson());
@@ -295,12 +293,12 @@ public final class RootLoadedSavedResumeMain250 {
                 ||!Files.isDirectory(root.resolve("continuity/ROOT-CONTINUITY-WINDOW-EVENTS"),java.nio.file.LinkOption.NOFOLLOW_LINKS)))
             throw new IOException("loaded Saved preentry requires its existing complete store; use the explicit fresh entry request for an absent root");
     }
-    /** A v2 policy cannot convert canonical3/read-only or generic recovery into a mapped native4 admission. */
+    /** A v2 policy may use explicit original recovery; entry DATA alone does not acquire loaded custody. */
     static void requirePolicyRoute(org.xar.ck3.control.application.driver.InitialEpisodePolicy policy,int mode)throws IOException {
         Objects.requireNonNull(policy);
         if(mode<0||mode>4)throw new IOException("unknown loaded Saved route");
-        if(policy.isMaterializedSaved()&&mode!=1&&mode!=2&&mode!=4)
-            throw new IOException("mapped Saved v2 requires its explicit initial admission; retained/gameplay recovery needs a distinct current-pair lineage proof");
+        if(policy.isMaterializedSaved()&&mode==0)
+            throw new IOException("mapped Saved v2 requires its explicit original recovery or initial admission; legacy retained entry is unsupported");
     }
     static boolean preentryRequest(com.fasterxml.jackson.databind.JsonNode value) {
         int mode=requestMode(value);
