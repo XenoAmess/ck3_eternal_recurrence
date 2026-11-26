@@ -5,6 +5,7 @@
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_1210_adapter.hpp"
 #include "xar_bridge/ck3_121003_owned_army123_wire.hpp"
+#include "ck3_active_event_frame.hpp"
 
 #include <array>
 #include <charconv>

@@ -12,6 +12,7 @@
 #include "xar_bridge/ck3_121003_owned_army123_wire.hpp"
 #include "xar_bridge/ck3_1210_gui_control_v1.hpp"
 #include "xar_bridge/ck3_1210_toast_query_v1.hpp"
+#include "ck3_active_event_frame.hpp"
 
 #include <array>
 #include <cstdlib>

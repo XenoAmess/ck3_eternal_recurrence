@@ -7,6 +7,8 @@
 #include "xar_bridge/ck3_1210_date_sentinel_v1.hpp"
 #include "xar_bridge/ck3_1210_thread_runtime.hpp"
 #include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
+#include "xar_bridge/ck3_121003_owned_army123_wire.hpp"
+#include "ck3_active_event_frame.hpp"
 #include <windows.h>
 #include <filesystem>
 #include <fstream>
