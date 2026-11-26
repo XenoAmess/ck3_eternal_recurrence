@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import org.xar.ck3.control.application.action.ActionJournal;
+import org.xar.ck3.control.application.action.ContinuityActionJournal;
 import org.xar.ck3.control.application.action.CommandExpectation;
 import org.xar.ck3.control.application.action.ActionPorts;
 import org.xar.ck3.control.application.action.ActionReceipt;
@@ -243,6 +244,7 @@ public final class DriverBootstrap {
         private Seed appliedSeed;
         private String appliedEventIdentity;
         private DriverSnapshotFacts.Stamp appliedStamp;
+        private ContinuityActionJournal.ImportedRestoreRetirement appliedRetirement;
         private Staged(Adopted provisional,DriverSnapshotFacts.Stamp predecessor,ActionSnapshotReader actions,
                 ActionPorts.OutcomeArchive archive,NativeGameTransport transport,long sequence,String digest,
                 Optional<RootRestoreMaterials.ColdAdoption> nativeCampaignOriginal) {
@@ -336,6 +338,14 @@ public final class DriverBootstrap {
                     try {
                         lease.assertCurrent();StrictJson.require(Instant.now().isBefore(deadline),"restored adoption deadline expired");
                         requireRestoreCommit(stage,finalSeed,originalPrepared,actualReceipt,lease);
+                        var transport = stage.session();
+                        var owner = new org.xar.ck3.control.application.session.SessionPorts.SessionIdentity(
+                                transport.machineId(), transport.game(), transport.sessionId());
+                        var retirement = ContinuityActionJournal.committedImportedRestoreRetirement(
+                                borrowed, originalPrepared, actualReceipt, lease.snapshot(), stage.archive, owner);
+                        var retainedResume = retirement.isPresent()
+                                ? retirement.orElseThrow().retainedResume(borrowed, lease.snapshot(), stage.archive.withSession(borrowed))
+                                : Optional.<ActionReceipt>empty();
                         readExact(originals,stage.source().sourceRef(),DriverJson.MAX_NATIVE_BYTES);
                         StrictJson.require(stage.transport.awaitHello(deadline).equals(stage.session()),"staged held Native session changed before final adoption");
                         var driver=DriverStateSnapshot.decodeComplete(readExact(originals,finalSeed.fullDriver(),DriverCheckpointStore.MAX_DRIVER_BYTES));
@@ -354,7 +364,12 @@ public final class DriverBootstrap {
                         });
                         List<DriverSnapshotFacts.ActionRow> rows=new ArrayList<>();List<String> gaps=new ArrayList<>();boolean unresolved=false;
                         for(var actual:lease.snapshot().actions()) {
-                            if(!actual.settled()) { unresolved=true;gaps.add("unreconciled_action:"+actual.command().actionId());continue; }
+                            if (!actual.settled()) {
+                                if (retainedResume.filter(actual::equals).isEmpty()) {
+                                    unresolved = true; gaps.add("unreconciled_action:" + actual.command().actionId());
+                                }
+                                continue;
+                            }
                             if(actual.command().expectation() instanceof CommandExpectation.OperatorRebind operator) {
                                 if(actual.command().origin().game().equals(stage.session().game())
                                         &&actual.command().sessionId().equals(stage.session().sessionId())
@@ -395,9 +410,16 @@ public final class DriverBootstrap {
                                         "previously adopted Driver changed; use current Root authority");return null;
                             });
                         }
+                        if (retirement.isPresent()) {
+                            if (stage.appliedRetirement == null) stage.appliedRetirement = retirement.orElseThrow();
+                            stage.authority().bindImportedRestoreProjection(stage.appliedRetirement, stage.archive);
+                        }
                         if(stage.nativeCampaignOriginal.isPresent())
                             stage.provisional.producer().promoteNativeCampaignRestored(stage,finalSeed,originalPrepared,actualReceipt,borrowed);
-                        DriverStateSnapshot projected=DriverStateAssembler.project(replacement,lease.snapshot(),Optional.empty());
+                        DriverStateSnapshot projected = retirement.isPresent()
+                                ? stage.authority().withFrozenFacts(borrowed, frozen ->
+                                        DriverStateAssembler.project(frozen.state(), frozen.actions(), frozen.activeActionId()))
+                                : DriverStateAssembler.project(replacement, lease.snapshot(), Optional.empty());
                         if(projected instanceof DriverStateSnapshot.Incomplete missing)
                             for(String reason:missing.missingOrUnreconciledFields())if(!gaps.contains(reason))gaps.add(reason);
                         var first=stage.provisional.observations().observe(deadline);

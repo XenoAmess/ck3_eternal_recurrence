@@ -9,7 +9,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import org.xar.ck3.control.application.advance.AdvancePrimitives;
+import org.xar.ck3.control.application.checkpoint.CheckpointPair;
 import org.xar.ck3.control.application.checkpoint.CheckpointPairCodec;
+import org.xar.ck3.control.application.checkpoint.SavedAttachmentAuthority;
+import org.xar.ck3.control.application.checkpoint.SavedAttachmentSourceStore;
 import org.xar.ck3.control.application.session.OrdinaryCycleTransitions;
 import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
 import org.xar.ck3.control.continuity.ContinuityJson;
@@ -255,6 +258,81 @@ public final class ContinuityActionJournal implements ActionJournal {
         return exact.map(old -> unresolved.stream().filter(receipt -> !receipt.equals(old)).toList()).orElse(unresolved);
     }
 
+    /** Data derived from the actual v5 attachment transaction before the ordinary-cycle rebind. */
+    public static final class ImportedRestoreRetirement {
+        private final SessionIdentity owner;
+        private final long attachmentSequence;
+        private final String attachmentDigest;
+        private final ActionReceipt retiredResume;
+
+        private ImportedRestoreRetirement(SessionIdentity owner, WriterContracts.Head attached, ActionReceipt retiredResume) {
+            this.owner = owner;
+            this.attachmentSequence = attached.state().sequence();
+            this.attachmentDigest = attached.digest();
+            this.retiredResume = retiredResume;
+        }
+
+        public Optional<ActionReceipt> retainedResume(ContinuityStorePort.Session same, ActionJournal.Snapshot snapshot,
+                ActionPorts.OutcomeArchive archive) throws IOException {
+            var head = same.head();
+            StrictJson.require(head.state().sequence() == snapshot.ledgerSequence() && head.digest().equals(snapshot.headSha256()),
+                    "imported Driver projection requires its actual current raw action snapshot");
+            var whole = head.state().toJson();
+            if (!owner.machineId().equals(head.state().machineId())
+                    || !ContinuityJson.same(whole.get("game_binding"), owner.game().toJson())
+                    || !snapshot.actions().contains(retiredResume)) return Optional.empty();
+            if (whole.has(WriterContracts.ORDINARY_IMPORTED_CYCLE_ORIGIN_FIELD)) {
+                if (blockingUnresolved(same, head, archive, owner, snapshot.actions()).contains(retiredResume))
+                    return Optional.empty();
+            } else if (attachmentSequence != head.state().sequence() || !attachmentDigest.equals(head.digest())) {
+                same.requireDomainImportContinuation(attachmentSequence, attachmentDigest);
+            }
+            StrictJson.require(head.digest().equals(same.head().digest()), "imported Driver projection changed its actual writer head");
+            return Optional.of(retiredResume);
+        }
+    }
+
+    /** The before-REBIND classification can only follow the exact committed imported Saved attachment. */
+    public static Optional<ImportedRestoreRetirement> committedImportedRestoreRetirement(ContinuityStorePort.Session same,
+            WriterContracts.Prepared prepared, WriterContracts.Receipt committed, ActionJournal.Snapshot snapshot,
+            ActionPorts.OutcomeArchive archive, SessionIdentity owner) throws IOException {
+        var details = prepared.request().detailsObject();
+        var encoded = details.path(SavedAttachmentSourceStore.SOURCES_DETAIL);
+        if (!SavedAttachmentSourceStore.SOURCES_SCHEMA_IMPORTED_SAVE.equals(encoded.path("schema").asText())) return Optional.empty();
+        same.requireCommitted(prepared, committed);
+        archive = archive.withSession(same);
+        var before = prepared.predecessor().state();
+        var current = same.head();
+        StrictJson.require(SavedAttachmentAuthority.kinds().contains(prepared.request().kind())
+                && committed.disposition() != WriterContracts.Disposition.NO_CHANGE
+                && current.state().sequence() == Math.addExact(before.sequence(), 1)
+                && current.state().sequence() == committed.head().sequence()
+                && current.state().sequence() == snapshot.ledgerSequence()
+                && current.digest().equals(snapshot.headSha256())
+                && current.digest().equals(ContinuityJson.digest(committed.head().toJson()))
+                && owner.machineId().equals(current.state().machineId())
+                && ContinuityJson.same(current.state().toJson().get("game_binding"), owner.game().toJson())
+                && owner.sessionId().equals(StrictJson.text(current.state().toJson().path("latest_binding").get("session_id"))),
+                "imported Driver projection requires the actual immediate replacement attachment");
+        var sources = SavedAttachmentSourceStore.Sources.decode(encoded);
+        var departed = sources.importedOrigin().orElseThrow().owner();
+        var pair = SavedAttachmentAuthority.pairFromDetails(prepared.request());
+        var originalActionHead = recordHead(before).orElseThrow();
+        var originalTerminal = archive.loadRecord(originalActionHead).receipt();
+        StrictJson.require(!owner.game().equals(departed.game()) && !owner.game().equals(pair.frame().game())
+                && owner.machineId().equals(departed.machineId())
+                && before.status() == ContinuityState.Status.REPAIR_REQUIRED
+                && ContinuityJson.same(before.toJson().get("game_binding"), departed.game().toJson())
+                && originalTerminal.sequence() == before.sequence()
+                && recordHead(current.state()).filter(originalActionHead::equals).isPresent()
+                && sources.physicalSaveWitness().filter(pair.save()::equals).isPresent(),
+                "imported Driver projection crossed the departed target or independent SAVE");
+        var unresolved = snapshot.actions().stream().filter(receipt -> !receipt.settled()).toList();
+        var retired = retiredResumeFromImportedPrefix(originalActionHead, archive, departed, pair, snapshot.actions(), unresolved);
+        StrictJson.require(retired.isPresent(), "committed imported restore lost the original retired RESUME fact");
+        return retired.map(receipt -> new ImportedRestoreRetirement(owner, current, receipt));
+    }
+
     private static Optional<ActionReceipt> importedRetiredResume(ExactRef tombstoneRef, ActionPorts.OutcomeArchive archive,
             SessionIdentity owner, List<ActionReceipt> canonical, List<ActionReceipt> unresolved) {
         var tombstone = StrictJson.object(ContinuityJson.parseObject(archive.loadMaterial(tombstoneRef).bytes(),
@@ -274,7 +352,13 @@ public final class ContinuityActionJournal implements ActionJournal {
                 && !restored.game().equals(departed.game()) && !restored.game().equals(oldPair.frame().game()),
                 "imported action eligibility crossed the original restore owners");
 
-        var retiredRecord = archive.loadRecord(ExactRef.fromJson(tombstone.get("original_action_head")));
+        return retiredResumeFromImportedPrefix(ExactRef.fromJson(tombstone.get("original_action_head")), archive, departed, oldPair,
+                canonical, unresolved);
+    }
+
+    private static Optional<ActionReceipt> retiredResumeFromImportedPrefix(ExactRef terminal, ActionPorts.OutcomeArchive archive,
+            SessionIdentity departed, CheckpointPair oldPair, List<ActionReceipt> canonical, List<ActionReceipt> unresolved) {
+        var retiredRecord = archive.loadRecord(terminal);
         var retired = retiredRecord.receipt();
         StrictJson.require(canonical.contains(retired) && retired.state() instanceof ActionState.CompositeOperatorQuarantined
                 && retired.command().origin() instanceof CommandOrigin.Gameplay && retired.command().origin().game().equals(departed.game())

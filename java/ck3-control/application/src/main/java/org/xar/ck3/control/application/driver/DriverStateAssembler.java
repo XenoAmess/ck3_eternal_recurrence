@@ -18,6 +18,7 @@ import org.xar.ck3.control.application.action.CommandOrigin;
 import org.xar.ck3.control.application.action.ActionPorts;
 import org.xar.ck3.control.application.action.ActionReceipt;
 import org.xar.ck3.control.application.action.ActionSnapshotReader;
+import org.xar.ck3.control.application.action.ContinuityActionJournal;
 import org.xar.ck3.control.application.action.ActionState;
 import org.xar.ck3.control.application.action.NativeObservationPort;
 import org.xar.ck3.control.application.action.RawJson;
@@ -88,6 +89,40 @@ public final class DriverStateAssembler implements FrozenDriverSnapshotSupplier.
         var same=Objects.requireNonNull(reservedLifeProjectionSession.get(),"actual borrowed projection writer session required");
         return new CheckpointArchive(same,reservedLifeProjectionArchive.withSession(same));
     }
+    private record ImportedRestoreProjection(ContinuityActionJournal.ImportedRestoreRetirement retirement,
+            ActionPorts.OutcomeArchive archive) { }
+    private record ImportedProjectionScope(DriverSnapshotFacts.State facts, ActionJournal.Snapshot snapshot,
+            ActionReceipt retainedResume) { }
+    private static final ThreadLocal<ImportedProjectionScope> importedProjection = new ThreadLocal<>();
+    private ImportedRestoreProjection importedRestore;
+
+    synchronized void bindImportedRestoreProjection(ContinuityActionJournal.ImportedRestoreRetirement retirement,
+            ActionPorts.OutcomeArchive archive) {
+        Objects.requireNonNull(retirement); Objects.requireNonNull(archive);
+        StrictJson.require(importedRestore == null || (importedRestore.retirement() == retirement && importedRestore.archive() == archive),
+                "only this committed imported restore owns Driver projection");
+        if (importedRestore == null) importedRestore = new ImportedRestoreProjection(retirement, archive);
+    }
+
+    private <T>T presentationScope(ContinuityStorePort.Session same, ActionJournal.Snapshot snapshot,
+            PresentationWork<T> work) throws IOException {
+        ImportedRestoreProjection binding;
+        synchronized (this) { binding = importedRestore; }
+        if (binding == null || same == null) return presentationScope(snapshot, work);
+        var source = binding.archive().withSession(same);
+        var retired = binding.retirement().retainedResume(same, snapshot, source);
+        if (retired.isEmpty()) return presentationScope(snapshot, work);
+        var current = facts.locked(state -> state);
+        var previous = importedProjection.get();
+        importedProjection.set(new ImportedProjectionScope(current, snapshot, retired.orElseThrow()));
+        try { return presentationScope(snapshot, work); }
+        finally { if (previous == null) importedProjection.remove(); else importedProjection.set(previous); }
+    }
+
+    private synchronized ContinuityStorePort.Session currentImportedProjectionSession() {
+        return importedRestore == null || historySession == null ? null : historySession.get();
+    }
+
     private static final ThreadLocal<ReservedLifeProjectionScope> verifiedReservedLife=new ThreadLocal<>();
     private <T>T presentationScope(ActionJournal.Snapshot snapshot,PresentationWork<T> work)throws IOException {
         ReservedLifeRetirementVerifier verifier;
@@ -968,7 +1003,7 @@ public final class DriverStateAssembler implements FrozenDriverSnapshotSupplier.
         try {
             return actions.withFrozen(lease -> facts.locked(state -> {
                 lease.assertCurrent();
-                try { return frozenWork(work,new Frozen(state,lease.snapshot(),lease.activeActionId())); }
+                try { return frozenWork(currentImportedProjectionSession(),work,new Frozen(state,lease.snapshot(),lease.activeActionId())); }
                 catch(IOException failure) { throw new UncheckedIOException(failure); }
             }));
         } catch(UncheckedIOException failure) { throw failure.getCause(); }
@@ -980,7 +1015,7 @@ public final class DriverStateAssembler implements FrozenDriverSnapshotSupplier.
         try {
             return actions.withFrozen(borrowed,lease -> facts.locked(state -> {
                 lease.assertCurrent();
-                try { T result=frozenWork(work,new Frozen(state,lease.snapshot(),lease.activeActionId())); lease.assertCurrent(); return result; }
+                try { T result=frozenWork(borrowed,work,new Frozen(state,lease.snapshot(),lease.activeActionId())); lease.assertCurrent(); return result; }
                 catch(IOException failure) { throw new UncheckedIOException(failure); }
             }));
         } catch(UncheckedIOException failure) { throw failure.getCause(); }
@@ -989,9 +1024,9 @@ public final class DriverStateAssembler implements FrozenDriverSnapshotSupplier.
     public void requireOutsideObservationScope(ContinuityStorePort.Session original) {
         Objects.requireNonNull(original);StrictJson.require(readFreezeDepth.get()==0,"read-history publication must leave every immutable Driver read scope first");
     }
-    private <T>T frozenWork(DriverWork<T> work,Frozen frozen) throws IOException {
+    private <T>T frozenWork(ContinuityStorePort.Session same,DriverWork<T> work,Frozen frozen) throws IOException {
         int prior=readFreezeDepth.get();readFreezeDepth.set(prior+1);
-        try{return presentationScope(frozen.actions(),()->work.run(frozen));}finally{if(prior==0)readFreezeDepth.remove();else readFreezeDepth.set(prior);}
+        try{return presentationScope(same,frozen.actions(),()->work.run(frozen));}finally{if(prior==0)readFreezeDepth.remove();else readFreezeDepth.set(prior);}
     }
 
     /** Same-session observation publication only; this is not a ledger writer or an action retry. */
@@ -1184,7 +1219,7 @@ public final class DriverStateAssembler implements FrozenDriverSnapshotSupplier.
         if(raw!=null)rawCheckpointContext.set(raw);
         planningReadCallback.set(new PlanningReadCallbackScope(borrowed,lease.snapshot().headSha256()));
         try {
-            T result=presentationScope(lease.snapshot(),()->work.run(new FrozenObservation(current,lease.snapshot(),lease.activeActionId(),completed)));
+            T result=presentationScope(borrowed,lease.snapshot(),()->work.run(new FrozenObservation(current,lease.snapshot(),lease.activeActionId(),completed)));
             var after=(DriverSnapshotFacts.Known)facts.locked(state -> state);
             if(raw!=null&&raw.publication!=null) {
                 var saved=raw.publication;
@@ -1280,7 +1315,7 @@ public final class DriverStateAssembler implements FrozenDriverSnapshotSupplier.
                 }
                 final Optional<RawCheckpointOpening> qualified=opening;
                 DriverStateSnapshot projection;
-                try{projection=presentationScope(lease.snapshot(),()->qualified.isPresent()?projectObservation((DriverSnapshotFacts.Known)state,lease.snapshot(),lease.activeActionId(),qualified)
+                try{projection=presentationScope(raw==null?currentImportedProjectionSession():raw.session,lease.snapshot(),()->qualified.isPresent()?projectObservation((DriverSnapshotFacts.Known)state,lease.snapshot(),lease.activeActionId(),qualified)
                         :project(state,lease.snapshot(),lease.activeActionId()));}
                 catch(IOException failure){throw new UncheckedIOException(failure);}
                 AtomicBoolean open=new AtomicBoolean(true); AtomicBoolean published=new AtomicBoolean();
@@ -1683,6 +1718,9 @@ public final class DriverStateAssembler implements FrozenDriverSnapshotSupplier.
                     && action.state() instanceof ActionState.AckReceived
                     && "save-checkpoint".equals(action.command().operation().value()) && action.ack().filter(ack -> ack.nativeOk()).isPresent();
             if (!action.settled()) {
+                var imported = importedProjection.get();
+                if (imported != null && imported.facts() == state && imported.snapshot() == durable
+                        && imported.retainedResume().equals(action)) continue;
                 boolean currentParent=allowedParent.filter(action.command()::equals).isPresent()
                         && activeActionId.filter(action.command().actionId()::equals).isPresent()
                         && (action.state() instanceof ActionState.IntentDurable || action.state() instanceof ActionState.Submitting
