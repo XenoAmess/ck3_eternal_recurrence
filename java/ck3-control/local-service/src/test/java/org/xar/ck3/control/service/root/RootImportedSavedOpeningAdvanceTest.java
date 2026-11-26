@@ -51,8 +51,9 @@ final class RootImportedSavedOpeningAdvanceTest {
         var result = f.project(f.current.frame());
         assertTrue(result.isEmpty());
         assertEquals(0, f.originalReads);
-        assertEquals(BigInteger.valueOf(53179344),
-                RootGovernanceOpeningInputs.openingGate(f.opening, f.current.frame(), Optional.empty(), result).dateRaw());
+        var gate = RootGovernanceOpeningInputs.openingGate(f.opening, f.current.frame(), Optional.empty(), result);
+        assertEquals(BigInteger.valueOf(53179344), gate.dateRaw());
+        assertTrue(gate.dateEvidence().isEmpty());
     }
 
     @Test void actualSettleReducerAllowsFirstOpeningAndPreservesTheRealExistingFocusTurnShape() throws Exception {
@@ -142,6 +143,7 @@ final class RootImportedSavedOpeningAdvanceTest {
         assertEquals("3110d087b33043133593b696abf8699994cbf9056ab25bce669e9a496d545d93", proof.semantic().semantic().sha256());
         assertNotEquals(control, proof.semantic());
         assertTrue(proof.evidence().containsAll(List.of(proof.cycleRecord(), proof.lifeReceipt(), proof.semantic().semantic())));
+        assertEquals(proof.evidence(), gate.dateEvidence());
         assertEquals(originalSaved, f.head.toJson().get(SavedContinuityBootstrap.FIELD));
         assertEquals(originalGate, DomainBodies.reference(f.head, DomainBodies.Slot.OPENING_GATE));
         assertEquals(56L, f.head.settledCycles());

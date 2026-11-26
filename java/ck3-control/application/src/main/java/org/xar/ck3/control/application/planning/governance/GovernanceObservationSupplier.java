@@ -64,12 +64,20 @@ public interface GovernanceObservationSupplier {
         }
     }
     record OpeningGate(String episodeRunId, BigInteger dateRaw, OpeningStage stage,
-            Optional<ActionReceipt> action, Optional<CheckpointFact> checkpoint) {
+            Optional<ActionReceipt> action, Optional<CheckpointFact> checkpoint, List<ExactRef> dateEvidence) {
         public OpeningGate {
             StrictJson.text(episodeRunId); Objects.requireNonNull(dateRaw); Objects.requireNonNull(stage);
             Objects.requireNonNull(action); Objects.requireNonNull(checkpoint);
+            dateEvidence = List.copyOf(dateEvidence);
             StrictJson.require(stage == OpeningStage.AWAIT_SUBMIT || stage == OpeningStage.COMPLETE || action.isPresent(),
                     "opening continuation requires its original action receipt");
+            StrictJson.require(dateEvidence.isEmpty() || stage == OpeningStage.AWAIT_SUBMIT
+                    && action.isEmpty() && checkpoint.isEmpty() && dateEvidence.stream().allMatch(ref -> ref.bytes() > 0),
+                    "projected opening date requires exact originals for the unissued gate");
+        }
+        public OpeningGate(String episodeRunId, BigInteger dateRaw, OpeningStage stage,
+                Optional<ActionReceipt> action, Optional<CheckpointFact> checkpoint) {
+            this(episodeRunId, dateRaw, stage, action, checkpoint, List.of());
         }
     }
     /** Read under the sole continuity store lock; the domain adapters never publish it. */

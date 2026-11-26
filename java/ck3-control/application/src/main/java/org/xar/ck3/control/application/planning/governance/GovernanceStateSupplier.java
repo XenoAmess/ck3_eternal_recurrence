@@ -114,6 +114,7 @@ public final class GovernanceStateSupplier implements GovernanceCollector.StateS
                 ExactRef headRef = session.persistedHead(); List<ExactRef> originals = new ArrayList<>();
                 Optional<CadenceModels.State> cadenceState = body(session, cadence, request, headRef, originals);
                 Optional<OpeningGate> gate = body(session, opening, request, headRef, originals);
+                gate.ifPresent(value -> originals.addAll(value.dateEvidence()));
                 Optional<DomainState> councilState = body(session, council, request, headRef, originals);
                 Optional<DomainState> crownState = body(session, crown, request, headRef, originals);
                 // With no imported body, retain the existing absent-state observation metadata.

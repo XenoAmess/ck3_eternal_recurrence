@@ -168,8 +168,8 @@ public final class GovernancePolicies {
             if (LifestyleHistory.select(first.history()).status() != LifestyleHistory.Status.CLEAR)
                 return new Wait("submitted opening focus takes precedence over observing its now-present focus");
             if (existingFocus(first.originalQuery())) {
-                Obj evidence = annotation(previous, "initial_lifestyle_focus_existing", first.originalQuery())
-                        .with("opening_required_gate_intent", new Text("consume_verified_existing_focus_on_following_turn"));
+                Obj evidence = withOpeningDateEvidence(annotation(previous, "initial_lifestyle_focus_existing", first.originalQuery())
+                        .with("opening_required_gate_intent", new Text("consume_verified_existing_focus_on_following_turn")), gate);
                 return new Replace(new Draft("java-opening-focus-v1", "initial_lifestyle_focus_already_present", "existing focus and exact XP/points observed",
                         Kind.OPENING_FOCUS, Optional.empty(), Purpose.READ_ONLY, Optional.of(Domain.lifestyle), evidence), "existing focus does not authorize another focus submission");
             }
@@ -184,7 +184,13 @@ public final class GovernancePolicies {
             var outcome = LifestyleConsumer.consumeWithHistory(selected.input(), selected.history());
             if (outcome.route() != LifestyleConsumer.Route.FOCUS_SUBMIT) return new Wait("the exact selected opening target lacks the last fresh final-legal query");
             Obj detail = annotation(previous, "opening_first_focus_comparison", parse(LifestyleMinCodec.encode(choice)));
-            return selectedLife(request, previous, selected, outcome, detail, true);
+            return selectedLife(request, previous, selected, outcome, withOpeningDateEvidence(detail, gate), true);
+        }
+
+        private static Obj withOpeningDateEvidence(Obj detail, OpeningGate gate) {
+            if (gate.dateEvidence().isEmpty()) return detail;
+            List<Value> refs = gate.dateEvidence().stream().map(ref -> parse(StrictJson.canonical(ref.toJson()))).toList();
+            return detail.with("opening_date_evidence", new Arr(refs));
         }
     }
 

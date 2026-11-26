@@ -199,6 +199,17 @@ final class GovernancePoliciesTest {
         assertEquals(GovernancePolicies.FOCUS, command.operation()); assertEquals(OrdinaryPolicy.Kind.OPENING_FOCUS, selected.draft().kind());
         assertEquals(new Text(supplier.focusTargets.getLast()), command.arguments().get("target_key"));
         assertEquals(2, supplier.lifeReads); assertEquals(command, ActionCodec.decodeCommand(ActionCodec.encodeCommand(command)));
+        assertNull(selected.draft().detail().get("opening_date_evidence"));
+
+        var gate = supplier.state.opening().orElseThrow();
+        var projected = new OpeningGate(gate.episodeRunId(), gate.dateRaw(), gate.stage(), gate.action(), gate.checkpoint(), List.of(REF));
+        var old = supplier.state;
+        supplier.state = new Durable(old.observed(), old.sessionId(), old.cadence(), Optional.of(projected), old.council(), old.crown());
+        var withEvidence = assertInstanceOf(OrdinaryPolicy.Replace.class,
+                new GovernancePolicies.Opening(supplier, REF).evaluate(request, OrdinaryPolicy.Draft.empty())).draft();
+        assertEquals(command, withEvidence.command().orElseThrow());
+        assertEquals(new Arr(List.of(parse(org.xar.ck3.control.contracts.StrictJson.canonical(REF.toJson())))),
+                withEvidence.detail().get("opening_date_evidence"));
     }
     @Test void openingDateDriftAndCrownUnknownStateDoNotProduceAnotherAction() {
         var request = request(9, true, List.of()); var supplier = new Supplier(request); var old = supplier.state;

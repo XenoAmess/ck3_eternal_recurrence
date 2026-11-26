@@ -80,9 +80,9 @@ public final class RootGovernanceOpeningInputs implements RootPlanningInputsFact
         if (canProjectOpeningDate(document, actual, action)) {
             context.collector().requireHeldFrame(capture.session(), capture.frame());
             advance = importedOpeningAdvance(context, capture.session(), document, capture.frame(), capture.deadline());
-            advance.ifPresent(value -> originals.addAll(value.evidence()));
         }
         OpeningGate gate=openingGate(document,actual,action,advance);
+        originals.addAll(gate.dateEvidence());
         StrictJson.require(head.equals(capture.session().persistedHead()),"opening input reads changed the writer head");
         return new RootPlanningInputsFactory.OpeningObservation(new RootPlanningInputsFactory.FieldSource(actual,capture.frame().source(),
                 capture.frame().sessionId(),originals.stream().distinct().toList()),gate);
@@ -175,7 +175,8 @@ public final class RootGovernanceOpeningInputs implements RootPlanningInputsFact
             date = advance.orElseThrow().semantic().frame().frame().identity().dateRaw();
         }
         return new OpeningGate(current.frame().episodeRunId(),date,
-                preparedOnly?OpeningStage.AWAIT_SUBMIT:document.stage(),action,document.checkpoint());
+                preparedOnly?OpeningStage.AWAIT_SUBMIT:document.stage(),action,document.checkpoint(),
+                advance.map(OpeningDateEvidence::evidence).orElseGet(List::of));
     }
 
 }
