@@ -30,10 +30,12 @@ public record ContinuityEvent(long sequence, String atUtc, String kind, byte[] d
         String identity = StrictJson.text(row.get("identity"));
         ContinuityState after = ContinuityState.fromJson(row.get("after"), previous.machineId());
         String predecessor = StrictJson.text(row.get("previous_sha256"));
+        ObjectNode previousRow = previous.toJson();
         StrictJson.require(sequence == previous.sequence() + 1 && after.sequence() == sequence
-                && predecessor.equals(ContinuityJson.digest(previous.toJson())), "continuity event gap or predecessor digest");
+                && predecessor.equals(ContinuityJson.digest(previousRow)), "continuity event gap or predecessor digest");
+        ObjectNode afterRow = after.toJson();
         StrictJson.require(identity.equals(ContinuityJson.digest(identityValue))
-                && identity.equals(StrictJson.text(after.toJson().get("last_event_identity"))), "event changed identity/sequence");
+                && identity.equals(StrictJson.text(afterRow.get("last_event_identity"))), "event changed identity/sequence");
         if(EpisodeWindow.isTransition(kind)) {
             EpisodeWindow.requireReduction(previous,after,new org.xar.ck3.control.continuity.writer.WriterContracts.Request(kind,ContinuityJson.canonical(details),java.util.List.of()),true);
         }else if(OriginalLegacyResume.KIND.equals(kind)) {
@@ -53,15 +55,15 @@ public record ContinuityEvent(long sequence, String atUtc, String kind, byte[] d
             org.xar.ck3.control.continuity.writer.WriterContracts.requireDriverActionHistoryReduction(previous,after,
                     new org.xar.ck3.control.continuity.writer.WriterContracts.Request(kind,ContinuityJson.canonical(details),java.util.List.of()),true);
         }else {
-            StrictJson.require(java.util.Objects.equals(after.toJson().get(org.xar.ck3.control.continuity.writer.WriterContracts.DRIVER_ACTION_HISTORY_FIELD),
-                    previous.toJson().get(org.xar.ck3.control.continuity.writer.WriterContracts.DRIVER_ACTION_HISTORY_FIELD)),
+            StrictJson.require(java.util.Objects.equals(afterRow.get(org.xar.ck3.control.continuity.writer.WriterContracts.DRIVER_ACTION_HISTORY_FIELD),
+                    previousRow.get(org.xar.ck3.control.continuity.writer.WriterContracts.DRIVER_ACTION_HISTORY_FIELD)),
                     "unrelated event changed Driver action-history publication");
-            StrictJson.require(java.util.Objects.equals(after.toJson().get(OriginalLegacyResume.STATE_FIELD),
-                    previous.toJson().get(OriginalLegacyResume.STATE_FIELD)),"unrelated event changed original legacy resume");
+            StrictJson.require(java.util.Objects.equals(afterRow.get(OriginalLegacyResume.STATE_FIELD),
+                    previousRow.get(OriginalLegacyResume.STATE_FIELD)),"unrelated event changed original legacy resume");
             StrictJson.require(after.initializedOrigin().equals(previous.initializedOrigin())
-                    && java.util.Objects.equals(after.toJson().get("schema"),previous.toJson().get("schema"))
-                    && java.util.Objects.equals(after.toJson().get(EpisodeWindow.FIELD),previous.toJson().get(EpisodeWindow.FIELD))
-                    && java.util.Objects.equals(after.toJson().get(FreshContinuityGenesis.FIELD),previous.toJson().get(FreshContinuityGenesis.FIELD)),
+                    && java.util.Objects.equals(afterRow.get("schema"),previousRow.get("schema"))
+                    && java.util.Objects.equals(afterRow.get(EpisodeWindow.FIELD),previousRow.get(EpisodeWindow.FIELD))
+                    && java.util.Objects.equals(afterRow.get(FreshContinuityGenesis.FIELD),previousRow.get(FreshContinuityGenesis.FIELD)),
                     "only exact versioned BEGIN/BASELINE may change episode window/schema/origin");
         }
         return new ContinuityEvent(sequence, StrictJson.text(row.get("at_utc")), kind,
