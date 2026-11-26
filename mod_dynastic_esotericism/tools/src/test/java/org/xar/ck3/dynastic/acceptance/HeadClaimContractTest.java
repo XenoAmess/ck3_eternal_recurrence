@@ -87,14 +87,78 @@ final class HeadClaimContractTest {
         assertTrue(priorAdoption(prior, Map.of("var:des_apostate_rite", "new-rite"), "new-rite"));
     }
 
-    /** Evaluate the literal persisted prior-adoption predicate, not engine crime effects. */
+    /** Evaluate the literal persisted prior-adoption predicate without running the game. */
     private static boolean priorAdoption(Block prior, Map<String, String> references, String boundRite) {
-        for (Entry entry : prior.entries()) {
-            assertEquals("=", entry.operator());
-            assertEquals("dynasty.var:des_bound_rite", atom(entry));
-            if (boundRite.equals(references.get(entry.key()))) return true;
+        Map<String, String> scopes = new HashMap<>(references);
+        scopes.put("dynasty.var:des_bound_rite", boundRite);
+        return evaluateGuard(prior, true, scopes);
+    }
+
+    @Test
+    void apostasyComparisonsResolveOnlyExistingRiteMarkers() throws IOException {
+        Sources sources = Sources.load();
+        Block prior = block(one(sources.definition("des_is_apostate_trigger"), "OR"));
+        assertTrue(priorAdoption(prior, Map.of("var:des_adopted_bound_rite", "152", "var:des_apostate_rite", "6"), "152"));
+        assertFalse(priorAdoption(prior, Map.of("var:des_adopted_bound_rite", "6", "var:des_apostate_rite", "4"), "152"));
+
+        Block refresh = block(one(sources.definition("des_refresh_apostasy_state_effect"), "if"));
+        List<Block> resets = refresh.entries().stream()
+                .filter(entry -> entry.key().equals("if")).map(HeadClaimContractTest::block)
+                .filter(body -> sets(body, "des_apostate_rite", "dynasty.var:des_bound_rite")).toList();
+        List<Block> transfers = walk(sources.definition("des_reuse_native_dynast_binding_effect")).stream()
+                .filter(entry -> entry.key().equals("if")).map(HeadClaimContractTest::block)
+                .map(body -> block(one(body, "limit")))
+                .filter(limit -> has(limit, "var:des_apostate_rite", "scope:des_transferred_old_rite")).toList();
+        assertEquals(1, resets.size());
+        assertEquals(1, transfers.size());
+        Block reset = block(one(resets.getFirst(), "limit"));
+        Block transfer = transfers.getFirst();
+        for (Map<String, String> marker : List.of(Map.<String, String>of(),
+                Map.of("var:des_apostate_rite", "6"), Map.of("var:des_apostate_rite", "152"))) {
+            Map<String, String> scopes = new HashMap<>(marker);
+            scopes.put("dynasty.var:des_bound_rite", "152");
+            scopes.put("scope:des_transferred_old_rite", "6");
+            assertEquals(!"152".equals(marker.get("var:des_apostate_rite")), evaluateGuard(reset, false, scopes));
+            assertEquals("6".equals(marker.get("var:des_apostate_rite")), evaluateGuard(transfer, false, scopes));
         }
-        return false;
+    }
+
+    /** Boolean siblings may all be evaluated. Only the explicit trigger branch skips its body. */
+    private static boolean evaluateGuard(Block block, boolean disjunction, Map<String, String> scopes) {
+        boolean result = !disjunction;
+        List<Entry> entries = block.entries();
+        for (int i = 0; i < entries.size(); i++) {
+            Entry entry = entries.get(i);
+            assertEquals("=", entry.operator());
+            boolean value;
+            if (entry.key().equals("trigger_if")) {
+                Block branch = block(entry);
+                assertTrue(i + 1 < entries.size(), "optional marker comparison requires an explicit fallback");
+                Entry fallback = entries.get(++i);
+                assertEquals("trigger_else", fallback.key());
+                value = evaluateGuard(block(one(branch, "limit")), false, scopes)
+                        ? evaluateGuard(new Block(branch.entries().stream().filter(e -> !e.key().equals("limit")).toList()), false, scopes)
+                        : evaluateGuard(block(fallback), false, scopes);
+            } else {
+                value = switch (entry.key()) {
+                    case "AND" -> evaluateGuard(block(entry), false, scopes);
+                    case "OR" -> evaluateGuard(block(entry), true, scopes);
+                    case "NOT" -> !evaluateGuard(block(entry), false, scopes);
+                    case "exists" -> scopes.containsKey(atom(entry));
+                    case "always" -> {
+                        assertTrue(Set.of("yes", "no").contains(atom(entry)));
+                        yield "yes".equals(atom(entry));
+                    }
+                    default -> {
+                        assertTrue(scopes.containsKey(entry.key()), "unguarded missing Rite marker: " + entry.key());
+                        assertTrue(scopes.containsKey(atom(entry)), "unguarded missing Rite target: " + atom(entry));
+                        yield scopes.get(entry.key()).equals(scopes.get(atom(entry)));
+                    }
+                };
+            }
+            result = disjunction ? result | value : result & value;
+        }
+        return result;
     }
 
     @Test
