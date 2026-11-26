@@ -34,10 +34,13 @@ final class CheckpointMaterialRestoreCompositionTest {
         public void close()throws IOException{f.close();}
     }
     private Harness actualSaved(String name)throws Exception{
+        return actualSaved(name,false);
+    }
+    private Harness actualSaved(String name,boolean guardedMaterialOutputs)throws Exception{
         Path root=temporary.resolve(name);
         var f=new CheckpointSourceCompositionTest.Fixture(root,false,Clock.systemUTC(),java.util.Optional.empty(),java.util.Optional.empty(),
                 java.util.List.of(),java.time.Duration.ofSeconds(8),root.resolve("profile"),java.util.Optional.empty(),
-                java.util.Optional.of(CheckpointSourceCompositionTest.freshReconciliationReads()));
+                java.util.Optional.of(CheckpointSourceCompositionTest.freshReconciliationReads()),guardedMaterialOutputs);
         try{
             var actual=f.service.checkpoint(f.request);
             if(actual instanceof CheckpointResult.Unknown unknown&&unknown.action().flatMap(receipt->receipt.ack()).filter(ack->ack.nativeOk()).isPresent()) {
@@ -291,7 +294,7 @@ final class CheckpointMaterialRestoreCompositionTest {
         }
     }
     @Test void actualSavedAttachmentKeepsOriginalCyclePhysicalEligibilityAfterGameBindingChanges()throws Exception {
-        try(var h=actualSaved("historical-after-attachment")){
+        try(var h=actualSaved("historical-after-attachment",true)){
             var candidate=actualReplacementPacket(h,"historical");
             h.f.actual.writer.locked(same->{
                 var material=h.request.savedMaterial();var original=material.session();
