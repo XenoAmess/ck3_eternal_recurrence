@@ -137,11 +137,16 @@ final class CodexLargeReviewDocumentTest {
             assertThrows(RuntimeException.class,()->CodexSessionDecisionFiles.respond(pending,pending.selection(CodexSessionDecisionFiles.Decision.WAIT,"material changed")));
             assertFalse(Files.exists(request.getParent().resolve("response.json")));
         } finally {assertEquals(OrdinaryDecisionSelector.Choice.WAIT,producer.get(6,TimeUnit.SECONDS).choice());}
-        var expired=fixture(directory.resolve("expired"),Duration.ofMillis(700),1000);
+        var expired=fixture(directory.resolve("expired"),Duration.ofSeconds(4),1000);
         var timeout=CompletableFuture.supplyAsync(()->expired.selector().select(expired.request(),expired.proposal()));
-        Path request=ready(expired);String sha=ActionCodec.sha256(Files.readAllBytes(request));Thread.sleep(800);
-        assertThrows(RuntimeException.class,()->CodexSessionDecisionFiles.read(request,sha,expired.materials(),Clock.systemUTC()));
-        assertFalse(Files.exists(request.getParent().resolve("response.json")));assertEquals(OrdinaryDecisionSelector.Choice.WAIT,timeout.get(4,TimeUnit.SECONDS).choice());
+        Path request=ready(expired);byte[] original=Files.readAllBytes(request);String sha=ActionCodec.sha256(original);
+        var deadline=Instant.parse(FullJsonTree.parse(original,16384).path("deadline_utc").textValue());
+        assertTrue(deadline.isBefore(expired.request().deadline()));
+        var pastDeadline=Clock.fixed(deadline.plusNanos(1),java.time.ZoneOffset.UTC);
+        assertThrows(RuntimeException.class,()->CodexSessionDecisionFiles.read(request,sha,expired.materials(),pastDeadline));
+        assertFalse(Files.exists(request.getParent().resolve("response.json")));
+        assertArrayEquals(original,Files.readAllBytes(request));
+        assertEquals(OrdinaryDecisionSelector.Choice.WAIT,timeout.get(8,TimeUnit.SECONDS).choice());
     }
     /** Owned, hidden fixture producer for the single-response diagnostic watcher test. */
     public static void main(String[] args) throws Exception {
