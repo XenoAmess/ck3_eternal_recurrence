@@ -4,8 +4,12 @@ import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.time.Instant;
 import java.util.Objects;
+import org.xar.ck3.control.application.action.ActionState;
+import org.xar.ck3.control.application.action.NativeObservationPort;
+import org.xar.ck3.control.application.advance.LifeAdvanceComposite;
 import org.xar.ck3.control.application.driver.*;
 import org.xar.ck3.control.application.readiness.NativeReadinessCollector;
+import org.xar.ck3.control.application.session.ContinuityBatchJournal;
 import org.xar.ck3.control.application.session.SessionPorts;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 import org.xar.ck3.control.continuity.writer.ContinuityWriter;
@@ -94,17 +98,18 @@ final class RootSessionObservationPort implements SessionPorts.ObservationPort {
                     &&org.xar.ck3.control.application.session.OrdinaryCycleTransitions.sessionFromJson(cycle.get("session")).equals(expected)
                     &&org.xar.ck3.control.contracts.ExactRef.fromJson(cycle.get("pending_receipt")).equals(receiptRef),
                     "after-SEM barrier is not this actual retained pending cycle");
-            var terminal=terminalBarrier(actualTerminal,archive);
-            var before=command.before();var after=terminal.frame();
+            var barrier=terminalBarrier(actualTerminal,archive);
+            var before=command.before();var after=barrier.frame();
             StrictJson.require(after.machineId().equals(before.machineId())&&after.game().equals(before.game())
                     &&after.observationVersion()==before.observationVersion()
                     &&after.frame().episodeRunId().equals(before.frame().episodeRunId())
                     &&after.frame().identity().player().equals(before.frame().identity().player())
-                    &&!terminal.observedAt().isAfter(Instant.now()),"after-SEM terminal changed its original actor/episode or actual time");
+                    &&!barrier.observedAt().isAfter(Instant.now()),"after-SEM terminal changed its original actor/episode or actual time");
             var pin=same.capturePin(receiptRef,org.xar.ck3.control.continuity.writer.WriterContracts.MAX_PIN_BYTES);
-            ordinary.discardPlanningCaptureAtOrBefore(same,terminal.observedAt());
+            ordinary.discardPlanningCaptureAtOrBefore(same,barrier.observedAt());
             var retained=transport.latestObservedSnapshot();
-            if(retained.isEmpty()||!retained.orElseThrow().observedAt().isAfter(terminal.observedAt())
+            NativeObservationPort.ObservedFrame packet;
+            if(retained.isEmpty()||!retained.orElseThrow().observedAt().isAfter(barrier.observedAt())
                     ||retained.orElseThrow().nativeRevision().compareTo(after.frame().identity().nativeRevision())<0) {
                 var queried=transport.readFreshFullState(readinessDeadline);
                 if(!(queried instanceof org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort.Received received)) {
@@ -114,32 +119,45 @@ final class RootSessionObservationPort implements SessionPorts.ObservationPort {
                 }
                 org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort.verifyOriginal(
                         received.acknowledgement(),received.originalFrame(),received.snapshotReceived());
-                var packet=received.originalFrame();
+                packet=received.originalFrame();
                 StrictJson.require(packet.session().machineId().equals(expected.machineId())&&packet.session().game().equals(expected.game())
                         &&packet.session().sessionId().equals(expected.sessionId())
-                        &&packet.observedAt().isAfter(terminal.observedAt())
+                        &&packet.observedAt().isAfter(barrier.observedAt())
                         &&packet.nativeRevision().compareTo(after.frame().identity().nativeRevision())>=0,
                         "actual after-SEM READ did not follow the original terminal in this owned Game");
                 archive.preserve(received.acknowledgement());archive.preserveNativeFrame(packet);
                 transport.acceptedSnapshotRevision(packet).requireOriginal(transport.currentSnapshot(readinessDeadline));
-            }
+            }else packet=retained.orElseThrow();
             same.verifyPin(pin);StrictJson.require(head.digest().equals(same.head().digest()),"after-SEM original changed during its independent READ");
+            if(actualTerminal.state() instanceof ActionState.CompositeSettled settled
+                    &&settled.execution().handlerId().equals(LifeAdvanceComposite.HANDLER)
+                    &&LifeAdvanceComposite.accepts(command.operation().value())&&actualTerminal.eligibleAdvance()
+                    &&ContinuityBatchJournal.initialImportedSavedPendingFrontier(head.state(),expected)) {
+                // A historic opening remains on its original date while the imported Life closes with physical SEM.
+                var semantic=terminal.withReceivedSnapshot(same,planningDeadline,packet,physical->terminal.semantic(same,expected,physical));
+                requireAfterTerminal(semantic,barrier);same.verifyPin(pin);
+                StrictJson.require(head.digest().equals(same.head().digest()),"after-SEM original changed during physical qualification");
+                return new SessionPorts.AfterCycleObserved(semantic);
+            }
             var result=observeBorrowed(same,expected,readinessDeadline,planningDeadline);
             if(result instanceof SessionPorts.Ready ready) {
                 var semantic=ready.semanticEvidence().orElseThrow(()->new IOException("after-SEM observation has no actual archived semantic evidence"));
-                var frame=semantic.frame();
-                StrictJson.require(semantic.observedAt().isAfter(terminal.observedAt())
-                        &&frame.machineId().equals(after.machineId())&&frame.game().equals(after.game())
-                        &&frame.frame().episodeRunId().equals(after.frame().episodeRunId())
-                        &&frame.frame().identity().player().equals(after.frame().identity().player())
-                        &&frame.frame().identity().nativeRevision().compareTo(after.frame().identity().nativeRevision())>=0
-                        &&frame.frame().identity().dateRaw().compareTo(after.frame().identity().dateRaw())>=0,
-                        "actual after-SEM Ready reused an earlier terminal packet or changed its original owner");
+                requireAfterTerminal(semantic,barrier);
             }
             same.verifyPin(pin);return result;
         });
     }
     private record TerminalBarrier(org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity frame,Instant observedAt) { }
+    private static void requireAfterTerminal(SessionPorts.SemanticEvidence semantic,TerminalBarrier barrier) {
+        var frame=semantic.frame();var after=barrier.frame();
+        StrictJson.require(semantic.observedAt().isAfter(barrier.observedAt())
+                &&frame.machineId().equals(after.machineId())&&frame.game().equals(after.game())
+                &&frame.frame().episodeRunId().equals(after.frame().episodeRunId())
+                &&frame.frame().identity().player().equals(after.frame().identity().player())
+                &&frame.frame().identity().nativeRevision().compareTo(after.frame().identity().nativeRevision())>=0
+                &&frame.frame().identity().dateRaw().compareTo(after.frame().identity().dateRaw())>=0,
+                "actual after-SEM reused an earlier terminal packet or changed its original owner");
+    }
     private TerminalBarrier terminalBarrier(org.xar.ck3.control.application.action.ActionReceipt receipt,
             org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive archive) {
         var semantic=org.xar.ck3.control.application.action.ActionEffects.observation(receipt);

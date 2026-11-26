@@ -47,7 +47,7 @@ public final class SessionPorts {
         GameLifecycle.Observation inspect(SessionIdentity expected, Instant deadline) throws IOException;
     }
     public enum CheckpointEligibility { SAFE, MODAL_PENDING, TERMINAL_PENDING, UNRESOLVED_ACTION, UNAVAILABLE }
-    public sealed interface Observation permits Ready, TerminalReady, PendingSuccessorUi, Waiting, ObservationUnavailable { }
+    public sealed interface Observation permits Ready, AfterCycleObserved, TerminalReady, PendingSuccessorUi, Waiting, ObservationUnavailable { }
     /** Pending successor DATA, not ordinary Ready or a permission to submit. The registered continuation revalidates its private source. */
     public record PendingSuccessorUi(NaturalSuccessionPreparation.PendingToken token) implements Observation {
         public PendingSuccessorUi {
@@ -166,6 +166,10 @@ public final class SessionPorts {
             semanticEvidence.ifPresent(proof -> StrictJson.require(proof.frame().equals(request.before()), "semantic evidence must bind actual current frame"));
         }
     }
+    /** Actual after-SEM for a retained action. It carries no planning request or Ready publication. */
+    public record AfterCycleObserved(SemanticEvidence semantic) implements Observation {
+        public AfterCycleObserved { Objects.requireNonNull(semantic); }
+    }
     public record Waiting(String reason, ExactRef evidence) implements Observation {
         public Waiting { StrictJson.text(reason); Objects.requireNonNull(evidence); }
     }
@@ -179,7 +183,7 @@ public final class SessionPorts {
         default Observation observe(SessionIdentity expected, Instant readinessDeadline, Instant planningDeadline) throws IOException, InterruptedException {
             return observe(expected, readinessDeadline);
         }
-        /** Post-terminal readiness keeps the actual receipt; settlement independently verifies strict original-evidence freshness. */
+        /** Actual after-cycle observation keeps the retained receipt; settlement independently verifies original evidence. */
         default Observation observeAfter(SessionIdentity expected, ActionReceipt actualTerminal,
                 Instant readinessDeadline, Instant planningDeadline) throws IOException, InterruptedException {
             Objects.requireNonNull(actualTerminal);

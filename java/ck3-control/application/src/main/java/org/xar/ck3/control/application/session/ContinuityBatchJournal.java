@@ -4040,7 +4040,8 @@ public final class ContinuityBatchJournal implements BatchJournal {
         } catch(RuntimeException invalid){return false;}
     }
 
-    private static boolean initialImportedSavedPendingFrontier(ContinuityState current,SessionIdentity owner) {
+    /** DATA shape for an imported save's first retained cycle; callers still prove the exact original action. */
+    public static boolean initialImportedSavedPendingFrontier(ContinuityState current,SessionIdentity owner) {
         try {
             var whole=current.toJson();
             if(whole.hasNonNull(WriterContracts.GAMEPLAY_ENTRY_FIELD)||!initialPendingFrontierMatches(current,whole,owner))return false;

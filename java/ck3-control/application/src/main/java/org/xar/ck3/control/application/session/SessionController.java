@@ -40,6 +40,7 @@ import org.xar.ck3.control.contracts.GameLifecycle;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.contracts.offline.OfflineEventAnalysisContract.BatchRequest;
 import org.xar.ck3.control.contracts.offline.RetainedIncidentBatchSource;
+import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
 import static org.xar.ck3.control.application.session.BatchReport.*;
 import static org.xar.ck3.control.application.session.SessionPorts.*;
 
@@ -1202,8 +1203,10 @@ public final class SessionController {
         boolean observedPendingAction;
         final Optional<org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity> previousObservation = latestProgressObservation;
         void observed(PlanningRequest actualRequest) {
-            var actual = actualRequest.before();
             observedPendingAction |= actualRequest.observations().actionFacts().stream().anyMatch(fact -> fact.unresolved());
+            observed(actualRequest.before());
+        }
+        void observed(ObservationIdentity actual) {
             var comparison = firstObservation.isPresent() ? firstObservation : previousObservation;
             if (comparison.isPresent()) {
                 var first = comparison.orElseThrow();
@@ -1318,15 +1321,15 @@ public final class SessionController {
             return ready(false);
         }
         Ready ready(boolean stoppingForSave) throws IOException, InterruptedException {
-            return ready(stoppingForSave,null);
+            Observation observed=readyOrAfterCycle(stoppingForSave,null);
+            if(observed instanceof Ready ready)return ready;
+            throw new End(Terminal.CHECKPOINT_DEFERRED,"actual lifecycle terminal is not an ordinary after-SEM or paired SAVE frame");
         }
-        Ready ready(boolean stoppingForSave,ActionReceipt actualTerminal) throws IOException, InterruptedException {
+        Observation readyOrAfterCycle(boolean stoppingForSave,ActionReceipt actualTerminal) throws IOException, InterruptedException {
             while(true){
                 var captured=planningScope.inPlanningScope(()->available(stoppingForSave,actualTerminal));
                 if(captured.readPublication().isPresent()){replanAfterPublication();continue;}
-                Observation observed=captured.value();
-                if(observed instanceof Ready ready)return ready;
-                throw new End(Terminal.CHECKPOINT_DEFERRED,"actual lifecycle terminal is not an ordinary after-SEM or paired SAVE frame");
+                return captured.value();
             }
         }
         int completedCount(){return turns.size()+reconciliations.size()+lifecycleTurns.size()+readReconciliations.size();}
@@ -1493,6 +1496,12 @@ public final class SessionController {
                     latest = Optional.of(ready);lastTerminal=Optional.empty(); return ready;
                 }
                 requireTime();
+                if(result instanceof AfterCycleObserved afterCycle){
+                    var frame=afterCycle.semantic().frame();
+                    StrictJson.require(actualTerminal!=null&&frame.machineId().equals(identity.machineId())&&frame.game().equals(identity.game()),
+                            "after-cycle SEM requires the original terminal and owned Game");
+                    observed(frame);latest=Optional.empty();lastTerminal=Optional.empty();return afterCycle;
+                }
                 if(result instanceof TerminalReady terminal){
                     var current=terminal.identity();StrictJson.require(current.machineId().equals(identity.machineId())&&current.game().equals(identity.game())
                             &&current.sessionId().equals(identity.sessionId()),"actual terminal source crossed owned Game/session");
@@ -1626,10 +1635,14 @@ public final class SessionController {
             try {
                 measured(Phase.JOURNAL, () -> { journal.retainCycle(identity, receipt); return true; });
                 boolean requiresFresh=measured(Phase.JOURNAL,()->journal.requiresFreshAfterCycle(identity,receipt));
-                Ready fresh = ready(true,requiresFresh?receipt:null);
-                if (fresh.semanticEvidence().isEmpty()) throw new End(Terminal.INCOMPLETE_MIGRATION,
-                        "the original AUTO remains retained; a fresh archived after-SEM is unavailable");
-                measured(Phase.JOURNAL, () -> journal.settleCycle(identity, receipt, fresh.semanticEvidence().orElseThrow()));
+                var fresh = readyOrAfterCycle(true,requiresFresh?receipt:null);
+                var semantic = switch(fresh) {
+                    case AfterCycleObserved afterCycle -> afterCycle.semantic();
+                    case Ready ready -> ready.semanticEvidence().orElseThrow(()->new End(Terminal.INCOMPLETE_MIGRATION,
+                            "the original AUTO remains retained; a fresh archived after-SEM is unavailable"));
+                    default -> throw new End(Terminal.CHECKPOINT_DEFERRED,"actual lifecycle terminal is not an ordinary after-SEM or paired SAVE frame");
+                };
+                measured(Phase.JOURNAL, () -> journal.settleCycle(identity, receipt, semantic));
                 cyclePending = false;
             } catch (IOException | RuntimeException failure) { journalUnknown = true; throw failure; }
         }

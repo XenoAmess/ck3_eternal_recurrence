@@ -86,6 +86,24 @@ final class CompletedLifeReserve74ControllerTest {
         assertNotEquals(phaseSum,nanos(hint,"reserve_floor_nanos"),"use the observed last-action-to-report envelope, not nested span sums");
     }
 
+    @Test void actualAfterCycleSemanticCanCloseLifeWithoutAnAfterCyclePlanningRequest() {
+        var f=new Fixture();f.lifeLimit=1;f.afterCycleSemanticOnly=true;
+        var report=f.controller().runBatch(legacyLimits("after-cycle-semantic",1));
+        var original=f.actions.getFirst();
+        assertEquals(List.of(original),f.retained);
+        assertEquals(List.of(original),f.settled);
+        assertBefore(f.events,"retain:life","after-cycle-semantic");
+        assertBefore(f.events,"after-cycle-semantic","settle:life");
+        assertBefore(f.events,"settle:life","observe:3");
+        assertEquals(1,f.policyCalls);
+        assertEquals(0,f.checkpointReadinessCalls);
+        assertNull(f.pending);assertFalse(f.controller.isQuarantined(),report.detail());
+        assertEquals(1,report.eligibleAdvancesSinceSave());
+        assertEquals(0,report.committedSavedDays());
+        assertTrue(report.dirtySinceSave());
+        assertSame(f.baseline,report.lastSavedPair().orElseThrow());
+    }
+
     @Test void invalidOrUnmarkedSamplesPreserveValidHintsAndNeverCreateSavedTailOrForeignAdmission() {
         Fixture f=new Fixture();SessionController c=f.controller();
         BatchReport first=c.runBatch(optedLimits("valid-prior",3));assertCleanEarly(first,f,1);
@@ -181,7 +199,7 @@ final class CompletedLifeReserve74ControllerTest {
         final List<ActionReceipt> actions=new ArrayList<>(),retained=new ArrayList<>(),settled=new ArrayList<>();
         final List<SemanticEvidence> semantics=new ArrayList<>();
         long date=INITIAL_DATE,revision=8,savedDate=INITIAL_DATE,completedCycles=1;
-        int observations,policyCalls,checkpointReadinessCalls,lifeExecuted; boolean withBaseline=true,nextSmall,stopAfterLife,rejectRequiredSave,smallBeforeLife;
+        int observations,policyCalls,checkpointReadinessCalls,lifeExecuted; boolean withBaseline=true,nextSmall,stopAfterLife,rejectRequiredSave,smallBeforeLife,afterCycleSemanticOnly;
         int lifeLimit=2; long lifeSeconds=601;
         ActionReceipt pending;SessionController controller;CheckpointPair baseline;byte[] originalLifeBody;
         PlanningRequest latestRequest;
@@ -226,7 +244,10 @@ final class CompletedLifeReserve74ControllerTest {
                 @Override public Observation observe(SessionIdentity owner,Instant until){return ready(owner,until);}
                 @Override public Observation observe(SessionIdentity owner,Instant readinessUntil,Instant planningUntil){return ready(owner,planningUntil);}
                 @Override public Observation observeAfter(SessionIdentity owner,ActionReceipt actual,Instant readinessUntil,Instant planningUntil){
-                    assertSame(pending,actual,"actual retained receipt must supply after-cycle capture");time.waitFor(Duration.ofSeconds(11));return ready(owner,planningUntil);
+                    assertSame(pending,actual,"actual retained receipt must supply after-cycle capture");time.waitFor(Duration.ofSeconds(11));
+                    if(!afterCycleSemanticOnly)return ready(owner,planningUntil);
+                    assertEquals(OWNER,owner);observations++;revision++;events.add("after-cycle-semantic");
+                    return new AfterCycleObserved(semantic(frame(date,revision)));
                 }
                 private Observation ready(SessionIdentity owner,Instant until){
                     assertEquals(OWNER,owner);if(pending==null)time.waitFor(Duration.ofSeconds(19));observations++;events.add("observe:"+observations);revision++;
@@ -236,8 +257,11 @@ final class CompletedLifeReserve74ControllerTest {
                             +"\",\"episode_run_id\":\"episode-real-1\",\"played_character\":{\"character_id\":73},\"active_wars\":[],\"player_armies\":[]}").getBytes(StandardCharsets.UTF_8)),"fixture");
                     var data=new PlanningObservation(snapshot,List.of(),Set.of(new OperationKey("life-advance"),new OperationKey("fixture-small-action")),Set.of(),Optional.empty(),List.of(),Optional.empty(),Optional.empty(),false);
                     latestRequest=new PlanningRequest(before,BUILD,OWNER.sessionId(),until,data);
-                    var semantic=new SemanticEvidence(before,ref("semantic-"+observations,"d"),ref("native-"+observations,"e"),ref("stamp-"+observations,"f"),ref("driver-"+observations,"a"),time.instant());
-                    semantics.add(semantic);return new Ready(latestRequest,CheckpointEligibility.SAFE,Optional.empty(),Optional.of(semantic));
+                    return new Ready(latestRequest,CheckpointEligibility.SAFE,Optional.empty(),Optional.of(semantic(before)));
+                }
+                private SemanticEvidence semantic(ObservationIdentity frame){
+                    var semantic=new SemanticEvidence(frame,ref("semantic-"+observations,"d"),ref("native-"+observations,"e"),ref("stamp-"+observations,"f"),ref("driver-"+observations,"a"),time.instant());
+                    semantics.add(semantic);return semantic;
                 }
             };
             ActionCoordinatorPort actionPort=new ActionCoordinatorPort(){
@@ -271,7 +295,8 @@ final class CompletedLifeReserve74ControllerTest {
                 }
                 @Override public boolean requiresFreshAfterCycle(SessionIdentity owner,ActionReceipt actual){assertSame(pending,actual);return true;}
                 @Override public CompletedCycleProof settleCycle(SessionIdentity owner,ActionReceipt original,SemanticEvidence after){
-                    assertEquals(OWNER,owner);assertSame(pending,original);assertSame(semantics.getLast(),after);assertEquals(latestRequest.before(),after.frame());
+                    assertEquals(OWNER,owner);assertSame(pending,original);assertSame(semantics.getLast(),after);
+                    assertEquals(afterCycleSemanticOnly?original.command().before():after.frame(),latestRequest.before());
                     var effect=original.applied().orElseThrow().observation();
                     assertEquals(effect.after().frame().identity().dateRaw(),after.frame().frame().identity().dateRaw());
                     assertTrue(after.frame().frame().identity().nativeRevision().compareTo(effect.after().frame().identity().nativeRevision())>0);
