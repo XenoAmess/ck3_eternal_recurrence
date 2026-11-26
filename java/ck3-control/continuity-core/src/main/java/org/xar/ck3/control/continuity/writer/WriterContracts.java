@@ -2,6 +2,9 @@ package org.xar.ck3.control.continuity.writer;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.nio.file.Path;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.HexFormat;
 import java.util.List;
 import java.util.Objects;
 import org.xar.ck3.control.continuity.ContinuityJson;
@@ -138,7 +141,11 @@ public final class WriterContracts {
             Objects.requireNonNull(state); documents = List.copyOf(documents); absent = List.copyOf(absent);
             indexRepairs = List.copyOf(indexRepairs);
         }
-        public String digest() { return ContinuityJson.digest(state.toJson()); }
+        public String digest() {
+            // ContinuityState retains normalized canonical bytes and returns a defensive copy.
+            try { return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(state.canonicalBytes())); }
+            catch (NoSuchAlgorithmException error) { throw new IllegalStateException(error); }
+        }
     }
     /** Actual canonical edge DATA only. No missing original evidence or warm Prepared is reconstructed. */
     public record HistoricalTransition(long sequence,String kind,byte[] details,String eventIdentity,
