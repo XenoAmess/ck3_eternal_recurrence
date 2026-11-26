@@ -58,7 +58,11 @@ final class SteamOfflineObservationCodecTest {
                 case "float_sample" -> evidence.putArray("raw_samples").add(1.0).add(1.0);
                 case "changed_sample" -> evidence.putArray("raw_samples").add(1).add(0);
                 case "changed_process" -> ((ObjectNode) evidence.get("steam_after")).put("birth_filetime", "1");
-                case "changed_source" -> ((ObjectNode) evidence.get("source_after")).put("file_id", "1");
+                case "changed_source" -> {
+                    ObjectNode after = (ObjectNode) evidence.get("source_after");
+                    String originalId = after.get("file_id").textValue();
+                    after.put("file_id", originalId.equals("1") ? "2" : "1");
+                }
                 case "wrong_nonce" -> evidence.put("nonce", "stale");
                 case "wrong_anchor" -> evidence.put("producer_anchor_hex", "00");
                 case "wrong_method" -> wire.put("observation_method", "cef_app_getters");
