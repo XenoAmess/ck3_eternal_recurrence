@@ -134,8 +134,8 @@ public final class RootOrdinaryRuntimeAssembly {
         return prepare(config,clock,Optional.empty(),true);
     }
 
-    /** The exited imported restore only reopens its original existing writer. */
-    static Prepared prepareImportedExited(RootOrdinaryRuntimeConfiguration config,Clock clock)throws IOException {
+    /** Saved recovery only reopens its original existing writer. */
+    static Prepared prepareExistingSaved(RootOrdinaryRuntimeConfiguration config,Clock clock)throws IOException {
         return prepare(config,clock,Optional.empty(),true);
     }
 

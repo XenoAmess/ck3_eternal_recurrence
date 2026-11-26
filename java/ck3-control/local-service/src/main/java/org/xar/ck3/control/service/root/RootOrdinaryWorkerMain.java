@@ -46,6 +46,7 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
         String mode = args[2];
         boolean loaded="resume-loaded-replacement".equals(mode);
         boolean imported="restore-exited".equals(mode)&&args.length==6;
+        boolean resume="resume".equals(mode);
         if(args.length!=(loaded||imported?6:3))
             throw new IllegalArgumentException("recovery request requires its original path, byte count and SHA-256");
         if (!"fresh".equals(mode) && !"resume".equals(mode) && !"current-map".equals(mode) && !"operator-quarantine".equals(mode)
@@ -54,7 +55,10 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
         var descriptor = GameSupervisorControl.readDescriptor(Path.of(args[0]));
         NativeLaunchPlan plan = descriptor.configuration().accept();
         RootOrdinaryRuntimeConfiguration config=imported?RootOrdinaryRuntimeConfiguration.readSaved(Path.of(args[1]),plan):
-                RootOrdinaryRuntimeConfiguration.read(Path.of(args[1]));
+                resume?RootOrdinaryRuntimeConfiguration.readResume(Path.of(args[1]),plan):
+                        RootOrdinaryRuntimeConfiguration.read(Path.of(args[1]));
+        boolean savedResume=resume&&config.initialPolicy().kind()==
+                org.xar.ck3.control.application.driver.InitialEpisodePolicy.Lifecycle.NATIVE_CAMPAIGN_SAVED;
         Optional<ExactRef> importedRequest=Optional.empty();
         if(imported) {
             if(!args[4].matches("[1-9][0-9]{0,6}"))throw new IOException("bounded exact original imported Saved recovery request required");
@@ -72,7 +76,7 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
         RootOrdinaryWorkerLoop.Result result = null;
         Throwable primary = null;
         try {
-            prepared = imported?RootOrdinaryRuntimeAssembly.prepareImportedExited(config,clock):
+            prepared = imported||savedResume?RootOrdinaryRuntimeAssembly.prepareExistingSaved(config,clock):
                     loaded?RootOrdinaryRuntimeAssembly.prepareLoadedReplacement(config,clock):RootOrdinaryRuntimeAssembly.prepare(config,clock);
             prepared.bindOrdinaryHost(ordinaryHost);
             if("retire-exited".equals(mode)) {
@@ -138,7 +142,7 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
                 }
                 // Only the new administrative role has this finite recovery envelope. Source.capture still enforces the original decision window.
                 running = prepared.openOperatorQuarantineRecovery(attached, clock.instant().plus(operatorTimeout));
-            } else if ("resume".equals(mode)) {
+            } else if (resume) {
                 Optional<CleanRestartTicket> pointer = Files.exists(ticketPath) ? Optional.of(readTicket(ticketPath)) : Optional.empty();
                 running = prepared.openExistingSameGameRecovery(attached, pointer, clock.instant().plus(config.operationTimeout()));
             } else if (mapReady) {

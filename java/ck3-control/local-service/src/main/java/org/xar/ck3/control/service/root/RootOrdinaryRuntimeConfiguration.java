@@ -98,7 +98,7 @@ public final class RootOrdinaryRuntimeConfiguration {
 
     public static RootOrdinaryRuntimeConfiguration read(Path configPath) throws IOException {
         try {
-            return decode(configPath,java.util.Optional.empty());
+            return decode(configPath,java.util.Optional.empty(),false);
         } catch (IllegalArgumentException invalid) {
             throw new IOException("Invalid ordinary runtime configuration: " + configPath, invalid);
         }
@@ -108,8 +108,14 @@ public final class RootOrdinaryRuntimeConfiguration {
     public static RootOrdinaryRuntimeConfiguration readSaved(Path configPath,org.xar.ck3.control.platform.NativeLaunchPlan identicalPlan)throws IOException {
         java.util.Objects.requireNonNull(identicalPlan);
         if(!(identicalPlan.load() instanceof org.xar.ck3.control.platform.NativeLaunchPlan.SavedGame))throw new IOException("explicit Saved configuration requires Saved plan");
-        try{return decode(configPath,java.util.Optional.of(identicalPlan));}
+        try{return decode(configPath,java.util.Optional.of(identicalPlan),false);}
         catch(IllegalArgumentException invalid){throw new IOException("invalid explicit Saved runtime configuration",invalid);}
+    }
+    static RootOrdinaryRuntimeConfiguration readResume(Path configPath,
+            org.xar.ck3.control.platform.NativeLaunchPlan retainedPlan)throws IOException {
+        if (!(retainedPlan.load() instanceof org.xar.ck3.control.platform.NativeLaunchPlan.SavedGame)) return read(configPath);
+        try { return decode(configPath,java.util.Optional.of(retainedPlan),true); }
+        catch (IllegalArgumentException invalid) { throw new IOException("invalid same-Game runtime configuration",invalid); }
     }
     org.xar.ck3.control.platform.NativeLaunchPlan retainBoundLaunchPlan(org.xar.ck3.control.platform.NativeLaunchPlan decoded)throws IOException {
         if(boundSavedPlan.isEmpty())return decoded;
@@ -119,7 +125,8 @@ public final class RootOrdinaryRuntimeConfiguration {
         initialPolicy.requireSavedHistory(actual);return actual;
     }
     private static RootOrdinaryRuntimeConfiguration decode(Path configPath,
-            java.util.Optional<org.xar.ck3.control.platform.NativeLaunchPlan> boundSavedPlan) throws IOException {
+            java.util.Optional<org.xar.ck3.control.platform.NativeLaunchPlan> boundSavedPlan,
+            boolean decodeRetainedPolicy) throws IOException {
         Path absoluteConfigPath = configPath.toAbsolutePath().normalize();
         Path configParent = absoluteConfigPath.getParent();
 
@@ -203,11 +210,19 @@ public final class RootOrdinaryRuntimeConfiguration {
         );
 
         Path initialPolicyFile = resolvePath(root.get("initial_policy_file"), configParent);
+        JsonNode retainedPolicy = decodeRetainedPolicy ? readInitialPolicyDocument(initialPolicyFile) : null;
+        if (retainedPolicy != null) {
+            String policySchema = retainedPolicy.path("schema").asText();
+            if (!InitialEpisodePolicy.SAVED_SCHEMA.equals(policySchema)
+                    && !InitialEpisodePolicy.MATERIALIZED_SAVED_SCHEMA.equals(policySchema)) {
+                boundSavedPlan = java.util.Optional.empty();
+            }
+        }
         InitialEpisodePolicy initialPolicy;
         if(boundSavedPlan.isPresent()) {
             var original=org.xar.ck3.control.build.ControlBuild.FileRef.measure(initialPolicyFile);
             initialPolicy=InitialEpisodePolicy.readExactSaved(new org.xar.ck3.control.contracts.ExactRef(original.path(),original.bytes(),original.sha256()),boundSavedPlan.orElseThrow());
-        } else initialPolicy=readInitialPolicy(initialPolicyFile);
+        } else initialPolicy=readInitialPolicy(retainedPolicy == null ? readInitialPolicyDocument(initialPolicyFile) : retainedPolicy);
 
         java.util.Optional<DecisionProvider> decisionProvider = java.util.Optional.empty();
         if (root.has("decision_provider")) {
@@ -268,15 +283,16 @@ public final class RootOrdinaryRuntimeConfiguration {
         return p.normalize();
     }
 
-    private static InitialEpisodePolicy readInitialPolicy(Path policyPath) throws IOException {
+    private static JsonNode readInitialPolicyDocument(Path policyPath) throws IOException {
         byte[] policyBytes = readBoundedFile(policyPath);
-        JsonNode policyRoot;
         try {
-            policyRoot = StrictJson.parse(policyBytes, StrictJson.EXPLICIT_MAX_BYTES);
+            return StrictJson.parse(policyBytes, StrictJson.EXPLICIT_MAX_BYTES);
         } catch (Exception e) {
             throw new IOException("Invalid initial policy JSON: " + e.getMessage(), e);
         }
+    }
 
+    private static InitialEpisodePolicy readInitialPolicy(JsonNode policyRoot) throws IOException {
         if (!policyRoot.isObject()) {
             throw new IOException("Initial policy root must be a JSON object");
         }

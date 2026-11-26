@@ -146,6 +146,9 @@ final class MappedSavedPolicyTest {
         var loaded=RootSavedRuntimeConfigurationInputs.readLoaded(configuration,f.plan());
         var equal=NativeLaunchPlanCodec.fromJson(NativeLaunchPlanCodec.toJson(NativeLaunchPlanCodec.describe(f.plan()))).accept();
         assertSame(f.plan(),loaded.retainBoundLaunchPlan(equal));loaded.initialPolicy().requireSavedHistory(f.plan());
+        var resumed=RootOrdinaryRuntimeConfiguration.readResume(Path.of(configuration.path()),f.plan());
+        assertSame(f.plan(),resumed.retainBoundLaunchPlan(equal));
+        assertTrue(resumed.initialPolicy().isMaterializedSaved());
         // The explicit original route reads this policy and its actual saved clone before same-Game recovery.
         RootLoadedSavedResumeMain250.requirePolicyRoute(loaded.initialPolicy(),3);
         try(var held=NativeSavedGameClone.qualify(f.plan(),f.original())) {
@@ -167,6 +170,8 @@ final class MappedSavedPolicyTest {
         var changed=NativeLaunchPlanCodec.toJson(NativeLaunchPlanCodec.describe(f.plan()));changed.put("request_id","crossed-owner-request");
         var crossed=NativeLaunchPlanCodec.fromJson(changed).accept();
         assertThrows(IOException.class,()->RootSavedRuntimeConfigurationInputs.readLoaded(configuration,crossed));
+        assertThrows(IOException.class,()->RootOrdinaryRuntimeConfiguration.readResume(Path.of(configuration.path()),crossed)
+                .retainBoundLaunchPlan(f.plan()));
         assertArrayEquals(before,Files.readAllBytes(Path.of(configuration.path())));
         Files.writeString(Path.of(configuration.path()),"{}",StandardOpenOption.TRUNCATE_EXISTING);
         assertThrows(IOException.class,()->RootSavedRuntimeConfigurationInputs.readSource(configuration));
@@ -176,6 +181,9 @@ final class MappedSavedPolicyTest {
         var f=fixture(true);var policy=write("v1-config-policy.json",InitialEpisodePolicy.produceSaved(f.env(),((NativeLaunchPlan.SavedGame)f.plan().load()).save()).bytes());
         var configuration=currentConfiguration(f,policy);var loaded=RootSavedRuntimeConfigurationInputs.readLoaded(configuration,f.plan());
         assertFalse(loaded.initialPolicy().isMaterializedSaved());
+        var resumed=RootOrdinaryRuntimeConfiguration.readResume(Path.of(configuration.path()),f.plan());
+        assertFalse(resumed.initialPolicy().isMaterializedSaved());
+        resumed.initialPolicy().requireSavedHistory(f.plan());
         for(int mode=0;mode<=3;mode++)RootLoadedSavedResumeMain250.requirePolicyRoute(loaded.initialPolicy(),mode);
     }
     @Test void actualDefaultSourceRosterIncludesConfigurationReaderAndBothSavedPublicConsumers() {
