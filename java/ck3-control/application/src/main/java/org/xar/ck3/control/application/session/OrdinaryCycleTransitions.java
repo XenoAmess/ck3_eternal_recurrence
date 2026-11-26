@@ -19,6 +19,7 @@ import org.xar.ck3.control.application.action.ActionCodec;
 import org.xar.ck3.control.application.action.ActionTransitions;
 import org.xar.ck3.control.application.action.CommandOrigin;
 import org.xar.ck3.control.application.action.ActionState;
+import org.xar.ck3.control.application.advance.LifeAdvanceComposite;
 import org.xar.ck3.control.application.action.ContinuityActionJournal;
 import org.xar.ck3.control.application.action.RawJson;
 import org.xar.ck3.control.application.checkpoint.CheckpointPair;
@@ -1175,7 +1176,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         }
     }
 
-    /** The first eligible Life SETTLE in the imported branch can explain one changed opening date. */
+    /** Consecutive settled Life cycles can explain the current date of an unissued imported opening. */
     public Optional<ImportedOpeningAdvance> importedOpeningAdvance(ContinuityStorePort.Session same, SessionIdentity owner,
             ObservationIdentity originalOpening, G2Source source, ObservationIdentity current) throws IOException {
         Objects.requireNonNull(originalOpening); Objects.requireNonNull(source); Objects.requireNonNull(current);
@@ -1201,35 +1202,52 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         requireOwner(retained, owner);
         requireSameOwner(originalOpening, current);
         CycleState cycle = state(retained, owner);
+        long advances = cycle.completedCycles() - cycle.basisCycles();
         if (cycle.pending().isPresent() || cycle.head().isEmpty() || cycle.originFrame().isPresent()
                 || cycle.episodeOrigin().isPresent() || cycle.basisCycles() != retained.settledCycles()
-                || cycle.completedCycles() != Math.addExact(cycle.basisCycles(), 1)) return Optional.empty();
+                || advances <= 0 || advances > MAX_RECORDS) return Optional.empty();
         requireLegacyPendingClear(retained, cycle);
         ExactRef recordRef = cycle.head().orElseThrow();
         CycleRecord record = load(recordRef);
-        if (!record.session().equals(owner) || record.previous().isPresent() || record.completedCycles() != cycle.completedCycles()
-                || record.classification() != Classification.ELIGIBLE_ADVANCE) return Optional.empty();
-        // While the opening is still unissued, its completed Life is the latest canonical action.
+        if (!record.semantic().frame().frame().identity().dateRaw().equals(current.frame().identity().dateRaw()))
+            return Optional.empty();
+        // An unissued opening may read through its canonical Life prefix only.
         var actionHead = ContinuityActionJournal.recordHead(retained);
         if (actionHead.isEmpty()) return Optional.empty();
         ActionReceipt life = archive.loadRecord(actionHead.orElseThrow()).receipt();
-        if (!archive.receiptReferenceOf(life).equals(record.receipt())
-                || life.sequence() > retained.sequence()
-                || !(life.command().origin() instanceof CommandOrigin.Gameplay)
-                || !life.command().sessionId().equals(owner.sessionId())
-                || life.outcome() != ActionReceipt.Outcome.APPLIED_CONFIRMED) return Optional.empty();
-        ObservationIdentity before = life.command().before();
-        if (!life.command().operation().value().equals("life-advance") || !life.command().source().equals(source)
-                || !life.eligibleAdvance() || !before.frame().identity().dateRaw().equals(originalOpening.frame().identity().dateRaw()))
-            return Optional.empty();
-        var after = life.applied().orElseThrow().observation().after();
-        if (!after.frame().identity().dateRaw().equals(current.frame().identity().dateRaw())) return Optional.empty();
-        requireSavedContinuation(originalOpening, before);
-        requireSavedContinuation(after, record.semantic().frame());
-        requireSavedContinuation(record.semantic().frame(), current);
-        freshAfter(life, record.semantic().frame(), record.semantic().observedAt());
+        if (!archive.receiptReferenceOf(life).equals(record.receipt())) return Optional.empty();
+        var latest = new ImportedOpeningAdvance(recordRef, record.receipt(), record.semantic());
+        long followingSequence = retained.sequence() + 1;
+        ObservationIdentity following = current;
+        for (long remaining = advances; remaining > 0; remaining--) {
+            if (!record.session().equals(owner) || record.completedCycles() != cycle.basisCycles() + remaining
+                    || record.classification() != Classification.ELIGIBLE_ADVANCE
+                    || !LifeAdvanceComposite.accepts(life.command().operation().value())
+                    || !life.command().source().equals(source) || life.sequence() >= followingSequence
+                    || !matchesCycleRecordReceipt(record, life, owner)) return Optional.empty();
+            var before = life.command().before();
+            var after = life.applied().orElseThrow().observation().after();
+            if (before.frame().identity().dateRaw().compareTo(after.frame().identity().dateRaw()) >= 0
+                    || !after.frame().identity().dateRaw().equals(following.frame().identity().dateRaw()))
+                return Optional.empty();
+            requireSavedContinuation(after, record.semantic().frame());
+            requireSavedContinuation(record.semantic().frame(), following);
+            freshAfter(life, record.semantic().frame(), record.semantic().observedAt());
+            if (remaining == 1) {
+                if (record.previous().isPresent()
+                        || !before.frame().identity().dateRaw().equals(originalOpening.frame().identity().dateRaw()))
+                    return Optional.empty();
+                requireSavedContinuation(originalOpening, before);
+            } else {
+                if (record.previous().isEmpty()) return Optional.empty();
+                following = before;
+                followingSequence = life.sequence();
+                record = load(record.previous().orElseThrow());
+                life = archive.loadReceipt(record.receipt());
+            }
+        }
         StrictJson.require(head.digest().equals(same.head().digest()), "opening date evidence changed the actual writer head");
-        return Optional.of(new ImportedOpeningAdvance(recordRef, record.receipt(), record.semantic()));
+        return Optional.of(latest);
     }
 
     /** Qualify only current ordinary submission; this value cannot serve as a SAVE/cycle proof. */
@@ -2310,6 +2328,14 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         StrictJson.require(state.pending().isEmpty() && proof.completedCycles() == state.completedCycles()
                 && proof.cycleStateDigest().equals(ContinuityJson.digest(state.toJson())), "SAVE proof differs from the actual settled cycle state");
     }
+    private boolean matchesCycleRecordReceipt(CycleRecord record, ActionReceipt receipt, SessionIdentity owner) {
+        return receipt.command().origin() instanceof CommandOrigin.Gameplay
+                && archive.receiptReferenceOf(receipt).equals(record.receipt())
+                && receipt.command().sessionId().equals(owner.sessionId())
+                && receipt.command().before().machineId().equals(owner.machineId())
+                && receipt.command().before().game().equals(owner.game())
+                && receipt.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED && classify(receipt) == record.classification();
+    }
     private Optional<CycleRecord> find(CycleState state, ExactRef receipt) {
         return walk(state, Optional.of(Objects.requireNonNull(receipt)));
     }
@@ -2336,12 +2362,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
             var record = load(ref); StrictJson.require(record.session().equals(state.session()) && record.completedCycles() == expected,
                     "cycle record source/counter differs from the exact branch head or predecessor");
             ActionReceipt receipt = archive.loadReceipt(record.receipt());
-            StrictJson.require(receipt.command().origin() instanceof org.xar.ck3.control.application.action.CommandOrigin.Gameplay
-                    &&archive.receiptReferenceOf(receipt).equals(record.receipt())
-                    && receipt.command().sessionId().equals(state.session().sessionId())
-                    && receipt.command().before().machineId().equals(state.session().machineId())
-                    && receipt.command().before().game().equals(state.session().game())
-                    && receipt.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED && classify(receipt) == record.classification(),
+            StrictJson.require(matchesCycleRecordReceipt(record, receipt, state.session()),
                     "cycle record differs from its original owned canonical AUTO classification");
             StrictJson.require(actionIds.add(receipt.command().actionId()), "the same canonical AUTO receipt occurs twice in the cycle branch");
             freshAfter(receipt, record.semantic().frame(), record.semantic().observedAt());
