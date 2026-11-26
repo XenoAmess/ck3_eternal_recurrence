@@ -9,11 +9,13 @@ import java.lang.reflect.Proxy;
 import java.time.Instant;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 import java.util.zip.GZIPInputStream;
 import org.junit.jupiter.api.Test;
 import org.xar.ck3.control.application.action.ActionCodec;
 import org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive;
 import org.xar.ck3.control.application.action.ActionReceipt;
+import org.xar.ck3.control.application.action.ActionState;
 import org.xar.ck3.control.application.action.ContinuityActionJournal;
 import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
 import org.xar.ck3.control.continuity.ContinuityJson;
@@ -88,6 +90,90 @@ final class ImportedSavedInterruptedLifeRecoveryDataTest {
         });
     }
 
+    @Test void secondSoftwareSettlementKeepsTheImportedPhysicalFrontier() throws IOException {
+        var fixture = new Fixture();
+        var genuine = fixtureData("source56-first-imported-settlement.json.gz");
+        assertEquals(2, genuine.size());
+        var retain = genuine.get(0);
+        var settle = genuine.get(1);
+        assertEquals("43f4bb73939a748ffb52d3afd580b4a5cd56b96c88b5941e772eaf1a6eb67d04",
+                ActionCodec.sha256(ContinuityJson.canonical(retain)));
+        assertEquals("9997b9d453b28fc3abccd2a8f6db4e65831df77f748e5f534b1033e6d481e609",
+                ActionCodec.sha256(ContinuityJson.canonical(settle)));
+
+        fixture.state = ContinuityState.fromJson(retain.get("after"), fixture.owner.machineId());
+        var firstDetails = (ObjectNode) settle.get("details");
+        fixture.applyCycle(firstDetails);
+        assertArrayEquals(ContinuityJson.canonical(settle.get("after")), fixture.state.canonicalBytes());
+        var originalPair = fixture.state.toJson().path(SavedContinuityBootstrap.FIELD).get("checkpoint_pair");
+        var firstCycle = fixture.state.toJson().get(WriterContracts.ORDINARY_CYCLE_FIELD);
+        assertEquals(57, firstCycle.path("completed_cycles").asLong());
+
+        // The new action, SEM and record below are independent software reducer inputs.
+        // This fixture never supplies their native or writer admission and never updates head57.
+        String batchId = "source56-software-recovery-1";
+        fixture.applyBoundary(batchId, SessionPorts.JournalKind.BATCH_STARTED);
+        fixture.applyBoundary(batchId, SessionPorts.JournalKind.BATCH_INTERRUPTED);
+        byte[] receiptToken = "isolated software receipt without native authority".getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        var receipt = new ExactRef("software-only/second-life-receipt.json", receiptToken.length, ActionCodec.sha256(receiptToken));
+
+        var nextRetain = firstDetails.deepCopy();
+        nextRetain.put("operation", "RETAIN").put("evidence_id", "RETAIN:" + receipt.sha256());
+        nextRetain.set("receipt_ref", receipt.toJson());
+        for (String field : List.of("semantic", "cycle_record_ref", "cycle_record")) nextRetain.putNull(field);
+        fixture.applyCycle(nextRetain);
+
+        var nextSettle = firstDetails.deepCopy();
+        var semantic = (ObjectNode) nextSettle.get("semantic");
+        var frame = (ObjectNode) semantic.path("frame").path("frame");
+        frame.put("date_raw", "53179392").put("native_revision", "28").put("revision", "14").put("snapshot_id", "native:28");
+        semantic.put("observed_at", Instant.parse(semantic.path("observed_at").asText()).plusSeconds(1).toString());
+        var record = (ObjectNode) nextSettle.get("cycle_record");
+        record.put("completed_cycles", 58).put("classification", "VISIBLE_GAMEPLAY");
+        record.set("previous", firstCycle.get("head"));
+        record.set("receipt_ref", receipt.toJson());
+        record.set("semantic", semantic);
+        byte[] recordBytes = ContinuityJson.canonical(record);
+        var recordRef = new ExactRef("software-only/second-cycle-record.json", recordBytes.length, ActionCodec.sha256(recordBytes));
+        nextSettle.put("evidence_id", "SETTLE:" + receipt.sha256() + ":" + ExactRef.fromJson(semantic.get("semantic")).sha256());
+        nextSettle.set("receipt_ref", receipt.toJson());
+        nextSettle.set("cycle_record_ref", recordRef.toJson());
+        fixture.applyCycle(nextSettle);
+        assertEquals(45, fixture.state.sequence());
+        assertSecondUnsavedFrontier(fixture, originalPair, recordRef);
+
+        fixture.state = fixture.originalState;
+        assertEquals(ActionReceipt.Outcome.UNRESOLVED, fixture.readOnlyParent().outcome());
+        fixture.locked(same -> {
+            var resume = ContinuityActionJournal.receipts(fixture.originalState, fixture.archive.withSession(same)).stream()
+                    .filter(action -> action.sequence() == 55).findFirst().orElseThrow();
+            assertInstanceOf(ActionState.Unknown.class, resume.state());
+            assertTrue(resume.ack().orElseThrow().nativeOk());
+            return null;
+        });
+        assertEquals(HEAD_SHA, ActionCodec.sha256(fixture.originalHead));
+    }
+
+    private static void assertSecondUnsavedFrontier(Fixture fixture, JsonNode originalPair, ExactRef recordRef) {
+        var whole = fixture.state.toJson();
+        var cycle = whole.get(WriterContracts.ORDINARY_CYCLE_FIELD);
+        assertEquals(58, cycle.path("completed_cycles").asLong());
+        assertEquals(56, cycle.path("basis_cycles").asLong());
+        assertEquals(recordRef, ExactRef.fromJson(cycle.get("head")));
+        assertTrue(cycle.path("pending_receipt").isNull());
+        assertEquals(originalPair, whole.path(SavedContinuityBootstrap.FIELD).get("checkpoint_pair"));
+        assertEquals(56, fixture.state.settledCycles());
+        assertEquals(53179344, fixture.state.settledDateRaw());
+        assertFalse(whole.hasNonNull(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD));
+        assertEquals(ContinuityState.Status.RUNNING, fixture.state.status());
+        assertEquals(SessionPorts.JournalKind.BATCH_INTERRUPTED.name(),
+                whole.path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD).path("boundary").asText());
+
+        // A cold reader gets past the imported physical frontier but still requires the original Driver.
+        assertSame(fixture.driverRead, assertThrows(IllegalStateException.class, fixture::recoverSettled));
+        assertEquals(1, fixture.driverReads);
+    }
+
     private static final class Fixture implements ContinuityStorePort {
         private final byte[] originalHead;
         private final ContinuityState originalState;
@@ -96,6 +182,7 @@ final class ImportedSavedInterruptedLifeRecoveryDataTest {
         private final ExactRef initialDriverFacts;
         private final OutcomeArchive archive;
         private final ContinuityBatchJournal journal;
+        private final OrdinaryCycleTransitions transitions;
         private final IllegalStateException driverRead = new IllegalStateException("fixture reached the original saved Driver read");
         private boolean held;
         private int driverReads;
@@ -131,7 +218,7 @@ final class ImportedSavedInterruptedLifeRecoveryDataTest {
                 assertNotNull(material, "fixture archive is missing " + reference.sha256());
                 return binary(material);
             }).proxy();
-            var transitions = new OrdinaryCycleTransitions(archive, (session, identity, semantic) -> { throw unavailable(); },
+            transitions = new OrdinaryCycleTransitions(archive, (session, identity, semantic) -> { throw unavailable(); },
                     (session, identity, pair, settlement) -> { throw unavailable(); },
                     new OriginalWindowReducer.Policy(originalState.origin().targetDays()), this::requireSession);
             journal = new ContinuityBatchJournal(this, transitions);
@@ -144,6 +231,26 @@ final class ImportedSavedInterruptedLifeRecoveryDataTest {
 
         private ContinuityBatchJournal.UnresolvedSameGameData recover() throws IOException {
             return locked(session -> journal.readUnresolvedSameGame(session, owner));
+        }
+
+        private ContinuityBatchJournal.SettledSameGameData recoverSettled() throws IOException {
+            return locked(session -> journal.readSettledSameGame(session, owner));
+        }
+
+        private void applyCycle(ObjectNode details) {
+            apply(new WriterContracts.Request(OrdinaryCycleTransitions.CYCLE_KIND, ContinuityJson.canonical(details), List.of()));
+        }
+
+        private void applyBoundary(String batch, SessionPorts.JournalKind kind) {
+            apply(transitions.batchRequest(new SessionPorts.JournalInput(owner, batch, kind,
+                    Optional.empty(), Optional.empty(), Optional.empty(), List.of())));
+        }
+
+        private void apply(WriterContracts.Request request) {
+            var next = transitions.reduce(state, request).toJson();
+            next.put("sequence", state.sequence() + 1);
+            next.put("last_event_identity", request.identity());
+            state = ContinuityState.fromJson(next, owner.machineId());
         }
 
         @Override public void requireSession(Session session) { assertTrue(held); assertSame(same, session); }
@@ -163,7 +270,11 @@ final class ImportedSavedInterruptedLifeRecoveryDataTest {
     private static byte[] binary(JsonNode value) { return Base64.getDecoder().decode(value.textValue()); }
 
     private static JsonNode fixtureData() throws IOException {
-        try (var original = ImportedSavedInterruptedLifeRecoveryDataTest.class.getResourceAsStream("source56-interrupted-recovery-prefix.json.gz")) {
+        return fixtureData("source56-interrupted-recovery-prefix.json.gz");
+    }
+
+    private static JsonNode fixtureData(String resource) throws IOException {
+        try (var original = ImportedSavedInterruptedLifeRecoveryDataTest.class.getResourceAsStream(resource)) {
             assertNotNull(original);
             try (var input = new GZIPInputStream(original)) {
                 byte[] bytes = input.readNBytes(1 << 20);
