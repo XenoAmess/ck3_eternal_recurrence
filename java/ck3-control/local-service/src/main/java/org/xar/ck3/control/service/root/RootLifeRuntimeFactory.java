@@ -22,6 +22,7 @@ import org.xar.ck3.control.application.action.ReadContract;
 import org.xar.ck3.control.application.action.RootExecutableBindings;
 import org.xar.ck3.control.application.advance.LifeAdvanceCommands;
 import org.xar.ck3.control.application.advance.LifeAdvanceComposite;
+import org.xar.ck3.control.application.advance.LifeExpiredPartialAdvanceEvidence;
 import org.xar.ck3.control.application.advance.LifePostResumePauseCleanupProof;
 import org.xar.ck3.control.application.advance.LifePostResumePauseCleanupEvidence;
 import org.xar.ck3.control.application.advance.PostExitCleanupNoEffectProof;
@@ -113,12 +114,16 @@ public final class RootLifeRuntimeFactory {
                     (head,cursor,archive)->verifyQualifiedPreparedCursor(context,head,cursor,archive),
                     (head,parent,archive)->verifyQualifiedPreparedParent(context,head,parent,archive),
                     (head,receipt,archive)->RootDerivedChildAuthority.verifyZeroCancellation(context,infrastructure,head,receipt,archive));
+            var expiryEvidence = new LifeExpiredPartialAdvanceEvidence(context.archive(), replay, infrastructure.replay());
             composite=new LifeAdvanceComposite(infrastructure.observations(),scopedReadiness,infrastructure.timeline(),
                     infrastructure.statuses(),context.core().actions(),context.archive(),context.clock(),replay,
-                    new LifeAdvanceComposite.PreparedCleanupReads() {
+                    new LifeAdvanceComposite.ExpiredPartialReads() {
                         @Override public LifeAdvanceComposite.CancellationRead read(ActionCommand parent,CompositeExecution execution,
                                 List<ActionReceipt> children,Instant deadline) {
                             return readCancellationStatus(parent,execution,children,deadline);
+                        }
+                        @Override public LifeExpiredPartialAdvanceEvidence expiredPartialEvidence() {
+                            return expiryEvidence;
                         }
                         @Override public void requireQualifiedBackend(ActionReceipt original,List<ActionReceipt> canonicalOriginalChildren) {
                             requireCurrentPostResumeBackend(original,canonicalOriginalChildren);

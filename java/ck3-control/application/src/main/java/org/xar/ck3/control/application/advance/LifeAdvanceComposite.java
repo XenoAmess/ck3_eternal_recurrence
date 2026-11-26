@@ -30,6 +30,10 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
     @FunctionalInterface public interface CancellationReads {
         CancellationRead read(ActionCommand parent, CompositeExecution execution, List<ActionReceipt> canonicalChildren, Instant deadline);
     }
+    /** Optional source-owned post-expiry reads. The current legacy Status and heartbeat cannot supply this profile. */
+    public interface ExpiredPartialReads extends PreparedCleanupReads {
+        LifeExpiredPartialAdvanceEvidence expiredPartialEvidence();
+    }
     /** Actual installed source provider only. An implementation or DATA record cannot grant Root/native custody. */
     public interface PostResumePauseCancellationReads extends CancellationReads {
         void requireQualifiedBackend(ActionReceipt original,List<ActionReceipt> canonicalOriginalChildren);
@@ -260,11 +264,19 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
                         List.of(retained.guard().nativeEvidence()));
             }
         }
+        var retainedExpired = actualPreparedCursor.filter(original -> original.command().equals(parent)
+                && original.state() instanceof ActionState.CompositeUnknown unknown && unknown.execution().equals(retained))
+                .filter(original -> LifeExpiredPartialAdvanceEvidence.accepts(original, children, clock.instant()));
+        if (retainedExpired.isPresent() && cancellationReads instanceof ExpiredPartialReads source) {
+            var observed = source.expiredPartialEvidence().retainedPending(retainedExpired.orElseThrow(), children);
+            if (observed.isPresent()) return observed.orElseThrow();
+        }
         Optional<AdvanceObservationPort.Frame> archivedStart = entryFrames.read(parent, retained.guard(), archive);
         if (archivedStart.isEmpty()) return new ActionPorts.Pending("original life start lacks its complete native/Driver guard basis; no fabricated episode or public revision", List.of(retained.guard().nativeEvidence()));
         AdvanceObservationPort.Frame starting = archivedStart.orElseThrow();
         require(starting.identity().equals(parent.before()) && starting.source().equals(parent.source()) && starting.sessionId().equals(parent.sessionId()), "archived life start crossed original authority");
         Instant window = ActionObservationWindow.deadline(parent);
+        Instant readStarted = clock.instant();
         var current = observations.current(parent, window);
         if (!AdvancePolicy.truth(current.semantic(), "paused") || !current.identity().frame().episodeRunId().equals(parent.before().frame().episodeRunId())
                 || !current.identity().frame().identity().player().equals(parent.before().frame().identity().player()))
@@ -286,8 +298,17 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
                     && children.stream().anyMatch(receipt -> receipt.command().operation().value().equals(ClockStatusRead.CANCEL_PREFIX + armed.generation().decimal())
                         && receipt.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED)) {
                 AdvanceClock.validateCancellation(armed, actual, plan, end); canceled = true;
-            } else
+            } else {
+                if (actual.state() == State.FAILED && retainedExpired.isPresent()
+                        && cancellationReads instanceof ExpiredPartialReads source
+                        && read.receipt().request().deadline().equals(window) && !current.observedAt().isBefore(readStarted)
+                        && clock.instant().isBefore(window)) {
+                    var captured = new LifeExpiredPartialAdvanceEvidence.Capture(read, current);
+                    var verified = source.expiredPartialEvidence().preserve(retainedExpired.orElseThrow(), children, captured);
+                    if (verified.isPresent()) return verified.orElseThrow();
+                }
                 return new ActionPorts.Pending("original native clock stop or generation-bound cancellation remains unconfirmed", List.of(read.originalEvidence()));
+            }
             terminal = Optional.of(read);
             var fresh = observations.current(parent, window);
             AdvanceClock.requireAfterControl(parent, current, read, fresh);
