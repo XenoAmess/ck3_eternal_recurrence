@@ -258,3 +258,9 @@ ref as part of delivery rather than as a later cleanup project.
 - 5 条金融市场分支与 4 条交付分支的补丁已在 `master`。2 条旧 DES 分支还有存档检查和验收工具待接入，4 条已合并的 bot 引用仍在。按实际主线 CI 结果继续退役，已检出的本地引用先核对工作树所有权。
 
 退役前的 27 条远端引用与原始对象已保存在可验证的 Git bundle，前置对象由主线提供。原始 GitHub 回读和 Git inventories 在 `D:/ck3-state/ck3-master-integration-20261126`。Bundle SHA-256 为 `ee9aa54f202a25b40afb5f15e74eba5f0e6846d52ab6547f1d41c4dae9bf9970`。本轮只删除 Git 引用，场次目录与已绑定工作树保留。
+
+后续核对同一官方绿色基线，另退役 13 条未检出的等价本地引用。原始提交存于 `local-equivalent-before-retirement.bundle`，SHA-256 为 `40c6e282839c977d1fa8567681a4c53c42f92435ff28f69a4cf39db488b3f870`。
+
+主线继续接入 Native 等待原始快照修复 `59e7cdd125`、词法路径别名回归 `399c31ec15`、DES 原发布和部分验收历史 `164f103921`、选中对象和意见读取 `02e642d16b`、完整家族父级读取 `e1e23a94d6`、帝国恢复离线证据 `758a4ffe2d`。帝国恢复通过 42 项 Save Core 和 6 项 DES 测试，实包核对 55 项产物与 28 个源码文件。目前的原生 Title 读取仍有 int32 范围，公开 UI 验收等待真实 S1 原件，产品版本未更新。Native 等待回归连续 30 轮通过，另有 5 项通过及旧计时夹具的 3 次重复通过，见 `0cb700f714`。
+
+`42e204dbe6` 把相同 Maven 3.10.0 发行包与校验和的来源移至 Maven Central。生产下载、校验及解包 4.057 秒，46 项本地启动测试通过。此前下载超时的两个托管 workflow 都已通过新版的 Maven 准备及读回步骤，继续进行产品验证。[DES 托管回执](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/45798383204) [礼仪融合托管回执](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/45798383150)
