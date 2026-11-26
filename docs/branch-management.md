@@ -272,3 +272,5 @@ ref as part of delivery rather than as a later cleanup project.
 10:32 UTC，MCP 2.2.0 与战争 AI 录制 Pillow 13.0.0 的正式依赖图、线性历史和主线等价补丁分别确认。本机对应 MCP 共 36 项、录制 7 项离线用例通过，最后两个 Dependabot ref 已退役。远端仅余 `master`、`work/dynastic-heir-stock-input-20261025`、`work/dynastic-product-reactor-20261030`，开放 PR 为 0。[MCP 依赖图](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/45793880324) [录制依赖图](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/45794809522)
 
 两条 DES 分支的可用原件及离线工具已陆续进入主线。两阶段罪行 fixture 在 `c0a2c51fd3` 通过 13 项 Save Core、22 项 DES 和 Quarkus 打包。仍在分支内的公开帝国恢复接线需要真实原版 UI S1 与持有者快照，旧编排工具依赖冻结场次和仓库外类。现行 v4 和金融存档的重复检查维持原合同。对应分支继续保存，完整官方主线检查仍在运行。
+
+10:37 UTC，`work/dynastic-product-reactor-20261030` 已退役。它与继承人分支自 `4680f73aea` 分叉后仅有两个独有提交。其类型检查环境已由主线的完整 DES CI 步骤覆盖，别名回归由 `b0a5305979` 和 `399c31ec15` 覆盖。共享历史仍由 `work/dynastic-heir-stock-input-20261025` 保留，退役前两条完整引用仍在 bundle。远端现为 `master` 与这一条待验分支，本地为 66 条。[DES CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/45801837726) [线性历史](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/45801837661)
