@@ -15,6 +15,7 @@ import org.xar.ck3.control.application.action.NativeActionPort.AckReceived;
 import org.xar.ck3.control.application.action.NativeRequest;
 import org.xar.ck3.control.application.action.OperationKey;
 import org.xar.ck3.control.application.action.RequestIds;
+import org.xar.ck3.control.application.capabilities.NativeActionSteps;
 import org.xar.ck3.control.application.driver.DriverJson;
 import org.xar.ck3.control.application.planning.PlanningRequest;
 import org.xar.ck3.control.application.planning.events.RegisteredEventCore.Full111EventObservation;
@@ -28,16 +29,12 @@ import org.xar.ck3.control.nativebridge.CurrentFull111EventOption;
 import org.xar.ck3.control.nativebridge.CurrentFull111EventOption.Target;
 import org.xar.ck3.control.nativebridge.CurrentFull111EventRenderer;
 import org.xar.ck3.control.nativebridge.NativeGameTransport;
-import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFrame;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 
 /** Proposes from an archived renderer read, then acquires a private lease only for the canonical action. */
 final class RootFull111EventOptionPreparation implements Full111EventSelection, ActionPorts.PreparationPort {
-    static final OperationKey SELECT = new OperationKey(CurrentFull111EventOption.Action.SELECT.step());
-    static final String CAPABILITY = CurrentFull111EventOption.Action.SELECT.capability();
-    private static final Set<String> CAPABILITIES = Set.of(CoreFrame.CAPABILITY, CurrentFull111EventRenderer.CAPABILITY,
-            CAPABILITY, CurrentFull111EventOption.Action.PREPARE.capability(),
-            CurrentFull111EventOption.Action.QUERY_QUEUE.capability());
+    static final OperationKey SELECT = new OperationKey(NativeActionSteps.FULL111_EVENT_SELECT_STEP);
+    static final String CAPABILITY = NativeActionSteps.FULL111_EVENT_SELECT_CAPABILITY;
     private static final Set<String> ARGUMENTS = Set.of("renderer_original", "instance_id", "recipient_character_id",
             "definition_key", "authored_option_index");
 
@@ -55,7 +52,7 @@ final class RootFull111EventOptionPreparation implements Full111EventSelection, 
     @Override public Optional<ActionCommand> propose(PlanningRequest request, Full111EventObservation observation,
             Full111RenderedOption option) {
         var seen = request.observations();
-        if (!seen.actionSteps().contains(SELECT) || !seen.bridgeCapabilities().containsAll(CAPABILITIES))
+        if (!seen.actionSteps().contains(SELECT) || !seen.bridgeCapabilities().containsAll(NativeActionSteps.FULL111_EVENT_OPTION_CAPABILITIES))
             return Optional.empty();
         var ref = observation.renderer().orElseThrow().originalRead();
         var target = new Target(observation.instanceId(), request.before().frame().identity().player().intValueExact(),
@@ -64,8 +61,9 @@ final class RootFull111EventOptionPreparation implements Full111EventSelection, 
             var same = context.borrowedSession();
             context.writer().requireSession(same);
             var renderer = renderer(context.archive().withSession(same), ref, target);
-            var deadline = CurrentFull111EventOption.rendererDeadline(renderer);
-            if (deadline.isAfter(request.deadline()) || !context.clock().instant().isBefore(deadline)) return Optional.empty();
+            var rendererDeadline = CurrentFull111EventOption.rendererDeadline(renderer);
+            if (rendererDeadline.isAfter(request.deadline()) || !context.clock().instant().isBefore(rendererDeadline))
+                return Optional.empty();
             var encoded = StrictJson.object().put("instance_id", target.instanceId())
                     .put("recipient_character_id", target.recipientCharacterId()).put("definition_key", target.definitionKey())
                     .put("authored_option_index", target.authoredOptionIndex());
@@ -74,7 +72,8 @@ final class RootFull111EventOptionPreparation implements Full111EventSelection, 
             var id = ActionIds.forDecision(request.sessionId(), request.before(), SELECT.value() + ":"
                     + ActionCodec.sha256(DriverJson.encode(args)));
             return Optional.of(new ActionCommand(id, request.before(), request.source(), request.sessionId(), SELECT, args,
-                    RootFull111EventOptionEffects.expected(request, target), EventRuntimeInstaller.foregroundClaims(request), deadline));
+                    RootFull111EventOptionEffects.expected(request, target), EventRuntimeInstaller.foregroundClaims(request),
+                    request.deadline()));
         } catch (IOException | UncheckedIOException | ContractViolationException unavailable) {
             return Optional.empty();
         }
@@ -98,7 +97,7 @@ final class RootFull111EventOptionPreparation implements Full111EventSelection, 
                     new ContractViolationException("The original Full111 renderer no longer qualifies a private selection lease"));
             var request = acquired.request();
             return new NativeRequest(request.step(), request.requiredCapability(), request.additionalFields(),
-                    List.of(ref, archive.preserve(acquired.original())));
+                    List.of(ref, archive.preserve(acquired.renderer()), archive.preserve(acquired.original())));
         } catch (InterruptedException interrupted) {
             Thread.currentThread().interrupt();
             throw new ContractViolationException("Full111 selection preparation was interrupted", interrupted);

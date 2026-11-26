@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import org.xar.ck3.control.contracts.ExactCk3Build;
+import org.xar.ck3.control.contracts.semantic.NativeFull111OrdinaryEvent;
 
 /**
  * Exact snapshot expansion of native_driver._action_steps. This is a candidate
@@ -24,6 +26,12 @@ public final class NativeActionSteps {
     public static final String PREVIEW = PREFIX + "preview-move-army-N-to-N";
     public static final String HORIZON = PREFIX + "query-route-contact-horizon-v1-N";
     public static final String OCCUPATION = PREFIX + "query-war-occupation-targets-v1-N";
+    public static final String FULL111_EVENT_SELECT_STEP = "select-current-ordinary-event-option-26785313-v2";
+    public static final String FULL111_EVENT_SELECT_CAPABILITY = PREFIX + "select-current-ordinary-event-option.26785313.v2";
+    public static final Set<String> FULL111_EVENT_OPTION_CAPABILITIES = Set.of(NativeFull111OrdinaryEvent.CAPABILITY,
+            "game.query.core-frame.v1", "game.query.current-ordinary-event-renderer.26785313.v1",
+            "game.query.prepare-current-ordinary-event-option.26785313.v2", FULL111_EVENT_SELECT_CAPABILITY,
+            "game.query.current-ordinary-event-queue.26785313.v2");
     public static final String ASSAULT_STATE = "game.state.war-objective-assault";
     private static final Set<String> PAUSED_WINDOWS = Set.of("query-war-declared-overview-v1","close-war-declared-overview-v1","query-war-results-window-v1","close-war-results-window-v1");
     private static final Set<String> PENDING = Set.of("accept-pending-character-interaction","reject-pending-character-interaction","acknowledge-pending-character-interaction");
@@ -69,6 +77,18 @@ public final class NativeActionSteps {
         }
     }
 
+    private static boolean full111OrdinaryEvent(Obj snapshot, Obj event) {
+        var build = ExactCk3Build.CK3_121003_STEAM_26785313_FULL111;
+        return build.matches(textOrNull(snapshot, "game_version"), textOrNull(snapshot, "executable_sha256"))
+                && named(snapshot, "adapter_id", build.coreFullAdapterId()) && yes(snapshot, "map_ready")
+                && yes(obj(snapshot.get("played_character")).orElse(null), "alive") && named(event, "source", "native")
+                && int32Id(event.get("instance_id"))
+                && event.get("option_count") == Nil.INSTANCE && event.get("title") == Nil.INSTANCE
+                && emptyArray(event, "options")
+                && event.get("authored_option_count") instanceof IntegerValue count && count.value().signum() > 0
+                && count.value().compareTo(BigInteger.valueOf(64)) <= 0;
+    }
+
     public static Set<String> candidates(Input input) {
         Set<String> caps = input.bridgeCapabilities(); Obj snapshot = input.semantic(); boolean paused = yes(snapshot,"paused");
         Obj event = obj(snapshot.get("active_event")).orElse(null), pending = obj(snapshot.get("pending_character_interaction")).orElse(null);
@@ -77,7 +97,7 @@ public final class NativeActionSteps {
             if ("game.state.native-mandatory-choice-window-v1".equals(capability)) { steps.add("query-mandatory-choice-v1"); steps.add("select-mandatory-choice-v1"); continue; }
             if ("game.query.council-composition-candidates-v1".equals(capability)) { if (paused) steps.add("query-council-composition-candidates-v1"); continue; }
             if ("game.action.assign-councillor-v1".equals(capability)) { if (paused) steps.add("assign-councillor-v1"); continue; }
-            if (!capability.startsWith(PREFIX)) continue;
+            if (FULL111_EVENT_SELECT_CAPABILITY.equals(capability) || !capability.startsWith(PREFIX)) continue;
             String step = capability.substring(PREFIX.length());
             if (PAUSED_WINDOWS.contains(step) || PAUSED_FIXED.contains(step)) { if (paused) steps.add(step); continue; }
             if (EXPLICIT_ONLY.contains(step)) continue;
@@ -101,6 +121,8 @@ public final class NativeActionSteps {
             require(count.value().compareTo(BigInteger.valueOf(65536)) <= 0,"bounded actual displayed option count required");
             for (int i = 1; i <= count.value().intValueExact(); i++) steps.add("select-event-option-" + i);
         }
+        if (paused && event != null && caps.containsAll(FULL111_EVENT_OPTION_CAPABILITIES)
+                && full111OrdinaryEvent(snapshot, event)) steps.add(FULL111_EVENT_SELECT_STEP);
         if (pending != null && no(pending,"auto_accept_notification")) {
             for (String step : pendingSteps) if (!"acknowledge-pending-character-interaction".equals(step)) steps.add(step);
         } else if (pending != null && paused && yes(pending,"auto_accept_notification") && pendingSteps.contains("acknowledge-pending-character-interaction")) {

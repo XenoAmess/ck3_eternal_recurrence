@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Test;
 import org.xar.ck3.control.application.action.*;
+import org.xar.ck3.control.application.capabilities.NativeActionSteps;
 import org.xar.ck3.control.application.planning.*;
 import org.xar.ck3.control.application.planning.events.*;
 import org.xar.ck3.control.contracts.*;
@@ -23,6 +24,7 @@ import org.xar.ck3.control.contracts.semantic.NativeSemanticNormalizer;
 import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector;
 import org.xar.ck3.control.g2.common.G2Source;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.*;
+import org.xar.ck3.control.nativebridge.CurrentFull111EventOption;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 import org.xar.ck3.control.wave2.events.eventoutcome.RegisteredEventMaterial;
 import org.xar.ck3.control.wave2.events.registered.RegisteredEventKnowledge;
@@ -315,8 +317,29 @@ final class RegisteredEventCoreIntegrationTest {
         assertTrue(second.path("native_can_select").booleanValue());
     }
 
+    @Test void onlyTheCompleteFull111ProfileAdvertisesTheCanonicalStockOptionRoute() throws Exception {
+        var semantic = full111ActiveEvent(Set.of()).observations().snapshot()
+                .with("pending_character_interaction", OpportunityJson.Nil.INSTANCE);
+        var action = CurrentFull111EventOption.Action.SELECT;
+        var caps = NativeActionSteps.FULL111_EVENT_OPTION_CAPABILITIES;
+        assertEquals(action.step(), NativeActionSteps.FULL111_EVENT_SELECT_STEP);
+        assertTrue(caps.contains(action.capability()));
+        var admitted = NativeActionSteps.candidates(new NativeActionSteps.Input(caps, semantic, List.of(), Set.of()));
+        assertEquals(Set.of(action.step()), admitted);
+        for (String missing : caps) {
+            var partial = new java.util.HashSet<>(caps);
+            partial.remove(missing);
+            assertTrue(NativeActionSteps.candidates(new NativeActionSteps.Input(partial, semantic, List.of(), Set.of())).isEmpty());
+        }
+        for (var different : List.of(semantic.with("paused", new OpportunityJson.Bool(false)),
+                semantic.with("active_event", OpportunityJson.Nil.INSTANCE),
+                semantic.with("executable_sha256", new OpportunityJson.Text("0".repeat(64))))) {
+            assertTrue(NativeActionSteps.candidates(new NativeActionSteps.Input(caps, different, List.of(), Set.of())).isEmpty());
+        }
+    }
+
     @Test void full111UsesTheFirstVisibleStockOptionInTheOrdinaryPlanner() throws Exception {
-        var operation = new OperationKey("select-current-ordinary-event-option-26785313-v2");
+        var operation = new OperationKey(NativeActionSteps.FULL111_EVENT_SELECT_STEP);
         var input = full111ActiveEvent(Set.of(operation));
         for (boolean firstEnabled : List.of(true, false)) {
             var captured = new ArrayList<OpportunityJson.Obj>();

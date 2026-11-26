@@ -15,6 +15,7 @@ import org.xar.ck3.control.application.action.PlanningReadPort;
 import org.xar.ck3.control.application.action.PlanningReadRequest;
 import org.xar.ck3.control.application.action.PlanningReadResult;
 import org.xar.ck3.control.application.action.ReadContract;
+import org.xar.ck3.control.application.capabilities.NativeActionSteps;
 import org.xar.ck3.control.application.driver.DriverJson;
 import org.xar.ck3.control.application.planning.OrdinaryCorePolicy;
 import org.xar.ck3.control.application.planning.OrdinaryHistory;
@@ -241,6 +242,7 @@ public final class RegisteredEventCore implements OrdinaryCorePolicy.CoreProduce
                     var command = selection.orElseThrow();
                     StrictJson.require(command.before().equals(request.before()) && command.source().equals(request.source())
                             && command.sessionId().equals(request.sessionId()) && !command.deadline().isAfter(request.deadline())
+                            && command.operation().value().equals(NativeActionSteps.FULL111_EVENT_SELECT_STEP)
                             && request.observations().actionSteps().contains(command.operation()),
                             "Full111 selection must retain the current executable ordinary observation");
                     String reason = "select the first visible stock event option whose widget and native option both allow selection";
