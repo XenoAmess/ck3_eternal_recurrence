@@ -30,6 +30,6 @@ Keeper 于 **19:04:52Z** 结束，原父进程实际等待 `0`、线程退出且
 
 旧 `_runtime/living_service_checkpoints.py` 服务仍指向原 `case-output`、max `5`，未随续行自动结束。19:06:37Z 枚举确认 CK3 已无进程且原 public 已实际退出；再次核完整 argv、出生时间、父子关系及无活动 producer 子进程后，只显式停止这项只读 scheduler。实际 scheduler PID `12396` 的 Windows 等待返回 `15`，launcher PID `10556` 的等待没有取得退出码；Root 随后对原工具 session `73931` 实际等待也返回 **15**（chunk `344a57`）。两进程均已消失；这属于本任务只读服务显式终止，不能记为 OS0，也没有终止游戏、host 或 keeper。
 
-本轮并行工作调整按 [AGENTS.md 第 533 行](../../AGENTS.md#自动游玩-agent价值优先与安全边界)补记于此：当天现有根日报没有活武器任务段落，故不改其他机器的 Java 日报。R13 续行与闭场记录完成，原失败保留；独立 c17 的 timer a21、curse a22 已实际执行 plan → prepare → preflight，六步均 exit `0`，固定来源分别读回 `151 / 162` 项，尚未 allocate/run。下一门槛是 Root 绑定真实前场身份后开展代表业务场，cold 仍等待真实 timer renewed checkpoint 来源。
+本轮并行工作调整按 [AGENTS 的并行工作规则](../../docs/maintenance/autoplayer-workflow.md#自动游玩-agent价值优先与安全边界)补记于此：当天现有根日报没有活武器任务段落，故不改其他机器的 Java 日报。R13 续行与闭场记录完成，原失败保留；独立 c17 的 timer a21、curse a22 已实际执行 plan → prepare → preflight，六步均 exit `0`，固定来源分别读回 `151 / 162` 项，尚未 allocate/run。下一门槛是 Root 绑定真实前场身份后开展代表业务场，cold 仍等待真实 timer renewed checkpoint 来源。
 
 Root 另在并行隔离整合 Java CI 的最小夹具修复，并由现有 storage 工作包进行人工时效复核；本记录不替这些工作声明 CI 或容量通过。R14 已由 Root 分配为本机 `R0014`，本次交接时等待新的 storage 操作卡正式启动，尚无 R14 业务结果。没有因等候 R13 闭场而重跑已通过检查或扩展验收范围。本包只新增本说明和专属摘要，由 Root 与 Java 工作包协调后统一提交；没有发布产品。
