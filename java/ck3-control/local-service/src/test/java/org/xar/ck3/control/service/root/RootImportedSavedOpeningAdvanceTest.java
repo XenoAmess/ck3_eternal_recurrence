@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.lang.reflect.Proxy;
 import java.math.BigInteger;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -94,6 +96,34 @@ final class RootImportedSavedOpeningAdvanceTest {
         assertThrows(IOException.class, () -> f.project(f.current.frame()));
     }
 
+    @Test void exactFirstAndSoftwareSecondSettledLifeProjectTheUnissuedOpeningToTheLatestDate() throws Exception {
+        var f = new Fixture();
+        var originalGate = DomainBodies.reference(f.head, DomainBodies.Slot.OPENING_GATE);
+        var originalSaved = f.head.toJson().get(SavedContinuityBootstrap.FIELD);
+        var ending = f.loadSecondSettle();
+        var before = f.head;
+        var proof = f.project(ending.frame()).orElseThrow();
+        assertEquals(f.record, proof.cycleRecord());
+        assertEquals(ending, proof.semantic());
+        var gate = RootGovernanceOpeningInputs.openingGate(f.opening, ending.frame(), Optional.empty(), Optional.of(proof));
+        assertEquals(OpeningStage.AWAIT_SUBMIT, gate.stage());
+        assertEquals(BigInteger.valueOf(53179392L), gate.dateRaw());
+        assertTrue(f.project(f.current.frame()).isEmpty());
+        assertEquals(56, f.head.settledCycles());
+        assertEquals(53179344L, f.head.settledDateRaw());
+        assertSame(before, f.head);
+        assertEquals(originalGate, DomainBodies.reference(f.head, DomainBodies.Slot.OPENING_GATE));
+        assertEquals(originalSaved, f.head.toJson().get(SavedContinuityBootstrap.FIELD));
+        assertArrayEquals(f.originalOpening, GovernanceOpeningDocument.encode(f.opening));
+    }
+
+    @Test void theSecondSettleStillRequiresTheExactFirstCycleRecord() throws Exception {
+        var f = new Fixture();
+        var ending = f.loadSecondSettle();
+        f.cycleBodies.remove(f.firstCycle);
+        assertThrows(IOException.class, () -> f.project(ending.frame()));
+    }
+
     private static ObservationIdentity nextFrame(ObservationIdentity first, BigInteger actor, BigInteger date) {
         var frame = first.frame();
         var identity = new Frame(actor, frame.identity().nativeRevision().add(BigInteger.ONE), date);
@@ -104,9 +134,10 @@ final class RootImportedSavedOpeningAdvanceTest {
     private static final class Fixture {
         private static final String HEAD_SHA = "c2b842b1476486db5182351c717a0154e7a9f20b8dbfcb3028b30ef6d5b07b94";
         private final byte[] originalOpening;
-        private final byte[] originalActionRecord;
+        private final Map<ExactRef, byte[]> actionRecords = new HashMap<>();
+        private final Map<ExactRef, ActionReceipt> receipts = new HashMap<>();
+        private final Map<ExactRef, byte[]> cycleBodies = new HashMap<>();
         private final GovernanceOpeningDocument.Document opening;
-        private final ActionReceipt parent;
         private final ExactRef life;
         private final SemanticEvidence current;
         private final Session same;
@@ -115,19 +146,11 @@ final class RootImportedSavedOpeningAdvanceTest {
         private ContinuityState head;
         private ExactRef record;
         private byte[] cycleBytes;
+        private ExactRef firstCycle;
         private int originalReads;
 
         Fixture() throws IOException {
-            JsonNode data;
-            try (var raw = getClass().getResourceAsStream(
-                    "/org/xar/ck3/control/application/session/source56-opening-advance.json.gz")) {
-                assertNotNull(raw);
-                try (var gzip = new GZIPInputStream(raw)) {
-                    byte[] bytes = gzip.readNBytes(1 << 20);
-                    assertTrue(bytes.length < 1 << 20);
-                    data = FullJsonTree.parse(bytes, 1 << 20);
-                }
-            }
+            var data = readFixture("source56-opening-advance.json.gz");
             byte[] originalHead = binary(data.get("head"));
             assertEquals(HEAD_SHA, ActionCodec.sha256(originalHead));
             var state = ContinuityJson.parseObject(originalHead, 1 << 20);
@@ -135,12 +158,15 @@ final class RootImportedSavedOpeningAdvanceTest {
             originalOpening = binary(data.get("opening"));
             requireBytes(DomainBodies.reference(head, DomainBodies.Slot.OPENING_GATE).orElseThrow().payload(), originalOpening);
             opening = GovernanceOpeningDocument.decode(originalOpening);
-            originalActionRecord = binary(data.get("action_record"));
-            requireBytes(ContinuityActionJournal.recordHead(head).orElseThrow(), originalActionRecord);
+            var actionHead = ContinuityActionJournal.recordHead(head).orElseThrow();
+            byte[] actionRecord = binary(data.get("action_record"));
+            requireBytes(actionHead, actionRecord);
+            actionRecords.put(actionHead, actionRecord);
             byte[] receiptBytes = binary(data.get("receipt"));
             life = ExactRef.fromJson(state.get(OrdinaryCycleTransitions.STATE_FIELD).get("pending_receipt"));
             requireBytes(life, receiptBytes);
-            parent = ActionReceiptCodec.decodeReceipt(receiptBytes, null);
+            var parent = ActionReceiptCodec.decodeReceipt(receiptBytes, null);
+            receipts.put(life, parent);
             assertTrue(parent.eligibleAdvance());
             current = OrdinaryCycleTransitions.semanticFromJson(data.get("current"));
             same = (Session) Proxy.newProxyInstance(getClass().getClassLoader(), new Class<?>[]{Session.class},
@@ -166,23 +192,24 @@ final class RootImportedSavedOpeningAdvanceTest {
                 }
                 case "loadRecord" -> {
                     originalReads++;
-                    requireBytes((ExactRef) args[0], originalActionRecord);
-                    yield ActionRecordCodec.decode(originalActionRecord, archive);
+                    byte[] bytes = actionRecords.get((ExactRef) args[0]);
+                    requireBytes((ExactRef) args[0], bytes);
+                    yield ActionRecordCodec.decode(bytes, archive);
                 }
                 case "loadReceipt" -> {
                     originalReads++;
-                    assertEquals(life, args[0]);
-                    yield parent;
+                    yield java.util.Objects.requireNonNull(receipts.get((ExactRef) args[0]));
                 }
                 case "receiptReferenceOf" -> {
-                    assertEquals(parent, args[0]);
-                    yield life;
+                    yield receipts.entrySet().stream().filter(entry -> entry.getValue().equals(args[0]))
+                            .findFirst().orElseThrow().getKey();
                 }
                 case "loadMaterial" -> {
                     originalReads++;
-                    if (cycleBytes == null) throw new java.io.UncheckedIOException(new IOException("absent fixture cycle record"));
-                    requireBytes((ExactRef) args[0], cycleBytes);
-                    yield new RawJson(cycleBytes);
+                    byte[] bytes = cycleBodies.isEmpty() ? cycleBytes : cycleBodies.get((ExactRef) args[0]);
+                    if (bytes == null) throw new java.io.UncheckedIOException(new IOException("absent fixture cycle record"));
+                    requireBytes((ExactRef) args[0], bytes);
+                    yield new RawJson(bytes);
                 }
                 default -> throw new AssertionError("read-only archive cannot use " + method);
             };
@@ -210,9 +237,52 @@ final class RootImportedSavedOpeningAdvanceTest {
                     current.driverStamp(), current.originalDriver(), record)));
         }
 
+        private SemanticEvidence loadSecondSettle() throws IOException {
+            var data = readFixture("source56-opening-second-settle.json.gz");
+            byte[] originalHead = binary(data.get("head"));
+            assertEquals("1a951b024dc338bf54e15046f8d537c3fa2359303bf2bf037eb73253f7b596df", ActionCodec.sha256(originalHead));
+            var state = ContinuityJson.parseObject(originalHead, 1 << 20);
+            head = ContinuityState.fromJson(state, head.machineId());
+            assertEquals(62, head.sequence());
+            var cycle = state.get(OrdinaryCycleTransitions.STATE_FIELD);
+            assertEquals(58, cycle.get("completed_cycles").longValue());
+            record = ExactRef.fromJson(cycle.get("head"));
+            byte[] lastBytes = binary(data.get("last_cycle"));
+            requireBytes(record, lastBytes);
+            cycleBodies.put(record, lastBytes);
+            var last = ContinuityJson.parseObject(lastBytes, 1 << 20);
+            firstCycle = ExactRef.fromJson(last.get("previous"));
+            byte[] firstBytes = binary(data.get("first_cycle"));
+            requireBytes(firstCycle, firstBytes);
+            cycleBodies.put(firstCycle, firstBytes);
+            assertEquals(life, ExactRef.fromJson(ContinuityJson.parseObject(firstBytes, 1 << 20).get("receipt_ref")));
+            var receipt = ExactRef.fromJson(last.get("receipt_ref"));
+            byte[] receiptBytes = binary(data.get("receipt"));
+            requireBytes(receipt, receiptBytes);
+            receipts.put(receipt, ActionReceiptCodec.decodeReceipt(receiptBytes, null));
+            var actionHead = ContinuityActionJournal.recordHead(head).orElseThrow();
+            byte[] actionRecord = binary(data.get("action_record"));
+            requireBytes(actionHead, actionRecord);
+            actionRecords.put(actionHead, actionRecord);
+            requireBytes(DomainBodies.reference(head, DomainBodies.Slot.OPENING_GATE).orElseThrow().payload(), originalOpening);
+            return OrdinaryCycleTransitions.semanticFromJson(last.get("semantic"));
+        }
+
         private Optional<OrdinaryCycleTransitions.ImportedOpeningAdvance> project(ObservationIdentity frame) throws IOException {
             var owner = OrdinaryCycleTransitions.sessionFromJson(head.toJson().get(SavedContinuityBootstrap.FIELD).get("session"));
             return cycles.importedOpeningAdvance(same, owner, opening.observed(), opening.source(), frame);
+        }
+    }
+
+    private static JsonNode readFixture(String filename) throws IOException {
+        try (var raw = RootImportedSavedOpeningAdvanceTest.class.getResourceAsStream(
+                "/org/xar/ck3/control/application/session/"+filename)) {
+            assertNotNull(raw);
+            try (var gzip = new GZIPInputStream(raw)) {
+                byte[] bytes = gzip.readNBytes(1 << 20);
+                assertTrue(bytes.length < 1 << 20);
+                return FullJsonTree.parse(bytes, 1 << 20);
+            }
         }
     }
 
