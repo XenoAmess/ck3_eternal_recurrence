@@ -3795,7 +3795,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
     private SettledSameGameData issuedSettledSameGameData;
     private WriterContracts.HistoricalTransition issuedSettledSameGameRecovery;
     private boolean issuedSettledSameGameOpenBatch;
-    private ImportedLifeSettlement issuedImportedLifeSettlement;
+    private ImportedCycleSettlement issuedImportedCycleSettlement;
     private long acceptedSettledSameGameSequence;
     private String acceptedSettledSameGameDigest;
     private SavedSettledHistory issuedSavedSettledHistory;
@@ -3985,24 +3985,24 @@ public final class ContinuityBatchJournal implements BatchJournal {
             SettledSameGameData data, SemanticEvidence fresh) throws IOException {
         store.requireSession(same);Objects.requireNonNull(data);Objects.requireNonNull(fresh);
         return transitions.withLocked(same,()->{
-            if(data==issuedSettledSameGameData&&issuedImportedLifeSettlement!=null) {
+            if(data==issuedSettledSameGameData&&issuedImportedCycleSettlement!=null) {
                 StrictJson.require(committedSettledSameGameData==null,"imported Saved settlement DATA can be adopted only once");
-                var retained=issuedImportedLifeSettlement;
+                var retained=issuedImportedCycleSettlement;
                 var pins=new java.util.ArrayList<>(java.util.List.of(retained.retain().eventPin(),retained.settle().eventPin()));
-                retained.batchFinish().ifPresent(row->pins.add(row.eventPin()));
+                retained.batchBoundary().ifPresent(row->pins.add(row.eventPin()));
                 var edges=same.readHistoricalTransitions(pins);
                 StrictJson.require(edges.size()==pins.size(),"imported Saved adoption changed the exact settlement and batch pins");
                 var originals=transitions.restartArchive(same);
                 var owner=data.controller().owner();
                 var settle=edges.get(1);
-                requireImportedLifeSettlement(same,settle.after(),owner,data.settledActions(),originals,
+                requireImportedCycleSettlement(same,settle.after(),owner,data.settledActions(),originals,
                         retained.original(),edges.getFirst(),settle);
-                var frontier=retained.batchFinish().isPresent()
-                        ?requireImportedBatchFinish(settle,edges.getLast(),owner):settle;
+                var frontier=retained.batchBoundary().isPresent()
+                        ?requireImportedBatchBoundary(settle,edges.getLast(),owner):settle;
                 StrictJson.require(ContinuityJson.same(frontier.after().toJson(),same.head().state().toJson()),
                         "imported Saved adoption crossed its exact completed frontier");
                 requireSettledObservedContinuation(data.latestObservedFrame(),fresh.frame());
-                transitions.requireImportedLifeSettlementReady(same,data,fresh,retained.original());
+                transitions.requireImportedCycleSettlementReady(same,data,fresh,retained.original());
                 committedSettledSameGameData=data;
                 acceptedSettledSameGameSequence=data.canonicalSequence();
                 acceptedSettledSameGameDigest=data.canonicalHeadDigest();
@@ -4028,14 +4028,14 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 return Optional.empty();
             }
             var receipt = savedRole
-                    ? transitions.commitSettledSameGameRecovery(same, data, fresh, issuedSavedSettledHistory)
-                    : (issuedSettledSameGameOpenBatch
+                    ? transitions.recoverSettledSavedGame(same, data, fresh, issuedSavedSettledHistory)
+                    : Optional.of(issuedSettledSameGameOpenBatch
                         ? transitions.commitSettledSameGameRecovery(same,data,fresh,issuedSettledSameGameRecovery)
                         : transitions.commitSettledSameGameRecovery(same,data,fresh));
-            committedSettledSameGameData=data;committedSettledSameGameReceipt=receipt;
-            acceptedSettledSameGameSequence=receipt.head().sequence();
-            acceptedSettledSameGameDigest=ContinuityJson.digest(receipt.head().toJson());
-            return Optional.of(receipt);
+            committedSettledSameGameData=data;committedSettledSameGameReceipt=receipt.orElse(null);
+            acceptedSettledSameGameSequence=receipt.map(result->result.head().sequence()).orElse(data.canonicalSequence());
+            acceptedSettledSameGameDigest=receipt.map(result->ContinuityJson.digest(result.head().toJson())).orElse(data.canonicalHeadDigest());
+            return receipt;
         });
     }
 
@@ -4871,21 +4871,21 @@ public final class ContinuityBatchJournal implements BatchJournal {
     private record CheckedSameGameHistory(SettledSameGameData data, boolean isolated,
             java.util.Set<ExactRef> confirmedSaveReceipts, WriterContracts.HistoricalTransition retainedRecovery,
             boolean unfinishedReadOnlyBatch, java.util.List<CleanBatchRestart> capturedManifests,
-            Optional<CompletedEventOutcomeWitness> completedEventOutcome, Optional<ImportedLifeSettlement> importedLifeSettlement) {
+            Optional<CompletedEventOutcomeWitness> completedEventOutcome, Optional<ImportedCycleSettlement> importedCycleSettlement) {
         private CheckedSameGameHistory {
             Objects.requireNonNull(data);
             confirmedSaveReceipts = java.util.Set.copyOf(confirmedSaveReceipts);
             capturedManifests = java.util.List.copyOf(capturedManifests);
             Objects.requireNonNull(completedEventOutcome);
-            Objects.requireNonNull(importedLifeSettlement);
+            Objects.requireNonNull(importedCycleSettlement);
         }
     }
 
-    private record ImportedLifeSettlement(WriterContracts.HistoricalTransition retain,
+    private record ImportedCycleSettlement(WriterContracts.HistoricalTransition retain,
             WriterContracts.HistoricalTransition settle, ActionReceipt original,
-            Optional<WriterContracts.HistoricalTransition> batchFinish) { }
+            Optional<WriterContracts.HistoricalTransition> batchBoundary) { }
 
-    private void requireImportedLifeSettlement(ContinuityStorePort.Session same,ContinuityState current,SessionIdentity owner,java.util.List<ActionReceipt> actions,
+    private void requireImportedCycleSettlement(ContinuityStorePort.Session same,ContinuityState current,SessionIdentity owner,java.util.List<ActionReceipt> actions,
             org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals,ActionReceipt original,
             WriterContracts.HistoricalTransition retain,WriterContracts.HistoricalTransition settle) throws IOException {
         var retainData=ContinuityJson.parseObject(retain.details(),ContinuityJson.LEDGER_MAX_BYTES);
@@ -4903,17 +4903,36 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 &&(initialImportedSavedPendingFrontier(settle.before(),owner)
                     ||importedSavedCycleBasis(settle.before(),pendingFrontier,
                             pendingFrontier.path(WriterContracts.ORDINARY_CYCLE_FIELD),owner))
-                &&actions.containsAll(settledPrefix)
-                &&readOnlyPendingCompletedLifeCycle(settle.before(),owner,settledPrefix,originals)
-                    .or(() -> readOnlyPendingPartialLifeCycle(settle.before(), owner, settledPrefix, originals))
-                    .filter(original::equals).isPresent()
+                &&actions.containsAll(settledPrefix)&&settledPrefix.contains(original)
+                &&original.sequence()<=retain.before().sequence()
                 &&receipt.equals(ExactRef.fromJson(retainData.get("receipt_ref")))
                 &&receipt.equals(ExactRef.fromJson(settleData.get("receipt_ref"))),
-                "imported Saved restart requires adjacent original Life RETAIN and SETTLE at its actual cycle frontier");
+                "imported Saved restart requires adjacent original RETAIN and SETTLE at its actual cycle frontier");
+        boolean life=importedLifeCycle(original);
         boolean interrupted=settle.before().status()==ContinuityState.Status.REPAIR_REQUIRED;
+        if(life) {
+            StrictJson.require(readOnlyPendingCompletedLifeCycle(settle.before(),owner,settledPrefix,originals)
+                    .or(() -> readOnlyPendingPartialLifeCycle(settle.before(),owner,settledPrefix,originals))
+                    .filter(original::equals).isPresent(),"imported Saved restart lost its exact original Life receipt");
+        } else {
+            var boundary=pendingFrontier.path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD);
+            var record=settleData.path("cycle_record");
+            String classification=original.eligibleAdvance()?"ELIGIBLE_ADVANCE":
+                    original.visibleGameplay()?"VISIBLE_GAMEPLAY":"CONTROL_ONLY";
+            StrictJson.require(!interrupted&&retain.before().status()==ContinuityState.Status.RUNNING
+                    &&settle.before().status()==ContinuityState.Status.RUNNING
+                    &&JournalKind.BATCH_STARTED.name().equals(StrictJson.text(boundary.get("boundary")))
+                    &&OrdinaryCycleTransitions.sessionFromJson(boundary.get("session")).equals(owner)
+                    &&ContinuityJson.same(boundary,retain.before().toJson().get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD))
+                    &&ContinuityJson.same(boundary,current.toJson().get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD))
+                    &&original.settled()&&original.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED
+                    &&classification.equals(StrictJson.text(record.get("classification")))
+                    &&ContinuityJson.same(record.get("semantic"),settleData.get("semantic")),
+                    "imported ordinary restart changed its open batch, actual original or cycle classification");
+        }
         for(var edge:java.util.List.of(retain,settle)) {
             var details=edge==retain?retainData:settleData;
-            StrictJson.require(historicalCompletedLifeCycle(edge.before(),edge.after(),details,batch,owner,actions,originals,interrupted)
+            if(life)StrictJson.require(historicalCompletedLifeCycle(edge.before(),edge.after(),details,batch,owner,actions,originals,interrupted)
                     ||interrupted&&historicalPartialLifeTerminalCycle(edge.before(),edge.after(),details,batch,owner,actions,originals),
                     "imported Saved restart changed the original Life receipt, classification or cycle frontier");
             var replay=transitions.reduce(edge.before(),new WriterContracts.Request(edge.kind(),edge.details(),java.util.List.of())).toJson();
@@ -4924,11 +4943,15 @@ public final class ContinuityBatchJournal implements BatchJournal {
         var cycleRecord=originals.loadMaterial(ExactRef.fromJson(settleData.get("cycle_record_ref")));
         StrictJson.require(java.util.Arrays.equals(cycleRecord.bytes(),ContinuityJson.canonical(settleData.get("cycle_record"))),
                 "imported Saved restart changed its archived cycle record");
-        transitions.requireFirstImportedSemantic(same,owner,original,
+        transitions.requireImportedCycleSemantic(same,owner,original,
                 OrdinaryCycleTransitions.semanticFromJson(settleData.get("semantic")));
     }
 
-    private WriterContracts.HistoricalTransition requireImportedBatchFinish(WriterContracts.HistoricalTransition settle,
+    private static boolean importedLifeCycle(ActionReceipt original) {
+        return org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(original.command().operation().value());
+    }
+
+    private WriterContracts.HistoricalTransition requireImportedBatchBoundary(WriterContracts.HistoricalTransition settle,
             WriterContracts.HistoricalTransition finish,SessionIdentity owner) {
         var details=ContinuityJson.parseObject(finish.details(),ContinuityJson.LEDGER_MAX_BYTES);
         var prior=settle.after().toJson().path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD);
@@ -4936,7 +4959,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 &&finish.sequence()==settle.sequence()+1
                 &&ContinuityJson.same(settle.after().toJson(),finish.before().toJson())
                 &&JournalKind.BATCH_STARTED.name().equals(StrictJson.text(prior.get("boundary")))
-                &&JournalKind.BATCH_FINISHED.name().equals(StrictJson.text(details.get("boundary")))
+                &&importedClosedBatchBoundary(StrictJson.text(details.get("boundary")))
                 &&StrictJson.text(details.get("batch_id")).equals(StrictJson.text(prior.get("batch_id")))
                 &&OrdinaryCycleTransitions.sessionFromJson(details.get("session")).equals(owner)
                 &&details.get("checkpoint_pair").isNull()&&details.get("completed_cycle_proof").isNull(),
@@ -4946,6 +4969,10 @@ public final class ContinuityBatchJournal implements BatchJournal {
         StrictJson.require(ContinuityJson.same(replay,finish.after().toJson()),
                 "imported Saved finished batch differs from its actual canonical reducer");
         return finish;
+    }
+
+    private static boolean importedClosedBatchBoundary(String boundary) {
+        return JournalKind.BATCH_FINISHED.name().equals(boundary)||JournalKind.BATCH_DEFERRED.name().equals(boundary);
     }
 
     /** A completed imported cycle can precede a separately interrupted original Life, with no intervening SAVE. */
@@ -5164,8 +5191,8 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 requested.add(pin);
             }
             return same.<CheckedSameGameHistory>withHistoricalTransitions(requested, edges -> {
-            var importedSettlements=new java.util.ArrayList<ImportedLifeSettlement>();
-            Optional<WriterContracts.HistoricalTransition> importedBatchFinish=Optional.empty();
+            var importedSettlements=new java.util.ArrayList<ImportedCycleSettlement>();
+            Optional<WriterContracts.HistoricalTransition> importedBatchBoundary=Optional.empty();
             if (importedClosedCycle || importedWithSavedHistory) {
                 for(int i=1;i<edges.size();i++) {
                     var settle=edges.get(i);
@@ -5176,10 +5203,11 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     if(!"SETTLE".equals(details.path("operation").asText()))continue;
                     var retain=edges.get(i-1);
                     var original=originals.loadReceipt(ExactRef.fromJson(details.get("receipt_ref")));
-                    if(importedSettlements.isEmpty())StrictJson.require(initialImportedSavedPendingFrontier(settle.before(),owner),
+                    if(importedSettlements.isEmpty())StrictJson.require(importedLifeCycle(original)
+                                    &&initialImportedSavedPendingFrontier(settle.before(),owner),
                             "imported Saved history must start with the original saved basis");
-                    requireImportedLifeSettlement(same,settle.after(),owner,actions,originals,original,retain,settle);
-                    importedSettlements.add(new ImportedLifeSettlement(retain,settle,original,Optional.empty()));
+                    requireImportedCycleSettlement(same,settle.after(),owner,actions,originals,original,retain,settle);
+                    importedSettlements.add(new ImportedCycleSettlement(retain,settle,original,Optional.empty()));
                 }
                 StrictJson.require(!importedSettlements.isEmpty(),"imported Saved restart has no actual Life settlement");
             }
@@ -5188,9 +5216,9 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 var tailIndex=Math.toIntExact(settle.sequence());
                 if(tailIndex<edges.size()) {
                     var after=edges.get(tailIndex);
-                    if(after.kind().equals(OrdinaryCycleTransitions.BATCH_KIND)&&JournalKind.BATCH_FINISHED.name().equals(
+                    if(after.kind().equals(OrdinaryCycleTransitions.BATCH_KIND)&&importedClosedBatchBoundary(
                             after.after().toJson().path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD).path("boundary").asText())) {
-                        importedBatchFinish=Optional.of(requireImportedBatchFinish(settle,after,owner));
+                        importedBatchBoundary=Optional.of(requireImportedBatchBoundary(settle,after,owner));
                         tailIndex++;
                     }
                 }
@@ -5221,7 +5249,8 @@ public final class ContinuityBatchJournal implements BatchJournal {
             }
             var importedGuards = new java.util.HashMap<Long,GuardEvidence>();
             if(imported) {
-                var guardedParents = importedSettlements.stream().map(ImportedLifeSettlement::original)
+                var guardedParents = importedSettlements.stream().map(ImportedCycleSettlement::original)
+                        .filter(ContinuityBatchJournal::importedLifeCycle)
                         .collect(java.util.stream.Collectors.toCollection(java.util.ArrayList::new));
                 if(importedSettlements.isEmpty())guardedParents.add(pendingControl.or(()->firstImportedExpiry)
                         .or(()->readOnlyObservedLifeRecoveryRoot(actions)).orElseThrow());
@@ -5386,16 +5415,24 @@ public final class ContinuityBatchJournal implements BatchJournal {
                                         &&OrdinaryCycleTransitions.sessionFromJson(oldBoundary.get("session")).equals(owner)
                                         &&ContinuityJson.same(oldBoundary,previous.after().toJson().get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD)),
                                         "saved batch continuation changed its exact previous open batch");
-                                var previousActions=org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(previous.before(),originals);
-                                var original=readOnlyPendingCompletedLifeCycle(previous.before(),owner,previousActions,originals).orElseThrow(
-                                        ()->new IOException("saved batch continuation lacks its exact completed pending Life original"));
+                                var importedPrevious=importedSettlements.stream()
+                                        .filter(settlement->settlement.settle().sequence()==previous.sequence()).findFirst();
+                                ActionReceipt original;
+                                if(importedPrevious.isPresent()) {
+                                    original=importedPrevious.orElseThrow().original();
+                                } else {
+                                    var previousActions=org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(previous.before(),originals);
+                                    original=readOnlyPendingCompletedLifeCycle(previous.before(),owner,previousActions,originals).orElseThrow(
+                                            ()->new IOException("saved batch continuation lacks its exact completed pending Life original"));
+                                }
+                                long credit=original.eligibleAdvance()||original.visibleGameplay()?1:0;
                                 var receiptRef=ExactRef.fromJson(previousDetails.get("receipt_ref"));
                                 var beforeCycle=previous.before().toJson().get(WriterContracts.ORDINARY_CYCLE_FIELD);
                                 var afterCycle=previous.after().toJson().get(WriterContracts.ORDINARY_CYCLE_FIELD);
                                 StrictJson.require(actions.contains(original)&&receiptRef.equals(originals.receiptReferenceOf(original))&&cycleReceipts.contains(receiptRef)
                                         &&receiptRef.equals(ExactRef.fromJson(beforeCycle.get("pending_receipt")))
                                         &&afterCycle.get("pending_receipt").isNull()
-                                        &&StrictJson.integer(beforeCycle.get("completed_cycles"),0,StrictJson.MAX_SAFE_INTEGER)+1==completedCycles
+                                        &&Math.addExact(StrictJson.integer(beforeCycle.get("completed_cycles"),0,StrictJson.MAX_SAFE_INTEGER),credit)==completedCycles
                                         &&StrictJson.integer(afterCycle.get("completed_cycles"),0,StrictJson.MAX_SAFE_INTEGER)==completedCycles
                                         &&lastCycleRef!=null&&lastCycleRef.equals(ExactRef.fromJson(afterCycle.get("head")))
                                         &&lastCycleRef.equals(ExactRef.fromJson(previousDetails.get("cycle_record_ref"))),
@@ -5806,12 +5843,16 @@ public final class ContinuityBatchJournal implements BatchJournal {
                                 && (action.visibleGameplay() || action.eligibleAdvance()));
             boolean firstImportedPending=importedBase&&retainedControl;
             StrictJson.require(importedGuards.isEmpty(),"imported Saved history omitted an original Life guard point");
+            boolean openCompletedImported=importedSettled&&!importedSettlements.isEmpty()
+                    &&importedBatchBoundary.isEmpty()&&importedSettlements.getLast().settle().sequence()==state.sequence();
             boolean importedCompleted=!importedSettlements.isEmpty()&&pendingImportedOpening&&existingOpeningRead
                     &&restoredImportedCapabilities&&savedPair.isPresent()&&savedBranch==null&&confirmedSaves.isEmpty()
                     &&(pending==null||expiryAfterImportedCycle.isPresent()&&retainedControl)
-                    &&latest!=null&&lastCycleRef!=null&&openBatch==null&&retainedRecovery==null
+                    &&latest!=null&&lastCycleRef!=null&&(openBatch==null||openCompletedImported)&&retainedRecovery==null
                     &&!used.isEmpty()
-                    &&completedCycles==Math.addExact(state.settledCycles(),importedSettlements.size());
+                    &&completedCycles==Math.addExact(state.settledCycles(),importedSettlements.stream()
+                            .map(ImportedCycleSettlement::original)
+                            .filter(receipt->receipt.eligibleAdvance()||receipt.visibleGameplay()).count());
             if(importedWithSavedHistory) {
                 StrictJson.require(pendingImportedOpening&&existingOpeningRead&&restoredImportedCapabilities&&!confirmedSaves.isEmpty(),
                         "imported Saved recovery needs its original opening and an actual later confirmed SAVE");
@@ -5882,8 +5923,8 @@ public final class ContinuityBatchJournal implements BatchJournal {
                         "saved settled recovery requires its complete confirmed SAVE and closed canonical actions");
             }
             var finalImported=importedClosedCycle?importedSettlements.getLast():null;
-            if(finalImported!=null&&importedBatchFinish.isPresent())finalImported=new ImportedLifeSettlement(
-                    finalImported.retain(),finalImported.settle(),finalImported.original(),importedBatchFinish);
+            if(finalImported!=null&&importedBatchBoundary.isPresent())finalImported=new ImportedCycleSettlement(
+                    finalImported.retain(),finalImported.settle(),finalImported.original(),importedBatchBoundary);
             return new CheckedSameGameHistory(data, isolated, confirmedSaves, retainedRecovery,
                     unfinishedReadOnlyBatch, capturedManifests,lastCompletedEventOutcome.filter(value->
                             org.xar.ck3.control.application.action.ContinuityActionJournal.recordHead(state).filter(value.actionHead()::equals).isPresent()),
@@ -5896,8 +5937,8 @@ public final class ContinuityBatchJournal implements BatchJournal {
             for (var captured : checkedHistory.capturedManifests()) captures.accept(captured);
             if (checkedHistory.isolated()) return data; // Isolated/unresolved DATA grants no settled recovery authority.
             completedEventOutcomeData=data;completedEventOutcomeWitness=checkedHistory.completedEventOutcome().orElse(null);
-            issuedImportedLifeSettlement=checkedHistory.importedLifeSettlement().orElse(null);
-            if(issuedImportedLifeSettlement!=null) {
+            issuedImportedCycleSettlement=checkedHistory.importedCycleSettlement().orElse(null);
+            if(issuedImportedCycleSettlement!=null) {
                 issuedSettledSameGameData=data;
                 return data;
             }

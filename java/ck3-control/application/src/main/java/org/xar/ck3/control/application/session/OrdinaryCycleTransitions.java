@@ -378,7 +378,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
     }
 
     /** Consume this journal's fully verified saved and settled history without replaying an action. */
-    WriterContracts.Receipt commitSettledSameGameRecovery(ContinuityStorePort.Session same,
+    Optional<WriterContracts.Receipt> recoverSettledSavedGame(ContinuityStorePort.Session same,
             ContinuityBatchJournal.SettledSameGameData data, SemanticEvidence semantic,
             ContinuityBatchJournal.SavedSettledHistory role) throws IOException {
         StrictJson.require(active.get() == same && savedSettledContext.get() == null,
@@ -387,7 +387,26 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         role.requireCurrent(same, data);
         savedSettledContext.set(new SavedSettledContext(same, role, data));
         try {
-            return commitSettledSameGameRecovery(same, data, semantic);
+            var head=same.head();
+            var owner=data.controller().owner();
+            var branch=state(head.state(),owner);
+            if (isFullySavedBatchBoundary(head.state(),owner,branch)
+                    && ContinuityJson.same(head.state().toJson().get("latest_binding"),originalFrame(semantic.frame()))) {
+                // A fresh paused read can have the identical frame. The writer would have no state change to commit.
+                var fresh=verify(same,owner,semantic);
+                var retained=data.latestCycleSemantic();
+                requireObservedContinuation(data.latestObservedFrame(),fresh.frame());
+                requireSettledRecoveryFrontier(head.state(),owner,branch);
+                StrictJson.require(fresh.observedAt().isAfter(retained.observedAt())
+                        && fresh.observedAt().isAfter(data.controller().savedPair().orElseThrow().observedAt())
+                        && load(branch.head().orElseThrow()).semantic().equals(retained)
+                        && semantic.originalDriver().sha256().equals(data.retainedFullDriver().sha256())
+                        && head.digest().equals(same.head().digest()),
+                        "unchanged saved frontier requires an independent later SEM with its actual Driver");
+                settledObservation=new SettledObservation(owner,ContinuityJson.digest(branch.toJson()),fresh.frame());
+                return Optional.empty();
+            }
+            return Optional.of(commitSettledSameGameRecovery(same, data, semantic));
         } finally {
             savedSettledContext.remove();
         }
@@ -483,8 +502,8 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         settledObservation = new SettledObservation(owner, ContinuityJson.digest(branch.toJson()), checked.frame());
     }
 
-    /** An imported save's completed Life already reopened its interrupted batch in the exact SETTLE. */
-    void requireImportedLifeSettlementReady(ContinuityStorePort.Session same,
+    /** Adopts the exact completed cycle of an imported save using a new same-date observation. */
+    void requireImportedCycleSettlementReady(ContinuityStorePort.Session same,
             ContinuityBatchJournal.SettledSameGameData data,SemanticEvidence fresh,ActionReceipt original)throws IOException {
         StrictJson.require(active.get()==same,"imported Saved adoption requires the original held writer scope");
         var head=same.head();var owner=data.controller().owner();var branch=state(head.state(),owner);
@@ -497,7 +516,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         StrictJson.require(record.receipt().equals(archive.receiptReferenceOf(original))&&record.semantic().equals(retained)
                 &&ContinuityActionJournal.receipts(head.state(),archive).equals(data.settledActions()),
                 "imported Saved restart changed its already completed cycle or canonical actions");
-        requireFirstImportedSemantic(same,owner,original,fresh);
+        requireImportedCycleSemantic(same,owner,original,fresh);
         requireObservedContinuation(retained.frame(),fresh.frame());
         requireObservedBindingNotRegressed(head.state(),fresh.frame());
         StrictJson.require(fresh.observedAt().isAfter(retained.observedAt())
@@ -508,7 +527,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         settledObservation=new SettledObservation(owner,ContinuityJson.digest(branch.toJson()),fresh.frame());
     }
 
-    void requireFirstImportedSemantic(ContinuityStorePort.Session same,SessionIdentity owner,ActionReceipt original,
+    void requireImportedCycleSemantic(ContinuityStorePort.Session same,SessionIdentity owner,ActionReceipt original,
             SemanticEvidence semantic)throws IOException {
         var verified=verify(same,owner,semantic);freshAfter(original,verified);
         var originalSemantic=archive.loadFullMaterial(semantic.semantic());
@@ -516,7 +535,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         var manifestRef=DriverObservationEvidenceReader.reference(body.get("java_driver_facts_evidence"));
         var manifest=archive.loadFullMaterial(manifestRef);
         StrictJson.require(G2Wire.source(StrictJson.parse(manifest.bytes()).get("source")).equals(original.command().source()),
-                "imported Saved restart SEM changed the actual original Life source");
+                "imported Saved restart SEM changed the actual original action source");
     }
 
     private String revalidateSettledSameGameRecovery(ContinuityStorePort.Session same,
