@@ -14,8 +14,12 @@ import org.xar.ck3.control.application.checkpoint.CheckpointPairCodec;
 import org.xar.ck3.control.application.action.ActionCodec;
 import org.xar.ck3.control.application.checkpoint.NativeCheckpointFiles;
 import org.xar.ck3.control.application.checkpoint.SavedAttachmentSourceStore;
+import org.xar.ck3.control.application.session.OrdinaryCycleTransitions;
+import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
+import org.xar.ck3.control.continuity.ContinuityJson;
 import org.xar.ck3.control.continuity.ContinuityState;
 import org.xar.ck3.control.continuity.writer.WriterContracts;
+import org.xar.ck3.control.contracts.GameGeneration;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.platform.JavaGameLifecycle;
 import org.xar.ck3.control.platform.NativeLaunchPlan;
@@ -82,9 +86,10 @@ final class RootExitedSavedMaterialSource {
     }
     @FunctionalInterface private interface SourceCheck { void require()throws IOException; }
     private static RootJavaSavedBootstrap.ConfirmedSource qualifyOriginal(RootApplicationAssembly.Core core,
-            RootOrdinaryRuntimeConfiguration configuration,String machineId,org.xar.ck3.control.contracts.GameGeneration oldGame,
+            RootOrdinaryRuntimeConfiguration configuration,String machineId,GameGeneration oldGame,
             String oldSession,String oldPipe,SourceCheck source,CheckpointFiles files)throws IOException {
         Objects.requireNonNull(core);Objects.requireNonNull(configuration);source.require();
+        var expected = new SessionIdentity(machineId,oldGame,oldSession);
         Path materialRoot=configuration.stateDirectory().resolve("checkpoints/attachments");
         Located located=core.writer().locked(same->{
             var head=same.head();
@@ -94,10 +99,7 @@ final class RootExitedSavedMaterialSource {
             StrictJson.require(saved!=null&&saved.isObject()&&saved.hasNonNull("pair"),
                     "exited restoration requires the canonical latest ordinary saved pair");
             var pair=CheckpointPairCodec.decode(StrictJson.canonical(saved.get("pair")));
-            StrictJson.require(pair.frame().machineId().equals(machineId)
-                            &&pair.frame().game().equals(oldGame)
-                            &&pair.frame().frame().episodeRunId().equals(oldSession),
-                    "exited restoration crossed the canonical saved machine, Game or episode");
+            requireOrdinaryPairIdentity(head.state(),pair,expected);
             Path path=materialRoot.resolve("checkpoints").resolve(ActionCodec.sha256(CheckpointPairCodec.encode(pair))+".json");
             var witness=files.observe(path).orElseThrow(()->new IOException("original saved material is unavailable"));
             var document=StrictJson.parse(files.read(witness,MAX_METADATA),MAX_METADATA);
@@ -115,6 +117,27 @@ final class RootExitedSavedMaterialSource {
         });
         var result=RootJavaSavedBootstrap.qualify(core,files,materialRoot,
                 oldPipe,located.pair(),located.confirmation());
+        requireConfirmedRuntimeOwner(result.confirmation().details(),expected);
         source.require();return result;
+    }
+
+    /** The canonical campaign episode is independent of its runtime owner's session ID. */
+    static void requireOrdinaryPairIdentity(ContinuityState canonical,CheckpointPair pair,SessionIdentity expected) {
+        var state=canonical.toJson();
+        StrictJson.require(canonical.machineId().equals(expected.machineId())
+                        &&pair.frame().machineId().equals(expected.machineId())
+                        &&pair.frame().game().equals(expected.game())
+                        &&GameGeneration.fromJson(state.get("game_binding")).equals(expected.game())
+                        &&pair.frame().frame().episodeRunId().equals(
+                                StrictJson.text(state.path("latest_binding").get("episode_run_id"))),
+                "exited restoration crossed the canonical saved machine, Game or episode");
+    }
+
+    /** Called on the original SAVE edge after complete source and physical requalification. */
+    static void requireConfirmedRuntimeOwner(byte[] confirmedDetails,SessionIdentity expected) {
+        var details=ContinuityJson.parseObject(confirmedDetails,MAX_METADATA);
+        StrictJson.require("SAVE_CONFIRMED".equals(StrictJson.text(details.get("boundary")))
+                        &&OrdinaryCycleTransitions.sessionFromJson(details.get("session")).equals(expected),
+                "exited restoration crossed the original SAVE runtime owner");
     }
 }
