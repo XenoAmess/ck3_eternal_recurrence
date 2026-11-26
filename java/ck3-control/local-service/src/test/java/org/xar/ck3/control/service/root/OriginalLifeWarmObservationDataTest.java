@@ -8,17 +8,31 @@ import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.zip.GZIPInputStream;
 import org.junit.jupiter.api.Test;
 import org.xar.ck3.control.application.action.ActionCodec;
 import org.xar.ck3.control.application.action.ActionReceipt;
 import org.xar.ck3.control.application.action.ActionReceiptCodec;
+import org.xar.ck3.control.application.action.ActionState;
+import org.xar.ck3.control.application.action.ActionTransitions;
+import org.xar.ck3.control.application.action.ContinuityActionJournal;
+import org.xar.ck3.control.application.advance.ResumeCoreObservation;
 import org.xar.ck3.control.application.planning.PlanTrace;
 import org.xar.ck3.control.application.session.BatchReport;
+import org.xar.ck3.control.application.session.ContinuityBatchJournal;
 import org.xar.ck3.control.application.session.SessionClock;
+import org.xar.ck3.control.continuity.ContinuityJson;
+import org.xar.ck3.control.continuity.ContinuityState;
+import org.xar.ck3.control.continuity.writer.PortableRecoveryDataArchive;
+import org.xar.ck3.control.contracts.ExactRef;
+import org.xar.ck3.control.contracts.FullJsonTree;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedText;
+import org.xar.ck3.control.g2.planning.ProposalLifecycle.FieldKey;
 
 /** Frozen receipt DATA and existing STOP/default-denial seams; never a Root/Native authority fixture. */
 final class OriginalLifeWarmObservationDataTest {
@@ -81,6 +95,106 @@ final class OriginalLifeWarmObservationDataTest {
         assertArrayEquals(runningBytes, fixture("receipt-749.json", ActionCodec.sha256(runningBytes)));
         assertArrayEquals(childBytes, fixture("receipt-753.json", ActionCodec.sha256(childBytes)));
         System.out.println("WARM_DATA_PASS original_receipts=3 report_denials=6 reason_denials=4 stop_access=0 default_dispatch=0 original_command_preserved=true private_root_recovery_exercised=false");
+    }
+
+    @Test void expiredCurrentFull111CoreResumeAllowsOriginalReadWithoutChangingEitherAction() throws Exception {
+        var originalActions = source56Actions();
+        var parent = ContinuityBatchJournal.readOnlyLifeRecoveryRoot(originalActions).orElseThrow();
+        var children = ActionTransitions.composite(parent.state()).orElseThrow().children();
+        var last = children.getLast();
+        var resume = originalActions.stream().filter(action -> action.command().actionId().equals(last.actionId()))
+                .findFirst().orElseThrow();
+        Instant deadline = parent.command().deadline();
+        Instant expired = deadline.plusNanos(1);
+
+        // The original Source56 child remained ACKed UNKNOWN and cannot qualify through the new path.
+        assertInstanceOf(ActionState.Unknown.class, resume.state());
+        assertTrue(resume.ack().orElseThrow().nativeOk());
+        assertTrue(RootOrdinaryWorkerLoop.expiredCoreResumeRead(parent, originalActions, expired).isEmpty());
+        assertFalse(RootOrdinaryWorkerLoop.knownPostAckLifeRead(parent, originalActions));
+
+        // Future role DATA only. Test references have no archive originals and grant no authority.
+        var observation = new ResumeCoreObservation(new ExactRef("fixture/pre-resume", 1, "a".repeat(64)),
+                new ExactRef("fixture/core-after", 1, "b".repeat(64)), resume.command().deadline());
+        var core = new ActionReceipt(resume.version(), resume.sequence(), resume.command(), resume.bodySha256(),
+                new ActionState.Settled(ActionTransitions.attempt(resume.state()).orElseThrow(),
+                        resume.ack().orElseThrow(), new ActionState.ResumeCoreApplied(observation)));
+        var afterCore = originalActions.stream().map(action -> action.equals(resume) ? core : action).toList();
+        assertSame(core, RootOrdinaryWorkerLoop.expiredCoreResumeRead(parent, afterCore, expired).orElseThrow());
+        assertTrue(RootOrdinaryWorkerLoop.expiredCoreResumeRead(parent, afterCore, deadline).isEmpty());
+        assertTrue(RootOrdinaryWorkerLoop.expiredCoreResumeRead(parent, afterCore, deadline.minusNanos(1)).isEmpty());
+        assertTrue(RootOrdinaryWorkerLoop.expiredCoreResumeRead(parent,
+                afterCore.stream().filter(action -> action != core).toList(), expired).isEmpty());
+        var duplicate = new java.util.ArrayList<>(afterCore);
+        duplicate.add(core);
+        assertTrue(RootOrdinaryWorkerLoop.expiredCoreResumeRead(parent, duplicate, expired).isEmpty());
+        var forgedAck = new org.xar.ck3.control.application.action.NativeActionPort.AckReceived(
+                resume.ack().orElseThrow().requestId(), true, Optional.empty(),
+                resume.ack().orElseThrow().originalFrame(), resume.ack().orElseThrow().originalPacket());
+        assertThrows(IllegalArgumentException.class, () -> new ActionReceipt(resume.version(), resume.sequence(),
+                resume.command(), resume.bodySha256(), new ActionState.Settled(
+                ActionTransitions.attempt(resume.state()).orElseThrow(), forgedAck,
+                new ActionState.ResumeCoreApplied(observation))));
+        var oldParent = ActionReceiptCodec.decodeReceipt(fixture("receipt-754.json",
+                "896b54ed5e1454dc8fff7e2d93cb4dc3ea78fd1fce070af1d8df5816153be87f"), null);
+        assertTrue(RootOrdinaryWorkerLoop.expiredCoreResumeRead(oldParent, afterCore, expired).isEmpty());
+
+        var command = parent.command();
+        var owner = new SessionIdentity(command.origin().machineId(), command.origin().game(), command.sessionId());
+        var at = new SessionClock.Tick(0L, expired);
+        var returned = new BatchReport.PhaseSpan(BatchReport.Phase.ACTION, at, at, BatchReport.PhaseTerminal.RETURNED);
+        var failure = report(owner, BatchReport.Terminal.ACTION_UNKNOWN, "original action remains UNRESOLVED",
+                at, List.of(returned), List.of(turn(parent, 1)));
+        assertSame(parent, RootOrdinaryWorkerLoop.postAckLifeReadFailure(failure).orElseThrow());
+        assertFalse(RootOrdinaryWorkerLoop.knownPostAckLifeRead(parent, afterCore));
+        assertEquals(ActionReceipt.Outcome.UNRESOLVED, parent.outcome());
+        assertEquals(deadline, parent.command().deadline());
+        assertEquals(resume.command().deadline(), core.command().deadline());
+        assertArrayEquals(ActionCodec.encodeCommand(resume.command()), ActionCodec.encodeCommand(core.command()));
+        assertEquals(resume.ack(), core.ack());
+    }
+
+    @Test void ordinaryVisibleAppliedWithoutAdvanceCreditCannotBeReadAsExpiryTerminal() throws Exception {
+        var ordinary = source56Actions().stream()
+                .filter(receipt -> receipt.state() instanceof ActionState.CompositeSettled && receipt.eligibleAdvance())
+                .findFirst().orElseThrow();
+        var settled = (ActionState.CompositeSettled) ordinary.state();
+        var observation = ordinary.applied().orElseThrow().observation();
+        var actual = observation.actual().stream().map(value -> value instanceof ExpectedText text
+                && text.field().equals(new FieldKey("progress_status"))
+                        ? new ExpectedText(text.field(), "boundary_interrupted") : value).toList();
+        var nonEligible = new ActionState.EffectObservation(observation.after(), observation.source(),
+                observation.sessionId(), observation.observerSchema(), actual, observation.provenance(),
+                ordinary.command().deadline().plusNanos(1), observation.originalEvidence(), observation.supportingEvidence());
+        var candidate = new ActionReceipt(ordinary.version(), ordinary.sequence(), ordinary.command(), ordinary.bodySha256(),
+                new ActionState.CompositeSettled(settled.execution(), new ActionState.Applied(nonEligible)));
+        assertTrue(candidate.visibleGameplay());
+        assertFalse(candidate.eligibleAdvance());
+        var unreadable = new PortableRecoveryDataArchive(
+                same -> { throw new AssertionError("non-expiry result cannot acquire a writer"); },
+                (ref, maximum) -> { throw new AssertionError("non-expiry result cannot read terminal evidence"); }).proxy();
+        assertFalse(RootOrdinaryWorkerLoop.recoveredExpiredLifeReceipt(candidate, Optional.of(candidate), unreadable));
+        assertFalse(RootOrdinaryWorkerLoop.recoveredExpiredLifeReceipt(candidate, Optional.of(ordinary), unreadable));
+    }
+
+    private List<ActionReceipt> source56Actions() throws IOException {
+        try (var input = getClass().getResourceAsStream(
+                "/org/xar/ck3/control/application/session/source56-interrupted-recovery-prefix.json.gz")) {
+            assertNotNull(input);
+            try (var gzip = new GZIPInputStream(input)) {
+                var data = FullJsonTree.parse(gzip.readNBytes(1 << 20), 1 << 20);
+                var head = ContinuityJson.parseObject(Base64.getDecoder().decode(data.get("head").textValue()), 1 << 20);
+                var archive = new PortableRecoveryDataArchive(same -> {
+                    throw new AssertionError("warm admission fixture cannot acquire a writer");
+                }, (ref, maximum) -> {
+                    var material = data.path("artifacts").get(ref.sha256());
+                    assertNotNull(material);
+                    return Base64.getDecoder().decode(material.textValue());
+                }).proxy();
+                return ContinuityActionJournal.receipts(
+                        ContinuityState.fromJson(head, head.get("machine_id").textValue()), archive);
+            }
+        }
     }
 
     /** Real archived negative READ packets plus synthetic rejection mutations; no live custody/lease is issued. */

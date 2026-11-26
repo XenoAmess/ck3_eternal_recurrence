@@ -3,15 +3,30 @@ package org.xar.ck3.control.application.advance;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.IOException;
 import java.math.BigInteger;
+import java.lang.reflect.Proxy;
 import java.time.Instant;
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.zip.GZIPInputStream;
 import org.junit.jupiter.api.Test;
+import org.xar.ck3.control.application.action.ActionCodec;
+import org.xar.ck3.control.application.action.ActionEffects;
+import org.xar.ck3.control.application.action.ActionPorts;
 import org.xar.ck3.control.application.action.ActionReceipt;
+import org.xar.ck3.control.application.action.CommandOrigin;
+import org.xar.ck3.control.application.action.CompositeExecution;
+import org.xar.ck3.control.application.action.GuardEvidence;
+import org.xar.ck3.control.application.action.OperationKey;
+import org.xar.ck3.control.application.action.PhysicalStatusIdentity;
+import org.xar.ck3.control.application.action.PhysicalStatusIdentityCodec;
+import org.xar.ck3.control.application.action.PlanningReadGuard;
+import org.xar.ck3.control.application.action.PlanningReadReceipt;
+import org.xar.ck3.control.application.action.PlanningReadRequest;
 import org.xar.ck3.control.application.action.ActionState;
 import org.xar.ck3.control.application.action.ActionTransitions;
 import org.xar.ck3.control.application.action.ContinuityActionJournal;
@@ -20,6 +35,12 @@ import org.xar.ck3.control.application.action.NativeObservationPort.TransportSes
 import org.xar.ck3.control.application.action.NativeRequestChronology;
 import org.xar.ck3.control.application.action.ObservationProvenance;
 import org.xar.ck3.control.application.action.RawJson;
+import org.xar.ck3.control.application.driver.DriverJson;
+import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector.Frame;
+import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector.ProposalFrame;
+import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
+import org.xar.ck3.control.planning.opportunity.OpportunityJson.*;
+import org.xar.ck3.control.nativebridge.NativeWire;
 import org.xar.ck3.control.application.session.ContinuityBatchJournal;
 import org.xar.ck3.control.continuity.ContinuityJson;
 import org.xar.ck3.control.continuity.ContinuityState;
@@ -65,6 +86,8 @@ final class LifeExpiredPartialAdvanceEvidenceDataTest {
                 assertEquals(ActionReceipt.Outcome.UNRESOLVED, children.getLast().outcome());
                 assertFalse(parent.eligibleAdvance());
                 assertEquals(deadline, parent.command().deadline());
+                assertFalse(LifeExpiredPartialAdvanceEvidence.terminalShape(parent));
+                assertTrue(LifeExpiredPartialAdvanceEvidence.readTerminalData(parent, archive).isEmpty());
 
                 // Only the future receipt role is modeled here. These refs have no
                 // originals in this fixture and cannot pass production archive replay.
@@ -80,6 +103,7 @@ final class LifeExpiredPartialAdvanceEvidenceDataTest {
                         List.of(children.getFirst(), futureReceiptShape), deadline.plusNanos(1)));
                 assertFalse(LifeExpiredPartialAdvanceEvidence.accepts(parent,
                         List.of(children.getFirst(), futureReceiptShape), deadline));
+                checkTerminalData(parent, children.getFirst(), legacyResume, futureReceiptShape);
 
                 var plan = AdvancePlan.decode(parent.command());
                 var status = ClockStatusRead.decode(ack(token(1 << 15, "evaluation_failure")));
@@ -96,6 +120,162 @@ final class LifeExpiredPartialAdvanceEvidenceDataTest {
                 }
             }
         }
+    }
+
+    private static void checkTerminalData(ActionReceipt parent, ActionReceipt arm,
+            ActionReceipt oldResume, ActionReceipt futureResume) throws IOException {
+        var command = parent.command();
+        var execution = ((ActionState.CompositeUnknown) parent.state()).execution();
+        var time = command.deadline().plusSeconds(1);
+        var before = command.before();
+        var startNative = proofRef("start-native", '1');
+        var endNative = proofRef("end-native", '2');
+        var facts = proofRef("driver", '3');
+        var sem = proofRef("semantic", '4');
+        var revision = before.frame().identity().nativeRevision().add(BigInteger.TEN);
+        var after = new ObservationIdentity(before.machineId(), before.game(),
+                new ProposalFrame(new Frame(before.frame().identity().player(), revision, BigInteger.valueOf(53179944)),
+                        "native:" + revision, before.frame().revision().add(BigInteger.ONE), before.frame().episodeRunId()), before.observationVersion());
+        var basis = new ObservationProvenance.FreshSnapshotQuery("fixture-full", proofRef("full-ack", '5'), event(3, time),
+                new ObservationProvenance.LiveAfterSetter(proofRef("resume-ack", '6')));
+        var semantic = new Obj(Map.ofEntries(
+                Map.entry("snapshot_id", new Text(after.frame().snapshotId())),
+                Map.entry("revision", new IntegerValue(after.frame().revision())),
+                Map.entry("native_revision", new IntegerValue(revision)),
+                Map.entry("date_raw", new IntegerValue(after.frame().identity().dateRaw())),
+                Map.entry("episode_run_id", new Text(after.frame().episodeRunId())),
+                Map.entry("played_character", new Obj(Map.of("character_id", new IntegerValue(after.frame().identity().player()),
+                        "alive", new Bool(true)))),
+                Map.entry("paused", new Bool(true)), Map.entry("map_ready", new Bool(true)),
+                Map.entry("speed", new IntegerValue(BigInteger.valueOf(5))),
+                Map.entry("active_event", Nil.INSTANCE), Map.entry("pending_character_interaction", Nil.INSTANCE),
+                Map.entry("one_life_terminal_reason", Nil.INSTANCE), Map.entry("active_wars", new Arr(List.of())),
+                Map.entry("player_armies", new Arr(List.of())), Map.entry("diagnostics", new Obj(Map.of()))));
+        var ending = new AdvanceObservationPort.Frame(after, command.source(), command.sessionId(), semantic,
+                basis, event(3, time).observedAt(), endNative);
+        var start = new LifeAdvanceEvidence.FrameRecord(before, new ObservationProvenance.Push(before.frame().snapshotId(),
+                before.frame().identity().nativeRevision(), startNative), execution.guard().observedAt(), startNative, facts, sem);
+        var end = new LifeAdvanceEvidence.FrameRecord(after, basis, ending.observedAt(), endNative, facts, sem);
+        var status = fixtureExpiryRead(parent, ending);
+
+        var valid = terminalFixture(parent, arm, futureResume, status, start, end);
+        var receipt = terminalReceipt(parent, execution, ending, valid.reference(), AdvanceClock.ProgressStatus.WALL_TIMEOUT_WITH_DATE_PROGRESS);
+        assertTrue(LifeExpiredPartialAdvanceEvidence.terminalShape(receipt));
+        assertTrue(receipt.visibleGameplay());
+        assertFalse(receipt.eligibleAdvance());
+        var settlement = ((ActionState.CompositeSettled) receipt.state()).settlement();
+        ActionEffects.validateComposite(command, execution, settlement);
+        ActionEffects.validateCompositeChildren(command, execution, settlement, List.of(arm, futureResume));
+        assertFalse(receipt.applied().orElseThrow().observation().actual().contains(new org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedBoolean(
+                new org.xar.ck3.control.g2.planning.ProposalLifecycle.FieldKey("timeline.checkpoint_eligible"), true)));
+        var data = LifeExpiredPartialAdvanceEvidence.readTerminalData(receipt, valid.archive()).orElseThrow();
+        assertEquals(parent, data.original());
+        assertEquals(List.of(arm, futureResume), data.children());
+        assertEquals(start, data.starting());
+        assertEquals(end, data.ending());
+        assertEquals(status, data.status());
+        assertTrue(AdvanceResult.compatibleResult(receipt, valid.archive()).isEmpty());
+        var noFrameBytes = new LifeExpiredPartialAdvanceEvidence(valid.archive(), (ignored, frame, archive) -> {
+            throw new AssertionError("inexact frame bytes must be rejected before reconstruction");
+        }, new AdvancePrimitiveArchivedReplay((frame, archive) -> {
+            throw new AssertionError("inexact frame bytes must be rejected before child replay");
+        }));
+        assertThrows(IllegalArgumentException.class, () -> noFrameBytes.verifyTerminal(receipt, data));
+
+        var old = terminalFixture(parent, arm, oldResume, status, start, end);
+        var former = terminalReceipt(parent, execution, ending, old.reference(), AdvanceClock.ProgressStatus.WALL_TIMEOUT_WITH_DATE_PROGRESS);
+        assertThrows(IllegalArgumentException.class, () -> LifeExpiredPartialAdvanceEvidence.readTerminalData(former, old.archive()));
+        var mismatched = terminalReceipt(parent, execution, ending, valid.reference(), AdvanceClock.ProgressStatus.POSTCONDITION);
+        assertFalse(LifeExpiredPartialAdvanceEvidence.terminalShape(mismatched));
+        var badBytes = terminalReceipt(parent, execution, ending, proofRef("different-terminal", '8'),
+                AdvanceClock.ProgressStatus.WALL_TIMEOUT_WITH_DATE_PROGRESS);
+        assertThrows(IllegalArgumentException.class, () -> LifeExpiredPartialAdvanceEvidence.readTerminalData(badBytes, valid.archive()));
+    }
+
+    private static PlanningReadReceipt fixtureExpiryRead(ActionReceipt parent, AdvanceObservationPort.Frame ending) throws IOException {
+        var command = parent.command();
+        var identity = ending.identity();
+        var transport = new TransportSession(identity.machineId(), identity.game(), BigInteger.valueOf(22), command.sessionId());
+        var hello = proofRef("hello", '7');
+        var physical = new PhysicalStatusIdentity(transport, identity.frame().snapshotId(), identity.frame().identity().nativeRevision(),
+                command.source(), ending.originalEvidence(), hello, proofRef("heartbeat", '8'), Optional.empty(), Optional.empty(), ending.observedAt());
+        var step = new OperationKey(ClockStatusRead.STEP);
+        var deadline = ending.observedAt().plusSeconds(15);
+        var guard = new GuardEvidence(new CommandOrigin.PhysicalStatusOnly(physical), command.source(), command.sessionId(),
+                transport.connectionGeneration(), step, ending.originalEvidence(), hello, "expiry-fixture-physical", ending.observedAt(),
+                deadline, List.of(hello));
+        var readGuard = new PlanningReadGuard(guard, new PlanningReadGuard.PhysicalStatus(physical),
+                PhysicalStatusIdentityCodec.bindingSha256(physical));
+        var request = PlanningReadRequest.newStatusOnly(physical, step, new Obj(Map.of()), deadline);
+        var id = "fixture-expiry-status";
+        var token = token(1 << 15, "evaluation_failure");
+        token.putObject(LifeExpiredPartialAdvanceEvidence.EXPIRY_STATUS_FIELD)
+                .put("schema", LifeExpiredPartialAdvanceEvidence.EXPIRY_STATUS_SCHEMA)
+                .put("generation", 2).put("original_deadline_unix_ms", command.deadline().toEpochMilli()).put("failure_flags", 32)
+                .put("armed", false).put("shutdown_safe", true).put("access_cleanup_unknown", false);
+        var wireRequest = StrictJson.object().put("type", "execute_step").put("protocol_version", 1).put("request_id", id)
+                .put("step", step.value()).put("expected_revision", physical.nativeRevision());
+        var wireResponse = StrictJson.object().put("type", "command_result").put("protocol_version", 1).put("request_id", id).put("ok", true);
+        wireResponse.set("result", token);
+        byte[] out = NativeWire.packet(StrictJson.canonical(wireRequest));
+        byte[] in = NativeWire.packet(StrictJson.canonical(wireResponse));
+        var time = ending.observedAt();
+        var custody = new NativeRequestChronology(transport, UUID.fromString("8c799220-1674-4572-9dca-7a0e40d20b49"),
+                id, NativeRequestChronology.PacketIdentity.of(out), NativeRequestChronology.PacketIdentity.of(in),
+                event(5, time), event(6, time), event(7, time));
+        var ack = new NativeActionPort.AckReceived(id, true, Optional.of(new RawJson(StrictJson.canonical(token))),
+                new RawJson(StrictJson.canonical(wireResponse)), in, Optional.of(new NativeActionPort.OutboundPacket(id, out)), Optional.of(custody));
+        return new PlanningReadReceipt(request, PhysicalStatusIdentity.CONTRACT_ID, id, readGuard, readGuard, ack);
+    }
+
+    private record TerminalFixture(ExactRef reference, ActionPorts.OutcomeArchive archive) { }
+
+    /** Portable capture of the terminal DATA format. The installed cold replay still requires full immutable originals. */
+    private static TerminalFixture terminalFixture(ActionReceipt parent, ActionReceipt arm, ActionReceipt resume,
+            PlanningReadReceipt status, LifeAdvanceEvidence.FrameRecord start, LifeAdvanceEvidence.FrameRecord end) {
+        var parentRef = proofRef("parent", 'a');
+        var armRef = proofRef("arm", 'b');
+        var resumeRef = proofRef("resume", 'c');
+        var statusRef = proofRef("status", 'd');
+        var expiry = new RawJson(DriverJson.encode(new Obj(Map.of(
+                "schema", new Text(LifeExpiredPartialAdvanceEvidence.SCHEMA), "parent_receipt", ref(parentRef),
+                "child_receipts", new Arr(List.of(ref(armRef), ref(resumeRef))), "status_read", ref(statusRef),
+                "ending", LifeAdvanceEvidence.frame(end)))));
+        var expiryRef = new ExactRef("fixture/expiry", expiry.bytes().length, ActionCodec.sha256(expiry.bytes()));
+        var wrapper = new RawJson(DriverJson.encode(new Obj(Map.of("schema", new Text(LifeExpiredPartialAdvanceEvidence.TERMINAL_SCHEMA),
+                "expiry", ref(expiryRef), "starting", LifeAdvanceEvidence.frame(start)))));
+        var wrapperRef = new ExactRef("fixture/terminal", wrapper.bytes().length, ActionCodec.sha256(wrapper.bytes()));
+        var receipts = Map.of(parentRef, parent, armRef, arm, resumeRef, resume);
+        var refs = Map.of(parent, parentRef, arm, armRef, resume, resumeRef);
+        var archive = (ActionPorts.OutcomeArchive) Proxy.newProxyInstance(ActionPorts.OutcomeArchive.class.getClassLoader(),
+                new Class<?>[]{ActionPorts.OutcomeArchive.class}, (ignored, method, args) -> switch (method.getName()) {
+                    case "loadMaterial" -> expiryRef.equals(args[0]) ? expiry : wrapper;
+                    case "loadReceipt" -> receipts.get(args[0]);
+                    case "receiptReferenceOf" -> refs.get(args[0]);
+                    case "loadNativeFrame" -> new byte[]{1};
+                    case "loadRead" -> status;
+                    case "readReferenceOf" -> statusRef;
+                    case "referenceOf" -> new ExactRef("fixture/actual-status-ack", status.original().originalPacket().length,
+                            ActionCodec.sha256(status.original().originalPacket()));
+                    default -> throw new AssertionError(method.getName());
+                });
+        return new TerminalFixture(wrapperRef, archive);
+    }
+
+    private static Value ref(ExactRef ref) {
+        return DriverJson.fromNode(ref.toJson());
+    }
+
+    private static ActionReceipt terminalReceipt(ActionReceipt parent, CompositeExecution execution,
+            AdvanceObservationPort.Frame ending, ExactRef reference, AdvanceClock.ProgressStatus progress) {
+        var effect = LifeAdvanceComposite.observation(parent.command(), AdvancePlan.decode(parent.command()), ending,
+                progress, null, List.of(reference));
+        return new ActionReceipt(parent.version(), parent.sequence() + 1, parent.command(), parent.bodySha256(),
+                new ActionState.CompositeSettled(execution, new ActionState.Applied(effect)));
+    }
+
+    private static ExactRef proofRef(String path, char digest) {
+        return new ExactRef("fixture/" + path, 1, String.valueOf(digest).repeat(64));
     }
 
     @Test void fullReadNeedsSameHeldSetterOrAnExactNewConnectionWatch() {

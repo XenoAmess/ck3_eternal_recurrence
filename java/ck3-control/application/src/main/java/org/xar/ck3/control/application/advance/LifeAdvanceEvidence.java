@@ -137,7 +137,8 @@ public final class LifeAdvanceEvidence {
                 "completed life endpoint lacks the sole complete archived basis");
         Obj body = DriverJson.object(archive.loadMaterial(effect.supportingEvidence().getFirst()).bytes(), RawJson.MAXIMUM_BYTES);
         if(PreparedCleanupParentEvidence.isSchema(body)
-                ||LifePostResumePauseCleanupEvidence.isTerminalSchema(body)) {
+                ||LifePostResumePauseCleanupEvidence.isTerminalSchema(body)
+                ||LifeExpiredPartialAdvanceEvidence.isTerminalSchema(body)) {
             require(sameRootFrames instanceof LifeAdvanceRootReplay,"cleanup endpoint requires its installed full archived replay");
             var verified=((LifeAdvanceRootReplay)sameRootFrames).readRecorded(actualCanonical,archive);
             return restore(actualCanonical.command(),verified.ending(),archive,sameRootFrames);
@@ -176,6 +177,11 @@ public final class LifeAdvanceEvidence {
             AdvanceClockArchivedReplay timeline) {
         Objects.requireNonNull(archive); Objects.requireNonNull(frames); Objects.requireNonNull(timeline);
         if(LifeAdvanceRootReplay.preparedParent(receipt))return PreparedCleanupParentEvidence.readRecorded(receipt,archive,frames);
+        var expired = LifeExpiredPartialAdvanceEvidence.readTerminalData(receipt, archive);
+        if (expired.isPresent()) {
+            require(frames instanceof LifeAdvanceRootReplay, "expiry terminal requires the installed full archived replay");
+            return ((LifeAdvanceRootReplay) frames).readExpiryRecorded(receipt, expired.orElseThrow(), archive);
+        }
         require(LifeAdvanceComposite.accepts(receipt.command().operation().value()), "life verifier cannot verify another operation");
         ActionState.EffectObservation effect = ActionEffects.observation(receipt).orElseThrow(() -> new IllegalArgumentException("advance has no semantic terminal observation"));
         require(effect.supportingEvidence().size() == 1, "advance needs one exact complete archived basis");

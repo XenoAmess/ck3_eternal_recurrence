@@ -64,6 +64,30 @@ final class ImportedSavedInterruptedLifeRecoveryDataTest {
         assertEquals(0, fixture.driverReads);
     }
 
+    @Test void partialExpiryUsesTheLastObservedCycleInsteadOfThePhysicalSaveDate() throws IOException {
+        var fixture = new Fixture();
+        var original = fixture.readOnlyParent();
+        var whole = fixture.state.toJson();
+        var cycle = whole.get(WriterContracts.ORDINARY_CYCLE_FIELD);
+        var opening = org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.decodeObservation(
+                whole.get(SavedContinuityBootstrap.FIELD).get("opening"));
+        assertEquals(53179344, opening.frame().identity().dateRaw().longValueExact());
+        assertEquals(53179368, original.command().before().frame().identity().dateRaw().longValueExact());
+        fixture.locked(session -> {
+            var originals = fixture.archive.withSession(session);
+            assertTrue(ContinuityBatchJournal.expiredPartialStartsAtFrontier(
+                    fixture.state, whole, cycle, fixture.owner, original.command().before(), originals));
+            assertFalse(ContinuityBatchJournal.expiredPartialStartsAtFrontier(
+                    fixture.state, whole, cycle, fixture.owner, opening, originals));
+            var actions = ContinuityActionJournal.receipts(fixture.state, originals);
+            assertTrue(ContinuityBatchJournal.readOnlyPartialLifeTerminalRoot(
+                    fixture.state, fixture.owner, actions, originals).isEmpty());
+            assertTrue(ContinuityBatchJournal.readOnlyPendingPartialLifeCycle(
+                    fixture.state, fixture.owner, actions, originals).isEmpty());
+            return null;
+        });
+    }
+
     private static final class Fixture implements ContinuityStorePort {
         private final byte[] originalHead;
         private final ContinuityState originalState;

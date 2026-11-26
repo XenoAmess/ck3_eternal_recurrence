@@ -22,12 +22,15 @@ import org.xar.ck3.control.continuity.ContinuityJson;
 import org.xar.ck3.control.contracts.ExactCk3Build;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedText;
+import org.xar.ck3.control.g2.planning.ProposalLifecycle.FieldKey;
 import org.xar.ck3.control.reconciliation.LateOutcome.State;
 import org.xar.ck3.control.reconciliation.LateOutcome.Status;
 
-/** Read-only attribution of elapsed game dates to an expired original clock. No action settlement is modeled. */
+/** Original evidence and complete archived replay for a finite expired clock with real partial game-date progress. */
 public final class LifeExpiredPartialAdvanceEvidence {
     public static final String SCHEMA = "xar.ck3.java-life-expired-partial-evidence/v1";
+    public static final String TERMINAL_SCHEMA = "xar.ck3.java-life-expired-partial-terminal/v1";
     private static final String REASON = "original Life expired before its target; archived partial progress, reconciliation only";
     public static final String EXPIRY_STATUS_FIELD = "date_sentinel_expiry";
     public static final String EXPIRY_STATUS_SCHEMA = "ck3_1210_date_sentinel_expiry_v1";
@@ -87,12 +90,16 @@ public final class LifeExpiredPartialAdvanceEvidence {
         actions.add(parent);
         if (ContinuityBatchJournal.readOnlyLifeRecoveryRoot(actions).filter(parent::equals).isEmpty()) return false;
         var plan = AdvancePlan.decode(parent.command());
-        return plan.clockMode() == AdvancePlan.ClockMode.CAMPAIGN_SENTINEL
+        return parent.command().operation().value().equals("life-advance")
+                && plan.clockMode() == AdvancePlan.ClockMode.CAMPAIGN_SENTINEL && plan.horizonDays() > 1 && plan.dailyWatch().isEmpty()
                 && arm.command().operation().value().equals(plan.armStep())
                 && resume.command().operation().value().equals("resume-map");
     }
 
-    Optional<ActionPorts.Pending> preserve(ActionReceipt parent, List<ActionReceipt> children, Capture actual) {
+    private record Proof(ExactRef reference, Observed observed) { }
+
+    Optional<ActionPorts.EffectObserved> settle(ActionReceipt parent, List<ActionReceipt> children,
+            AdvanceObservationPort.Frame starting, Capture actual) {
         if (expiryStatus(actual.status().receipt().original()).isEmpty()
                 || !boundPhysicalFrame(actual.status(), actual.ending())
                 || !(actual.ending().provenance() instanceof ObservationProvenance.FreshSnapshotQuery fresh)
@@ -100,42 +107,183 @@ public final class LifeExpiredPartialAdvanceEvidence {
                         || fresh.basis() instanceof ObservationProvenance.SameGameWatch)) return Optional.empty();
         var ending = LifeAdvanceEvidence.preserveFrame(actual.ending(), archive);
         var restored = LifeAdvanceEvidence.restore(parent.command(), ending, archive, frames);
-        verify(parent, children, actual.status(), restored);
+        var observed = verify(parent, children, actual.status(), restored);
         List<Value> references = children.stream().map(child -> reference(archive.receiptReferenceOf(child))).toList();
         var proof = new Obj(Map.of("schema", new Text(SCHEMA), "parent_receipt", reference(archive.receiptReferenceOf(parent)),
                 "child_receipts", new Arr(references), "status_read", reference(archive.readReferenceOf(actual.status().receipt())),
                 "ending", LifeAdvanceEvidence.frame(ending)));
-        return Optional.of(new ActionPorts.Pending(REASON, List.of(archive.preserveMaterial(new RawJson(DriverJson.encode(proof))))));
+        return Optional.of(terminal(starting, new Proof(archive.preserveMaterial(new RawJson(DriverJson.encode(proof))), observed)));
     }
 
-    /** Once recorded, the same evidence can be recovered without another native read. */
-    Optional<ActionPorts.Pending> retainedPending(ActionReceipt current, List<ActionReceipt> children) {
+    /** An existing observation-only receipt may settle through the same archived proof. */
+    Optional<ActionPorts.EffectObserved> settleRetained(ActionReceipt current, List<ActionReceipt> children,
+            AdvanceObservationPort.Frame starting) {
         if (!(current.state() instanceof ActionState.CompositeUnknown state) || !state.reason().equals(REASON)) return Optional.empty();
         require(state.evidence().size() == 1, "expired partial cursor lacks its single original proof");
-        var proof = replay(state.evidence().getFirst());
-        var original = proof.parent();
-        require(original.sequence() < current.sequence() && original.command().equals(current.command())
-                && original.bodySha256().equals(current.bodySha256()) && proof.children().equals(children)
-                && ((ActionState.CompositeUnknown) original.state()).execution().equals(state.execution()),
+        var reference = state.evidence().getFirst();
+        var observed = replay(reference);
+        require(observed.children().equals(children) && isPredecessor(current, observed.parent(), reference),
                 "retained partial expiry changed the original canonical parent or children");
-        return Optional.of(new ActionPorts.Pending(REASON, state.evidence()));
+        return Optional.of(terminal(starting, new Proof(reference, observed)));
+    }
+
+    static boolean isPredecessor(ActionReceipt current, ActionReceipt original, ExactRef proof) {
+        if (current.equals(original)) return true;
+        return current.state() instanceof ActionState.CompositeUnknown cursor
+                && original.state() instanceof ActionState.CompositeUnknown prior
+                && current.sequence() > original.sequence() && current.command().equals(original.command())
+                && current.bodySha256().equals(original.bodySha256()) && cursor.execution().equals(prior.execution())
+                && cursor.reason().equals(REASON) && cursor.evidence().equals(List.of(proof));
+    }
+
+    private ActionPorts.EffectObserved terminal(AdvanceObservationPort.Frame starting, Proof captured) {
+        var evidence = captured.observed();
+        var parent = evidence.parent();
+        var startingRecord = LifeAdvanceEvidence.preserveFrame(starting, archive);
+        verifyStarting(parent, startingRecord, evidence.ending());
+        var body = new Obj(Map.of("schema", new Text(TERMINAL_SCHEMA), "expiry", reference(captured.reference()),
+                "starting", LifeAdvanceEvidence.frame(startingRecord)));
+        var saved = archive.preserveMaterial(new RawJson(DriverJson.encode(body)));
+        return new ActionPorts.EffectObserved(observation(parent.command(), evidence.ending(), saved));
+    }
+
+    private record OriginalData(ActionReceipt parent, List<ActionReceipt> children,
+            LifeAdvanceEvidence.FrameRecord ending, PlanningReadReceipt status) { }
+
+    /** Prior receipts and exact frame/read references only. Full replay owns qualification. */
+    public record TerminalData(ExactRef reference, ExactRef expiryReference, ActionReceipt original,
+            List<ActionReceipt> children, LifeAdvanceEvidence.FrameRecord starting,
+            LifeAdvanceEvidence.FrameRecord ending, PlanningReadReceipt status) {
+        public TerminalData { children = List.copyOf(children); }
+    }
+
+    static boolean isTerminalSchema(Obj body) {
+        return new Text(TERMINAL_SCHEMA).equals(body.get("schema"));
+    }
+
+    /** Structural selector only. Original bytes, history and terminal authority are not checked here. */
+    public static boolean terminalShape(ActionReceipt receipt) {
+        var command = receipt.command();
+        if (!(receipt.state() instanceof ActionState.CompositeSettled settled)
+                || !(settled.settlement() instanceof ActionState.Applied applied)
+                || !settled.execution().handlerId().equals(LifeAdvanceComposite.HANDLER)
+                || !command.operation().value().equals("life-advance")
+                || !PROFILE.executableSha256().equalsIgnoreCase(command.source().exactBuild())) return false;
+        var effect = applied.observation();
+        if (!receipt.visibleGameplay() || receipt.eligibleAdvance() || effect.supportingEvidence().size() != 1
+                || !effect.observedAt().isAfter(command.deadline())
+                || !(effect.provenance() instanceof ObservationProvenance.FreshSnapshotQuery fresh)
+                || !(fresh.basis() instanceof ObservationProvenance.LiveAfterSetter || fresh.basis() instanceof ObservationProvenance.SameGameWatch)
+                || !effect.actual().contains(new ExpectedText(new FieldKey("progress_status"),
+                        AdvanceResult.progressStatus(AdvanceClock.ProgressStatus.WALL_TIMEOUT_WITH_DATE_PROGRESS)))) return false;
+        try {
+            var plan = AdvancePlan.decode(command);
+            return plan.clockMode() == AdvancePlan.ClockMode.CAMPAIGN_SENTINEL && plan.horizonDays() > 1 && plan.dailyWatch().isEmpty();
+        } catch (IllegalArgumentException invalid) { return false; }
+    }
+
+    /** Decodes only the exact durable originals. Does not grant current observation or terminal authority. */
+    public static Optional<TerminalData> readTerminalData(ActionReceipt receipt, ActionPorts.OutcomeArchive archive) {
+        if (!terminalShape(receipt)) return Optional.empty();
+        var settled = (ActionState.CompositeSettled) receipt.state();
+        var effect = receipt.applied().orElseThrow().observation();
+        var reference = effect.supportingEvidence().getFirst();
+        var body = exactMaterial(reference, archive);
+        if (!isTerminalSchema(body)) return Optional.empty();
+        require(body.members().keySet().equals(Set.of("schema", "expiry", "starting")), "expired Life terminal fields differ");
+        var expiryRef = exact(body.get("expiry"));
+        require(!expiryRef.equals(reference), "expired Life terminal repeats its own proof reference");
+        var prior = loadOriginal(expiryRef, archive);
+        var first = LifeAdvanceEvidence.decodeFrame(object(body.get("starting"), "starting"), false);
+        var end = prior.ending();
+        var original = prior.parent();
+        require(accepts(original, prior.children(), end.observedAt())
+                && original.state() instanceof ActionState.CompositeUnknown unknown && unknown.execution().equals(settled.execution())
+                && original.command().equals(receipt.command()) && original.bodySha256().equals(receipt.bodySha256())
+                && original.sequence() < receipt.sequence()
+                && first.identity().equals(receipt.command().before()) && end.identity().equals(effect.after())
+                && end.provenance().equals(effect.provenance()) && end.observedAt().equals(effect.observedAt())
+                && end.nativeFrame().equals(effect.originalEvidence()) && receipt.visibleGameplay() && !receipt.eligibleAdvance(),
+                "expired Life terminal differs from the exact prior parent, child vector or frames");
+        var status = originalStatus(prior.status(), archive);
+        status.requirePhysicalParent(receipt.command());
+        var plan = AdvancePlan.decode(receipt.command());
+        requireExpirySlot(receipt.command(), plan, prior.children().get(prior.children().size() - 2), status);
+        require(boundPhysicalFrame(status, end.identity(), end.nativeFrame(), end.observedAt()),
+                "expired Life terminal requires exact native expiry Status bound to the complete ending Frame");
+        partialDays(plan, status.status(), end.identity().frame().identity().dateRaw());
+        return Optional.of(new TerminalData(reference, expiryRef, original, prior.children(), first, end, prior.status()));
+    }
+
+    LifeAdvanceEvidence.Recorded verifyTerminal(ActionReceipt receipt, TerminalData data) {
+        verifyFrameBytes(data.starting());
+        verifyFrameBytes(data.ending());
+        var original = new OriginalData(data.original(), data.children(), data.ending(), data.status());
+        var observed = replay(original);
+        verifyStarting(data.original(), data.starting(), observed.ending());
+        require(receipt.applied().orElseThrow().observation().equals(observation(receipt.command(), observed.ending(), data.reference())),
+                "expired Life terminal did not rederive its exact visible partial progress");
+        return new LifeAdvanceEvidence.Recorded(data.starting(), data.ending(), Optional.empty());
+    }
+
+    private void verifyStarting(ActionReceipt parent, LifeAdvanceEvidence.FrameRecord record, AdvanceObservationPort.Frame ending) {
+        require(frames instanceof LifeAdvanceEvidence.EntryFrameReader, "expiry terminal requires the installed original Life entry reader");
+        var execution = ((ActionState.CompositeUnknown) parent.state()).execution();
+        var starting = LifeAdvanceEvidence.restore(parent.command(), record, archive, frames);
+        var actual = ((LifeAdvanceEvidence.EntryFrameReader) frames).read(parent.command(), execution.guard(), archive).orElseThrow();
+        require(actual.equals(starting) && starting.identity().equals(parent.command().before()),
+                "expiry terminal starting frame differs from its original canonical Life guard");
+        AdvanceWait.binding(parent.command(), starting, ending);
+    }
+
+    private void verifyFrameBytes(LifeAdvanceEvidence.FrameRecord frame) {
+        requireBytes(frame.nativeFrame(), archive.loadNativeFrame(frame.nativeFrame()));
+        requireBytes(frame.driverFacts(), archive.loadFullMaterial(frame.driverFacts()).bytes());
+        requireBytes(frame.semantic(), archive.loadFullMaterial(frame.semantic()).bytes());
+    }
+
+    private static void requireBytes(ExactRef reference, byte[] bytes) {
+        require(bytes.length == reference.bytes() && ActionCodec.sha256(bytes).equals(reference.sha256()),
+                "expired partial evidence differs from its original archive");
+    }
+
+    private static ActionState.EffectObservation observation(ActionCommand parent, AdvanceObservationPort.Frame ending, ExactRef proof) {
+        return LifeAdvanceComposite.observation(parent, AdvancePlan.decode(parent), ending,
+                AdvanceClock.ProgressStatus.WALL_TIMEOUT_WITH_DATE_PROGRESS, null, List.of(proof));
     }
 
     public Observed replay(ExactRef original) {
-        byte[] bytes = archive.loadMaterial(original).bytes();
-        require(bytes.length == original.bytes() && ActionCodec.sha256(bytes).equals(original.sha256()), "expired partial evidence differs from its original archive");
-        var body = DriverJson.object(bytes, RawJson.MAXIMUM_BYTES);
+        return replay(loadOriginal(original, archive));
+    }
+
+    private Observed replay(OriginalData original) {
+        var status = originalStatus(original.status(), archive);
+        var ending = LifeAdvanceEvidence.restore(original.parent().command(), original.ending(), archive, frames);
+        return verify(original.parent(), original.children(), status, ending);
+    }
+
+    private static ClockStatusRead.Observation originalStatus(PlanningReadReceipt read, ActionPorts.OutcomeArchive archive) {
+        return new ClockStatusRead.Observation(ClockStatusRead.decode(read.original()), read, archive.referenceOf(read.original()));
+    }
+
+    private static OriginalData loadOriginal(ExactRef reference, ActionPorts.OutcomeArchive archive) {
+        var body = exactMaterial(reference, archive);
         require(body.members().keySet().equals(FIELDS) && new Text(SCHEMA).equals(body.get("schema")), "exact expired partial evidence schema required");
         var childRefs = array(body.get("child_receipts"), "child_receipts");
         require(childRefs.size() >= 2 && childRefs.size() <= 4, "expired partial requires the complete finite child prefix");
-        var parent = receipt(exact(body.get("parent_receipt")));
-        var children = childRefs.stream().map(ref -> receipt(exact(ref))).toList();
+        var parent = receipt(exact(body.get("parent_receipt")), archive);
+        var children = childRefs.stream().map(ref -> receipt(exact(ref), archive)).toList();
         var statusRef = exact(body.get("status_read"));
         var read = archive.loadRead(statusRef);
         require(statusRef.equals(archive.readReferenceOf(read)), "expired partial Status differs from its archived original");
-        var status = new ClockStatusRead.Observation(ClockStatusRead.decode(read.original()), read, archive.referenceOf(read.original()));
-        var ending = LifeAdvanceEvidence.restore(parent.command(), LifeAdvanceEvidence.decodeFrame(object(body.get("ending"), "ending"), false), archive, frames);
-        return verify(parent, children, status, ending);
+        var ending = LifeAdvanceEvidence.decodeFrame(object(body.get("ending"), "ending"), false);
+        return new OriginalData(parent, children, ending, read);
+    }
+
+    private static Obj exactMaterial(ExactRef reference, ActionPorts.OutcomeArchive archive) {
+        byte[] bytes = archive.loadMaterial(reference).bytes();
+        requireBytes(reference, bytes);
+        return DriverJson.object(bytes, RawJson.MAXIMUM_BYTES);
     }
 
     private Observed verify(ActionReceipt parent, List<ActionReceipt> children,
@@ -156,19 +304,13 @@ public final class LifeExpiredPartialAdvanceEvidence {
                 && coreParent.sequence() < resume.sequence(), "Core resume reservation changed the original Life body or its child prefix");
         var command = parent.command();
         var plan = AdvancePlan.decode(command);
-        var expiry = expiryStatus(status.receipt().original()).orElseThrow(() -> new IllegalArgumentException("source-owned native expiry status is absent"));
+        var expiry = requireExpirySlot(command, plan, arm, status);
         var armAck = originalAck(arm, FullSnapshotDateSentinelArm.additionalFields(arm.command(), PROFILE));
         var resumeAck = originalAck(resume, FullSnapshotClockControl.additionalFields(resume.command(), PROFILE));
         AdvancePrimitives.nativeResult(resume.ack().orElseThrow(), "resume-map");
         require(armAck.session().equals(resumeAck.session()) && armAck.custodyEpoch().equals(resumeAck.custodyEpoch())
                 && resumeAck.writeEntered().order().compareTo(armAck.responseReceived().order()) > 0
                 && !resumeAck.writeEntered().observedAt().isBefore(armAck.responseReceived().observedAt()), "resume did not follow the original ARM ACK in its held session");
-        var originalSlot = AdvancePrimitives.acknowledgedSentinel(arm.ack().orElseThrow(), plan.armStep());
-        AdvanceClock.validateArm(originalSlot, plan);
-        AdvanceClock.requireSameSlot(originalSlot, status.status());
-        require(expiry.nativeDeadlineMillis() == arm.command().deadline().toEpochMilli()
-                && !arm.command().deadline().isAfter(command.deadline()), "expiry status changed the original ARM deadline");
-
         status.requirePhysicalParent(command);
         NativeRecordedEvidenceVerifier.requireRead(status.receipt(), archive);
         require(status.originalEvidence().equals(archive.referenceOf(status.receipt().original())), "expiry status changed its original native ACK");
@@ -213,11 +355,15 @@ public final class LifeExpiredPartialAdvanceEvidence {
     }
 
     private static boolean boundPhysicalFrame(ClockStatusRead.Observation status, AdvanceObservationPort.Frame ending) {
-        var frame = ending.identity().frame();
+        return boundPhysicalFrame(status, ending.identity(), ending.originalEvidence(), ending.observedAt());
+    }
+
+    private static boolean boundPhysicalFrame(ClockStatusRead.Observation status,
+            org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity ending, ExactRef evidence, Instant observedAt) {
+        var frame = ending.frame();
         return status.physicalIdentity().filter(physical -> physical.snapshotId().equals(frame.snapshotId())
                 && physical.nativeRevision().equals(frame.identity().nativeRevision())
-                && physical.nativeEvidence().equals(ending.originalEvidence())
-                && physical.observedAt().equals(ending.observedAt())).isPresent();
+                && physical.nativeEvidence().equals(evidence) && physical.observedAt().equals(observedAt)).isPresent();
     }
 
     static void requireFreshBasis(ObservationProvenance.FreshSnapshotBasis basis, ExactRef parent, ExactRef resume,
@@ -234,6 +380,18 @@ public final class LifeExpiredPartialAdvanceEvidence {
                 && fullRead.session().machineId().equals(resumeAck.session().machineId())
                 && fullRead.session().sessionId().equals(resumeAck.session().sessionId()),
                 "expiry Full read lacks its original held ACK or exact same-Game Core-confirmed watch");
+    }
+
+    private static ExpiryStatus requireExpirySlot(ActionCommand parent, AdvancePlan plan, ActionReceipt arm,
+            ClockStatusRead.Observation status) {
+        var expiry = expiryStatus(status.receipt().original())
+                .orElseThrow(() -> new IllegalArgumentException("source-owned native expiry status is absent"));
+        var originalSlot = AdvancePrimitives.acknowledgedSentinel(arm.ack().orElseThrow(), plan.armStep());
+        AdvanceClock.validateArm(originalSlot, plan);
+        AdvanceClock.requireSameSlot(originalSlot, status.status());
+        require(expiry.nativeDeadlineMillis() == arm.command().deadline().toEpochMilli()
+                && !arm.command().deadline().isAfter(parent.deadline()), "expiry status changed the original ARM deadline");
+        return expiry;
     }
 
     static long partialDays(AdvancePlan plan, Status status, BigInteger currentDate) {
@@ -273,7 +431,9 @@ public final class LifeExpiredPartialAdvanceEvidence {
         return chronology;
     }
 
-    private ActionReceipt receipt(ExactRef ref) {
+    private ActionReceipt receipt(ExactRef ref) { return receipt(ref, archive); }
+
+    private static ActionReceipt receipt(ExactRef ref, ActionPorts.OutcomeArchive archive) {
         var original = archive.loadReceipt(ref);
         require(archive.receiptReferenceOf(original).equals(ref), "expired partial evidence changed its original receipt");
         return original;

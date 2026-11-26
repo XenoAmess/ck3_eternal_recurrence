@@ -1903,7 +1903,7 @@ public final class RootApplicationAssembly {
                             || ContinuityBatchJournal.readOnlyPendingKnownCompletionRoot(finalizationHead, identity, actionsList, originals).isPresent()
                             || ContinuityBatchJournal.readOnlyPendingEventCompletionRoot(finalizationHead, identity, actionsList, originals).isPresent();
                     var completedLife = ContinuityBatchJournal.readOnlyPendingCompletedLifeCycle(finalizationHead, identity, actionsList, originals).isPresent()
-                            || ContinuityBatchJournal.readOnlyPendingPreparedPartialCycle(finalizationHead, identity, actionsList, originals).isPresent();
+                            || ContinuityBatchJournal.readOnlyPendingPartialLifeCycle(finalizationHead, identity, actionsList, originals).isPresent();
                     var runningSavedSway = finalizationHead.status() == org.xar.ck3.control.continuity.ContinuityState.Status.RUNNING
                             && ContinuityBatchJournal.readOnlyUnstartedSwayRecoveryRoot(finalizationHead, identity, actionsList, originals).isPresent();
                     var normalAppliedEvent=ContinuityBatchJournal.readOnlyAppliedEventCompletionRoot(finalizationHead,identity,actionsList,originals).isPresent();

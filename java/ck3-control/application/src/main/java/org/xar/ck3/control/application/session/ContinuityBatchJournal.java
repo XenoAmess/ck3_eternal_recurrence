@@ -17,6 +17,9 @@ import org.xar.ck3.control.application.action.ObservationProvenance;
 import org.xar.ck3.control.application.action.CommandExpectation;
 import org.xar.ck3.control.application.action.CommandOrigin;
 import org.xar.ck3.control.application.action.NativeActionPort;
+import org.xar.ck3.control.application.action.ActionPorts;
+import org.xar.ck3.control.application.action.ContinuityActionJournal;
+import org.xar.ck3.control.application.advance.LifeExpiredPartialAdvanceEvidence;
 import org.xar.ck3.control.application.checkpoint.CheckpointPairCodec;
 import org.xar.ck3.control.application.checkpoint.CheckpointRequestFactory;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.FieldKey;
@@ -1767,7 +1770,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
     public static Optional<ActionReceipt> readOnlyPendingKnownCompletionRoot(ContinuityState current, SessionIdentity owner,
             java.util.List<ActionReceipt> canonicalActions,
             org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) {
-        return readOnlyPreparedPartialTerminalRoot(current,owner,canonicalActions,originals)
+        return readOnlyPartialLifeTerminalRoot(current,owner,canonicalActions,originals)
                 .or(()->readOnlyUnretainedAppliedLifeRoot(current,owner,canonicalActions,originals))
                 .or(()->readOnlyPendingPrimitiveCompletionRoot(current,owner,canonicalActions,originals));
     }
@@ -1906,6 +1909,99 @@ public final class ContinuityBatchJournal implements BatchJournal {
             return Optional.of(parent);
         }catch(RuntimeException rejected){return Optional.empty();}
     }
+    /** Canonical DATA for an already settled partial Life before its ordinary RETAIN. */
+    public static Optional<ActionReceipt> readOnlyPartialLifeTerminalRoot(ContinuityState current, SessionIdentity owner,
+            java.util.List<ActionReceipt> actions, ActionPorts.OutcomeArchive originals) {
+        return readOnlyExpiredPartialRoot(current, owner, actions, originals, false)
+                .or(() -> readOnlyPreparedPartialTerminalRoot(current, owner, actions, originals));
+    }
+
+    /** Canonical DATA for a partial Life whose original RETAIN still awaits independent SEM. */
+    public static Optional<ActionReceipt> readOnlyPendingPartialLifeCycle(ContinuityState current, SessionIdentity owner,
+            java.util.List<ActionReceipt> actions, ActionPorts.OutcomeArchive originals) {
+        return readOnlyExpiredPartialRoot(current, owner, actions, originals, true)
+                .or(() -> readOnlyPendingPreparedPartialCycle(current, owner, actions, originals));
+    }
+
+    private static Optional<ActionReceipt> readOnlyExpiredPartialRoot(ContinuityState current, SessionIdentity owner,
+            java.util.List<ActionReceipt> actions, ActionPorts.OutcomeArchive originals, boolean retained) {
+        if (current == null || owner == null || actions == null || originals == null
+                || !current.machineId().equals(owner.machineId())) return Optional.empty();
+        var latest = actions.stream().max(java.util.Comparator.comparingLong(ActionReceipt::sequence));
+        if (latest.filter(LifeExpiredPartialAdvanceEvidence::terminalShape).isEmpty()) return Optional.empty();
+        var parent = latest.orElseThrow();
+        var command = parent.command();
+        if (parent.sequence() > current.sequence() || !command.before().machineId().equals(owner.machineId())
+                || !command.before().game().equals(owner.game()) || !command.sessionId().equals(owner.sessionId()))
+            return Optional.empty();
+        try {
+            var whole = current.toJson();
+            var batch = whole.path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD);
+            boolean interrupted = current.status() == ContinuityState.Status.REPAIR_REQUIRED
+                    && JournalKind.BATCH_INTERRUPTED.name().equals(batch.path("boundary").asText());
+            boolean running = retained && current.status() == ContinuityState.Status.RUNNING
+                    && JournalKind.BATCH_STARTED.name().equals(batch.path("boundary").asText());
+            if (!(interrupted || running) || !OrdinaryCycleTransitions.sessionFromJson(batch.get("session")).equals(owner))
+                return Optional.empty();
+            var cycle = whole.path(WriterContracts.ORDINARY_CYCLE_FIELD);
+            if (cycle.isObject() && !OrdinaryCycleTransitions.sessionFromJson(cycle.get("session")).equals(owner))
+                return Optional.empty();
+            if (cycle.hasNonNull("pending_receipt") != retained
+                    || retained && (parent.sequence() >= current.sequence()
+                        || !ExactRef.fromJson(cycle.get("pending_receipt")).equals(originals.receiptReferenceOf(parent))))
+                return Optional.empty();
+            var canonical = ContinuityActionJournal.receipts(current, originals);
+            var canonicalSet = new java.util.HashSet<>(canonical);
+            if (canonicalSet.size() != actions.size() || !canonicalSet.equals(new java.util.HashSet<>(actions))
+                    || canonical.stream().anyMatch(receipt -> !receipt.settled())
+                    || !originals.loadRecord(ContinuityActionJournal.recordHead(current).orElseThrow()).receipt().equals(parent))
+                return Optional.empty();
+            var data = LifeExpiredPartialAdvanceEvidence.readTerminalData(parent, originals);
+            if (data.isEmpty()) return Optional.empty();
+            var proven = data.orElseThrow();
+            if (!canonicalSet.containsAll(proven.children())
+                    || !expiredPartialStartsAtFrontier(current, whole, cycle, owner, proven.starting().identity(), originals))
+                return Optional.empty();
+            ContinuityActionJournal.requireHistoricalReceipt(current, proven.original(), originals);
+            ContinuityActionJournal.requireHistoricalReceipt(current, parent, originals);
+            return Optional.of(parent);
+        } catch (RuntimeException unavailable) {
+            return Optional.empty();
+        }
+    }
+
+    static boolean expiredPartialStartsAtFrontier(ContinuityState current,
+            com.fasterxml.jackson.databind.node.ObjectNode whole, com.fasterxml.jackson.databind.JsonNode cycle,
+            SessionIdentity owner, ObservationIdentity starting, ActionPorts.OutcomeArchive originals) {
+        if (cycle.hasNonNull("head")) {
+            var last = ContinuityJson.parseObject(originals.loadMaterial(ExactRef.fromJson(cycle.get("head"))).bytes(),
+                    ContinuityJson.LEDGER_MAX_BYTES);
+            if (!"xar.java-ordinary-cycle-record/v1".equals(last.path("schema").asText())
+                    || !OrdinaryCycleTransitions.sessionFromJson(last.get("session")).equals(owner)
+                    || !cycle.get("completed_cycles").equals(last.get("completed_cycles"))) return false;
+            var frontier = OrdinaryCycleTransitions.semanticFromJson(last.get("semantic")).frame();
+            if (!frontier.frame().identity().dateRaw().equals(starting.frame().identity().dateRaw())) return false;
+            requireSettledObservedContinuation(frontier, starting);
+            return true;
+        }
+        if (cycle.isObject() && StrictJson.integer(cycle.get("completed_cycles"), 0, StrictJson.MAX_SAFE_INTEGER)
+                != current.settledCycles()) return false;
+        if (whole.hasNonNull(SavedContinuityBootstrap.FIELD)) {
+            if (!importedSavedEntryMatches(current, whole, owner)) return false;
+            var marker = whole.path(SavedContinuityBootstrap.FIELD);
+            var opening = org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.decodeObservation(marker.get("opening"));
+            requireSettledObservedContinuation(opening, starting);
+            return opening.frame().identity().dateRaw().equals(starting.frame().identity().dateRaw());
+        }
+        var initialBinding = whole.path("latest_binding");
+        return current.settledCycles() == 0
+                && starting.frame().episodeRunId().equals(initialBinding.path("episode_run_id").asText())
+                && starting.frame().identity().dateRaw().equals(
+                    StrictJson.integer(initialBinding.get("date_raw"), java.math.BigInteger.ZERO, StrictJson.UINT64_MAX))
+                && starting.frame().identity().player().equals(
+                    StrictJson.integer(initialBinding.get("actor_character_id"), java.math.BigInteger.ONE, StrictJson.UINT64_MAX));
+    }
+
     /** Exact prepared-cleanup partial terminal DATA; full Driver/SEM replay remains the installed Root's responsibility. */
     public static Optional<ActionReceipt> readOnlyPreparedPartialTerminalRoot(ContinuityState current,SessionIdentity owner,
             java.util.List<ActionReceipt> actions,org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) {
@@ -2055,6 +2151,25 @@ public final class ContinuityBatchJournal implements BatchJournal {
         ActionEffects.validateCompositeChildren(command,settled.execution(),settled.settlement(),data.children());
         return true;
     }
+    /** Shape only. The current canonical reader has already checked the corresponding archived terminal. */
+    private static boolean savedPartialLifeTerminalData(SettledSameGameData history, java.util.List<ActionReceipt> isolated) {
+        if (savedPreparedPartialTerminalData(history, isolated)) return true;
+        if (isolated.size() != 1) return false;
+        var receipt = isolated.getFirst();
+        var command = receipt.command();
+        var owner = history.controller().owner();
+        if (!LifeExpiredPartialAdvanceEvidence.terminalShape(receipt) || !history.settledActions().contains(receipt)
+                || !command.source().equals(history.source()) || !command.before().machineId().equals(owner.machineId())
+                || !command.before().game().equals(owner.game()) || !command.sessionId().equals(owner.sessionId()))
+            return false;
+        var frontier = history.cycleSemantic().map(SemanticEvidence::frame)
+                .orElseGet(() -> history.startingPoint() instanceof SameGameEntry.ImportedSaved imported
+                        ? imported.opening() : history.latestObservedFrame());
+        return command.before().frame().episodeRunId().equals(frontier.frame().episodeRunId())
+                && command.before().frame().identity().dateRaw().equals(frontier.frame().identity().dateRaw())
+                && command.before().frame().identity().player().equals(frontier.frame().identity().player());
+    }
+
     /** Shape only. The exact schema, five-child originals and canonical history were checked by the reader. */
     private static boolean savedPreparedPartialTerminalData(SettledSameGameData history,java.util.List<ActionReceipt> isolated) {
         if(isolated.size()==1&&preparedSuccessorParentShape(isolated.getFirst()))return savedPreparedSuccessorPartialTerminalData(history,isolated);
@@ -3036,7 +3151,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                         || savedCurrentCanonicalLifeData(retained,unresolvedActions)
                         || savedOperatorLifeHeadData(retained,unresolvedActions)
                         || savedUnretainedAppliedLifeData(retained,unresolvedActions)
-                        || savedPreparedPartialTerminalData(retained,unresolvedActions)
+                        || savedPartialLifeTerminalData(retained,unresolvedActions)
                         || savedIsolatedCouncilData(retained,unresolvedActions)
                         || savedIsolatedSaveData(retained,unresolvedActions)
                          || savedIsolatedEventData(retained,unresolvedActions)
@@ -3385,7 +3500,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
             var actions = org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(state, originals);
             return pendingCancelledLifeCycle(actions, ExactRef.fromJson(pending), originals)
                     .or(()->readOnlyPendingCompletedLifeCycle(state,owner,actions,originals))
-                    .or(()->readOnlyPendingPreparedPartialCycle(state,owner,actions,originals));
+                    .or(() -> readOnlyPendingPartialLifeCycle(state, owner, actions, originals));
         });
         if (pendingControl.isPresent()) {
             var captured = new java.util.concurrent.atomic.AtomicReference<CleanBatchRestart>();
@@ -3396,7 +3511,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
             StrictJson.require(captured.get()!=null||initialPending
                     ||importedSavedPendingLifeData(retained,java.util.List.of(pendingControl.orElseThrow()))
                     ||savedPendingLifeData(retained,java.util.List.of(pendingControl.orElseThrow()))
-                     ||savedPreparedPartialTerminalData(retained,java.util.List.of(pendingControl.orElseThrow())),
+                     ||savedPartialLifeTerminalData(retained,java.util.List.of(pendingControl.orElseThrow())),
                     "pending Life cycle retains its actual restart capture or complete initial/saved CurrentMap DATA");
             return new UnresolvedSameGameData(Optional.ofNullable(captured.get()), retained.controller(), retained.retainedFacts(),
                     retained.retainedFullDriver(), retained.canonicalSequence(), retained.canonicalHeadDigest(),
@@ -3432,7 +3547,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     || savedIsolatedCouncilData(retained,isolated) || savedIsolatedSaveData(retained,isolated)
                     || savedIsolatedEventData(retained,isolated) || savedPendingEventCompletionData(retained,isolated) || savedIsolatedSwayData(retained,isolated)
                     || savedUnretainedAppliedLifeData(retained,isolated)
-                     || savedPreparedPartialTerminalData(retained,isolated),
+                     || savedPartialLifeTerminalData(retained,isolated),
                     "isolated recovery retains its actual restart capture or fully verified initial/saved CurrentMap Life history");
             return new UnresolvedSameGameData(Optional.ofNullable(captured.get()), retained.controller(), retained.retainedFacts(),
                     retained.retainedFullDriver(), retained.canonicalSequence(), retained.canonicalHeadDigest(),
@@ -4109,11 +4224,16 @@ public final class ContinuityBatchJournal implements BatchJournal {
 
     private static boolean firstImportedSavedClosedCycle(ContinuityState current,com.fasterxml.jackson.databind.node.ObjectNode whole,
             com.fasterxml.jackson.databind.JsonNode cycle,SessionIdentity owner) {
+        return cycle.path("pending_receipt").isNull() && firstImportedSavedCycleBasis(current, whole, cycle, owner);
+    }
+
+    private static boolean firstImportedSavedCycleBasis(ContinuityState current, com.fasterxml.jackson.databind.node.ObjectNode whole,
+            com.fasterxml.jackson.databind.JsonNode cycle, SessionIdentity owner) {
         return cycle.isObject()
                 &&OrdinaryCycleTransitions.sessionFromJson(cycle.get("session")).equals(owner)
                 &&StrictJson.integer(cycle.get("basis_cycles"),0,StrictJson.MAX_SAFE_INTEGER)==current.settledCycles()
                 &&StrictJson.integer(cycle.get("completed_cycles"),0,StrictJson.MAX_SAFE_INTEGER)==Math.addExact(current.settledCycles(),1)
-                &&cycle.hasNonNull("head")&&cycle.path("pending_receipt").isNull()
+                &&cycle.hasNonNull("head")
                 &&cycle.path("retained_legacy_pending_digest").isNull()&&cycle.path("origin_frame").isNull()
                 &&cycle.path("episode_origin").isNull()&&importedSavedEntryMatches(current,whole,owner);
     }
@@ -4399,7 +4519,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
         return ContinuityJson.same(replay,after.toJson());
     }
 
-    static boolean historicalPreparedPartialTerminalCycle(ContinuityState before, ContinuityState after,
+    private static boolean historicalPartialLifeTerminalCycle(ContinuityState before, ContinuityState after,
             com.fasterxml.jackson.databind.node.ObjectNode details, String batch, SessionIdentity owner,
             java.util.List<ActionReceipt> actions,
             org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) {
@@ -4416,8 +4536,8 @@ public final class ContinuityBatchJournal implements BatchJournal {
         var receiptRef = ExactRef.fromJson(details.get("receipt_ref"));
         var actual = originals.loadReceipt(receiptRef);
         var prefix=org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(before,originals);
-        var role="RETAIN".equals(operation)?readOnlyPreparedPartialTerminalRoot(before,owner,prefix,originals)
-                :readOnlyPendingPreparedPartialCycle(before,owner,prefix,originals);
+        var role = "RETAIN".equals(operation) ? readOnlyPartialLifeTerminalRoot(before,owner,prefix,originals)
+                : readOnlyPendingPartialLifeCycle(before,owner,prefix,originals);
         if(role.filter(actual::equals).isEmpty())return false;
         if (!actions.contains(actual) || !originals.receiptReferenceOf(actual).equals(receiptRef)
                 || actual.sequence() > before.sequence()
@@ -4450,9 +4570,9 @@ public final class ContinuityBatchJournal implements BatchJournal {
         org.xar.ck3.control.application.action.ActionEffects.validateComposite(command, settled.execution(), settled.settlement());
         org.xar.ck3.control.application.action.ActionEffects.validateCompositeChildren(command, settled.execution(), settled.settlement(), children);
         if(!previous.has(WriterContracts.ORDINARY_CYCLE_FIELD)) {
-            return "RETAIN".equals(operation)&&before.settledCycles()==0
-                    &&initialCurrentMapPendingFrontier(after,owner)
-                    &&readOnlyPendingCompletedLifeCycle(after,owner,
+            return "RETAIN".equals(operation)&&before.settledCycles()==after.settledCycles()
+                    &&(initialCurrentMapPendingFrontier(after,owner)||initialImportedSavedPendingFrontier(after,owner))
+                    &&readOnlyPendingPartialLifeCycle(after,owner,
                         org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(after,originals),originals)
                         .filter(actual::equals).isPresent()
                     &&details.get("semantic").isNull()&&details.get("cycle_record_ref").isNull()
@@ -4759,13 +4879,16 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 &&ContinuityJson.same(settle.after().toJson(),current.toJson())
                 &&initialImportedSavedPendingFrontier(settle.before(),owner)
                 &&actions.containsAll(settledPrefix)
-                &&readOnlyPendingCompletedLifeCycle(settle.before(),owner,settledPrefix,originals).filter(original::equals).isPresent()
+                &&readOnlyPendingCompletedLifeCycle(settle.before(),owner,settledPrefix,originals)
+                    .or(() -> readOnlyPendingPartialLifeCycle(settle.before(), owner, settledPrefix, originals))
+                    .filter(original::equals).isPresent()
                 &&receipt.equals(ExactRef.fromJson(retainData.get("receipt_ref")))
                 &&receipt.equals(ExactRef.fromJson(settleData.get("receipt_ref"))),
                 "imported Saved restart requires its exact first RETAIN and final SETTLE of the same original Life");
         for(var edge:java.util.List.of(retain,settle)) {
             var details=edge==retain?retainData:settleData;
-            StrictJson.require(historicalCompletedLifeCycle(edge.before(),edge.after(),details,batch,owner,actions,originals),
+            StrictJson.require(historicalCompletedLifeCycle(edge.before(),edge.after(),details,batch,owner,actions,originals)
+                    ||historicalPartialLifeTerminalCycle(edge.before(),edge.after(),details,batch,owner,actions,originals),
                     "imported Saved restart changed the original Life receipt, classification or cycle frontier");
             var replay=transitions.reduce(edge.before(),new WriterContracts.Request(edge.kind(),edge.details(),java.util.List.of())).toJson();
             replay.put("sequence",edge.sequence());replay.put("last_event_identity",edge.eventIdentity());
@@ -4843,10 +4966,22 @@ public final class ContinuityBatchJournal implements BatchJournal {
             var head=same.head();var state=head.state();var whole=state.toJson();
             var savedMarker=whole.get(SavedContinuityBootstrap.FIELD);
             boolean importedPending=pendingControl.isPresent()&&initialImportedSavedPendingFrontier(state,owner);
+            Optional<ActionReceipt> importedExpiry = Optional.empty();
+            if (!isolatedLife && state.status() == ContinuityState.Status.REPAIR_REQUIRED
+                    && savedMarker != null && savedMarker.isObject() && importedSavedEntryMatches(state, whole, owner)) {
+                var originals = transitions.restartArchive(same);
+                var canonical = ContinuityActionJournal.receipts(state, originals);
+                importedExpiry = readOnlyExpiredPartialRoot(state, owner, canonical, originals, pendingControl.isPresent());
+            }
+            var firstImportedExpiry = importedExpiry.filter(receipt -> !whole.hasNonNull(WriterContracts.ORDINARY_CYCLE_FIELD));
+            var expiryAfterFirstImportedCycle = importedExpiry.filter(receipt -> firstImportedSavedCycleBasis(
+                    state, whole, whole.path(WriterContracts.ORDINARY_CYCLE_FIELD), owner));
             boolean importedSettled=!isolatedLife&&pendingControl.isEmpty()&&firstImportedSavedSettledFrontier(state,owner);
-            boolean importedInterrupted=isolatedLife&&pendingControl.isEmpty()&&operatorRequest.isEmpty()&&firstImportedSavedInterruptedFrontier(state,owner);
+            boolean importedInterrupted=operatorRequest.isEmpty() && (expiryAfterFirstImportedCycle.isPresent()
+                    || isolatedLife&&pendingControl.isEmpty()&&firstImportedSavedInterruptedFrontier(state,owner));
             boolean importedClosedCycle=importedSettled||importedInterrupted;
-            boolean imported=importedClosedCycle||(isolatedLife&&!whole.hasNonNull(WriterContracts.ORDINARY_CYCLE_FIELD)||importedPending)
+            boolean imported=importedClosedCycle||(isolatedLife&&!whole.hasNonNull(WriterContracts.ORDINARY_CYCLE_FIELD)
+                    ||importedPending||firstImportedExpiry.isPresent())
                     &&savedMarker!=null&&savedMarker.isObject()
                     &&state.status()==ContinuityState.Status.REPAIR_REQUIRED
                     &&!whole.hasNonNull(WriterContracts.GAMEPLAY_ENTRY_FIELD)
@@ -4895,16 +5030,20 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 var ref = ExactRef.fromJson(whole.path(WriterContracts.ORDINARY_CYCLE_FIELD).get("pending_receipt"));
                 StrictJson.require(!isolatedLife && pendingCancelledLifeCycle(actions, ref, originals)
                         .or(()->readOnlyPendingCompletedLifeCycle(state,owner,actions,originals))
-                         .or(()->readOnlyPendingPreparedPartialCycle(state,owner,actions,originals)).equals(pendingControl),
+                         .or(() -> readOnlyPendingPartialLifeCycle(state, owner, actions, originals)).equals(pendingControl),
                         "pending Life control cycle changed its exact canonical receipt or complete source proof");
             }
-            var newImportedLife=importedInterrupted?readOnlyLifeRecoveryRoot(actions):Optional.<ActionReceipt>empty();
+            var newImportedLife = !importedInterrupted ? Optional.<ActionReceipt>empty()
+                    : expiryAfterFirstImportedCycle.flatMap(receipt -> LifeExpiredPartialAdvanceEvidence.readTerminalData(receipt, originals))
+                        .map(LifeExpiredPartialAdvanceEvidence.TerminalData::original)
+                        .or(() -> readOnlyLifeRecoveryRoot(actions));
             StrictJson.require(!importedInterrupted||newImportedLife.isPresent(),"imported Saved interrupted batch requires the exact original Life prefix");
             ExactRef importedCycle=importedClosedCycle?ExactRef.fromJson(whole.path(WriterContracts.ORDINARY_CYCLE_FIELD).get("head")):null;
             var importedOriginal=importedClosedCycle?Optional.of(originals.loadReceipt(ExactRef.fromJson(
                     ContinuityJson.parseObject(originals.loadMaterial(importedCycle).bytes(),ContinuityJson.LEDGER_MAX_BYTES).get("receipt_ref"))))
                     :Optional.<ActionReceipt>empty();
-            var importedGuard=imported?importedOriginal.or(()->pendingControl).or(()->readOnlyObservedLifeRecoveryRoot(actions))
+            var importedGuard=imported?importedOriginal.or(()->pendingControl).or(()->firstImportedExpiry)
+                    .or(()->readOnlyObservedLifeRecoveryRoot(actions))
                     .flatMap(parent->ActionTransitions.composite(parent.state()))
                     .orElseThrow().guard():null;
             long importedGuardSequence=imported?RootGuardEvidence.writerPoint(importedGuard,originals).sequence():-1;
@@ -4995,8 +5134,26 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 var settle=matches.getFirst();int settlementIndex=Math.toIntExact(settle.sequence()-1);
                 var retain=edges.get(settlementIndex-1);var original=importedOriginal.orElseThrow();
                 requireFirstImportedSettlement(same,importedInterrupted?settle.after():state,owner,actions,originals,original,retain,settle);
-                if(importedInterrupted)requireImportedInterruptedLifeTail(owner,newImportedLife.orElseThrow(),settle,
-                        edges.subList(settlementIndex+1,edges.size()),originals);
+                if (importedInterrupted) {
+                    var tail = edges.subList(settlementIndex + 1, edges.size());
+                    var originalLife = newImportedLife.orElseThrow();
+                    if (expiryAfterFirstImportedCycle.isPresent()) {
+                        // The newer settlement and RETAIN are replayed by the ordinary history loop.
+                        // Here validate the original interrupted batch through its exact pre-settlement cut.
+                        var cuts = tail.stream().filter(edge -> edge.kind().equals(OrdinaryCycleTransitions.BATCH_KIND)
+                                && JournalKind.BATCH_INTERRUPTED.name().equals(edge.after().toJson()
+                                    .path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD).path("boundary").asText())).toList();
+                        StrictJson.require(cuts.size() == 1, "expired imported Life requires its sole original interrupted batch");
+                        var cut = cuts.getFirst();
+                        var initial = readOnlyLifeRecoveryRoot(ContinuityActionJournal.receipts(cut.after(), originals)).orElseThrow();
+                        StrictJson.require(initial.command().equals(originalLife.command())
+                                && ActionTransitions.composite(initial.state()).equals(ActionTransitions.composite(originalLife.state())),
+                                "expired imported Life changed its canonical original interruption");
+                        tail = tail.subList(0, Math.toIntExact(cut.sequence() - settle.sequence()));
+                        originalLife = initial;
+                    }
+                    requireImportedInterruptedLifeTail(owner, originalLife, settle, tail, originals);
+                }
                 firstImportedSettlement=new FirstImportedSettlement(retain,settle,original);
             }
             var retained=new RetainedReadDriver(known,initialDriver);
@@ -5466,7 +5623,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     var receiptRef=ExactRef.fromJson(details.get("receipt_ref"));
                     boolean recoveredCycle = openBatch == null && (historicalCancelledLifeCycle(
                             edge.before(), edge.after(), details, used.isEmpty() ? null : used.getLast(), owner, actions, originals)
-                            || historicalPreparedPartialTerminalCycle(edge.before(),edge.after(),details,
+                            || historicalPartialLifeTerminalCycle(edge.before(),edge.after(),details,
                                      used.isEmpty()?null:used.getLast(),owner,actions,originals)
                              || historicalCompletedLifeCycle(edge.before(), edge.after(), details,
                                     used.isEmpty() ? null : used.getLast(), owner, actions, originals)
@@ -5544,22 +5701,29 @@ public final class ContinuityBatchJournal implements BatchJournal {
             boolean retainedControl = pendingControl.isPresent() && pendingOriginalProven && pending != null
                     && pending.equals(originals.receiptReferenceOf(pendingControl.orElseThrow()))
                     && pending.equals(ExactRef.fromJson(cycle.get("pending_receipt")));
-            boolean initialCurrentMap = (isolatedLife || isolatedOperator) && existingOpening && pendingControl.isEmpty()
+            var expiredBeforeRetain = pendingKnownCompletion.filter(LifeExpiredPartialAdvanceEvidence::terminalShape);
+            boolean initialCurrentMap = (isolatedLife || isolatedOperator || expiredBeforeRetain.isPresent())
+                    && existingOpening && pendingControl.isEmpty()
                     && state.status()==ContinuityState.Status.REPAIR_REQUIRED
                     && !whole.has(WriterContracts.ORDINARY_CYCLE_FIELD) && !whole.has(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD)
                     && savedPair.isEmpty() && completedCycles==0 && pending==null && lastCycleRef==null && latest==null
                     && openBatch==null && used.size()==1 && retainedRecovery==null
-                    && ordinaryCycleRoots(actions,isolatedLife).stream().noneMatch(action->action.visibleGameplay()||action.eligibleAdvance());
+                    && ordinaryCycleRoots(actions,isolatedLife).stream()
+                        .noneMatch(action -> !expiredBeforeRetain.filter(action::equals).isPresent()
+                                && (action.visibleGameplay() || action.eligibleAdvance()));
             boolean importedBase=imported&&pendingImportedOpening&&existingOpeningRead&&restoredImportedCapabilities
                     &&state.status()==ContinuityState.Status.REPAIR_REQUIRED&&savedPair.isPresent()&&savedBranch==null
                     &&confirmedSaves.isEmpty()&&completedCycles==state.settledCycles()
                     &&lastCycleRef==null&&latest==null&&openBatch==null&&used.size()==1&&retainedRecovery==null;
             boolean initialImported=importedBase&&pendingControl.isEmpty()&&pending==null
-                    &&ordinaryCycleRoots(actions,true).stream().noneMatch(action->action.visibleGameplay()||action.eligibleAdvance());
+                    &&ordinaryCycleRoots(actions,true).stream()
+                        .noneMatch(action -> firstImportedExpiry.filter(action::equals).isEmpty()
+                                && (action.visibleGameplay() || action.eligibleAdvance()));
             boolean firstImportedPending=importedBase&&retainedControl;
             boolean firstImportedCompleted=firstImportedSettlement!=null&&pendingImportedOpening&&existingOpeningRead
                     &&restoredImportedCapabilities&&savedPair.isPresent()&&savedBranch==null&&confirmedSaves.isEmpty()
-                    &&pending==null&&latest!=null&&lastCycleRef!=null&&openBatch==null&&used.size()==(importedInterrupted?2:1)&&retainedRecovery==null
+                    &&(pending==null||expiryAfterFirstImportedCycle.isPresent()&&retainedControl)
+                    &&latest!=null&&lastCycleRef!=null&&openBatch==null&&used.size()==(importedInterrupted?2:1)&&retainedRecovery==null
                     &&completedCycles==Math.addExact(state.settledCycles(),1);
             if(imported)StrictJson.require(initialImported||firstImportedPending||firstImportedCompleted,
                     "imported Saved recovery requires its original guard capability DATA and closed interrupted Life batch");

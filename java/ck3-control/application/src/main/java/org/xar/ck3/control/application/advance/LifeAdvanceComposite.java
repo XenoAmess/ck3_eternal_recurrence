@@ -267,14 +267,14 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
         var retainedExpired = actualPreparedCursor.filter(original -> original.command().equals(parent)
                 && original.state() instanceof ActionState.CompositeUnknown unknown && unknown.execution().equals(retained))
                 .filter(original -> LifeExpiredPartialAdvanceEvidence.accepts(original, children, clock.instant()));
-        if (retainedExpired.isPresent() && cancellationReads instanceof ExpiredPartialReads source) {
-            var observed = source.expiredPartialEvidence().retainedPending(retainedExpired.orElseThrow(), children);
-            if (observed.isPresent()) return observed.orElseThrow();
-        }
         Optional<AdvanceObservationPort.Frame> archivedStart = entryFrames.read(parent, retained.guard(), archive);
         if (archivedStart.isEmpty()) return new ActionPorts.Pending("original life start lacks its complete native/Driver guard basis; no fabricated episode or public revision", List.of(retained.guard().nativeEvidence()));
         AdvanceObservationPort.Frame starting = archivedStart.orElseThrow();
         require(starting.identity().equals(parent.before()) && starting.source().equals(parent.source()) && starting.sessionId().equals(parent.sessionId()), "archived life start crossed original authority");
+        if (retainedExpired.isPresent() && cancellationReads instanceof ExpiredPartialReads source) {
+            var settled = source.expiredPartialEvidence().settleRetained(retainedExpired.orElseThrow(), children, starting);
+            if (settled.isPresent()) return settled.orElseThrow();
+        }
         Instant window = ActionObservationWindow.deadline(parent);
         Instant readStarted = clock.instant();
         var current = observations.current(parent, window);
@@ -304,7 +304,7 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
                         && read.receipt().request().deadline().equals(window) && !current.observedAt().isBefore(readStarted)
                         && clock.instant().isBefore(window)) {
                     var captured = new LifeExpiredPartialAdvanceEvidence.Capture(read, current);
-                    var verified = source.expiredPartialEvidence().preserve(retainedExpired.orElseThrow(), children, captured);
+                    var verified = source.expiredPartialEvidence().settle(retainedExpired.orElseThrow(), children, starting, captured);
                     if (verified.isPresent()) return verified.orElseThrow();
                 }
                 return new ActionPorts.Pending("original native clock stop or generation-bound cancellation remains unconfirmed", List.of(read.originalEvidence()));

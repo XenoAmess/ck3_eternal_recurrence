@@ -1419,7 +1419,7 @@ public final class DriverBootstrap {
                                 || org.xar.ck3.control.application.session.ContinuityBatchJournal
                                     .readOnlyPendingCompletedLifeCycle(finalizationHead,owner,lease.snapshot().actions(),originals.withSession(same)).isPresent()
                                 || org.xar.ck3.control.application.session.ContinuityBatchJournal
-                                    .readOnlyPendingPreparedPartialCycle(finalizationHead,owner,lease.snapshot().actions(),originals.withSession(same)).isPresent()
+                                    .readOnlyPendingPartialLifeCycle(finalizationHead,owner,lease.snapshot().actions(),originals.withSession(same)).isPresent()
                                 || org.xar.ck3.control.application.session.ContinuityBatchJournal
                                     .readOnlyKnownPendingRecoveryRoot(lease.snapshot().actions()).isPresent()
                                 || org.xar.ck3.control.application.session.ContinuityBatchJournal

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import org.xar.ck3.control.application.action.RawJson;
@@ -11,16 +12,22 @@ import org.xar.ck3.control.application.action.OperationKey;
 import org.xar.ck3.control.application.action.ActionReceipt;
 import org.xar.ck3.control.application.action.ActionCodec;
 import org.xar.ck3.control.application.action.ActionObservationWindow;
+import org.xar.ck3.control.application.action.ActionPorts;
+import org.xar.ck3.control.application.action.ContinuityActionJournal;
 import org.xar.ck3.control.application.action.ActionTransitions;
 import org.xar.ck3.control.application.action.NativeActionPort;
 import org.xar.ck3.control.application.session.ContinuityBatchJournal;
 import org.xar.ck3.control.application.action.ActionState;
 import org.xar.ck3.control.application.action.CommandOrigin;
+import org.xar.ck3.control.application.advance.AdvancePlan;
 import org.xar.ck3.control.application.advance.LifeAdvanceComposite;
+import org.xar.ck3.control.application.advance.LifeExpiredPartialAdvanceEvidence;
 import org.xar.ck3.control.application.session.BatchLimits;
 import org.xar.ck3.control.application.session.BatchReport;
 import org.xar.ck3.control.application.session.SessionController;
+import org.xar.ck3.control.contracts.ExactCk3Build;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.nativebridge.NativeGameTransport;
 import org.xar.ck3.control.service.mcp.PublicPlanningCodec;
 
 /**
@@ -431,8 +438,9 @@ public final class RootOrdinaryWorkerLoop {
         ActionReceipt original = expected.orElseThrow();
         var retained = readWarmLifeData(root, report, nextBatchSequence, original, schedulingDeadline, false);
         if (retained.isEmpty() || !lifeReadAdmissionOpen(schedulingDeadline, began)) return false;
-        var data = retained.orElseThrow();
-        logLifeReadRecovery("BEGIN", report, original, 0, schedulingDeadline);
+        var admitted = retained.orElseThrow();
+        logLifeReadRecovery(admitted.expiryOnly() ? "BEGIN_EXPIRED_CORE_RESUME" : "BEGIN",
+                report, original, 0, schedulingDeadline);
         for (int attempt = 1; attempt <= LIFE_READ_ATTEMPTS; attempt++) {
             long delayMillis = 10_000L << (attempt - 1); // Before calls: 10, 20, 40, 80 seconds.
             logLifeReadRecovery("WAIT", report, original, attempt, schedulingDeadline);
@@ -441,47 +449,79 @@ public final class RootOrdinaryWorkerLoop {
             }
             if (root.controllerForPublication() != controller || controller.isRunning() || controller.isRetired()
                     || !controller.isQuarantined() || controller.lastReport().filter(known -> known == report).isEmpty()) return false;
+            if (admitted.expiryOnly()) {
+                var refreshed = readWarmLifeData(root, report, nextBatchSequence, original, schedulingDeadline, false);
+                if (refreshed.isEmpty() || !refreshed.orElseThrow().expiryOnly()
+                        || !lifeReadAdmissionOpen(schedulingDeadline, began)) return false;
+                admitted = refreshed.orElseThrow();
+            }
             // No public clamp exists: each admitted call keeps the original two-minute observation window.
             // This in-flight call and its original writer/cycle cleanup may cross the admission deadline.
             Instant observationDeadline = clock.instant().plus(ActionObservationWindow.MAXIMUM_WINDOW);
             logLifeReadRecovery("OBSERVE", report, original, attempt, schedulingDeadline);
             ActionReceipt actual;
-            try { actual = root.reconcileUnresolvedOriginal(data, observationDeadline); }
+            try { actual = root.reconcileUnresolvedOriginal(admitted.data(), observationDeadline); }
             catch (IOException failure) {
+                if (admitted.expiryOnly()) throw failure;
                 var verified=negativeFreshReadFailure(failure);
                 if(verified.isEmpty() || !verified.orElseThrow().matches(original.command())) throw failure;
                 if(!lifeReadAdmissionOpen(schedulingDeadline,began)) return false;
-                final Optional<ContinuityBatchJournal.UnresolvedSameGameData> refreshed;
+                final Optional<WarmLifeData> refreshed;
                 try { refreshed=readWarmLifeData(root,report,nextBatchSequence,original,schedulingDeadline,true); }
                 catch(IOException | RuntimeException changed) { changed.addSuppressed(failure);throw changed; }
                 if(refreshed.isEmpty()) throw failure;
-                data=refreshed.orElseThrow();
+                admitted=refreshed.orElseThrow();
                 logNegativeLifeRead(report,verified.orElseThrow(),attempt);
                 continue;
             }
             StrictJson.require(actual.bodySha256().equals(original.bodySha256())
                     && java.util.Arrays.equals(ActionCodec.encodeCommand(actual.command()), ActionCodec.encodeCommand(original.command())),
                     "warm Life reconciliation changed the complete original command");
-            if (isAppliedLife(actual) && root.controllerForPublication() == controller
-                    && !controller.isQuarantined() && !controller.isRetired() && !controller.isRunning()) {
+            if (root.controllerForPublication() == controller
+                    && !controller.isQuarantined() && !controller.isRetired() && !controller.isRunning()
+                    && (isAppliedLife(actual) || verifyRecoveredExpiredLife(root, actual))) {
                 logLifeReadRecovery("RECOVERED", report, actual, attempt, schedulingDeadline); return true;
             }
             if (!lifeReadAdmissionOpen(schedulingDeadline, began)) {
                 logLifeReadRecovery("STOP_OR_ADMISSION_WINDOW", report, actual, attempt, schedulingDeadline); return false;
             }
+            if (admitted.expiryOnly()) {
+                logLifeReadRecovery("EXPIRED_CORE_RESUME_NOT_RECOVERED", report, actual, attempt, schedulingDeadline);
+                return false;
+            }
             var refreshed=readWarmLifeData(root,report,nextBatchSequence,original,schedulingDeadline,false);
-            if(refreshed.isEmpty() || !refreshed.orElseThrow().unresolvedActions().getFirst().equals(actual)) {
+            if(refreshed.isEmpty() || !refreshed.orElseThrow().data().unresolvedActions().getFirst().equals(actual)) {
                 logLifeReadRecovery("CHANGED_OR_UNQUALIFIED", report, actual, attempt, schedulingDeadline); return false;
             }
-            data=refreshed.orElseThrow();
+            admitted=refreshed.orElseThrow();
             logLifeReadRecovery("KNOWN_READ_UNAVAILABLE", report, actual, attempt, schedulingDeadline);
         }
         logLifeReadRecovery("ATTEMPTS_EXHAUSTED", report, original, LIFE_READ_ATTEMPTS, schedulingDeadline);
         return false;
     }
 
+    /** Only re-open the archive after the original Controller has completed its cycle. */
+    private boolean verifyRecoveredExpiredLife(RootApplicationSession root, ActionReceipt actual)
+            throws IOException, InterruptedException {
+        if (!LifeExpiredPartialAdvanceEvidence.terminalShape(actual)) return false;
+        return root.withPublicStandaloneRead(clock.instant().plus(ActionObservationWindow.MAXIMUM_WINDOW), same -> {
+            var archive = root.archive().withSession(same);
+            var current = ContinuityActionJournal.receipts(same.head().state(), archive).stream()
+                    .filter(receipt -> receipt.command().actionId().equals(actual.command().actionId())).findFirst();
+            return recoveredExpiredLifeReceipt(actual, current, archive);
+        });
+    }
+
+    static boolean recoveredExpiredLifeReceipt(ActionReceipt actual, Optional<ActionReceipt> current,
+            ActionPorts.OutcomeArchive archive) {
+        return current.filter(actual::equals).isPresent() && LifeExpiredPartialAdvanceEvidence.terminalShape(actual)
+                && LifeExpiredPartialAdvanceEvidence.readTerminalData(actual, archive).isPresent();
+    }
+
+    private record WarmLifeData(ContinuityBatchJournal.UnresolvedSameGameData data, boolean expiryOnly) { }
+
     /** Reopen current canonical DATA after each attempt; neither an old head nor a copied report authenticates it. */
-    private Optional<ContinuityBatchJournal.UnresolvedSameGameData> readWarmLifeData(RootApplicationSession root,
+    private Optional<WarmLifeData> readWarmLifeData(RootApplicationSession root,
             BatchReport report,long nextBatchSequence,ActionReceipt original,Instant deadline,boolean verifiedCurrentNegative) throws IOException, InterruptedException {
         var controller=root.controllerForPublication();
         if(!report.session().equals(root.identity()) || controller.isRunning() || controller.isRetired()
@@ -499,9 +539,22 @@ public final class RootOrdinaryWorkerLoop {
             StrictJson.require(actual.bodySha256().equals(original.bodySha256())
                     && java.util.Arrays.equals(ActionCodec.encodeCommand(actual.command()),ActionCodec.encodeCommand(original.command())),
                     "warm Life DATA changed the complete original command");
-            var canonical=org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(head.state(),root.archive().withSession(same));
-            if(verifiedCurrentNegative ? postAckLifeResume(actual,canonical).isEmpty() : !knownPostAckLifeRead(actual,canonical)) return Optional.empty();
-            return Optional.of(current);
+            var canonical=ContinuityActionJournal.receipts(head.state(),root.archive().withSession(same));
+            if (verifiedCurrentNegative ? postAckLifeResume(actual, canonical).isPresent()
+                    : knownPostAckLifeRead(actual, canonical)) return Optional.of(new WarmLifeData(current, false));
+            if (verifiedCurrentNegative) return Optional.empty();
+
+            var expired = expiredCoreResumeRead(actual, canonical, clock.instant());
+            if (expired.isEmpty()) return Optional.empty();
+            var ack = expired.orElseThrow().ack().orElseThrow();
+            var custody = ack.custody().orElseThrow();
+            var transport = root.nativeTransport();
+            var held = transport.diagnostics();
+            if (held.receivedState() != NativeGameTransport.ReceivedState.HELLO_VERIFIED
+                    || held.session().filter(custody.session()::equals).isEmpty()
+                    || transport.originalRequestChronology(ack.requestId()).filter(custody::equals).isEmpty())
+                return Optional.empty();
+            return Optional.of(new WarmLifeData(current, true));
         });
     }
 
@@ -519,7 +572,7 @@ public final class RootOrdinaryWorkerLoop {
         return Optional.empty();
     }
 
-    private static Optional<ActionReceipt> postAckLifeResume(ActionReceipt original,java.util.List<ActionReceipt> canonical) {
+    private static Optional<ActionReceipt> postAckLifeResume(ActionReceipt original, List<ActionReceipt> canonical) {
         if(!(original.state() instanceof ActionState.CompositeUnknown unknown)
                 || ContinuityBatchJournal.readOnlyLifeRecoveryRoot(canonical).filter(original::equals).isEmpty()
                 || unknown.execution().children().isEmpty()) return Optional.empty();
@@ -541,20 +594,28 @@ public final class RootOrdinaryWorkerLoop {
         } catch(Throwable ignored) { /* Preserve business cause and interruption; no diagnostics under writer. */ }
     }
 
-    /** A known negative READ reason only qualifies scheduling; original canonical/ACK/physical guards still own every read. */
-    static boolean knownPostAckLifeRead(ActionReceipt original, java.util.List<ActionReceipt> canonical) {
+    /** A retained Full111 Core resume permits expiry collection only after its own parent's deadline. */
+    static Optional<ActionReceipt> expiredCoreResumeRead(ActionReceipt original, List<ActionReceipt> canonical, Instant now) {
         if (!(original.state() instanceof ActionState.CompositeUnknown unknown)
-                || ContinuityBatchJournal.readOnlyLifeRecoveryRoot(canonical).filter(original::equals).isEmpty()
-                || unknown.execution().children().isEmpty()) return false;
-        var binding = unknown.execution().children().getLast();
-        var matches = canonical.stream().filter(receipt -> receipt.command().actionId().equals(binding.actionId())).toList();
-        if (matches.size() != 1) return false;
-        var child = matches.getFirst();
-        if (!child.command().operation().value().equals("resume-map") || !child.bodySha256().equals(binding.bodySha256())
-                || child.ack().isEmpty() || !child.ack().orElseThrow().nativeOk()
-                || child.ack().orElseThrow().outbound().isEmpty()) return false;
-        return child.state() instanceof ActionState.Unknown pending && knownNegativeFreshRead(pending.reason())
-                || org.xar.ck3.control.application.advance.AdvancePrimitives.confirmedResume(child) && knownNegativeFreshRead(unknown.reason());
+                || unknown.execution().children().size() < 2 || unknown.execution().children().size() > 4
+                || !now.isAfter(original.command().deadline())
+                || !ExactCk3Build.CK3_121003_STEAM_26785313_FULL111.executableSha256()
+                        .equalsIgnoreCase(original.command().source().exactBuild())) return Optional.empty();
+        return postAckLifeResume(original, canonical).filter(child ->
+                child.state() instanceof ActionState.Settled settled
+                && settled.settlement() instanceof ActionState.ResumeCoreApplied
+                && child.sequence() < original.sequence()
+                && child.ack().flatMap(NativeActionPort.AckReceived::custody).isPresent()
+                && AdvancePlan.decode(original.command()).clockMode() == AdvancePlan.ClockMode.CAMPAIGN_SENTINEL);
+    }
+
+    /** A known negative READ reason only qualifies scheduling; original canonical/ACK/physical guards still own every read. */
+    static boolean knownPostAckLifeRead(ActionReceipt original, List<ActionReceipt> canonical) {
+        return postAckLifeResume(original, canonical).filter(child ->
+                child.state() instanceof ActionState.Unknown pending
+                        ? knownNegativeFreshRead(pending.reason())
+                        : original.state() instanceof ActionState.CompositeUnknown unknown && knownNegativeFreshRead(unknown.reason()))
+                .isPresent();
     }
 
     static boolean knownNegativeFreshRead(String reason) {

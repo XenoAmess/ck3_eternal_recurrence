@@ -155,6 +155,39 @@ public final class LifeAdvanceRootReplay implements LifeAdvanceEvidence.EntryFra
         return LifeAdvanceEvidence.readRecorded(actual, originals, this, timeline);
     }
 
+    LifeAdvanceEvidence.Recorded readExpiryRecorded(ActionReceipt receipt,
+            LifeExpiredPartialAdvanceEvidence.TerminalData originals, ActionPorts.OutcomeArchive archive) {
+        return new LifeExpiredPartialAdvanceEvidence(archive, this, new AdvancePrimitiveArchivedReplay(frames))
+                .verifyTerminal(receipt, originals);
+    }
+
+    private LifeAdvanceEvidence.Recorded verifyExpiryRecorded(WriterContracts.Head head, ActionReceipt receipt,
+            LifeExpiredPartialAdvanceEvidence.TerminalData originals, ActionPorts.OutcomeArchive archive) {
+        var prior = originals.original();
+        var current = ContinuityActionJournal.lookup(head.state(), receipt.command().actionId(), archive).orElseThrow();
+        var history = new java.util.ArrayList<>(originals.children());
+        history.add(prior);
+        if (receipt.sequence() <= head.state().sequence()) {
+            require(receipt.equals(current), "expired Life cold receipt differs from its settled canonical parent");
+            history.add(receipt);
+        } else {
+            require(receipt.sequence() == head.state().sequence() + 1
+                    && LifeExpiredPartialAdvanceEvidence.isPredecessor(current, prior, originals.expiryReference()),
+                    "expired Life settlement changed its canonical unresolved predecessor");
+        }
+        for (var child : originals.children())
+            require(ContinuityActionJournal.lookup(head.state(), child.command().actionId(), archive).filter(child::equals).isPresent(),
+                    "expired Life settlement changed an original canonical child");
+        var resume = (ActionState.Settled) originals.children().getLast().state();
+        var core = (ActionState.ResumeCoreApplied) resume.settlement();
+        history.add(archive.loadReceipt(core.observation().parentReceipt()));
+        ContinuityActionJournal.requireHistoricalReceipts(head.state(), history, archive);
+        var settlement = (ActionState.CompositeSettled) receipt.state();
+        ActionEffects.validateComposite(receipt.command(), settlement.execution(), settlement.settlement());
+        ActionEffects.validateCompositeChildren(receipt.command(), settlement.execution(), settlement.settlement(), originals.children());
+        return readExpiryRecorded(receipt, originals, archive);
+    }
+
     /** Archive-only dedicated cleanup proof; no permit or current observation is created. */
     public void verifyPostResumePauseCleanup(LifePostResumePauseCleanupEvidence.Authorization authorization,
             CompositeExecution successor,java.util.List<ActionReceipt> children,ClockStatusRead.Observation terminal,
@@ -179,6 +212,8 @@ public final class LifeAdvanceRootReplay implements LifeAdvanceEvidence.EntryFra
             ActionReceipt proposed, ActionPorts.OutcomeArchive sameWriterArchive) {
         require(proposed.command().origin().machineId().equals(actualLockedHead.state().machineId()),
                 "life replay crossed the actual canonical writer machine");
+        var expiry = LifeExpiredPartialAdvanceEvidence.readTerminalData(proposed, sameWriterArchive);
+        if (expiry.isPresent()) return Optional.of(verifyExpiryRecorded(actualLockedHead, proposed, expiry.orElseThrow(), sameWriterArchive));
         if(preparedParent(proposed)){
             var recorded=PreparedCleanupParentEvidence.readRecorded(proposed,sameWriterArchive,this);
             preparedParentVerifier.orElseThrow(()->new IllegalStateException("actual prepared parent source qualification is absent"))
