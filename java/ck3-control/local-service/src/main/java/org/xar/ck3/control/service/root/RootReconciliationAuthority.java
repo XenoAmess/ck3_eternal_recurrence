@@ -351,12 +351,20 @@ public final class RootReconciliationAuthority {
             if(full111Event && (!canReadFull111EventSelection(same,original,attempt)
                     || captured.fullSnapshot().actual().nativeRevision().compareTo(before.identity().frame().identity().nativeRevision())<=0))
                 throw new RawUnavailable("Full111 SELECT reconciliation lost its retained receiver or later Full",
-                        List.of(attempt.guard().nativeEvidence(),captured.fullSnapshot().originalEvidence()));
+                        preserveFull111Read(captured, attempt, bound));
             if(captured.ordinary().isEmpty()) {
                 captured.assertCurrent(same);
+                var originals = new ArrayList<>(List.of(captured.fullSnapshot().originalEvidence(), captured.originalHello(),
+                        captured.originalHeartbeat(), captured.freshFacts().semanticFactsEvidence(), captured.originalDriver(),
+                        captured.originalSemantic()));
+                captured.sourceQualification().proof().ifPresent(originals::add);
+                if (full111Event) {
+                    for (var proof : preserveFull111Read(captured, attempt, bound)) {
+                        if (!originals.contains(proof)) originals.add(proof);
+                    }
+                }
                 throw new RawUnavailable("actual current player is missing, dead or changed; unresolved primitive has no same-actor reconciliation data",
-                        java.util.stream.Stream.concat(List.of(captured.fullSnapshot().originalEvidence(),captured.originalHello(),captured.originalHeartbeat(),
-                                captured.freshFacts().semanticFactsEvidence(),captured.originalDriver(),captured.originalSemantic()).stream(),captured.sourceQualification().proof().stream()).toList());
+                        originals);
             }
             Complete actual=captured.ordinary().orElseThrow();
             require(actual.source().equals(original.command().source())&&actual.sessionId().equals(original.command().sessionId()),
@@ -393,10 +401,21 @@ public final class RootReconciliationAuthority {
             finally {active.remove();}
         };
         if (full111Event) {
-            return physical.withFull111EventReconciliationSnapshot(same, observationDeadline, attempt,
-                    original.ack().orElseThrow(), reconcileFrame);
+            try {
+                return physical.withFull111EventReconciliationSnapshot(same, observationDeadline, attempt,
+                        original.ack().orElseThrow(), reconcileFrame);
+            } catch (RootLifecycleAuthority.UnavailableFull111FreshRead unavailable) {
+                throw new RawUnavailable("Full111 independent recovery snapshot unavailable: " + unavailable.getMessage(),
+                        unavailable.evidence());
+            }
         }
         return physical.withReconciliationSnapshot(same, observationDeadline, freshRead, reconcileFrame);
+    }
+
+    private static List<ExactRef> preserveFull111Read(RootLifecycleAuthority.SnapshotLease captured,
+            ActionState.Attempt attempt, ActionPorts.OutcomeArchive archive) throws IOException {
+        return RootFull111EventOptionEffects.preserveRead(attempt, archive,
+                captured.freshSnapshot().orElseThrow(() -> new IOException("Full111 reconciliation omitted its independent READ")));
     }
 
     private static boolean isFull111EventSelection(ActionReceipt receipt) {

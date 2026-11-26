@@ -42,8 +42,27 @@ public final class RootLifecycleAuthority {
     }
     @FunctionalInterface public interface CheckedWork<T> { T apply(Lease actual) throws IOException; }
     @FunctionalInterface public interface SnapshotWork<T> { T apply(SnapshotLease actual) throws IOException; }
-    @FunctionalInterface private interface FreshSnapshotRead {
-        NativeFreshSnapshotPort.Result read(Instant deadline) throws IOException, InterruptedException;
+    private static final class Full111Selection {
+        private final ActionState.Attempt attempt;
+        private final NativeActionPort.AckReceived acknowledgement;
+        private NativeFreshSnapshotPort.Result read;
+        private boolean snapshotEntered;
+
+        private Full111Selection(ActionState.Attempt attempt, NativeActionPort.AckReceived acknowledgement) {
+            this.attempt = attempt;
+            this.acknowledgement = acknowledgement;
+        }
+    }
+    static final class UnavailableFull111FreshRead extends IOException {
+        @java.io.Serial private static final long serialVersionUID = 1L;
+        private final transient List<ExactRef> evidence;
+
+        private UnavailableFull111FreshRead(Exception failure, List<ExactRef> evidence) {
+            super(failure.getMessage(), failure);
+            this.evidence = List.copyOf(evidence);
+        }
+
+        List<ExactRef> evidence() { return evidence; }
     }
     @FunctionalInterface public interface ActualDriverAuthority {
         /** Root resolves its actually adopted Driver at use time; no pre-adoption repository or substitute is legal. */
@@ -322,14 +341,25 @@ public final class RootLifecycleAuthority {
     }
     /** Fresh SAVE reconciliation: actual independent read, never replay. */
     public <T>T withReconciliationSnapshot(ContinuityStorePort.Session borrowed,Instant callerDeadline,boolean freshRead,SnapshotWork<T> work)throws IOException {
-        return withSnapshot(borrowed,callerDeadline,Optional.empty(),work,Duration.ofMinutes(2),
-                freshRead ? Optional.of(transport::readFreshFullState) : Optional.empty());
+        return withSnapshot(borrowed,callerDeadline,Optional.empty(),work,Duration.ofMinutes(2),freshRead,Optional.empty());
     }
 
     <T> T withFull111EventReconciliationSnapshot(ContinuityStorePort.Session same, Instant deadline, ActionState.Attempt attempt,
             NativeActionPort.AckReceived selected, SnapshotWork<T> work) throws IOException {
-        return withSnapshot(same, deadline, Optional.empty(), work, Duration.ofMinutes(2),
-                Optional.of(limit -> transport.readFreshFullStateAfterFull111Selection(attempt, selected, limit)));
+        var original = new Full111Selection(attempt, selected);
+        String head = same.head().digest();
+        try {
+            return withSnapshot(same, deadline, Optional.empty(), snapshot -> {
+                original.snapshotEntered = true;
+                return work.apply(snapshot);
+            }, Duration.ofMinutes(2), true, Optional.of(original));
+        } catch (IOException | org.xar.ck3.control.contracts.ContractViolationException unavailable) {
+            if (original.read == null || original.snapshotEntered || unavailable.getSuppressed().length != 0) throw unavailable;
+            requireSession(same);
+            require(same.head().digest().equals(head), "Full111 fresh READ changed its original writer head");
+            var evidence = RootFull111EventOptionEffects.preserveRead(attempt, archive.withSession(same), original.read);
+            throw new UnavailableFull111FreshRead(unavailable, evidence);
+        }
     }
 
     /** Pure custody check against the same receiver that will perform the physical read. */
@@ -354,15 +384,14 @@ public final class RootLifecycleAuthority {
     }
     private <T>T withSnapshot(ContinuityStorePort.Session borrowed,Instant callerDeadline,
             Optional<NativeObservationPort.ObservedFrame> received,SnapshotWork<T> work,Duration effectiveFreshness)throws IOException {
-        return withSnapshot(borrowed,callerDeadline,received,work,effectiveFreshness,Optional.empty());
+        return withSnapshot(borrowed,callerDeadline,received,work,effectiveFreshness,false,Optional.empty());
     }
     private <T>T withSnapshot(ContinuityStorePort.Session borrowed,Instant callerDeadline,
             Optional<NativeObservationPort.ObservedFrame> received,SnapshotWork<T> work,Duration effectiveFreshness,
-            Optional<FreshSnapshotRead> freshReader)throws IOException {
+            boolean freshRead,Optional<Full111Selection> full111Selection)throws IOException {
         Objects.requireNonNull(work);Objects.requireNonNull(effectiveFreshness);
         require(!effectiveFreshness.isZero()&&!effectiveFreshness.isNegative()
                 &&effectiveFreshness.compareTo(Duration.ofMinutes(2))<=0,"bounded physical observation window required");
-        boolean freshRead = freshReader.isPresent();
         Instant deadline=deadline(callerDeadline,effectiveFreshness);Scope existing=active.get();
         if(existing!=null){
             if(freshRead) throw new IOException("fresh reconciliation read cannot borrow an existing physical scope");
@@ -384,16 +413,30 @@ public final class RootLifecycleAuthority {
                 freshResult=Optional.empty();
             }else if(freshRead) {
                 NativeFreshSnapshotPort.Result readResult;
-                try { transport.awaitHello(deadline);transport.verifyHeld(deadline);readResult=freshReader.orElseThrow().read(deadline); }
+                try {
+                    transport.awaitHello(deadline);
+                    transport.verifyHeld(deadline);
+                    if (full111Selection.isPresent()) {
+                        var selected = full111Selection.orElseThrow();
+                        readResult = transport.readFreshFullStateAfterFull111Selection(selected.attempt, selected.acknowledgement, deadline);
+                        selected.read = readResult;
+                    } else {
+                        readResult = transport.readFreshFullState(deadline);
+                    }
+                }
                 catch(InterruptedException failure){Thread.currentThread().interrupt();var interrupted=new InterruptedIOException("actual fresh reconciliation read interrupted");interrupted.initCause(failure);throw interrupted;}
                 if(readResult instanceof NativeFreshSnapshotPort.Unavailable unavailable) {
                     var outcome=unavailable.dispatch();
                     if(outcome instanceof NativeActionPort.Unknown unknown) {
-                        try { readResult=transport.collectFreshFullState(unknown.requestId(),deadline); }
+                        try {
+                            readResult=transport.collectFreshFullState(unknown.requestId(),deadline);
+                            if (full111Selection.isPresent()) full111Selection.orElseThrow().read = readResult;
+                        }
                         catch(InterruptedException failure){Thread.currentThread().interrupt();var interrupted=new InterruptedIOException("actual fresh reconciliation collection interrupted");interrupted.initCause(failure);throw interrupted;}
                     }
                 }
-                if(!(readResult instanceof NativeFreshSnapshotPort.Received)) {
+                if(readResult instanceof NativeFreshSnapshotPort.Unavailable unavailable) {
+                    if (full111Selection.isPresent()) throw new IOException(unavailable.reason());
                     var diagnostics=transport.diagnostics();
                     require(diagnostics.receivedState()==NativeGameTransport.ReceivedState.HELLO_VERIFIED
                             && diagnostics.terminalFailure().isEmpty(),"negative fresh READ lost its actual held transport");

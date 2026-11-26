@@ -96,18 +96,26 @@ final class RootFull111EventOptionEffects implements NativeEffectRegistry.Observ
                 return pendingAfterRead(attempt, "Full111 independent post-SELECT snapshot unavailable: " + unavailable.reason(),
                         archive, unavailable);
             var fresh = (NativeFreshSnapshotPort.Received) snapshot;
-            NativeFreshSnapshotPort.verifyAfter(selected, fresh);
-            var proof = transport.readFull111EventQueue(attempt, selected, deadline);
-            if (proof.isEmpty() || proof.orElseThrow().after() != fresh.originalFrame())
-                return pendingAfterRead(attempt, "Full111 independent complete queue did not verify the selected instance absent",
+            try {
+                NativeFreshSnapshotPort.verifyAfter(selected, fresh);
+                var proof = transport.readFull111EventQueue(attempt, selected, deadline);
+                if (proof.isEmpty() || proof.orElseThrow().after() != fresh.originalFrame())
+                    return pendingAfterRead(attempt, "Full111 independent complete queue did not verify the selected instance absent",
+                            archive, fresh);
+                var queue = proof.orElseThrow();
+                var before = RootGuardEvidence.loadFrame(attempt.guard(), archive, context.frameLoader());
+                return context.remainingDomains().lifecycle().physical().withReceivedSnapshot(same, deadline, fresh.originalFrame(), lease -> {
+                    var after = lease.ordinary().orElseThrow(() -> new IOException("No complete Full111 ordinary after observation"));
+                    return settle(command, attempt, new NativeEffectSnapshots.Pair(before, after), selected,
+                            fresh.acknowledgement(), fresh.snapshotReceived(), queue.original(), archive, deadline);
+                });
+            } catch (InterruptedException interrupted) {
+                Thread.currentThread().interrupt();
+                return pendingAfterRead(attempt, "Full111 independent after observation interrupted", archive, fresh);
+            } catch (IOException | ContractViolationException unavailable) {
+                return pendingAfterRead(attempt, "Full111 queue or exact after originals unavailable: " + unavailable.getMessage(),
                         archive, fresh);
-            var queue = proof.orElseThrow();
-            var before = RootGuardEvidence.loadFrame(attempt.guard(), archive, context.frameLoader());
-            return context.remainingDomains().lifecycle().physical().withReceivedSnapshot(same, deadline, fresh.originalFrame(), lease -> {
-                var after = lease.ordinary().orElseThrow(() -> new IOException("No complete Full111 ordinary after observation"));
-                return settle(command, attempt, new NativeEffectSnapshots.Pair(before, after), selected,
-                        fresh.acknowledgement(), fresh.snapshotReceived(), queue.original(), archive, deadline);
-            });
+            }
         } catch (InterruptedException interrupted) {
             Thread.currentThread().interrupt();
             return pending(attempt, "Full111 independent after observation interrupted");
@@ -379,6 +387,10 @@ final class RootFull111EventOptionEffects implements NativeEffectRegistry.Observ
 
     static NativeEffectRegistry.Projected pendingAfterRead(ActionState.Attempt attempt, String reason, OutcomeArchive archive,
             NativeFreshSnapshotPort.Result read) {
+        return NativeEffectRegistry.Projected.pending(reason, preserveRead(attempt, archive, read));
+    }
+
+    static List<ExactRef> preserveRead(ActionState.Attempt attempt, OutcomeArchive archive, NativeFreshSnapshotPort.Result read) {
         var evidence = new LinkedHashSet<ExactRef>();
         evidence.add(attempt.guard().nativeEvidence());
         evidence.add(archive.preserve(read.dispatch()));
@@ -387,7 +399,7 @@ final class RootFull111EventOptionEffects implements NativeEffectRegistry.Observ
             case NativeFreshSnapshotPort.Unavailable unavailable -> unavailable.originalFrame();
         };
         frame.map(archive::preserveNativeFrame).ifPresent(evidence::add);
-        return NativeEffectRegistry.Projected.pending(reason, List.copyOf(evidence));
+        return List.copyOf(evidence);
     }
 
     record Originals(ExactRef selected, ExactRef fresh, NativeRequestChronology.Event snapshotReceived, ExactRef queue) {
