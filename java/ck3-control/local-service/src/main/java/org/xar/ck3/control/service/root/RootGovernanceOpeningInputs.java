@@ -9,7 +9,7 @@ import java.util.Optional;
 import org.xar.ck3.control.application.action.ActionReceipt;
 import org.xar.ck3.control.application.action.ActionPorts;
 import org.xar.ck3.control.application.driver.DriverObservationAssembler.Complete;
-import org.xar.ck3.control.application.session.OrdinaryCycleTransitions.ImportedOpeningAdvance;
+import org.xar.ck3.control.application.session.OrdinaryCycleTransitions.OpeningDateEvidence;
 import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
 import org.xar.ck3.control.application.planning.governance.GovernanceObservationSupplier.OpeningStage;
 import org.xar.ck3.control.continuity.ContinuityState;
@@ -76,7 +76,7 @@ public final class RootGovernanceOpeningInputs implements RootPlanningInputsFact
                     && receipt.command().source().equals(document.source()),"opening pending receipt is not its exact original action/source");
             document.checkpoint().ifPresent(checkpoint->StrictJson.require(checkpoint.actionId().equals(receipt.command().actionId()),"opening checkpoint/action differs"));
         });
-        Optional<ImportedOpeningAdvance> advance = Optional.empty();
+        Optional<? extends OpeningDateEvidence> advance = Optional.empty();
         if (canProjectOpeningDate(document, actual, action)) {
             context.collector().requireHeldFrame(capture.session(), capture.frame());
             advance = importedOpeningAdvance(context, capture.session(), document, capture.frame(), capture.deadline());
@@ -132,7 +132,7 @@ public final class RootGovernanceOpeningInputs implements RootPlanningInputsFact
                 org.xar.ck3.control.application.action.ActionCodec.encodeCommand(canonical.orElseThrow().command())),"opening pending command crossed its canonical receipt");
         return canonical;
     }
-    private static Optional<ImportedOpeningAdvance> importedOpeningAdvance(RootRuntimeContext context, Session same,
+    private static Optional<? extends OpeningDateEvidence> importedOpeningAdvance(RootRuntimeContext context, Session same,
             GovernanceOpeningDocument.Document document, Complete current, Instant deadline) throws IOException {
         context.requireCurrent(deadline);
         if (!new Bool(true).equals(current.semantic().get("paused"))
@@ -141,7 +141,7 @@ public final class RootGovernanceOpeningInputs implements RootPlanningInputsFact
                 "opening date projection requires the actual Root cycle owner");
         var session = (RootApplicationSession) context.actions();
         var owner = new SessionIdentity(current.identity().machineId(), current.identity().game(), current.sessionId());
-        var advance = session.cycles().importedOpeningAdvance(same, owner, document.observed(), current.source(), current.identity());
+        var advance = session.batchJournal().openingDateEvidence(same, owner, document.observed(), current.source(), current.identity());
         context.requireCurrent(deadline);
         return advance;
     }
@@ -165,7 +165,7 @@ public final class RootGovernanceOpeningInputs implements RootPlanningInputsFact
     }
 
     static OpeningGate openingGate(GovernanceOpeningDocument.Document document, ObservationIdentity current,
-            Optional<ActionReceipt> action, Optional<ImportedOpeningAdvance> advance) {
+            Optional<ActionReceipt> action, Optional<? extends OpeningDateEvidence> advance) {
         boolean preparedOnly=document.stage()==OpeningStage.AWAIT_RECEIPT&&document.preparedCommand().isPresent()
                 &&document.actionReceipt().isEmpty()&&document.checkpoint().isEmpty()&&action.isEmpty();
         var date = document.observed().frame().identity().dateRaw();

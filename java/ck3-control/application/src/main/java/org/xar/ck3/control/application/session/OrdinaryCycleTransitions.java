@@ -1164,8 +1164,14 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         requireProofFrame(head.state(), state, checked);
         return Optional.of(new CompletedCycleProof(state.completedCycles(), semantic, ContinuityJson.digest(state.toJson())));
     }
-    /** Read-only DATA for the original imported opening. This is not a SAVE or dispatch proof. */
-    public record ImportedOpeningAdvance(ExactRef cycleRecord, ExactRef lifeReceipt, SemanticEvidence semantic) {
+    /** Read-only calendar evidence for the original unissued Opening. */
+    public sealed interface OpeningDateEvidence permits ImportedOpeningAdvance, SavedOpeningAdvance {
+        SemanticEvidence semantic();
+        List<ExactRef> evidence();
+    }
+
+    public record ImportedOpeningAdvance(ExactRef cycleRecord, ExactRef lifeReceipt, SemanticEvidence semantic)
+            implements OpeningDateEvidence {
         public ImportedOpeningAdvance {
             Objects.requireNonNull(cycleRecord); Objects.requireNonNull(lifeReceipt); Objects.requireNonNull(semantic);
         }
@@ -1176,12 +1182,36 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         }
     }
 
+    public record SavedOpeningAdvance(ExactRef confirmation, ExactRef saveReceipt, ExactRef savedCycleRecord, SemanticEvidence savedSemantic,
+            Optional<ImportedOpeningAdvance> laterAdvance) implements OpeningDateEvidence {
+        public SavedOpeningAdvance {
+            Objects.requireNonNull(confirmation); Objects.requireNonNull(saveReceipt); Objects.requireNonNull(savedCycleRecord);
+            Objects.requireNonNull(savedSemantic); Objects.requireNonNull(laterAdvance);
+        }
+        @Override public SemanticEvidence semantic() {
+            return laterAdvance.map(ImportedOpeningAdvance::semantic).orElse(savedSemantic);
+        }
+        @Override public List<ExactRef> evidence() {
+            var refs = new ArrayList<>(List.of(confirmation, saveReceipt, savedCycleRecord));
+            refs.addAll(savedSemantic.references());
+            laterAdvance.ifPresent(advance -> refs.addAll(advance.evidence()));
+            return List.copyOf(refs);
+        }
+    }
+
     /** Settled Life cycles and date-neutral controls can explain the current date of an unissued imported opening. */
     public Optional<ImportedOpeningAdvance> importedOpeningAdvance(ContinuityStorePort.Session same, SessionIdentity owner,
             ObservationIdentity originalOpening, G2Source source, ObservationIdentity current) throws IOException {
-        Objects.requireNonNull(originalOpening); Objects.requireNonNull(source); Objects.requireNonNull(current);
         if (active.get() == null)
             return withLocked(same, () -> importedOpeningAdvance(same, owner, originalOpening, source, current));
+        return openingDateEvidence(same, owner, originalOpening, source, current, Optional.empty())
+                .map(ImportedOpeningAdvance.class::cast);
+    }
+
+    Optional<OpeningDateEvidence> openingDateEvidence(ContinuityStorePort.Session same, SessionIdentity owner,
+            ObservationIdentity originalOpening, G2Source source, ObservationIdentity current,
+            Optional<ContinuityBatchJournal.OpeningSaveAnchor> saved) throws IOException {
+        Objects.requireNonNull(originalOpening); Objects.requireNonNull(source); Objects.requireNonNull(current);
         StrictJson.require(active.get() == same, "opening date projection requires its original writer Session");
         sessionAuthority.require(same);
         var head = same.head();
@@ -1189,23 +1219,36 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         var whole = retained.toJson();
         if (retained.status() != ContinuityState.Status.RUNNING || !whole.hasNonNull(SavedContinuityBootstrap.FIELD)
                 || !whole.hasNonNull(STATE_FIELD) || whole.hasNonNull(WriterContracts.GAMEPLAY_ENTRY_FIELD)
-                || whole.hasNonNull(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD)) return Optional.empty();
+                || whole.hasNonNull(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD) != saved.isPresent()) return Optional.empty();
 
         var imported = SavedContinuityBootstrap.request(ContinuityJson.object(whole.get(SavedContinuityBootstrap.FIELD))).detailsObject();
         if (!owner.equals(sessionFromJson(imported.get("session")))
                 || !originalOpening.equals(ProposalLifecycleCodec.decodeObservation(imported.get("opening")))
                 || !ContinuityJson.same(imported.get("source"), ProposalLifecycleCodec.source(source))
                 || !ContinuityJson.same(whole.get("game_binding"), owner.game().toJson())
-                || !ContinuityJson.same(whole.get(WriterContracts.DRIVER_HISTORY_BASELINE_FIELD), imported.get("full_driver"))
-                || retained.settledDateRaw() != number(imported, "saved_date_raw")
-                || retained.settledCycles() != number(imported, "saved_completed_cycles")) return Optional.empty();
+                || !ContinuityJson.same(whole.get(WriterContracts.DRIVER_HISTORY_BASELINE_FIELD), imported.get("full_driver")))
+            return Optional.empty();
         requireOwner(retained, owner);
         requireSameOwner(originalOpening, current);
+        long importedCycles = number(imported, "saved_completed_cycles");
+        long anchorCycles = importedCycles;
+        long anchorDate = number(imported, "saved_date_raw");
+        var anchor = saved.orElse(null);
+        if (anchor != null) {
+            requireObservedContinuation(originalOpening, anchor.pair().frame());
+            requireObservedBindingNotRegressed(retained, current);
+            var canonicalRevision = StrictJson.integer(whole.get("latest_binding").get("revision"), BigInteger.ZERO, StrictJson.UINT64_MAX);
+            StrictJson.require(current.frame().revision().compareTo(canonicalRevision) >= 0,
+                    "Opening projection regressed its canonical public revision");
+            anchorCycles = anchor.pairCycles();
+            anchorDate = anchor.pair().frame().frame().identity().dateRaw().longValueExact();
+        }
+        if (retained.settledCycles() != anchorCycles || retained.settledDateRaw() != anchorDate) return Optional.empty();
         CycleState cycle = state(retained, owner);
-        long advances = cycle.completedCycles() - cycle.basisCycles();
+        long advances = cycle.completedCycles() - anchorCycles;
         if (cycle.pending().isPresent() || cycle.head().isEmpty() || cycle.originFrame().isPresent()
-                || cycle.episodeOrigin().isPresent() || cycle.basisCycles() != retained.settledCycles()
-                || advances <= 0 || advances > MAX_RECORDS) return Optional.empty();
+                || cycle.episodeOrigin().isPresent() || cycle.basisCycles() != importedCycles
+                || advances < 0 || advances > MAX_RECORDS || (anchor == null && advances == 0)) return Optional.empty();
         requireLegacyPendingClear(retained, cycle);
         ExactRef recordRef = cycle.head().orElseThrow();
         CycleRecord record = load(recordRef);
@@ -1214,6 +1257,11 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         var actionHead = ContinuityActionJournal.recordHead(retained);
         if (actionHead.isEmpty()) return Optional.empty();
         ActionReceipt receipt = archive.loadRecord(actionHead.orElseThrow()).receipt();
+        if (anchor != null && recordRef.equals(anchor.cycleRecord())) {
+            if (advances != 0 || !receipt.equals(anchor.receipt())) return Optional.empty();
+            requireOpeningSaveContinuation(anchor, current);
+            return Optional.of(savedOpeningEvidence(anchor, null));
+        }
         long followingSequence = retained.sequence() + 1;
         ObservationIdentity following = current;
         ImportedOpeningAdvance latestLife = null;
@@ -1221,7 +1269,8 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         for (int visited = 0; visited < MAX_RECORDS; visited++) {
             boolean advance = record.classification() == Classification.ELIGIBLE_ADVANCE;
             boolean controlOnly = record.classification() == Classification.CONTROL_ONLY;
-            if (!record.session().equals(owner) || record.completedCycles() != cycle.basisCycles() + remaining
+            if (!record.session().equals(owner) || record.completedCycles() != anchorCycles + remaining
+                    || (anchor != null && receipt.sequence() <= anchor.sequence())
                     || (!advance && !controlOnly)
                     || (advance && (remaining == 0 || !LifeAdvanceComposite.accepts(receipt.command().operation().value())))
                     || !receipt.command().source().equals(source) || receipt.sequence() >= followingSequence
@@ -1241,7 +1290,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                 if (latestLife == null) latestLife = new ImportedOpeningAdvance(recordRef, record.receipt(), record.semantic());
             }
             if (record.previous().isEmpty()) {
-                if (!advance || remaining != 0
+                if (anchor != null || !advance || remaining != 0
                         || !before.frame().identity().dateRaw().equals(originalOpening.frame().identity().dateRaw()))
                     return Optional.empty();
                 requireSavedContinuation(originalOpening, before);
@@ -1251,10 +1300,33 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
             following = before;
             followingSequence = receipt.sequence();
             recordRef = record.previous().orElseThrow();
+            if (anchor != null && recordRef.equals(anchor.cycleRecord())) {
+                if (remaining != 0) return Optional.empty();
+                requireOpeningSaveContinuation(anchor, following);
+                StrictJson.require(head.digest().equals(same.head().digest()), "opening date evidence changed the actual writer head");
+                return Optional.of(savedOpeningEvidence(anchor, latestLife));
+            }
             record = load(recordRef);
             receipt = archive.loadReceipt(record.receipt());
         }
         return Optional.empty();
+    }
+
+    private static void requireOpeningSaveContinuation(ContinuityBatchJournal.OpeningSaveAnchor anchor,
+            ObservationIdentity following) {
+        var saved = anchor.receipt().applied().orElseThrow().observation().after();
+        requireSavedContinuation(saved, following);
+        StrictJson.require(following.frame().revision().compareTo(saved.frame().revision()) >= 0,
+                "opening date projection regressed the actual SAVE public revision");
+    }
+
+    private static SavedOpeningAdvance savedOpeningEvidence(ContinuityBatchJournal.OpeningSaveAnchor anchor,
+            ImportedOpeningAdvance latestLife) {
+        return new SavedOpeningAdvance(anchor.confirmation(), anchor.receiptRef(), anchor.cycleRecord(), anchor.semantic(), Optional.ofNullable(latestLife));
+    }
+
+    SemanticEvidence openingSavedCycleSemantic(ExactRef record) {
+        return load(record).semantic();
     }
 
     /** Qualify only current ordinary submission; this value cannot serve as a SAVE/cycle proof. */

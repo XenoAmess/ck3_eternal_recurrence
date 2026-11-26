@@ -36,6 +36,7 @@ import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.Resto
 import org.xar.ck3.control.application.lifecycle.LifecycleEpisodeInputs;
 import org.xar.ck3.control.application.lifecycle.LifecycleHistoricalPublication;
 import org.xar.ck3.control.application.checkpoint.CheckpointPair;
+import org.xar.ck3.control.g2.common.G2Source;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
 import org.xar.ck3.control.continuity.ContinuityJson;
 import org.xar.ck3.control.continuity.ContinuityState;
@@ -4742,6 +4743,104 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 && "CONTROL_ONLY".equals(details.path("cycle_record").path("classification").asText());
     }
 
+    record OpeningSaveAnchor(CheckpointPair pair, long pairCycles, ExactRef cycleRecord, ActionReceipt receipt,
+            ExactRef receiptRef, ExactRef confirmation, long sequence, SemanticEvidence semantic) { }
+
+    // A locator is only a search hint. Its original pin, SAVE, receipt and cycle are checked in each writer scope.
+    private record OpeningSaveLocator(CheckpointPair pair, WriterContracts.Pin pin) { }
+    private OpeningSaveLocator openingSaveLocator;
+
+    public Optional<OrdinaryCycleTransitions.OpeningDateEvidence> openingDateEvidence(ContinuityStorePort.Session same,
+            SessionIdentity owner, ObservationIdentity originalOpening, G2Source source, ObservationIdentity current) throws IOException {
+        store.requireSession(same);
+        var head = same.head();
+        var whole = head.state().toJson();
+        if (!whole.hasNonNull(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD)
+                || !whole.hasNonNull(org.xar.ck3.control.continuity.SavedContinuityBootstrap.FIELD))
+            return transitions.importedOpeningAdvance(same, owner, originalOpening, source, current)
+                    .map(OrdinaryCycleTransitions.OpeningDateEvidence.class::cast);
+        return transitions.withLocked(same, () -> {
+            var anchor = readOpeningSaveAnchor(same, head, owner, source);
+            var evidence = transitions.openingDateEvidence(same, owner, originalOpening, source, current, Optional.of(anchor));
+            StrictJson.require(same.head().digest().equals(head.digest()), "Opening projection crossed its actual writer head");
+            return evidence;
+        });
+    }
+
+    private OpeningSaveAnchor readOpeningSaveAnchor(ContinuityStorePort.Session same, WriterContracts.Head head,
+            SessionIdentity owner, G2Source source) throws IOException {
+        var saved = StrictJson.object(head.state().toJson().get(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD),
+                java.util.Set.of("pair", "state"));
+        var pair = CheckpointPairCodec.decode(ContinuityJson.canonical(saved.get("pair")));
+        var branch = saved.get("state");
+        StrictJson.require(OrdinaryCycleTransitions.sessionFromJson(branch.get("session")).equals(owner)
+                && branch.get("pending_receipt").isNull(), "Opening SAVE requires its actual owned and settled cycle");
+        var cycleRecord = ExactRef.fromJson(branch.get("head"));
+        long cycles = StrictJson.integer(branch.get("completed_cycles"), 1, StrictJson.MAX_SAFE_INTEGER);
+        var originals = transitions.restartArchive(same);
+        var receipt = ContinuityActionJournal.lookup(head.state(), pair.saveActionId(), originals)
+                .orElseThrow(() -> new IOException("Opening SAVE has no actual canonical receipt"));
+        StrictJson.require(receipt.command().source().equals(source), "Opening SAVE receipt crossed its actual source");
+
+        var pin = locateOpeningSave(same, head, saved, pair, receipt.sequence());
+        var anchor = same.withHistoricalTransitions(java.util.List.of(pin), edges -> {
+            var edge = edges.getFirst();
+            var details = ContinuityJson.parseObject(edge.details(), ContinuityJson.LEDGER_MAX_BYTES);
+            StrictJson.require(edge.sequence() > receipt.sequence()
+                    && matchesOpeningSave(edge.kind(), details, edge.after().toJson(), saved)
+                    && !saved.equals(edge.before().toJson().get(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD)),
+                    "Opening SAVE must be the actual new confirmation of its retained branch");
+            ContinuityActionJournal.requireHistoricalReceipt(edge.before(), receipt, originals);
+            var semantic = transitions.openingSavedCycleSemantic(cycleRecord);
+            var verified = requireHistoricalConfirmedSave(same, edge, owner, java.util.List.of(receipt), originals,
+                    semantic, cycles, cycleRecord);
+            return new OpeningSaveAnchor(pair, cycles, cycleRecord, verified, originals.receiptReferenceOf(verified),
+                    edge.eventPin().reference(), edge.sequence(), semantic);
+        });
+        openingSaveLocator = new OpeningSaveLocator(pair, pin);
+        return anchor;
+    }
+
+    private WriterContracts.Pin locateOpeningSave(ContinuityStorePort.Session same, WriterContracts.Head head,
+            com.fasterxml.jackson.databind.JsonNode saved, CheckpointPair pair, long receiptSequence) throws IOException {
+        var hint = openingSaveLocator;
+        if (hint != null && hint.pair().equals(pair) && head.documents().contains(hint.pin())) return hint.pin();
+        // An action sequence is only a lower bound on its confirmation. The selected edge is qualified separately.
+        long lower = Math.addExact(receiptSequence, 1);
+        var suffix = canonicalEventPins(same, head).tailMap(lower, true);
+        StrictJson.require(!suffix.isEmpty() && suffix.lastKey() == head.state().sequence()
+                && suffix.size() == head.state().sequence() - lower + 1,
+                "Opening SAVE requires its complete canonical confirmation suffix");
+        for (var pin : suffix.descendingMap().values()) {
+            var candidate = ContinuityJson.parseObject(same.readPinned(pin, ContinuityJson.LEDGER_MAX_BYTES),
+                    ContinuityJson.LEDGER_MAX_BYTES);
+            if (matchesOpeningSave(candidate.path("kind").asText(), candidate.path("details"), candidate.path("after"), saved))
+                return pin;
+        }
+        throw new IOException("Opening SAVE has no exact canonical confirmation for its retained pair");
+    }
+
+    private static boolean matchesOpeningSave(String kind, com.fasterxml.jackson.databind.JsonNode details,
+            com.fasterxml.jackson.databind.JsonNode after, com.fasterxml.jackson.databind.JsonNode saved) {
+        return kind.equals(OrdinaryCycleTransitions.BATCH_KIND)
+                && JournalKind.SAVE_CONFIRMED.name().equals(details.path("boundary").asText())
+                && saved.equals(after.get(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD));
+    }
+
+    private static java.util.TreeMap<Long, WriterContracts.Pin> canonicalEventPins(ContinuityStorePort.Session same,
+            WriterContracts.Head head) throws IOException {
+        var directory = java.nio.file.Path.of(same.persistedHead().path()).toAbsolutePath().normalize()
+                .resolveSibling("ROOT-CONTINUITY-WINDOW-EVENTS");
+        var pins = new java.util.TreeMap<Long, WriterContracts.Pin>();
+        for (var pin : head.documents()) {
+            var path = java.nio.file.Path.of(pin.reference().path()).toAbsolutePath().normalize();
+            var name = path.getFileName().toString();
+            if (directory.equals(path.getParent()) && name.matches("[0-9]{8}\\.json"))
+                pins.put(Long.parseLong(name.substring(0, 8)), pin);
+        }
+        return pins;
+    }
+
     /** Exact canonical SAVE DATA only; no private recovery or live readiness is issued. */
     private ActionReceipt requireHistoricalConfirmedSave(ContinuityStorePort.Session same, WriterContracts.HistoricalTransition edge, SessionIdentity owner, java.util.List<ActionReceipt> actions, org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals, SemanticEvidence completedSemantic, long completedCycles, ExactRef cycleHead) throws IOException {
         var details = ContinuityJson.parseObject(edge.details(), ContinuityJson.LEDGER_MAX_BYTES);
@@ -5189,14 +5288,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     "initial settled recovery full Driver differs from its original entry");
             if(imported) requireImportedSavedOpening(savedMarker,importedOpening,nativeFrame,observation,known,owner);
 
-            var directory=java.nio.file.Path.of(same.persistedHead().path()).toAbsolutePath().normalize()
-                    .resolveSibling("ROOT-CONTINUITY-WINDOW-EVENTS");
-            var pins=new java.util.TreeMap<Long,WriterContracts.Pin>();
-            for(var pin:head.documents()) {
-                var path=java.nio.file.Path.of(pin.reference().path()).toAbsolutePath().normalize();
-                if(directory.equals(path.getParent())&&path.getFileName().toString().matches("[0-9]{8}\\.json"))
-                    pins.put(Long.parseLong(path.getFileName().toString().substring(0,8)),pin);
-            }
+            var pins=canonicalEventPins(same,head);
             var requested=new java.util.ArrayList<WriterContracts.Pin>();
             for(long sequence=1;sequence<=state.sequence();sequence++) {
                 var pin=pins.get(sequence);
