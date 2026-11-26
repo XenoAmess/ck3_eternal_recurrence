@@ -84,4 +84,83 @@ final class CheckpointRestoreSourceCodecTest {
                     SavedAttachmentAuthority.KIND,"restore",pair,wrong,List.of(metadata)));
         }
     }
+    @Test void importedRecoveryBasisPersistsOriginalFileIdsAndIndependentRolesOnlyOnDemand() {
+        var fixture=importedAttachment();
+        var request=fixture.attachment();
+        assertTrue(SavedAttachmentSourceStore.importedRecoveryBasis(request.detailsObject()).isEmpty());
+        byte[] oldDetails=request.details();
+        var durable=SavedAttachmentSourceStore.bindRecoveryBasis(request,fixture.basis());
+        assertArrayEquals(oldDetails,request.details());
+        assertEquals(request.sourceKey(),durable.sourceKey());
+        assertNotEquals(request.identity(),durable.identity());
+        var decoded=SavedAttachmentSourceStore.importedRecoveryBasis(org.xar.ck3.control.continuity.ContinuityJson.parseObject(durable.details(),65536)).orElseThrow();
+        assertEquals(fixture.basis(),decoded);
+        assertEquals("9007199254740993",decoded.readManifest().identity().fileIdDecimal());
+        assertEquals(Instant.parse("2026-11-26T22:05:00Z"),decoded.lifecycleDeadline());
+        assertTrue(durable.evidence().containsAll(decoded.pins().stream().map(WriterContracts.Pin::reference).toList()));
+        assertFalse(durable.evidence().contains(fixture.pair().save().reference()));
+        assertDoesNotThrow(()->SavedAttachmentSourceStore.requireRecoveryBasis(fixture.before(),durable,fixture.pair(),fixture.sources(),decoded,decoded.successor()));
+        assertThrows(IllegalArgumentException.class,()->SavedAttachmentSourceStore.bindRecoveryBasis(durable,decoded));
+    }
+
+    @Test void importedRecoveryBasisRejectsChangedDefaultProducerAndCrossedReadRoles() {
+        var fixture=importedAttachment();
+        var basis=fixture.basis();
+        var durable=SavedAttachmentSourceStore.bindRecoveryBasis(fixture.attachment(),basis);
+        var changed=basis.toJson();changed.set("second_native",basis.firstNative().toJson());
+        assertThrows(IllegalArgumentException.class,()->SavedAttachmentSourceStore.ImportedRecoveryBasis.decode(changed));
+        var crossed=basis.toJson();crossed.set("first_native",basis.secondNative().toJson());crossed.set("second_native",basis.firstNative().toJson());
+        var mislabeled=SavedAttachmentSourceStore.ImportedRecoveryBasis.decode(crossed);
+        assertThrows(IllegalArgumentException.class,()->SavedAttachmentSourceStore.requireRecoveryBasis(fixture.before(),durable,fixture.pair(),fixture.sources(),mislabeled,basis.successor()));
+        var legacy=new SavedAttachmentSourceStore.Sources(SavedCheckpointMaterial.Kind.ORDINARY,fixture.sources().material(),
+                fixture.sources().basis(),fixture.sources().game(),fixture.sources().opening(),fixture.sources().progress(),fixture.sources().restoredNative());
+        assertThrows(IllegalArgumentException.class,()->SavedAttachmentSourceStore.requireRecoveryBasis(fixture.before(),durable,fixture.pair(),legacy,basis,basis.successor()));
+        var missing=new WriterContracts.Request(durable.kind(),durable.details(),fixture.attachment().evidence());
+        assertThrows(IllegalArgumentException.class,()->SavedAttachmentSourceStore.requireRecoveryBasis(fixture.before(),missing,fixture.pair(),fixture.sources(),basis,basis.successor()));
+        var otherGame=new org.xar.ck3.control.application.session.SessionPorts.SessionIdentity(basis.successor().machineId(),
+                basis.departed().game(),basis.successor().sessionId());
+        assertThrows(IllegalArgumentException.class,()->SavedAttachmentSourceStore.requireRecoveryBasis(fixture.before(),durable,fixture.pair(),fixture.sources(),basis,otherGame));
+    }
+
+    private record ImportedAttachmentFixture(org.xar.ck3.control.continuity.ContinuityState before,CheckpointPair pair,
+            SavedAttachmentSourceStore.Sources sources,WriterContracts.Request attachment,SavedAttachmentSourceStore.ImportedRecoveryBasis basis) { }
+
+    private static ImportedAttachmentFixture importedAttachment() {
+        Path root=Path.of("imported-recovery-basis-software").toAbsolutePath();String machine="machine";
+        var departed=new org.xar.ck3.control.application.session.SessionPorts.SessionIdentity(machine,
+                new GameGeneration(50372,new PythonOnlyUInt64(BigInteger.TEN)),"departed");
+        var successor=new org.xar.ck3.control.application.session.SessionPorts.SessionIdentity(machine,
+                new GameGeneration(61127,new PythonOnlyUInt64(BigInteger.ONE)),"successor");
+        var frame=new ObservationIdentity(machine,new GameGeneration(241448,new PythonOnlyUInt64(BigInteger.valueOf(11))),
+                new JointBudgetSelector.ProposalFrame(new JointBudgetSelector.Frame(BigInteger.ONE,BigInteger.ONE,BigInteger.ONE),
+                        "native:1",BigInteger.ONE,"episode"),3);
+        var save=new CheckpointPair.FileWitness(new ExactRef(root.resolve("original.ck3").toString(),94604706,"a".repeat(64)),
+                new FileStatIdentity(BigInteger.valueOf(94604706),"11","1"));
+        var driver=new CheckpointPair.FileWitness(recoveryPin(root,"driver").reference(),new FileStatIdentity(BigInteger.valueOf(17),"12","1"));
+        var nativeSaveAck=recoveryPin(root,"save-ack").reference();
+        var pair=new CheckpointPair(save,driver,frame,"lineage",1,"original-save",nativeSaveAck,Instant.EPOCH);
+        var material=new CheckpointPair.FileWitness(recoveryPin(root,"material").reference(),new FileStatIdentity(BigInteger.valueOf(17),"13","1"));
+        var row=StrictJson.object().put("schema","root.ck3.continuity-window/v1").put("machine_id",machine).put("sequence",58)
+                .put("window_id",1).put("start_date_raw",0).put("target_date_raw",240).put("target_days",10)
+                .put("status","running").put("last_settled_cycles",0).put("last_settled_date_raw",0);
+        var before=org.xar.ck3.control.continuity.ContinuityState.fromJson(row,machine);
+        var importSource=new SavedAttachmentSourceStore.ImportedOrigin(departed,recoveryPin(root,"request").reference(),
+                recoveryPin(root,"entry"),recoveryPin(root,"physical-confirmation"));
+        var second=recoveryPin(root,"second-native");var doc=recoveryPin(root,"doc").reference();
+        var sources=new SavedAttachmentSourceStore.Sources(SavedCheckpointMaterial.Kind.ORDINARY,material,doc,doc,doc,doc,
+                second.reference(),Optional.of(save),Optional.of(importSource));
+        var basis=new SavedAttachmentSourceStore.ImportedRecoveryBasis("restore",Instant.parse("2026-11-26T22:05:00Z"),58,
+                org.xar.ck3.control.continuity.ContinuityJson.digest(row),departed,successor,
+                new ExactRef(root.resolve("staged.ck3").toString(),save.reference().bytes(),save.reference().sha256()),
+                recoveryPin(root,"control"),recoveryPin(root,"transfer-proof"),recoveryPin(root,"read-manifest"),
+                recoveryPin(root,"first-ack"),recoveryPin(root,"first-native"),recoveryPin(root,"second-ack"),second);
+        return new ImportedAttachmentFixture(before,pair,sources,SavedAttachmentSourceStore.attachmentRequest(SavedAttachmentAuthority.KIND,
+                "restore",pair,sources,List.of()),basis);
+    }
+
+    private static WriterContracts.Pin recoveryPin(Path root,String name) {
+        var ref=new ExactRef(root.resolve(name+".json").toString(),17,"e".repeat(64));
+        return new WriterContracts.Pin(ref,new WriterContracts.FileIdentity("1","9007199254740993","3",Instant.EPOCH.toString(),17));
+    }
+
 }

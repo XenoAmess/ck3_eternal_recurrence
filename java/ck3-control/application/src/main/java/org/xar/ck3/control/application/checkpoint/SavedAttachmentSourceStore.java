@@ -84,6 +84,67 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
         }
         List<ExactRef> references(){return List.of(recoveryRequest,targetEntry.reference(),physicalConfirmation.reference());}
     }
+    public static final String RECOVERY_BASIS_DETAIL="java_imported_restore_recovery_basis";
+
+    /** Historical originals retained by the same committed transaction. This value grants no live or private authority. */
+    public record ImportedRecoveryBasis(String requestId,Instant lifecycleDeadline,long predecessorSequence,String predecessorDigest,
+            SessionIdentity departed,SessionIdentity successor,ExactRef stagedLoad,WriterContracts.Pin lifecycleControl,
+            WriterContracts.Pin transferProof,WriterContracts.Pin readManifest,WriterContracts.Pin firstReadAck,
+            WriterContracts.Pin firstNative,WriterContracts.Pin secondReadAck,WriterContracts.Pin secondNative) {
+        public static final String SCHEMA="xar.java-imported-restore-recovery-basis/v1";
+        public ImportedRecoveryBasis {
+            StrictJson.text(requestId);Objects.requireNonNull(lifecycleDeadline);
+            StrictJson.safe(predecessorSequence,1);
+            StrictJson.require(predecessorDigest!=null&&predecessorDigest.matches("[0-9a-f]{64}"),"original restore predecessor digest required");
+            StrictJson.require(departed.machineId().equals(successor.machineId())&&!departed.game().equals(successor.game())
+                    &&!departed.sessionId().equals(successor.sessionId()),"imported restore requires distinct Game and session identities");
+            StrictJson.require(stagedLoad.bytes()>0&&Path.of(stagedLoad.path()).isAbsolute(),"exact staged LOAD required");
+            var pins=List.of(lifecycleControl,transferProof,readManifest,firstReadAck,firstNative,secondReadAck,secondNative);
+            var paths=new java.util.HashSet<Path>();
+            for(var pin:pins){
+                var ref=pin.reference();var path=Path.of(ref.path());
+                StrictJson.require(ref.bytes()>0&&ref.bytes()<=MAX_NATIVE+4&&path.isAbsolute()
+                        &&paths.add(path.normalize()),"bounded distinct original imported recovery artifact paths required");
+            }
+            StrictJson.require(lifecycleControl.reference().bytes()<=65536&&transferProof.reference().bytes()<=65536
+                    &&readManifest.reference().bytes()<=65536,"bounded imported lifecycle, transfer and READ manifest originals required");
+        }
+        public List<WriterContracts.Pin> pins(){return List.of(lifecycleControl,transferProof,readManifest,firstReadAck,firstNative,secondReadAck,secondNative);}
+        public ObjectNode toJson(){
+            var row=StrictJson.object().put("schema",SCHEMA).put("request_id",requestId).put("lifecycle_deadline_utc",lifecycleDeadline.toString())
+                    .put("predecessor_sequence",predecessorSequence).put("predecessor_digest",predecessorDigest);
+            row.set("departed",session(departed));row.set("successor",session(successor));row.set("staged_load",stagedLoad.toJson());
+            row.set("lifecycle_control",lifecycleControl.toJson());row.set("transfer_proof",transferProof.toJson());
+            row.set("read_manifest",readManifest.toJson());row.set("first_read_ack",firstReadAck.toJson());row.set("first_native",firstNative.toJson());
+            row.set("second_read_ack",secondReadAck.toJson());row.set("second_native",secondNative.toJson());return row;
+        }
+        public static ImportedRecoveryBasis decode(JsonNode value){
+            var row=StrictJson.object(value,Set.of("schema","request_id","lifecycle_deadline_utc","predecessor_sequence","predecessor_digest",
+                    "departed","successor","staged_load","lifecycle_control","transfer_proof","read_manifest","first_read_ack","first_native",
+                    "second_read_ack","second_native"));
+            StrictJson.require(SCHEMA.equals(StrictJson.text(row.get("schema"))),"explicit imported restore recovery basis required");
+            return new ImportedRecoveryBasis(StrictJson.text(row.get("request_id")),Instant.parse(StrictJson.text(row.get("lifecycle_deadline_utc"))),
+                    StrictJson.integer(row.get("predecessor_sequence"),1,StrictJson.MAX_SAFE_INTEGER),StrictJson.text(row.get("predecessor_digest")),
+                    session(row.get("departed")),session(row.get("successor")),ExactRef.fromJson(row.get("staged_load")),
+                    WriterContracts.Pin.fromJson(row.get("lifecycle_control")),WriterContracts.Pin.fromJson(row.get("transfer_proof")),
+                    WriterContracts.Pin.fromJson(row.get("read_manifest")),WriterContracts.Pin.fromJson(row.get("first_read_ack")),
+                    WriterContracts.Pin.fromJson(row.get("first_native")),WriterContracts.Pin.fromJson(row.get("second_read_ack")),
+                    WriterContracts.Pin.fromJson(row.get("second_native")));
+        }
+    }
+
+    static WriterContracts.Request bindRecoveryBasis(WriterContracts.Request original,ImportedRecoveryBasis basis){
+        var details=original.detailsObject();
+        StrictJson.require(!details.has(RECOVERY_BASIS_DETAIL),"imported restore basis can be attached only once");
+        details.set(RECOVERY_BASIS_DETAIL,basis.toJson());
+        var evidence=new LinkedHashSet<>(original.evidence());basis.pins().stream().map(WriterContracts.Pin::reference).forEach(evidence::add);
+        return new WriterContracts.Request(original.kind(),metadataBytes(details),List.copyOf(evidence));
+    }
+
+    public static Optional<ImportedRecoveryBasis> importedRecoveryBasis(ObjectNode details){
+        return details.has(RECOVERY_BASIS_DETAIL)?Optional.of(ImportedRecoveryBasis.decode(details.get(RECOVERY_BASIS_DETAIL))):Optional.empty();
+    }
+
     private record ImportedOriginal(ImportedOrigin origin,SavedMaterial original,ImportedSourceRead source) { }
 
     public static final class SavedMaterial implements SavedCheckpointMaterial {
@@ -730,6 +791,14 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
                 &&request.evidence().containsAll(physical?List.of(pair.nativeAckRef(),pair.driver().reference())
                     :List.of(pair.nativeAckRef(),pair.driver().reference(),pair.save().reference())),"writer evidence must include complete exact material/physical/semantic closure");
         byte[] basis=read(sources.basis,MAX_METADATA),game=read(sources.game,MAX_METADATA),opening=read(sources.opening,MAX_METADATA),progress=read(sources.progress,MAX_METADATA);
+        var recovery=importedRecoveryBasis(request.detailsObject());
+        if(recovery.isPresent()) {
+            var original=recovery.orElseThrow();var start=object(FullJsonTree.parse(opening,MAX_METADATA));
+            var successor=new SessionIdentity(StrictJson.text(start.get("machine_id")),GameGeneration.fromJson(start.get("game")),
+                    StrictJson.text(start.get("session_id")));
+            requireRecoveryBasis(predecessor,request,pair,sources,original,successor);
+            for(var pin:original.pins())borrowed.verifyPin(pin);
+        }
         StrictJson.require(FullJsonTree.parse(basis,MAX_METADATA).equals(FullJsonTree.parse(metadataBytes(expectedBasis),MAX_METADATA))
                 &&FullJsonTree.parse(progress,MAX_METADATA).equals(FullJsonTree.parse(metadataBytes(progress(predecessor)),MAX_METADATA)),
                 "original saved frontier and predecessor progress differ from actual producer");
@@ -741,6 +810,21 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
         if(physical)files.verify(pair.save());
         StrictJson.require(currentHead.equals(borrowed.head().digest()),"canonical writer changed during original source loading");
         return new SavedAttachmentAuthority.Loaded(pair,input,material);
+    }
+    static void requireRecoveryBasis(ContinuityState predecessor,WriterContracts.Request request,CheckpointPair pair,
+            Sources sources,ImportedRecoveryBasis original,SessionIdentity successor) {
+        var imported=sources.importedOrigin().orElseThrow(()->new IllegalArgumentException("Committed recovery basis requires explicit imported SAVE material"));
+        var physical=pair.save().reference();var staged=original.stagedLoad();
+        StrictJson.require(SavedAttachmentAuthority.KIND.equals(request.kind())&&original.departed().equals(imported.owner())
+                &&original.successor().equals(successor)&&original.predecessorSequence()==predecessor.sequence()
+                &&original.predecessorDigest().equals(ContinuityJson.digest(predecessor.toJson()))
+                &&original.requestId().equals(StrictJson.text(request.detailsObject().get("evidence_id")))
+                &&original.secondNative().reference().equals(sources.restoredNative()),
+                "Imported recovery basis crossed its original predecessor, departed or successor owner and second READ");
+        StrictJson.require(!Path.of(physical.path()).equals(Path.of(staged.path()))
+                &&physical.bytes()==staged.bytes()&&physical.sha256().equals(staged.sha256())
+                &&original.pins().stream().map(WriterContracts.Pin::reference).allMatch(request.evidence()::contains),
+                "Imported recovery basis requires the distinct original staged LOAD and complete captured Pin closure");
     }
     private ObjectNode opening(RestoreCheckpointService.Request request,RestoreCheckpointService.NativeCandidate actual) {
         var pair=request.pair();var transport=actual.actual().session();var raw=object(FullJsonTree.parse(actual.actual().state().bytes(),MAX_NATIVE));

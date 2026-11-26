@@ -151,6 +151,7 @@ public final class RootRestoreAdapters implements AttachmentPort, PublicationPor
         savedMaterials.requireOwn(request.savedMaterial());request.savedMaterial().requirePhysical(borrowed);
         Attachment physical = coldPrevious!=null&&coldPrevious.loadedReplacement().isPresent()?
                 sources.prepareLoaded(request,actual,saved):savedMaterials.prepare(request, actual, saved);
+        physical=reads.bindImportedRecoveryBasis(physical);
         var details = physical.request().detailsObject().deepCopy(); var delta = details.putObject("driver_snapshot");
         delta.put("expected_version", abandoned.stamp().driverVersion()); delta.put("expected_epoch", abandoned.stamp().episodeEpoch());
         delta.put("next_epoch", seed.episodeEpoch()); delta.put("before_sha256", abandoned.stamp().driverSha256()); delta.put("after_sha256", finalDriver.sha256());

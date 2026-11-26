@@ -218,6 +218,7 @@ public final class RestoreCheckpointService {
         private ReplacementAck replacement;
         private NativeCandidate candidate;
         private IndependentReadPair originalReadPair;
+        private SavedAttachmentSourceStore.ImportedRecoveryBasis recoveryBasis;
         private WriterContracts.Prepared prepared;
         private WriterContracts.Receipt committed;
         private RestoreBinding binding;
@@ -246,6 +247,17 @@ public final class RestoreCheckpointService {
             if (actual == null) throw new IOException("original restore has no retained replacement ACK");
             requireReplacement(actual);
             return actual;
+        }
+        /** Carries the actual same-lock original evidence into the physical attachment before Root adds its Driver delta. */
+        public Attachment bindImportedRecoveryBasis(Attachment physical)throws IOException {
+            requireOriginal(attempt.request);
+            if(attempt.recoveryBasis==null)return physical;
+            if(physical.material()!=attempt.request.savedMaterial()||!attempt.request.pair().equals(SavedAttachmentAuthority.pairFromDetails(physical.request())))
+                throw new IOException("Imported restore basis crossed its original private SAVE material");
+            var request=SavedAttachmentSourceStore.bindRecoveryBasis(physical.request(),attempt.recoveryBasis);
+            var original=physical.input();
+            return new Attachment(request,new SavedContinuityAttachment.Input(original.predecessor(),request.details(),
+                    original.basis(),original.game(),original.opening(),original.progress()),physical.material());
         }
         /** This proves only the current finite read scope of the actual original private attempt. */
         public void requireOriginal(Request exact)throws IOException {
@@ -383,7 +395,15 @@ public final class RestoreCheckpointService {
                         materials.requireOwn(request.savedMaterial());request.savedMaterial().requirePhysical(session);
                         reads.requireOriginal(request);
                         nativeFrames.requireHistoricalPair(session,stage.replacement,stage.originalReadPair);
+                        if(request.savedMaterial() instanceof SavedAttachmentSourceStore.SavedMaterial ordinary&&ordinary.importedOrigin().isPresent()) {
+                            var captured=captureImportedRecoveryBasis(session,stage);
+                            if(stage.recoveryBasis!=null&&!stage.recoveryBasis.equals(captured))
+                                throw new IOException("Original imported restore recovery artifacts changed before attachment");
+                            stage.recoveryBasis=captured;
+                        }
                         Attachment source = attachments.prepare(request, stage.candidate, saved,reads);
+                        if(!SavedAttachmentSourceStore.importedRecoveryBasis(source.request().detailsObject()).equals(Optional.ofNullable(stage.recoveryBasis)))
+                            throw new IOException("Original imported restore recovery artifacts must be included in the same canonical attachment");
                         StrictJson.require(SavedAttachmentAuthority.kinds().contains(source.request().kind())
                                 &&source.material().kind()==request.savedMaterial().kind()&&source.material().witness().equals(request.savedMaterial().witness())
                                 && SavedAttachmentAuthority.pairFromDetails(source.request()).equals(request.pair()), "original attachment kind and exact physical pair required");
@@ -416,6 +436,22 @@ public final class RestoreCheckpointService {
         }catch(IOException|IllegalArgumentException|ArithmeticException failure){
             return new Unknown(request.requestId(),failure.toString());
         }
+    }
+    private static SavedAttachmentSourceStore.ImportedRecoveryBasis captureImportedRecoveryBasis(
+            ContinuityStorePort.Session same,Attempt stage)throws IOException {
+        var request=stage.request;var replacement=stage.replacement;var head=same.head();
+        var transfer=replacement.importedSaveTransfer().orElseThrow(()->new IOException("Imported restore lacks its original transferred LOAD proof"));
+        var old=new SessionIdentity(request.current().observed().machineId(),request.current().observed().game(),request.current().sessionId());
+        var observed=stage.candidate.actual().session();
+        var successor=new SessionIdentity(observed.machineId(),observed.game(),observed.sessionId());
+        var pair=stage.originalReadPair;
+        if(!stage.candidate.originalNativePacket().equals(pair.secondNative()))
+            throw new IOException("Imported attachment original Native packet differs from its actual second READ");
+        return new SavedAttachmentSourceStore.ImportedRecoveryBasis(request.requestId(),request.deadline(),head.state().sequence(),head.digest(),
+                old,successor,transfer.staged().reference(),same.capturePin(replacement.lifecycleEvidence(),65536),
+                same.capturePin(transfer.proof(),65536),same.capturePin(pair.manifest(),65536),
+                same.capturePin(pair.firstAck(),MAX_NATIVE_BYTES+4),same.capturePin(pair.firstNative(),MAX_NATIVE_BYTES+4),
+                same.capturePin(pair.secondAck(),MAX_NATIVE_BYTES+4),same.capturePin(pair.secondNative(),MAX_NATIVE_BYTES+4));
     }
     /** Root calls this again immediately before replacing its controller; stale bindings cannot admit a session. */
     public void requireCurrent(RestoreBinding binding, Instant deadline) throws IOException, InterruptedException {
