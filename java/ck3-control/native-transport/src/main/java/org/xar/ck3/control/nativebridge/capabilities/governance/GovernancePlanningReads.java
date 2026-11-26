@@ -263,7 +263,8 @@ public final class GovernancePlanningReads {
         // Add only a reviewed Full111 bridge that actually contains both Opening producers and the pinned reader/ABI.
         private static final List<DllIdentity> FULL111_PRODUCERS = List.of(
                 new DllIdentity(21_515_776L, "f33eb6d59068ebd21ba78ef43d933222e15427352d2bb206bb60990152963c52"),
-                new DllIdentity(21_523_968L, "db2a814aaa702b322a53e76512b8c80d71fc3249c71c9d31a674a436effaee86"));
+                new DllIdentity(21_523_968L, "db2a814aaa702b322a53e76512b8c80d71fc3249c71c9d31a674a436effaee86"),
+                new DllIdentity(21_568_000L, "18c9272b94fa1a34d8b72a2be0cf23bae41e2756fd84adf536053a3f33677f03"));
         private static final SourcePins FULL111_PINS = new SourcePins(
                 "d31b5b369f4e121009cdb3b941fc362992e8155782ac5a894daafd48c6f87cc9",
                 "6db7725c631d02cbed843b7c0ebf085ac120448cb1719a5b46f9df0831f0f2b8");
