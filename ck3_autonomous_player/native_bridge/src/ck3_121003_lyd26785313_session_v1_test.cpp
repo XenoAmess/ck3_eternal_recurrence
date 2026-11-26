@@ -5,9 +5,15 @@
 #include "ck3_121003_full111_event_read_v1.hpp"
 #include <stdexcept>
 #include <cstring>
+#include <filesystem>
+#include <fstream>
 using namespace xar::ck3_121003::build26785313;
 namespace fixture {
 unsigned observations=0,effects=0;bool uncertain=false,full_read_available=true;
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2
+bool option_visible=true, option_enabled=true, option_native=true, option_changed=false, queue_available=true, still_pending=false;
+int foreground=7;
+#endif
 auto core(){xar::ck3_1210::CoreSnapshotPrefix p;p.clock.date_raw=53144328;p.clock.speed=1;p.clock.paused=true;p.local_player_id=0;p.map_ready=p.has_played_character=p.played_character_alive=true;p.played_character_id=-16777215;return p;}
 auto source(bool modal){LydSource267V1 v;v.kind=LydKind267V1::personal;v.personal.emplace();auto&s=*v.personal;s.resident_available=s.named_root_bound=s.window_visible=s.window_enabled=s.actor_bound=s.is_adding=s.model_materialized=s.slots_complete=s.groups_complete=s.empty_slot_found=s.actual_personal_complete=true;s.native_window_visible=true;s.slot_count=1;s.group_count=1;s.slots.push_back({true,false,{}});s.rows.push_back({1,std::string(kLydPersonalKeys267V1[0]),"lyd.private.fixture",true,false,!modal,true});if(modal){s.blocked_by_visible_modal=true;s.add_modal={true,true,true,false,LydPersonal267V1::reverent_heaven,true,true};}return v;}
 auto ordinary(){
@@ -43,12 +49,46 @@ bool ReadFull111LydEventRaw267V1(const ReadonlyBindings&,const ck3_1210::CoreSna
 bool ReadFull111EventRendererOnOwner267V1(const ReadonlyBindings&,ck3_11906::MainThreadQueryMailboxV1*,
  const ck3_11906::MainThreadQueryTicketV1&,const ck3_11906::MainThreadExecutionStampV1&,void*,
  const LydFrame267V1&,const LydRequest267V1&request,std::uint64_t,Full111EventRendererSource267V1&out,
- bool &entered,bool &cleanup,std::string&reason)noexcept{
+ bool &entered,bool &cleanup,std::string&reason,[[maybe_unused]] Full111EventRendererMaterial267V2 *material)noexcept{
  ++fixture::observations;entered=false;cleanup=true;
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2
+ if(material&&request.instance_id==fixture::foreground){
+  out={fixture::foreground,fixture::core().played_character_id,6,"bookmark.1070",{{4,fixture::option_native,fixture::option_visible,fixture::option_enabled,"Bound",""}}};
+  material->root=0x44;material->runtime=0x45;material->definition=0x46;
+  material->options={{0x50,fixture::option_changed?std::uintptr_t{0x60}:std::uintptr_t{0x51},0x52,4}};
+  return true;
+ }
+#endif
  if(request.instance_id!=1){reason="current111_renderer_expected_foreground_changed";return false;}
  out={1,fixture::core().played_character_id,6,"bookmark.1070",{{4,true,true,false,"Visible",""}}};
  return true;
 }
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2
+namespace lyd_common {
+bool Text(std::uintptr_t address, std::size_t, std::string &out, bool) {
+ out.assign(reinterpret_cast<const char *>(address));return true;
+}
+}
+namespace lyd_raw {
+bool NativeSelect(std::uintptr_t, std::uintptr_t, bool &entered, bool &clean) noexcept {
+ entered=true;clean=!fixture::uncertain;++fixture::effects;return clean;
+}
+}
+#include "ck3_121003_full111_event_option_raw_v2.inc"
+bool ReadFull111EventQueueOnOwner267V2(const ReadonlyBindings&,ck3_11906::MainThreadQueryMailboxV1*,
+ const ck3_11906::MainThreadQueryTicketV1&,const ck3_11906::MainThreadExecutionStampV1&,void*,
+ const Full111EventOptionRequest267V2 &request,std::uint64_t,ck3_1210::CoreSnapshotPrefix &actual,Full111EventQueue267V2 &queue) noexcept {
+ if(!fixture::queue_available) return false;
+ actual=fixture::core();queue=fixture::still_pending?Full111EventQueue267V2{{8,request.target.instance_id},true}:Full111EventQueue267V2{{},false};return true;
+}
+LydRawCall267V1 SelectFull111RenderedOptionOnOwner267V2(const ReadonlyBindings&,ck3_11906::MainThreadQueryMailboxV1*,
+ const ck3_11906::MainThreadQueryTicketV1&,const ck3_11906::MainThreadExecutionStampV1&,void*,const LydFrame267V1&,
+ const Full111EventOptionRequest267V2&,std::uint64_t,const Full111EventRendererMaterial267V2::Option &option,
+ const Full111EventRendererMaterial267V2&) noexcept {
+ ReadonlyBindings bindings;bindings.exact_image_admitted=true;
+ return option.model==0x51?CallFull111StockOption267V2(bindings,option.model):LydRawCall267V1{};
+}
+#endif
 void TokenizeLydRaw267V1(LydRaw267V1&,std::uint64_t,std::uint64_t){}
 bool SameLydRawForLease267V1(const LydRaw267V1&a,const LydRaw267V1&b)noexcept{return a==b;}
 bool LydRawAdmissible267V1(const LydRaw267V1&r,const LydRequest267V1&q)noexcept{return LydPublicAdmissible267V1(r.source,q);}
@@ -93,7 +133,16 @@ void VerifyQueueWitness(){
  require(!full111_event_queue::Capture(bindings,game_address,later),"empty queue became an event proof");
 }
 }
-int main(){using namespace fixture;VerifyQueueWitness();LydSession267V1 session;auto mailbox=std::make_unique<xar::ck3_11906::MainThreadQueryMailboxV1>();mailbox->offline_fixture=false;mailbox->permitted_executor_quinquevigintary=&ExecuteLydOnOwner267V1;xar::ck3_11906::MainThreadExecutionStampV1 stamp;stamp.thread_id=7;stamp.pump_epoch=11;stamp.paused=true;unsigned ids=0;const auto deadline=Wall()+60000;
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2
+#include "ck3_121003_full111_event_option_test_v2.inc"
+#endif
+int main([[maybe_unused]] int argc,[[maybe_unused]] char **argv){using namespace fixture;
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2
+ if(argc==3&&std::string_view(argv[1])=="--emit-option-wire") { EmitOptionWire(argv[2]);return 0; }
+ if(argc==3&&std::string_view(argv[1])=="--validate-option-request") return ValidateOptionWire(argv[2]);
+ VerifyStockOptionOwner();VerifyStockOptionRefusals();VerifyStockRuntimeQueue();effects=0;uncertain=false;
+#endif
+ VerifyQueueWitness();LydSession267V1 session;auto mailbox=std::make_unique<xar::ck3_11906::MainThreadQueryMailboxV1>();mailbox->offline_fixture=false;mailbox->permitted_executor_quinquevigintary=&ExecuteLydOnOwner267V1;xar::ck3_11906::MainThreadExecutionStampV1 stamp;stamp.thread_id=7;stamp.pump_epoch=11;stamp.paused=true;unsigned ids=0;const auto deadline=Wall()+60000;
  const auto request=[&](LydAction267V1 action,std::uint64_t connection){LydContext267V1 q;q.session=&session;q.mailbox=mailbox.get();q.connection_generation=connection;q.ticket.sequence=17;q.request.action=action;q.request.expected=core();q.request.personal=LydPersonal267V1::reverent_heaven;q.request.deadline_unix_ms=deadline;const auto id="fixture-"+std::to_string(++ids);std::copy(id.begin(),id.end(),q.request.request_id.begin());q.request.request_id_size=static_cast<std::uint8_t>(id.size());ArmLydDeadline267V1(q);return q;};
  stamp.game_state=0x4000;
  auto observed_event=request(LydAction267V1::query_events,21);

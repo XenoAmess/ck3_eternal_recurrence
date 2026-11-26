@@ -1,4 +1,4 @@
-#include "xar_bridge/ck3_121003_lyd26785313_v1.hpp"
+#include "xar_bridge/ck3_121003_full111_event_option_v2.hpp"
 #include "xar_bridge/ck3_121003_full_profile111.hpp"
 #include <algorithm>
 #include <charconv>
@@ -297,4 +297,5 @@ std::string SerializeFull111EventRendererResult267V1(std::string_view id,const L
  else String(j.data,r.reason.empty()?"current111_renderer_source_unavailable":r.reason);
  j.data+="}}";return j.data;
 }
+#include "ck3_121003_full111_event_option_wire_v2.inc"
 }

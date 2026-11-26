@@ -17218,10 +17218,15 @@ void RunConnectedSession(
                 xar::ck3_121003::build26785313::kLydEventQueryIndex267V1]
 #if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1
              ||step==xar::ck3_121003::build26785313::kFull111EventRendererStep267V1
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2
+             ||std::find(xar::ck3_121003::build26785313::kFull111EventOptionSteps267V2.begin(),
+                         xar::ck3_121003::build26785313::kFull111EventOptionSteps267V2.end(),step)!=
+                         xar::ck3_121003::build26785313::kFull111EventOptionSteps267V2.end()
+#endif
 #endif
             )){
           connected=write_frame(pipe,xar::ck3_121003::build26785313::DispatchLydRequest267V1(
-              game,state.connection_generation,request_id,step,incoming.payload,g_main_thread_query_mailbox_v1));
+              game,state.connection_generation,request_id,step,incoming.payload,g_main_thread_query_mailbox_v1,state.state_revision));
           early_step_dispatched=true;
         }
 #endif

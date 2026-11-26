@@ -549,6 +549,11 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
 #if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1
   if(step==ck3_121003::build26785313::kFull111EventRendererStep267V1)
    return ck3_121003::build26785313::LydStepEnabled267V1(actual,step);
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2
+  const auto &event_option_steps=ck3_121003::build26785313::kFull111EventOptionSteps267V2;
+  if(std::find(event_option_steps.begin(),event_option_steps.end(),step)!=event_option_steps.end())
+   return ck3_121003::build26785313::LydStepEnabled267V1(actual,step);
+#endif
 #endif
   if(std::find(ck3_121003::build26785313::kLydSteps267V1.begin(),ck3_121003::build26785313::kLydSteps267V1.end(),step)!=ck3_121003::build26785313::kLydSteps267V1.end())return ck3_121003::build26785313::LydStepEnabled267V1(actual,step);
 #endif

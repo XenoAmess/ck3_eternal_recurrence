@@ -5,6 +5,9 @@
 #include <limits>
 #include <mutex>
 #include <windows.h>
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2
+#include "ck3_121003_full111_event_option_state_v2.hpp"
+#endif
 namespace xar::ck3_121003::build26785313 {namespace {
 std::uint64_t Wall()noexcept{const auto t=std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();return t>0?static_cast<std::uint64_t>(t):0;}
 [[maybe_unused]]bool Time(const LydContext267V1&q)noexcept{const auto t=Wall();return t&&t<q.request.deadline_unix_ms&&q.monotonic_deadline_ms&&GetTickCount64()<q.monotonic_deadline_ms;}
@@ -24,7 +27,11 @@ std::uint64_t Wall()noexcept{const auto t=std::chrono::duration_cast<std::chrono
   Full111EventRendererSource267V1 renderer;
   bool entered=false;
   const bool good=ReadFull111EventRendererOnOwner267V1(q.bindings,q.mailbox,q.ticket,stamp,&q,
-      frame,q.request,q.monotonic_deadline_ms,renderer,entered,q.result.cleanup_known,reason);
+      frame,q.request,q.monotonic_deadline_ms,renderer,entered,q.result.cleanup_known,reason
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2
+      ,&q.renderer_material
+#endif
+  );
   q.native_observation_entered=q.native_observation_entered||entered;
   if(!good){q.result.reason=reason;return false;}
   q.result.renderer=std::move(renderer);
@@ -47,10 +54,17 @@ std::uint64_t Wall()noexcept{const auto t=std::chrono::duration_cast<std::chrono
  return b.action==LydAction267V1::query_decisions;
 }
 }
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2
+#include "ck3_121003_full111_event_option_owner_v2.inc"
+#endif
 struct LydSession267V1::State{
  struct Lease{LydFrame267V1 frame;LydRaw267V1 raw;LydRequest267V1 request;std::uint64_t query=0,connection=0,mono=0;bool consumed=false;};
  struct Claim{std::uint64_t sequence=0;std::string id;std::uintptr_t global=0,jomini=0;std::int32_t actor=-1;};
  std::atomic_bool unknown{false};std::mutex mutex;std::uint64_t generation=GetTickCount64()?GetTickCount64():1,query_sequence=0,claim_sequence=0;
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2
+ full111_event_effect::State event_option;
+ std::optional<RendererEvidence267V2> event_renderer;
+#endif
  std::optional<Lease>latest;std::optional<LydSelectionAssociation267V1>pending;std::uint64_t pending_connection=0;std::vector<Claim>claims;
 };
 LydSession267V1::LydSession267V1():state_(std::make_unique<State>()){}
@@ -63,6 +77,15 @@ bool ExecuteLydInner267V1(LydContext267V1&q,[[maybe_unused]]const ck3_11906::Mai
  q.result.decision=q.request.decision;q.result.personal=q.request.personal;q.result.event_role=q.request.event_role;q.result.instance_id=q.request.instance_id;q.result.reason="current_lyd_default_off";
 #if defined(XAR_CK3_ENABLE_121003_26785313_LYD_V1) && XAR_CK3_ENABLE_121003_26785313_LYD_V1
  try{using S=LydStatus267V1;const auto reject=[&](S status,const char*why){q.result.status=status;q.result.reason=why;return true;};
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2
+  if(q.event_option_request){
+   if(!q.session||!q.full111_ordinary_events_only||!q.full111_event_renderer)
+    return reject(S::unavailable,"current111_original_event_option_owner_unavailable");
+   auto &state=*q.session->state_;
+   std::scoped_lock lock(state.mutex);
+   return ExecuteFull111EventOption267V2(q,s,state.event_option,state.event_renderer,state.unknown);
+  }
+#endif
   if(q.full111_ordinary_events_only&&q.request.action!=LydAction267V1::query_events)
    return reject(S::unavailable,"current111_ordinary_event_query_only");
   const bool request_valid=q.full111_event_renderer
@@ -83,6 +106,9 @@ bool ExecuteLydInner267V1(LydContext267V1&q,[[maybe_unused]]const ck3_11906::Mai
     if(!Time(q))return reject(S::expired,"lyd_original_pending_selection_deadline_expired");
    }
    if(!q.full111_ordinary_events_only)state.latest.reset();
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2
+   if(q.full111_event_renderer)state.event_renderer.reset();
+#endif
    const auto before=frame;LydRaw267V1 raw;if(!Observe(q,frame,s,state.pending,raw))return failed();
    if(!Frame(q,s,frame)||!SameFrame(before,frame)){
     if(q.full111_ordinary_events_only){q.result.source_available=false;q.result.source.reset();q.result.renderer.reset();}
@@ -94,6 +120,15 @@ bool ExecuteLydInner267V1(LydContext267V1&q,[[maybe_unused]]const ck3_11906::Mai
     LydSession267V1::State::Lease lease{frame,raw,q.request,sequence,q.connection_generation,q.monotonic_deadline_ms,false};
     state.latest=std::move(lease);
    }
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2
+   if(q.full111_event_renderer&&q.published_revision&&q.result.renderer&&q.renderer_material.runtime){
+    Full111EventOptionLineage267V2 lineage;
+    lineage.source_revision=q.published_revision;lineage.renderer_request_id=q.request.id();
+    lineage.renderer_provider_generation=state.generation;lineage.renderer_query_sequence=sequence;
+    state.event_renderer=RendererEvidence267V2{{std::move(lineage),frame.core,EventOptionOwner267V2(q,s),
+        q.request.deadline_unix_ms,q.monotonic_deadline_ms},frame,std::move(q.renderer_material),*q.result.renderer};
+   }
+#endif
    q.result.provider_generation=state.generation;q.result.query_sequence=sequence;q.result.status=S::available;q.result.reason.clear();return true;
   }
   if(!state.latest)return reject(S::stale_source,"lyd_original_private_query_unavailable");auto&lease=*state.latest;

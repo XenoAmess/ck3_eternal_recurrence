@@ -50,6 +50,27 @@ int main(){try{
  require(LydStepEnabled267V1(full,kLydSteps267V1[kLydEventQueryIndex267V1])==full111_enabled,"renderer hid legacy event read");
  const xar::game::AdapterDescriptor core{kAdapterId,kGameVersion,kExecutableSha256,"xar_checkpoint",renderer_caps};
  require(!LydStepEnabled267V1(core,kFull111EventRendererStep267V1),"core profile acquired renderer");
+ constexpr bool option_enabled=
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2
+ true;
+#else
+ false;
+#endif
+ for(std::size_t i=0;i<kFull111EventOptionSteps267V2.size();++i){
+  const auto &step=kFull111EventOptionSteps267V2[i];
+  full.capabilities=renderer_caps;
+  require(!LydStepEnabled267V1(full,step),"renderer DATA capability grants a v2 operation");
+  const std::array caps{kFull111EventOptionCapabilities267V2[i]};
+  full.capabilities=caps;
+  require(LydStepEnabled267V1(full,step)==option_enabled,"actual exact v2 compiled route differs");
+  require(!LydStepEnabled267V1(full,kFull111EventOptionSteps267V2[(i+1)%kFull111EventOptionSteps267V2.size()]),
+      "one v2 capability authorized another operation");
+  auto wrong=full;wrong.adapter_id=kAdapterId;
+  require(!LydStepEnabled267V1(wrong,step),"Core profile gained a v2 operation");
+  wrong=full;wrong.executable_sha256="wrong-executable";
+  require(!LydStepEnabled267V1(wrong,step),"unknown executable gained a v2 operation");
+ }
+ full.capabilities=renderer_caps;
  full.executable_sha256="wrong-executable";
  require(!LydStepEnabled267V1(full,kFull111EventRendererStep267V1),"renderer accepted a wrong executable");
  require(!LydStepEnabled267V1(full,kLydSteps267V1[kLydEventQueryIndex267V1]),"Full111 wrong executable");
@@ -60,6 +81,9 @@ int main(){try{
 // The tested StepEnabled symbol itself is linked unchanged; no substitute body.
 namespace xar::game {bool GameAdapter::supports_step(std::string_view)const noexcept{std::abort();}}
 namespace xar::ck3_121003::build26785313 {
+bool ParseFull111EventOptionRequest267V2(std::string_view,Full111EventOptionRequest267V2&)noexcept{std::abort();}
+std::string SerializeFull111EventOptionResult267V2(std::string_view,Full111EventOptionAction267V2,
+ const LydResult267V1&,const Full111EventOptionResult267V2&){std::abort();}
 bool ParseLydRequest267V1(std::string_view,LydRequest267V1&)noexcept{std::abort();}
 bool ParseFull111LydEventRequest267V1(std::string_view,LydRequest267V1&)noexcept{std::abort();}
 std::string SerializeFull111LydEventResult267V1(std::string_view,const LydResult267V1&){std::abort();}

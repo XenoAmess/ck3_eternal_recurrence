@@ -112,11 +112,13 @@ struct Full111RenderedOption267V1 {
  std::int32_t authored_option_index = -1;
  bool native_can_select = false, widget_visible = false, widget_enabled = false;
  std::string text, disabled_reason;
+ friend bool operator==(const Full111RenderedOption267V1 &, const Full111RenderedOption267V1 &) = default;
 };
 struct Full111EventRendererSource267V1 {
  std::int32_t instance_id = 0, recipient_character_id = -1, authored_option_count = 0;
  std::string definition_key;
  std::vector<Full111RenderedOption267V1> options;
+ friend bool operator==(const Full111EventRendererSource267V1 &, const Full111EventRendererSource267V1 &) = default;
 };
 struct LydResult267V1{
  LydAction267V1 action=LydAction267V1::query_decisions;LydStatus267V1 status=LydStatus267V1::unavailable;

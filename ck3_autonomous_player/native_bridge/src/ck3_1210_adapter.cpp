@@ -21,7 +21,7 @@
 #include <chrono>
 #endif
 #if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1
-#include "xar_bridge/ck3_121003_lyd26785313_v1.hpp"
+#include "xar_bridge/ck3_121003_full111_event_option_v2.hpp"
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1
 #include "xar_bridge/ck3_121003_rite_doctrine26785313_v1.hpp"
@@ -565,6 +565,11 @@ const AdapterDescriptor &Ck3_121003Full111AdapterDescriptor() noexcept {
 #if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1
     ,ck3_121003::full111::kOrdinaryEventCapabilityV1
     ,ck3_121003::build26785313::kFull111EventRendererCapability267V1
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2
+    ,ck3_121003::build26785313::kFull111EventOptionCapabilities267V2[0]
+    ,ck3_121003::build26785313::kFull111EventOptionCapabilities267V2[1]
+    ,ck3_121003::build26785313::kFull111EventOptionCapabilities267V2[2]
+#endif
 #endif
 #if defined(XAR_CK3_ENABLE_26785313_OPENING_READONLY56)
     ,ck3_1210::kOpeningScopeCapability26785313,ck3_1210::kOpeningCurrentCapability26785313

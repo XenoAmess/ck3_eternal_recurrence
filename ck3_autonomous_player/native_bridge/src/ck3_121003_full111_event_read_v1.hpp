@@ -12,7 +12,7 @@ struct Sample {
   std::array<std::uintptr_t,kMaximumRows> rows{};
   friend bool operator==(const Sample&,const Sample&)=default;
 };
-bool Capture(const ReadonlyBindings&,std::uintptr_t owner_game,Sample&) noexcept;
+bool Capture(const ReadonlyBindings&,std::uintptr_t owner_game,Sample&, bool allow_empty=false) noexcept;
 
 inline bool Matches(const Sample&queue,std::uintptr_t owner_game,std::int32_t played_character,
  const LydRaw267V1&raw)noexcept{

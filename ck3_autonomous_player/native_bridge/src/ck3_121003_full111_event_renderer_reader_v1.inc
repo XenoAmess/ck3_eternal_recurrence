@@ -47,7 +47,7 @@ bool ReadFull111EventRendererOnOwner267V1(const ReadonlyBindings &bindings,
  ck3_11906::MainThreadQueryMailboxV1 *mailbox, const ck3_11906::MainThreadQueryTicketV1 &ticket,
  const ck3_11906::MainThreadExecutionStampV1 &stamp, void *invocation_context,
  const LydFrame267V1 &frame, const LydRequest267V1 &request, std::uint64_t mono,
- Full111EventRendererSource267V1 &result, bool &native_read_entered, bool &cleanup_known, std::string &reason) noexcept {
+ Full111EventRendererSource267V1 &result, bool &native_read_entered, bool &cleanup_known, std::string &reason, Full111EventRendererMaterial267V2 *material) noexcept {
  result = {}; native_read_entered = false; cleanup_known = true;
  reason = "current111_renderer_original_owner_unavailable";
  Full111OrdinaryEventWitnessV1 witness;
@@ -110,6 +110,16 @@ bool ReadFull111EventRendererOnOwner267V1(const ReadonlyBindings &bindings,
    source.options.push_back({row.authored_index, row.native_valid, row.widget_visible,
        row.widget_enabled, text->text, text->disabled_reason});
   }
+  if (material) {
+   Full111EventRendererMaterial267V2 bound;
+   bound.game_data=queue.game_data; bound.queue_items=queue.items;
+   bound.controller=selected->controller; bound.root=selected->root; bound.data=selected->data;
+   bound.runtime=selected->runtime; bound.definition=selected->definition; bound.grid=stable->grid;
+   bound.queue_rows.assign(queue.rows.begin(),queue.rows.begin()+queue.count);
+   for (const auto &row : stable->renderer_order)
+    bound.options.push_back({row.placement.widget,row.option,row.context_thunk,row.authored_index});
+   *material=std::move(bound);
+  }
   result = std::move(source);
   reason.clear();
   return true;
@@ -120,3 +130,7 @@ bool ReadFull111EventRendererOnOwner267V1(const ReadonlyBindings &bindings,
   return false;
  }
 }
+
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2
+#include "ck3_121003_full111_event_option_reader_v2.inc"
+#endif

@@ -1,4 +1,5 @@
-#include "xar_bridge/ck3_121003_lyd26785313_v1.hpp"
+#include "xar_bridge/ck3_121003_full111_event_option_v2.hpp"
+#include <algorithm>
 #include "xar_bridge/ck3_121003_personal_gold26785313_v2.hpp"
 #include "xar_bridge/game_adapter.hpp"
 #include "xar_bridge/ck3_1210_adapter.hpp"
@@ -13,8 +14,10 @@ bool GameAdapter::supports(std::string_view capability) const noexcept {
   // These versioned read protocols have producers only in the exact Florin
   // adapter. A copied capability string cannot qualify another descriptor.
   const auto &identity=descriptor();
+  const auto &event_option_caps=ck3_121003::build26785313::kFull111EventOptionCapabilities267V2;
   if((capability==ck3_121003::full111::kOrdinaryEventCapabilityV1 ||
-      capability==ck3_121003::build26785313::kFull111EventRendererCapability267V1) &&
+      capability==ck3_121003::build26785313::kFull111EventRendererCapability267V1 ||
+      std::find(event_option_caps.begin(),event_option_caps.end(),capability)!=event_option_caps.end()) &&
       !IsCk3_121003Full111Descriptor(identity))return false;
   if(capability==ck3_121003::build26785313::kPersonalGoldCapabilityV2 &&
       !IsCk3_121003Core26785313Descriptor(identity))return false;

@@ -190,6 +190,9 @@ struct PersonalModelDiagnostic {
  if(!s.resources){reason="lyd_existing_typed_resource_snapshot_unavailable";return false;}LydReadbackSource267V1 v;v.resources=s.resources;out.source.readback=v;return Fresh(b,core,s,mono);
 }
 } // namespace lyd_raw
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2
+#include "ck3_121003_full111_event_option_raw_v2.inc"
+#endif
 #endif
 bool VerifyLydImage267V1([[maybe_unused]]std::uintptr_t image)noexcept{
 #if defined(XAR_CK3_ENABLE_121003_26785313_LYD_V1) && XAR_CK3_ENABLE_121003_26785313_LYD_V1
