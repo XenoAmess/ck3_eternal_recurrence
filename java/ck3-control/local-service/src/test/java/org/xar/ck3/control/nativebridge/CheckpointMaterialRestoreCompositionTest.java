@@ -329,7 +329,7 @@ final class CheckpointMaterialRestoreCompositionTest {
         }
     }
     @Test void changedOriginalFileIdentityStillRefusesAfterAnActualAttachment()throws Exception {
-        try(var h=actualSaved("attachment-original-identity")){
+        try(var h=actualSaved("attachment-original-identity",true)){
             var candidate=actualReplacementPacket(h,"identity");
             h.f.actual.writer.locked(same->{
                 var material=h.request.savedMaterial();var attachment=h.f.materials.prepare(h.request,candidate,material.savedDriver());
@@ -347,7 +347,7 @@ final class CheckpointMaterialRestoreCompositionTest {
     }
 
     @Test void actualOrdinaryBasisUsesSharedPreflightBeforeAnyReplacementAndRejectsStaleDataFrontiers()throws Exception {
-        try(var h=actualSaved("ordinary-preflight")){
+        try(var h=actualSaved("ordinary-preflight",true)){
             var candidate=actualReplacementPacket(h,"preflight");
             h.f.actual.writer.locked(same->{
                 String head=same.head().digest();var actual=h.f.materials.prepare(h.request,candidate,h.request.savedMaterial().savedDriver());
