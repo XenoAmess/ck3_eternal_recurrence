@@ -284,3 +284,7 @@ ref as part of delivery rather than as a later cleanup project.
 最后分支的旧开局夹具只能生成拜占庭 S0。公开帝国恢复仍缺实际付费操作和独立实机回执、后继 S1 物理存档及对应头衔持有者状态。旧注册表将两条恢复 case 设为 ready，但两条操作合同均仍缺存档身份和日期。主线保留已验的离线消费者，现有原生持有者查询只接受 int32 范围。旧容量与执行工具依赖仓库外冻结类。独立 recorder 样例以原源码通过 40 项离线检查，主线现行录制路径和原回执格式消费者已覆盖其有用行为，未发现需要新增该工具的生产调用。DES 旧 reactor 改动已由根 `pom.xml` 的正式按模块构建覆盖，发布 workflow 的步骤名称用现行投影术语。
 
 本地 common-dir 审计起始为 66 条分支，43 条有工作树。另退役未检出的 `holy-order-source-condition30-first-20261006`。8 个提交补丁相同，剩余 mapper 提交除 CMake include 位置外等价于 `700406a4d6`，该 include 在绿色主线中已核对。退役后余 65 条。原 tip 已在 `D:/ck3-state/ck3-master-integration-20261126/local-residue-4bfc/holy-order-source-condition30-first.bundle`，SHA-256 为 `0f77bce1340a13869fcda64e067eb89c8f2d7183960293d2a812bf17a2e9e08f`。Z 盘用户工作树上的两个提交已通过补丁等价核对，工作树有未提交修改。[已覆盖主线 CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39957553119) [DES 专项 CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/45801837726)
+
+最后一条 DES 继承人分支的原始 28 个提交已纳入主线的[可恢复归档](handover/archives/dynastic-heir-stock-input-20261025.md)。
+已验证从 GitHub 取得单个主线前置提交即可在独立仓库恢复原 tip 和源码树。
+主线继续使用已验收的离线合同。公开帝国恢复的 S1 实机证据和旧编排的冻结类型依赖按原状态记录。
