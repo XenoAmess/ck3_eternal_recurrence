@@ -183,6 +183,7 @@ final class JournalHistoricalProfile79DataTest {
                             events.add("archive.loadRecord");
                             throw recordFailure;
                         }
+                        if (method.isDefault()) return java.lang.reflect.InvocationHandler.invokeDefault(proxy, method, args);
                         throw new AssertionError("unexpected software archive operation: " + name);
                     }));
             var transitions = new OrdinaryCycleTransitions(archive,
