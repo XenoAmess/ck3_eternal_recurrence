@@ -29,6 +29,7 @@ public final class SaveStream {
     private RecordContext streamingContext;
     private boolean complete;
     private final Map<ScopeKind, Set<String>> census = new LinkedHashMap<>();
+    private final Map<ScopeKind, Set<String>> vacantIds = new LinkedHashMap<>();
     private final Set<ScopeKind> seen = new LinkedHashSet<>();
     private final List<Scope> scopes = new ArrayList<>();
     private final List<ProjectionScope> projections = new ArrayList<>();
@@ -54,7 +55,10 @@ public final class SaveStream {
         if ((streaming == null) != (sink == null)) throw new IllegalArgumentException("streaming table and sink must be supplied together");
         this.streaming = streaming; this.streamingSink = sink;
         if (streaming != null) for (NativeId id : streaming.selectedIds()) streamingSelected.add(id.value());
-        for (TableSelection table : selection.tables()) census.put(table.kind(), new LinkedHashSet<>());
+        for (TableSelection table : selection.tables()) {
+            census.put(table.kind(), new LinkedHashSet<>());
+            vacantIds.put(table.kind(), new LinkedHashSet<>());
+        }
         for (ProjectionSelection projection : selection.projections()) matches.put(projection.name(), 0);
     }
     public Projection read() throws IOException {
@@ -107,6 +111,7 @@ public final class SaveStream {
             if (key.equals("=")) throw failure("unexpected assignment");
             if (key.equals("{")) {
                 if (streaming != null && path.equals(streaming.path())) throw failure("anonymous streaming table entry");
+                if (isSelectedTable(path)) throw failure("anonymous native table entry");
                 block(child(path, "[]"), true); continue;
             }
             if ("=".equals(lexer.peek())) {
@@ -123,6 +128,7 @@ public final class SaveStream {
                 if (value.equals("{")) {
                     List<String> nested = child(path, key); enter(nested); block(nested, true);
                 } else {
+                    observeSelectedScalar(path, key, value);
                     observeDiscriminator(path, key, value);
                     if (path.isEmpty()) {
                     diagnostic(key); diagnostic(value);
@@ -131,6 +137,7 @@ public final class SaveStream {
                     }
                 }
             } else if (streaming != null && path.equals(streaming.path())) throw failure("unassigned streaming table atom");
+            else if (isSelectedTable(path)) throw failure("unassigned native table atom: " + key);
             else if (path.isEmpty() && !(rootKeys.isEmpty() && (key.startsWith("SAV") || key.equals("CK3txt")))) throw failure("unassigned root atom: " + key);
         }
         if (braced) {
@@ -173,17 +180,36 @@ public final class SaveStream {
             if (path.equals(table.path()) && !seen.add(table.kind())) throw failure("duplicate selected table: " + path);
             if (path.size() != table.path().size() + 1 || !path.subList(0, path.size() - 1).equals(table.path())) continue;
             String id = path.getLast();
-            try { new NativeId(id); } catch (IllegalArgumentException invalid) { throw failure("invalid native table identity at " + path); }
+            NativeId nativeId;
+            try { nativeId = new NativeId(id); } catch (IllegalArgumentException invalid) { throw failure("invalid native table identity at " + path); }
             Set<String> ids = census.get(table.kind());
-            if (!ids.add(id)) throw failure("duplicate native ID in table: " + path);
-            if (ids.size() > 200000) throw failure("table identity cap exceeded");
-            if (table.ids().contains(new NativeId(id))) start(new Capture(table.kind(), path, null, 0));
+            Set<String> slots = vacantIds.get(table.kind());
+            if (slots.contains(id) || !ids.add(id)) throw failure("duplicate native ID in table: " + path);
+            if (ids.size() + slots.size() > 200000) throw failure("table identity cap exceeded");
+            if (table.ids().contains(nativeId)) start(new Capture(table.kind(), path, null, 0));
         }
         for (ProjectionSelection projection : selection.projections()) if (projection.path().equals(path)) {
             int occurrence = matches.get(projection.name());
             if (occurrence >= projection.maxMatches()) throw failure("projection match cap exceeded: " + projection.name());
             matches.put(projection.name(), occurrence + 1);
             start(new Capture(null, path, projection, occurrence));
+        }
+    }
+    private boolean isSelectedTable(List<String> path) {
+        return selection.tables().stream().anyMatch(table -> table.path().equals(path));
+    }
+    private void observeSelectedScalar(List<String> path, String key, String value) throws IOException {
+        for (TableSelection table : selection.tables()) {
+            List<String> tablePath = table.path();
+            if (tablePath.size() == path.size() + 1 && tablePath.getLast().equals(key)
+                    && tablePath.subList(0, path.size()).equals(path)) throw failure("native table must be a block: " + tablePath);
+            if (!tablePath.equals(path)) continue;
+            try { new NativeId(key); } catch (IllegalArgumentException invalid) { throw failure("invalid native empty-slot identity: " + key); }
+            if (!value.equals("none")) throw failure("unknown native table scalar: " + child(path, key));
+            Set<String> slots = vacantIds.get(table.kind());
+            Set<String> ids = census.get(table.kind());
+            if (ids.contains(key) || !slots.add(key)) throw failure("duplicate native ID in table: " + child(path, key));
+            if (ids.size() + slots.size() > 200000) throw failure("table identity cap exceeded");
         }
     }
     private void start(Capture capture) throws IOException {
