@@ -376,11 +376,11 @@ public final class SessionController {
         var state=new ControllerRestartState(identity,batchPrefix,nextSequence,usedBatches,unsavedGameplayActions,savedPair,ledgerHead,
                 eligibleSinceSave,dirty,quarantined,localUnresolved,totalCommittedDays,completedAnalysisIds,stopRequested.get());
         var known=restartDriver.withFrozenFacts(same,frozen->{
-            StrictJson.require(frozen.activeActionId().isEmpty()&&frozen.actions().actions().stream().allMatch(ActionReceipt::settled)
-                &&frozen.state() instanceof org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known,"active or unresolved Driver/action cannot restart");
+            StrictJson.require(frozen.activeActionId().isEmpty()
+                &&frozen.state() instanceof org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known,"active or incomplete Driver/action cannot restart");
             return (org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known)frozen.state();
         });
-        // Leave the immutable Driver read scope before the actual metadata commit; the same writer lock remains held.
+        // The journal verifies the current action blockers under this same writer lock, after leaving the immutable Driver read scope.
         return ((ContinuityBatchJournal)journal).captureCleanRestart(same,new CapturedRestart(this,state),known);
     }
     /** Only the new actual Root owner can consume the original writer's private canonical admission. */

@@ -91,8 +91,29 @@ public final class DriverStateAssembler implements FrozenDriverSnapshotSupplier.
     }
     private record ImportedRestoreProjection(ContinuityActionJournal.ImportedRestoreRetirement retirement,
             ActionPorts.OutcomeArchive archive) { }
-    private record ImportedProjectionScope(DriverSnapshotFacts.State facts, ActionJournal.Snapshot snapshot,
-            ActionReceipt retainedResume) { }
+    private static final class ImportedProjectionScope {
+        private final ImportedRestoreProjection binding;
+        private final ContinuityStorePort.Session session;
+        private final DriverSnapshotFacts.State facts;
+        private final ActionJournal.Snapshot snapshot;
+        private Optional<ActionReceipt> retained;
+
+        private ImportedProjectionScope(ImportedRestoreProjection binding, ContinuityStorePort.Session session,
+                DriverSnapshotFacts.State facts, ActionJournal.Snapshot snapshot) {
+            this.binding = binding; this.session = session; this.facts = facts; this.snapshot = snapshot;
+        }
+
+        private boolean permits(DriverSnapshotFacts.State actual, ActionJournal.Snapshot raw, ActionReceipt action) {
+            if (facts != actual || snapshot != raw || !binding.retirement().matches(action)) return false;
+            try {
+                // Resolve at most once for this actual frozen callback, and only if projection needs the old receipt.
+                if (retained == null) {
+                    retained = binding.retirement().retainedResume(session, snapshot, binding.archive().withSession(session));
+                }
+                return retained.filter(action::equals).isPresent();
+            } catch (IOException failure) { throw new UncheckedIOException(failure); }
+        }
+    }
     private static final ThreadLocal<ImportedProjectionScope> importedProjection = new ThreadLocal<>();
     private ImportedRestoreProjection importedRestore;
 
@@ -109,12 +130,9 @@ public final class DriverStateAssembler implements FrozenDriverSnapshotSupplier.
         ImportedRestoreProjection binding;
         synchronized (this) { binding = importedRestore; }
         if (binding == null || same == null) return presentationScope(snapshot, work);
-        var source = binding.archive().withSession(same);
-        var retired = binding.retirement().retainedResume(same, snapshot, source);
-        if (retired.isEmpty()) return presentationScope(snapshot, work);
         var current = facts.locked(state -> state);
         var previous = importedProjection.get();
-        importedProjection.set(new ImportedProjectionScope(current, snapshot, retired.orElseThrow()));
+        importedProjection.set(new ImportedProjectionScope(binding, same, current, snapshot));
         try { return presentationScope(snapshot, work); }
         finally { if (previous == null) importedProjection.remove(); else importedProjection.set(previous); }
     }
@@ -1719,8 +1737,7 @@ public final class DriverStateAssembler implements FrozenDriverSnapshotSupplier.
                     && "save-checkpoint".equals(action.command().operation().value()) && action.ack().filter(ack -> ack.nativeOk()).isPresent();
             if (!action.settled()) {
                 var imported = importedProjection.get();
-                if (imported != null && imported.facts() == state && imported.snapshot() == durable
-                        && imported.retainedResume().equals(action)) continue;
+                if (imported != null && imported.permits(state, durable, action)) continue;
                 boolean currentParent=allowedParent.filter(action.command()::equals).isPresent()
                         && activeActionId.filter(action.command().actionId()::equals).isPresent()
                         && (action.state() instanceof ActionState.IntentDurable || action.state() instanceof ActionState.Submitting

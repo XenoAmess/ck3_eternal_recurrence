@@ -913,8 +913,16 @@ public final class DriverBootstrap {
                     List<ActionReceipt> cleanActuals=new ArrayList<>();
                     List<DriverActionHistoryCodec.Source> cleanSources=new ArrayList<>();
                     String coverageHead=cleanRestart.isPresent()?borrowed.head().digest():null;
+                    var importedRestart = cleanRestart.isPresent()
+                            ? ContinuityActionJournal.admittedImportedRestartRetirement(borrowed, cleanRestart.orElseThrow(), lease.snapshot(), archive)
+                            : Optional.<ContinuityActionJournal.ImportedRestoreRetirement>empty();
                     for(var actual:lease.snapshot().actions()) {
-                        if(!actual.settled()) { unresolved=true;gaps.add("unreconciled_action:"+actual.command().actionId());continue; }
+                        if (!actual.settled()) {
+                            if (importedRestart.filter(retirement -> retirement.matches(actual)).isEmpty()) {
+                                unresolved = true; gaps.add("unreconciled_action:" + actual.command().actionId());
+                            }
+                            continue;
+                        }
                         if(actual.command().expectation() instanceof CommandExpectation.OperatorRebind operator) {
                             if(actual.command().origin().game().equals(stamp.game())
                                     &&actual.command().sessionId().equals(seed.expectedSession().sessionId())
@@ -952,13 +960,14 @@ public final class DriverBootstrap {
                     var repository=new DriverFactsRepository(known);
                     var producer=new NativeDriverObservationProducer(repository,transport,source,wire -> archive.preserveMaterial(RawJson.fullMaterial(wire)));
                     var authority=new DriverStateAssembler(actions,repository,producer);
+                    importedRestart.ifPresent(retirement -> authority.bindImportedRestoreProjection(retirement, archive));
                     if(retirementVerifier.isPresent()) {
                         var sessions=currentSession.orElseThrow();
                         authority.bindReservedLifeRetirementVerifier(retirementVerifier.orElseThrow(),archive,()->{
                             try{return sessions.current();}catch(IOException failure){throw new UncheckedIOException(failure);}
                         });
                     }
-                    DriverStateSnapshot projected=retirementVerifier.isPresent()
+                    DriverStateSnapshot projected=retirementVerifier.isPresent() || importedRestart.isPresent()
                             ?authority.withFrozenFacts(borrowed,frozen->DriverStateAssembler.project(frozen.state(),frozen.actions(),frozen.activeActionId()))
                             :DriverStateAssembler.project(known,lease.snapshot(),Optional.empty());
                     if(projected instanceof DriverStateSnapshot.Incomplete incomplete)

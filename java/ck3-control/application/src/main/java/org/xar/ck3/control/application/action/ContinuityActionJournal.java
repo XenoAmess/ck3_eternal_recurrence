@@ -13,6 +13,7 @@ import org.xar.ck3.control.application.checkpoint.CheckpointPair;
 import org.xar.ck3.control.application.checkpoint.CheckpointPairCodec;
 import org.xar.ck3.control.application.checkpoint.SavedAttachmentAuthority;
 import org.xar.ck3.control.application.checkpoint.SavedAttachmentSourceStore;
+import org.xar.ck3.control.application.session.ContinuityBatchJournal.CleanRestartAdmission;
 import org.xar.ck3.control.application.session.OrdinaryCycleTransitions;
 import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
 import org.xar.ck3.control.continuity.ContinuityJson;
@@ -264,13 +265,19 @@ public final class ContinuityActionJournal implements ActionJournal {
         private final long attachmentSequence;
         private final String attachmentDigest;
         private final ActionReceipt retiredResume;
+        private final boolean beforeCycleRebindAllowed;
 
-        private ImportedRestoreRetirement(SessionIdentity owner, WriterContracts.Head attached, ActionReceipt retiredResume) {
+        private ImportedRestoreRetirement(SessionIdentity owner, WriterContracts.Head attached, ActionReceipt retiredResume,
+                boolean beforeCycleRebindAllowed) {
             this.owner = owner;
             this.attachmentSequence = attached.state().sequence();
             this.attachmentDigest = attached.digest();
             this.retiredResume = retiredResume;
+            this.beforeCycleRebindAllowed = beforeCycleRebindAllowed;
         }
+
+        /** Cheap identity test, followed by retainedResume under the original writer when needed. */
+        public boolean matches(ActionReceipt receipt) { return retiredResume.equals(receipt); }
 
         public Optional<ActionReceipt> retainedResume(ContinuityStorePort.Session same, ActionJournal.Snapshot snapshot,
                 ActionPorts.OutcomeArchive archive) throws IOException {
@@ -284,8 +291,10 @@ public final class ContinuityActionJournal implements ActionJournal {
             if (whole.has(WriterContracts.ORDINARY_IMPORTED_CYCLE_ORIGIN_FIELD)) {
                 if (blockingUnresolved(same, head, archive, owner, snapshot.actions()).contains(retiredResume))
                     return Optional.empty();
-            } else if (attachmentSequence != head.state().sequence() || !attachmentDigest.equals(head.digest())) {
-                same.requireDomainImportContinuation(attachmentSequence, attachmentDigest);
+            } else {
+                if (!beforeCycleRebindAllowed) return Optional.empty();
+                if (attachmentSequence != head.state().sequence() || !attachmentDigest.equals(head.digest()))
+                    same.requireDomainImportContinuation(attachmentSequence, attachmentDigest);
             }
             StrictJson.require(head.digest().equals(same.head().digest()), "imported Driver projection changed its actual writer head");
             return Optional.of(retiredResume);
@@ -330,7 +339,22 @@ public final class ContinuityActionJournal implements ActionJournal {
         var unresolved = snapshot.actions().stream().filter(receipt -> !receipt.settled()).toList();
         var retired = retiredResumeFromImportedPrefix(originalActionHead, archive, departed, pair, snapshot.actions(), unresolved);
         StrictJson.require(retired.isPresent(), "committed imported restore lost the original retired RESUME fact");
-        return retired.map(receipt -> new ImportedRestoreRetirement(owner, current, receipt));
+        return retired.map(receipt -> new ImportedRestoreRetirement(owner, current, receipt, true));
+    }
+
+    /** A new worker may reuse the historical disposition only after its private clean ticket is admitted. */
+    public static Optional<ImportedRestoreRetirement> admittedImportedRestartRetirement(ContinuityStorePort.Session same,
+            CleanRestartAdmission admission, ActionJournal.Snapshot snapshot, ActionPorts.OutcomeArchive archive) throws IOException {
+        var head = same.head();
+        if (!head.state().toJson().has(WriterContracts.ORDINARY_IMPORTED_CYCLE_ORIGIN_FIELD)) return Optional.empty();
+        admission.requireCurrent(same);
+        StrictJson.require(head.state().sequence() == snapshot.ledgerSequence() && head.digest().equals(snapshot.headSha256()),
+                "clean Driver restart requires its actual current raw action snapshot");
+        var owner = admission.controller().owner();
+        var blockers = blockingUnresolved(same, head, archive.withSession(same), owner, snapshot.actions());
+        StrictJson.require(blockers.isEmpty(), "clean Driver restart retains another unresolved original");
+        return snapshot.actions().stream().filter(receipt -> !receipt.settled()).findFirst()
+                .map(retired -> new ImportedRestoreRetirement(owner, head, retired, false));
     }
 
     private static Optional<ActionReceipt> importedRetiredResume(ExactRef tombstoneRef, ActionPorts.OutcomeArchive archive,

@@ -1619,7 +1619,9 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         StrictJson.require(cycle.pending().isEmpty(),"unfinished ordinary cycle cannot restart");
         ObjectNode whole=head.state().toJson();
         for(String key:List.of("pending_cycle","pending_checkpoint"))StrictJson.require(!whole.has(key)||whole.get(key).isNull(),"original pending cycle/SAVE cannot restart");
-        for(ActionReceipt row:ContinuityActionJournal.receipts(head.state(),archive))StrictJson.require(row.settled(),"unresolved original action remains retained without replay");
+        var raw = ContinuityActionJournal.receipts(head.state(), archive);
+        StrictJson.require(ContinuityActionJournal.blockingUnresolved(same, head, archive, owner, raw).isEmpty(),
+                "unresolved original action remains retained without replay");
     }
     /** Pure old-branch preflight before a new operator native attempt. Actual Root source qualification remains mandatory. */
     public void requireOperatorBefore(ContinuityStorePort.Session same,SessionIdentity owner,
