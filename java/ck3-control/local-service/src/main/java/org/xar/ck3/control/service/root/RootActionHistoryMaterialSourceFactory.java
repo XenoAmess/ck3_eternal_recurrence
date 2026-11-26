@@ -27,6 +27,7 @@ import org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedBoolean;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedInteger;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.FieldKey;
 import org.xar.ck3.control.contracts.ExactRef;
+import org.xar.ck3.control.nativebridge.CurrentFull111EventOption;
 
 /** The actual installed domain material adapters. No handler, query, recorder or writer is constructed here. */
 public final class RootActionHistoryMaterialSourceFactory {
@@ -569,6 +570,8 @@ public final class RootActionHistoryMaterialSourceFactory {
             }
             // Generic ordinary effects carry an explicit durable NativeEffectEvidence compatible original.
             Optional<NativeEffectEvidence.Original> nativeOriginal=NativeEffectEvidence.loadIfPresent(actual,originals,RootAdvanceInfrastructureFactory.freshFrameLoader(context.frameLoader()));
+            if (full111StockSelection(op) && actual.applied().isPresent())
+                require(nativeOriginal.isPresent(), "Full111 selection history requires its verified original Native effect");
             if(nativeOriginal.isPresent()) {
                 var original=nativeOriginal.orElseThrow();var evidence=independent(actual,originals);
                 frame(evidence,original.frames().before().originalEvidence(),NativeEffectEvidence.basis(original.frames().before()).driverFacts());
@@ -576,7 +579,7 @@ public final class RootActionHistoryMaterialSourceFactory {
                 for(var read:original.independentReads())evidence.add(new Evidence(EvidenceKind.READ,originals.readReferenceOf(read)));
                 original.supportingMaterials().forEach(ref->evidence.add(new Evidence(EvidenceKind.MATERIAL,ref)));
                 ExactRef result=originals.materialReferenceOf(original.compatibleResult());evidence.add(new Evidence(EvidenceKind.MATERIAL,result));
-                return legacy(op,result,original.compatibleResult(),evidence,producers);
+                return recordNativeResult(actual,result,original.compatibleResult(),evidence,producers);
             }
             if(!composite.isEmpty()&&composite.getFirst().handler() instanceof RouteContactComposite) {
                 RawJson raw=new RawJson(DriverJson.encode(RouteContactEvidenceArchive.compatibleResult(actual,originals)));
@@ -665,6 +668,31 @@ public final class RootActionHistoryMaterialSourceFactory {
         var archived=bindings.archivedBindings().stream().filter(candidate->candidate.operation().equals(effect.operation())).findFirst().orElse(null);
         return archived!=null&&archived==replay&&archived.definitionSource().equals(family.verifierSource());
     }
+    private static boolean full111StockSelection(OperationKey operation) {
+        return operation.value().equals(CurrentFull111EventOption.Action.SELECT.step());
+    }
+
+    /** Material policy for an already replayed original. It does not qualify an effect or perform a read. */
+    static OriginalMaterial recordNativeResult(ActionReceipt actual, ExactRef result, RawJson body,
+            LinkedHashSet<Evidence> evidence, LinkedHashSet<ExactRef> producers) {
+        var command = actual.command();
+        var operation = command.operation();
+        if (!full111StockSelection(operation)) return legacy(operation,result,body,evidence,producers);
+        require(actual.state() instanceof ActionState.Settled settled
+                        && settled.settlement() instanceof ActionState.Applied applied
+                        && applied.observation().provenance() instanceof ObservationProvenance.Query
+                        && RootFull111EventOptionEffects.SCHEMA.equals(command.expected().observerSchema()),
+                "Full111 selection history requires its applied, independently observed queue result");
+        Obj original = DriverJson.object(body.bytes(),DriverJson.MAX_NATIVE_BYTES);
+        require(new Text(RootFull111EventOptionEffects.RESULT_SCHEMA).equals(original.get("schema"))
+                        && new Text(operation.value()).equals(original.get("step"))
+                        && new Bool(true).equals(original.get("event_queue_absent")),
+                "Full111 selection history requires its original v2 queue absence result");
+        require(evidence.contains(new Evidence(EvidenceKind.MATERIAL,result)),
+                "Full111 selection history requires its exact original result reference");
+        return only(CanonicalReason.DIRECT_API_WITHOUT_LEGACY_RECORDER,evidence,producers);
+    }
+
     private static Legacy legacy(OperationKey op,ExactRef result,RawJson body,LinkedHashSet<Evidence> evidence,LinkedHashSet<ExactRef> producers){
         Obj original=DriverJson.object(body.bytes(),DriverJson.MAX_NATIVE_BYTES);
         return new Legacy(recording(op,original),Optional.of(result),Optional.empty(),List.copyOf(evidence),List.copyOf(producers));
