@@ -76,6 +76,22 @@ final class RootBlockedPendingIncidentTest {
                 assertOfflineScan(journal, configured, origin, batch, rejected.originalRead(), ticket.incidentId());
                 var reopened = EpisodeIncidentJournal.open(configured, origin, journal.episodeReference());
                 assertEquals(List.of(batch), RootIncidentRuntime.retainedOriginalBatches(List.of(reopened)));
+                var later = fixture.later(current, true);
+                var laterFrame = RootIncidentRuntime.replayPendingUiOriginal(later,
+                        new DriverFrameEvidenceLoader(new DriverObservationAssembler()), archive);
+                assertTrue(laterFrame.observedAt().isAfter(original.observedAt()));
+                var tail = RootIncidentRuntime.scanCurrentObservation(reopened, laterFrame, archive);
+                var tailBatch = tail.batch().orElseThrow();
+                assertNotEquals(batch.batchId(), tailBatch.batchId());
+                assertEquals(batch.capturedRefs(), tailBatch.capturedRefs());
+                var laterIndex = StrictJson.parse(Files.readAllBytes(Path.of(tail.indexRef().path())));
+                assertEquals("xar.episode-incident-scan/v3", laterIndex.path("schema").textValue());
+                var progressRef = ExactRef.fromJson(laterIndex.get("scan_observation_basis"));
+                var progress = RootIncidentRuntime.originalObservationBasis(laterFrame);
+                assertEquals(archive.materialReferenceOf(progress), progressRef);
+                assertTrue(tail.originals().contains(progressRef));
+                assertFalse(scan.originals().contains(progressRef), "origin-only sweep has no later-frame input");
+                assertEquals(List.of(batch), RootIncidentRuntime.retainedOriginalBatches(List.of(reopened)));
                 assertEquals(ticket, RootIncidentRuntime.capturePendingUiBlockedOriginal(journal, blocked, original, archive,
                         receipt.request().deadline()), "same original blocked card/read is idempotent");
                 assertEquals(head, same.head().digest()); return null;

@@ -215,6 +215,11 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
     public final AtomicInteger sourceChecks = new AtomicInteger();
     public final AtomicInteger nestedPlanningReads = new AtomicInteger();
     public final AtomicInteger collectorLocks = new AtomicInteger();
+    @FunctionalInterface interface CheckpointTailInputs {
+        Optional<NativeReadinessCollector.CheckpointTailInputs> collect(ContinuityStorePort.Session borrowed,
+                DriverObservationAssembler.Complete frame) throws IOException;
+    }
+    final AtomicReference<CheckpointTailInputs> checkpointTailInputs = new AtomicReference<>((same, frame) -> Optional.empty());
     public final AtomicInteger intentBarrierChecks = new AtomicInteger();
     public final AtomicInteger stopAtIntentBarrier = new AtomicInteger();
     public final AtomicInteger preparationClaimConsumptions = new AtomicInteger();
@@ -243,6 +248,10 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
 
     public ActionWriterIntegrationFixture(Path root, boolean loseAck) throws IOException {
         this(root, loseAck, false);
+    }
+    ActionWriterIntegrationFixture(Path root, boolean loseAck, Duration validity) throws IOException {
+        this(root, loseAck, false, false, Optional.empty(), List.of(), List.of(),
+                ignored -> List.of(), Clock.systemUTC(), SoftwareReadGuardContext::guard, validity);
     }
     public ActionWriterIntegrationFixture(Path root, boolean loseAck, boolean council) throws IOException {
         this(root, loseAck, council, false);
@@ -589,14 +598,23 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
                     });
                 },
                 (borrowed, frame, known, received, deadline) -> new NativeReadinessCollector.ExecutableCapabilities(executable, bridgeCapabilities, Optional.empty()),
-                (borrowed, frame, known, received, deadline) -> {
-                    var request = new PlanningReadRequest(frame.identity(), source, SESSION, QUERY, new OpportunityJson.Obj(Map.of()), deadline);
-                    var result = readRef.get().read(borrowed, readContract, request);
-                    assertInstanceOf(PlanningReadResult.Known.class, result,
-                            () -> "nested query must borrow the outer actual readiness frame; actual result: "
-                                    + (result instanceof PlanningReadResult.Unavailable<?> unavailable ? unavailable.reason() : String.valueOf(result)));
-                    var knownRead = (PlanningReadResult.Known<?>) result; lastNestedRead.set(knownRead.receipt()); nestedPlanningReads.incrementAndGet();
-                    return new NativeReadinessCollector.PlanningInputs(executable, bridgeCapabilities, Optional.empty(), List.of(), Optional.empty(), Optional.empty(), false, Optional.empty());
+                new NativeReadinessCollector.PlanningInputsPort() {
+                    @Override public NativeReadinessCollector.PlanningInputs collect(ContinuityStorePort.Session borrowed,
+                            DriverObservationAssembler.Complete frame, DriverSnapshotFacts.Known known,
+                            OpportunityJson.Obj received, Instant deadline) throws IOException {
+                        var request = new PlanningReadRequest(frame.identity(), source, SESSION, QUERY, new OpportunityJson.Obj(Map.of()), deadline);
+                        var result = readRef.get().read(borrowed, readContract, request);
+                        assertInstanceOf(PlanningReadResult.Known.class, result,
+                                () -> "nested query must borrow the outer actual readiness frame; actual result: "
+                                        + (result instanceof PlanningReadResult.Unavailable<?> unavailable ? unavailable.reason() : String.valueOf(result)));
+                        var knownRead = (PlanningReadResult.Known<?>) result; lastNestedRead.set(knownRead.receipt()); nestedPlanningReads.incrementAndGet();
+                        return new NativeReadinessCollector.PlanningInputs(executable, bridgeCapabilities, Optional.empty(), List.of(), Optional.empty(), Optional.empty(), false, Optional.empty());
+                    }
+                    @Override public Optional<NativeReadinessCollector.CheckpointTailInputs> collectCheckpointTail(
+                            ContinuityStorePort.Session borrowed, DriverObservationAssembler.Complete frame,
+                            DriverSnapshotFacts.Known known, OpportunityJson.Obj received, Instant deadline) throws IOException {
+                        return checkpointTailInputs.get().collect(borrowed, frame);
+                    }
                 }, new NativeReadiness.Policy(false, false, Optional.of(BigInteger.valueOf(73)), Duration.ZERO, false), readinessValidity, Clock.systemUTC());
         collectorRef.set(collector);
         collector.bindObservationSession(writer::requireSession);

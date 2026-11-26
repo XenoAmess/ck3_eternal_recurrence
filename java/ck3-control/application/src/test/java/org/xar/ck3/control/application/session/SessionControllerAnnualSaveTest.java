@@ -17,12 +17,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import org.junit.jupiter.api.Test;
 import org.xar.ck3.control.application.action.*;
 import org.xar.ck3.control.application.checkpoint.*;
 import org.xar.ck3.control.application.planning.*;
 import org.xar.ck3.control.application.planning.campaign.M7CampaignPolicies.RealmLifecycle;
 import org.xar.ck3.control.contracts.*;
+import org.xar.ck3.control.contracts.offline.OfflineEventAnalysisContract.BatchRequest;
 import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector;
 import org.xar.ck3.control.g2.common.G2Source;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.*;
@@ -54,6 +56,81 @@ final class SessionControllerAnnualSaveTest {
         assertSaveAdmission(due, f, 2);
         assertEquals(f.baseline, controller.savedPair().orElseThrow());
         assertEquals(0, due.committedSavedDays(), "admission is not a confirmed SAVE");
+    }
+
+    @Test void underYearTailUsesItsOwnFrameForTheReportAndBatchFinish() {
+        Fixture f = new Fixture(true);
+        f.narrowTail = true;
+        f.tailRevisionChange = true;
+        var progressedIncident = new BatchRequest("tail-progress-incident", REF, List.of(REF));
+        f.tailAnalysis = Optional.of(progressedIncident);
+        SessionController controller = f.controller();
+
+        var report = controller.runBatch(limits("under-year-tail", 1));
+
+        assertEquals(BatchReport.Terminal.TURN_BOUND, report.terminal(), report::detail);
+        assertEquals(2, f.fullObservations, "ordinary plan and post-RETAIN still use full Ready");
+        assertEquals(1, f.tailObservations);
+        assertEquals(0, f.saveAdmissions);
+        assertTrue(report.dirtySinceSave());
+        assertEquals(1, report.eligibleAdvancesSinceSave());
+        assertEquals(f.baseline, report.lastSavedPair().orElseThrow());
+        var frame = f.request(BASE.plusSeconds(10)).before();
+        var boundary = controller.lastBatchBoundary().orElseThrow();
+        assertEquals(3, boundary.observationCount());
+        assertEquals(frame, boundary.lastObservation().orElseThrow());
+        assertEquals(JournalKind.BATCH_FINISHED, f.journal.getLast().kind());
+        assertEquals(frame, f.journal.getLast().frame().orElseThrow());
+        assertEquals(List.of(progressedIncident), f.queuedAnalyses);
+        assertEquals(List.of(progressedIncident.batchId()), report.pendingAnalysisBatchIds());
+    }
+
+    @Test void sameSessionNameCannotAdmitAnotherGameAndItsPhysicalBaseline() {
+        var predecessor = new GameGeneration(122, GAME.creationFiletime());
+        Fixture f = new Fixture(true, predecessor);
+        f.foreignTail = true;
+        SessionController controller = f.controller();
+
+        var report = controller.runBatch(limits("wrong-owner-tail", 1));
+
+        assertEquals(BatchReport.Terminal.INTERNAL_FAILURE, report.terminal(), report::detail);
+        assertTrue(report.detail().contains("requires its original owned Game"), report::detail);
+        assertEquals(1, f.tailObservations);
+        assertEquals(0, f.saveAdmissions);
+        assertEquals(GAME, controller.lastBatchBoundary().orElseThrow().lastObservation().orElseThrow().game());
+        assertEquals(f.baseline, report.lastSavedPair().orElseThrow());
+    }
+
+    @Test void currentTailCrossesTheYearAfterAnUnderYearAfterCycle() {
+        Fixture f = new Fixture(true);
+        f.advanceRaw = 8759;
+        f.narrowTail = true;
+        f.tailRawAdjustment = 1;
+
+        var report = f.controller().runBatch(limits("tail-just-crossed-year", 1));
+
+        assertSaveAdmission(report, f, 1);
+        assertEquals(1, f.tailObservations);
+        assertEquals(3, f.fullObservations);
+        assertEquals(f.baseline, report.lastSavedPair().orElseThrow());
+    }
+
+    @Test void terminalTailIsDeferredWithoutUsingThePriorOrdinaryFrameAsSaveAuthority() {
+        Fixture f = new Fixture(true);
+        f.terminalAtTail = true;
+        SessionController controller = f.controller();
+
+        var report = controller.runBatch(limits("terminal-during-tail", 1));
+
+        assertEquals(BatchReport.Terminal.CHECKPOINT_DEFERRED, report.terminal(), report::detail);
+        assertEquals(2, f.fullObservations);
+        assertEquals(1, f.tailObservations);
+        assertEquals(0, f.saveAdmissions);
+        assertTrue(report.dirtySinceSave());
+        assertTrue(report.lastTerminalObservation().isPresent());
+        assertEquals(JournalKind.BATCH_DEFERRED, f.journal.getLast().kind());
+        assertTrue(f.journal.getLast().frame().isEmpty());
+        assertEquals(f.baseline, report.lastSavedPair().orElseThrow());
     }
 
     @Test void exactYearAndOvershootAreAlsoCheckedAtTheOrdinaryDirtyBatchTail() {
@@ -127,10 +204,16 @@ final class SessionControllerAnnualSaveTest {
         final boolean withBaseline;
         final CheckpointPair baseline;
         long dateRaw = SAVED_DATE, advanceRaw = 24, revision = 1;
-        int actions, saveAdmissions;
+        int actions, saveAdmissions, fullObservations, tailObservations, tailRawAdjustment;
+        boolean narrowTail, tailRevisionChange, terminalAtTail, foreignTail;
+        Optional<BatchRequest> tailAnalysis = Optional.empty();
+        final List<BatchRequest> queuedAnalyses = new ArrayList<>();
         boolean unknown;
         CheckpointEligibility eligibility = CheckpointEligibility.SAFE, afterEligibility = CheckpointEligibility.SAFE;
         Fixture(boolean withBaseline) {
+            this(withBaseline, GAME);
+        }
+        Fixture(boolean withBaseline, GameGeneration savedGame) {
             this.withBaseline = withBaseline;
             var save = new ExactRef("D:/annual-fixture/save.ck3", 1, "b".repeat(64));
             var driver = new ExactRef("D:/annual-fixture/Driver.json", 1, "c".repeat(64));
@@ -138,7 +221,8 @@ final class SessionControllerAnnualSaveTest {
                     new FileStatIdentity(BigInteger.ONE, "9007199254740993", "134000000000000001")),
                     new CheckpointPair.FileWitness(driver,
                     new FileStatIdentity(BigInteger.ONE, "9007199254740995", "134000000000000003")),
-                    request(BASE.plusSeconds(10)).before(), "annual-lineage", 1, "saved-original", REF, BASE);
+                    new ObservationIdentity(OWNER.machineId(), savedGame, request(BASE.plusSeconds(10)).before().frame(), 1),
+                    "annual-lineage", 1, "saved-original", REF, BASE);
         }
         PlanningRequest request(Instant deadline) {
             var before = new ObservationIdentity(OWNER.machineId(), GAME,
@@ -237,11 +321,46 @@ final class SessionControllerAnnualSaveTest {
                 @Override public PlanningDisposition afterPlanning(PlanningRequest request, PlanningResult planned) { return new Unchanged("annual DATA fixture"); }
                 @Override public ExecutionDisposition afterExecution(ActionReceipt receipt) { return new Unchanged("annual DATA fixture"); }
             };
-            ObservationPort observer = (owner, until) -> {
-                var request = request(until); return new Ready(request, eligibility, Optional.empty(), Optional.of(semantic(request)));
+            ObservationPort observer = new ObservationPort() {
+                @Override public Observation observe(SessionIdentity owner, Instant until) {
+                    fullObservations++;
+                    var request = request(until);
+                    return new Ready(request, eligibility, Optional.empty(), Optional.of(semantic(request)));
+                }
+                @Override public Observation observeCheckpointTail(SessionIdentity owner, ObservationIdentity lastSaved,
+                        Instant readinessDeadline, Instant planningDeadline) {
+                    tailObservations++;
+                    if (terminalAtTail) {
+                        var actual = new LifecycleIdentity(OWNER.machineId(), GAME, OWNER.sessionId(), BigInteger.ONE,
+                                new LifecycleIdentity.Subject(BigInteger.valueOf(29829), "annual-episode", 1, 2),
+                                new LifecycleIdentity.Frame("terminal-tail", BigInteger.valueOf(revision + 1),
+                                        BigInteger.valueOf(revision + 1), BigInteger.valueOf(dateRaw), true, false),
+                                new LifecycleIdentity.Null(), LifecycleIdentity.TerminalReason.MISSING,
+                                new LifecycleIdentity.Evidence(REF, baseline.save().reference(), baseline.driver().reference(),
+                                        new ExactRef("D:/annual-fixture/original-driver.json", 1, "d".repeat(64)),
+                                        new ExactRef("D:/annual-fixture/source-proof.json", 1, "e".repeat(64))), BASE);
+                        return new TerminalReady(actual, new TerminalWait("actual terminal needs its own decision"));
+                    }
+                    if (tailRevisionChange) revision++;
+                    dateRaw += tailRawAdjustment;
+                    var request = request(planningDeadline);
+                    var captured = semantic(request);
+                    if (foreignTail) {
+                        var predecessorFrame = new ObservationIdentity(owner.machineId(), lastSaved.game(), captured.frame().frame(), 1);
+                        assertTrue(belowAnnualSave(lastSaved, predecessorFrame), "the foreign pair alone is internally consistent");
+                        return new CheckpointTailNotDue(new SemanticEvidence(predecessorFrame, captured.semantic(), captured.originalNativePacket(),
+                                captured.driverStamp(), captured.originalDriver(), captured.observedAt()), owner.sessionId(), Optional.empty());
+                    }
+                    return narrowTail && eligibility == CheckpointEligibility.SAFE && belowAnnualSave(lastSaved, request.before())
+                            ? new CheckpointTailNotDue(captured, OWNER.sessionId(), tailAnalysis) : observe(owner, planningDeadline);
+                }
             };
             var controller = new SessionController(OWNER, (owner, until) -> new GameLifecycle.Running(GAME, REF), observer,
-                    planner, actionPort, checkpoints, requests, writer, work -> { throw unused(); }, clock,
+                    planner, actionPort, checkpoints, requests, writer, work -> {
+                        assertEquals(tailAnalysis.orElseThrow(), work);
+                        queuedAnalyses.add(work);
+                        return new AnalysisTicket(work.batchId(), new CompletableFuture<>());
+                    }, clock,
                     withBaseline ? Optional.of(baseline) : Optional.empty(), 0, scope, (owner, receipt, until) -> { throw unused(); });
             controller.bindRetainedIncidents(List::of);
             return controller;

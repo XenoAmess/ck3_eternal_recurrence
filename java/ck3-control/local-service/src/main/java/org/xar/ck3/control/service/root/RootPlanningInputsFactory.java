@@ -52,6 +52,9 @@ public final class RootPlanningInputsFactory {
     }
     @FunctionalInterface public interface OfflineInputs {
         OfflineObservation collect(Capture actual, PlanningRequest complete) throws IOException;
+        default Optional<OfflineObservation> collectCheckpointTail(Capture actual) throws IOException {
+            return Optional.empty();
+        }
     }
     @FunctionalInterface public interface GovernmentInputs {
         void capture(Capture actual) throws IOException;
@@ -115,6 +118,20 @@ public final class RootPlanningInputsFactory {
             @Override public NativeReadinessCollector.PlanningInputs collect(Session borrowed, Complete frame,
                     Known known, OpportunityJson.Obj received, Instant deadline) throws IOException {
                 return collectActual(borrowed, frame, known, received, deadline, InputPurpose.ORDINARY_READY);
+            }
+            @Override public Optional<NativeReadinessCollector.CheckpointTailInputs> collectCheckpointTail(Session borrowed,
+                    Complete frame, Known known, OpportunityJson.Obj received, Instant deadline) throws IOException {
+                Capture capture = new Capture(context, borrowed, frame, known, received, deadline);
+                requireCurrent(capture, actualAdopted, products);
+                String head = borrowed.head().digest();
+                var offline = products.offline().collectCheckpointTail(capture);
+                var input = offline.map(observed -> {
+                    observed.binding().require(capture);
+                    return new NativeReadinessCollector.CheckpointTailInputs(observed.batch());
+                });
+                requireCurrent(capture, actualAdopted, products);
+                StrictJson.require(head.equals(borrowed.head().digest()), "checkpoint tail input changed its actual writer head");
+                return input;
             }
             @Override public NativeReadinessCollector.PlanningInputs collectPublic(Session borrowed, Complete frame,
                     Known known, OpportunityJson.Obj received, Instant deadline) throws IOException {

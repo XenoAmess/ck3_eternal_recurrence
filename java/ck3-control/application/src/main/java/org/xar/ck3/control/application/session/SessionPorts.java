@@ -1,6 +1,7 @@
 package org.xar.ck3.control.application.session;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import org.xar.ck3.control.application.checkpoint.PublicCheckpointMaterialCapture.Captured;
 import java.time.Instant;
 import java.util.List;
@@ -31,6 +32,17 @@ import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
 /** Application ports borrow the original sole session, writer and native custody. */
 public final class SessionPorts {
     private SessionPorts() { }
+    static final BigInteger ANNUAL_SAVE_RAW_TICKS = BigInteger.valueOf(8_760);
+
+    /** CK3 fixed 365-day year, measured from the last physical SAVE of this subject. */
+    public static boolean belowAnnualSave(ObservationIdentity saved, ObservationIdentity actual) {
+        if (!saved.machineId().equals(actual.machineId()) || !saved.game().equals(actual.game())
+                || saved.observationVersion() != actual.observationVersion()
+                || !saved.frame().episodeRunId().equals(actual.frame().episodeRunId())
+                || !saved.frame().identity().player().equals(actual.frame().identity().player())) return false;
+        BigInteger elapsed = actual.frame().identity().dateRaw().subtract(saved.frame().identity().dateRaw());
+        return elapsed.signum() >= 0 && elapsed.compareTo(ANNUAL_SAVE_RAW_TICKS) < 0;
+    }
     public record SessionIdentity(String machineId, GameGeneration game, String sessionId) {
         public SessionIdentity {
             StrictJson.require(machineId != null && machineId.matches("[a-z0-9][a-z0-9-]{0,63}") && !machineId.equals("unknown"), "explicit session machine ID required");
@@ -47,7 +59,7 @@ public final class SessionPorts {
         GameLifecycle.Observation inspect(SessionIdentity expected, Instant deadline) throws IOException;
     }
     public enum CheckpointEligibility { SAFE, MODAL_PENDING, TERMINAL_PENDING, UNRESOLVED_ACTION, UNAVAILABLE }
-    public sealed interface Observation permits Ready, AfterCycleObserved, TerminalReady, PendingSuccessorUi, Waiting, ObservationUnavailable { }
+    public sealed interface Observation permits Ready, AfterCycleObserved, CheckpointTailNotDue, TerminalReady, PendingSuccessorUi, Waiting, ObservationUnavailable { }
     /** Pending successor DATA, not ordinary Ready or a permission to submit. The registered continuation revalidates its private source. */
     public record PendingSuccessorUi(NaturalSuccessionPreparation.PendingToken token) implements Observation {
         public PendingSuccessorUi {
@@ -170,6 +182,13 @@ public final class SessionPorts {
     public record AfterCycleObserved(SemanticEvidence semantic) implements Observation {
         public AfterCycleObserved { Objects.requireNonNull(semantic); }
     }
+    /** Fresh qualified ordinary SEM for an annual tail below the fixed interval. It grants no planning or SAVE authority. */
+    public record CheckpointTailNotDue(SemanticEvidence semantic, String sessionId,
+            Optional<BatchRequest> offlineAnalysis) implements Observation {
+        public CheckpointTailNotDue {
+            Objects.requireNonNull(semantic); StrictJson.text(sessionId); Objects.requireNonNull(offlineAnalysis);
+        }
+    }
     public record Waiting(String reason, ExactRef evidence) implements Observation {
         public Waiting { StrictJson.text(reason); Objects.requireNonNull(evidence); }
     }
@@ -182,6 +201,12 @@ public final class SessionPorts {
         /** Readiness wait bounds initial native acquisition; planning deadline bounds request publication. */
         default Observation observe(SessionIdentity expected, Instant readinessDeadline, Instant planningDeadline) throws IOException, InterruptedException {
             return observe(expected, readinessDeadline);
+        }
+        /** A known physical baseline permits a narrower, original same-Game tail observation. */
+        default Observation observeCheckpointTail(SessionIdentity expected, ObservationIdentity lastSaved,
+                Instant readinessDeadline, Instant planningDeadline) throws IOException, InterruptedException {
+            Objects.requireNonNull(lastSaved);
+            return observe(expected, readinessDeadline, planningDeadline);
         }
         /** Actual after-cycle observation keeps the retained receipt; settlement independently verifies original evidence. */
         default Observation observeAfter(SessionIdentity expected, ActionReceipt actualTerminal,

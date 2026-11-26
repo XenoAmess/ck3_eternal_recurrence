@@ -324,7 +324,7 @@ public final class RootIncidentRuntime implements RootPlanningInputsFactory.Offl
         for (EpisodeIncidentJournal.Scan scan : scanOriginals(journals, journal -> journal.episodeReference().equals(own.episodeReference())
                 ? new Binding(complete.before(), complete.source(), complete.sessionId()) : journal.origin(),
                 journal -> journal.episodeReference().equals(own.episodeReference())
-                        ? Optional.of(() -> context.archive().withSession(actual.session()).preserveMaterial(originalObservationBasis(actual.frame()))) : Optional.empty())) {
+                        ? Optional.of(observationProgress(actual.frame(), context.archive().withSession(actual.session()))) : Optional.empty())) {
             evidence.addAll(scan.evidence()); scan.batch().ifPresent(candidates::add);
         }
         Optional<BatchRequest> batch;
@@ -335,6 +335,30 @@ public final class RootIncidentRuntime implements RootPlanningInputsFactory.Offl
         unchanged(actual.session(), head);
         return new RootPlanningInputsFactory.OfflineObservation(new RootPlanningInputsFactory.FieldSource(
                 complete.before(), complete.source(), complete.sessionId(), List.copyOf(new LinkedHashSet<>(evidence))), batch);
+    }
+
+    @Override public Optional<RootPlanningInputsFactory.OfflineObservation> collectCheckpointTail(RootPlanningInputsFactory.Capture actual)
+            throws IOException {
+        StrictJson.require(actual.context() == context, "Checkpoint tail incident inputs require the actual Root context");
+        Session same = actual.session();
+        Complete frame = actual.frame();
+        requireCurrent(same, frame, actual.deadline());
+        String head = same.head().digest();
+        // The original end-of-batch scan still covers all retained episodes. Only this frame can supply current progress.
+        EpisodeIncidentJournal.Scan scan = scanCurrentObservation(current(same, frame), frame, context.archive().withSession(same));
+        unchanged(same, head);
+        return Optional.of(new RootPlanningInputsFactory.OfflineObservation(new RootPlanningInputsFactory.FieldSource(
+                frame.identity(), frame.source(), frame.sessionId(), scan.evidence()), scan.batch()));
+    }
+
+    static EpisodeIncidentJournal.Scan scanCurrentObservation(EpisodeIncidentJournal journal, Complete frame,
+            ActionPorts.OutcomeArchive originalArchive) throws IOException {
+        return journal.scanWithProgress(new Binding(frame.identity(), frame.source(), frame.sessionId()),
+                observationProgress(frame, originalArchive));
+    }
+
+    private static EpisodeIncidentJournal.ProgressOriginal observationProgress(Complete frame, ActionPorts.OutcomeArchive originalArchive) {
+        return () -> originalArchive.preserveMaterial(originalObservationBasis(frame));
     }
 
     /** Batch-end source DATA. It never requires or fabricates a current player/episode/Ready frame. */

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.Optional;
 import org.xar.ck3.control.application.action.ActionState;
 import org.xar.ck3.control.application.action.NativeObservationPort;
 import org.xar.ck3.control.application.advance.LifeAdvanceComposite;
@@ -14,6 +15,7 @@ import org.xar.ck3.control.application.session.SessionPorts;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 import org.xar.ck3.control.continuity.writer.ContinuityWriter;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
 import org.xar.ck3.control.nativebridge.NativeGameTransport;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 
@@ -73,6 +75,11 @@ final class RootSessionObservationPort implements SessionPorts.ObservationPort {
     }
     @Override public SessionPorts.Observation observe(SessionPorts.SessionIdentity expected,Instant readinessDeadline,Instant planningDeadline) throws IOException,InterruptedException {
         return core.withBorrowed(()->observeBorrowed(core.activeBorrowedSession(),expected,readinessDeadline,planningDeadline));
+    }
+    @Override public SessionPorts.Observation observeCheckpointTail(SessionPorts.SessionIdentity expected,
+            ObservationIdentity lastSaved, Instant readinessDeadline, Instant planningDeadline) throws IOException, InterruptedException {
+        return core.withBorrowed(() -> observeBorrowed(core.activeBorrowedSession(), expected,
+                readinessDeadline, planningDeadline, Optional.of(lastSaved)));
     }
     /** Actual post-RETAIN observation barrier; the received packet itself remains immutable. */
     @Override public SessionPorts.Observation observeAfter(SessionPorts.SessionIdentity expected,
@@ -180,11 +187,18 @@ final class RootSessionObservationPort implements SessionPorts.ObservationPort {
         throw new IllegalArgumentException("actual original action has no supported ordinary terminal barrier");
     }
     private SessionPorts.Observation observeBorrowed(ContinuityStorePort.Session same,SessionPorts.SessionIdentity expected,Instant deadline,Instant planningDeadline) throws IOException,InterruptedException {
+        return observeBorrowed(same, expected, deadline, planningDeadline, Optional.empty());
+    }
+
+    private SessionPorts.Observation observeBorrowed(ContinuityStorePort.Session same,SessionPorts.SessionIdentity expected,
+            Instant deadline,Instant planningDeadline,Optional<ObservationIdentity> lastSaved) throws IOException,InterruptedException {
         writer.requireSession(same);
         StrictJson.require(ordinary.identity().equals(expected),"session observer crossed its actual physical owner");
         var pending=lifecycleRuntime.pending(same,expected);
         if(pending.isPresent())return pending.orElseThrow();
-        SessionPorts.Observation observed=ordinary.observe(same,expected,deadline,planningDeadline);
+        SessionPorts.Observation observed=lastSaved.isPresent()
+                ?ordinary.observeCheckpointTail(same,expected,lastSaved.orElseThrow(),deadline,planningDeadline)
+                :ordinary.observe(same,expected,deadline,planningDeadline);
         if(observed instanceof SessionPorts.TerminalReady)return observed;
         boolean terminalReady=observed instanceof SessionPorts.Ready ready
                 &&ready.checkpointEligibility()==SessionPorts.CheckpointEligibility.TERMINAL_PENDING;
@@ -198,6 +212,7 @@ final class RootSessionObservationPort implements SessionPorts.ObservationPort {
         } catch(IOException|IllegalArgumentException|IllegalStateException unavailable) {
             var evidence=observed instanceof SessionPorts.Waiting waiting?waiting.evidence()
                     :observed instanceof SessionPorts.Ready ready?ready.semanticEvidence().orElseThrow().semantic()
+                    :observed instanceof SessionPorts.CheckpointTailNotDue tail?tail.semantic().semantic()
                     :((SessionPorts.ObservationUnavailable)observed).evidence();
             return new SessionPorts.ObservationUnavailable("actual terminal observation unavailable: "+unavailable.getMessage(),evidence);
         }

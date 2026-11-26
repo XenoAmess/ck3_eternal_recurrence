@@ -94,9 +94,17 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
             return armyCoreInvalidation.map(value->value.planningSnapshot(frame,driver)).orElse(frame.semantic());
         }
     }
+    public record CheckpointTailInputs(Optional<BatchRequest> offlineAnalysis) {
+        public CheckpointTailInputs { Objects.requireNonNull(offlineAnalysis); }
+    }
     @FunctionalInterface public interface PlanningInputsPort {
         PlanningInputs collect(ContinuityStorePort.Session borrowed, Complete frame, Known driver,
                 Obj receivedCapabilities, Instant deadline) throws IOException;
+        /** Absent support retains ordinary Ready construction and all of its existing input callbacks. */
+        default Optional<CheckpointTailInputs> collectCheckpointTail(ContinuityStorePort.Session borrowed, Complete frame,
+                Known driver, Obj receivedCapabilities, Instant deadline) throws IOException {
+            return Optional.empty();
+        }
     }
     /** The same actual factory explicitly binds its read-only public inputs; an old ordinary lambda cannot substitute. */
     public interface PublicPlanningInputsPort extends PlanningInputsPort {
@@ -298,6 +306,7 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
     private static final class PlanningRoundScope {
         private final ContinuityStorePort.Session borrowed;
         private Captured captured;
+        private org.xar.ck3.control.application.action.NativeObservationPort.ObservedFrame checkpointTailPacket;
         private org.xar.ck3.control.application.action.NativeObservationPort.ObservedFrame retainedPacket;
         private PlanningRoundScope(ContinuityStorePort.Session borrowed) { this.borrowed = borrowed; }
     }
@@ -402,15 +411,17 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
     public boolean prepareReadPublicationReplan(ContinuityStorePort.Session borrowed) throws IOException {
         Objects.requireNonNull(borrowed);
         PlanningRoundScope round = planningRoundScope.get();
-        if (round == null || round.captured == null) return false;
+        if (round == null || round.captured == null && round.checkpointTailPacket == null) return false;
         require(round.borrowed == borrowed, "read-publication replan borrowed another actual writer");
         require(planningReadScope.get() == null && heldReadScope.get() == null && publicPlanningScope.get() == null,
                 "read-publication replan must leave the original frozen scope");
         driver.requireOutsideObservationScope(borrowed);
         ObservationSessionAuthority actualWriter = observationSession;
         require(actualWriter != null, "actual original writer observation authority is not installed"); actualWriter.require(borrowed);
-        round.retainedPacket = round.captured.physical().original();
+        // Retaining a tail packet exposes only the exact raw occurrence for a READ-publication rejoin.
+        round.retainedPacket = round.captured == null ? round.checkpointTailPacket : round.captured.physical().original();
         round.captured = null;
+        round.checkpointTailPacket = null;
         return true;
     }
 
@@ -438,6 +449,7 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
         if(round==null)return;
         require(round.borrowed==borrowed,"after-SEM cache boundary cannot borrow another planning writer");
         if(round.captured!=null&&!round.captured.physical().original().observedAt().isAfter(observedAfter))round.captured=null;
+        if(round.checkpointTailPacket!=null&&!round.checkpointTailPacket.observedAt().isAfter(observedAfter))round.checkpointTailPacket=null;
         if(round.retainedPacket!=null&&!round.retainedPacket.observedAt().isAfter(observedAfter))round.retainedPacket=null;
     }
     private <T> T retainedPlanningRead(PlanningRoundScope round, ContinuityStorePort.Session borrowed,
@@ -480,14 +492,24 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
         try { return observeBorrowed(borrowed, expected, readinessDeadline, planningDeadline); }
         catch (InterruptedIOException interrupted) { throw interrupted(interrupted); }
     }
+    public SessionPorts.Observation observeCheckpointTail(ContinuityStorePort.Session borrowed, SessionIdentity expected,
+            ObservationIdentity lastSaved, Instant readinessDeadline, Instant planningDeadline) throws IOException, InterruptedException {
+        try { return observeBorrowed(borrowed, expected, readinessDeadline, planningDeadline, Optional.of(lastSaved)); }
+        catch (InterruptedIOException interrupted) { throw interrupted(interrupted); }
+    }
     @Override public SessionPorts.Observation observe(SessionIdentity expected, Instant readinessDeadline, Instant planningDeadline) throws IOException, InterruptedException {
         require(identity.equals(expected), "collector belongs to another owned session");
         try { return store.locked(borrowed -> observeBorrowed(borrowed, expected, readinessDeadline, planningDeadline)); }
         catch (InterruptedIOException interrupted) { throw interrupted(interrupted); }
     }
-    /** The two public entries share this one actual producer; it never opens another writer lock. */
+    /** The public entries share this one actual producer; it never opens another writer lock. */
     private SessionPorts.Observation observeBorrowed(ContinuityStorePort.Session borrowed, SessionIdentity expected,
             Instant readinessDeadline, Instant planningDeadline) throws IOException {
+        return observeBorrowed(borrowed, expected, readinessDeadline, planningDeadline, Optional.empty());
+    }
+
+    private SessionPorts.Observation observeBorrowed(ContinuityStorePort.Session borrowed, SessionIdentity expected,
+            Instant readinessDeadline, Instant planningDeadline, Optional<ObservationIdentity> lastSaved) throws IOException {
         Objects.requireNonNull(borrowed); Objects.requireNonNull(expected); Objects.requireNonNull(readinessDeadline); Objects.requireNonNull(planningDeadline);
         require(identity.equals(expected), "collector belongs to another owned session");
         ObservationSessionAuthority actualWriter = observationSession;
@@ -497,22 +519,31 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
         require(planningReadScope.get() == null, "a frozen observation callback cannot recursively collect another observation");
         try {
             PlanningRoundScope round = planningRoundScope.get();
-            require(round == null || round.borrowed == borrowed && round.captured == null,
-                    "planning round already holds its original Ready observation");
+            require(round == null || round.borrowed == borrowed && round.captured == null && round.checkpointTailPacket == null,
+                    "planning round already holds its original observation");
             if (round != null && round.retainedPacket != null) {
                 var original = round.retainedPacket; round.retainedPacket = null;
-                return rejoinRetained(borrowed, original, planningDeadline, round);
+                return rejoinRetained(borrowed, original, planningDeadline, round, lastSaved);
             }
-            return capture(borrowed, readinessDeadline, planningDeadline, captured -> inPlanningScope(borrowed, captured, sameCapture -> {
-                SessionPorts.Observation result = createObservation(borrowed, sameCapture, planningDeadline);
-                if (round != null && result instanceof SessionPorts.Ready) round.captured = sameCapture;
-                return result;
-            }));
+            return capture(borrowed, readinessDeadline, planningDeadline,
+                    captured -> roundObservation(borrowed, captured, planningDeadline, round, lastSaved));
         } catch (IllegalArgumentException | IllegalStateException failure) {
             gate.reset();
             ExactRef diagnostic = diagnostic(borrowed, failure);
             return new SessionPorts.ObservationUnavailable(reason(failure), diagnostic);
         }
+    }
+
+    private SessionPorts.Observation roundObservation(ContinuityStorePort.Session borrowed, Captured captured,
+            Instant deadline, PlanningRoundScope round, Optional<ObservationIdentity> lastSaved) throws IOException {
+        return inPlanningScope(borrowed, captured, sameCapture -> {
+            SessionPorts.Observation result = createObservation(borrowed, sameCapture, deadline, lastSaved);
+            if (round != null) {
+                if (result instanceof SessionPorts.Ready) round.captured = sameCapture;
+                if (result instanceof SessionPorts.CheckpointTailNotDue) round.checkpointTailPacket = sameCapture.physical().original();
+            }
+            return result;
+        });
     }
 
     /**
@@ -521,14 +552,11 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
      */
     private SessionPorts.Observation rejoinRetained(ContinuityStorePort.Session borrowed,
             org.xar.ck3.control.application.action.NativeObservationPort.ObservedFrame original,
-            Instant deadline, PlanningRoundScope round) throws IOException {
+            Instant deadline, PlanningRoundScope round, Optional<ObservationIdentity> lastSaved) throws IOException {
         // A changed receiver occurrence uses the existing fresh capture; never swallow I/O or writer failures.
         var current = transport.currentSnapshot(deadline);
-        if (current != original) return capture(borrowed, deadline, captured -> inPlanningScope(borrowed, captured, sameCapture -> {
-            SessionPorts.Observation result = createObservation(borrowed, sameCapture, deadline);
-            if (result instanceof SessionPorts.Ready) round.captured = sameCapture;
-            return result;
-        }));
+        if (current != original) return capture(borrowed, deadline,
+                captured -> roundObservation(borrowed, captured, deadline, round, lastSaved));
         transport.acceptedSnapshotRevision(original).requireOriginal(current);
 
         // Use the existing driver.withFrozenObservation to join the original packet with current Driver facts
@@ -538,17 +566,9 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
             ExactRef originalRef = preserve(borrowed, ReadinessArchive.Role.NATIVE_PACKET, original.originalPacket());
 
             // Qualify the physical capture using the existing producers
-            return qualifyPhysical(borrowed, deadline, borrowed.head().digest(), original, frozen.state(), frozen.facts(), originalRef, physical -> {
-                // Create the captured state from the physical qualification
-                return fromPhysical(borrowed, deadline, physical, captured -> {
-                    // Enter the planning scope and create the observation
-                    return inPlanningScope(borrowed, captured, sameCapture -> {
-                        SessionPorts.Observation result = createObservation(borrowed, sameCapture, deadline);
-                        if (round != null && result instanceof SessionPorts.Ready) round.captured = sameCapture;
-                        return result;
-                    });
-                });
-            });
+            return qualifyPhysical(borrowed, deadline, borrowed.head().digest(), original, frozen.state(), frozen.facts(),
+                    originalRef, physical -> fromPhysical(borrowed, deadline, physical,
+                            captured -> roundObservation(borrowed, captured, deadline, round, lastSaved)));
         });
     }
     /**
@@ -750,6 +770,11 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
     /** Shared actual producer for ordinary auto observations and public actions. */
     private SessionPorts.Observation createObservation(ContinuityStorePort.Session borrowed, Captured captured,
             Instant deadline) throws IOException {
+        return createObservation(borrowed, captured, deadline, Optional.empty());
+    }
+
+    private SessionPorts.Observation createObservation(ContinuityStorePort.Session borrowed, Captured captured,
+            Instant deadline, Optional<ObservationIdentity> lastSaved) throws IOException {
         PlanningReadScope scope = planningReadScope.get();
         require(scope != null && scope.borrowed() == borrowed && scope.captured() == captured,
                 "actual planning request producer requires its original held scope");
@@ -760,6 +785,13 @@ public final class NativeReadinessCollector implements SessionPorts.ObservationP
             return new SessionPorts.ObservationUnavailable(assessed.reason(), captured.lease().semantic().semantic());
         }
         Complete frame = captured.lease().frame();
+        if (lastSaved.filter(saved -> SessionPorts.belowAnnualSave(saved, frame.identity())).isPresent()
+                && checkpointEligibility(frame.semantic()) == SessionPorts.CheckpointEligibility.SAFE) {
+            var tail = planningInputs.collectCheckpointTail(borrowed, frame, captured.lease().driver(),
+                    captured.lease().capabilities(), deadline);
+            if (tail.isPresent()) return new SessionPorts.CheckpointTailNotDue(captured.lease().semantic(),
+                    frame.sessionId(), tail.orElseThrow().offlineAnalysis());
+        }
         PlanningInputs inputs = planningInputs.collect(borrowed, frame, captured.lease().driver(), captured.lease().capabilities(), deadline);
         require(inputs.actionSteps().equals(captured.capabilities().actionSteps())
                 && inputs.bridgeCapabilities().equals(captured.capabilities().bridgeCapabilities())

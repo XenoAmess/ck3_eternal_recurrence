@@ -26,7 +26,9 @@ import org.xar.ck3.control.application.driver.DriverJson;
 import org.xar.ck3.control.application.effects.RootGuardEvidence;
 import org.xar.ck3.control.application.effects.RootPlanningReadGuard;
 import org.xar.ck3.control.application.readiness.*;
+import org.xar.ck3.control.application.session.SessionPorts;
 import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
+import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 import org.xar.ck3.control.contracts.GameLifecycle;
 import org.xar.ck3.control.g2.common.G2Source;
@@ -122,9 +124,92 @@ final class NativeHeldOriginalScopeTest {
         }
     }
 
+    @Test void annualTailUsesTheOriginalNativeCaptureAndLeavesTheExactYearToReady() throws Exception {
+        try (var actual = new ActionWriterIntegrationFixture(temporary.resolve("annual-tail"), false, Duration.ofMinutes(1))) {
+            var owner = actual.observationIdentity();
+            var before = assertInstanceOf(SessionPorts.Ready.class, actual.collector.observe(owner, Instant.now().plusSeconds(30)));
+            var frame = before.request().before();
+            var fallback = actual.writer.locked(same -> {
+                var until = Instant.now().plusSeconds(30);
+                try {
+                    return assertInstanceOf(SessionPorts.Ready.class,
+                            actual.collector.observeCheckpointTail(same, owner, savedBefore(frame, 24), until, until),
+                            "an observer with legacy incident collection must retain full Ready");
+                } catch (InterruptedException interrupted) {
+                    Thread.currentThread().interrupt();
+                    throw new IOException(interrupted);
+                }
+            });
+            assertEquals(before.semanticEvidence(), fallback.semanticEvidence());
+            assertSame(fallback.request(), actual.lastPublishedReady.get());
+            var progressedIncident = new org.xar.ck3.control.contracts.offline.OfflineEventAnalysisContract.BatchRequest(
+                    "tail-incident", actual.observationSource().sourceRef(), List.of(before.semanticEvidence().orElseThrow().semantic()));
+            actual.checkpointTailInputs.set((same, current) -> {
+                actual.writer.requireSession(same);
+                assertEquals(frame, current.identity());
+                assertEquals(before.semanticEvidence().orElseThrow().originalNativePacket(), current.originalEvidence());
+                return Optional.of(new NativeReadinessCollector.CheckpointTailInputs(Optional.of(progressedIncident)));
+            });
+            var until = Instant.now().plusSeconds(30);
+            int packets = actual.nativePacketReads(), nativeReads = actual.nativeReadWrites();
+            int planningReads = actual.nestedPlanningReads.get();
+            actual.writer.locked(same -> {
+                try {
+                    return actual.collector.withPlanningRound(same, () -> {
+                        var beforeYear = savedBefore(frame, 24);
+                        var tail = assertInstanceOf(SessionPorts.CheckpointTailNotDue.class,
+                                actual.collector.observeCheckpointTail(same, owner, beforeYear, until, until));
+                        assertEquals(frame, tail.semantic().frame());
+                        assertEquals(fallback.semanticEvidence().orElseThrow().originalNativePacket(), tail.semantic().originalNativePacket());
+                        assertEquals(owner.sessionId(), tail.sessionId());
+                        assertEquals(Optional.of(progressedIncident), tail.offlineAnalysis());
+                        assertThrows(IllegalArgumentException.class,
+                                () -> actual.collector.borrowCurrent(same, frame, until, lease -> null));
+                        assertTrue(actual.collector.prepareReadPublicationReplan(same), "only the exact raw occurrence can rejoin");
+                        assertEquals(tail, actual.collector.observeCheckpointTail(same, owner, beforeYear, until, until));
+                        return null;
+                    });
+                } catch (InterruptedException interrupted) {
+                    Thread.currentThread().interrupt();
+                    throw new IOException(interrupted);
+                }
+            });
+            assertEquals(packets, actual.nativePacketReads());
+            assertEquals(nativeReads, actual.nativeReadWrites());
+            assertEquals(planningReads, actual.nestedPlanningReads.get());
+            assertSame(fallback.request(), actual.lastPublishedReady.get());
+
+            var ready = actual.writer.locked(same -> {
+                var dueUntil = Instant.now().plusSeconds(30);
+                try {
+                    return assertInstanceOf(SessionPorts.Ready.class,
+                            actual.collector.observeCheckpointTail(same, owner, savedBefore(frame, 8760), dueUntil, dueUntil));
+                } catch (InterruptedException interrupted) {
+                    Thread.currentThread().interrupt();
+                    throw new IOException(interrupted);
+                }
+            });
+            assertEquals(fallback.semanticEvidence().orElseThrow().originalNativePacket(), ready.semanticEvidence().orElseThrow().originalNativePacket());
+            assertSame(ready.request(), actual.lastPublishedReady.get());
+            assertEquals(planningReads + 1, actual.nestedPlanningReads.get());
+            assertEquals(nativeReads + 1, actual.nativeReadWrites(), "only the ordinary planning query adds a write");
+            assertEquals(0, actual.nativeActionWrites());
+        }
+    }
+
+    private static ObservationIdentity savedBefore(ObservationIdentity current, int ticks) {
+        var proposal = current.frame();
+        var identity = proposal.identity();
+        var older = new JointBudgetSelector.Frame(identity.player(), identity.nativeRevision(),
+                identity.dateRaw().subtract(BigInteger.valueOf(ticks)));
+        return new ObservationIdentity(current.machineId(), current.game(), new JointBudgetSelector.ProposalFrame(
+                older, proposal.snapshotId(), proposal.revision(), proposal.episodeRunId()), current.observationVersion());
+    }
+
     @Test void sourceOwnedUnpausedDataMayExplainStaleCollectionButCannotIssueAnOriginalReadGuard() throws Exception {
-        try (var actual = new ActionWriterIntegrationFixture(temporary.resolve("held-unpaused"), false)) {
-            actual.ready();
+        try (var actual = new ActionWriterIntegrationFixture(temporary.resolve("held-unpaused"), false, Duration.ofMinutes(1))) {
+            var before = assertInstanceOf(SessionPorts.Ready.class,
+                    actual.collector.observe(actual.observationIdentity(), Instant.now().plusSeconds(45))).request().before();
             var received = actual.physicalInputs().transport().currentSnapshot(Instant.now().plusSeconds(20));
             var state = DriverJson.object(received.state().bytes(), DriverJson.MAX_NATIVE_BYTES).with("paused", new OpportunityJson.Bool(false));
             var snapshot = new Obj(Map.of("type", new OpportunityJson.Text("state_snapshot"),
@@ -132,8 +217,20 @@ final class NativeHeldOriginalScopeTest {
                     "snapshot_id", new OpportunityJson.Text("held-unpaused-snapshot"),
                     "revision", new OpportunityJson.IntegerValue(received.nativeRevision().add(BigInteger.ONE)), "state", state));
             actual.enqueueSoftwareNativePacket(NativeWire.packet(DriverJson.encode(snapshot)));
-            assertInstanceOf(org.xar.ck3.control.application.session.SessionPorts.Waiting.class,
-                    actual.collector.observe(actual.observationIdentity(), Instant.now().plusSeconds(20)));
+            var until = Instant.now().plusSeconds(30);
+            // Drive the controlled receiver first, as this queued frame is not yet the accepted snapshot.
+            actual.physicalInputs().transport().observe(until);
+            actual.writer.locked(same -> {
+                try {
+                    var waiting = assertInstanceOf(SessionPorts.Waiting.class, actual.collector.observeCheckpointTail(
+                            same, actual.observationIdentity(), savedBefore(before, 24), until, until));
+                    assertEquals("map is not paused", waiting.reason());
+                    return null;
+                } catch (InterruptedException interrupted) {
+                    Thread.currentThread().interrupt();
+                    throw new IOException(interrupted);
+                }
+            });
             var probe = new Probe(actual, Clock.systemUTC()); int packets = actual.nativePacketReads(), queries = actual.nativeReadWrites();
             actual.writer.locked(same -> probe.collector.withHeldReadScope(same, actual.observationIdentity(), Instant.now().plusSeconds(20), frame -> {
                 assertEquals(new OpportunityJson.Bool(false), frame.semantic().get("paused"));

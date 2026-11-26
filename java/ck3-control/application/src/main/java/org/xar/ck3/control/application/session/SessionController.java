@@ -952,15 +952,7 @@ public final class SessionController {
                 }
                 run.deferAfterSettledLifeIfBudgetInsufficient(receipt, checkpointsEnabled);
             }
-            if (checkpointsEnabled && dirty) {
-                Ready fresh = run.ready(true);
-                // CK3 fixed-365 year: 24 raw ticks per day, measured from the last confirmed physical SAVE.
-                if (savedPair.isEmpty() || fresh.request().before().frame().identity().dateRaw()
-                        .subtract(savedPair.orElseThrow().frame().frame().identity().dateRaw()).compareTo(BigInteger.valueOf(8_760)) >= 0) {
-                    if (fresh.checkpointEligibility() == CheckpointEligibility.SAFE) run.save(fresh);
-                    else { run.terminal = Terminal.CHECKPOINT_DEFERRED; run.detail = "dirty tail retained: " + fresh.checkpointEligibility(); }
-                }
-            }
+            if (checkpointsEnabled && dirty) run.checkpointDirtyTail();
         } catch (End end) {
             if (end.getSuppressed().length != 0) run.failIo(end);
             else { run.terminal = end.terminal; run.detail = end.getMessage(); }
@@ -993,7 +985,7 @@ public final class SessionController {
                         ? JournalKind.BATCH_FINISHED : !quarantined && !run.cyclePending
                         && Set.of(Terminal.CHECKPOINT_DEFERRED, Terminal.READINESS_TIMEOUT, Terminal.OBSERVATION_UNAVAILABLE, Terminal.WALL_TIMEOUT,Terminal.EPISODE_HANDOFF).contains(run.terminal)
                         ? JournalKind.BATCH_DEFERRED : JournalKind.BATCH_INTERRUPTED,
-                        run.latest.map(value -> value.request().before()), Optional.empty(), List.of()); }
+                        run.latestBoundaryFrame, Optional.empty(), List.of()); }
                 catch (IOException | RuntimeException failure) { quarantineUnresolved(); run.terminal = Terminal.WRITER_UNKNOWN; run.detail += "; journal completion unknown: " + failure; }
                 catch (InterruptedException failure) { Thread.currentThread().interrupt(); quarantineUnresolved(); run.terminal = Terminal.WRITER_UNKNOWN; run.detail += "; journal interrupted"; }
             }
@@ -1194,6 +1186,7 @@ public final class SessionController {
         final List<RevisionReplan> revisionReplans = new ArrayList<>(); Optional<org.xar.ck3.control.application.planning.PlanTrace> lastPlan = Optional.empty(); int currentTurnRevisionReplans,currentTurnReadReplans;
         final LinkedHashMap<String, BatchRequest> captured = new LinkedHashMap<>();
         Optional<GameLifecycle.Observation> lastLifecycle = Optional.empty(); Optional<Ready> latest = Optional.empty();
+        Optional<ObservationIdentity> latestBoundaryFrame = Optional.empty();
         Terminal terminal = Terminal.TURN_BOUND; String detail = "bounded ordinary batch ended"; boolean journalUnknown; boolean journalStarted; boolean cyclePending; boolean checkpointAdoptionDeferred;
         Optional<CompletedCycleProof> savingProof = Optional.empty();
         Optional<org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity> firstObservation = Optional.empty();
@@ -1246,7 +1239,7 @@ public final class SessionController {
             // Ordinary automatic SAVE uses elapsed game date, never the number of eligible Life actions.
             if(checkpointsEnabled&&dirty&&ready.checkpointEligibility()==CheckpointEligibility.SAFE
                     &&(savedPair.isEmpty()||ready.request().before().frame().identity().dateRaw()
-                    .subtract(savedPair.orElseThrow().frame().frame().identity().dateRaw()).compareTo(BigInteger.valueOf(8_760))>=0))return new SaveRound(ready);
+                    .subtract(savedPair.orElseThrow().frame().frame().identity().dateRaw()).compareTo(ANNUAL_SAVE_RAW_TICKS)>=0))return new SaveRound(ready);
             PlanningResult planned=measured(Phase.PLANNING,()->planner.plan(ready.request(),completion));lastPlan=Optional.of(planned.trace());
             StrictJson.require(planned.trace().before().equals(ready.request().before()),"planner result crossed current observation");
             requireTime();
@@ -1281,7 +1274,7 @@ public final class SessionController {
             var saved = savedPair.orElseThrow().frame();
             var unsaved = subject.frame().identity().dateRaw().subtract(saved.frame().identity().dateRaw());
             if (!sameLifeBudgetSubject(saved, subject) || unsaved.signum() < 0
-                    || unsaved.compareTo(BigInteger.valueOf(8_760)) >= 0) return;
+                    || unsaved.compareTo(ANNUAL_SAVE_RAW_TICKS) >= 0) return;
             requireTime();
             if (stopRequested()) return; // The original loop retains its OPERATOR_STOP and SAVE ordering.
             long remaining = untilNanos - clock.now().elapsedNanos();
@@ -1321,13 +1314,19 @@ public final class SessionController {
             return ready(false);
         }
         Ready ready(boolean stoppingForSave) throws IOException, InterruptedException {
-            Observation observed=readyOrAfterCycle(stoppingForSave,null);
+            return requireReady(readyOrAfterCycle(stoppingForSave,null));
+        }
+        Ready requireReady(Observation observed) {
             if(observed instanceof Ready ready)return ready;
             throw new End(Terminal.CHECKPOINT_DEFERRED,"actual lifecycle terminal is not an ordinary after-SEM or paired SAVE frame");
         }
         Observation readyOrAfterCycle(boolean stoppingForSave,ActionReceipt actualTerminal) throws IOException, InterruptedException {
+            return readyOrAfterCycle(stoppingForSave, actualTerminal, Optional.empty());
+        }
+        Observation readyOrAfterCycle(boolean stoppingForSave,ActionReceipt actualTerminal,Optional<ObservationIdentity> lastSaved)
+                throws IOException, InterruptedException {
             while(true){
-                var captured=planningScope.inPlanningScope(()->available(stoppingForSave,actualTerminal));
+                var captured=planningScope.inPlanningScope(()->available(stoppingForSave,actualTerminal,lastSaved));
                 if(captured.readPublication().isPresent()){replanAfterPublication();continue;}
                 return captured.value();
             }
@@ -1374,7 +1373,7 @@ public final class SessionController {
             lifecycleTurns.add(new LifecycleTurn(completedCount()+1,token.obligation().binding().predecessor(),actual.parent(),false,
                     Optional.of(new SuccessorUiContinuation(token.kind(),actual,token.canonicalDomain(),
                             token.actualPublishedDriver(),token.canonicalPublicationProof()))));
-            lastPlan=Optional.empty();latest=Optional.empty();lastTerminal=Optional.empty();
+            lastPlan=Optional.empty();clearLatest();lastTerminal=Optional.empty();
             if(!actual.parent().settled())throw new End(Terminal.ACTION_UNKNOWN,"actual successor UI parent or child remains unresolved; no replay");
             if(actual.parent().outcome()!=ActionReceipt.Outcome.APPLIED_CONFIRMED)
                 throw new End(Terminal.ACTION_REJECTED,"actual successor UI parent settled without confirmed continuation");
@@ -1454,9 +1453,10 @@ public final class SessionController {
             completeCycle(actual);
         }
         Observation available(boolean stoppingForSave) throws IOException,InterruptedException {
-            return available(stoppingForSave,null);
+            return available(stoppingForSave,null,Optional.empty());
         }
-        Observation available(boolean stoppingForSave,ActionReceipt actualTerminal) throws IOException,InterruptedException {
+        Observation available(boolean stoppingForSave,ActionReceipt actualTerminal,Optional<ObservationIdentity> lastSaved)
+                throws IOException,InterruptedException {
             long readyUntil = Math.min(untilNanos, clock.now().elapsedNanos() + limits.readinessTimeout().toNanos());
             String waitingReason = "readiness deadline expired before observation";
             while (true) {
@@ -1469,53 +1469,81 @@ public final class SessionController {
                 }
                 Instant until = began.utc().plusNanos(readyUntil - began.elapsedNanos());
                 Instant planningUntil = deadline();
-                Observation result = measured(Phase.OBSERVATION, () -> actualTerminal==null
-                        ?observations.observe(identity,until,planningUntil)
-                        :observations.observeAfter(identity,actualTerminal,until,planningUntil));
+                Observation result = measured(Phase.OBSERVATION, () -> {
+                    if (actualTerminal != null) return observations.observeAfter(identity,actualTerminal,until,planningUntil);
+                    if (lastSaved.isPresent()) return observations.observeCheckpointTail(identity,lastSaved.orElseThrow(),until,planningUntil);
+                    return observations.observe(identity,until,planningUntil);
+                });
                 if (result instanceof Ready ready) {
                     identity.require(ready.request()); StrictJson.require(!ready.request().deadline().isAfter(planningUntil), "observation extended batch planning deadline");
                     // A late actual Ready still describes an observed date; it grants no extended execution deadline.
                     observed(ready.request());
-                    ready.offlineAnalysis().ifPresent(batch -> {
-                        StrictJson.require(captured.size() < 32 || captured.containsKey(batch.batchId()), "bounded captured analysis work per batch");
-                        BatchRequest previous = captured.get(batch.batchId());
-                        StrictJson.require(previous == null || previous.equals(batch), "offline incident batch ID changed captured sources");
-                        if (!completedAnalysisIds.contains(batch.batchId()) && !pendingAnalyses.containsKey(batch.batchId())) {
-                            BatchRequest retained = retainedAnalysisInputs.get(batch.batchId());
-                            StrictJson.require(retained == null || retained.equals(batch), "retained offline incident batch ID changed captured sources");
-                            // New work remains in this Run when the rejected-input reserve is full.
-                            // Its admission bound is consumed during cleanup, never as an unresolved Game action.
-                            if (retained != null || retainedAnalysisInputs.size() < 32)
-                                retainedAnalysisInputs.putIfAbsent(batch.batchId(), batch);
-                        }
-                        captured.putIfAbsent(batch.batchId(), batch);
-                    });
+                    ready.offlineAnalysis().ifPresent(this::retainOfflineAnalysis);
                     // The producer may already have persisted incident DATA when observe returns late.
                     // Retaining its validated original does not extend planning, action or SAVE authority.
                     requireTime();
-                    latest = Optional.of(ready);lastTerminal=Optional.empty(); return ready;
+                    latest = Optional.of(ready);latestBoundaryFrame=Optional.of(ready.request().before());
+                    lastTerminal=Optional.empty();return ready;
+                }
+                if (result instanceof CheckpointTailNotDue tail) {
+                    var frame=tail.semantic().frame();
+                    StrictJson.require(stoppingForSave && actualTerminal == null && identity.sessionId().equals(tail.sessionId())
+                            && identity.machineId().equals(frame.machineId()) && identity.game().equals(frame.game())
+                            && lastSaved.filter(saved -> belowAnnualSave(saved, frame)).isPresent(),
+                            "annual SAVE tail requires its original owned Game, physical baseline and actual under-year frame");
+                    observed(frame);
+                    tail.offlineAnalysis().ifPresent(this::retainOfflineAnalysis);
+                    requireTime();
+                    latest=Optional.empty();latestBoundaryFrame=Optional.of(frame);lastTerminal=Optional.empty();return tail;
                 }
                 requireTime();
                 if(result instanceof AfterCycleObserved afterCycle){
                     var frame=afterCycle.semantic().frame();
                     StrictJson.require(actualTerminal!=null&&frame.machineId().equals(identity.machineId())&&frame.game().equals(identity.game()),
                             "after-cycle SEM requires the original terminal and owned Game");
-                    observed(frame);latest=Optional.empty();lastTerminal=Optional.empty();return afterCycle;
+                    observed(frame);clearLatest();lastTerminal=Optional.empty();return afterCycle;
                 }
                 if(result instanceof TerminalReady terminal){
                     var current=terminal.identity();StrictJson.require(current.machineId().equals(identity.machineId())&&current.game().equals(identity.game())
                             &&current.sessionId().equals(identity.sessionId()),"actual terminal source crossed owned Game/session");
-                    latest=Optional.empty();lastPlan=Optional.empty();lastTerminal=Optional.of(terminal);return terminal;
+                    clearLatest();lastPlan=Optional.empty();lastTerminal=Optional.of(terminal);return terminal;
                 }
                 if(result instanceof PendingSuccessorUi pending){
                     pending.requireOwner(identity);StrictJson.require(!pending.token().deadline().isAfter(until),"pending UI source extended caller deadline");
-                    latest=Optional.empty();lastPlan=Optional.empty();lastTerminal=Optional.empty();return pending;
+                    clearLatest();lastPlan=Optional.empty();lastTerminal=Optional.empty();return pending;
                 }
                 if (result instanceof ObservationUnavailable unavailable) throw new End(Terminal.OBSERVATION_UNAVAILABLE, unavailable.reason());
                 waitingReason = ((Waiting) result).reason();
                 if (clock.now().elapsedNanos() >= readyUntil) throw new End(Terminal.READINESS_TIMEOUT, waitingReason);
                 pause();
             }
+        }
+        void retainOfflineAnalysis(BatchRequest batch) {
+            StrictJson.require(captured.size() < 32 || captured.containsKey(batch.batchId()), "bounded captured analysis work per batch");
+            BatchRequest previous = captured.get(batch.batchId());
+            StrictJson.require(previous == null || previous.equals(batch), "offline incident batch ID changed captured sources");
+            if (!completedAnalysisIds.contains(batch.batchId()) && !pendingAnalyses.containsKey(batch.batchId())) {
+                BatchRequest retained = retainedAnalysisInputs.get(batch.batchId());
+                StrictJson.require(retained == null || retained.equals(batch), "retained offline incident batch ID changed captured sources");
+                // New work remains in this Run when the rejected-input reserve is full.
+                // Its admission bound is consumed during cleanup, never as an unresolved Game action.
+                if (retained != null || retainedAnalysisInputs.size() < 32)
+                    retainedAnalysisInputs.putIfAbsent(batch.batchId(), batch);
+            }
+            captured.putIfAbsent(batch.batchId(), batch);
+        }
+        void clearLatest() {
+            latest=Optional.empty();latestBoundaryFrame=Optional.empty();
+        }
+        void checkpointDirtyTail() throws IOException, InterruptedException {
+            var baseline=savedPair.map(CheckpointPair::frame);
+            Observation actual=readyOrAfterCycle(true,null,baseline);
+            if (actual instanceof CheckpointTailNotDue) return;
+            Ready fresh=requireReady(actual);
+            if (baseline.isPresent() && fresh.request().before().frame().identity().dateRaw()
+                    .subtract(baseline.orElseThrow().frame().identity().dateRaw()).compareTo(ANNUAL_SAVE_RAW_TICKS)<0) return;
+            if (fresh.checkpointEligibility()==CheckpointEligibility.SAFE) save(fresh);
+            else {terminal=Terminal.CHECKPOINT_DEFERRED;detail="dirty tail retained: "+fresh.checkpointEligibility();}
         }
         void pause() throws IOException, InterruptedException {
             requireTime(); long remaining = untilNanos - clock.now().elapsedNanos();
