@@ -202,8 +202,7 @@ public final class GovernanceOrdinaryRuntimeInstaller {
         if(privateSourceInstalled||readonlyDefinitions.isEmpty()
                 ||original.stage()!=PlanningStage.COUNCIL&&original.stage()!=PlanningStage.CROWN_AUTHORITY)return original;
         var definitions=readonlyDefinitions.orElseThrow();
-        var profile=OpeningReadProfile.selectQualified(OpeningReadProfile.VERSION,OpeningReadProfile.EXECUTABLE,
-                definitions.current().sourceRef()).orElseThrow();
+        var profile=definitions.profile();
         return new OrdinaryPolicy() {
             @Override public PlanningStage stage(){return original.stage();}
             @Override public ExactRef implementationSource(){return original.implementationSource();}
@@ -236,7 +235,7 @@ public final class GovernanceOrdinaryRuntimeInstaller {
     private static boolean actualReadonlyZeroProgress(OpeningReadProfile profile,PlanningRequest request,OrdinaryPolicy.Draft previous) {
         if(!(previous.detail().get("lifestyle_readonly_progress") instanceof OpportunityJson.Obj query))return false;
         var row=org.xar.ck3.control.application.driver.DriverJson.toNode(query);
-        if(!row.path("opening_read_profile").asText().equals(OpeningReadProfile.Kind.CURRENT.profile())
+        if(!row.path("opening_read_profile").asText().equals(profile.profileId(OpeningReadProfile.Kind.CURRENT))
                 ||!row.path("status").asText().equals("available")||!row.hasNonNull("opening_native_current"))return false;
         try {
             var current=request.before().frame();var identity=current.identity();

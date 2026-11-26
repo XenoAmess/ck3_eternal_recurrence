@@ -205,7 +205,7 @@ public final class OpeningTransitions implements OrdinaryPlanCompletion {
         return encode(old,old.observed(),OpeningStage.COMPLETE,old.actionReceipt(),old.checkpoint(),refs,old.preparedCommand(),old.existingObserved());}
     /** Pure archival replay. Native/source/current writer qualification stays with the installed catalog and retained original verifier. */
     static void requireReadOnlyExisting(PlanningReadReceipt read,ReadContract<OpeningReadProfile.Data> contract) {
-        StrictJson.require(contract.operation().value().equals(OpeningReadProfile.Kind.CURRENT.step())&&read.contractId().equals(contract.contractId())
+        StrictJson.require(OpeningReadProfile.isCurrentOperation(contract.operation())&&read.contractId().equals(contract.contractId())
                 &&read.request().operation().equals(contract.operation())&&read.request().arguments().members().isEmpty(),"exact readonly current-focus receipt required");
         var data=contract.replay(read);var id=read.request().before().frame().identity();
         requireReadOnlyExistingData(data,new OpeningReadProfile.Frame(id.nativeRevision(),id.dateRaw(),id.player()));

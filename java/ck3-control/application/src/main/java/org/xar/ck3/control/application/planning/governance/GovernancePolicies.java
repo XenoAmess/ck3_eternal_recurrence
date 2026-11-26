@@ -122,7 +122,9 @@ public final class GovernancePolicies {
     /** The independent current-focus profile never qualifies the legacy perk/minimum consumer. */
     static Optional<Decision> readOnlyCurrentProgress(PlanningRequest request, Draft previous, Life life) {
         Obj query = life.originalQuery();
-        if (!new Text("ck3-26757580-lifestyle-current-v1").equals(query.get("opening_read_profile"))) return Optional.empty();
+        Value profile = query.get("opening_read_profile");
+        if (!new Text("ck3-26757580-lifestyle-current-v1").equals(profile)
+                && !new Text("ck3-26785313-lifestyle-current-v1").equals(profile)) return Optional.empty();
         StrictJson.require(new Text("available").equals(query.get("status")), "readonly current progress must be available");
         GovernanceCollector.bindLife(request, query);
         StrictJson.require(existingFocus(query), "readonly progress needs an actually present focus and matching current progress");

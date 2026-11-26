@@ -4,6 +4,32 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.math.BigInteger;
 import java.util.List;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Proxy;
+import java.nio.file.Path;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.util.Locale;
+import java.util.Optional;
+import java.util.Set;
+import org.xar.ck3.control.application.action.ActionCodec;
+import org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive;
+import org.xar.ck3.control.application.action.PlanningReadPort;
+import org.xar.ck3.control.application.planning.PlanningObservation;
+import org.xar.ck3.control.application.planning.PlanningRequest;
+import org.xar.ck3.control.application.planning.governance.GovernanceBorrowedSession;
+import org.xar.ck3.control.application.planning.governance.GovernanceObservationSupplier.Unavailable;
+import org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session;
+import org.xar.ck3.control.contracts.ExactCk3Build;
+import org.xar.ck3.control.contracts.ExactRef;
+import org.xar.ck3.control.contracts.GameGeneration;
+import org.xar.ck3.control.contracts.PythonOnlyUInt64;
+import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector;
+import org.xar.ck3.control.g2.common.G2Source;
+import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
+import org.xar.ck3.control.nativebridge.NativeWire;
+import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 import org.junit.jupiter.api.Test;
 import org.xar.ck3.control.application.action.RawJson;
 import org.xar.ck3.control.contracts.StrictJson;
@@ -90,6 +116,133 @@ final class OpeningReadProfileProtocolTest {
         bad=row.deepCopy();((ObjectNode)bad.get("current_lifestyle_progress")).put("lifestyle_key","other_style");reject(Kind.CURRENT,bad);
         bad=row.deepCopy();var origin=(ObjectNode)bad.get("origin");origin.put("source_kind","application_main_ticket").put("main_owner_observed",true).put("ticket_sequence",0).put("pump_epoch",1).put("thread_id",1);reject(Kind.CURRENT,bad);
     }
+    @Test void full111SoftwareRepliesUseTheExactOriginalSource56Frame() throws Exception {
+        var frame = full111Frame();
+        var profile = OpeningReadProfile.full111DataProfile();
+        var scope = available(Kind.SCOPE);
+        scope.putObject("government").put("key", "feudal_government").put("native_flag_count", 1)
+                .putArray("flags").add("government_is_feudal");
+        for (Kind kind : Kind.values()) {
+            var row = full111(kind == Kind.SCOPE ? scope : current(), profile, kind);
+            row.put("native_revision", frame.nativeRevision()).put("snapshot_id", frame.snapshotId())
+                    .put("date_raw", frame.dateRaw()).put("player_character_id", frame.playerCharacterId());
+            var data = profile.decodeData(kind, raw(row), frame);
+            assertEquals(frame, data.frame().orElseThrow());
+            assertArrayEquals(raw(row).bytes(), data.original().bytes());
+            assertThrows(IllegalArgumentException.class, data::requireApplicationMainOrigin);
+            assertThrows(IllegalArgumentException.class, () -> PROFILE.decodeData(kind, raw(row), frame));
+            var crossed = new OpeningReadProfile.Frame(frame.nativeRevision().add(BigInteger.ONE), frame.dateRaw(), frame.playerCharacterId());
+            assertThrows(IllegalArgumentException.class, () -> profile.decodeData(kind, raw(row), crossed));
+            var badBuild = row.deepCopy();
+            ((ObjectNode) badBuild.get("provenance")).put("adapter_id", "ck3-1.21.0.3-26785313-msvc-x64");
+            assertThrows(IllegalArgumentException.class, () -> profile.decodeData(kind, raw(badBuild), frame));
+            var wrongActor = row.deepCopy().put("player_character_id", frame.playerCharacterId().add(BigInteger.ONE));
+            assertThrows(IllegalArgumentException.class, () -> profile.decodeData(kind, raw(wrongActor), frame));
+        }
+        var missing = full111(unavailable(Kind.CURRENT), profile, Kind.CURRENT).put("unavailable_reason", "no_focus");
+        var rejected = profile.decodeData(Kind.CURRENT, raw(missing), frame);
+        assertFalse(rejected.available());
+        assertTrue(rejected.frame().isEmpty());
+        assertTrue(rejected.progress().isEmpty());
+        assertEquals("no_focus", rejected.unavailableReason().orElseThrow());
+    }
+
+    @Test void full111ContractsKeepTheNewOperationPairSeparateFromUnqualifiedNative131() {
+        var source = new ExactRef(Path.of("software-fixture.dll").toAbsolutePath().toString(),
+                12389376L, "060a22216f6d7642ce2ee392dc7ffffbd17f1bb8d2029cd79eb17e47599b23f4");
+        var build = ExactCk3Build.CK3_121003_STEAM_26785313_FULL111;
+        assertTrue(OpeningReadProfile.selectQualified(build.version(), build.executableSha256(), source).isEmpty());
+        assertTrue(OpeningReadProfile.selectQualified(OpeningReadProfile.VERSION, OpeningReadProfile.EXECUTABLE, source).isEmpty());
+        // Software contract assembly only. Real registration above requires a separately reviewed DLL identity.
+        var bindings = new OpeningReadProfile.Bindings(OpeningReadProfile.full111DataProfile(), source);
+        assertEquals(List.of("query-current-lifestyle-scope-26785313-v1", "query-current-lifestyle-state-26785313-v1"),
+                bindings.all().stream().map(contract -> contract.operation().value()).toList());
+        assertEquals(List.of("game.query.current-lifestyle-scope.26785313.v1", "game.query.current-lifestyle-state.26785313.v1"),
+                bindings.all().stream().map(contract -> contract.requiredCapability().orElseThrow()).toList());
+        assertTrue(bindings.all().stream().allMatch(contract -> contract.advertisedRequired() && contract.hasPureReplay()));
+        assertFalse(OpeningReadProfile.isCurrentOperation(bindings.scope().operation()));
+        assertTrue(OpeningReadProfile.isCurrentOperation(bindings.current().operation()));
+        var original = new OpeningReadProfile.Bindings(PROFILE, source);
+        assertTrue(OpeningReadProfile.isCurrentOperation(original.current().operation()));
+        assertNotEquals(bindings.current().contractId(), original.current().contractId());
+    }
+
+    @Test void full111OpeningDoesNotBorrowOrQueryWhenEitherCapabilityIsAbsent() throws Exception {
+        var profile = OpeningReadProfile.full111DataProfile();
+        var ref = new ExactRef(Path.of("software-fixture.dll").toAbsolutePath().toString(), 1, READER);
+        var bindings = new OpeningReadProfile.Bindings(profile, ref);
+        var forbidden = (InvocationHandler)(proxy, method, args) -> {
+            throw new AssertionError("an incomplete capability pair must not reach " + method.getName());
+        };
+        var reader = noCalls(PlanningReadPort.class, forbidden);
+        var archive = noCalls(OutcomeArchive.class, forbidden);
+        var same = noCalls(Session.class, forbidden);
+        var scope = new GovernanceBorrowedSession(same,
+                Path.of("software-fixture.lock").toAbsolutePath(), ignored -> {
+                    throw new AssertionError("an incomplete capability pair cannot acquire a writer scope");
+                });
+        var now = Instant.parse("2026-11-26T18:00:00Z");
+        var port = OpeningReadProfile.readPort(bindings, reader, archive, scope, Clock.fixed(now, ZoneOffset.UTC), ignored -> { });
+        var frame = full111Frame();
+        var joint = new JointBudgetSelector.ProposalFrame(
+                new JointBudgetSelector.Frame(frame.playerCharacterId(), frame.nativeRevision(), frame.dateRaw()),
+                frame.snapshotId(), BigInteger.valueOf(13), "source56-archive-test");
+        var owner = new ObservationIdentity("source56-archive-test",
+                new GameGeneration(50372, new PythonOnlyUInt64(new BigInteger("134401544348311914"))),
+                joint, 3);
+        var snapshot = StrictJson.object().put("paused", true).put("map_ready", true).put("snapshot_id", frame.snapshotId())
+                .put("revision", joint.revision()).put("native_revision", frame.nativeRevision())
+                .put("date_raw", frame.dateRaw()).put("episode_run_id", joint.episodeRunId());
+        snapshot.putObject("played_character").put("character_id", frame.playerCharacterId());
+        snapshot.putArray("active_wars");
+        snapshot.putArray("player_armies");
+        var semantic = (OpportunityJson.Obj)
+                OpportunityJson.parse(StrictJson.canonical(snapshot));
+        for (var definition : bindings.all()) {
+            var observation = new PlanningObservation(semantic, List.of(), Set.of(),
+                    Set.of(definition.requiredCapability().orElseThrow()), Optional.empty(), List.of(),
+                    Optional.empty(), Optional.empty(), true);
+            var request = new PlanningRequest(owner,
+                    new G2Source(owner.machineId(), now.toString(), "Full111 software fixture", ref),
+                    "source56-archive-test", now.plusSeconds(15), observation);
+            var result = assertInstanceOf(Unavailable.class,
+                    port.openingReadOnly(request).orElseThrow());
+            assertTrue(result.reason().contains("both read-only capabilities"));
+        }
+    }
+
+    private static <T> T noCalls(Class<T> type, InvocationHandler handler) {
+        return type.cast(Proxy.newProxyInstance(type.getClassLoader(), new Class<?>[] {type}, handler));
+    }
+
+    private static ObjectNode full111(ObjectNode row, OpeningReadProfile profile, Kind kind) {
+        var build = ExactCk3Build.CK3_121003_STEAM_26785313_FULL111;
+        row.put("schema", kind == Kind.SCOPE ? "xar.ck3.lifestyle-scope.26785313.v1" : "xar.ck3.lifestyle-current.26785313.v1");
+        ((ObjectNode) row.get("provenance")).put("profile_id", profile.profileId(kind)).put("adapter_id", build.coreFullAdapterId())
+                .put("game_version", build.version()).put("executable_sha256", build.executableSha256().toUpperCase(Locale.ROOT))
+                .put("reader_source_sha256", profile.pins().readerSourceSha256()).put("abi_manifest_sha256", profile.pins().abiManifestSha256());
+        return row;
+    }
+
+    private static OpeningReadProfile.Frame full111Frame() throws Exception {
+        try (var resource = OpeningReadProfileProtocolTest.class.getResourceAsStream("/opening-full111/source56-native26-full.bin")) {
+            assertNotNull(resource);
+            byte[] original = resource.readAllBytes();
+            assertEquals("3677442a5b5a49c6a710d95d7305411212c71de8e7c5ef9d0035cfd160e66613",
+                    ActionCodec.sha256(original));
+            var snapshot = assertInstanceOf(NativeWire.Snapshot.class,
+                    NativeWire.decode(original));
+            var state = StrictJson.parse(snapshot.state().value());
+            var build = ExactCk3Build.CK3_121003_STEAM_26785313_FULL111;
+            assertTrue(build.matches(state.get("game_version").textValue(), state.get("executable_sha256").textValue()));
+            assertEquals(build.coreFullAdapterId(), state.get("adapter_id").textValue());
+            assertTrue(state.get("paused").booleanValue());
+            assertTrue(state.get("map_ready").booleanValue());
+            return new OpeningReadProfile.Frame(snapshot.revision(), state.get("date_raw").bigIntegerValue(),
+                    state.path("played_character").get("character_id").bigIntegerValue());
+        }
+    }
+
     private static ObjectNode current() {
         ObjectNode row=available(Kind.CURRENT);row.putObject("current_focus").put("presence","present").put("key","observed_focus").put("lifestyle_key","observed_style");
         row.putObject("current_lifestyle_progress").put("presence","present").put("lifestyle_key","observed_style").put("xp_total_raw",Long.MAX_VALUE)

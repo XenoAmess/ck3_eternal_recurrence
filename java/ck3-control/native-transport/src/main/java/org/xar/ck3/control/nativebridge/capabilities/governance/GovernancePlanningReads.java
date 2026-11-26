@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.function.Function;
 import org.xar.ck3.control.application.action.*;
 import org.xar.ck3.control.application.effects.NativeGovernanceEffects;
+import org.xar.ck3.control.contracts.ExactCk3Build;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.governance.council.CouncilCodec;
@@ -236,15 +237,34 @@ public final class GovernancePlanningReads {
         private static final Set<String> COMMON=Set.of("schema","status","unavailable_reason","read_only","full_governance_ready","action_ready",
                 "native_revision","snapshot_id","date_raw","player_character_id","readiness","origin","provenance");
         public enum Kind {
-            SCOPE("query-current-lifestyle-scope-26757580-v1","game.query.current-lifestyle-scope.26757580.v1",
-                    "xar.ck3.lifestyle-scope.26757580.v1","ck3-26757580-lifestyle-scope-v1"),
-            CURRENT("query-current-lifestyle-state-26757580-v1","game.query.current-lifestyle-state.26757580.v1",
-                    "xar.ck3.lifestyle-current.26757580.v1","ck3-26757580-lifestyle-current-v1");
-            private final String step,capability,schema,profile;
-            Kind(String step,String capability,String schema,String profile){this.step=step;this.capability=capability;this.schema=schema;this.profile=profile;}
-            public String step(){return step;} public String capability(){return capability;}
-            public String schema(){return schema;} public String profile(){return profile;}
+            SCOPE("scope", "scope"), CURRENT("state", "current");
+            private final String nativeName, dataName;
+            Kind(String nativeName, String dataName) { this.nativeName = nativeName; this.dataName = dataName; }
+            private String step(String build) { return "query-current-lifestyle-" + nativeName + "-" + build + "-v1"; }
+            private String capability(String build) { return "game.query.current-lifestyle-" + nativeName + "." + build + ".v1"; }
+            private String schema(String build) { return "xar.ck3.lifestyle-" + dataName + "." + build + ".v1"; }
+            private String profile(String build) { return "ck3-" + build + "-lifestyle-" + dataName + "-v1"; }
+            // Archived BB3 callers still name the original wire values.
+            public String step() { return step(Protocol.BB3.number); }
+            public String capability() { return capability(Protocol.BB3.number); }
+            public String schema() { return schema(Protocol.BB3.number); }
+            public String profile() { return profile(Protocol.BB3.number); }
         }
+        private enum Protocol {
+            BB3("26757580", ExactCk3Build.CK3_1210_STEAM_26757580),
+            FULL111("26785313", ExactCk3Build.CK3_121003_STEAM_26785313_FULL111);
+            private final String number;
+            private final ExactCk3Build build;
+            Protocol(String number, ExactCk3Build build) { this.number = number; this.build = build; }
+        }
+        private record DllIdentity(long bytes, String sha256) {
+            private boolean matches(ExactRef actual) { return bytes == actual.bytes() && sha256.equals(actual.sha256()); }
+        }
+        // Add only a reviewed Full111 bridge that actually contains both Opening producers and the pinned reader/ABI.
+        private static final List<DllIdentity> FULL111_PRODUCERS = List.of();
+        private static final SourcePins FULL111_PINS = new SourcePins(
+                "d31b5b369f4e121009cdb3b941fc362992e8155782ac5a894daafd48c6f87cc9",
+                "6db7725c631d02cbed843b7c0ebf085ac120448cb1719a5b46f9df0831f0f2b8");
         /** Exact separately frozen reader/ABI identity; syntactic pins alone never install a live producer. */
         public record SourcePins(String readerSourceSha256,String abiManifestSha256) {
             public SourcePins {
@@ -316,8 +336,11 @@ public final class GovernancePlanningReads {
         }
         /** Exact readonly producer combinations; each still needs real catalog/HELLO/owner/read guards. */
         public static Optional<OpeningReadProfile> selectQualified(String version,String executableSha256,ExactRef selectedDll) {
-            if(!VERSION.equals(version)||executableSha256==null||!EXECUTABLE.equalsIgnoreCase(executableSha256)||selectedDll==null
-                    ||!java.nio.file.Path.of(selectedDll.path()).isAbsolute())return Optional.empty();
+            if (selectedDll == null || !java.nio.file.Path.of(selectedDll.path()).isAbsolute()) return Optional.empty();
+            if (Protocol.FULL111.build.matches(version, executableSha256))
+                return FULL111_PRODUCERS.stream().filter(producer -> producer.matches(selectedDll)).findFirst()
+                        .map(producer -> full111DataProfile());
+            if (!Protocol.BB3.build.matches(version, executableSha256)) return Optional.empty();
             boolean opening56=selectedDll.bytes()==13443584L&&selectedDll.sha256().equals("6d6eddb24b6d84a4066606b262329d52ec5acf061ae8edae804dcab1d7c7b5f3");
             // SAVE61 reuses the exact56 Opening reader/frame/serializer/Actor objects and source/ABI pair.
             boolean mappedSave61=selectedDll.bytes()==13451776L&&selectedDll.sha256().equals("4376f38077794ba100349da7a8cc26f45fcab33d0ad525da9ea1836ca26747d6");
@@ -329,20 +352,35 @@ public final class GovernancePlanningReads {
             return Optional.of(new OpeningReadProfile(new SourcePins("856a95114bd5e70ab50bef77d26a27035552b77df1c3bf79467d1c5b50839102",
                     "31fe8e38eaa822edb8cb63606ee9c1c630657af8f41cd25f7ccb6319e65901f8")));
         }
+        private final Protocol protocol;
         private final SourcePins pins;
-        public OpeningReadProfile(SourcePins actualFrozenPins){pins=java.util.Objects.requireNonNull(actualFrozenPins);}
-        public SourcePins pins(){return pins;}
+        public OpeningReadProfile(SourcePins actualFrozenPins) { this(Protocol.BB3, actualFrozenPins); }
+        private OpeningReadProfile(Protocol protocol, SourcePins pins) {
+            this.protocol = protocol;
+            this.pins = java.util.Objects.requireNonNull(pins);
+        }
+        static OpeningReadProfile full111DataProfile() { return new OpeningReadProfile(Protocol.FULL111, FULL111_PINS); }
+        public SourcePins pins() { return pins; }
+        public String profileId(Kind kind) { return kind.profile(protocol.number); }
+        private String step(Kind kind) { return kind.step(protocol.number); }
+        private String capability(Kind kind) { return kind.capability(protocol.number); }
+        private String schema(Kind kind) { return kind.schema(protocol.number); }
+        public static boolean isCurrentOperation(OperationKey operation) {
+            return java.util.Arrays.stream(Protocol.values()).anyMatch(value -> Kind.CURRENT.step(value.number).equals(operation.value()));
+        }
         /** DATA decoding only. A matching provenance string does not itself prove Native execution or owner authority. */
         public Data decodeData(Kind kind,RawJson original,Frame expected) {
             java.util.Objects.requireNonNull(kind);java.util.Objects.requireNonNull(original);java.util.Objects.requireNonNull(expected);
             var fields=new HashSet<>(COMMON);if(kind==Kind.SCOPE)fields.add("government");else fields.addAll(Set.of("current_focus","current_lifestyle_progress"));
             ObjectNode row=StrictJson.object(StrictJson.parse(original.bytes(),65536),fields);
-            equal(row,"schema",kind.schema());String status=StrictJson.text(row.get("status"));
+            equal(row,"schema",schema(kind));String status=StrictJson.text(row.get("status"));
             StrictJson.require(status.equals("available")||status.equals("unavailable"),"exact opening DATA status required");boolean available=status.equals("available");
             StrictJson.require(CouncilCodec.bool(row.get("read_only"))&&!CouncilCodec.bool(row.get("full_governance_ready"))
                     &&!CouncilCodec.bool(row.get("action_ready")),"opening DATA cannot claim full governance or action readiness");
             ObjectNode provenance=StrictJson.object(row.get("provenance"),Set.of("profile_id","adapter_id","game_version","executable_sha256","reader_source_sha256","abi_manifest_sha256"));
-            equal(provenance,"profile_id",kind.profile());equal(provenance,"adapter_id",ADAPTER);equal(provenance,"game_version",VERSION);equal(provenance,"executable_sha256",EXECUTABLE);
+            equal(provenance,"profile_id",profileId(kind));equal(provenance,"adapter_id",protocol.build.coreFullAdapterId());
+            equal(provenance,"game_version",protocol.build.version());
+            equal(provenance,"executable_sha256",protocol.build.executableSha256().toUpperCase(java.util.Locale.ROOT));
             equal(provenance,"reader_source_sha256",pins.readerSourceSha256());equal(provenance,"abi_manifest_sha256",pins.abiManifestSha256());
             Origin origin=origin(row.get("origin"));Optional<String> reason;
             Optional<Frame> frame;
@@ -404,31 +442,34 @@ public final class GovernancePlanningReads {
                 StrictJson.require(nativeSource.bytes()>0&&java.nio.file.Path.of(nativeSource.path()).isAbsolute(),"actual selected native read producer required");
                 scope=contract(Kind.SCOPE,nativeSource);current=contract(Kind.CURRENT,nativeSource);
             }
+            public OpeningReadProfile profile() { return profile; }
             public List<ReadContract<?>> all(){return List.of(scope,current);}
             public ReadContract<Data> scope(){return scope;}public ReadContract<Data> current(){return current;}
             private ReadContract<Data> contract(Kind kind,ExactRef source) {
+                var step = profile.step(kind);
+                var capability = profile.capability(kind);
                 java.util.function.Function<PlanningReadReceipt,Data> decoder=receipt->{
-                    requireReceipt(receipt,kind);
+                    requireReceipt(receipt,step);
                     original(receipt);
                     Data data=profile.decodeData(kind,receipt.original().originalResultToken().orElseThrow(),frame(receipt.request()));
                     if(data.available())data.requireApplicationMainOrigin();
                     return data;
                 };
-                return new ReadContract<>("governance.opening-readonly."+kind.profile(),new OperationKey(kind.step()),Optional.of(kind.capability()),
-                        kind.capability(),ReadContract.PermissionMode.ADVERTISED_CAPABILITY,ReadContract.WireProfile.EXECUTE_STEP,
+                return new ReadContract<>("governance.opening-readonly."+profile.profileId(kind),new OperationKey(step),Optional.of(capability),
+                        capability,ReadContract.PermissionMode.ADVERTISED_CAPABILITY,ReadContract.WireProfile.EXECUTE_STEP,
                         ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP,source,(request,id)->{
                             StrictJson.require(request.arguments().members().isEmpty(),"Opening read takes no caller selector or extra wire fields");
                             frame(request);
-                            return new NativeRequest(kind.step(),Optional.of(kind.capability()),new RawJson(StrictJson.canonical(StrictJson.object())));
+                            return new NativeRequest(step,Optional.of(capability),new RawJson(StrictJson.canonical(StrictJson.object())));
                         },decoder,decoder);
             }
             private static Frame frame(PlanningReadRequest request) {
                 StrictJson.require(request.origin() instanceof CommandOrigin.Gameplay,"Opening read requires its actual gameplay frame");
                 var id=request.before().frame().identity();return new Frame(id.nativeRevision(),id.dateRaw(),id.player());
             }
-            private static void requireReceipt(PlanningReadReceipt receipt,Kind kind) {
+            private static void requireReceipt(PlanningReadReceipt receipt,String step) {
                 var request=receipt.request();frame(request);
-                StrictJson.require(request.operation().value().equals(kind.step())&&request.arguments().members().isEmpty()
+                StrictJson.require(request.operation().value().equals(step)&&request.arguments().members().isEmpty()
                         &&receipt.adoption().isEmpty()&&receipt.archiveVersion()==PlanningReadReceipt.ArchiveVersion.CURRENT_V2,
                         "Opening read cannot adopt another operation or historical/canonical receipt");
                 for(var guard:List.of(receipt.before(),receipt.after())) {
@@ -464,6 +505,12 @@ public final class GovernancePlanningReads {
                         org.xar.ck3.control.application.planning.PlanningRequest request) {
                     try {
                         currentGuard.requireCurrent(request.deadline());StrictJson.require(clock.instant().isBefore(request.deadline()),"Opening planning deadline elapsed");
+                        if (definitions.profile.protocol == Protocol.FULL111) {
+                            var advertised = request.observations().bridgeCapabilities();
+                            StrictJson.require(advertised.contains(definitions.profile.capability(Kind.SCOPE))
+                                    && advertised.contains(definitions.profile.capability(Kind.CURRENT)),
+                                    "Full111 Opening needs both read-only capabilities on the held connection");
+                        }
                         var value=borrowed.use(request,same->archive.inSession(same,bound->{
                             var originals=new java.util.ArrayList<PlanningReadReceipt>();var refs=new java.util.ArrayList<ExactRef>();
                             java.util.function.Function<ReadContract<Data>,Data> read=contract->{
@@ -493,7 +540,7 @@ public final class GovernancePlanningReads {
                                     .put("at_peace",!request.observations().warInProgress()).put("government_key",government.key())
                                     .put("snapshot_revision",scopeData.frame().orElseThrow().nativeRevision()).put("player_character_id",scopeData.frame().orElseThrow().playerCharacterId());
                             ObjectNode query=StrictJson.object().put("status","not_requested_outside_current_admitted_scope");
-                            if(admitted)query=projectCurrent(request,read.apply(definitions.current()));
+                            if(admitted)query=definitions.profile.projectCurrent(request,read.apply(definitions.current()));
                             query.set("opening_native_scope",StrictJson.parse(scopeData.original().bytes()));
                             var result=new org.xar.ck3.control.application.planning.governance.GovernanceCollector.ReadOnlyOpening(
                                     (OpportunityJson.Obj)OpportunityJson.parse(StrictJson.canonical(scope)),(OpportunityJson.Obj)OpportunityJson.parse(StrictJson.canonical(query)));
@@ -507,11 +554,11 @@ public final class GovernancePlanningReads {
                 }
             };
         }
-        private static ObjectNode projectCurrent(org.xar.ck3.control.application.planning.PlanningRequest request,Data data) {
+        private ObjectNode projectCurrent(org.xar.ck3.control.application.planning.PlanningRequest request,Data data) {
             StrictJson.require(data.kind()==Kind.CURRENT&&data.available()&&data.progress().orElseThrow().present(),"actual present current focus/progress required");
             data.requireApplicationMainOrigin();var frame=request.before().frame();var id=frame.identity();var p=data.progress().orElseThrow();
             StrictJson.require(data.frame().orElseThrow().equals(new Frame(id.nativeRevision(),id.dateRaw(),id.player())),"Opening projection crossed its Full frame");
-            ObjectNode query=StrictJson.object().put("status","available").put("opening_read_profile",Kind.CURRENT.profile());
+            ObjectNode query=StrictJson.object().put("status","available").put("opening_read_profile",profileId(Kind.CURRENT));
             query.set("source_frame",StrictJson.object().put("snapshot_id",frame.snapshotId()).put("revision",frame.revision()).put("native_revision",id.nativeRevision()).put("date_raw",id.dateRaw()));
             ObjectNode snapshot=query.putObject("snapshot").put("status","available").put("snapshot_id",frame.snapshotId()).put("episode_run_id",frame.episodeRunId())
                     .put("public_revision",frame.revision()).put("native_revision",id.nativeRevision()).put("date_raw",id.dateRaw()).put("player_character_id",id.player());
