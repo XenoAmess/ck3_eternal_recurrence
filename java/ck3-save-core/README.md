@@ -26,3 +26,21 @@ DES 另提供两条共享读取入口，均采用 `--inputs <request> --output <
 显式选中表的直接 scalar 子项只接受规范 NativeId 键和精确原始 token `none`。它表示空槽，不进入旧 inventory 的完整 block ID 集合；可选选择返回 NOT_FOUND，required 选择仍拒绝缺失。其他 scalar／非法 ID／重复空槽或 block 与空槽冲突均拒绝。该守卫不扩张为成员 census 或全部历史角色资格。
 
 共享 Java 21 核心在离线读取期间持有 Java FileLock，并在读取前后核对存档和解码器的文件 Pin。需要 Win32 deny-write、retained Save custody 或 SDK 来源资格的 operator 继续持有自己的已核 OS 句柄，并在调用 API 前后执行所需的 runtime、SDK pin、custody、decoder 和源码身份检查。
+
+## House 与 Dynasty 的父级引用
+
+DES 的 `inspect-save-house-parents-v1 --inputs <request> --output <unused-report>`
+与共享 `HouseParentInspection.inspect` API 接受 Request1。请求须提供当前机器、仓库、存档和解码器的 Pin，
+并显式指定 `houseTablePath` 和 `dynastyTablePath`。每条完整 House 记录必须恰有一个直接的 `dynasty` 原子字段。
+
+同一个解码器进程在完整遍历期间收集两个表的完整记录 ID 和 House 父级。每个 House 必须恰好对应同一次读取中存在的
+Dynasty。缺失、重复、非规范 ID、块值或悬空的父级引用均拒绝。两个表都必须存在，并可为空。
+原生 `id=none` 空槽沿用共享扫描规则。
+
+报告使用 `ck3-save-house-parents-v1`，覆盖范围为 `COMPLETE_FULL_HOUSE_RECORD_PARENTS`。
+父级映射按 House ID 排序，每项是两个规范十进制字符串，依次为 House ID 和 Dynasty ID。
+读取采用 64 KiB 请求和 1 MiB 报告限额，超限时拒绝整个结果。业务评估为 `NOT_ASSESSED`。
+
+调用方可用 `projection.housesInDynasty(actualDynastyId)` 获取关联 House 的完整 ID 列表，并通过同一个已绑定存档的
+selected API 取得相关完整 AST。比较不同保存点时，每个存档都需要独立的父级映射。调用方继续按需执行既有的 SDK、
+存档 custody、源码和操作系统句柄检查。

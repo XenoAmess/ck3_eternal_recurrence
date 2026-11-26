@@ -18,6 +18,7 @@ public final class SaveStream {
     private static final int MAX_SELECTED_BYTES = 4 * 1024 * 1024;
     private final Clausewitz.Lexer lexer;
     private final Selection selection;
+    private final HouseParentInspection.Collector houseParents;
     private final StreamingTable streaming;
     private final StreamingTableSink streamingSink;
     private final Set<String> streamingSelected = new LinkedHashSet<>();
@@ -50,6 +51,14 @@ public final class SaveStream {
         this(reader, selection, null, null);
     }
     public SaveStream(Reader reader, Selection selection, StreamingTable streaming, StreamingTableSink sink) {
+        this(reader, selection, streaming, sink, null);
+    }
+    SaveStream(Reader reader, Selection selection, HouseParentInspection.Collector houseParents) {
+        this(reader, selection, null, null, houseParents);
+    }
+    private SaveStream(Reader reader, Selection selection, StreamingTable streaming, StreamingTableSink sink,
+                       HouseParentInspection.Collector houseParents) {
+        this.houseParents = houseParents;
         this.lexer = new Clausewitz.Lexer(reader, Clausewitz.Syntax.SAVE, 2 * 1024 * 1024);
         this.selection = java.util.Objects.requireNonNull(selection);
         if ((streaming == null) != (sink == null)) throw new IllegalArgumentException("streaming table and sink must be supplied together");
@@ -105,6 +114,7 @@ public final class SaveStream {
     }
     private void block(List<String> path, boolean braced) throws IOException {
         if (path.size() > 128) throw failure("nesting cap exceeded");
+        if (houseParents != null) houseParents.enter(path);
         StructureBuilder structure = structure(path);
         while (lexer.peek() != null && !lexer.peek().equals("}")) {
             String key = next();
@@ -124,6 +134,7 @@ public final class SaveStream {
                 if (path.isEmpty() && !key.matches("[0-9]+") && !rootKeys.contains(key)) {
                     diagnostic(key); rootKeys.add(key); if (rootKeys.size() > 512) throw failure("root-key cap exceeded");
                 }
+                if (houseParents != null) houseParents.field(path, key, value);
                 if (structure != null) structure.observe(key, value.equals("{"));
                 if (value.equals("{")) {
                     List<String> nested = child(path, key); enter(nested); block(nested, true);
@@ -139,6 +150,7 @@ public final class SaveStream {
             } else if (streaming != null && path.equals(streaming.path())) throw failure("unassigned streaming table atom");
             else if (isSelectedTable(path)) throw failure("unassigned native table atom: " + key);
             else if (path.isEmpty() && !(rootKeys.isEmpty() && (key.startsWith("SAV") || key.equals("CK3txt")))) throw failure("unassigned root atom: " + key);
+            else if (houseParents != null) houseParents.unassigned(path, key);
         }
         if (braced) {
             if (!"}".equals(next())) throw failure("truncated block");
@@ -148,6 +160,7 @@ public final class SaveStream {
                 throw failure("streaming record discriminator absent at " + path);
             for (int i = active.size() - 1; i >= 0; i--) if (active.get(i).path.equals(path)) finish(active.remove(i));
             if (recordEnd) streamingContext = null;
+            if (houseParents != null) houseParents.leave(path);
         } else if (lexer.peek() != null) throw failure("unexpected root closing brace");
     }
     private void enter(List<String> path) throws IOException {
