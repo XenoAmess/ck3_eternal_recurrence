@@ -18,7 +18,8 @@ final class RootOperatorQuarantineRuntime {
     private RootOperatorQuarantineRuntime() { }
     static void install(RootApplicationAssembly.Core core,ManagedGameSession game,ExactRef configuredRequest,Clock clock)throws IOException {
         byte[] requestBytes=readExact(configuredRequest);var request=CompositeOperatorQuarantineRequest.decode(requestBytes);
-        StrictJson.require(request.machineId().equals(game.machineId()),"operator request belongs to another runtime machine");
+        StrictJson.require(request.exitedLife().isEmpty() && request.machineId().equals(game.machineId()),
+                "a running or historical Game cannot install the exited-only administrative decision");
         if(!request.game().equals(game.generation())) {
             game.verify();
             var historical=new CompositeOperatorQuarantineSource(configuredRequest,requestBytes,readExact(request.authorizedBy()),
@@ -37,13 +38,18 @@ final class RootOperatorQuarantineRuntime {
         exited.requireOwner(lifecycle,deadline);
         byte[] requestBytes=readExact(configuredRequest);
         var request=CompositeOperatorQuarantineRequest.decode(requestBytes);
-        StrictJson.require(request.lifeInterruption()&&!request.reservedTailInterruption()
-                        &&request.machineId().equals(exited.machineId())&&request.game().equals(exited.generation())
-                        &&request.episodeRunId().equals(exited.sourceSessionId()),
-                "exited administrative source requires its exact v2 Life request and original owner");
+        StrictJson.require(request.matchesExitedOwner(exited.machineId(),exited.generation(),exited.sourceSessionId(),
+                        java.util.Optional.of(exited.terminalReference())),
+                "exited administrative source requires its exact original supervisor owner");
+        java.util.Optional<org.xar.ck3.control.application.action.RawJson> terminal = java.util.Optional.empty();
+        if (request.exitedLife().isPresent()) {
+            StrictJson.require(!request.issuedAt().isBefore(exited.terminalObservedAt()),
+                    "exited Life decision predates the original supervisor exit");
+            terminal=java.util.Optional.of(new org.xar.ck3.control.application.action.RawJson(readExact(exited.terminalReference(),262144)));
+        }
         var source=new CompositeOperatorQuarantineSource(configuredRequest,requestBytes,readExact(request.authorizedBy()),
-                exited.generation(),exited.sourceSessionId(),new org.xar.ck3.control.application.action.OperationKey("life-advance"),
-                org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER,clock);
+                exited.generation(),request.episodeRunId(),new org.xar.ck3.control.application.action.OperationKey("life-advance"),
+                org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER,clock,terminal);
         exited.requireOwner(lifecycle,deadline);core.bindOperatorQuarantineSource(source);
     }
     /** The loaded role supplies only the old canonical subject; this path never captures or appends a decision. */
@@ -53,7 +59,7 @@ final class RootOperatorQuarantineRuntime {
         loaded.requireCurrent(deadline);
         byte[] bytes=readExact(configuredRequest);var request=CompositeOperatorQuarantineRequest.decode(bytes);
         var old=loaded.previousOwner();
-        StrictJson.require(request.lifeInterruption()&&!request.reservedTailInterruption()
+        StrictJson.require(request.exitedLife().isEmpty() && request.lifeInterruption()&&!request.reservedTailInterruption()
                 &&request.machineId().equals(old.machineId())&&request.game().equals(old.game())
                 &&request.episodeRunId().equals(old.sessionId()),"loaded recovery requires its actual old configured Life terminal source");
         var source=new CompositeOperatorQuarantineSource(configuredRequest,bytes,readExact(request.authorizedBy()),old.game(),old.sessionId(),
@@ -61,9 +67,16 @@ final class RootOperatorQuarantineRuntime {
                 org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER,clock);
         loaded.requireCurrent(deadline);core.bindOperatorQuarantineSource(source);
     }
+    static void requireRestorableOperatorRequest(ExactRef configuredRequest)throws IOException {
+        if (CompositeOperatorQuarantineRequest.decode(readExact(configuredRequest)).exitedLife().isPresent())
+            throw new IOException("exited positive-RESUME retirement has its own retire-exited entry; imported saved attachment is a separate producer");
+    }
     private static byte[] readExact(ExactRef reference)throws IOException {
-        StrictJson.require(reference.bytes()>0&&reference.bytes()<=65536,"bounded explicit operator configuration required");
-        byte[] raw;try(var stream=Files.newInputStream(Path.of(reference.path()))){raw=stream.readNBytes(65537);}
+        return readExact(reference,65536);
+    }
+    private static byte[] readExact(ExactRef reference,int limit)throws IOException {
+        StrictJson.require(reference.bytes()>0&&reference.bytes()<=limit,"bounded explicit operator original required");
+        byte[] raw;try(var stream=Files.newInputStream(Path.of(reference.path()))){raw=stream.readNBytes(limit+1);}
         if(raw.length!=reference.bytes()||!ActionCodec.sha256(raw).equals(reference.sha256()))throw new IOException("configured operator request/authorization exact bytes changed");
         return raw;
     }

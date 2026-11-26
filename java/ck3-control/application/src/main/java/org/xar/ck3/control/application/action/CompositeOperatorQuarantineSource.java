@@ -25,13 +25,23 @@ public final class CompositeOperatorQuarantineSource {
     private final OperationKey operation;
     private final String handler;
     private final Clock clock;
+    private final Optional<RawJson> exitTerminal;
     public CompositeOperatorQuarantineSource(ExactRef configuredRequest,byte[] actualRequest,byte[] actualAuthorization,
             GameGeneration installedGame,String installedEpisode,OperationKey installedOperation,String installedHandler,Clock clock) {
+        this(configuredRequest, actualRequest, actualAuthorization, installedGame, installedEpisode, installedOperation,
+                installedHandler, clock, Optional.empty());
+    }
+    public CompositeOperatorQuarantineSource(ExactRef configuredRequest,byte[] actualRequest,byte[] actualAuthorization,
+            GameGeneration installedGame,String installedEpisode,OperationKey installedOperation,String installedHandler,Clock clock,
+            Optional<RawJson> exitTerminal) {
         requestRef=Objects.requireNonNull(configuredRequest);requestBytes=actualRequest.clone();authorizationBytes=actualAuthorization.clone();
         require(requestRef.bytes()==requestBytes.length&&requestRef.sha256().equals(ActionCodec.sha256(requestBytes)),"configured operator request bytes/SHA differ");
         request=CompositeOperatorQuarantineRequest.decode(requestBytes);
         require(request.authorizedBy().bytes()==authorizationBytes.length&&request.authorizedBy().sha256().equals(ActionCodec.sha256(authorizationBytes)),"actual operator authorization bytes/SHA differ");
-        StrictJson.parse(authorizationBytes,65536);
+        request.requireAuthorization(authorizationBytes);
+        this.exitTerminal = Objects.requireNonNull(exitTerminal);
+        require(request.exitedLife().isPresent()==exitTerminal.isPresent(), "exited decision requires the separately measured supervisor terminal");
+        exitTerminal.ifPresent(original -> requireTerminalOriginal(original.bytes()));
         require(request.game().equals(installedGame)&&request.episodeRunId().equals(installedEpisode),"operator request is not for this installed Game/episode");
         operation=Objects.requireNonNull(installedOperation);handler=StrictJson.text(installedHandler);this.clock=Objects.requireNonNull(clock);
     }
@@ -44,6 +54,10 @@ public final class CompositeOperatorQuarantineSource {
         requireOriginalBinding(original);
         require(archive.receiptReferenceOf(original).equals(request.originalReceipt()),"configured original receipt reference differs");
         if(request.reservedTailInterruption())requireReservedSubject(same,head,original,archive);
+        if (request.exitedLife().isPresent()) {
+            requireExitedOriginals(head,original,archive);
+            archive.preserveMaterial(exitTerminal.orElseThrow());
+        }
         var actionHead=ContinuityActionJournal.recordHead(head.state()).orElseThrow();
         var reservations=reservations(actionHead,original,archive);
         var originalState=archive.preserveMaterial(new RawJson(ContinuityJson.canonical(head.state().toJson(),ContinuityJson.LEDGER_MAX_BYTES)));
@@ -71,7 +85,9 @@ public final class CompositeOperatorQuarantineSource {
                 var priorSource=new CompositeOperatorQuarantineSource(proof.requestSource(),priorBytes,
                         archive.loadMaterial(archive.materialReference(prior.authorizedBy().sha256(),prior.authorizedBy().bytes())).bytes(),
                         request.game(),request.episodeRunId(),priorOriginal.command().operation(),
-                        org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER,clock);
+                        org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER,clock,
+                        prior.exitedLife().map(binding -> archive.loadMaterial(archive.materialReference(
+                                binding.originalTerminal().sha256(), binding.originalTerminal().bytes()))));
                 priorSource.verify(same,actualHead,proposed,archive);return;
             }
             require(CompositeOperatorQuarantineRequest.SCOPE.equals(prior.scope())&&prior.priorRequests().isEmpty(),"prior request replay is limited to the original optional Sway decision");
@@ -97,6 +113,17 @@ public final class CompositeOperatorQuarantineSource {
         require(Arrays.equals(ContinuityJson.canonical(before.state().toJson(),ContinuityJson.LEDGER_MAX_BYTES),archive.loadMaterial(proof.predecessorState()).bytes()),"operator predecessor snapshot changed");
         require(ContinuityActionJournal.recordHead(before.state()).equals(Optional.of(proof.originalActionHead())),"operator proof changed actual ACTION prefix");
         if(request.reservedTailInterruption())requireReservedSubject(same,before,original,archive);
+        if (request.exitedLife().isPresent()) {
+            requireExitedOriginals(before,original,archive);
+            var terminal = request.exitedLife().orElseThrow().originalTerminal();
+            var retained = archive.loadMaterial(archive.materialReference(terminal.sha256(), terminal.bytes()));
+            requireTerminalOriginal(retained.bytes());
+            require(java.util.Arrays.equals(retained.bytes(), exitTerminal.orElseThrow().bytes()),
+                    "archived exited retirement changed the original supervisor terminal");
+            require(java.util.Arrays.equals(archive.loadMaterial(archive.materialReference(
+                    request.authorizedBy().sha256(), request.authorizedBy().bytes())).bytes(), authorizationBytes),
+                    "archived exited retirement changed the actual configured operator decision");
+        }
         var atPoint=ContinuityActionJournal.lookup(before.state(),original.command().actionId(),archive).orElseThrow();
         require(Arrays.equals(ActionReceiptCodec.encodeReceipt(atPoint,archive),ActionReceiptCodec.encodeReceipt(original,archive)),"operator parent was not the exact retained unknown at its predecessor");
         require(proof.reservations().equals(reservations(proof.originalActionHead(),original,archive)),"operator first reservation references changed");
@@ -113,6 +140,18 @@ public final class CompositeOperatorQuarantineSource {
         var canonical=ContinuityActionJournal.receipts(predecessor.state(),archive);
         ReservedLifeRetirementSubject.require(request,predecessor.state(),original,canonical,archive);
     }
+    public ExitedLifeRetirementSubject.Originals requireExitedOriginals(WriterContracts.Head predecessor,
+            ActionReceipt original, ActionPorts.OutcomeArchive archive) {
+        return ExitedLifeRetirementSubject.requireOriginals(request, predecessor, original, archive);
+    }
+
+    private void requireTerminalOriginal(byte[] original) {
+        var expected = request.exitedLife().orElseThrow().originalTerminal();
+        require(original.length==expected.bytes() && ActionCodec.sha256(original).equals(expected.sha256()),
+                "actual supervisor exit terminal differs from the explicit operator request");
+        StrictJson.parse(original,262144);
+    }
+
     private void requireOriginalBinding(ActionReceipt original) {
         request.requireParent(original);require(original.command().operation().equals(operation)&&((ActionState.CompositeUnknown)original.state()).execution().handlerId().equals(handler),"operator proof has no installed operation/handler binding");
     }

@@ -937,12 +937,14 @@ public final class RootApplicationAssembly {
                     var machine=exited==null?game.machineId():exited.machineId();
                     var generation=exited==null?game.generation():exited.generation();
                     var episode=exited==null?game.sessionId():exited.sourceSessionId();
-                    boolean scope=exited==null?source.request().reservedTailInterruption():
-                            source.request().lifeInterruption()&&!source.request().reservedTailInterruption();
+                    var request = source.request();
+                    boolean scope = exited == null
+                            ? request.reservedTailInterruption() && request.machineId().equals(machine)
+                                && request.game().equals(generation) && request.episodeRunId().equals(episode)
+                            : request.matchesExitedOwner(machine, generation, episode,
+                                Optional.ofNullable(exited.original).map(org.xar.ck3.control.platform.JavaGameLifecycle.ExitedGeneration::terminalReference));
                     StrictJson.require(reservedRetirement.get()==this&&operatorQuarantine==source&&scope
-                            &&activeSession==null&&!finished&&!router.isSealed()&&clock.instant().isBefore(deadline)
-                            &&source.request().machineId().equals(machine)&&source.request().game().equals(generation)
-                            &&source.request().episodeRunId().equals(episode),
+                            &&activeSession==null&&!finished&&!router.isSealed()&&clock.instant().isBefore(deadline),
                             "private retirement scope lost its actual uninstalled Core/Game/source/writer ownership");
                 }catch(IOException failure){throw new UncheckedIOException(failure);}
             }
@@ -986,15 +988,15 @@ public final class RootApplicationAssembly {
                 finally{reservedRetirement.remove();}
             }));
         }
-        /** Source-proven exited ownership permits only the configured administrative v2 Life retirement. */
+        /** Source-proven exited ownership and the configured decision govern original administrative retirement. */
         public ActionReceipt retireExitedLifeInterruptionOnly(org.xar.ck3.control.platform.JavaGameLifecycle owner,
                 org.xar.ck3.control.platform.JavaGameLifecycle.ExitedGeneration exited,Instant deadline)throws IOException {
             Objects.requireNonNull(owner);Objects.requireNonNull(exited);Objects.requireNonNull(deadline);
             exited.requireOwner(owner,deadline);
             var source=operatorQuarantineSource().orElseThrow(()->new IOException("configured exited Life operator source is absent"));
-            StrictJson.require(source.request().lifeInterruption()&&!source.request().reservedTailInterruption()
-                    &&source.request().game().equals(exited.generation())&&source.request().machineId().equals(exited.machineId())
-                    &&source.request().episodeRunId().equals(exited.sourceSessionId())
+            StrictJson.require(source.request().matchesExitedOwner(exited.machineId(),exited.generation(),exited.sourceSessionId(),
+                            Optional.of(exited.terminalReference()))
+                    &&(source.request().exitedLife().isEmpty()||!source.request().issuedAt().isBefore(exited.terminalObservedAt()))
                     &&activeSession==null&&!finished&&!router.isSealed()&&reservedRetirement.get()==null
                     &&clock.instant().isBefore(deadline),
                     "exited Life retirement requires the actual uninstalled Core, typed exited owner and finite source window");
@@ -1011,10 +1013,20 @@ public final class RootApplicationAssembly {
                     }
                     request.requireParent(original);
                     var execution=((org.xar.ck3.control.application.action.ActionState.CompositeUnknown)original.state()).execution();
-                    for(var binding:execution.children()) {
-                        var child=ContinuityActionJournal.lookup(head.state(),binding.actionId(),originals).orElseThrow();
-                        StrictJson.require(child.settled()&&child.bodySha256().equals(binding.bodySha256()),
-                                "exited Life retirement retains every original child terminal and exact body");
+                    if (request.exitedLife().isPresent()) {
+                        var retained = source.requireExitedOriginals(head,original,originals);
+                        for (ActionReceipt child : List.of(retained.arm(),retained.resume())) {
+                            // The full archive also compares the original outbound fields and revision with the prepared Attempt.
+                            StrictJson.require(actualArchive.loadReceipt(originals.receiptReferenceOf(child)).equals(child),
+                                    "exited Life child must retain its exact original verified guard and outbound packet");
+                        }
+                        new org.xar.ck3.control.application.checkpoint.NativeCheckpointFiles().verify(retained.savedPair());
+                    } else {
+                        for(var binding:execution.children()) {
+                            var child=ContinuityActionJournal.lookup(head.state(),binding.actionId(),originals).orElseThrow();
+                            StrictJson.require(child.settled()&&child.bodySha256().equals(binding.bodySha256()),
+                                    "exited Life retirement retains every original child terminal and exact body");
+                        }
                     }
                     var observation=source.capture(same,original,originals);
                     var terminal=scope.administrativeJournal.locked(same,locked->{

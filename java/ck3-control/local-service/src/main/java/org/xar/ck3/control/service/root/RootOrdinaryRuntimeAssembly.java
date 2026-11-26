@@ -890,6 +890,8 @@ public final class RootOrdinaryRuntimeAssembly {
                 org.xar.ck3.control.contracts.GameGeneration expected,Instant deadline)throws IOException,InterruptedException {
             var configuredDecision=config.decisionProvider().orElseThrow(()->
                     new IOException("exited checkpoint recovery requires its explicit decision provider"));
+            RootOperatorQuarantineRuntime.requireRestorableOperatorRequest(config.operatorQuarantine().orElseThrow(() ->
+                    new IOException("exited checkpoint recovery requires its configured operator request")));
             retireExitedLifeInterruptionOnly(ownerDescriptor,expected,deadline);
             var exited=Objects.requireNonNull(exitedRecovery);
             var qualified=RootExitedSavedMaterialSource.qualify(core,config,lifecycle,exited,deadline);

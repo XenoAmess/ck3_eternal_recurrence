@@ -157,6 +157,8 @@ public final class JavaGameLifecycle {
         public String sourceSessionId(){return source.descriptor().sessionId();}
         public String machineId(){return source.descriptor().machineId();}
         public ExactRef evidence(){return source.currentObservation();}
+        public ExactRef terminalReference(){return source.terminalReference();}
+        public Instant terminalObservedAt(){return source.terminal().observedAt();}
         public Instant observedAt(){return source.observedAt();}
         public Instant deadline(){return deadline;}
         public NativeLaunchPlanCodec.Configuration originalConfiguration(){return source.descriptor().configuration();}
