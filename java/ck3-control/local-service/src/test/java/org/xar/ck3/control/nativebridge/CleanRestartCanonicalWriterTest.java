@@ -31,6 +31,10 @@ import static org.xar.ck3.control.application.session.SessionPorts.*;
 
 /** Existing software Driver -> actual archive/sole writer -> strict restart readers. No Managed/native admission is manufactured. */
 final class CleanRestartCanonicalWriterTest {
+    // These tests verify custody and persistence. Each logical operation may flush multiple
+    // original artifacts and its writer events to the Windows volume.
+    private static final Duration WRITER_IO_BUDGET = Duration.ofMinutes(3);
+
     @TempDir Path root;
     private record Inputs(ActionCommand observed, ContinuityBatchJournal batches, SessionController controller) { }
     private ActionWriterIntegrationFixture fixture(Path directory)throws IOException {
@@ -45,7 +49,7 @@ final class CleanRestartCanonicalWriterTest {
         return inputs(fixture,"restart-before");
     }
     private Inputs inputs(ActionWriterIntegrationFixture fixture,String actionId)throws Exception {
-        var ready=dirtyReady(fixture,Instant.now().plusSeconds(60));
+        var ready=dirtyReady(fixture,Instant.now().plus(WRITER_IO_BUDGET));
         var request=ready.request();
         var source=request.source();
         var expected=new org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedPostcondition(1,request.before(),source,"paused/v1",List.of(new org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedBoolean(new org.xar.ck3.control.g2.planning.ProposalLifecycle.FieldKey("paused"),true)));
@@ -126,17 +130,28 @@ final class CleanRestartCanonicalWriterTest {
         var scenario=new ActionWriterIntegrationFixture.SoftwareActionScenario(operation,"game.command.dirty-business-software-v1",
                 (command,attempt,dispatch)->{
                     try {
-                        var after=dirtyReady(actual.get(),command.deadline());var semantic=after.semanticEvidence().orElseThrow();
-                        var identity=after.request().before();
-                        return new ActionPorts.EffectObserved(new ActionState.EffectObservation(identity,command.source(),command.sessionId(),
-                                command.expected().observerSchema(),command.expected().values(),
-                                new ObservationProvenance.Push(identity.frame().snapshotId(),identity.frame().identity().nativeRevision(),semantic.originalNativePacket()),
-                                semantic.observedAt(),semantic.originalNativePacket(),List.of(semantic.semantic())));
+                        var fixture = actual.get();
+                        var setter = assertInstanceOf(NativeActionPort.AckReceived.class, dispatch);
+                        var received = assertInstanceOf(NativeFreshSnapshotPort.Received.class,
+                                fixture.physicalInputs().transport().readFreshFullState(command.deadline()));
+                        NativeFreshSnapshotPort.verifyAfter(setter, received);
+                        var after = dirtyReady(fixture, command.deadline());
+                        var semantic = after.semanticEvidence().orElseThrow();
+                        assertEquals(fixture.archive.preserveNativeFrame(received.originalFrame()), semantic.originalNativePacket());
+                        var provenance = new ObservationProvenance.FreshSnapshotQuery(received.acknowledgement().requestId(),
+                                fixture.archive.preserve(received.acknowledgement()), received.snapshotReceived(),
+                                new ObservationProvenance.LiveAfterSetter(fixture.archive.preserve(setter)));
+                        return new ActionPorts.EffectObserved(new ActionState.EffectObservation(after.request().before(), command.source(),
+                                command.sessionId(), command.expected().observerSchema(), command.expected().values(), provenance,
+                                semantic.observedAt(), semantic.originalNativePacket(), List.of(semantic.semantic())));
                     }catch(Exception failure){throw new IllegalStateException(failure);}
                 },()->actual.get().enqueueSoftwareNativePacket(afterPacket.get()),Optional.empty(),Optional.empty(),true);
-        var readScenario=new ActionWriterIntegrationFixture.SoftwareReadScenario("0".repeat(64),"actual-dirty-read",ignored->List.of(),
-                request->{throw new AssertionError("dirty suffix uses only the fixture's original query contract");});
+        var build = ExactCk3Build.CK3_12004;
+        var readScenario = new ActionWriterIntegrationFixture.SoftwareReadScenario(build.executableSha256(), "ck3-1.20.0.4-msvc-x64",
+                ignored -> List.of(), request -> { throw new AssertionError("dirty suffix uses only the original native fresh read"); },
+                Optional.of(build.version()), Set.of(NativeFreshSnapshotPort.CAPABILITY));
         try(var fixture=new ActionWriterIntegrationFixture(root.resolve("actual-dirty"),false,readScenario,List.of(scenario),Duration.ofSeconds(60))) {
+            fixture.configureSoftwareFreshRead179("success", true);
             actual.set(fixture);
             fixture.bindAdditionalArchivedVerifier(new org.xar.ck3.control.application.effects.NativeRecordedEvidenceVerifier.Binding(operation,
                     fixture.observationSource().sourceRef(),(head,receipt,archive)->{
@@ -154,7 +169,7 @@ final class CleanRestartCanonicalWriterTest {
                 assertEquals(effect.after().frame().identity().nativeRevision(),retained.get("native_revision").bigIntegerValue());
                 assertTrue(retained.get("paused").booleanValue());
             }));
-            var initial=dirtyReady(fixture,Instant.now().plusSeconds(60));var semantic=initial.semanticEvidence().orElseThrow();
+            var initial=dirtyReady(fixture,Instant.now().plus(WRITER_IO_BUDGET));var semantic=initial.semanticEvidence().orElseThrow();
             var packet=(NativeWire.Snapshot)NativeWire.decode(java.nio.file.Files.readAllBytes(Path.of(semantic.originalNativePacket().path())));
             var post=StrictJson.object();post.put("type","state_snapshot");post.put("protocol_version",1);
             post.put("snapshot_id","dirty-business-snapshot-2");post.put("revision",packet.revision().add(BigInteger.ONE));
@@ -190,6 +205,7 @@ final class CleanRestartCanonicalWriterTest {
             assertArrayEquals(admitted.facts().driver().encode(),restored.facts().driver().encode());
             assertEquals(admitted.facts().actionRows(),restored.facts().actionRows());
             assertEquals(receipt,fixture.coordinator.execute(receipt.command()));assertEquals(1,fixture.nativeActionWrites());
+            assertEquals(2, fixture.softwareFreshWrites179());
             batches.commit(new JournalInput(owner,"dirty-worker-1",JournalKind.BATCH_STARTED,Optional.empty(),Optional.empty(),Optional.empty(),List.of()));
             batches.commit(new JournalInput(owner,"dirty-worker-1",JournalKind.BATCH_INTERRUPTED,Optional.empty(),Optional.empty(),Optional.empty(),List.of()));
             var suffix=fixture.writer.locked(same->batches.admitInitialNoDispatchRecovery(same,owner));
@@ -371,7 +387,24 @@ final class CleanRestartCanonicalWriterTest {
                 return new OrdinaryPlanCompletion.Unchanged("original actual receipt history published");
             }
         };
-        var controller=new SessionController(owner,(same,until)->new GameLifecycle.Running(owner.game(),source),(same,until)->dirtyReady(fixture,until),
+        ObservationPort observationsWithFreshCycle = new ObservationPort() {
+            @Override public Observation observe(SessionIdentity expected, Instant deadline) throws IOException, InterruptedException {
+                return fixture.collector.observe(expected, deadline);
+            }
+            @Override public Observation observe(SessionIdentity expected, Instant readinessDeadline, Instant planningDeadline)
+                    throws IOException, InterruptedException {
+                return fixture.collector.observe(expected, readinessDeadline, planningDeadline);
+            }
+            @Override public Observation observeAfter(SessionIdentity expected, ActionReceipt terminal, Instant readinessDeadline,
+                    Instant planningDeadline) throws IOException, InterruptedException {
+                var received = assertInstanceOf(NativeFreshSnapshotPort.Received.class,
+                        fixture.physicalInputs().transport().readFreshFullState(readinessDeadline));
+                NativeFreshSnapshotPort.verifyAfter(terminal.ack().orElseThrow(), received);
+                assertTrue(received.originalFrame().observedAt().isAfter(terminal.applied().orElseThrow().observation().observedAt()));
+                return observe(expected, readinessDeadline, planningDeadline);
+            }
+        };
+        var controller=new SessionController(owner,(same,until)->new GameLifecycle.Running(owner.game(),source),observationsWithFreshCycle,
                 new OrdinaryPlanner(policies,Clock.systemUTC(),realm),fixture.coordinator,checkpoints,new CheckpointRequestFactory(root.resolve("dirty-unused.ck3"),observations),
                 batches,work->{throw new AssertionError("no incident");},new SessionClock.SystemClock(),Optional.empty(),0,completion,
                 (same,receipt,until)->{throw new AssertionError("no episode handoff");});
@@ -565,7 +598,7 @@ final class CleanRestartCanonicalWriterTest {
             var publisher=new DriverReadHistoryPublisher(fixture.driverAuthority(),fixture.archive,fixture.reads.catalog(),List.of(contract.sourceRef()));
             fixture.bindAdditionalTransitionAuthority(org.xar.ck3.control.continuity.writer.WriterContracts.DRIVER_READ_HISTORY_KIND,publisher);
             fixture.writer.locked(same->{
-                fixture.collector.current(same,input.observed().before(),Instant.now().plusSeconds(60),lease->{
+                fixture.collector.current(same,input.observed().before(),Instant.now().plus(WRITER_IO_BUDGET),lease->{
                     var configuration=new DynamicCapabilities.Configuration(Optional.empty(),Optional.empty(),3,3,false,false);
                     var session=new CapabilitySessionPresentation(false,Optional.empty(),Optional.of(CapabilitySessionPresentation.RestoreKind.NEW_EPISODE),
                             CapabilitySessionPresentation.BindingState.ACTIVE_NEW,Optional.empty(),Optional.empty(),Optional.empty(),Optional.empty());
@@ -576,9 +609,10 @@ final class CleanRestartCanonicalWriterTest {
             });
             var before=fixture.writer.locked(same->fixture.driverAuthority().withFrozenFacts(same,frozen->(DriverSnapshotFacts.Known)frozen.state()));
             fixture.writer.locked(same->{
-                fixture.collector.current(same,input.observed().before(),Instant.now().plusSeconds(60),lease->{
+                Instant readDeadline = Instant.now().plus(WRITER_IO_BUDGET);
+                fixture.collector.current(same,input.observed().before(),readDeadline,lease->{
                     for(int ordinal=0;ordinal<6;ordinal++) {
-                        var request=new PlanningReadRequest(lease.frame().identity(),lease.frame().source(),lease.frame().sessionId(),contract.operation(),new Obj(java.util.Map.of()),Instant.now().plusSeconds(60));
+                        var request=new PlanningReadRequest(lease.frame().identity(),lease.frame().source(),lease.frame().sessionId(),contract.operation(),new Obj(java.util.Map.of()),readDeadline);
                         var result=fixture.reads.read(same,contract,request);
                         if(!(result instanceof PlanningReadResult.Known<MilitaryReadObservation> known))throw new AssertionError(result);
                         publisher.enqueue(same,contract,known);
@@ -587,8 +621,8 @@ final class CleanRestartCanonicalWriterTest {
                 });assertTrue(publisher.flushActualReads(same).isPresent());return null;
             });
             // Consume the fixture's next physical publication before the collector checks retained age.
-            fixture.physicalInputs().transport().observe(Instant.now().plusSeconds(60));
-            dirtyReady(fixture,Instant.now().plusSeconds(60));
+            fixture.physicalInputs().transport().observe(Instant.now().plus(WRITER_IO_BUDGET));
+            dirtyReady(fixture,Instant.now().plus(WRITER_IO_BUDGET));
             var current=fixture.writer.locked(same->fixture.driverAuthority().withFrozenFacts(same,frozen->(DriverSnapshotFacts.Known)frozen.state()));
             assertEquals(before.driver().commandHistory().size()+6,current.driver().commandHistory().size());
             assertTrue(current.observation().isPresent());assertTrue(current.driver().encode().length>ContinuityJson.TRANSPORT_MAX_BYTES);
