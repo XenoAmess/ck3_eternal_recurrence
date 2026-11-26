@@ -158,7 +158,8 @@ final class SessionControllerRegressionTest {
         assertEquals(BatchReport.Terminal.READINESS_TIMEOUT, report.terminal()); assertTrue(fixture.observed.get() > 0);
         assertEquals(0, fixture.submitted.get()); assertEquals(0, report.committedSavedDays());
         assertTrue(report.phases().stream().anyMatch(span -> span.phase() == BatchReport.Phase.IDLE_WAIT));
-        assertEquals(PlanningStage.ORDINARY_CORE, report.lastPlan().orElseThrow().visits().getLast().stage());
+        assertTrue(report.lastPlan().isEmpty());
+        assertEquals(0, fixture.planningPublications);
     }
     @Test void readinessPollDoesNotInvokeObserverAfterTheOperationDeadline() {
         Fixture fixture = new Fixture(false);
@@ -194,11 +195,17 @@ final class SessionControllerRegressionTest {
         assertTrue(report.lastSavedPair().isEmpty());assertEquals(0,report.committedSavedDays());
         assertTrue(fixture.journal.stream().noneMatch(row->row.kind()==JournalKind.SAVE_CONFIRMED));
     }
-    @Test void missingInitialPairedSaveProofStopsBeforeAnyOrdinaryGameplay() {
-        Fixture fixture = new Fixture(true); fixture.withBaseline = false; fixture.cycleAvailable = false;
+    @Test void initialDomainCheckpointWithoutCycleProofStopsBeforeSaveOrGameplay() {
+        Fixture fixture = new Fixture(true);
+        fixture.withBaseline = false;
+        fixture.requireCheckpoint = true;
+        fixture.cycleAvailable = false;
         BatchReport report = fixture.controller().runBatch(limits("initial-save"));
         assertEquals(BatchReport.Terminal.INCOMPLETE_MIGRATION, report.terminal());
-        assertTrue(report.detail().contains("completed-cycle")); assertEquals(0, fixture.submitted.get()); assertTrue(report.lastSavedPair().isEmpty());
+        assertTrue(report.detail().contains("completed-cycle"));
+        assertEquals(1, fixture.planningPublications);
+        assertEquals(0, fixture.submitted.get());
+        assertTrue(report.lastSavedPair().isEmpty());
     }
     @Test void unknownActionIsNeverReplayedOrFollowedBySaveAcrossBatches() {
         Fixture fixture = new Fixture(true); SessionController controller = fixture.controller();
@@ -1083,8 +1090,15 @@ final class SessionControllerRegressionTest {
         };
         LifecyclePort life = (expected, until) -> new GameLifecycle.Running(GAME, REF);
         ObservationPort observer = (expected, until) -> { observed.incrementAndGet(); return new Ready(request(until), CheckpointEligibility.SAFE, Optional.empty(), Optional.of(semantic(request(until)))); };
+        Ready latestReady;
         BatchJournal writer = new BatchJournal() {
             @Override public JournalCommit commit(JournalInput input) { journal.add(input); return new JournalCommit(REF, 0); }
+            @Override public void validateOrdinarySubmission(SessionIdentity owner, SemanticEvidence actual) {
+                assertEquals(SESSION, owner);
+                assertNotNull(latestReady);
+                assertSame(latestReady.semanticEvidence().orElseThrow(), actual);
+                assertEquals(latestReady.request().before(), actual.frame());
+            }
             @Override public Optional<CompletedCycleProof> cycleProof(SessionIdentity owner, SemanticEvidence semantic) {
                 return cycleAvailable ? Optional.of(new CompletedCycleProof(0, semantic, "d".repeat(64))) : Optional.empty();
             }
@@ -1169,8 +1183,16 @@ final class SessionControllerRegressionTest {
                     new CheckpointPair.FileWitness(driverRef, new FileStatIdentity(BigInteger.ONE, "9007199254740995", "134000000000000003")), request(BASE.plusSeconds(5)).before(), "lineage-1", 1, "save-initial", REF, BASE);
             EpisodeContinuation episodes=(owner,receipt,after)->{episodeCalls++;throw new IOException("fixture has no live committed private lifecycle producer");};
             ObservationPort actualObserver=new ObservationPort() {
-                @Override public Observation observe(SessionIdentity expected,Instant until)throws IOException,InterruptedException{return observer.observe(expected,until);}
-                @Override public Observation observe(SessionIdentity expected,Instant readinessUntil,Instant planningUntil)throws IOException,InterruptedException{return observer.observe(expected,readinessUntil,planningUntil);}
+                @Override public Observation observe(SessionIdentity expected,Instant until)throws IOException,InterruptedException {
+                    return remember(observer.observe(expected,until));
+                }
+                @Override public Observation observe(SessionIdentity expected,Instant readinessUntil,Instant planningUntil)throws IOException,InterruptedException {
+                    return remember(observer.observe(expected,readinessUntil,planningUntil));
+                }
+                private Observation remember(Observation observation) {
+                    latestReady = observation instanceof Ready ready ? ready : null;
+                    return observation;
+                }
                 @Override public Optional<PendingSuccessorUi> pendingSuccessorUi(SessionIdentity expected,Instant until){assertEquals(0,scopeDepth);return pendingProbe.apply(expected,until);}
             };
             var controller = new SessionController(SESSION, life, actualObserver, planner, actions, service, factory, writer, analysis, time, withBaseline ? Optional.of(baseline) : Optional.empty(), 0,completion,episodes);
