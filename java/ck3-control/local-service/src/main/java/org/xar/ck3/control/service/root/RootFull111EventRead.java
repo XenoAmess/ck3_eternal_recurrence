@@ -9,10 +9,13 @@ import java.util.Objects;
 import java.util.Optional;
 import org.xar.ck3.control.application.action.ActionCodec;
 import org.xar.ck3.control.application.action.NativeActionPort.AckReceived;
+import org.xar.ck3.control.application.action.NativeActionPort.DispatchOutcome;
 import org.xar.ck3.control.application.action.NativeObservationPort.ObservedFrame;
 import org.xar.ck3.control.application.planning.PlanningRequest;
 import org.xar.ck3.control.application.planning.events.RegisteredEventCore.Full111EventObservation;
 import org.xar.ck3.control.application.planning.events.RegisteredEventCore.Full111EventRead;
+import org.xar.ck3.control.application.planning.events.RegisteredEventCore.Full111RenderedOption;
+import org.xar.ck3.control.application.planning.events.RegisteredEventCore.Full111RendererObservation;
 import org.xar.ck3.control.application.readiness.ReadinessAuthority.LeaseSnapshot;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session;
 import org.xar.ck3.control.contracts.ContractViolationException;
@@ -20,6 +23,7 @@ import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.semantic.NativeFull111OrdinaryEvent;
 import org.xar.ck3.control.g2.common.G2Source;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
+import org.xar.ck3.control.nativebridge.CurrentFull111EventRenderer;
 import org.xar.ck3.control.nativebridge.CurrentLyd;
 import org.xar.ck3.control.nativebridge.CurrentLydResult;
 import org.xar.ck3.control.nativebridge.NativeGameTransport;
@@ -42,8 +46,8 @@ final class RootFull111EventRead implements Full111EventRead {
 
     @Override public Optional<Full111EventObservation> observe(PlanningRequest actual, NativeFull111OrdinaryEvent foreground) {
         var caps = actual.observations().bridgeCapabilities();
-        if (!caps.contains(CoreFrame.CAPABILITY) || !caps.contains(CurrentLyd.Action.QUERY_EVENTS.capability()))
-            return Optional.empty();
+        if (!caps.contains(CoreFrame.CAPABILITY) || !(caps.contains(CurrentFull111EventRenderer.CAPABILITY)
+                || caps.contains(CurrentLyd.Action.QUERY_EVENTS.capability()))) return Optional.empty();
         try {
             Session same = context.borrowedSession();
             context.writer().requireSession(same);
@@ -57,10 +61,12 @@ final class RootFull111EventRead implements Full111EventRead {
     private Optional<Full111EventObservation> read(Session same, PlanningRequest actual, LeaseSnapshot lease,
             NativeFull111OrdinaryEvent foreground) throws IOException {
         var frame = lease.frame();
+        var caps = lease.bridgeCapabilities();
+        boolean canRender = caps.contains(CurrentFull111EventRenderer.CAPABILITY);
+        boolean canReadLyd = caps.contains(CurrentLyd.Action.QUERY_EVENTS.capability());
         if (!actual.source().equals(frame.source()) || !actual.sessionId().equals(frame.sessionId())
                 || !actual.observations().snapshot().equals(frame.semantic())
-                || !lease.bridgeCapabilities().contains(CoreFrame.CAPABILITY)
-                || !lease.bridgeCapabilities().contains(CurrentLyd.Action.QUERY_EVENTS.capability()))
+                || !caps.contains(CoreFrame.CAPABILITY) || !(canRender || canReadLyd))
             return Optional.empty();
         var originals = lease.semantic();
         var full = context.collector().activeOriginalNativeFrame(same, lease);
@@ -73,11 +79,17 @@ final class RootFull111EventRead implements Full111EventRead {
         Instant now = context.clock().instant();
         if (!now.isBefore(deadline)) return Optional.empty();
         var subject = new ReadSubject(accepted, frame.identity(), frame.source(), bound, originals.semantic(), foreground);
-        return reads.observe(subject, now, () -> query(same, full, subject, deadline));
+        EventReadAttempt original = () -> query(same, full, subject, canRender, canReadLyd, deadline);
+        if (!canRender) return reads.observe(subject, now, original);
+        return reads.observe(subject, now, original, base -> {
+            var basis = base.rendererBasis().orElseThrow();
+            return renderer(same, subject, basis.core(), basis.lyd(), Optional.of(base.evidence().definitionKey()), deadline)
+                    .map(RenderedEvent::observation);
+        });
     }
 
-    private Optional<VerifiedRead> query(Session same, ObservedFrame full, ReadSubject subject, Instant deadline)
-            throws IOException {
+    private Optional<VerifiedRead> query(Session same, ObservedFrame full, ReadSubject subject, boolean canRender,
+            boolean canReadLyd, Instant deadline) throws IOException {
         var raw = NativeWire.object(NativeWire.parse(full.state().bytes()));
         byte[] packet = full.originalPacket();
         if (subject.full().bytes() != packet.length || !subject.full().sha256().equals(ActionCodec.sha256(packet))
@@ -95,64 +107,142 @@ final class RootFull111EventRead implements Full111EventRead {
                     || coreCustody.writeEntered().order().compareTo(accepted.received().order()) <= 0)
                 return Optional.empty();
             accepted.requireOriginal(transport.currentSnapshot(deadline));
+            var archive = context.archive().withSession(same);
+            if (canRender) {
+                var direct = renderer(same, subject, core, core.original(), Optional.empty(), deadline);
+                if (direct.isPresent()) {
+                    var observed = direct.orElseThrow();
+                    var evidence = new Full111EventObservation(subject.foreground().instanceId(), observed.definitionKey(),
+                            subject.full(), subject.semantic(), archive.preserve(core.original()),
+                            Optional.empty(), Optional.of(observed.observation()));
+                    return Optional.of(new VerifiedRead(core.validUntil(), evidence));
+                }
+            }
+            if (!canReadLyd || Thread.currentThread().isInterrupted()) return Optional.empty();
             if (!(transport.readFull111OrdinaryEvents(core, deadline) instanceof AckReceived ack) || !ack.nativeOk())
                 return Optional.empty();
             accepted.requireOriginal(transport.currentSnapshot(deadline));
             var key = foregroundDefinition(core.original(), partial.prefix(), ack, subject.foreground());
             if (key.isEmpty()) return Optional.empty();
 
-            var archive = context.archive().withSession(same);
             var evidence = new Full111EventObservation(subject.foreground().instanceId(), key.orElseThrow(),
                     subject.full(), subject.semantic(), archive.preserve(core.original()), archive.preserve(ack));
-            return Optional.of(new VerifiedRead(core.validUntil(), evidence));
+            var renderBasis = canRender ? Optional.of(new RendererBasis(core, ack)) : Optional.<RendererBasis>empty();
+            return Optional.of(new VerifiedRead(core.validUntil(), evidence, renderBasis));
         } catch (InterruptedException interrupted) {
             Thread.currentThread().interrupt();
             return Optional.empty();
         }
     }
 
+    private record RenderedEvent(String definitionKey, Full111RendererObservation observation) { }
+
+    private Optional<RenderedEvent> renderer(Session same, ReadSubject subject, NativeGameTransport.CoreReceived core,
+            AckReceived previous, Optional<String> definitionKey, Instant deadline) throws IOException {
+        Instant until = earlier(deadline, core.validUntil());
+        if (!context.clock().instant().isBefore(until)) return Optional.empty();
+        subject.occurrence().requireOriginal(transport.currentSnapshot(until));
+
+        DispatchOutcome outcome;
+        try {
+            outcome = transport.readFull111EventRenderer(core, subject.foreground().instanceId(), until);
+        } catch (InterruptedException interrupted) {
+            Thread.currentThread().interrupt();
+            return Optional.empty();
+        }
+        // This also rejects another accepted frame that arrived while the optional reply was being read.
+        subject.occurrence().requireOriginal(transport.currentSnapshot(deadline));
+        if (!(outcome instanceof AckReceived ack) || !ack.nativeOk()) return Optional.empty();
+
+        try {
+            var expected = ((CoreFrame.Partial) core.frame()).prefix();
+            var observed = foregroundRenderer(previous, expected, ack, subject.foreground(), definitionKey);
+            if (observed.isEmpty()) return Optional.empty();
+            var flags = observed.orElseThrow().options().stream().map(option -> new Full111RenderedOption(
+                    option.authoredOptionIndex(), option.nativeCanSelect(), option.widgetVisible(), option.widgetEnabled())).toList();
+            var original = context.archive().withSession(same).preserve(ack);
+            return Optional.of(new RenderedEvent(observed.orElseThrow().definitionKey(), new Full111RendererObservation(original, flags)));
+        } catch (IOException | UncheckedIOException | ContractViolationException unavailable) {
+            return Optional.empty();
+        }
+    }
+
+    static Optional<CurrentFull111EventRenderer.Source> foregroundRenderer(AckReceived previous, CoreFrame.Prefix expected,
+            AckReceived ack, NativeFull111OrdinaryEvent foreground, Optional<String> definitionKey) throws IOException {
+        if (!sameSessionAfter(previous, ack)) return Optional.empty();
+        var result = CurrentFull111EventRenderer.decodeOutcome(ack);
+        if (result.status() != CurrentFull111EventRenderer.Status.AVAILABLE
+                || result.factsBefore().filter(expected::equals).isEmpty()
+                || !result.owner().orElseThrow().connectionGeneration().equals(previous.custody().orElseThrow().session().connectionGeneration()))
+            return Optional.empty();
+        return result.source().filter(source -> source.instanceId() == foreground.instanceId()
+                && source.authoredOptionCount() == foreground.authoredOptionCount()
+                && definitionKey.filter(key -> !source.definitionKey().equals(key)).isEmpty());
+    }
+
     record ReadSubject(AcceptedSnapshotRevision occurrence, ObservationIdentity before, G2Source source,
             ExactRef full, ExactRef semantic, NativeFull111OrdinaryEvent foreground) { }
-    record VerifiedRead(Instant validUntil, Full111EventObservation evidence) { }
+    record RendererBasis(NativeGameTransport.CoreReceived core, AckReceived lyd) { }
+    record VerifiedRead(Instant validUntil, Full111EventObservation evidence, Optional<RendererBasis> rendererBasis) {
+        VerifiedRead(Instant validUntil, Full111EventObservation evidence) {
+            this(validUntil, evidence, Optional.empty());
+        }
+    }
     @FunctionalInterface interface EventReadAttempt {
         Optional<VerifiedRead> read() throws IOException;
     }
+    @FunctionalInterface interface RendererReadAttempt {
+        Optional<Full111RendererObservation> read(VerifiedRead basis) throws IOException;
+    }
 
-    /** Accessed under the one Root writer. The receipt is DATA bound to a single accepted snapshot occurrence. */
+    /** Accessed under the one Root writer. Both readings stay bound to the same accepted occurrence. */
     static final class HeldReadMemo {
         private record Entry(ReadSubject subject, VerifiedRead observed) { }
         private Entry retained;
 
         Optional<Full111EventObservation> observe(ReadSubject actual, Instant now, EventReadAttempt attempt)
                 throws IOException {
-            if (retained != null && retained.subject().equals(actual) && now.isBefore(retained.observed().validUntil()))
-                return Optional.of(retained.observed().evidence());
-            retained = null;
-            var recovered = attempt.read();
-            recovered.ifPresent(read -> retained = new Entry(actual, read));
-            return recovered.map(VerifiedRead::evidence);
+            return observe(actual, now, attempt, unused -> Optional.empty());
+        }
+        Optional<Full111EventObservation> observe(ReadSubject actual, Instant now, EventReadAttempt attempt,
+                RendererReadAttempt renderer) throws IOException {
+            if (retained == null || !retained.subject().equals(actual) || !now.isBefore(retained.observed().validUntil())) {
+                retained = null;
+                var sampled = attempt.read();
+                sampled.ifPresent(read -> retained = new Entry(actual, read));
+                return sampled.map(VerifiedRead::evidence);
+            }
+            var read = retained.observed();
+            if (read.rendererBasis().isPresent() && read.evidence().renderer().isEmpty()) {
+                renderer.read(read).ifPresent(actualRenderer -> retained = new Entry(actual,
+                        new VerifiedRead(read.validUntil(), read.evidence().withRenderer(actualRenderer))));
+            }
+            return Optional.of(retained.observed().evidence());
         }
     }
 
     /** Join only the real returned read evidence. A complete runtime queue or an option binding is never inferred here. */
     static Optional<String> foregroundDefinition(AckReceived core, CoreFrame.Prefix expected, AckReceived lyd,
             NativeFull111OrdinaryEvent foreground) throws IOException {
-        var basis = core.custody().orElseThrow(() -> new IOException("Original Full111 Core read custody is missing"));
-        var receipt = lyd.custody().orElseThrow(() -> new IOException("Original Full111 event read custody is missing"));
-        basis.verify(core);
-        receipt.verify(lyd);
-        if (!basis.session().equals(receipt.session()) || !basis.custodyEpoch().equals(receipt.custodyEpoch())
-                || receipt.writeEntered().order().compareTo(basis.responseReceived().order()) <= 0)
-            return Optional.empty();
+        if (!sameSessionAfter(core, lyd)) return Optional.empty();
         var result = CurrentLydResult.decodeFull111OrdinaryEvents(lyd);
         if (!result.successful() || !result.factsBefore().filter(expected::equals).isPresent()
-                || !result.owner().orElseThrow().connectionGeneration().equals(basis.session().connectionGeneration()))
+                || !result.owner().orElseThrow().connectionGeneration().equals(core.custody().orElseThrow().session().connectionGeneration()))
             return Optional.empty();
         return result.source().orElseThrow().events().orElseThrow().events().stream()
                 .filter(row -> row.instanceId() == foreground.instanceId()
                         && row.authoredOptionCount() == foreground.authoredOptionCount()
                         && row.namedRootBound() && row.windowVisible())
                 .map(row -> row.definitionKey()).findFirst();
+    }
+
+    private static boolean sameSessionAfter(AckReceived first, AckReceived next) throws IOException {
+        var basis = first.custody().orElseThrow(() -> new IOException("Original Full111 basis read custody is missing"));
+        var receipt = next.custody().orElseThrow(() -> new IOException("Original Full111 event read custody is missing"));
+        basis.verify(first);
+        receipt.verify(next);
+        return basis.session().equals(receipt.session()) && basis.custodyEpoch().equals(receipt.custodyEpoch())
+                && receipt.writeEntered().order().compareTo(basis.responseReceived().order()) > 0;
     }
 
     private static CoreFrame.Prefix prefix(JsonNode raw) throws IOException {

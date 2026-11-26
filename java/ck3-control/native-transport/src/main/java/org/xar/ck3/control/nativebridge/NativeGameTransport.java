@@ -2964,6 +2964,26 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             }));
         } catch(IOException|RuntimeException invalid){return retainReadOutcome(zero(id,reason(invalid)));}
     }
+    /** Fixed Full111 foreground renderer query. The accepted Core and target confer no write role. */
+    public synchronized DispatchOutcome readFull111EventRenderer(CoreReceived basis, int foregroundInstanceId,
+            Instant deadline) throws InterruptedException {
+        String id = "held-event-renderer-" + UUID.randomUUID().toString().replace("-", "");
+        try {
+            Objects.requireNonNull(basis);
+            Instant requested = readDeadline(Objects.requireNonNull(deadline));
+            Instant until = requested.isBefore(basis.validUntil()) ? requested : basis.validUntil();
+            requireHeldFull111ReadBasis(basis, until, CurrentFull111EventRenderer.CAPABILITY);
+            if (sentRequestIds.size() >= maximumSubmissions)
+                throw new IOException("Native request identity retention limit reached");
+            byte[] packet = CurrentFull111EventRenderer.queryPacket(id, (CoreFrame.Partial) basis.frame(), foregroundInstanceId, until);
+            return retainReadOutcome(dispatchRead(id, packet, until, () -> {
+                try { basis.requireOriginal(this, until); }
+                catch (IOException invalid) { throw new UncheckedIOException(invalid); }
+            }));
+        } catch (IOException | RuntimeException unavailable) {
+            return retainReadOutcome(zero(id, reason(unavailable)));
+        }
+    }
     private void requireHeldFull111ReadBasis(CoreReceived basis,Instant until,String capability)throws IOException{
         basis.requireOriginal(this,until);
         if(!(basis.frame() instanceof CoreFrame.Partial)

@@ -274,6 +274,47 @@ final class RegisteredEventCoreIntegrationTest {
         }
     }
 
+    @Test void rendererOnlyEvidenceRetainsIndependentWidgetFlagsThroughTheIncident() throws Exception {
+        var input = full111ActiveEvent(Set.of());
+        var incidents = new ArrayList<OpportunityJson.Obj>();
+        var policies = registryEventPolicies((actual, plan) -> incidents.add(plan));
+        var rendererRef = new ExactRef("software-renderer-ack", 4, "5".repeat(64));
+        var renderer = new RegisteredEventCore.Full111RendererObservation(rendererRef, List.of(
+                new RegisteredEventCore.Full111RenderedOption(2, false, false, true),
+                new RegisteredEventCore.Full111RenderedOption(0, true, true, false)));
+        var observation = new RegisteredEventCore.Full111EventObservation(17, "bookmark.1070",
+                new ExactRef("software-full", 6, "1".repeat(64)), new ExactRef("software-semantic", 10, "2".repeat(64)),
+                new ExactRef("software-core-read", 11, "3".repeat(64)), Optional.empty(), Optional.of(renderer));
+        var registry = new RegisteredEventCore(RegisteredEventKnowledge.load(), NO_READS, operation -> Optional.empty(),
+                EventWindowService.validator(ignored -> Build.CROZIER4), RegisteredEventMaterial::plan,
+                RegisteredEventCore.exactSourcePhases(), (actual, operation, args, detail, purpose, domain) -> {
+                    throw new AssertionError("Renderer observations do not qualify an event option");
+                }, org.xar.ck3.control.application.planning.events.EventIncidentCapturePort.unavailable(),
+                (actual, foreground) -> Optional.of(observation));
+        var lower = new AtomicInteger();
+        var waiting = assertInstanceOf(PlanningResult.ReadOnlyWait.class,
+                registryPlanner(registry, policies.get(1), policies.get(2), lower).plan(input));
+        assertEquals(0, lower.get());
+        assertTrue(waiting.trace().finalPlan().orElseThrow().command().isEmpty());
+        var diagnostic = OpportunityJson.toNode(incidents.getFirst()).path("unhandled_native_window_diagnostic");
+        assertTrue(diagnostic.path("context").isNull());
+        assertTrue(diagnostic.path("selection").isNull());
+        var evidence = diagnostic.path("original_plan").path("full111_ordinary_event_read");
+        assertFalse(evidence.has("original_event_read"));
+        var retained = evidence.path("renderer");
+        assertEquals(rendererRef, ExactRef.fromJson(retained.path("original_read")));
+        var first = retained.path("options").get(0);
+        var second = retained.path("options").get(1);
+        assertEquals(2, first.path("authored_option_index").intValue());
+        assertTrue(first.path("widget_enabled").booleanValue());
+        assertFalse(first.path("widget_visible").booleanValue());
+        assertFalse(first.path("native_can_select").booleanValue());
+        assertEquals(0, second.path("authored_option_index").intValue());
+        assertFalse(second.path("widget_enabled").booleanValue());
+        assertTrue(second.path("widget_visible").booleanValue());
+        assertTrue(second.path("native_can_select").booleanValue());
+    }
+
     private static PlanningRequest full111ActiveEvent(Set<OperationKey> steps) throws Exception {
         byte[] original;
         try (var input = RegisteredEventCoreIntegrationTest.class.getResourceAsStream("/current267-lyd-cpp-a749/full111-ordinary-snapshot-event.json")) {

@@ -67,23 +67,64 @@ public final class RegisteredEventCore implements OrdinaryCorePolicy.CoreProduce
         Optional<Full111EventObservation> observe(PlanningRequest actual, NativeFull111OrdinaryEvent foreground);
     }
 
-    /** Read-only additional identity and the exact four original objects behind it. */
-    public record Full111EventObservation(int instanceId, String definitionKey, ExactRef full, ExactRef semantic,
-            ExactRef coreRead, ExactRef eventRead) {
-        public Full111EventObservation {
-            StrictJson.require(instanceId > 0, "positive Full111 event instance required");
-            StrictJson.text(definitionKey);
-            for (var ref : List.of(full, semantic, coreRead, eventRead))
-                StrictJson.require(ref.bytes() > 0, "nonempty original Full111 event evidence required");
+    /** A stock widget observation preserves each flag independently and carries no selection role. */
+    public record Full111RenderedOption(int authoredOptionIndex, boolean nativeCanSelect, boolean widgetVisible,
+            boolean widgetEnabled) {
+        public Full111RenderedOption {
+            StrictJson.require(authoredOptionIndex >= 0 && authoredOptionIndex < 64, "Actual authored option index required");
         }
         OpportunityJson.Obj diagnostic() {
             return new OpportunityJson.Obj(Map.of(
+                    "authored_option_index", new OpportunityJson.IntegerValue(BigInteger.valueOf(authoredOptionIndex)),
+                    "native_can_select", new OpportunityJson.Bool(nativeCanSelect),
+                    "widget_visible", new OpportunityJson.Bool(widgetVisible),
+                    "widget_enabled", new OpportunityJson.Bool(widgetEnabled)));
+        }
+    }
+
+    /** Ordered widget observations with the original renderer ACK, including its exact text. */
+    public record Full111RendererObservation(ExactRef originalRead, List<Full111RenderedOption> options) {
+        public Full111RendererObservation {
+            StrictJson.require(originalRead.bytes() > 0, "Original renderer ACK required");
+            options = List.copyOf(options);
+            StrictJson.require(!options.isEmpty() && options.size() <= 64, "Finite observed widget order required");
+        }
+        OpportunityJson.Obj diagnostic() {
+            return new OpportunityJson.Obj(Map.of(
+                    "original_read", DriverJson.fromNode(originalRead.toJson()),
+                    "options", new OpportunityJson.Arr(options.stream().<OpportunityJson.Value>map(Full111RenderedOption::diagnostic).toList())));
+        }
+    }
+
+    /** Read-only event identity and the exact original evidence behind it. */
+    public record Full111EventObservation(int instanceId, String definitionKey, ExactRef full, ExactRef semantic,
+            ExactRef coreRead, Optional<ExactRef> eventRead, Optional<Full111RendererObservation> renderer) {
+        public Full111EventObservation(int instanceId, String definitionKey, ExactRef full, ExactRef semantic,
+                ExactRef coreRead, ExactRef eventRead) {
+            this(instanceId, definitionKey, full, semantic, coreRead, Optional.of(eventRead), Optional.empty());
+        }
+        public Full111EventObservation {
+            StrictJson.require(instanceId > 0, "positive Full111 event instance required");
+            StrictJson.text(definitionKey);
+            for (var ref : List.of(full, semantic, coreRead))
+                StrictJson.require(ref.bytes() > 0, "nonempty original Full111 event evidence required");
+            Objects.requireNonNull(eventRead);
+            Objects.requireNonNull(renderer);
+            StrictJson.require(eventRead.isPresent() || renderer.isPresent(), "An original Full111 event query is required");
+            eventRead.ifPresent(ref -> StrictJson.require(ref.bytes() > 0, "Original Full111 LYD ACK required"));
+        }
+        public Full111EventObservation withRenderer(Full111RendererObservation observed) {
+            return new Full111EventObservation(instanceId, definitionKey, full, semantic, coreRead, eventRead, Optional.of(observed));
+        }
+        OpportunityJson.Obj diagnostic() {
+            var original = new OpportunityJson.Obj(Map.of(
                     "instance_id", new OpportunityJson.IntegerValue(BigInteger.valueOf(instanceId)),
                     "event_definition_key", new OpportunityJson.Text(definitionKey),
                     "original_full", DriverJson.fromNode(full.toJson()),
                     "original_semantic", DriverJson.fromNode(semantic.toJson()),
-                    "original_core_read", DriverJson.fromNode(coreRead.toJson()),
-                    "original_event_read", DriverJson.fromNode(eventRead.toJson())));
+                    "original_core_read", DriverJson.fromNode(coreRead.toJson())));
+            var actual = eventRead.map(ack -> original.with("original_event_read", DriverJson.fromNode(ack.toJson()))).orElse(original);
+            return renderer.map(value -> actual.with("renderer", value.diagnostic())).orElse(actual);
         }
     }
 
