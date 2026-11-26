@@ -6,6 +6,7 @@ excerpt preserves the full originals' pins separately and grants no live PASS.
 from __future__ import annotations
 
 import copy
+from dataclasses import dataclass
 import argparse
 import contextlib
 from collections.abc import Callable, Iterator
@@ -25,6 +26,15 @@ import ck3_live_run_id as ids
 from ck3_mod_acceptance_fresh_machine_bootstrap import MachineBinding
 from ck3_mod_acceptance_background_types import JsonObject, JsonValue, file_pin, json_object, object_field, text_field, strings_field
 from test_product_acceptance_purpose import pin
+
+
+@dataclass(frozen=True)
+class _TemporaryDirectoryAlias:
+    name: str
+    cleanup_callback: Callable[[], None]
+
+    def cleanup(self) -> None:
+        self.cleanup_callback()
 
 
 class PreservedNativeOS0Tests(unittest.TestCase):
@@ -604,6 +614,30 @@ from ck3_mod_acceptance_allocate import current_screen_absent, previous_failed_l
             stdout, stderr, code = api.run(['--strict', '--strict-equality', '--follow-imports=silent',
                 '--no-incremental', '--cache-dir', os.devnull, '-c', program])
         self.assertEqual(code, 0, stdout + stderr)
+
+
+class FixturePathAliasTests(unittest.TestCase):
+    def test_lexical_alias_reaches_actual_case_client_resource_reducer(self) -> None:
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        root = Path(temporary.name).resolve()
+        (root / 'alias-parent').mkdir()
+        actual = root / 'fixture'
+        actual.mkdir()
+        alias = root / 'alias-parent' / '..' / 'fixture'
+        self.assertNotEqual(alias, actual)
+        self.assertEqual(alias.resolve(), actual)
+        alias_directory = _TemporaryDirectoryAlias(str(alias), temporary.cleanup)
+        case = CaseClientFailureClosureTests(
+            'test_actual_shapes_producer_serialization_full_consumer_preserves_failure')
+        try:
+            with patch.object(tempfile, 'TemporaryDirectory', return_value=alias_directory):
+                case.setUp()
+            # Exercise the real bundle producer, reducer and Path.stat boundary.
+            case.test_actual_shapes_producer_serialization_full_consumer_preserves_failure()
+            self.assertEqual(case.fixture.root, actual)
+        finally:
+            case.doCleanups()
 
 
 class ProcessAbsent(Exception):
