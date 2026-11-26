@@ -48,7 +48,9 @@ final class RootExpiredCodexFileEvidence {
     private static void archiveOne(Path entry, String machine, Clock clock, RootOnlineDecisionSelector.MaterialSink sink) throws IOException {
         HeldFiles files = new HeldFiles(); boolean archiveStarted = false; ObjectNode marker = null; boolean hadPrevious = false;
         try (files) {
-            var request = files.hold(entry.resolve("request.json"), SMALL);
+            // A requester can stop after creating its directory and before publishing request.json.
+            var request = files.optional(entry.resolve("request.json"), SMALL);
+            if (request == null) return;
             ObjectNode row = CodexSessionDecisionFiles.parseEnvelope(request.original().bytes());
             String id = StrictJson.text(row.get("request_id"));
             if (!id.equals(entry.getFileName().toString()) || !machine.equals(StrictJson.text(row.get("machine_id")))) return;

@@ -10,6 +10,7 @@ import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +52,9 @@ final class ExpiredCodexRequesterDeathTest {
     void requesterDeathAndLateSelectAreArchivedAsUnknownWaitBeforeQueueReuse() throws Exception {
         Path root = directory.resolve("closed-requester"); Files.createDirectories(root); Path log = root.resolve("child.log");
         Path java = Path.of(System.getProperty("java.home"), "bin", "java.exe");
-        Process child = new ProcessBuilder(java.toString(), "-cp", System.getProperty("surefire.test.class.path", System.getProperty("java.class.path")),
+        Path childJna = Files.createDirectory(root.resolve("jna"));
+        Process child = new ProcessBuilder(java.toString(), "-Djna.tmpdir=" + childJna, "-cp",
+                System.getProperty("surefire.test.class.path", System.getProperty("java.class.path")),
                 ExpiredCodexRequesterDeathTest.class.getName(), "requester-data", root.toString()).redirectErrorStream(true).redirectOutput(log.toFile()).start();
         Path request;
         try {
@@ -108,14 +111,29 @@ final class ExpiredCodexRequesterDeathTest {
             assertEquals("WAIT", evidence.path("effective_decision").textValue());
             assertArrayEquals(requestBytes, Base64.getDecoder().decode(evidence.path("request_wire_base64").textValue()));
             assertArrayEquals(responseBytes, Base64.getDecoder().decode(evidence.path("response_wire_base64").textValue()));
-            for (int n = 0; n < 31; n++) Files.createDirectory(root.resolve("codex/codex-" + UUID.randomUUID()));
+            Path queue = root.resolve("codex");
+            var unpublished = new ArrayList<Path>();
+            for (int n = 1; n < RootCodexFileDecisionExchange.MAX_ENTRIES; n++)
+                unpublished.add(Files.createDirectory(queue.resolve("codex-" + UUID.randomUUID())));
+            try (var slots = Files.list(queue)) {
+                assertEquals(RootCodexFileDecisionExchange.MAX_ENTRIES, slots.count());
+            }
             var current = input(configuration.machineId(), configuration.writerSources().getFirst(), expired);
-            var selector = new RootOnlineDecisionSelector(new RootOrdinaryRuntimeConfiguration.DecisionProvider(root.resolve("codex").toUri(),
-                    "codex-session", Duration.ofSeconds(3), 1, Duration.ZERO), expired,
+            // The follow-up needs time to archive its own exact request and command before it reaches the queue.
+            var selector = new RootOnlineDecisionSelector(new RootOrdinaryRuntimeConfiguration.DecisionProvider(queue.toUri(),
+                    "codex-session", Duration.ofSeconds(12), 1, Duration.ZERO), expired,
                     raw -> core.archive().withSession(core.writer().borrowedSession()).preserveMaterial(raw));
             var choice = core.withBorrowed(() -> selector.select(current.request(), current.proposal()));
             assertEquals(OrdinaryDecisionSelector.Choice.WAIT, choice.choice(), "old late SELECT must not transfer to a new original request");
             assertFalse(Files.exists(request.getParent()), "only fully archived expired queue evidence can release a bounded slot");
+            for (Path slot : unpublished) {
+                try (var files = Files.list(slot)) { assertEquals(0, files.count(), "unpublished slots stay untouched"); }
+            }
+            try (var slots = Files.list(queue)) {
+                var newRequests = slots.filter(slot -> Files.isRegularFile(slot.resolve("ready.json"))).toList();
+                assertEquals(1, newRequests.size(), "the released slot can publish exactly one new request");
+                assertNotEquals(request.getParent(), newRequests.getFirst());
+            }
             assertArrayEquals(snapshot, Files.readAllBytes(configuration.ledger().snapshot()), "original pending/UNKNOWN state is unchanged");
         }
     }
