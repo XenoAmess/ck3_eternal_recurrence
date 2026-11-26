@@ -45,9 +45,11 @@ import org.xar.ck3.control.application.planning.PlanningObservation;
 import org.xar.ck3.control.application.planning.PlanningRequest;
 import org.xar.ck3.control.application.planning.PlanningResult;
 import org.xar.ck3.control.application.planning.PlanningStage;
+import org.xar.ck3.control.contracts.ExactCk3Build;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.FullJsonTree;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.semantic.NativeFull111OrdinaryEvent;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.ExternalFact;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.ExternalState;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.UnknownScope;
@@ -184,6 +186,106 @@ final class EventModelContext73Test {
             assertEquals(tree(ActionCodec.encodeCommand(ordinary)), data.get("proposal"));
             assertEquals("xar.model-root-history-dictionary/v1", data.path("history_projection_schema").textValue());
         }
+    }
+
+    @Test @Timeout(30)
+    void full111ShortOriginalWindowUsesOnlyTheProjectedWireAndPreservesAdmission(@TempDir Path root) throws Exception {
+        var f=full111Fixture();
+        var now=f.command().deadline().minusSeconds(7);
+        try (Stub model=new Stub();Client client=new Client(model,root,Clock.fixed(now,ZoneOffset.UTC))) {
+            model.reply.set(reply(f.command()));
+            var accepted=client.selector.select(f.request(),f.selected());
+            assertEquals(OrdinaryDecisionSelector.Choice.ACCEPT,accepted.choice(),accepted.reason());
+            assertEquals(1,model.calls.get());
+            byte[] wire=model.requests.getFirst();
+            assertTrue(wire.length<16000,"bounded Full111 wire even with more than one megabyte of unrelated original history");
+            var data=userData(tree(wire));
+            assertEquals("xar.model-event-admission/v2",data.path("decision_context_schema").textValue());
+            assertEquals(tree(ActionCodec.encodeCommand(f.command())),data.get("proposal"));
+            assertEquals(f.command().deadline().toString(),data.path("command_deadline").textValue());
+            assertEquals(f.request().deadline().toString(),data.path("planning_deadline").textValue());
+            assertEquals(1,data.path("rendered_event").path("options").get(1).path("authored_option_index").intValue());
+            assertFalse(data.path("rendered_event").path("options").get(0).path("widget_visible").booleanValue());
+            assertFalse(data.has("history"));
+            assertFalse(data.has("original_model_input"));
+            assertTrue(client.materials.values().stream().allMatch(bytes->bytes.length<16000),
+                    "no complete legacy context was archived for this narrow task");
+
+            var changedReply=reply(f.command()).put("body_sha256","0".repeat(64));
+            model.reply.set(changedReply);
+            var unbound=client.selector.select(f.request(),f.selected());
+            assertEquals(OrdinaryDecisionSelector.Choice.WAIT,unbound.choice(),unbound.reason());
+            assertTrue(unbound.reason().startsWith("model_invalid_selection:"));
+            model.assertHealthy();
+
+            var draft=f.selected().trace().finalPlan().orElseThrow();
+            var changed=(ObjectNode)OpportunityJson.toNode(draft.detail());
+            ((ObjectNode)changed.path("full111_ordinary_event_read").path("renderer").path("options").get(1)).put("widget_enabled",false);
+            var rejected=client.selector.select(f.request(),full111Selected(f.request(),f.command(),object(changed)));
+            assertEquals(OrdinaryDecisionSelector.Choice.WAIT,rejected.choice(),rejected.reason());
+            assertTrue(rejected.reason().contains("first visible authored option"));
+            assertEquals(2,model.calls.get(),"disabled first visible option must never fall through to a legacy request");
+        }
+        Path empty=Files.createDirectory(root.resolve("expired"));
+        try (Stub model=new Stub();Client client=new Client(model,empty,Clock.fixed(f.command().deadline(),ZoneOffset.UTC))) {
+            var expired=client.selector.select(f.request(),f.selected());
+            assertEquals(OrdinaryDecisionSelector.Choice.WAIT,expired.choice());
+            assertEquals("model_decision_deadline_exhausted",expired.reason());
+            assertEquals(0,model.calls.get());
+            assertTrue(client.materials.isEmpty());
+        }
+    }
+
+    private static Fixture full111Fixture() throws IOException {
+        var original=fixture(true);
+        var f=original.command();
+        var frame=f.before().frame();
+        // Software Full111 data uses the existing immutable scene coordinates and the authored widget order.
+        var snapshot=((ObjectNode)OpportunityJson.toNode(original.request().observations().snapshot())).deepCopy();
+        snapshot.put("paused",true).put("map_ready",true)
+                .put("snapshot_id",frame.snapshotId()).put("episode_run_id",frame.episodeRunId())
+                .put("date_raw",frame.identity().dateRaw()).put("native_revision",frame.identity().nativeRevision())
+                .put("revision",frame.revision());
+        var build=ExactCk3Build.CK3_121003_STEAM_26785313_FULL111;
+        snapshot.put("game_version",build.version()).put("executable_sha256",build.executableSha256())
+                .put("adapter_id",build.coreFullAdapterId());
+        snapshot.putObject("played_character").put("character_id",frame.identity().player()).put("alive",true);
+        snapshot.putObject("active_event").put("instance_id",19).put("source","native").put("authored_option_count",3)
+                .putNull("option_count").putNull("title").putArray("options");
+        var completeSnapshot=object(snapshot).with("irrelevant_original_snapshot_payload",
+                new OpportunityJson.Text("unrelated-".repeat(40000)));
+
+        var renderer=new ExactRef("software-only/renderer.json",87,"a".repeat(64));
+        var args=StrictJson.object().put("instance_id",19).put("recipient_character_id",frame.identity().player())
+                .put("definition_key","bookmark.1070").put("authored_option_index",1);
+        args.set("renderer_original",renderer.toJson());
+        var operation=new OperationKey("select-current-ordinary-event-option-26785313-v2");
+        var command=new ActionCommand(f.actionId(),f.origin(),f.source(),f.sessionId(),operation,object(args),
+                f.expectation(),f.claims(),f.deadline().minusSeconds(20));
+        var caps=Set.of(NativeFull111OrdinaryEvent.CAPABILITY,"game.query.core-frame.v1",
+                "game.query.current-ordinary-event-renderer.26785313.v1","game.query.prepare-current-ordinary-event-option.26785313.v2",
+                "game.command.select-current-ordinary-event-option.26785313.v2","game.query.current-ordinary-event-queue.26785313.v2");
+        var obs=new PlanningObservation(completeSnapshot,original.request().observations().history(),Set.of(operation),
+                caps,Optional.empty(),List.of(),Optional.empty(),Optional.empty(),false);
+        var request=new PlanningRequest(f.before(),f.source(),f.sessionId(),original.request().deadline(),obs);
+        var plan=StrictJson.object();
+        var evidence=plan.putObject("full111_ordinary_event_read").put("instance_id",19).put("event_definition_key","bookmark.1070");
+        evidence.set("original_full",new ExactRef("software-only/full.json",89,"b".repeat(64)).toJson());
+        evidence.set("original_semantic",new ExactRef("software-only/semantic.json",90,"c".repeat(64)).toJson());
+        evidence.set("original_core_read",new ExactRef("software-only/core.json",91,"d".repeat(64)).toJson());
+        var read=evidence.putObject("renderer");
+        read.set("original_read",renderer.toJson());
+        var options=read.putArray("options");
+        options.addObject().put("authored_option_index",2).put("widget_visible",false).put("native_can_select",true).put("widget_enabled",true);
+        options.addObject().put("authored_option_index",1).put("widget_visible",true).put("native_can_select",true).put("widget_enabled",true);
+        options.addObject().put("authored_option_index",0).put("widget_visible",true).put("native_can_select",true).put("widget_enabled",true);
+        return new Fixture(request,command,full111Selected(request,command,object(plan)));
+    }
+
+    private static PlanningResult.ActionSelected full111Selected(PlanningRequest request,ActionCommand command,Obj detail) {
+        var draft=new OrdinaryPolicy.Draft("one-life-turn-v1","active_event_full111_stock_selection","software v2 stock event",
+                OrdinaryPolicy.Kind.FOREGROUND,Optional.of(command),OrdinaryPolicy.Purpose.WORLD_ACTION,Optional.of(Domain.diplomacy),detail);
+        return new PlanningResult.ActionSelected(command,new PlanTrace(request.before(),List.of(),Optional.of(draft)));
     }
 
     private record Fixture(PlanningRequest request, ActionCommand command, PlanningResult.ActionSelected selected) { }
