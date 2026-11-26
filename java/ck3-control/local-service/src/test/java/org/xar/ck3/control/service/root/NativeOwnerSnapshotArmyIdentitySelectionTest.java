@@ -48,6 +48,15 @@ final class NativeOwnerSnapshotArmyIdentitySelectionTest {
                 () -> NativeOwnerSnapshotMain268.observationMode(config().put("mode", MODE).put("extra", true)));
     }
 
+    @Test
+    void heldDateStatusSelectsOnlyItsFixedReadMode() {
+        var status = config().put("schema", "xar.native-owner-snapshot-config/v54").put("mode", "held_date_sentinel_status");
+        assertEquals(ObservationMode.HELD_DATE_SENTINEL_STATUS, NativeOwnerSnapshotMain268.observationMode(status));
+        assertThrows(IllegalArgumentException.class, () -> NativeOwnerSnapshotMain268.observationMode(status.deepCopy().put("mode", "date_sentinel_advance")));
+        assertThrows(IllegalArgumentException.class, () -> NativeOwnerSnapshotMain268.observationMode(status.deepCopy().put("control_step", "resume-map")));
+        assertThrows(IllegalArgumentException.class, () -> NativeOwnerSnapshotMain268.observationMode(status.deepCopy().put("maximum_status_polls", 4)));
+    }
+
     private static ObjectNode config() {
         var config = StrictJson.object().put("schema", SCHEMA).put("overall_timeout_seconds", 30)
                 .put("read_timeout_seconds", 10).put("maximum_frames_per_operation", 8);

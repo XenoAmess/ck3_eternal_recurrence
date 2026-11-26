@@ -2915,6 +2915,26 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             return zero(id,"Date status rejected before write: "+reason(invalid));
         }
     }
+    /** Read the held Full111 sentinel register after an actual Core read, without reconstructing a prior ARM lease. */
+    public synchronized DispatchOutcome readHeldDateSentinelStatus(CoreReceived basis,Instant deadline)throws InterruptedException{
+        String id="held-date-status-"+UUID.randomUUID().toString().replace("-", "");
+        try {
+            Objects.requireNonNull(basis);
+            Instant requested=readDeadline(Objects.requireNonNull(deadline));
+            Instant until=requested.isBefore(basis.validUntil())?requested:basis.validUntil();
+            basis.requireOriginal(this,until);
+            if(!(basis.frame() instanceof CoreFrame.Partial)
+                    ||requireFlorinFullClockProfile()!=ExactCk3Build.CK3_121003_STEAM_26785313_FULL111
+                    ||!hello.capabilities().containsAll(Set.of(ClockStatusRead.STATUS_CAP,"game.guard.date-only-postday.v1")))
+                throw new IOException("held Date status requires the actual Full111 Core and advertised read capability");
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            byte[] packet=NativeWire.execute(id,ClockStatusRead.STEP,BigInteger.ZERO,new byte[]{'{','}'});
+            return retainReadOutcome(dispatchRead(id,packet,until,()->{
+                try { basis.requireOriginal(this,until); }
+                catch(IOException invalid){throw new UncheckedIOException(invalid);}
+            }));
+        } catch(IOException|RuntimeException invalid){return retainReadOutcome(zero(id,reason(invalid)));}
+    }
     /** Pure cleanup only after the same actual generation reports paused; CANCEL never requests a pause. */
     public synchronized DispatchOutcome cancelDateSentinel(DateArmReceived before,Instant deadline)throws InterruptedException{
         return cancelDateSentinelChecked(before,null,deadline);

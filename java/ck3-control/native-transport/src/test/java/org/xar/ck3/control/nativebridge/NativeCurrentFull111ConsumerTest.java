@@ -15,6 +15,7 @@ import org.xar.ck3.control.application.action.FullSnapshotClockControl;
 import org.xar.ck3.control.application.action.FullSnapshotDateSentinelArm;
 import org.xar.ck3.control.application.action.NativeActionPort;
 import org.xar.ck3.control.application.action.RawJson;
+import org.xar.ck3.control.application.advance.ClockStatusRead;
 import org.xar.ck3.control.contracts.ExactCk3Build;
 import org.xar.ck3.control.contracts.GameGeneration;
 import org.xar.ck3.control.contracts.PythonOnlyUInt64;
@@ -159,6 +160,44 @@ final class NativeCurrentFull111ConsumerTest {
         }
     }
 
+    @Test void heldStatusReadsAfterItsExactCoreWithoutFullOrArm() throws Exception {
+        try(var fixture=new Fixture(FULL,true);var other=new Fixture(FULL,true)) {
+            var core=assertInstanceOf(NativeGameTransport.CoreReceived.class,fixture.actual.readCoreFrameReceived(fixture.deadline));
+            zero(other.actual.readHeldDateSentinelStatus(core,other.deadline));
+            assertEquals(0,other.source.writes);
+            var ack=assertInstanceOf(NativeActionPort.AckReceived.class,fixture.actual.readHeldDateSentinelStatus(core,fixture.deadline));
+            var status=ClockStatusRead.decode(ack);
+            assertEquals("2",status.generation().decimal());
+            assertEquals("FAILED",status.state().name());
+            assertEquals(53180088,status.targetDateRaw());
+            var before=core.original().custody().orElseThrow();
+            var after=ack.custody().orElseThrow();
+            assertEquals(before.session(),after.session());
+            assertEquals(before.custodyEpoch(),after.custodyEpoch());
+            assertTrue(after.writeEntered().order().compareTo(before.responseReceived().order())>0);
+            assertEquals(2,fixture.source.writes);
+            assertTrue(fixture.actual.latestAcceptedSnapshotRevision().isEmpty());
+        }
+    }
+
+    @Test void heldStatusKeepsRejectionAndRequiresTheAdvertisedExactBuild() throws Exception {
+        try(var fixture=new Fixture(FULL,true)) {
+            fixture.source.statusNativeOk=false;
+            var core=assertInstanceOf(NativeGameTransport.CoreReceived.class,fixture.actual.readCoreFrameReceived(fixture.deadline));
+            var ack=assertInstanceOf(NativeActionPort.AckReceived.class,fixture.actual.readHeldDateSentinelStatus(core,fixture.deadline));
+            assertFalse(ack.nativeOk());
+            assertTrue(ack.custody().isPresent());
+            assertEquals(2,fixture.source.writes);
+        }
+        try(var missing=new Fixture(FULL);var coreOnly=new Fixture(CORE,true)) {
+            for(var fixture:List.of(missing,coreOnly)) {
+                var core=assertInstanceOf(NativeGameTransport.CoreReceived.class,fixture.actual.readCoreFrameReceived(fixture.deadline));
+                zero(fixture.actual.readHeldDateSentinelStatus(core,fixture.deadline));
+                assertEquals(1,fixture.source.writes);
+            }
+        }
+    }
+
     private static ObjectNode identity(String schema) {
         return StrictJson.object().put("schema",schema).put("game_version",FULL.version()).put("executable_sha256",FULL.executableSha256())
                 .put("adapter_id",FULL.coreFullAdapterId()).put("backend",FULL.coreFullBackend());
@@ -175,8 +214,9 @@ final class NativeCurrentFull111ConsumerTest {
     }
     private static final class Fixture implements AutoCloseable {
         final Instant deadline=Instant.now().plusSeconds(120);final Replay source;final NativeGameTransport actual;
-        Fixture(ExactCk3Build build)throws Exception {
-            source=new Replay(build);String slash=Character.toString(92);
+        Fixture(ExactCk3Build build)throws Exception {this(build,false);}
+        Fixture(ExactCk3Build build,boolean statusAdvertised)throws Exception {
+            source=new Replay(build,statusAdvertised);String slash=Character.toString(92);
             var config=new NativePipeEndpoint.Config(slash+slash+"."+slash+"pipe"+slash+"current111-software","current111-software",GAME,
                     "current111-software-session","current111-software",build.executableSha256(),build.coreFrameAdapterId());
             actual=new NativeGameTransport(source,config,16,16,List.of(),Clock.systemUTC());
@@ -185,13 +225,17 @@ final class NativeCurrentFull111ConsumerTest {
     }
     private static final class Replay implements NativePacketPort {
         final ArrayDeque<byte[]> packets=new ArrayDeque<>();final ExactCk3Build build;int writes;boolean closed;
-        Replay(ExactCk3Build build)throws IOException {
+        final boolean statusAdvertised;
+        boolean statusNativeOk=true;
+        Replay(ExactCk3Build build,boolean statusAdvertised)throws IOException {
             this.build=build;
+            this.statusAdvertised=statusAdvertised;
             var hello=StrictJson.object().put("type","hello").put("protocol_version",1).put("pid",GAME.pid()).put("connection_generation",1)
                     .put("bridge_version","current111-software").put("expected_ck3_version",build.version()).put("expected_ck3_sha256",build.executableSha256())
                     .put("game_adapter_id",build.coreFrameAdapterId()).put("game_adapter_status","ready").put("ck3_build_match",true);
             hello.putArray("capabilities").add(CoreFrame.CAPABILITY).add(NativeFreshSnapshotPort.CAPABILITY).add("game.state.snapshot")
                     .add("game.command.set-speed-3").add("game.command.pause-map").add("game.command.save-checkpoint");
+            if(statusAdvertised)hello.withArray("capabilities").add(ClockStatusRead.STATUS_CAP).add("game.guard.date-only-postday.v1");
             packets.add(NativeWire.packet(StrictJson.canonical(hello)));
         }
         @Override public void verify()throws IOException{if(closed)throw new IOException("software endpoint closed");}
@@ -199,10 +243,27 @@ final class NativeCurrentFull111ConsumerTest {
         @Override public byte[] readPacket(Instant deadline)throws IOException{verify();if(packets.isEmpty())throw new IOException("software packet absent");return packets.removeFirst();}
         @Override public void writePacket(byte[] packet,Instant deadline)throws IOException {
             verify();var request=NativeWire.decodeExecuteRequest(packet);writes++;
-            assertEquals(CoreFrame.STEP,request.step(),"unqualified Full111 must not enter a full-state or control write");
             assertEquals(Optional.of(BigInteger.ZERO),request.expectedRevision());
-            var ack=StrictJson.object().put("type","command_result").put("protocol_version",1).put("request_id",request.requestId()).put("ok",true);
-            ack.set("result",object(CoreFramePublicCodec.encode(new CoreFrame.Partial(build,PREFIX))));
+            assertTrue(NativeWire.object(NativeWire.parse(request.normalizedAdditionalFields().value())).isEmpty());
+            var ack=StrictJson.object().put("type","command_result").put("protocol_version",1).put("request_id",request.requestId());
+            if(request.step().equals(ClockStatusRead.STEP)) {
+                assertTrue(statusAdvertised);
+                ack.put("ok",statusNativeOk);
+                var result=ack.putObject("result").put("step",ClockStatusRead.STEP).put("accepted",statusNativeOk);
+                if(statusNativeOk) {
+                    result.put("status","available");
+                    var status=result.putObject("tactical_daily_sentinel").put("state","failed").put("generation",2)
+                            .put("starting_date_raw",53179368).put("target_date_raw",53180088).put("last_observed_date_raw",53179944)
+                            .put("trigger_date_raw",53179944).put("speed",5).put("mode","terminal_or_sentinel")
+                            .put("army_count",0).put("combat_count",0).put("completed_daily_ticks",24).put("intermediate_pause_count",0)
+                            .put("trigger_flags",32768).put("signed_date_delta_from_target_raw",-144).put("overshoot_days",-1)
+                            .put("pause_wrapper_called",true).put("pause_observed",true).put("terminal_observed",false).put("abnormal",true);
+                    status.putArray("trigger_reasons").add("evaluation_failure");
+                } else result.put("error","date-only sentinel unavailable");
+            } else {
+                assertEquals(CoreFrame.STEP,request.step(),"unqualified Full111 must not enter a full-state or control write");
+                ack.put("ok",true).set("result",object(CoreFramePublicCodec.encode(new CoreFrame.Partial(build,PREFIX))));
+            }
             packets.add(NativeWire.packet(StrictJson.canonical(ack)));
         }
         @Override public void close(){closed=true;}
