@@ -121,11 +121,15 @@ final class EpisodeWindowWriterTest {
         assertFalse(Files.exists(f.files.layout.event(3)));f.firstSaveConfirmed.set(true);
         var active=f.writer.locked(s->s.baselineEpisodeWindow(f.baseline(begin)));Head actual=f.writer.locked(ContinuityStorePort.Session::head);
         assertEquals(2,actual.state().origin().windowId());assertEquals(500,actual.state().origin().startDateRaw());assertEquals(0,actual.state().settledCycles());
-        assertEquals(WriterFixture.state().get("pending_cycle"),actual.state().toJson().get("pending_cycle"));
-        assertEquals(WriterFixture.state().get("NEXT"),actual.state().toJson().get("NEXT"));
-        assertTrue(actual.state().toJson().has("unknown_actions"));assertTrue(actual.state().toJson().get("unknown_actions").isNull());
-        assertEquals("UNKNOWN",actual.state().toJson().path("unknown_requests").path("original_request").textValue());
-        assertFalse(actual.state().toJson().has("pending_checkpoint"));
+        ObjectNode original = WriterFixture.state();
+        ObjectNode current = actual.state().toJson();
+        assertTrue(ContinuityJson.same(original.get("pending_cycle"), current.get("pending_cycle")),
+                "BASELINE preserves the original pending cycle");
+        assertTrue(ContinuityJson.same(original.get("NEXT"), current.get("NEXT")),
+                "BASELINE preserves the original next sequence");
+        assertTrue(current.has("unknown_actions"));assertTrue(current.get("unknown_actions").isNull());
+        assertEquals("UNKNOWN",current.path("unknown_requests").path("original_request").textValue());
+        assertFalse(current.has("pending_checkpoint"));
         f.writer.locked(s->{s.requireEpisodeWindowBegin(begin);s.requireEpisodeWindowActive(active);return null;});
     }
     @Test void samePairDuplicateOnlyReadsItsCommittedEventAndNeverCreatesASecondSaveOrEvent()throws Exception{

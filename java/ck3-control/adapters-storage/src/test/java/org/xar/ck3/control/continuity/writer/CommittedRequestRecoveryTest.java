@@ -77,7 +77,8 @@ class CommittedRequestRecoveryTest {
             assertEquals(expectedWrites, receipt.writes());
             assertEquals(expectedWrites > 0, receipt.recoveredCommittedReceipt());
             assertEquals(1, receipt.head().sequence());
-            assertEquals(WriterFixture.state().get("pending_cycle"), receipt.head().toJson().get("pending_cycle"));
+            assertTrue(ContinuityJson.same(WriterFixture.state().get("pending_cycle"),
+                    receipt.head().toJson().get("pending_cycle")), "committed recovery preserves the original pending cycle");
             assertEquals(11559, receipt.head().toJson().get("NEXT").intValue());
             assertArrayEquals(committedEvent, Files.readAllBytes(fixture.layout.event(1)));
             assertFalse(Files.exists(fixture.layout.event(2)));
