@@ -11,12 +11,15 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.xar.ck3.control.application.action.ActionCodec;
+import org.xar.ck3.control.application.action.ActionPorts;
 import org.xar.ck3.control.application.action.ActionReceipt;
+import org.xar.ck3.control.application.action.ActionReconciliationScope;
 import org.xar.ck3.control.application.checkpoint.*;
 import org.xar.ck3.control.application.lifecycle.SeedAdoption;
 
@@ -45,14 +48,23 @@ final class CheckpointOriginalQueryCompositionTest {
         }
     }
     private CheckpointSourceCompositionTest.Fixture fixture(String directory,boolean loseAck,Clock clock)throws Exception {
+        return fixture(directory,loseAck,clock,Optional.empty());
+    }
+    private CheckpointSourceCompositionTest.Fixture fixture(String directory,boolean loseAck,Clock clock,
+            Optional<CheckpointSourceCompositionTest.AfterPostcondition> after)throws Exception {
         Path root=temporary.resolve(directory);
-        return new CheckpointSourceCompositionTest.Fixture(root,loseAck,clock,Optional.empty(),Optional.empty(),List.of(),
+        return new CheckpointSourceCompositionTest.Fixture(root,loseAck,clock,Optional.empty(),after,List.of(),
                 Duration.ofSeconds(90),root.resolve("profile"),Optional.empty(),
                 Optional.of(CheckpointSourceCompositionTest.freshReconciliationReads()));
     }
     @Test void lateOriginalPositiveAckProducesSameCanonicalPairAndMaterialWithoutSecondSave()throws Exception {
         var clock=new FiniteClock();
-        try(var f=fixture("positive-original",false,clock)){
+        var observedInHeldScope=new AtomicBoolean();
+        CheckpointSourceCompositionTest.AfterPostcondition inspect=(command,attempt,dispatch,result)->{
+            if(result instanceof ActionPorts.EffectObserved)
+                observedInHeldScope.set(ActionReconciliationScope.activeFor(command));
+        };
+        try(var f=fixture("positive-original",false,clock,Optional.of(inspect))){
             Instant originalDeadline=f.request.saveCommand().deadline();
             byte[] body=ActionCodec.encodeCommand(f.request.saveCommand());
             clock.expireAfterOriginalEntry(originalDeadline);
@@ -62,7 +74,6 @@ final class CheckpointOriginalQueryCompositionTest {
             assertEquals(1,f.actual.nativeActionWrites());
             assertFalse(clock.instant().isBefore(originalDeadline));
             Instant readDeadline=clock.instant().plusSeconds(30);
-            Instant originalObservationDeadline=f.lastCheckpointObservationDeadline.get();
             int originalFreshWrites=f.actual.softwareFreshWrites179();
             var confirmed=assertInstanceOf(CheckpointResult.Confirmed.class,
                     f.service.queryOriginal(unknown.actionId(),readDeadline));
@@ -73,8 +84,7 @@ final class CheckpointOriginalQueryCompositionTest {
             assertEquals(unknown.actionId(),confirmed.pair().saveActionId());
             assertEquals(originalFreshWrites+1,f.actual.softwareFreshWrites179(),
                     "late original reconciliation uses the actual independent Fresh source");
-            assertEquals(originalObservationDeadline,f.lastCheckpointObservationDeadline.get(),
-                    "held reconciliation must not fall back to a second generic poststate observation");
+            assertTrue(observedInHeldScope.get(),"the original SAVE postcondition consumes the held reconciliation scope");
             assertInstanceOf(SeedAdoption.Available.class,confirmed.seedAdoption());
             f.drivers.verify(confirmed.pair());
             assertEquals(confirmed.pair(),CheckpointPairCodec.decode(CheckpointPairCodec.encode(confirmed.pair())));
