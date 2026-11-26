@@ -18,6 +18,8 @@ import org.xar.ck3.control.application.action.ActionCommand;
 import org.xar.ck3.control.application.action.ActionCodec;
 import org.xar.ck3.control.application.action.ActionTransitions;
 import org.xar.ck3.control.application.action.CommandOrigin;
+import org.xar.ck3.control.application.action.CompositeOperatorQuarantineObservation;
+import org.xar.ck3.control.application.action.CompositeOperatorQuarantineRequest;
 import org.xar.ck3.control.application.action.ActionState;
 import org.xar.ck3.control.application.advance.LifeAdvanceComposite;
 import org.xar.ck3.control.application.action.ContinuityActionJournal;
@@ -26,6 +28,8 @@ import org.xar.ck3.control.application.checkpoint.CheckpointPair;
 import org.xar.ck3.control.application.checkpoint.CheckpointPairCodec;
 import org.xar.ck3.control.application.checkpoint.DriverStateSnapshot;
 import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.RestoreBinding;
+import org.xar.ck3.control.application.checkpoint.SavedAttachmentAuthority;
+import org.xar.ck3.control.application.checkpoint.SavedAttachmentSourceStore;
 import org.xar.ck3.control.application.driver.DriverJson;
 import org.xar.ck3.control.application.driver.DriverObservationEvidenceReader;
 import org.xar.ck3.control.application.effects.NativeEffectEvidence;
@@ -59,6 +63,8 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
     public static final String STATE_FIELD = WriterContracts.ORDINARY_CYCLE_FIELD;
     private static final String STATE_SCHEMA = "xar.java-ordinary-cycle-state/v2";
     private static final String RECORD_SCHEMA = "xar.java-ordinary-cycle-record/v1";
+    private static final String RESTORE_SOURCE = "java-ordinary-source-bound-restore/v1";
+    private static final String IMPORTED_RESTORE_SOURCE = WriterContracts.ORDINARY_IMPORTED_CYCLE_RESTORE_SOURCE;
     private static final int MAX_RECORDS = 100_000;
     private static final String SAVED_MATERIAL_SOURCE = "java-ordinary-session/v2";
     private final ActionPorts.OutcomeArchive archive;
@@ -1887,15 +1893,27 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
     WriterContracts.Receipt rebind(ContinuityStorePort.Session session, RestoreBinding binding) throws IOException {
         StrictJson.require(restoring.get() == null, "one actual restore binding per cycle transaction"); restoring.set(Objects.requireNonNull(binding));
         try {
-            var head = session.head(); CycleState successor = restoredState(head.state(), binding);
-            RawJson tombstone = new RawJson(ContinuityJson.canonical(restoreTombstone(head.state(), binding)));
+            var head = session.head();
+            var imported = importedRestoreSources(binding);
+            CycleState successor = restoredState(head.state(), binding, imported);
+            RawJson tombstone = new RawJson(ContinuityJson.canonical(restoreTombstone(head.state(), binding, imported.isPresent())));
             ExactRef retained = archive.preserveMaterial(tombstone);
             ObjectNode details = StrictJson.object(); details.put("evidence_id", "restore-cycle:" + binding.attachment().eventIdentity());
-            details.put("source", "java-ordinary-source-bound-restore/v1"); details.put("operation", "REBIND"); details.set("session", sessionToJson(binding.session()));
+            details.put("source", imported.isPresent() ? IMPORTED_RESTORE_SOURCE : RESTORE_SOURCE);
+            details.put("operation", "REBIND"); details.set("session", sessionToJson(binding.session()));
             details.put("attachment_identity", binding.attachment().eventIdentity()); details.put("attachment_head_digest", ContinuityJson.digest(binding.attachment().head().toJson()));
             details.set("restore_pair", StrictJson.parse(CheckpointPairCodec.encode(binding.pair()))); details.set("semantic", semanticToJson(binding.semantic()));
             details.set("previous_state_ref", retained.toJson()); details.set("new_cycle_state", successor.toJson());
-            List<ExactRef> evidence = new ArrayList<>(binding.semantic().references()); evidence.add(retained); evidence.add(binding.pair().save().reference()); evidence.add(binding.pair().driver().reference());
+            List<ExactRef> evidence = new ArrayList<>(binding.semantic().references());
+            evidence.add(retained);
+            if (imported.isPresent()) {
+                evidence.add(binding.pair().nativeAckRef());
+                evidence.addAll(imported.orElseThrow().references());
+                evidence.add(ContinuityActionJournal.recordHead(head.state()).orElseThrow());
+            } else {
+                evidence.add(binding.pair().save().reference());
+            }
+            evidence.add(binding.pair().driver().reference());
             var request = new WriterContracts.Request(CYCLE_KIND, ContinuityJson.canonical(details), evidence.stream().distinct().toList());
             return session.commit(session.preview(request));
         } finally { restoring.remove(); }
@@ -2225,10 +2243,13 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                 && text(details, "attachment_head_digest").equals(ContinuityJson.digest(binding.attachment().head().toJson()))
                 && CheckpointPairCodec.decode(ContinuityJson.canonical(details.get("restore_pair"))).equals(binding.pair())
                 && semanticFromJson(details.get("semantic")).equals(binding.semantic()), "private actual restore admission/source/head changed before cycle rebind");
+        var imported = importedRestoreSources(binding);
+        StrictJson.require(text(details, "source").equals(imported.isPresent() ? IMPORTED_RESTORE_SOURCE : RESTORE_SOURCE),
+                "cycle rebind changed its actual restore source version");
         session.requireDomainImportContinuation(binding.attachment().head().sequence(),ContinuityJson.digest(binding.attachment().head().toJson()));
-        StrictJson.require(restoredState(head.state(), binding).toJson().equals(details.get("new_cycle_state")), "cycle rebind changed surviving saved branch or granted cycles");
+        StrictJson.require(restoredState(head.state(), binding, imported).toJson().equals(details.get("new_cycle_state")), "cycle rebind changed surviving saved branch or granted cycles");
         RawJson retained = archive.loadMaterial(ExactRef.fromJson(details.get("previous_state_ref")));
-        StrictJson.require(retained.equals(new RawJson(ContinuityJson.canonical(restoreTombstone(head.state(), binding)))), "old cycle/pending tombstone is not the actual immutable archived predecessor");
+        StrictJson.require(retained.equals(new RawJson(ContinuityJson.canonical(restoreTombstone(head.state(), binding, imported.isPresent())))), "old cycle/pending tombstone is not the actual immutable archived predecessor");
         VerifiedSemantic verified = verify(session, binding.session(), binding.semantic());
         ObjectNode proof = StrictJson.object(); proof.put("head", head.digest()); proof.put("attachment", binding.attachment().eventIdentity()); proof.put("semantic", verified.materialDigest()); return ContinuityJson.digest(proof);
     }
@@ -2237,17 +2258,33 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         StrictJson.require(restored.session().equals(sessionFromJson(details.get("session"))) && restored.head().isEmpty() && restored.pending().isEmpty()
                 && restored.basisCycles() == predecessor.settledCycles() && restored.completedCycles() == predecessor.settledCycles()
                 && restored.retainedLegacyPendingDigest().filter(legacyPendingDigest(predecessor)::equals).isPresent(), "restore cycle rebind must preserve saved frontier and exact original pending tombstones");
+        boolean imported = text(details, "source").equals(IMPORTED_RESTORE_SOURCE);
+        if (imported) {
+            var pair = CheckpointPairCodec.decode(ContinuityJson.canonical(details.get("restore_pair")));
+            var semantic = semanticFromJson(details.get("semantic"));
+            requireImportedCyclePredecessor(predecessor, restored.session(), pair, semantic);
+            StrictJson.require(restored.originFrame().filter(semantic.frame()::equals).isPresent() && restored.episodeOrigin().isEmpty(),
+                    "imported cycle rebind must start from the exact restored observation");
+        }
         ObjectNode next = predecessor.toJson(); next.set(STATE_FIELD, restored.toJson()); next.set(WriterContracts.ORDINARY_CYCLE_REBIND_FIELD, details.get("previous_state_ref"));
+        if (imported) {
+            next.set(WriterContracts.ORDINARY_IMPORTED_CYCLE_ORIGIN_FIELD, details.get("previous_state_ref"));
+        }
         // Only the private admitted final SEM has the public Driver revision absent from raw restore opening.
         next.set("latest_binding", originalFrame(semanticFromJson(details.get("semantic")).frame()));
         return ContinuityState.fromJson(next, predecessor.machineId());
     }
-    private CycleState restoredState(ContinuityState predecessor, RestoreBinding binding) {
+    private CycleState restoredState(ContinuityState predecessor, RestoreBinding binding,
+            Optional<SavedAttachmentSourceStore.Sources> imported) {
         StrictJson.require(binding.newSavedDayCredit() == 0 && binding.session().machineId().equals(predecessor.machineId())
                 && binding.attachment().head().settledCycles() == predecessor.settledCycles()
                 && binding.attachment().head().settledDateRaw() == predecessor.settledDateRaw(), "actual restore cannot grant day/cycle credit");
         ObjectNode whole = predecessor.toJson();
-        if (whole.has(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD)) {
+        if (imported.isPresent()) {
+            var actual = requireImportedCyclePredecessor(predecessor, binding.session(), binding.pair(), binding.semantic());
+            StrictJson.require(imported.orElseThrow().equals(actual), "imported cycle rebind changed its actual attachment sources");
+            validateChain(parseState(whole.get(STATE_FIELD)));
+        } else if (whole.has(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD)) {
             ObjectNode saved = StrictJson.object(whole.get(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD), Set.of("pair", "state"));
             StrictJson.require(CheckpointPairCodec.decode(ContinuityJson.canonical(saved.get("pair"))).equals(binding.pair()), "surviving Java cycle branch belongs to a different physical SAVE");
             CycleState survived = parseState(saved.get("state"));
@@ -2256,12 +2293,71 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         } else StrictJson.require(!whole.has(STATE_FIELD), "a Java cycle branch without its exact saved cycle snapshot cannot be guessed during restore");
         return new CycleState(binding.session(), predecessor.settledCycles(), predecessor.settledCycles(), Optional.empty(), Optional.empty(), Optional.of(legacyPendingDigest(predecessor)),Optional.of(binding.semantic().frame()),Optional.empty());
     }
-    private static ObjectNode restoreTombstone(ContinuityState predecessor, RestoreBinding binding) {
-        ObjectNode before = predecessor.toJson(); ObjectNode row = StrictJson.object(); row.put("schema", "xar.java-ordinary-cycle-restore-tombstone/v1");
+    private Optional<SavedAttachmentSourceStore.Sources> importedRestoreSources(RestoreBinding binding) {
+        if (!(binding.savedMaterial() instanceof SavedAttachmentSourceStore.SavedMaterial material) || material.importedOrigin().isEmpty()) {
+            return Optional.empty();
+        }
+        var original = binding.originalAttachment();
+        var sources = SavedAttachmentSourceStore.Sources.decode(original.request().detailsObject().get(SavedAttachmentSourceStore.SOURCES_DETAIL));
+        var owner = material.importedOrigin().orElseThrow().owner();
+        StrictJson.require(sources.importedOrigin().equals(material.importedOrigin()) && sources.material().equals(material.witness())
+                        && sources.physicalSaveWitness().filter(binding.pair().save()::equals).isPresent()
+                        && ContinuityBatchJournal.importedSavedInterruptedFrontier(original.predecessor().state(), owner),
+                "imported cycle rebind needs the actual interrupted target and original v5 physical SAVE witness");
+        var previous = original.predecessor().state();
+        var record = archive.loadRecord(ContinuityActionJournal.recordHead(previous).orElseThrow());
+        var terminal = record.receipt();
+        StrictJson.require(terminal.sequence() == previous.sequence()
+                        && terminal.state() instanceof ActionState.CompositeOperatorQuarantined
+                        && terminal.command().origin().game().equals(owner.game()) && terminal.command().sessionId().equals(owner.sessionId()),
+                "imported cycle rebind requires the actual exited target operator terminal");
+        var observation = CompositeOperatorQuarantineObservation.load(terminal, archive);
+        var request = CompositeOperatorQuarantineRequest.decode(archive.loadMaterial(observation.requestMaterial()).bytes());
+        StrictJson.require(request.exitedLife().filter(exit -> exit.ownerSessionId().equals(owner.sessionId())
+                                && exit.savedPairSha256().equals(ActionCodec.sha256(CheckpointPairCodec.encode(binding.pair())))).isPresent()
+                        && request.parentActionId().equals(terminal.command().actionId())
+                        && record.previous().filter(observation.originalActionHead()::equals).isPresent()
+                        && Math.addExact(request.expectedHeadSequence(), 1) == terminal.sequence(),
+                "imported cycle rebind changed its actual exited target decision");
+        return Optional.of(sources);
+    }
+    private static SavedAttachmentSourceStore.Sources requireImportedCyclePredecessor(ContinuityState predecessor,
+            SessionIdentity restored, CheckpointPair pair, SemanticEvidence semantic) {
+        var whole = predecessor.toJson();
+        var attachment = ContinuityJson.object(whole.get("last_current_saved_cold"));
+        var sources = SavedAttachmentSourceStore.Sources.decode(attachment.get(SavedAttachmentSourceStore.SOURCES_DETAIL));
+        var imported = sources.importedOrigin().orElseThrow();
+        var previous = parseState(whole.get(STATE_FIELD));
+        var loaded = ContinuityJson.object(whole.get("latest_binding"));
+        var frame = semantic.frame();
+        StrictJson.require(!whole.has(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD)
+                        && !whole.has(WriterContracts.ORDINARY_IMPORTED_CYCLE_ORIGIN_FIELD)
+                        && sources.physicalSaveWitness().filter(pair.save()::equals).isPresent()
+                        && pair.equals(CheckpointPairCodec.decode(ContinuityJson.canonical(attachment.get(SavedAttachmentAuthority.PAIR_DETAIL))))
+                        && previous.session().equals(imported.owner()) && previous.basisCycles() == predecessor.settledCycles()
+                        && previous.completedCycles() > predecessor.settledCycles() && previous.pending().isEmpty() && previous.head().isPresent()
+                        && !restored.equals(imported.owner()) && !restored.game().equals(imported.owner().game())
+                        && !restored.game().equals(pair.frame().game()) && frame.game().equals(restored.game())
+                        && restored.machineId().equals(frame.machineId()) && restored.machineId().equals(imported.owner().machineId())
+                        && ContinuityJson.same(whole.get("game_binding"), restored.game().toJson())
+                        && restored.sessionId().equals(StrictJson.text(loaded.get("session_id")))
+                        && frame.frame().episodeRunId().equals(pair.frame().frame().episodeRunId())
+                        && frame.frame().identity().player().equals(pair.frame().frame().identity().player())
+                        && frame.frame().identity().dateRaw().equals(pair.frame().frame().identity().dateRaw())
+                        && frame.frame().identity().dateRaw().longValueExact() == predecessor.settledDateRaw(),
+                "imported cycle rebind must preserve the physical SAVE frontier and the exact old target cycle");
+        return sources;
+    }
+    private static ObjectNode restoreTombstone(ContinuityState predecessor, RestoreBinding binding, boolean imported) {
+        ObjectNode before = predecessor.toJson(); ObjectNode row = StrictJson.object();
+        row.put("schema", imported ? "xar.java-ordinary-cycle-restore-tombstone/v2" : "xar.java-ordinary-cycle-restore-tombstone/v1");
         row.put("attachment_identity", binding.attachment().eventIdentity()); row.set("restored_session", sessionToJson(binding.session()));
         row.set("restore_pair", StrictJson.parse(CheckpointPairCodec.encode(binding.pair()))); row.put("retained_legacy_pending_digest", legacyPendingDigest(predecessor));
         for (String key : List.of(STATE_FIELD, WriterContracts.ORDINARY_SAVED_CYCLE_FIELD, WriterContracts.ORDINARY_CYCLE_REBIND_FIELD)) {
             ObjectNode slot = row.putObject(key); slot.put("present", before.has(key)); if (before.has(key)) slot.set("value", before.get(key));
+        }
+        if (imported) {
+            row.set("original_action_head", ContinuityActionJournal.recordHead(predecessor).orElseThrow().toJson());
         }
         return row;
     }
@@ -2874,7 +2970,10 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                 && left.frame().episodeRunId().equals(right.frame().episodeRunId()) && left.frame().identity().player().equals(right.frame().identity().player()), "Game/player/episode changed without its actual binding authority");
     }
     private static void strictCycle(ObjectNode row) { StrictJson.object(row, Set.of("evidence_id", "source", "session", "operation", "receipt_ref", "semantic", "cycle_record_ref", "cycle_record")); }
-    private static void strictRebind(ObjectNode row) { StrictJson.object(row, Set.of("evidence_id", "source", "session", "operation", "attachment_identity", "attachment_head_digest", "restore_pair", "semantic", "previous_state_ref", "new_cycle_state")); }
+    private static void strictRebind(ObjectNode row) {
+        StrictJson.object(row, Set.of("evidence_id", "source", "session", "operation", "attachment_identity", "attachment_head_digest", "restore_pair", "semantic", "previous_state_ref", "new_cycle_state"));
+        StrictJson.require(Set.of(RESTORE_SOURCE, IMPORTED_RESTORE_SOURCE).contains(text(row, "source")), "known restore cycle rebind source required");
+    }
     private static void strictEpisode(ObjectNode row){StrictJson.object(row,Set.of("evidence_id","source","operation","session","before_session","parent_receipt_ref","lifecycle_commit_digest","predecessor_head_digest","semantic","previous_state_ref","new_cycle_state"));}
     private static void strictBatch(ObjectNode row) {
         Set<String> fields=JournalKind.WORKER_RESTART_CAPTURE.name().equals(text(row,"boundary"))

@@ -4292,7 +4292,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 &&cycle.path("episode_origin").isNull()&&importedSavedEntryMatches(current,whole,owner);
     }
 
-    private static boolean importedSavedInterruptedFrontier(ContinuityState current,SessionIdentity owner) {
+    static boolean importedSavedInterruptedFrontier(ContinuityState current,SessionIdentity owner) {
         try {
             var whole=current.toJson();var boundary=whole.path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD);
             return current.status()==ContinuityState.Status.REPAIR_REQUIRED&&boundary.isObject()
@@ -6417,17 +6417,20 @@ public final class ContinuityBatchJournal implements BatchJournal {
     }
     /** Root already admitted the private physical restore; only actual canonical domain imports may intervene before this zero-credit rebind. */
     public ReboundCycle rebindAfterDomainImports(RestoreCheckpointService service,RestoreBinding binding) throws IOException {
+        return store.locked(session -> rebindAfterDomainImports(session, service, binding));
+    }
+    public ReboundCycle rebindAfterDomainImports(ContinuityStorePort.Session session,
+            RestoreCheckpointService service, RestoreBinding binding) throws IOException {
         Objects.requireNonNull(service);Objects.requireNonNull(binding);
-        return store.locked(session->{
+        store.requireSession(session);
+        service.requireRetainedOriginal(session,binding);
+        session.requireDomainImportContinuation(binding.attachment().head().sequence(),ContinuityJson.digest(binding.attachment().head().toJson()));
+        return transitions.withLocked(session,()->{
+            var committed=transitions.rebind(session,binding);
+            var proof=transitions.cycleProof(session,binding.session(),binding.semantic())
+                    .orElseThrow(()->new IOException("domain-only restored source did not produce its actual settled cycle binding"));
             service.requireRetainedOriginal(session,binding);
-            session.requireDomainImportContinuation(binding.attachment().head().sequence(),ContinuityJson.digest(binding.attachment().head().toJson()));
-            return transitions.withLocked(session,()->{
-                var committed=transitions.rebind(session,binding);
-                var proof=transitions.cycleProof(session,binding.session(),binding.semantic())
-                        .orElseThrow(()->new IOException("domain-only restored source did not produce its actual settled cycle binding"));
-                service.requireRetainedOriginal(session,binding);
-                return new ReboundCycle(this,binding,committed,proof);
-            });
+            return new ReboundCycle(this,binding,committed,proof);
         });
     }
     /** Re-read the new canonical head and exact archived proof before Root publishes its replacement controller. */

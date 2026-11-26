@@ -1583,6 +1583,16 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
             preserveField(old, next, ORDINARY_CYCLE_FIELD);
             preserveField(old, next, ORDINARY_CYCLE_REBIND_FIELD);
         }
+        var details = ORDINARY_CYCLE_KIND.equals(request.kind()) ? request.detailsObject() : null;
+        if (details != null && ORDINARY_IMPORTED_CYCLE_RESTORE_SOURCE.equals(details.path("source").asText())
+                && "REBIND".equals(details.path("operation").asText())) {
+            var origin = ExactRef.fromJson(details.get("previous_state_ref"));
+            StrictJson.require(!old.has(ORDINARY_IMPORTED_CYCLE_ORIGIN_FIELD)
+                            && ContinuityJson.same(next.get(ORDINARY_IMPORTED_CYCLE_ORIGIN_FIELD), origin.toJson()),
+                    "imported cycle rebind requires its one actual original action and cycle archive");
+        } else {
+            preserveField(old, next, ORDINARY_IMPORTED_CYCLE_ORIGIN_FIELD);
+        }
         if (!ORDINARY_BATCH_KIND.equals(request.kind())&&!ORDINARY_NEXT_BASELINE_KIND.equals(request.kind())) {
             preserveField(old, next, ORDINARY_SAVED_CYCLE_FIELD);
         }

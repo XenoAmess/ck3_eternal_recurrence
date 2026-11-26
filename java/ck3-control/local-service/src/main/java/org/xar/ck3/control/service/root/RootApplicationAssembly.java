@@ -3527,7 +3527,12 @@ public final class RootApplicationAssembly {
                 var current=physical.withSnapshot(same,configuration.deadline(),lease->{lease.assertCurrent(same);
                     var frame=lease.ordinary().orElseThrow(()->new IOException("cold restored planning requires its actual current physical frame"));
                     lease.assertCurrent(same);return frame;});
-                catalog.initializePersistentPlanning(same,current);service.requireRetainedOriginal(same,binding);
+                catalog.initializePersistentPlanning(same,current);
+                if (original.importedSource().isPresent()) {
+                    root.batchJournal().rebindAfterDomainImports(same, service, binding);
+                } else {
+                    service.requireRetainedOriginal(same,binding);
+                }
                 root.controllerForPublication().retainConsumedSavedBatches(root.identity(),List.copyOf(original.savedController().usedBatches()));
                 return root;
             });
