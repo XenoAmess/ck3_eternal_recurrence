@@ -7,20 +7,30 @@ import java.time.Clock;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.Optional;
+import org.xar.ck3.control.application.action.ActionPorts;
+import org.xar.ck3.control.application.driver.DriverObservationAssembler;
+import org.xar.ck3.control.application.driver.DriverObservationEvidenceReader;
+import org.xar.ck3.control.application.driver.DriverSnapshotFacts;
 import org.xar.ck3.control.application.driver.InitialEpisodePolicy;
 import org.xar.ck3.control.application.checkpoint.CheckpointFiles;
 import org.xar.ck3.control.application.checkpoint.CheckpointPair;
 import org.xar.ck3.control.application.checkpoint.CheckpointPairCodec;
+import org.xar.ck3.control.application.checkpoint.DriverStateSnapshot;
+import org.xar.ck3.control.application.checkpoint.DriverCheckpointStore;
 import org.xar.ck3.control.application.action.ActionCodec;
 import org.xar.ck3.control.application.checkpoint.NativeCheckpointFiles;
 import org.xar.ck3.control.application.checkpoint.SavedAttachmentSourceStore;
+import org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialStore;
 import org.xar.ck3.control.application.session.OrdinaryCycleTransitions;
 import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
 import org.xar.ck3.control.continuity.ContinuityJson;
 import org.xar.ck3.control.continuity.ContinuityState;
+import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 import org.xar.ck3.control.continuity.writer.WriterContracts;
+import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.GameGeneration;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.g2.planning.ProposalLifecycleCodec;
 import org.xar.ck3.control.platform.JavaGameLifecycle;
 import org.xar.ck3.control.platform.NativeLaunchPlan;
 
@@ -29,7 +39,171 @@ import org.xar.ck3.control.platform.NativeLaunchPlan;
 final class RootExitedSavedMaterialSource {
     private static final int MAX_METADATA=1024*1024;
     private record Located(CheckpointPair pair,WriterContracts.Pin confirmation) { }
+    private record LocatedImported(RootOrdinaryRuntimeConfiguration configuration,CheckpointPair pair,ExactRef confirmation) { }
     private RootExitedSavedMaterialSource(){ }
+
+    record ImportedData(SessionIdentity owner,SessionIdentity physicalSaveOwner,CheckpointPair pair,
+            WriterContracts.Pin entry,WriterContracts.Pin sourceConfirmation,DriverStateSnapshot.Complete physicalSavedDriver,
+            DriverObservationAssembler.Complete archivedBefore,DriverSnapshotFacts.Known archivedDriver,String headDigest) { }
+
+    @FunctionalInterface private interface ImportedRead<T> {
+        T read(ImportedData imported,RootJavaSavedBootstrap.ConfirmedSource source)throws IOException;
+    }
+
+    /**
+     * The explicit historical request locates the independent physical SAVE. The current writer separately
+     * supplies the actual original imported entry and archived opening. Results carry DATA only.
+     */
+    static ImportedData readImportedData(ExactRef originalRecoveryRequest,RootApplicationAssembly.Core currentCore,
+            SessionIdentity owner,Clock clock)throws IOException {
+        return readImported(originalRecoveryRequest,currentCore,owner,clock,(data,original)->data);
+    }
+
+    /** Also replays the physical SAVE's privately archived capability state under its original issuer. */
+    static RootRestoreMaterials.ImportedRestoreOriginal readImportedRestoreOriginal(ExactRef originalRecoveryRequest,
+            RootApplicationAssembly.Core currentCore,SessionIdentity owner,Clock clock)throws IOException {
+        return readImported(originalRecoveryRequest,currentCore,owner,clock,(data,original)->{
+            var result=new RootRestoreMaterials.ImportedRestoreOriginal(data,original.readOriginalPhysicalSave());
+            result.requireAbandoned(owner,data.archivedDriver());return result;
+        });
+    }
+
+    private static <T> T readImported(ExactRef originalRecoveryRequest,RootApplicationAssembly.Core currentCore,
+            SessionIdentity owner,Clock clock,ImportedRead<T> read)throws IOException {
+        var inputs=locateImported(originalRecoveryRequest,currentCore,owner);
+        try(var prepared=RootOrdinaryRuntimeAssembly.prepareReadOnlySavedSource(inputs.configuration(),clock)) {
+            var source=qualifyImported(inputs,prepared);
+            return read.read(readImportedEntry(currentCore,owner,source),source);
+        }
+    }
+    private static LocatedImported locateImported(ExactRef originalRecoveryRequest,RootApplicationAssembly.Core currentCore,
+            SessionIdentity owner)throws IOException {
+        Objects.requireNonNull(currentCore);Objects.requireNonNull(owner);
+        Path requestPath=Path.of(originalRecoveryRequest.path());
+        StrictJson.require(requestPath.isAbsolute()&&requestPath.normalize().equals(requestPath),
+                "explicit imported Saved source requires a normalized absolute request");
+        var row=StrictJson.parse(RootLoadedReplacementRecoveryInputs.read(originalRecoveryRequest,MAX_METADATA),MAX_METADATA);
+        StrictJson.require(RootLoadedSavedResumeMain250.requestMode(row)==3,"exact original loaded Saved recovery request required");
+        String machine=StrictJson.text(row.get("machineId"));
+        StrictJson.require(machine.equals(owner.machineId())&&machine.equals(currentCore.configuration().machineId()),
+                "imported Saved request crossed the original owner or writer machine");
+        var targetConfiguration=RootSavedRuntimeConfigurationInputs.readSource(ExactRef.fromJson(row.get("newRuntimeConfiguration")));
+        Path targetRoot=targetConfiguration.stateDirectory().getParent();
+        StrictJson.require(machine.equals(targetConfiguration.machineId())&&currentCore.configuration().ledger().snapshot()
+                        .equals(targetRoot.resolve("continuity/continuity.json")),
+                "original loaded Saved request belongs to another target writer");
+        Path ownerDirectory=Path.of(StrictJson.text(row.get("ownerDirectory")));
+        StrictJson.require(ownerDirectory.isAbsolute()&&ownerDirectory.normalize().equals(ownerDirectory),
+                "original loaded Saved request owner directory must be absolute and normalized");
+        var configuration=RootSavedRuntimeConfigurationInputs.readSource(ExactRef.fromJson(row.get("sourceRuntimeConfiguration")));
+        Path physicalRoot=configuration.stateDirectory().getParent();
+        StrictJson.require(machine.equals(configuration.machineId())&&!physicalRoot.startsWith(targetRoot)
+                        &&!targetRoot.startsWith(physicalRoot),"imported Saved requires its distinct original SAVE writer");
+        var confirmation=ExactRef.fromJson(row.get("sourceConfirmation"));
+        var pair=CheckpointPairCodec.decode(RootLoadedReplacementRecoveryInputs.read(
+                ExactRef.fromJson(row.get("checkpointPair")),MAX_METADATA));
+        return new LocatedImported(configuration,pair,confirmation);
+    }
+    private static RootJavaSavedBootstrap.ConfirmedSource qualifyImported(LocatedImported input,
+            RootOrdinaryRuntimeAssembly.Prepared prepared)throws IOException {
+        return RootJavaSavedBootstrap.qualifyOriginalConfirmation(prepared.openSavedSourceCore(),new NativeCheckpointFiles(),
+                input.configuration().stateDirectory().resolve("checkpoints/attachments"),prepared.plan().pipeName(),input.pair(),input.confirmation());
+    }
+
+    static PreparedImportedRestore prepareImportedRestore(ExactRef originalRecoveryRequest,RootApplicationAssembly.Core currentCore,
+            RootOrdinaryRuntimeConfiguration targetConfiguration,CheckpointFiles targetFiles,SessionIdentity owner,Clock clock)throws IOException {
+        var inputs=locateImported(originalRecoveryRequest,currentCore,owner);
+        StrictJson.require(currentCore.configuration().ledger().snapshot().equals(targetConfiguration.stateDirectory().getParent()
+                        .resolve("continuity/continuity.json")),"prepared imported SAVE crossed the actual target configuration");
+        var prepared=RootOrdinaryRuntimeAssembly.prepareReadOnlySavedSource(inputs.configuration(),clock);
+        try {
+            var source=qualifyImported(inputs,prepared);
+            var data=readImportedEntry(currentCore,owner,source);
+            var stores=RootJavaSavedBootstrap.checkpointStores(currentCore,targetFiles,
+                    targetConfiguration.stateDirectory().resolve("checkpoints/attachments"),prepared.plan().pipeName(),source.pair());
+            return new PreparedImportedRestore(prepared,currentCore,source,data,stores,originalRecoveryRequest,targetConfiguration.stateDirectory());
+        }catch(IOException|RuntimeException|Error failure) {
+            try{prepared.close();}catch(IOException|RuntimeException|Error close){if(close!=failure)failure.addSuppressed(close);}
+            throw failure;
+        }
+    }
+    /** One actual readonly old source retained by the cold predecessor throughout its writer work. */
+    static final class PreparedImportedRestore implements AutoCloseable,SavedAttachmentSourceStore.ImportedSourceRead {
+        private final RootOrdinaryRuntimeAssembly.Prepared prepared;
+        private final RootApplicationAssembly.Core target;
+        private final RootJavaSavedBootstrap.ConfirmedSource source;
+        private final ImportedData imported;
+        private final RootJavaSavedBootstrap.CheckpointStores stores;
+        private final SavedAttachmentSourceStore.ImportedOrigin origin;
+        private final Path targetStateDirectory;
+        private boolean closed;
+        private PreparedImportedRestore(RootOrdinaryRuntimeAssembly.Prepared prepared,RootApplicationAssembly.Core target,
+                RootJavaSavedBootstrap.ConfirmedSource source,ImportedData imported,RootJavaSavedBootstrap.CheckpointStores stores,
+                ExactRef request,Path targetStateDirectory) {
+            this.prepared=prepared;this.target=target;this.source=source;this.imported=imported;this.stores=stores;
+            this.origin=new SavedAttachmentSourceStore.ImportedOrigin(imported.owner(),request,imported.entry(),imported.sourceConfirmation());
+            this.targetStateDirectory=targetStateDirectory;
+        }
+        ImportedData imported(){return imported;}
+        Path targetStateDirectory(){return targetStateDirectory;}
+        SavedCheckpointMaterialStore materialStore(){return stores.materials();}
+        DriverCheckpointStore driverCheckpoints(){return stores.drivers();}
+        SavedAttachmentSourceStore.SavedMaterial material(ContinuityStorePort.Session same)throws IOException {
+            requireOpen(same);
+            return stores.materials().ordinaryStore().bindImported(same,origin,source.originalMaterial(),this);
+        }
+        RootRestoreMaterials.PhysicalSavedOriginal readOriginalPhysicalSave(ContinuityStorePort.Session same)throws IOException {
+            requireOpen(same);return source.readOriginalPhysicalSave(same);
+        }
+        @Override public <T> T read(ContinuityStorePort.Session same,SavedAttachmentSourceStore.ImportedSourceWork<T> work)throws IOException {
+            requireOpen(same);return source.withOriginalWriter(same,work);
+        }
+        private void requireOpen(ContinuityStorePort.Session same)throws IOException {
+            if(closed)throw new IOException("imported physical SAVE source lease is closed");
+            target.writer().requireSession(same);
+        }
+        @Override public void close()throws IOException {
+            if(!closed){closed=true;prepared.close();}
+        }
+    }
+
+    private static ImportedData readImportedEntry(RootApplicationAssembly.Core currentCore,SessionIdentity owner,
+            RootJavaSavedBootstrap.ConfirmedSource source)throws IOException {
+        var archive=currentCore.archive();
+        return currentCore.writer().locked(same->archive.inHistoricalReadScope(same,
+                new ActionPorts.HistoricalReadLimits(16,32L*1024*1024,32),data->{
+            var original=RootJavaSavedBootstrap.existingSavedSource(source,same,archive);
+            var entry=original.getValue();
+            var marker=ContinuityJson.parseObject(entry.details(),MAX_METADATA);
+            StrictJson.require(OrdinaryCycleTransitions.sessionFromJson(marker.get("session")).equals(owner)
+                            &&!source.physicalSaveOwner().game().equals(owner.game()),
+                    "imported Saved entry crossed the actual target runtime or original SAVE Game");
+            RootJavaSavedBootstrap.requireSavedSourceOriginals(source,archive,same,marker);
+            var facts=data.loadFullMaterial(ExactRef.fromJson(marker.get("driver_facts")));
+            var manifestReference=DriverSnapshotFacts.observationOriginalReference(facts).orElseThrow(()->
+                    new IOException("imported Saved entry lacks its actual opening observation manifest"));
+            var manifest=data.loadFullMaterial(manifestReference);
+            var driverReference=DriverObservationEvidenceReader.currentDriverReference(manifestReference,manifest);
+            StrictJson.require(driverReference.equals(ExactRef.fromJson(marker.get("full_driver"))),
+                    "imported Saved opening differs from its original target Driver");
+            var nativeFrame=DriverObservationEvidenceReader.retainedNativeFrame(manifestReference,manifest,data);
+            byte[] packet=nativeFrame.originalPacket();
+            var nativeReference=data.nativeFrameReference(ActionCodec.sha256(packet),packet.length);
+            var observation=DriverObservationEvidenceReader.decode(manifestReference,manifest,data.loadFullMaterial(driverReference),nativeFrame,data);
+            var known=DriverSnapshotFacts.decodeKnownOriginal(facts,Optional.of(observation));
+            var assembled=currentCore.observationAssembler().assemble(nativeFrame,observation,nativeReference);
+            if(!(assembled instanceof DriverObservationAssembler.Complete before))
+                throw new IOException("imported Saved opening did not replay a complete original target observation");
+            StrictJson.require(before.identity().equals(ProposalLifecycleCodec.decodeObservation(marker.get("opening")))
+                            &&before.sessionId().equals(owner.sessionId())
+                            &&known.stamp().driverVersion()==StrictJson.integer(marker.get("driver_version"),0,StrictJson.MAX_SAFE_INTEGER)
+                            &&known.stamp().episodeEpoch()==StrictJson.integer(marker.get("episode_epoch"),0,StrictJson.MAX_SAFE_INTEGER)
+                            &&before.identity().frame().episodeRunId().equals(source.pair().frame().frame().episodeRunId()),
+                    "archived opening or retained Driver facts crossed the actual imported Saved entry");
+            return new ImportedData(owner,source.physicalSaveOwner(),source.pair(),entry.eventPin(),source.confirmation().eventPin(),
+                    source.physicalSavedDriver(),before,known,original.getKey().digest());
+        }));
+    }
 
     /** The actual saved Driver selects the existing explicit projection reader before replacement CREATE. */
     static Optional<RootFrozenRunProfile.FrozenRunProfile> nativeCampaignProfile(

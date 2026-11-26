@@ -991,6 +991,13 @@ public final class RootApplicationAssembly {
         /** Source-proven exited ownership and the configured decision govern original administrative retirement. */
         public ActionReceipt retireExitedLifeInterruptionOnly(org.xar.ck3.control.platform.JavaGameLifecycle owner,
                 org.xar.ck3.control.platform.JavaGameLifecycle.ExitedGeneration exited,Instant deadline)throws IOException {
+            return withExitedLifeRetirement(owner,exited,deadline,this::retireExitedLife);
+        }
+        @FunctionalInterface private interface ExitedLifeWork<T> {
+            T run(ReservedRetirementScope scope,ActionPorts.OutcomeArchive actualArchive)throws IOException;
+        }
+        private <T> T withExitedLifeRetirement(org.xar.ck3.control.platform.JavaGameLifecycle owner,
+                org.xar.ck3.control.platform.JavaGameLifecycle.ExitedGeneration exited,Instant deadline,ExitedLifeWork<T> work)throws IOException {
             Objects.requireNonNull(owner);Objects.requireNonNull(exited);Objects.requireNonNull(deadline);
             exited.requireOwner(owner,deadline);
             var source=operatorQuarantineSource().orElseThrow(()->new IOException("configured exited Life operator source is absent"));
@@ -1002,45 +1009,47 @@ public final class RootApplicationAssembly {
                     "exited Life retirement requires the actual uninstalled Core, typed exited owner and finite source window");
             return writer.locked(same->archive.inSession(same,actualArchive->{
                 var scope=new ReservedRetirementScope(same,owner,exited,source,deadline);reservedRetirement.set(scope);
-                try(scope) {
-                    scope.initialize();var originals=scope.data;var request=source.request();var head=same.head();
-                    StrictJson.require(head.state().machineId().equals(exited.machineId()),"exited retirement Core belongs to another machine");
-                    var original=ContinuityActionJournal.lookup(head.state(),request.parentActionId(),originals).orElseThrow();
-                    if(original.state() instanceof org.xar.ck3.control.application.action.ActionState.CompositeOperatorQuarantined) {
-                        var proof=org.xar.ck3.control.application.action.CompositeOperatorQuarantineObservation.load(original,originals);
-                        StrictJson.require(proof.requestSource().equals(source.requestReference()),"existing exited retirement belongs to another request");
-                        scope.verifier.verify(head,original);scope.requireExitedPhysical();return original;
-                    }
-                    request.requireParent(original);
-                    var execution=((org.xar.ck3.control.application.action.ActionState.CompositeUnknown)original.state()).execution();
-                    if (request.exitedLife().isPresent()) {
-                        var retained = source.requireExitedOriginals(head,original,originals);
-                        for (ActionReceipt child : List.of(retained.arm(),retained.resume())) {
-                            // The full archive also compares the original outbound fields and revision with the prepared Attempt.
-                            StrictJson.require(actualArchive.loadReceipt(originals.receiptReferenceOf(child)).equals(child),
-                                    "exited Life child must retain its exact original verified guard and outbound packet");
-                        }
-                        new org.xar.ck3.control.application.checkpoint.NativeCheckpointFiles().verify(retained.savedPair());
-                    } else {
-                        for(var binding:execution.children()) {
-                            var child=ContinuityActionJournal.lookup(head.state(),binding.actionId(),originals).orElseThrow();
-                            StrictJson.require(child.settled()&&child.bodySha256().equals(binding.bodySha256()),
-                                    "exited Life retirement retains every original child terminal and exact body");
-                        }
-                    }
-                    var observation=source.capture(same,original,originals);
-                    var terminal=scope.administrativeJournal.locked(same,locked->{
-                        var retained=locked.find(request.parentActionId()).orElseThrow();
-                        StrictJson.require(retained.equals(original)&&retained.state() instanceof org.xar.ck3.control.application.action.ActionState.CompositeUnknown,
-                                "exited Life parent changed before its actual administrative append");
-                        scope.requireExitedPhysical();
-                        return locked.append(retained.command(),retained.bodySha256(),new org.xar.ck3.control.application.action.ActionState.CompositeOperatorQuarantined(
-                                ((org.xar.ck3.control.application.action.ActionState.CompositeUnknown)retained.state()).execution(),observation));
-                    });
-                    scope.verifier.verify(same.head(),terminal);scope.requireExitedPhysical();return terminal;
-                }catch(IOException failure){throw new UncheckedIOException(failure);}
+                try(scope) {scope.initialize();return work.run(scope,actualArchive);}
+                catch(IOException failure){throw new UncheckedIOException(failure);}
                 finally{reservedRetirement.remove();}
             }));
+        }
+        private ActionReceipt retireExitedLife(ReservedRetirementScope scope,ActionPorts.OutcomeArchive actualArchive)throws IOException {
+            var same=scope.same;var originals=scope.data;var source=scope.source;var request=source.request();var head=same.head();
+            StrictJson.require(head.state().machineId().equals(scope.exited.machineId()),"exited retirement Core belongs to another machine");
+            var original=ContinuityActionJournal.lookup(head.state(),request.parentActionId(),originals).orElseThrow();
+            if(original.state() instanceof org.xar.ck3.control.application.action.ActionState.CompositeOperatorQuarantined) {
+                var proof=org.xar.ck3.control.application.action.CompositeOperatorQuarantineObservation.load(original,originals);
+                StrictJson.require(proof.requestSource().equals(source.requestReference()),"existing exited retirement belongs to another request");
+                scope.verifier.verify(head,original);scope.requireExitedPhysical();return original;
+            }
+            request.requireParent(original);
+            var execution=((org.xar.ck3.control.application.action.ActionState.CompositeUnknown)original.state()).execution();
+            if (request.exitedLife().isPresent()) {
+                var retained = source.requireExitedOriginals(head,original,originals);
+                for (ActionReceipt child : List.of(retained.arm(),retained.resume())) {
+                    // The full archive also compares the original outbound fields and revision with the prepared Attempt.
+                    StrictJson.require(actualArchive.loadReceipt(originals.receiptReferenceOf(child)).equals(child),
+                            "exited Life child must retain its exact original verified guard and outbound packet");
+                }
+                new org.xar.ck3.control.application.checkpoint.NativeCheckpointFiles().verify(retained.savedPair());
+            } else {
+                for(var binding:execution.children()) {
+                    var child=ContinuityActionJournal.lookup(head.state(),binding.actionId(),originals).orElseThrow();
+                    StrictJson.require(child.settled()&&child.bodySha256().equals(binding.bodySha256()),
+                            "exited Life retirement retains every original child terminal and exact body");
+                }
+            }
+            var observation=source.capture(same,original,originals);
+            var terminal=scope.administrativeJournal.locked(same,locked->{
+                var retained=locked.find(request.parentActionId()).orElseThrow();
+                StrictJson.require(retained.equals(original)&&retained.state() instanceof org.xar.ck3.control.application.action.ActionState.CompositeUnknown,
+                        "exited Life parent changed before its actual administrative append");
+                scope.requireExitedPhysical();
+                return locked.append(retained.command(),retained.bodySha256(),new org.xar.ck3.control.application.action.ActionState.CompositeOperatorQuarantined(
+                        ((org.xar.ck3.control.application.action.ActionState.CompositeUnknown)retained.state()).execution(),observation));
+            });
+            scope.verifier.verify(same.head(),terminal);scope.requireExitedPhysical();return terminal;
         }
         private ColdRestoreSource coldRestoreSource;
         private Staged coldRestoreStage;
@@ -1065,6 +1074,7 @@ public final class RootApplicationAssembly {
             private final SavedCheckpointMaterialStore materials;
             private final SavedCheckpointMaterial material;
             private final DriverCheckpointStore drivers;
+            private final RootExitedSavedMaterialSource.PreparedImportedRestore imported;
             private final ContinuityBatchJournal.SettledSameGameData history;
             private final DriverObservationAssembler.Complete before;
             private final OriginalWindowReducer.Policy policy;
@@ -1074,9 +1084,11 @@ public final class RootApplicationAssembly {
             private ColdRestoreSource(Core core,org.xar.ck3.control.platform.JavaGameLifecycle lifecycle,
                     ColdOwner exited,SavedCheckpointMaterialStore materials,
                     SavedCheckpointMaterial material,DriverCheckpointStore drivers,ContinuityBatchJournal.SettledSameGameData history,
-                    DriverObservationAssembler.Complete before,OriginalWindowReducer.Policy policy,Instant deadline) {
+                    DriverObservationAssembler.Complete before,OriginalWindowReducer.Policy policy,Instant deadline,
+                    RootExitedSavedMaterialSource.PreparedImportedRestore imported) {
                 this.core=core;this.lifecycle=lifecycle;this.exited=exited;this.materials=materials;this.material=material;
                 this.drivers=drivers;this.history=history;this.before=before;this.policy=policy;this.deadline=deadline;
+                this.imported=imported;
             }
             /** Retained Driver DATA is a full-material CAS publication, independently of the larger physical checkpoint-file limit. */
             static byte[] readRetainedDriverOriginal(NativeOutcomeArchive archive,ContinuityStorePort.Session same,
@@ -1084,6 +1096,7 @@ public final class RootApplicationAssembly {
                 return archive.readArtifact(same,original,Math.min(RawJson.MAXIMUM_BYTES,ImmutableArtifactStore.MAXIMUM_ARTIFACT_BYTES));
             }
             public SavedCheckpointMaterial material(){return material;}
+            Optional<RootExitedSavedMaterialSource.PreparedImportedRestore> importedSource(){return Optional.ofNullable(imported);}
             Optional<org.xar.ck3.control.platform.RootProcessAttach.LoadedReplacement> loadedReplacement(){return Optional.ofNullable(exited.loaded);}
             public SavedCheckpointMaterialStore materials(){return materials;}
             public DriverCheckpointStore driverCheckpoints(){return drivers;}
@@ -1222,28 +1235,98 @@ public final class RootApplicationAssembly {
                     scope.initialize();materials.requireOwn(material);material.requirePhysical(same);
                     var owner=new SessionIdentity(exited.machineId(),exited.generation(),exited.sourceSessionId());
                     StrictJson.require(material.session().equals(owner),"cold restore material crossed the actual exited owner");
-                    var cycles=new OrdinaryCycleTransitions(scope.data,semanticVerifier,checkpointVerifiers,policy,writer::requireSession);
-                    cycles.bindTerminalFrameLoader(frames);
-                    cycles.bindOperatorRetirementVerifier((borrowed,head,retired)->source.verify(borrowed,head,retired,scope.data));
-                    var history=new ContinuityBatchJournal(writer,cycles).readSettledSameGame(same,owner);
-                    StrictJson.require(history.settledActions().stream().allMatch(ActionReceipt::settled)
-                            &&history.controller().savedPair().filter(material.pair()::equals).isPresent()
-                            &&history.retainedFacts().stamp().game().equals(exited.generation()),
-                            "cold restore retains every canonical action and its unchanged saved frontier");
-                    var semantic=history.cycleSemantic().orElse(material.sourceSemantic());
-                    var exported=DriverJson.object(scope.data.loadFullMaterial(semantic.semantic()).bytes(),DriverJson.MAX_NATIVE_BYTES);
-                    var manifest=DriverObservationEvidenceReader.reference(exported.get("java_driver_facts_evidence"));
-                    var before=frames.load(new NativeEffectEvidence.FrameBasis(semantic.originalNativePacket(),manifest),scope.data);
-                    StrictJson.require(before.identity().equals(semantic.frame())&&before.identity().game().equals(exited.generation())
-                            &&before.source().equals(history.source())&&before.sessionId().equals(exited.sourceSessionId())
-                            &&before.identity().frame().episodeRunId().equals(material.pair().frame().frame().episodeRunId())
-                            &&before.identity().frame().identity().player().equals(material.pair().frame().frame().identity().player()),
-                            "cold restore archived predecessor crossed its actual old Game, episode, actor or source");
-                    var result=new ColdRestoreSource(this,lifecycle,exited,materials,material,drivers,history,before,policy,deadline);
+                    var proof=readColdRestoreHistory(scope,owner,material,policy,false);
+                    var result=new ColdRestoreSource(this,lifecycle,exited,materials,material,drivers,proof.history(),proof.before(),policy,deadline,null);
                     coldRestoreSource=result;result.requireCurrent(same);return result;
                 }catch(IOException failure){throw new UncheckedIOException(failure);}
                 finally{reservedRetirement.remove();}
             }));
+        }
+        private record ColdRestoreHistory(ContinuityBatchJournal.SettledSameGameData history,
+                DriverObservationAssembler.Complete before) { }
+
+        private ColdRestoreHistory readColdRestoreHistory(ReservedRetirementScope scope,SessionIdentity owner,
+                SavedCheckpointMaterial material,OriginalWindowReducer.Policy policy,boolean imported)throws IOException {
+            var same=scope.same;
+            var cycles=new OrdinaryCycleTransitions(scope.data,semanticVerifier,checkpointVerifiers,policy,writer::requireSession);
+            cycles.bindTerminalFrameLoader(frames);
+            cycles.bindOperatorRetirementVerifier((borrowed,head,retired)->scope.source.verify(borrowed,head,retired,scope.data));
+            var batches=new ContinuityBatchJournal(writer,cycles);
+            var history=imported?batches.readExitedImportedHistory(same,owner,scope.source):batches.readSettledSameGame(same,owner);
+            StrictJson.require((imported||history.settledActions().stream().allMatch(ActionReceipt::settled))
+                    &&history.controller().savedPair().filter(material.pair()::equals).isPresent()
+                    &&history.retainedFacts().stamp().game().equals(owner.game()),
+                    "cold restore retains every canonical action and its unchanged saved frontier");
+            var semantic=imported?history.latestCycleSemantic():history.cycleSemantic().orElseGet(material::sourceSemantic);
+            var exported=DriverJson.object(scope.data.loadFullMaterial(semantic.semantic()).bytes(),DriverJson.MAX_NATIVE_BYTES);
+            var manifest=DriverObservationEvidenceReader.reference(exported.get("java_driver_facts_evidence"));
+            var before=frames.load(new NativeEffectEvidence.FrameBasis(semantic.originalNativePacket(),manifest),scope.data);
+            StrictJson.require(before.identity().equals(semantic.frame())&&before.identity().game().equals(owner.game())
+                    &&before.source().equals(history.source())&&before.sessionId().equals(owner.sessionId())
+                    &&before.identity().frame().episodeRunId().equals(material.pair().frame().frame().episodeRunId())
+                    &&before.identity().frame().identity().player().equals(material.pair().frame().frame().identity().player()),
+                    "cold restore archived predecessor crossed its actual old Game, episode, actor or source");
+            return new ColdRestoreHistory(history,before);
+        }
+
+        record ExitedImportedRestore(ColdRestoreSource source,Optional<RootFrozenRunProfile.FrozenRunProfile> profile) { }
+
+        /** Two actual sources must pass qualification before the original administrative append; no CREATE runs here. */
+        synchronized ExitedImportedRestore qualifyAndRetireExitedImported(
+                org.xar.ck3.control.platform.JavaGameLifecycle lifecycle,
+                org.xar.ck3.control.platform.JavaGameLifecycle.ExitedGeneration exited,
+                RootExitedSavedMaterialSource.PreparedImportedRestore prepared,
+                org.xar.ck3.control.platform.NativeLaunchPlan plan,Path expectedState,
+                OriginalWindowReducer.Policy policy,Instant deadline)throws IOException {
+            StrictJson.require(coldRestoreSource==null&&!staged&&adopted.isEmpty(),
+                    "imported restore must bind to an unused original Core");
+            var owner=new SessionIdentity(exited.machineId(),exited.generation(),exited.sourceSessionId());
+            return withExitedLifeRetirement(lifecycle,exited,deadline,(scope,actualArchive)->{
+                var request=scope.source.request();
+                var binding=request.exitedLife().orElseThrow();
+                var expected=prepared.imported();
+                var same=scope.same;
+                var material=prepared.material(same);
+                var origin=material.importedOrigin().orElseThrow();
+                var materials=prepared.materialStore();
+                materials.requireOwn(material);
+                material.requirePhysical(same);
+                StrictJson.require(owner.equals(expected.owner())&&owner.equals(origin.owner())
+                        &&expected.physicalSaveOwner().equals(material.session())&&!material.session().game().equals(owner.game())
+                        &&origin.targetEntry().equals(expected.entry())&&origin.physicalConfirmation().equals(expected.sourceConfirmation())
+                        &&expected.pair().equals(material.pair())
+                        &&binding.savedPairSha256().equals(ActionCodec.sha256(CheckpointPairCodec.encode(material.pair()))),
+                        "imported restore changed its original target runtime or independent physical SAVE");
+                var saveOutput=RootOrdinaryRuntimeAssembly.importedCheckpointOutput(plan,material.pair());
+                var profile=RootExitedSavedMaterialSource.nativeCampaignProfile(material,plan,clock);
+                var preflight=readColdRestoreHistory(scope,owner,material,policy,true);
+                StrictJson.require(preflight.history().startingPoint() instanceof ContinuityBatchJournal.SameGameEntry.ImportedSaved entry
+                        &&entry.canonicalEntry().equals(origin.targetEntry().reference())
+                        &&entry.opening().equals(expected.archivedBefore().identity())&&entry.savedPair().equals(material.pair()),
+                        "imported restore changed its target entry, archived opening or saved frontier");
+                // Capability originals still belong to the physical source's independent archive.
+                var physical=prepared.readOriginalPhysicalSave(same);
+                new RootRestoreMaterials.ImportedRestoreOriginal(expected,physical)
+                        .requireAbandoned(owner,preflight.history().retainedFacts());
+                RootRestoreMaterials.requireImportedRuntimeAuxiliary(same,archive,preflight.history().retainedFacts(),
+                        preflight.before(),owner,expectedState,saveOutput.getParent());
+
+                var terminal=retireExitedLife(scope,actualArchive);
+                var proof=preflight.history().canonicalSequence()==terminal.sequence()?preflight:
+                        readColdRestoreHistory(scope,owner,material,policy,true);
+                StrictJson.require(proof.before().identity().equals(preflight.before().identity())
+                        &&proof.before().originalEvidence().equals(preflight.before().originalEvidence())
+                        &&proof.history().controller().savedPair().equals(preflight.history().controller().savedPair())
+                        &&proof.history().controller().usedBatches().equals(preflight.history().controller().usedBatches())
+                        &&proof.history().canonicalSequence()==terminal.sequence()
+                        &&proof.history().settledActions().contains(terminal),
+                        "imported restore did not retain the qualified original frontier and its exact administrative terminal");
+                var result=new ColdRestoreSource(this,lifecycle,scope.exited,materials,material,prepared.driverCheckpoints(),
+                        proof.history(),proof.before(),policy,deadline,prepared);
+                coldRestoreSource=result;
+                result.requireCurrent(same);
+                return new ExitedImportedRestore(result,profile);
+            });
         }
         public ContinuityWriter writer() { return writer; }
         public NativeOutcomeArchive archive() { return archive; }
@@ -3389,14 +3472,17 @@ public final class RootApplicationAssembly {
                         "cold restore finishes the unused actual source Core once with its unchanged policy");
             }
             var driver=adapters.adopted(binding);
+            var expectedSaveOutput=original.importedSource().isPresent()
+                    ?RootOrdinaryRuntimeAssembly.importedCheckpointOutput(replacement.launchPlan(),binding.pair())
+                    :Path.of(binding.pair().save().reference().path());
             StrictJson.require(driver.status()==DriverBootstrap.AdoptionStatus.QUALIFICATION_REQUIRED
                     &&driver.session().game().equals(replacement.generation())&&driver.session().sessionId().equals(replacement.sessionId())
                     &&binding.session().game().equals(replacement.generation())&&binding.source().equals(driver.source())
                     &&binding.savedMaterial()==original.material()&&binding.pair().equals(original.material().pair())
                     &&binding.savedMaterial().kind()==SavedCheckpointMaterial.Kind.ORDINARY
                     &&configuration.checkpoints().lineageId().equals(binding.pair().lineageId())
-                    &&configuration.checkpoints().save().equals(Path.of(binding.pair().save().reference().path())),
-                    "cold restored Driver, physical saved pair or actual replacement differ");
+                    &&configuration.checkpoints().save().equals(expectedSaveOutput),
+                    "cold restored Driver, original saved pair, replacement or actual SAVE output differ");
             replacement.verify();
             var runtime=writer.locked(same->{original.requireOriginal(same);service.requireRetainedOriginal(same,binding);
                 return adapters.runtime(same,service,binding);});

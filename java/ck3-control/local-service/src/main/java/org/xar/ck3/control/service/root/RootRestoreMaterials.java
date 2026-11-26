@@ -12,7 +12,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import org.xar.ck3.control.application.action.ActionReceipt;
+import org.xar.ck3.control.application.action.ActionPorts;
 import org.xar.ck3.control.application.action.RawJson;
+import org.xar.ck3.control.application.capabilities.DynamicCapabilities;
 import org.xar.ck3.control.application.checkpoint.CheckpointFiles;
 import org.xar.ck3.control.application.checkpoint.DriverCheckpointStore;
 import org.xar.ck3.control.application.checkpoint.DriverStateSnapshot;
@@ -25,10 +27,13 @@ import org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialStore;
 import org.xar.ck3.control.application.checkpoint.CheckpointPair.FileWitness;
 import org.xar.ck3.control.application.driver.DriverBootstrap;
 import org.xar.ck3.control.application.driver.DriverActionHistoryCodec;
+import org.xar.ck3.control.application.driver.DriverCapabilityStateProducer;
 import org.xar.ck3.control.application.driver.DriverJson;
+import org.xar.ck3.control.application.driver.DriverObservationAssembler;
 import org.xar.ck3.control.application.driver.DriverObservationEvidenceReader;
 import org.xar.ck3.control.application.driver.DriverSnapshotFacts;
 import org.xar.ck3.control.application.driver.RestoreCapabilityAdoption;
+import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session;
 import org.xar.ck3.control.continuity.writer.ContinuityWriter;
 import org.xar.ck3.control.continuity.writer.ImmutableArtifactStore;
@@ -57,6 +62,81 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
     private record Capture(Request request,NativeCandidate nativeCandidate,DriverSnapshotFacts.Stamp abandoned,
             Originals originals,RootRestoreMaterialProjection.Reduced reduced,RootRestoreAdapters.Materials materials,
             DriverStateSnapshot.Complete saved,DriverSnapshotFacts.Known originalAbandoned) { }
+    /** The physical writer replayed the capabilities from its matching original pre-SAVE SEM. */
+    record PhysicalSavedOriginal(SavedCheckpointMaterialStore.OrdinaryPhysicalOriginal saved,
+            RestoreCapabilityAdoption.Recovered capabilities) {
+        PhysicalSavedOriginal {
+            Objects.requireNonNull(saved);Objects.requireNonNull(capabilities);
+            StrictJson.require(capabilities.original().equals(saved.semantic()),
+                    "recovered capabilities differ from the original physical SAVE semantic");
+        }
+    }
+    /** Cold restore input DATA, with separate immutable physical and abandoned-owner lanes. */
+    record ImportedRestoreOriginal(RootExitedSavedMaterialSource.ImportedData imported,PhysicalSavedOriginal physical) {
+        ImportedRestoreOriginal {
+            Objects.requireNonNull(imported);Objects.requireNonNull(physical);
+            var saved=physical.saved();
+            StrictJson.require(saved.owner().equals(imported.physicalSaveOwner())
+                            &&saved.pair().equals(imported.pair())
+                            &&Arrays.equals(saved.physicalDriver().encode(),imported.physicalSavedDriver().encode())
+                            &&saved.semantic().frame().game().equals(saved.owner().game()),
+                    "imported cold restore differs from its original physical SAVE issuer");
+        }
+        void requireAbandoned(SessionIdentity exitedOwner,DriverSnapshotFacts.Known abandoned) {
+            Objects.requireNonNull(exitedOwner);Objects.requireNonNull(abandoned);
+            var before=imported.archivedBefore();var saved=physical.saved().physicalDriver();
+            var historical=abandoned.driver();
+            StrictJson.require(imported.owner().equals(exitedOwner)&&!physical.saved().owner().game().equals(exitedOwner.game())
+                            &&before.identity().machineId().equals(exitedOwner.machineId())
+                            &&before.identity().game().equals(exitedOwner.game())&&before.sessionId().equals(exitedOwner.sessionId())
+                            &&abandoned.stamp().game().equals(exitedOwner.game())
+                            &&historical.session().actorId().equals(saved.session().actorId())
+                            &&historical.session().episodeRunId().equals(saved.session().episodeRunId())
+                            &&historical.lastCheckpoint().equals(saved.lastCheckpoint()),
+                    "imported cold restore abandoned Driver crossed the original owner, episode, actor or saved checkpoint");
+        }
+    }
+
+    static PhysicalSavedOriginal readOriginalPhysicalSave(Session sourceSession,NativeOutcomeArchive sourceArchive,
+            SavedCheckpointMaterialStore sourceStore,SavedAttachmentSourceStore.SavedMaterial material)throws IOException {
+        sourceArchive.writer().requireSession(sourceSession);
+        var saved=sourceStore.readOrdinaryPhysicalOriginal(sourceSession,material,material.savedDriver());
+        var recovered=new RestoreCapabilityAdoption(sourceArchive).replay(sourceSession,saved.semantic(),saved.preSaveDriver());
+        return new PhysicalSavedOriginal(saved,recovered);
+    }
+    static Obj requireImportedRuntimeAuxiliary(Session same,NativeOutcomeArchive targetArchive,DriverSnapshotFacts.Known target,
+            DriverObservationAssembler.Complete archivedBefore,SessionIdentity owner,Path expectedState,Path expectedSaveDir)throws IOException {
+        targetArchive.writer().requireSession(same);
+        return replayImportedRuntimeAuxiliary(targetArchive.withSession(same),target,archivedBefore,owner,expectedState,expectedSaveDir);
+    }
+    static Obj replayImportedRuntimeAuxiliary(ActionPorts.OutcomeArchive originals,DriverSnapshotFacts.Known target,
+            DriverObservationAssembler.Complete archivedBefore,SessionIdentity owner,Path expectedState,Path expectedSaveDir) {
+        StrictJson.require(target.stamp().game().equals(owner.game())&&archivedBefore.identity().game().equals(owner.game())
+                        &&archivedBefore.identity().machineId().equals(owner.machineId())&&archivedBefore.sessionId().equals(owner.sessionId()),
+                "imported restore capabilities require the actual archived target owner");
+        var retained=target.auxiliary();
+        var configuration=DynamicCapabilities.decodeConfiguration(OpportunityJson.object(retained.get("capability_configuration"),"actual target configuration"));
+        var presentation=DriverCapabilityStateProducer.sessionPresentation(retained);
+        presentation.validateConfiguration(configuration);
+        StrictJson.require(configuration.stateDir().filter(expectedState::equals).isPresent()
+                        &&configuration.saveDir().filter(expectedSaveDir::equals).isPresent()
+                        &&presentation.queueDirectory().filter(path->path.startsWith(expectedState)).isPresent()
+                        &&presentation.driverStatePath().filter(path->path.startsWith(expectedState)).isPresent(),
+                "imported restore capability paths must remain with the actual target writer and configured SAVE output");
+        var basis=org.xar.ck3.control.application.effects.NativeEffectEvidence.basis(archivedBefore);
+        var manifest=originals.loadFullMaterial(basis.driverFacts());
+        var driverReference=DriverObservationEvidenceReader.currentDriverReference(basis.driverFacts(),manifest);
+        var nativeFrame=DriverObservationEvidenceReader.nativeFrame(basis.driverFacts(),manifest,originals.loadNativeFrame(basis.nativeFrame()));
+        var observation=DriverObservationEvidenceReader.decodeTypedDriver(basis.driverFacts(),manifest,target.driver(),nativeFrame);
+        var archivedStamp=new DriverSnapshotFacts.Stamp(observation.driverVersion(),observation.episodeEpoch(),owner.game(),
+                target.stamp().episodeRunId(),driverReference.sha256());
+        var observed=new DriverSnapshotFacts.Known(target.driver(),archivedStamp,driverReference,List.of(),
+                observation.originalSemanticFields(),Optional.empty(),Optional.of(observation));
+        var state=DriverObservationEvidenceReader.reference(retained.get(DriverCapabilityStateProducer.STATE_SOURCE));
+        var replayed=DriverCapabilityStateProducer.replay(archivedBefore,observed,state,originals);
+        StrictJson.require(replayed.equals(retained),"imported restore target capability capsule differs from canonical retained planning state");
+        return replayed;
+    }
     /** Actual cold capture only. No serialized form, public constructor or borrowed Session is retained. */
     public static final class ColdAdoption {
         private final RootRestoreMaterials issuer;private final String requestId;private final DriverBootstrap.Seed seed;
@@ -259,10 +339,10 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
                 "native campaign restore crossed its genuine Saved replacement or lost the original null lifecycle");
         requireColdAdoption(same,ticket,exact,actual);return true;
     }
-    private static DriverStateSnapshot.Complete semanticDriver(Session same,SavedCheckpointMaterial material,
+    private DriverStateSnapshot.Complete semanticDriver(Session same,SavedCheckpointMaterial material,
             DriverStateSnapshot.Complete actuallySaved)throws IOException {
         return material instanceof SavedAttachmentSourceStore.SavedMaterial ordinary
-                ?ordinary.requireSemanticDriver(same,actuallySaved):actuallySaved;
+                ?savedSources.readOrdinaryPhysicalOriginal(same,ordinary,actuallySaved).preSaveDriver():actuallySaved;
     }
     private void requireSavedNativeCampaign(Session same,Capture retained)throws IOException {
         SavedCheckpointMaterial material=requireRetainedSource(same,savedSources,retained.request(),retained.saved());
@@ -296,16 +376,20 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
             for(ExactRef ref:metadata)pin(borrowed,ref,WriterContracts.MAX_PIN_BYTES,pins);
         }
         SavedCheckpointMaterial material=requireRetainedSource(borrowed,savedSources,request,saved);
+        var imported=coldPrevious==null?Optional.<RootExitedSavedMaterialSource.PreparedImportedRestore>empty():coldPrevious.importedSource();
         files.verify(material.witness());
         StrictJson.require(Arrays.equals(saved.encode(),drivers.readVerifiedOriginal(request.pair(),saved.session()).encode()),"cold source differs from the actual physical saved Driver");
         boolean physicalSaveWitness=(coldPrevious!=null&&coldPrevious.loadedReplacement().isPresent())
-                ||SavedAttachmentSourceStore.requiresPhysicalSaveWitness(request.pair());
+                ||imported.isPresent()||SavedAttachmentSourceStore.requiresPhysicalSaveWitness(request.pair());
         if(physicalSaveWitness)files.verify(request.pair().save());
         else pin(borrowed,request.pair().save().reference(),WriterContracts.MAX_PIN_BYTES,pins);
         pin(borrowed,request.pair().driver().reference(),DRIVER_LIMIT,pins);
         pin(borrowed,material.reference(),DOCUMENT_LIMIT,pins);
-        for(ExactRef source:material.sourceSemantic().references())pin(borrowed,source,WriterContracts.MAX_PIN_BYTES,pins);
-        Obj savedSemantic=DriverJson.object(archive.readArtifact(borrowed,material.sourceSemantic().semantic(),DOCUMENT_LIMIT),DOCUMENT_LIMIT);
+        var semanticReference=material.sourceSemantic().semantic();
+        for(ExactRef source:material.sourceSemantic().references())
+            if(imported.isEmpty()||!source.equals(semanticReference))pin(borrowed,source,WriterContracts.MAX_PIN_BYTES,pins);
+        Obj savedSemantic=imported.isPresent()?readObject(borrowed,semanticReference,DOCUMENT_LIMIT,pins):
+                DriverJson.object(archive.readArtifact(borrowed,semanticReference,DOCUMENT_LIMIT),DOCUMENT_LIMIT);
         pin(borrowed,DriverObservationEvidenceReader.reference(savedSemantic.get("java_driver_facts_evidence")),DOCUMENT_LIMIT,pins);
         StrictJson.require(abandoned.stamp().game().equals(request.current().observed().game())
                 &&abandoned.stamp().episodeRunId().equals(request.current().observed().frame().episodeRunId())
@@ -377,11 +461,25 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
         pin(borrowed,actual.originalNativePacket(),DOCUMENT_LIMIT,pins);
         Obj nativeState=DriverJson.object(actual.actual().state().bytes(),DriverJson.MAX_NATIVE_BYTES);
         // Replay the sole capability state producer from saved SEM, then reduce the actual original private fields.
-        var recovered=capabilities.replay(borrowed,material.sourceSemantic(),semanticDriver(borrowed,material,saved));
-        pin(borrowed,recovered.stateSource(),DOCUMENT_LIMIT,pins);
-        // state/v2 replay is the complete private owner auxiliary, including noncache fields and deletions.
-        // An older semantic_source can be a valid mint predecessor, but cannot supply the saved owner's current fields.
-        Obj auxiliary=capabilities.requireReduced(recovered,RootRestoreMaterialProjection.reduceAuxiliary(recovered.ownerAuxiliary(),nativeState));
+        Obj auxiliary;
+        if(imported.isPresent()) {
+            var original=imported.orElseThrow();
+            var bound=new ImportedRestoreOriginal(original.imported(),original.readOriginalPhysicalSave(borrowed));
+            bound.requireAbandoned(coldPrevious.previousOwner(),abandoned);
+            StrictJson.require(bound.physical().saved().witness().equals(material.witness())
+                            &&bound.physical().saved().semantic().equals(material.sourceSemantic()),
+                    "imported restore did not retain the actual old physical material and capability proof");
+            pin(borrowed,bound.physical().capabilities().stateSource(),DOCUMENT_LIMIT,pins);
+            var target=requireImportedRuntimeAuxiliary(borrowed,archive,abandoned,coldPrevious.archivedBefore(),coldPrevious.previousOwner(),
+                    original.targetStateDirectory(),replacement.launchPlan().profileDirectory().resolve("save games"));
+            pin(borrowed,DriverObservationEvidenceReader.reference(target.get(DriverCapabilityStateProducer.STATE_SOURCE)),DOCUMENT_LIMIT,pins);
+            auxiliary=RootRestoreMaterialProjection.reduceAuxiliary(target,nativeState);
+        }else {
+            var recovered=capabilities.replay(borrowed,material.sourceSemantic(),semanticDriver(borrowed,material,saved));
+            pin(borrowed,recovered.stateSource(),DOCUMENT_LIMIT,pins);
+            // State v2 retains the saved owner's complete auxiliary and its explicit deletions.
+            auxiliary=capabilities.requireReduced(recovered,RootRestoreMaterialProjection.reduceAuxiliary(recovered.ownerAuxiliary(),nativeState));
+        }
         var input=new RootRestoreMaterialProjection.Input(request.requestId(),request.current().observed().game(),actual.actual().session(),
                 replacement.nativeTransport().pipeName(),actual.actual().snapshotId(),actual.actual().nativeRevision(),saved,abandoned.driver(),nativeState,
                 control,lifecycleOriginal,actual.originalNativePacket(),Optional.of(before.semantic()));

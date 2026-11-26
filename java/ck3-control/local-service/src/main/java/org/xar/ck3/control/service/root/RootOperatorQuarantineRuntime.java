@@ -67,9 +67,11 @@ final class RootOperatorQuarantineRuntime {
                 org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER,clock);
         loaded.requireCurrent(deadline);core.bindOperatorQuarantineSource(source);
     }
-    static void requireRestorableOperatorRequest(ExactRef configuredRequest)throws IOException {
-        if (CompositeOperatorQuarantineRequest.decode(readExact(configuredRequest)).exitedLife().isPresent())
-            throw new IOException("exited positive-RESUME retirement has its own retire-exited entry; imported saved attachment is a separate producer");
+    static void requireRestorableOperatorRequest(ExactRef configuredRequest,boolean imported)throws IOException {
+        boolean exitedLife=CompositeOperatorQuarantineRequest.decode(readExact(configuredRequest)).exitedLife().isPresent();
+        if (exitedLife!=imported) throw new IOException(imported
+                ?"imported Saved recovery requires its own exited positive-RESUME operator decision"
+                :"exited positive-RESUME recovery requires its explicit original imported Saved source");
     }
     private static byte[] readExact(ExactRef reference)throws IOException {
         return readExact(reference,65536);

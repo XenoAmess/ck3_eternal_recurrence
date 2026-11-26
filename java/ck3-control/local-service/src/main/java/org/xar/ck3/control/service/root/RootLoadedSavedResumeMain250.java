@@ -139,16 +139,8 @@ public final class RootLoadedSavedResumeMain250 {
         try {
             oldSourcePrepared = RootOrdinaryRuntimeAssembly.prepareReadOnlySavedSource(oldConfig, clock);
             var oldCore = oldSourcePrepared.openSavedSourceCore();
-            var confirmation = oldCore.writer().locked(same -> {
-                var head = same.head();
-                StrictJson.require(!head.snapshotNeedsRecovery() && head.indexRepairs().isEmpty(), "old source requires explicit canonical repair");
-                var matches = head.documents().stream().filter(pin -> Path.of(pin.reference().path()).toAbsolutePath().normalize().equals(Path.of(confirmationRef.path()).toAbsolutePath().normalize()) && pin.reference().bytes() == confirmationRef.bytes() && pin.reference().sha256().equals(confirmationRef.sha256())).toList();
-                StrictJson.require(matches.size() == 1, "unique actual canonical confirmation Pin required");
-                var captured = same.capturePin(matches.getFirst().reference(), MAX);
-                StrictJson.require(captured.equals(matches.getFirst()), "original confirmation identity changed");
-                return captured;
-            });
-            var source = RootJavaSavedBootstrap.qualify(oldCore, new NativeCheckpointFiles(), oldConfig.stateDirectory().resolve("checkpoints/attachments"), oldSourcePrepared.plan().pipeName(), pair, confirmation);
+            var source = RootJavaSavedBootstrap.qualifyOriginalConfirmation(oldCore,new NativeCheckpointFiles(),
+                    oldConfig.stateDirectory().resolve("checkpoints/attachments"),oldSourcePrepared.plan().pipeName(),pair,confirmationRef);
             emit(event(clock, "SOURCE_QUALIFIED").put("source_head_sequence", source.sourceHead().sequence()).put("confirmation_sequence", source.confirmation().sequence()).put("saved_date_raw", source.savedState().settledDateRaw()).put("saved_cycles", source.savedState().settledCycles()).put("new_saved_day_credit", 0));
             newPrepared = publicRequest!=null?RootOrdinaryRuntimeAssembly.prepareFreshLoadedSaved(newConfig,clock,source,publicRequest,publicRuntime.ordinary())
                     :fresh?RootOrdinaryRuntimeAssembly.prepareFreshLoadedSaved(newConfig,clock,source)

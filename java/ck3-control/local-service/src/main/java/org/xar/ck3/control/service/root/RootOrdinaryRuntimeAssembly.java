@@ -26,6 +26,7 @@ import org.xar.ck3.control.application.driver.InitialEpisodePolicy;
 import org.xar.ck3.control.application.readiness.NativeReadiness;
 import org.xar.ck3.control.application.session.ContinuityBatchJournal;
 import org.xar.ck3.control.application.session.SessionClock;
+import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
 import org.xar.ck3.control.build.runtime.HostMode;
 import org.xar.ck3.control.continuity.OriginalWindowReducer;
 import org.xar.ck3.control.continuity.writer.WriterContracts;
@@ -107,11 +108,26 @@ public final class RootOrdinaryRuntimeAssembly {
     public static Prepared prepare(RootOrdinaryRuntimeConfiguration config,Clock clock)throws IOException {
         return prepare(config,clock,Optional.empty());
     }
+    static Path importedCheckpointOutput(NativeLaunchPlan replacement,
+            org.xar.ck3.control.application.checkpoint.CheckpointPair original)throws IOException {
+        Path output=replacement.profileDirectory().resolve("save games/xar_checkpoint.ck3");
+        Path source=Path.of(original.save().reference().path());
+        if(output.toAbsolutePath().normalize().equals(source.toAbsolutePath().normalize())
+                ||Files.exists(output)&&Files.isSameFile(output,source))
+            throw new IOException("replacement SAVE output overlaps the retained imported physical save");
+        return output;
+    }
+
     /** Existing saved-replacement recovery can never initialize a missing or partial canonical writer. */
     public static Prepared prepareLoadedReplacement(RootOrdinaryRuntimeConfiguration config,Clock clock)throws IOException {
         Objects.requireNonNull(config);Objects.requireNonNull(clock);
         var configuredDecision=config.decisionProvider().orElseThrow(()->new IOException("loaded recovery requires its explicit decision provider"));
         if(!configuredDecision.codexFile())throw new IOException("loaded recovery requires the configured direct Codex file provider");
+        return prepare(config,clock,Optional.empty(),true);
+    }
+
+    /** The exited imported restore only reopens its original existing writer. */
+    static Prepared prepareImportedExited(RootOrdinaryRuntimeConfiguration config,Clock clock)throws IOException {
         return prepare(config,clock,Optional.empty(),true);
     }
 
@@ -240,7 +256,7 @@ public final class RootOrdinaryRuntimeAssembly {
         if(requireExisting&&(!Files.isRegularFile(paths.anchor(),java.nio.file.LinkOption.NOFOLLOW_LINKS)
                 ||!Files.isRegularFile(paths.snapshot(),java.nio.file.LinkOption.NOFOLLOW_LINKS)
                 ||!Files.isDirectory(paths.events(),java.nio.file.LinkOption.NOFOLLOW_LINKS)))
-            throw new IOException("loaded recovery requires the complete existing canonical writer; no new genesis");
+            throw new IOException("recovery requires the complete existing canonical writer; no new genesis");
         var outputRoots=List.of(config.stateDirectory(),archiveRoot,paths.snapshot().getParent(),
                 root.resolve("checkpoints"),root.resolve("receipts"),root.resolve("artifacts"),plan.profileDirectory().resolve("save games"),plan.evidenceRoot());
         for(Path directory:outputRoots)Files.createDirectories(directory);
@@ -504,6 +520,7 @@ public final class RootOrdinaryRuntimeAssembly {
         private IOException publicInstallFailure;
         private final boolean sourceOnly;
         private org.xar.ck3.control.platform.JavaGameLifecycle.ExitedGeneration exitedRecovery;
+        private RootExitedSavedMaterialSource.PreparedImportedRestore importedRestore;
         private org.xar.ck3.control.platform.SavedGameOwnerLifetime249.Retained exitedOwnerLifetime;
         private JavaGameLifecycle.Started exitedOwnerStart;
         private Path exitedOwnerDirectory;
@@ -874,6 +891,12 @@ public final class RootOrdinaryRuntimeAssembly {
         /** Source-proven retirement runs before any old-Game attachment and never creates or queries Game. */
         public synchronized ActionReceipt retireExitedLifeInterruptionOnly(Path ownerDescriptor,
                 org.xar.ck3.control.contracts.GameGeneration expected,Instant deadline)throws IOException {
+            var exited=openExitedOriginal(ownerDescriptor,expected,deadline);
+            return core.retireExitedLifeInterruptionOnly(lifecycle,exited,deadline);
+        }
+
+        private JavaGameLifecycle.ExitedGeneration openExitedOriginal(Path ownerDescriptor,
+                org.xar.ck3.control.contracts.GameGeneration expected,Instant deadline)throws IOException {
             Objects.requireNonNull(ownerDescriptor);Objects.requireNonNull(expected);Objects.requireNonNull(deadline);
             if(sourceOnly||closed||entered||core!=null||game!=null)
                 throw new IOException("exited retirement requires the unused actual writable preparation");
@@ -882,30 +905,54 @@ public final class RootOrdinaryRuntimeAssembly {
             exitedRecovery=exited;
             var actual=openSavedSourceCore();
             RootOperatorQuarantineRuntime.installExited(actual,lifecycle,exited,configured,clock,deadline);
-            return actual.retireExitedLifeInterruptionOnly(lifecycle,exited,deadline);
+            return exited;
         }
 
         /** A new source-qualified daemon restores the exact original pair in the same canonical writer. */
         public synchronized Running openExitedCheckpointRecovery(Path ownerDescriptor,
                 org.xar.ck3.control.contracts.GameGeneration expected,Instant deadline)throws IOException,InterruptedException {
+            return openExitedCheckpointRecovery(ownerDescriptor,expected,Optional.empty(),deadline);
+        }
+
+        public synchronized Running openExitedCheckpointRecovery(Path ownerDescriptor,
+                org.xar.ck3.control.contracts.GameGeneration expected,ExactRef importedRecoveryRequest,
+                Instant deadline)throws IOException,InterruptedException {
+            return openExitedCheckpointRecovery(ownerDescriptor,expected,Optional.of(importedRecoveryRequest),deadline);
+        }
+
+        private Running openExitedCheckpointRecovery(Path ownerDescriptor,
+                org.xar.ck3.control.contracts.GameGeneration expected,Optional<ExactRef> importedRecoveryRequest,
+                Instant deadline)throws IOException,InterruptedException {
             var configuredDecision=config.decisionProvider().orElseThrow(()->
                     new IOException("exited checkpoint recovery requires its explicit decision provider"));
             RootOperatorQuarantineRuntime.requireRestorableOperatorRequest(config.operatorQuarantine().orElseThrow(() ->
-                    new IOException("exited checkpoint recovery requires its configured operator request")));
-            retireExitedLifeInterruptionOnly(ownerDescriptor,expected,deadline);
-            var exited=Objects.requireNonNull(exitedRecovery);
-            var qualified=RootExitedSavedMaterialSource.qualify(core,config,lifecycle,exited,deadline);
-            var material=core.writer().locked(same->{
-                if(!clock.instant().isBefore(deadline))throw new IOException("cold saved material qualification deadline expired");
-                var checked=core.archive().inHistoricalReadScope(same,
-                        new org.xar.ck3.control.application.action.ActionPorts.HistoricalReadLimits(1024,64L*1024*1024,2052),
-                        ignoredArchive->qualified.material(same));
-                if(!clock.instant().isBefore(deadline))throw new IOException("cold saved material qualification deadline expired");
-                return checked;
-            });
-            var original=core.qualifyColdRestoreSource(lifecycle,exited,qualified.materials(),material,
-                    qualified.driverCheckpoints(),cyclePolicy,deadline);
-            var restoredProfile=RootExitedSavedMaterialSource.nativeCampaignProfile(material,plan,clock);
+                    new IOException("exited checkpoint recovery requires its configured operator request")),importedRecoveryRequest.isPresent());
+            var exited=openExitedOriginal(ownerDescriptor,expected,deadline);
+            RootApplicationAssembly.Core.ColdRestoreSource original;
+            Optional<RootFrozenRunProfile.FrozenRunProfile> restoredProfile;
+            if(importedRecoveryRequest.isPresent()) {
+                var owner=new SessionIdentity(exited.machineId(),exited.generation(),exited.sourceSessionId());
+                importedRestore=RootExitedSavedMaterialSource.prepareImportedRestore(importedRecoveryRequest.orElseThrow(),
+                        core,config,files,owner,clock);
+                var preflight=core.qualifyAndRetireExitedImported(lifecycle,exited,importedRestore,plan,
+                        config.stateDirectory(),cyclePolicy,deadline);
+                original=preflight.source();restoredProfile=preflight.profile();
+            } else {
+                core.retireExitedLifeInterruptionOnly(lifecycle,exited,deadline);
+                var qualified=RootExitedSavedMaterialSource.qualify(core,config,lifecycle,exited,deadline);
+                var material=core.writer().locked(same->{
+                    if(!clock.instant().isBefore(deadline))throw new IOException("cold saved material qualification deadline expired");
+                    var checked=core.archive().inHistoricalReadScope(same,
+                            new org.xar.ck3.control.application.action.ActionPorts.HistoricalReadLimits(1024,64L*1024*1024,2052),
+                            ignoredArchive->qualified.material(same));
+                    if(!clock.instant().isBefore(deadline))throw new IOException("cold saved material qualification deadline expired");
+                    return checked;
+                });
+                original=core.qualifyColdRestoreSource(lifecycle,exited,qualified.materials(),material,
+                        qualified.driverCheckpoints(),cyclePolicy,deadline);
+                restoredProfile=RootExitedSavedMaterialSource.nativeCampaignProfile(material,plan,clock);
+            }
+            var material=original.material();
             var before=original.archivedBefore();
             // These are explicitly archived facts. An exited generation supplies no current paused-map readiness.
             var current=new org.xar.ck3.control.application.checkpoint.CheckpointRequest.Readiness(before.identity(),before.source(),
@@ -940,15 +987,17 @@ public final class RootOrdinaryRuntimeAssembly {
             };
             var nativeFrames=new org.xar.ck3.control.platform.GameRestoreNativeAdapter(lifecycle,source,material.pair().lineageId(),
                     core.archive(),core.writer(),core.writer()::activeSession,core.writer()::requireSession);
-            var service=new org.xar.ck3.control.application.checkpoint.RestoreCheckpointService(files,qualified.driverCheckpoints(),replacement,
+            var service=new org.xar.ck3.control.application.checkpoint.RestoreCheckpointService(files,original.driverCheckpoints(),replacement,
                     nativeFrames,core.writer(),original.materials(),adapters,adapters,clock);
             var result=service.restore(request);
             if(!(result instanceof org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.Restored restored))
                 throw new IOException("exited restoration retains its exact original result and replacement; no relaunch: "+result);
             game=lifecycle.currentSession().orElseThrow(()->new IOException("actual restored owned Game unavailable"));
             var base=sessionConfiguration(deadline);var paths=base.checkpoints();
+            var saveOutput=original.importedSource().isPresent()?importedCheckpointOutput(game.launchPlan(),material.pair()):
+                    Path.of(material.pair().save().reference().path());
             var checkpoints=new RootStartupConfiguration.CheckpointPaths(paths.driverCheckpoint(),paths.checkpointEvidence(),paths.attachmentEvidence(),
-                    material.pair().lineageId(),Path.of(material.pair().save().reference().path()));
+                    material.pair().lineageId(),saveOutput);
             var configuration=new RootApplicationAssembly.FreshSessionConfiguration(base.authorityId(),base.policy(),base.freshness(),
                     checkpoints,base.cyclePolicy(),deadline);
             var selector=new RootOnlineDecisionSelector(configuredDecision,clock,raw->{
@@ -1444,6 +1493,7 @@ private Running openSameGameBootstrapOpened(Opened opened, ManagedGameSession ac
                 try {noWrites.close();}catch(IOException|RuntimeException|Error close){failure=merge(failure,close);}
                 try {storage.close();}catch(IOException|RuntimeException|Error close){failure=merge(failure,close);}
             }
+            if(importedRestore!=null)try {importedRestore.close();}catch(IOException|RuntimeException|Error close){failure=merge(failure,close);}
             if(game!=null)try {game.close();}catch(IOException|RuntimeException|Error close){failure=merge(failure,close);}
             if(failure!=null)throwClose(failure);
         }

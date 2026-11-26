@@ -26,6 +26,7 @@ import org.xar.ck3.control.application.checkpoint.CheckpointPairCodec;
 import org.xar.ck3.control.application.checkpoint.DriverCheckpointStore;
 import org.xar.ck3.control.application.checkpoint.DriverStateSnapshot;
 import org.xar.ck3.control.application.checkpoint.SavedAttachmentSourceStore;
+import org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialStore;
 import org.xar.ck3.control.application.driver.DriverJson;
 import org.xar.ck3.control.application.driver.DriverObservationAssembler;
 import org.xar.ck3.control.application.readiness.NativeReadinessCollector;
@@ -34,6 +35,7 @@ import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
 import org.xar.ck3.control.continuity.ContinuityJson;
 import org.xar.ck3.control.continuity.ContinuityState;
 import org.xar.ck3.control.continuity.OriginalWindowReducer;
+import org.xar.ck3.control.continuity.SavedContinuityBootstrap;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 import org.xar.ck3.control.continuity.writer.ContinuityWriter;
 import org.xar.ck3.control.continuity.writer.NativeOutcomeArchive;
@@ -54,6 +56,27 @@ public final class RootJavaSavedBootstrap {
     private static final String KIND="JAVA_CONFIRMED_SAVED_GAME_ENTRY";
     private RootJavaSavedBootstrap(){ }
 
+    /** Resolves the explicit confirmation only through its own old writer's canonical history. */
+    static ConfirmedSource qualifyOriginalConfirmation(RootApplicationAssembly.Core sourceCore, CheckpointFiles files,
+            Path materialRoot, String originalPipeName, CheckpointPair pair, ExactRef confirmationReference)throws IOException {
+        var confirmation=sourceCore.writer().locked(same->{
+            var head=same.head();
+            StrictJson.require(!head.snapshotNeedsRecovery()&&head.indexRepairs().isEmpty(),
+                    "old source requires explicit canonical repair");
+            Path path=Path.of(confirmationReference.path()).toAbsolutePath().normalize();
+            var matches=head.documents().stream().filter(pin->{
+                var original=pin.reference();
+                return Path.of(original.path()).toAbsolutePath().normalize().equals(path)
+                        &&original.bytes()==confirmationReference.bytes()&&original.sha256().equals(confirmationReference.sha256());
+            }).toList();
+            StrictJson.require(matches.size()==1,"unique actual canonical confirmation Pin required");
+            var captured=same.capturePin(matches.getFirst().reference(),MAX_STATE);
+            StrictJson.require(captured.equals(matches.getFirst()),"original confirmation identity changed");
+            return captured;
+        });
+        return qualify(sourceCore,files,materialRoot,originalPipeName,pair,confirmation);
+    }
+
     /** Source-only factory. No managed Game, snapshot supplier, SAVE or live issuer is manufactured. */
     public static ConfirmedSource qualify(RootApplicationAssembly.Core sourceCore,CheckpointFiles actualFiles,
             Path materialRoot,String originalPipeName,CheckpointPair pair,WriterContracts.Pin confirmation)throws IOException {
@@ -61,6 +84,28 @@ public final class RootJavaSavedBootstrap {
         StrictJson.text(originalPipeName);
         var writer=sourceCore.writer();
         var sourceFiles=new PreReadCheckpointFiles(actualFiles);
+        var stores=checkpointStores(sourceCore,sourceFiles,materialRoot,originalPipeName,pair);
+        var store=stores.materials().ordinaryStore();
+        return writer.locked(same->{
+            writer.requireSession(same);
+            // Pure old-source qualification only; the scope closes before replacement or new READ.
+            return sourceCore.archive().inHistoricalReadScope(same,
+                    new ActionPorts.HistoricalReadLimits(1024, 64L * 1024 * 1024, 2052), ignoredArchive -> {
+                for(var action:ContinuityActionJournal.receipts(same.head().state(),sourceCore.archive().withSession(same)))
+                    StrictJson.require(action.settled(),"confirmed saved source cannot erase an unresolved canonical action");
+                var actual=store.requalifyConfirmed(same,confirmation,pair);
+                var material=actual.requireCurrent(same);
+                return new ConfirmedSource(writer,store,actual,material,sourceCore.archive(),stores.drivers(),stores.materials(),sourceFiles);
+            });
+        });
+    }
+
+    record CheckpointStores(DriverCheckpointStore drivers,SavedCheckpointMaterialStore materials) { }
+
+    /** Uses the given real writer/files but the original physical Driver path and pipe. */
+    static CheckpointStores checkpointStores(RootApplicationAssembly.Core sourceCore,CheckpointFiles sourceFiles,
+            Path materialRoot,String originalPipeName,CheckpointPair pair)throws IOException {
+        var writer=sourceCore.writer();
         var snapshots=new DriverCheckpointStore.SnapshotSupplier() {
             @Override public <T>T withFrozen(DriverCheckpointStore.SnapshotWork<T> unused)throws IOException {
                 throw new IOException("confirmed historical source factory cannot publish a Driver or submit SAVE");
@@ -82,19 +127,7 @@ public final class RootJavaSavedBootstrap {
                 writer.originalLockPath(),writer::requireSession,saves);
         var firstStore=new org.xar.ck3.control.application.checkpoint.SavedFirstCheckpointMaterialStore(
                 sourceFiles,firstVerifier,writer::borrowedSession,materialRoot.resolve("first"));
-        var materials=new org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialStore(store,firstStore);
-        return writer.locked(same->{
-            writer.requireSession(same);
-            // Pure old-source qualification only; the scope closes before replacement or new READ.
-            return sourceCore.archive().inHistoricalReadScope(same,
-                    new ActionPorts.HistoricalReadLimits(1024, 64L * 1024 * 1024, 2052), ignoredArchive -> {
-                for(var action:ContinuityActionJournal.receipts(same.head().state(),sourceCore.archive().withSession(same)))
-                    StrictJson.require(action.settled(),"confirmed saved source cannot erase an unresolved canonical action");
-                var actual=store.requalifyConfirmed(same,confirmation,pair);
-                var material=actual.requireCurrent(same);
-                return new ConfirmedSource(writer,store,actual,material,sourceCore.archive(),drivers,materials,sourceFiles);
-            });
-        });
+        return new CheckpointStores(drivers,new SavedCheckpointMaterialStore(store,firstStore));
     }
 
     /** Opaque qualification of old original DATA and present files; never a replacement or Ready permit. */
@@ -120,6 +153,21 @@ public final class RootJavaSavedBootstrap {
             StrictJson.require(sourceArchive.writer()==writer,"confirmed source archive must belong to the actual source writer");
         }
         public CheckpointPair pair(){return material.pair();}
+        SessionIdentity physicalSaveOwner(){return material.session();}
+        DriverStateSnapshot.Complete physicalSavedDriver(){return material.savedDriver();}
+        SavedAttachmentSourceStore.SavedMaterial originalMaterial(){return material;}
+        <T> T withOriginalWriter(ContinuityStorePort.Session target,SavedAttachmentSourceStore.ImportedSourceWork<T> work)throws IOException {
+            return writer.readOnlyFrom(target,old->sourceArchive.inHistoricalReadScope(old,
+                    new ActionPorts.HistoricalReadLimits(1024,64L*1024*1024,2052),ignored->work.read(old)));
+        }
+        RootRestoreMaterials.PhysicalSavedOriginal readOriginalPhysicalSave()throws IOException {
+            return writer.locked(same->sourceArchive.inHistoricalReadScope(same,
+                    new ActionPorts.HistoricalReadLimits(128,64L*1024*1024,260),ignored->
+                            RootRestoreMaterials.readOriginalPhysicalSave(same,sourceArchive,materials,material)));
+        }
+        RootRestoreMaterials.PhysicalSavedOriginal readOriginalPhysicalSave(ContinuityStorePort.Session target)throws IOException {
+            return withOriginalWriter(target,old->RootRestoreMaterials.readOriginalPhysicalSave(old,sourceArchive,materials,material));
+        }
         /** Package-owned same-writer restore source; this exposes actual issuers, never a replacement or planning permit. */
         DriverCheckpointStore driverCheckpoints(){return drivers;}
         org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialStore materials(){return materials;}
@@ -931,22 +979,28 @@ public final class RootJavaSavedBootstrap {
                     &&ContinuityJson.same(current.toJson().get(WriterContracts.DRIVER_HISTORY_BASELINE_FIELD),row.get("full_driver")),
                     "retained saved startup no longer has original saved basis/baseline");
         }
+        requireSavedSourceOriginals(source,context.archive(),same,row);
+        for(String field:List.of("full_driver","driver_facts"))
+            context.archive().readArtifact(same,ExactRef.fromJson(row.get(field)),WriterContracts.MAX_PIN_BYTES);
+        return row;
+    }
+
+    /** Relates the exact target marker to DATA requalified by the independent physical SAVE writer. */
+    static void requireSavedSourceOriginals(ConfirmedSource source,NativeOutcomeArchive archive,
+            ContinuityStorePort.Session same,ObjectNode row)throws IOException {
         var savedRef=ExactRef.fromJson(row.get("saved_state_reference"));
         var headRef=ExactRef.fromJson(row.get("source_head_reference"));
-        var input=new org.xar.ck3.control.continuity.SavedContinuityBootstrap.Input(source.savedState(),savedRef,
+        var input=new SavedContinuityBootstrap.Input(source.savedState(),savedRef,
                 source.confirmation().eventPin().reference(),source.sourceHead(),headRef,CheckpointPairCodec.encode(source.pair()),
                 ContinuityJson.canonical(row.get("session")),ContinuityJson.canonical(row.get("opening")),
                 ExactRef.fromJson(row.get("full_driver")),ExactRef.fromJson(row.get("driver_facts")),
                 StrictJson.integer(row.get("driver_version"),0,StrictJson.MAX_SAFE_INTEGER),
                 StrictJson.integer(row.get("episode_epoch"),0,StrictJson.MAX_SAFE_INTEGER));
-        StrictJson.require(ContinuityJson.same(row,org.xar.ck3.control.continuity.SavedContinuityBootstrap.details(
+        StrictJson.require(ContinuityJson.same(row,SavedContinuityBootstrap.details(
                 input,StrictJson.text(row.get("evidence_id")),row.get("source"))),"retained saved source details differ from qualified source");
-        var archive=context.archive();
         StrictJson.require(Arrays.equals(ContinuityJson.canonical(source.savedState().toJson()),archive.readArtifact(same,savedRef,MAX_STATE))
                 &&Arrays.equals(ContinuityJson.canonical(source.sourceHead().toJson()),archive.readArtifact(same,headRef,MAX_STATE)),
                 "retained saved archived source snapshots differ from actual old states");
-        for(var ref:List.of(input.fullDriver(),input.driverFacts()))archive.readArtifact(same,ref,WriterContracts.MAX_PIN_BYTES);
-        return row;
     }
 
     /** A new private read qualification for an actual previously committed saved entry. */

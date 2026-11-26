@@ -3,6 +3,8 @@ package org.xar.ck3.control.application.checkpoint;
 import java.io.IOException;
 import java.util.Objects;
 import org.xar.ck3.control.application.checkpoint.CheckpointPair.FileWitness;
+import org.xar.ck3.control.application.session.SessionPorts.SemanticEvidence;
+import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
 import org.xar.ck3.control.continuity.ContinuityState;
 import org.xar.ck3.control.continuity.EpisodeWindow;
 import org.xar.ck3.control.continuity.SavedContinuityAttachment;
@@ -22,6 +24,29 @@ public final class SavedCheckpointMaterialStore implements SavedAttachmentAuthor
     public SavedFirstCheckpointMaterialStore firstStore(){return first;}
     public void requireOwn(SavedCheckpointMaterial material){
         StrictJson.require(ordinary.owns(material)||first.owns(material),"material was not minted by these actual configured stores");
+    }
+
+    /** Physical SAVE DATA as read through its own issuer, independently of any later restore owner. */
+    public static final class OrdinaryPhysicalOriginal {
+        private final SavedAttachmentSourceStore.SavedMaterial material;
+        private final DriverStateSnapshot.Complete preSaveDriver;
+        private OrdinaryPhysicalOriginal(SavedAttachmentSourceStore.SavedMaterial material,
+                DriverStateSnapshot.Complete preSaveDriver) {
+            this.material=material;this.preSaveDriver=preSaveDriver;
+        }
+        public SessionIdentity owner(){return material.session();}
+        public CheckpointPair pair(){return material.pair();}
+        public FileWitness witness(){return material.witness();}
+        public DriverStateSnapshot.Complete physicalDriver(){return material.savedDriver();}
+        public DriverStateSnapshot.Complete preSaveDriver(){return preSaveDriver;}
+        public SemanticEvidence semantic(){return material.sourceSemantic();}
+    }
+
+    public OrdinaryPhysicalOriginal readOrdinaryPhysicalOriginal(ContinuityStorePort.Session same,
+            SavedAttachmentSourceStore.SavedMaterial material,DriverStateSnapshot.Complete actualPhysicalDriver)throws IOException {
+        requireOwn(material);
+        var preSave=material.requireSemanticDriver(same,actualPhysicalDriver);
+        return new OrdinaryPhysicalOriginal(material,preSave);
     }
     public SavedCheckpointMaterial loadOriginal(ContinuityStorePort.Session same,SavedCheckpointMaterial.Kind kind,FileWitness witness,CheckpointPair pair)throws IOException {
         Objects.requireNonNull(kind);

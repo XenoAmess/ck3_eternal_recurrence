@@ -24,6 +24,7 @@ import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
 import org.xar.ck3.control.continuity.ContinuityJson;
 import org.xar.ck3.control.continuity.ContinuityState;
 import org.xar.ck3.control.continuity.SavedContinuityAttachment;
+import org.xar.ck3.control.continuity.SavedContinuityBootstrap;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 import org.xar.ck3.control.continuity.writer.WriterContracts;
 import org.xar.ck3.control.contracts.ExactRef;
@@ -41,6 +42,7 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
     public static final String MATERIAL_SCHEMA="xar.java-saved-checkpoint-material/v1";
     public static final String SOURCES_SCHEMA="xar.java-saved-attachment-sources/v3";
     public static final String SOURCES_SCHEMA_PHYSICAL_SAVE_WITNESS="xar.java-saved-attachment-sources/v4";
+    public static final String SOURCES_SCHEMA_IMPORTED_SAVE="xar.java-saved-attachment-sources/v5";
     private static final String OPENING_SCHEMA="xar.java-restored-raw-binding/v2";
     private static final int MAX_METADATA=1024*1024, MAX_NATIVE=DriverJson.MAX_NATIVE_BYTES;
     @FunctionalInterface public interface BorrowedSession {
@@ -55,6 +57,35 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
         /** Actual canonical captured original state and immutable chain; grants no current cycle or credit. */
         String verify(ContinuityStorePort.Session borrowed,SessionIdentity source,CompletedCycleProof proof,ContinuityState capturedOriginalHead)throws IOException;
     }
+    /** A root-supplied, read-only scope for the actual independent physical SAVE writer. */
+    public interface ImportedSourceRead {
+        <T> T read(ContinuityStorePort.Session target,ImportedSourceWork<T> task)throws IOException;
+    }
+    @FunctionalInterface public interface ImportedSourceWork<T> {
+        T read(ContinuityStorePort.Session physicalSource)throws IOException;
+    }
+    /** Exact archived occurrence in the target and old physical SAVE writers. */
+    public record ImportedOrigin(SessionIdentity owner,ExactRef recoveryRequest,WriterContracts.Pin targetEntry,
+            WriterContracts.Pin physicalConfirmation) {
+        public ImportedOrigin {
+            Objects.requireNonNull(owner);Objects.requireNonNull(recoveryRequest);
+            Objects.requireNonNull(targetEntry);Objects.requireNonNull(physicalConfirmation);
+            StrictJson.require(recoveryRequest.bytes()>0&&recoveryRequest.bytes()<=MAX_METADATA
+                    &&Path.of(recoveryRequest.path()).isAbsolute(),"bounded canonical imported Saved request");
+        }
+        ObjectNode toJson() {
+            var row=StrictJson.object();row.set("owner",session(owner));row.set("recovery_request",recoveryRequest.toJson());
+            row.set("target_entry",targetEntry.toJson());row.set("physical_confirmation",physicalConfirmation.toJson());return row;
+        }
+        static ImportedOrigin fromJson(JsonNode value) {
+            var row=StrictJson.object(value,Set.of("owner","recovery_request","target_entry","physical_confirmation"));
+            return new ImportedOrigin(session(row.get("owner")),ExactRef.fromJson(row.get("recovery_request")),
+                    WriterContracts.Pin.fromJson(row.get("target_entry")),WriterContracts.Pin.fromJson(row.get("physical_confirmation")));
+        }
+        List<ExactRef> references(){return List.of(recoveryRequest,targetEntry.reference(),physicalConfirmation.reference());}
+    }
+    private record ImportedOriginal(ImportedOrigin origin,SavedMaterial original,ImportedSourceRead source) { }
+
     public static final class SavedMaterial implements SavedCheckpointMaterial {
         private final SavedAttachmentSourceStore issuer;
         private final CheckpointPair pair;
@@ -64,10 +95,16 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
         private final String originalHeadDigest, checkpointDigest;
         private final FileWitness manifest;
         private final DriverStateSnapshot.Complete savedDriver;
+        private final ImportedOriginal imported;
         private SavedMaterial(SavedAttachmentSourceStore issuer,CheckpointPair pair,SessionIdentity session,CompletedCycleProof proof,
                 ContinuityState originalHead,String originalHeadDigest,String checkpointDigest,FileWitness manifest,DriverStateSnapshot.Complete savedDriver) {
+            this(issuer,pair,session,proof,originalHead,originalHeadDigest,checkpointDigest,manifest,savedDriver,null);
+        }
+        private SavedMaterial(SavedAttachmentSourceStore issuer,CheckpointPair pair,SessionIdentity session,CompletedCycleProof proof,
+                ContinuityState originalHead,String originalHeadDigest,String checkpointDigest,FileWitness manifest,
+                DriverStateSnapshot.Complete savedDriver,ImportedOriginal imported) {
             this.issuer=issuer;this.pair=pair;this.session=session;this.proof=proof;this.originalHeadDigest=originalHeadDigest;
-            this.originalHead=originalHead;this.checkpointDigest=checkpointDigest;this.manifest=manifest;this.savedDriver=savedDriver;
+            this.originalHead=originalHead;this.checkpointDigest=checkpointDigest;this.manifest=manifest;this.savedDriver=savedDriver;this.imported=imported;
         }
         public Kind kind(){return Kind.ORDINARY;}
         public SemanticEvidence sourceSemantic(){return proof.semantic();}
@@ -75,6 +112,7 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
         public void requirePhysical(ContinuityStorePort.Session same)throws IOException{issuer.loadOriginal(same,witness(),pair);}
         public CheckpointPair pair(){return pair;}
         public SessionIdentity session(){return session;}
+        public Optional<ImportedOrigin> importedOrigin(){return Optional.ofNullable(imported).map(ImportedOriginal::origin);}
         public CompletedCycleProof proof(){return proof;}
         public ExactRef reference(){return manifest.reference();}
         public FileWitness witness(){return manifest;}
@@ -90,6 +128,7 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
                 DriverStateSnapshot.Complete actuallySaved)throws IOException {
             Objects.requireNonNull(same);Objects.requireNonNull(actuallySaved);
             StrictJson.require(issuer.sessions.current()==same,"semantic Driver requires its actual material issuer Session");
+            if(imported!=null)return imported.source().read(same,old->imported.original().requireSemanticDriver(old,actuallySaved));
             String head=same.head().digest();issuer.files.verify(manifest);
             var physical=issuer.drivers.readArchivedSnapshot(pair,issuer.files.read(pair.driver(),DriverCheckpointStore.MAX_DRIVER_BYTES));
             byte[] saved=savedDriver.encode();
@@ -108,32 +147,46 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
         }
     }
     public static record Sources(SavedCheckpointMaterial.Kind kind,FileWitness material,ExactRef basis,ExactRef game,ExactRef opening,
-            ExactRef progress,ExactRef restoredNative,Optional<FileWitness> physicalSaveWitness) {
+            ExactRef progress,ExactRef restoredNative,Optional<FileWitness> physicalSaveWitness,Optional<ImportedOrigin> importedOrigin) {
         public Sources(SavedCheckpointMaterial.Kind kind,FileWitness material,ExactRef basis,ExactRef game,ExactRef opening,
                 ExactRef progress,ExactRef restoredNative) {
-            this(kind,material,basis,game,opening,progress,restoredNative,Optional.empty());
+            this(kind,material,basis,game,opening,progress,restoredNative,Optional.empty(),Optional.empty());
+        }
+        public Sources(SavedCheckpointMaterial.Kind kind,FileWitness material,ExactRef basis,ExactRef game,ExactRef opening,
+                ExactRef progress,ExactRef restoredNative,Optional<FileWitness> physicalSaveWitness) {
+            this(kind,material,basis,game,opening,progress,restoredNative,physicalSaveWitness,Optional.empty());
         }
         public Sources { Objects.requireNonNull(kind);Objects.requireNonNull(material);for(ExactRef ref:List.of(material.reference(),basis,game,opening,progress,restoredNative))
             StrictJson.require(ref.bytes()>0&&Path.of(ref.path()).isAbsolute(),"actual nonempty absolute restore source");
-            Objects.requireNonNull(physicalSaveWitness);
+            Objects.requireNonNull(physicalSaveWitness);Objects.requireNonNull(importedOrigin);
             if(physicalSaveWitness.isPresent())StrictJson.require(kind==SavedCheckpointMaterial.Kind.ORDINARY
                     &&physicalSaveWitness.orElseThrow().reference().bytes()>0,"physical SAVE witness sources require the ordinary material branch");
+            StrictJson.require(importedOrigin.isEmpty()||physicalSaveWitness.isPresent(),"imported Saved requires the actual independent physical SAVE witness");
         }
-        public List<ExactRef> references(){return List.of(material.reference(),basis,game,opening,progress,restoredNative);}
+        public List<ExactRef> references(){
+            var references=new ArrayList<>(List.of(material.reference(),basis,game,opening,progress,restoredNative));
+            importedOrigin.ifPresent(origin->references.addAll(origin.references()));return List.copyOf(references);
+        }
         public ObjectNode toJson(){
-            var row=StrictJson.object();row.put("schema",physicalSaveWitness.isPresent()?SOURCES_SCHEMA_PHYSICAL_SAVE_WITNESS:SOURCES_SCHEMA);row.put("material_kind",kind.name());row.set("material_witness",CheckpointPairCodec.fileWitnessToJson(material));row.set("basis",basis.toJson());
+            var row=StrictJson.object();row.put("schema",importedOrigin.isPresent()?SOURCES_SCHEMA_IMPORTED_SAVE:
+                    physicalSaveWitness.isPresent()?SOURCES_SCHEMA_PHYSICAL_SAVE_WITNESS:SOURCES_SCHEMA);
+            row.put("material_kind",kind.name());row.set("material_witness",CheckpointPairCodec.fileWitnessToJson(material));row.set("basis",basis.toJson());
             row.set("game",game.toJson());row.set("opening",opening.toJson());row.set("progress",progress.toJson());row.set("restored_native",restoredNative.toJson());
-            physicalSaveWitness.ifPresent(witness->row.set("physical_save_witness",CheckpointPairCodec.fileWitnessToJson(witness)));return row;
+            physicalSaveWitness.ifPresent(witness->row.set("physical_save_witness",CheckpointPairCodec.fileWitnessToJson(witness)));
+            importedOrigin.ifPresent(origin->row.set("imported_origin",origin.toJson()));return row;
         }
         public static Sources decode(JsonNode value){
             var raw=object(value);String schema=StrictJson.text(raw.get("schema"));
-            boolean physical=SOURCES_SCHEMA_PHYSICAL_SAVE_WITNESS.equals(schema);
+            boolean imported=SOURCES_SCHEMA_IMPORTED_SAVE.equals(schema),physical=imported||SOURCES_SCHEMA_PHYSICAL_SAVE_WITNESS.equals(schema);
             StrictJson.require(physical||SOURCES_SCHEMA.equals(schema),"saved attachment source contract");
-            var row=StrictJson.object(raw,physical?Set.of("schema","material_kind","material_witness","basis","game","opening","progress","restored_native","physical_save_witness")
-                    :Set.of("schema","material_kind","material_witness","basis","game","opening","progress","restored_native"));
+            var fields=new java.util.HashSet<>(Set.of("schema","material_kind","material_witness","basis","game","opening","progress","restored_native"));
+            if(physical)fields.add("physical_save_witness");
+            if(imported)fields.add("imported_origin");
+            var row=StrictJson.object(raw,fields);
             return new Sources(SavedCheckpointMaterial.Kind.valueOf(StrictJson.text(row.get("material_kind"))),CheckpointPairCodec.fileWitnessFromJson(row.get("material_witness")),ExactRef.fromJson(row.get("basis")),ExactRef.fromJson(row.get("game")),
                     ExactRef.fromJson(row.get("opening")),ExactRef.fromJson(row.get("progress")),ExactRef.fromJson(row.get("restored_native")),
-                    physical?Optional.of(CheckpointPairCodec.fileWitnessFromJson(row.get("physical_save_witness"))):Optional.empty());
+                    physical?Optional.of(CheckpointPairCodec.fileWitnessFromJson(row.get("physical_save_witness"))):Optional.empty(),
+                    imported?Optional.of(ImportedOrigin.fromJson(row.get("imported_origin"))):Optional.empty());
         }
     }
     private final CheckpointFiles files;
@@ -146,6 +199,7 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
     private final java.util.concurrent.ConcurrentHashMap<Path,FileWitness> capturedMaterialWitnesses=new java.util.concurrent.ConcurrentHashMap<>();
     private record ReopenedOriginal(RestoreCheckpointService.OrdinaryReopenCustody custody,SavedMaterial issued) { }
     private final java.util.concurrent.ConcurrentHashMap<String,ReopenedOriginal> reopenedOriginals=new java.util.concurrent.ConcurrentHashMap<>();
+    private volatile SavedMaterial importedOriginal;
     public SavedAttachmentSourceStore(CheckpointFiles files,DriverCheckpointStore drivers,CheckpointCommitVerifier verifier,
             BorrowedSession sessions,Path root,CycleProofVerifier cycles,HistoricalCycleProofVerifier historicalCycles) {
         this.files=Objects.requireNonNull(files);this.drivers=Objects.requireNonNull(drivers);this.verifier=Objects.requireNonNull(verifier);
@@ -205,6 +259,8 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
     /** Restart recovery uses the actual immutable index and reruns the archived semantic verifier under the same current writer. */
     public SavedMaterial load(CheckpointPair pair) throws IOException {
         Objects.requireNonNull(pair);var borrowed=sessions.current();
+        var imported=importedFor(pair);
+        if(imported!=null){requireImported(borrowed,imported,true);return imported;}
         ReopenedOriginal reopened=reopenedOriginals.get(pairKey(pair));
         if(reopened!=null){requireReopened(borrowed,reopened,pair,true);return reopened.issued();}
         FileWitness manifest=capturedMaterialWitnesses.get(materialPath(pair));
@@ -214,6 +270,11 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
     /** Physical/cold producer consumes the previously persisted original identity, never recaptures it from a hash. */
     public SavedMaterial loadOriginal(ContinuityStorePort.Session borrowed,FileWitness originalMaterial,CheckpointPair pair)throws IOException {
         Objects.requireNonNull(originalMaterial);Objects.requireNonNull(pair);
+        var imported=importedFor(pair);
+        if(imported!=null){
+            StrictJson.require(imported.witness().equals(originalMaterial),"imported SAVE material lost its original FileWitness");
+            requireImported(borrowed,imported,true);return imported;
+        }
         ReopenedOriginal reopened=reopenedOriginals.get(pairKey(pair));
         if(reopened!=null){
             requireReopened(borrowed,reopened,pair,true);
@@ -224,6 +285,62 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
         files.verify(originalMaterial);SavedMaterial material=readMaterial(borrowed,pair,originalMaterial,false);files.verify(originalMaterial);
         var prior=capturedMaterialWitnesses.putIfAbsent(materialPath(pair),originalMaterial);
         StrictJson.require(prior==null||prior.equals(originalMaterial),"original material source conflicts with already captured identity");return material;
+    }
+    /** Binds the old private SAVE to its distinct configured target writer and already committed imported entry. */
+    public synchronized SavedMaterial bindImported(ContinuityStorePort.Session target,ImportedOrigin origin,
+            SavedMaterial original,ImportedSourceRead source)throws IOException {
+        Objects.requireNonNull(origin);Objects.requireNonNull(original);Objects.requireNonNull(source);
+        StrictJson.require(sessions.current()==target&&original.issuer!=this&&original.imported==null
+                        &&original.session().machineId().equals(origin.owner().machineId())
+                        &&!original.session().game().equals(origin.owner().game()),
+                "imported SAVE needs the exact target writer and an independent original physical SAVE issuer");
+        var actual=importedOriginal;
+        if(actual==null) {
+            StrictJson.require(!capturedMaterialWitnesses.containsKey(materialPath(original.pair()))
+                            &&!reopenedOriginals.containsKey(pairKey(original.pair())),
+                    "imported SAVE cannot replace an earlier source occurrence");
+            var imported=new ImportedOriginal(origin,original,source);
+            actual=new SavedMaterial(this,original.pair,original.session,original.proof,original.originalHead,
+                    original.originalHeadDigest,original.checkpointDigest,original.manifest,original.savedDriver,imported);
+            requireImported(target,actual,true);importedOriginal=actual;
+        } else {
+            StrictJson.require(actual.imported.origin().equals(origin)&&actual.imported.original()==original
+                            &&actual.imported.source()==source,"configured imported SAVE cannot switch original source");
+            requireImported(target,actual,true);
+        }
+        return actual;
+    }
+    private SavedMaterial importedFor(CheckpointPair pair) {
+        var retained=importedOriginal;
+        return retained!=null&&retained.pair().equals(pair)?retained:null;
+    }
+    private void requireImported(ContinuityStorePort.Session target,SavedMaterial material,boolean physical)throws IOException {
+        var imported=Objects.requireNonNull(material.imported);
+        StrictJson.require(sessions.current()==target&&material.issuer==this,"imported SAVE requires its actual target writer session");
+        var head=target.head();
+        var entry=target.readHistoricalTransition(imported.origin().targetEntry());
+        var marker=ContinuityJson.parseObject(entry.details(),MAX_METADATA);
+        var request=SavedContinuityBootstrap.request(marker);
+        StrictJson.require(request.kind().equals(entry.kind())&&request.identity().equals(entry.eventIdentity())
+                        &&session(marker.get("session")).equals(imported.origin().owner())
+                        &&ExactRef.fromJson(marker.get("confirmation_reference")).equals(imported.origin().physicalConfirmation().reference())
+                        &&material.pair().equals(CheckpointPairCodec.decode(ContinuityJson.canonical(marker.get("checkpoint_pair"))))
+                        &&ContinuityJson.same(head.state().toJson().get(SavedContinuityBootstrap.FIELD),marker),
+                "imported SAVE lost its actual canonical entry, original owner or physical pair");
+        SavedContinuityBootstrap.requireSavedAdmissionReduction(entry.before(),entry.after(),request,true);
+        var original=imported.source().read(target,old->{
+            var confirmation=old.readHistoricalTransition(imported.origin().physicalConfirmation());
+            var details=confirmedSourceDetails(confirmation.details());
+            var actual=imported.original();
+            StrictJson.require(session(details.get("session")).equals(actual.session())
+                            &&CheckpointPairCodec.decode(ContinuityJson.canonical(details.get("checkpoint_pair"))).equals(material.pair())
+                            &&ContinuityJson.same(confirmation.before().toJson(),actual.originalHead().toJson()),
+                    "imported SAVE source is not the actual independent physical confirmation");
+            if(physical)actual.requirePhysical(old);else actual.requireRetained(old);
+            return actual;
+        });
+        StrictJson.require(original==imported.original()&&sessions.current()==target&&head.digest().equals(target.head().digest()),
+                "imported SAVE crossed its old original or changed the target writer head");
     }
     /** New present qualification from an actual retained Java SAVE_CONFIRMED edge.
      * This never reconstructs an unavailable historical capture FileWitness or grants restoration. */
@@ -413,6 +530,11 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
     /** Durable original material only. This never qualifies the current physical pair for reload or grants a new Game. */
     public SavedMaterial loadRetainedOriginal(ContinuityStorePort.Session borrowed,FileWitness originalMaterial,CheckpointPair exactPair)throws IOException {
         Objects.requireNonNull(borrowed);Objects.requireNonNull(originalMaterial);Objects.requireNonNull(exactPair);
+        var imported=importedFor(exactPair);
+        if(imported!=null){
+            StrictJson.require(imported.witness().equals(originalMaterial),"retained imported SAVE changed the original FileWitness");
+            requireImported(borrowed,imported,false);return imported;
+        }
         ReopenedOriginal reopened=reopenedOriginals.get(pairKey(exactPair));
         if(reopened!=null){
             requireReopened(borrowed,reopened,exactPair,false);
@@ -458,7 +580,7 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
         StrictJson.require(reopenedOriginals.size()<16&&!capturedMaterialWitnesses.containsKey(materialPath(source.pair())),
                 "ordinary custody cannot overwrite captured identity or exceed its finite route inventory");
         var issued=new SavedMaterial(this,source.pair,source.session,source.proof,source.originalHead,
-                source.originalHeadDigest,source.checkpointDigest,source.manifest,source.savedDriver);
+                source.originalHeadDigest,source.checkpointDigest,source.manifest,source.savedDriver,source.imported);
         var reopened=new ReopenedOriginal(custody,issued);reopenedOriginals.put(key,reopened);
         requireReopened(same,reopened,source.pair(),true);return issued;
     }
@@ -484,8 +606,9 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
             RestoreCheckpointService.NativeCandidate restored,DriverStateSnapshot.Complete saved) throws IOException {
         SavedMaterial material=load(request.pair());
         StrictJson.require(request.savedMaterial().witness().equals(material.witness()),"request must retain its original ordinary material");
+        var physicalSave=material.importedOrigin().isPresent()?Optional.of(material.pair().save()):ordinaryPhysicalSaveWitness(material.pair());
         return prepareMaterial(request,restored,saved,material,basis(sessions.current().head().state(),material),
-                SavedAttachmentAuthority.KIND,ordinaryPhysicalSaveWitness(material.pair()));
+                SavedAttachmentAuthority.KIND,physicalSave);
     }
     /** The bound applies to raw writer pins. Oversized physical saves keep their exact typed file witness. */
     public static boolean requiresPhysicalSaveWitness(CheckpointPair pair) {
@@ -500,6 +623,7 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
         Objects.requireNonNull(request);
         StrictJson.require(request.savedMaterial() instanceof SavedMaterial&&owns(request.savedMaterial()),"actual private ordinary saved material issuer required");
         var borrowed=sessions.current();var original=(SavedMaterial)request.savedMaterial();
+        StrictJson.require(original.importedOrigin().isEmpty(),"loaded replacement cannot substitute an imported exited SAVE source");
         SavedMaterial material=loadOriginal(borrowed,original.witness(),request.pair());
         material.requirePhysical(borrowed);files.verify(request.pair().save());
         return prepareMaterial(request,restored,saved,material,basis(borrowed.head().state(),material),SavedAttachmentAuthority.KIND,
@@ -535,7 +659,8 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
         ExactRef gameRef=immutable(directory.resolve("game.json"),metadataBytes(game));
         ExactRef openingRef=immutable(directory.resolve("opening.json"),metadataBytes(opening));
         ExactRef progress=immutable(directory.resolve("progress.json"),metadataBytes(progress(predecessor)));
-        Sources sources=new Sources(material.kind(),material.witness(),basis,gameRef,openingRef,progress,restored.originalNativePacket(),physicalSaveWitness);
+        var imported=material instanceof SavedMaterial ordinary?ordinary.importedOrigin():Optional.<ImportedOrigin>empty();
+        Sources sources=new Sources(material.kind(),material.witness(),basis,gameRef,openingRef,progress,restored.originalNativePacket(),physicalSaveWitness,imported);
         var action=attachmentRequest(kind,request.requestId(),request.pair(),sources,materialEvidence(material));
         SavedAttachmentAuthority.Loaded loaded=loadMaterial(predecessor,action,material,actualBasis);
         return new RestoreCheckpointService.Attachment(action,loaded.input(),material);
@@ -587,7 +712,9 @@ public final class SavedAttachmentSourceStore implements SavedAttachmentAuthorit
         String currentHead=borrowed.head().digest();
         CheckpointPair pair=SavedAttachmentAuthority.pairFromDetails(request);
         Sources sources=Sources.decode(request.detailsObject().get(SOURCES_DETAIL));
-        StrictJson.require(material.kind()==sources.kind()&&material.pair().equals(pair)&&material.witness().equals(sources.material()),
+        var imported=material instanceof SavedMaterial ordinary?ordinary.importedOrigin():Optional.<ImportedOrigin>empty();
+        StrictJson.require(material.kind()==sources.kind()&&material.pair().equals(pair)&&material.witness().equals(sources.material())
+                        &&imported.equals(sources.importedOrigin()),
                 "typed source kind, original witness and pair must agree");
         material.requirePhysical(borrowed);
         files.verify(sources.material);

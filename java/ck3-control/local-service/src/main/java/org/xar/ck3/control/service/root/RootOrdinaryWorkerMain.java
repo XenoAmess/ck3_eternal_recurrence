@@ -11,11 +11,13 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.time.Clock;
+import java.time.Instant;
 import java.util.Optional;
 import org.xar.ck3.control.application.session.BatchReport;
 import org.xar.ck3.control.application.session.OrdinaryCycleTransitions;
 import org.xar.ck3.control.application.session.ContinuityBatchJournal.CleanRestartTicket;
 import org.xar.ck3.control.build.WindowsJobProcess;
+import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.contracts.FullJsonTree;
 import org.xar.ck3.control.platform.GameSupervisorControl;
@@ -40,15 +42,26 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
 
     public int runWithHost(org.xar.ck3.control.service.OrdinarySessionHost ordinaryHost, String... args) throws Exception {
         java.util.Objects.requireNonNull(ordinaryHost);
-        boolean loaded=args.length>=3&&"resume-loaded-replacement".equals(args[2]);
-        if (args.length != (loaded?6:3)) throw new IllegalArgumentException("ordinary-worker requires owner.json, configuration, mode; resume-loaded-replacement additionally needs recovery-request exact3");
+        if(args.length<3)throw new IllegalArgumentException("ordinary-worker requires owner.json, configuration and mode");
         String mode = args[2];
+        boolean loaded="resume-loaded-replacement".equals(mode);
+        boolean imported="restore-exited".equals(mode)&&args.length==6;
+        if(args.length!=(loaded||imported?6:3))
+            throw new IllegalArgumentException("recovery request requires its original path, byte count and SHA-256");
         if (!"fresh".equals(mode) && !"resume".equals(mode) && !"current-map".equals(mode) && !"operator-quarantine".equals(mode)
                 &&!"retire-exited".equals(mode)&&!"restore-exited".equals(mode)&&!loaded) throw new IllegalArgumentException("unknown ordinary-worker mode");
         Clock clock = Clock.systemUTC();
-        RootOrdinaryRuntimeConfiguration config = RootOrdinaryRuntimeConfiguration.read(Path.of(args[1]));
         var descriptor = GameSupervisorControl.readDescriptor(Path.of(args[0]));
         NativeLaunchPlan plan = descriptor.configuration().accept();
+        RootOrdinaryRuntimeConfiguration config=imported?RootOrdinaryRuntimeConfiguration.readSaved(Path.of(args[1]),plan):
+                RootOrdinaryRuntimeConfiguration.read(Path.of(args[1]));
+        Optional<ExactRef> importedRequest=Optional.empty();
+        if(imported) {
+            if(!args[4].matches("[1-9][0-9]{0,6}"))throw new IOException("bounded exact original imported Saved recovery request required");
+            long length=Long.parseLong(args[4]);
+            if(length>1024L*1024L)throw new IOException("original imported Saved recovery request exceeds its bound");
+            importedRequest=Optional.of(new ExactRef(args[3],length,args[5]));
+        }
         Path ticketPath = config.stateDirectory().resolve("worker-restart-ticket.json");
         Prepared prepared = null;
         Opened opened = null;
@@ -59,7 +72,8 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
         RootOrdinaryWorkerLoop.Result result = null;
         Throwable primary = null;
         try {
-            prepared = loaded?RootOrdinaryRuntimeAssembly.prepareLoadedReplacement(config,clock):RootOrdinaryRuntimeAssembly.prepare(config, clock);
+            prepared = imported?RootOrdinaryRuntimeAssembly.prepareImportedExited(config,clock):
+                    loaded?RootOrdinaryRuntimeAssembly.prepareLoadedReplacement(config,clock):RootOrdinaryRuntimeAssembly.prepare(config,clock);
             prepared.bindOrdinaryHost(ordinaryHost);
             if("retire-exited".equals(mode)) {
                 // This branch precedes NativeGameAttachment: an exited original cannot supply a HELLO or current map.
@@ -94,7 +108,9 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
                         .put("new_game_days",0).put("lifecycle_create_requested",false).put("ordinary_batch_started",false);
                 emit(restored);
             } else if("restore-exited".equals(mode)) {
-                running=prepared.openExitedCheckpointRecovery(Path.of(args[0]),descriptor.generation(),clock.instant().plus(java.time.Duration.ofMinutes(45)));
+                Instant deadline=clock.instant().plus(java.time.Duration.ofMinutes(45));
+                running=importedRequest.isPresent()?prepared.openExitedCheckpointRecovery(Path.of(args[0]),descriptor.generation(),
+                        importedRequest.orElseThrow(),deadline):prepared.openExitedCheckpointRecovery(Path.of(args[0]),descriptor.generation(),deadline);
                 attached=prepared.exitedReplacementGame();
                 var restored=event(clock,"EXITED_SAVED_RESTORATION_ADOPTED");
                 restored.set("game",attached.generation().toJson());
