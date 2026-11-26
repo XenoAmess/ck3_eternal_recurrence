@@ -121,7 +121,7 @@ public final class CheckpointService implements ActionPorts.PostconditionPort {
                     }
                 });
                 if (Thread.interrupted()) throw new InterruptedException("original SAVE collection interrupted; no dispatch");
-                return result;
+                return withinOriginalReadWindow(result,bounded);
             } catch (IOException | IllegalArgumentException | java.io.UncheckedIOException failure) {
                 return new CheckpointResult.Unknown(originalActionId, failure.toString(), Optional.empty());
             }
@@ -137,11 +137,18 @@ public final class CheckpointService implements ActionPorts.PostconditionPort {
             if(Thread.interrupted())throw new InterruptedException("original SAVE query interrupted before collection");
             receipt=actions.reconcile(originalActionId);
             if(!clock.instant().isBefore(bounded))return new CheckpointResult.Unknown(originalActionId,"original SAVE read window expired during collection; zero dispatch",Optional.of(receipt));
-            return materialized(context,receipt);
+            return withinOriginalReadWindow(materialized(context,receipt),bounded);
         } catch(IOException|IllegalArgumentException failure) {
             return new CheckpointResult.Unknown(originalActionId,failure.toString(),Optional.ofNullable(receipt));
         } finally {originalQuery.remove();}
     }
+    private CheckpointResult withinOriginalReadWindow(CheckpointResult result,Instant deadline) {
+        if(result instanceof CheckpointResult.Confirmed confirmed&&!clock.instant().isBefore(deadline))
+            return new CheckpointResult.Unknown(confirmed.action().command().actionId(),
+                    "original SAVE read window expired during material verification; zero dispatch",Optional.of(confirmed.action()));
+        return result;
+    }
+
     /** Re-collect a canonical already-applied SAVE without recreating a lost pre-dispatch context. */
     private CheckpointResult collectColdApplied(String actionId,
             org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same, Instant deadline) throws IOException {
