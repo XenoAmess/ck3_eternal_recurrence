@@ -4,6 +4,7 @@
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 #include "xar_bridge/tactical_daily_sentinel_v1.hpp"
 #include <atomic>
+#include <optional>
 namespace xar::ck3_121003::build26785313 {
 struct DateWorkerAccessContext267V1;
 }
@@ -95,6 +96,8 @@ struct DateSentinelStateV1 {
   DateSentinelObservationV1 initial{};
   std::atomic<std::uint64_t> generation{0};
   std::uint64_t original_deadline_unix_ms=0,monotonic_deadline_ms=0;
+  // Worker lifetime gate only. A failed replacement must not bind its new deadline to the old slot.
+  std::uint64_t confirmed_arm_generation=0;
   std::uintptr_t owner_tls_context=0;
   std::uint64_t armed_unix_ms=0,armed_monotonic_ms=0;
   bool fixture_only=false;
@@ -152,6 +155,19 @@ ck3_11906::TacticalDailySentinelCancelStatusV1 CancelDateSentinelV1(
 // Internal owner/post paths use the legacy status reader under their lease.
 ck3_11906::TacticalDailySentinelStatusV1 ReadDateSentinelStatusV1(
     const DateSentinelStateV1 &) noexcept;
+inline constexpr std::string_view kDateSentinelExpiryEvidenceSchemaV1="ck3_1210_date_sentinel_expiry_v1";
+struct DateSentinelExpiryEvidenceV1 {
+  std::uint64_t generation=0,original_deadline_unix_ms=0;
+  std::uint32_t failure_flags=0;
+  bool armed=false,shutdown_safe=false,access_cleanup_unknown=true;
+};
+struct DateSentinelStatusReadV1 {
+  ck3_11906::TacticalDailySentinelStatusV1 status{};
+  std::optional<DateSentinelExpiryEvidenceV1> expiry{};
+};
+// The same original Status slot and its finite cleanup evidence under one lifetime gate.
+// The independent physical frame and original ARM/RESUME receipts are separate consumer requirements.
+DateSentinelStatusReadV1 ReadDateSentinelStatusWithExpiryV1(const DateSentinelStateV1 &) noexcept;
 bool ReadDateSentinelTerminalForCancelV1(const DateSentinelStateV1 &,
     std::uint64_t generation,ck3_11906::TacticalDailySentinelStatusV1 &) noexcept;
 // Any thread: two atomic publications only, no TLS/world/clock/native calls.

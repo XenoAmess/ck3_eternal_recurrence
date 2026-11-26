@@ -597,6 +597,7 @@ static Arm ArmDateSentinelImplV1(DateSentinelStateV1 &s,const old::TacticalDaily
   if(s.shutdown_requested.load(std::memory_order_seq_cst)) {
     s.shutdown_safe.store(true,std::memory_order_seq_cst);return Arm::unavailable;
   }
+  s.confirmed_arm_generation=0;
   s.initial=o;s.original_deadline_unix_ms=deadline;s.monotonic_deadline_ms=mono+(deadline-wall);
   // Captured before this new ARM only. Old arms erase availability, never inherit a proof.
   g_ted_fixed={};
@@ -622,8 +623,9 @@ static Arm ArmDateSentinelImplV1(DateSentinelStateV1 &s,const old::TacticalDaily
     else Fail(s,date_sentinel_failure_runtime);
     return result;
   }
-  s.generation.store(old::ReadTacticalDailySentinelStatusV1().generation,std::memory_order_release);
-  if(g_ted_fixed.active&&g_ted_fixed.runtime==&s)g_ted_fixed.generation=s.generation.load(std::memory_order_acquire);
+  const auto generation=old::ReadTacticalDailySentinelStatusV1().generation;
+  s.generation.store(generation,std::memory_order_release);
+  if(g_ted_fixed.active&&g_ted_fixed.runtime==&s)g_ted_fixed.generation=generation;
   // Retire prior recoverable failures without ever erasing a racing Stop bit.
   s.pending_failure.fetch_and(date_sentinel_failure_shutdown,std::memory_order_acq_rel);
   s.last_post_thread_id.store(0,std::memory_order_relaxed);
@@ -636,7 +638,9 @@ static Arm ArmDateSentinelImplV1(DateSentinelStateV1 &s,const old::TacticalDaily
   if(Expired(s))Fail(s,date_sentinel_failure_expired);
   if(const auto again=Owner(s,tls))Fail(s,again);
   if(const auto worker=WorkerOwnerUnlocked(s,false))Fail(s,worker);
-  return s.pending_failure.load(std::memory_order_acquire)?Arm::unavailable:Arm::armed;
+  if(s.pending_failure.load(std::memory_order_acquire))return Arm::unavailable;
+  s.confirmed_arm_generation=generation;
+  return Arm::armed;
 }
 Arm ArmDateSentinelV1(DateSentinelStateV1&s,const old::TacticalDailySentinelArmRequestV1&r,std::uint64_t deadline)noexcept {
  return ArmDateSentinelImplV1(s,r,deadline,nullptr);
@@ -873,15 +877,40 @@ Cancel CancelDateSentinelV1(DateSentinelStateV1 &s,std::uint64_t generation) noe
   }
   return result;
 }
-old::TacticalDailySentinelStatusV1 ReadDateSentinelStatusV1(const DateSentinelStateV1 &s) noexcept {
+static old::TacticalDailySentinelStatusV1 ReadDateSentinelStatus(const DateSentinelStateV1 &s,
+    std::optional<DateSentinelExpiryEvidenceV1> *proof) noexcept {
   if(!s.initialized.load(std::memory_order_acquire))return {};
   WorkerStatusLock lifetime(s); // Pipe readers wait for the complete Post lease.
-  auto result=old::ReadTacticalDailySentinelStatusV1();
-  if(result.generation!=s.generation.load(std::memory_order_acquire))return {};
-  if(s.pending_failure.load(std::memory_order_acquire)) {
-    result.state=Phase::failed;result.abnormal=true;result.trigger_flags|=old::tactical_daily_trigger_evaluation_failure;
+  // The owner pump can confirm cleanup without this gate. Sample its publication
+  // before reading the slot so an in-flight owner cleanup cannot qualify it.
+  const bool shutdown_safe=proof && s.shutdown_safe.load(std::memory_order_seq_cst);
+  auto status=old::ReadTacticalDailySentinelStatusV1();
+  if(status.generation!=s.generation.load(std::memory_order_acquire))return {};
+  const auto flags=s.pending_failure.load(std::memory_order_acquire);
+  if(proof && shutdown_safe && flags==date_sentinel_failure_expired && status.generation
+      && status.generation==s.confirmed_arm_generation && s.original_deadline_unix_ms) {
+    const bool armed=s.armed.load(std::memory_order_acquire);
+    const bool cleanup_unknown=s.access_cleanup_unknown.load(std::memory_order_seq_cst);
+    const auto elapsed=static_cast<std::int64_t>(status.last_observed_date_raw)-status.starting_date_raw;
+    if(!armed && !cleanup_unknown && !s.shutdown_requested.load(std::memory_order_seq_cst)
+        && status.state==Phase::failed && status.abnormal && status.pause_observed && !status.terminal_observed
+        && elapsed>0 && elapsed%24==0 && elapsed/24==status.completed_daily_ticks
+        && status.last_observed_date_raw<status.target_date_raw && status.trigger_date_raw==status.last_observed_date_raw) {
+      *proof=DateSentinelExpiryEvidenceV1{status.generation,s.original_deadline_unix_ms,flags,armed,shutdown_safe,cleanup_unknown};
+    }
   }
+  if(flags) {
+    status.state=Phase::failed;status.abnormal=true;status.trigger_flags|=old::tactical_daily_trigger_evaluation_failure;
+  }
+  return status;
+}
+DateSentinelStatusReadV1 ReadDateSentinelStatusWithExpiryV1(const DateSentinelStateV1 &s) noexcept {
+  DateSentinelStatusReadV1 result;
+  result.status=ReadDateSentinelStatus(s,&result.expiry);
   return result;
+}
+old::TacticalDailySentinelStatusV1 ReadDateSentinelStatusV1(const DateSentinelStateV1 &s) noexcept {
+  return ReadDateSentinelStatus(s,nullptr);
 }
 bool ReadDateSentinelTerminalForCancelV1(const DateSentinelStateV1 &s,
     std::uint64_t generation,old::TacticalDailySentinelStatusV1 &status) noexcept {

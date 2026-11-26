@@ -40,6 +40,7 @@ struct Fixture {
   void *game_slot=game.data(),*jomini_slot=jomini.data(),*storage_slot=storage.data();
   std::uint8_t initialized=1;
   unsigned locals=0,tls_calls=0,wall_calls=0,mono_calls=0,pauses=0,mutate_at=0,reject_at=0,switch_root_at=0,switch_local_at=0;
+  unsigned missing_local_at=0;
   std::uint64_t wall=1000000,mono=1000;
   bool expire_on_pause=false,pause_fails=false;
   old::MainThreadQueryMailboxV1 mailbox{};
@@ -149,7 +150,7 @@ struct Fixture {
     Put(data,kPlayerCharacterManagerOffset+0x64,std::int32_t{1});
     Put(storage,0x20,rows.data());Put(storage,0x2C,std::int32_t{4});Put(rows,0x18,actor.data());
     Put(actor,0x18,kActor);Put(actor,0x1C,std::uint32_t{0x43686172});Put(actor,0x1D0,static_cast<void *>(nullptr));
-    wall+=10000;mono+=10000;mutate_at=0;reject_at=0;switch_root_at=0;switch_local_at=0;expire_on_pause=false;pause_fails=false;
+    missing_local_at=0;wall+=10000;mono+=10000;mutate_at=0;reject_at=0;switch_root_at=0;switch_local_at=0;expire_on_pause=false;pause_fails=false;
     if(sentinel.initialized.load() && !DateSentinelShutdownSafeV1(sentinel)) {
       Check(PollDateSentinelOwnerV1(sentinel,Stamp()),"owner recovers prior unsafe fixture world");
       Check(DateSentinelShutdownSafeV1(sentinel),"reset never erases an unsafe lifetime obligation");
@@ -176,6 +177,7 @@ struct Fixture {
 };
 void *Local(void *) {
   auto &f=*active;++f.locals;
+  if(f.locals==f.missing_local_at)return nullptr;
   if(f.switch_root_at && f.locals==f.switch_root_at)f.game_slot=f.other_game.data();
   if(f.switch_local_at && f.locals==f.switch_local_at) {
     Put(f.players,0x1F0,std::int32_t{8});Put(f.player,0x70,std::int32_t{8});
@@ -350,10 +352,75 @@ int main() {
   f.Reset();f.mutate_at=f.locals+3;
   Check(ArmDateSentinelV1(f.sentinel,f.Request(),f.wall+5000)==Arm::unavailable && !f.sentinel.armed.load(),
       "changing Core across ARM observations cannot publish a runtime arm");
+  f.Reset();f.Start(3,50);
+  const auto expiry_generation=f.sentinel.generation.load();
+  const auto expiry_deadline=f.sentinel.original_deadline_unix_ms;
+  const auto expiry_mono=f.sentinel.monotonic_deadline_ms;
+  Check(!ReadDateSentinelStatusWithExpiryV1(f.sentinel).expiry,"armed slot has no expiry evidence");
+  f.Date(24024);f.Post();
+  Check(ReadDateSentinelStatusV1(f.sentinel).completed_daily_ticks==1,
+      "original worker evaluates a real complete partial day before expiry");
+  f.mono=expiry_mono;f.block_pause.store(true);f.BeginPost();
+  const auto expiry_wait_until=std::chrono::steady_clock::now()+std::chrono::seconds(2);
+  while(!f.pause_entered.load(std::memory_order_acquire) && std::chrono::steady_clock::now()<expiry_wait_until)
+    std::this_thread::yield();
+  Check(f.pause_entered.load(std::memory_order_acquire),"original expiry reached worker pause inside its lease");
+  DateSentinelStatusReadV1 partial;
+  std::atomic<bool> expiry_reader_done=false;
+  std::thread expiry_reader([&]{
+    partial=ReadDateSentinelStatusWithExpiryV1(f.sentinel);
+    expiry_reader_done.store(true,std::memory_order_release);
+  });
+  while(!f.sentinel.status_readers_waiting.load(std::memory_order_acquire) &&
+      std::chrono::steady_clock::now()<expiry_wait_until)
+    std::this_thread::yield();
+  Check(f.sentinel.status_readers_waiting.load() && !expiry_reader_done.load(std::memory_order_acquire),
+      "typed Status waits for the actual expiry pause and worker rundown");
+  f.block_pause.store(false,std::memory_order_release);f.EndPost();expiry_reader.join();
+  Check(partial.status==ReadDateSentinelStatusV1(f.sentinel) && partial.status.state==Phase::failed &&
+      partial.status.starting_date_raw==24000 && partial.status.target_date_raw==24072 &&
+      partial.status.last_observed_date_raw==24024 && partial.status.trigger_date_raw==24024 &&
+      partial.status.completed_daily_ticks==1 && partial.status.pause_observed &&
+      !partial.status.terminal_observed,"legacy Status reflects the original paired paused partial failure");
+  Check(partial.expiry && partial.expiry->generation==expiry_generation &&
+      partial.expiry->original_deadline_unix_ms==expiry_deadline &&
+      partial.expiry->failure_flags==date_sentinel_failure_expired && !partial.expiry->armed &&
+      partial.expiry->shutdown_safe && !partial.expiry->access_cleanup_unknown,
+      "same lifetime Status binds exact expiry and complete cleanup to the original arm");
+  Check(f.sentinel.monotonic_deadline_ms==expiry_mono && f.Core().clock.paused,
+      "reading evidence neither renews cutoff nor changes paused world");
+  f.sentinel.access_cleanup_unknown.store(true);
+  Check(!ReadDateSentinelStatusWithExpiryV1(f.sentinel).expiry,
+      "separate cleanup uncertainty invalidates even an otherwise qualifying slot");
+  f.sentinel.access_cleanup_unknown.store(false);
+  f.sentinel.pending_failure.store(date_sentinel_failure_expired|date_sentinel_failure_observation);
+  Check(!ReadDateSentinelStatusWithExpiryV1(f.sentinel).expiry,
+      "coincident failure is outside the exact expiry protocol");
+  f.sentinel.pending_failure.store(date_sentinel_failure_expired);
+  auto replacement=f.Request(3);
+  replacement.starting_date_raw=24024;replacement.target_date_raw=24096;
+  // Two complete date-sentinel observations each read the local player twice.
+  f.missing_local_at=f.locals+5;
+  const auto replacement_deadline=f.wall+5000;
+  Check(ArmDateSentinelV1(f.sentinel,replacement,replacement_deadline)==Arm::army_unavailable &&
+      f.sentinel.original_deadline_unix_ms==replacement_deadline && DateSentinelShutdownSafeV1(f.sentinel) &&
+      f.sentinel.pending_failure.load()==date_sentinel_failure_expired,
+      "real failed replacement stages a deadline but keeps only the old failed shared slot");
+  const auto replaced=ReadDateSentinelStatusWithExpiryV1(f.sentinel);
+  Check(replaced.status==partial.status && !replaced.expiry,
+      "failed replacement cannot attach its deadline to the old slot");
+  f.Reset();f.Start(3,50);f.Date(24024);f.Post();
+  f.wall=f.sentinel.original_deadline_unix_ms;
+  Check(!DateSentinelAllowsResumeV1(f.sentinel,f.Core()) &&
+      !ReadDateSentinelStatusWithExpiryV1(f.sentinel).expiry,
+      "latched expiry before owner pause cannot prove clean disarm");
+  Check(PollDateSentinelOwnerV1(f.sentinel,f.Stamp()) && ReadDateSentinelStatusWithExpiryV1(f.sentinel).expiry,
+      "completed owner-side expiry has the same finite proof");
   f.Reset();f.Start(1,5);f.Date(24024);const auto original_deadline=f.sentinel.original_deadline_unix_ms;
   f.mono+=5;f.Post();Failed(f,date_sentinel_failure_expired);
   Check(f.sentinel.original_deadline_unix_ms==original_deadline &&
       ReadDateSentinelStatusV1(f.sentinel).completed_daily_ticks==0,"original monotonic cutoff is not renewed by a post");
+  Check(!ReadDateSentinelStatusWithExpiryV1(f.sentinel).expiry,"zero-day expiry has no partial-progress evidence");
   f.Reset();f.Start(1,5);c=f.Core();f.wall+=5;
   Check(!DateSentinelAllowsResumeV1(f.sentinel,c),"original UTC cutoff denies paired resume");
   Failed(f,date_sentinel_failure_expired);
@@ -361,6 +428,7 @@ int main() {
   Failed(f,date_sentinel_failure_expired);
   Check(old::ReadTacticalDailySentinelStatusV1().state==Phase::failed,
       "expiry during target pause reclassifies actual shared terminal result as failed");
+  Check(!ReadDateSentinelStatusWithExpiryV1(f.sentinel).expiry,"target-date expiry is outside the partial-progress proof");
   f.Reset();f.Start(2);f.Date(24024,true);f.Post();
   Failed(f,date_sentinel_failure_unexpected_pause);
   f.Reset();Put(f.actor,0x1C,std::uint32_t{0});
