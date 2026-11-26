@@ -4778,19 +4778,25 @@ public final class ContinuityBatchJournal implements BatchJournal {
         var cycleRecord = ExactRef.fromJson(branch.get("head"));
         long cycles = StrictJson.integer(branch.get("completed_cycles"), 1, StrictJson.MAX_SAFE_INTEGER);
         var originals = transitions.restartArchive(same);
-        var receipt = ContinuityActionJournal.lookup(head.state(), pair.saveActionId(), originals)
+        var hint = openingSaveLocator;
+        var cached = hint != null && hint.pair().equals(pair) && head.documents().contains(hint.pin());
+        // The cold lookup supplies the locator's original lower bound. A warm hint still needs the complete receipt proof.
+        var located = cached ? null : ContinuityActionJournal.lookup(head.state(), pair.saveActionId(), originals)
                 .orElseThrow(() -> new IOException("Opening SAVE has no actual canonical receipt"));
-        StrictJson.require(receipt.command().source().equals(source), "Opening SAVE receipt crossed its actual source");
-
-        var pin = locateOpeningSave(same, head, saved, pair, receipt.sequence());
+        if (located != null) requireOpeningSaveSource(located, source);
+        var pin = cached ? hint.pin() : locateOpeningSave(same, head, saved, located.sequence());
         var anchor = same.withHistoricalTransitions(java.util.List.of(pin), edges -> {
             var edge = edges.getFirst();
             var details = ContinuityJson.parseObject(edge.details(), ContinuityJson.LEDGER_MAX_BYTES);
+            var receipt = located != null ? located : ContinuityActionJournal.lookupWithHistoricalMembership(
+                    head.state(), edge.before(), pair.saveActionId(), originals)
+                    .orElseThrow(() -> new IOException("Opening SAVE has no actual canonical receipt"));
+            requireOpeningSaveSource(receipt, source);
             StrictJson.require(edge.sequence() > receipt.sequence()
                     && matchesOpeningSave(edge.kind(), details, edge.after().toJson(), saved)
                     && !saved.equals(edge.before().toJson().get(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD)),
                     "Opening SAVE must be the actual new confirmation of its retained branch");
-            ContinuityActionJournal.requireHistoricalReceipt(edge.before(), receipt, originals);
+            if (located != null) ContinuityActionJournal.requireHistoricalReceipt(edge.before(), receipt, originals);
             var semantic = transitions.openingSavedCycleSemantic(cycleRecord);
             var verified = requireHistoricalConfirmedSave(same, edge, owner, java.util.List.of(receipt), originals,
                     semantic, cycles, cycleRecord);
@@ -4801,10 +4807,12 @@ public final class ContinuityBatchJournal implements BatchJournal {
         return anchor;
     }
 
+    private static void requireOpeningSaveSource(ActionReceipt receipt, G2Source source) {
+        StrictJson.require(receipt.command().source().equals(source), "Opening SAVE receipt crossed its actual source");
+    }
+
     private WriterContracts.Pin locateOpeningSave(ContinuityStorePort.Session same, WriterContracts.Head head,
-            com.fasterxml.jackson.databind.JsonNode saved, CheckpointPair pair, long receiptSequence) throws IOException {
-        var hint = openingSaveLocator;
-        if (hint != null && hint.pair().equals(pair) && head.documents().contains(hint.pin())) return hint.pin();
+            com.fasterxml.jackson.databind.JsonNode saved, long receiptSequence) throws IOException {
         // An action sequence is only a lower bound on its confirmation. The selected edge is qualified separately.
         long lower = Math.addExact(receiptSequence, 1);
         var suffix = canonicalEventPins(same, head).tailMap(lower, true);

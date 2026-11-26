@@ -267,16 +267,59 @@ public final class ContinuityActionJournal implements ActionJournal {
             prior.putIfAbsent(item.receipt().command().actionId(), item.receipt());
         return List.copyOf(prior.values());
     }
+    /** Verifies current lookup and historical membership from one fresh walk where the exact older head is a suffix.
+     * Callers must supply the actual canonical predecessor under the writer's original historical edge scope. */
+    public static Optional<ActionReceipt> lookupWithHistoricalMembership(ContinuityState current,
+            ContinuityState predecessor, String actionId, ActionPorts.OutcomeArchive archive) {
+        var complete = historical(current, archive);
+        var selected = complete.stream().filter(item -> item.receipt().command().actionId().equals(actionId)).findFirst();
+        if (selected.isEmpty()) return Optional.empty();
+        var target = selected.orElseThrow();
+        var exact = target.receipt();
+        requireHistoricalReceiptIdentity(predecessor, exact);
+        var olderHead = recordHead(predecessor);
+        int from = -1;
+        for (int i = 0; i < complete.size(); i++) {
+            var item = complete.get(i);
+            if (olderHead.isPresent() && item.record().equals(olderHead.orElseThrow())) {
+                StrictJson.require(item.receipt().sequence() <= predecessor.sequence(),
+                        "action record chain sequence/machine drift");
+                from = i;
+                break;
+            }
+        }
+        if (from == -1) {
+            // The earlier canonical edge may record an independently valid ancestry. Verify it as before.
+            requireHistoricalReceipt(predecessor, exact, archive);
+        } else {
+            var actual = complete.subList(from, complete.size()).stream()
+                    .filter(item -> item.receipt().sequence() == exact.sequence()).findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("receipt is not in the surviving canonical action record chain"));
+            requireSameHistoricalReceipt(exact, actual, archive);
+        }
+        return Optional.of(exact);
+    }
+
     /** Membership in the actual canonical action chain, not just an independently stored receipt with matching bytes. */
     public static org.xar.ck3.control.contracts.ExactRef requireHistoricalReceipt(ContinuityState state, ActionReceipt exact, ActionPorts.OutcomeArchive archive) {
-        java.util.Objects.requireNonNull(exact); StrictJson.require(exact.sequence() <= state.sequence()
-                && exact.command().origin().machineId().equals(state.machineId()), "historical receipt crossed actual writer machine/sequence");
+        requireHistoricalReceiptIdentity(state, exact);
         List<Historical> complete = historical(state, archive);
         Historical actual = complete.stream().filter(item -> item.receipt().sequence() == exact.sequence()).findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("receipt is not in the surviving canonical action record chain"));
-        StrictJson.require(java.util.Arrays.equals(ActionReceiptCodec.encodeReceipt(exact, archive), ActionReceiptCodec.encodeReceipt(actual.receipt(), archive)),
-                "historical action record has another complete original receipt body");
+        requireSameHistoricalReceipt(exact, actual, archive);
         return actual.record();
+    }
+
+    private static void requireHistoricalReceiptIdentity(ContinuityState state, ActionReceipt exact) {
+        java.util.Objects.requireNonNull(exact);
+        StrictJson.require(exact.sequence() <= state.sequence() && exact.command().origin().machineId().equals(state.machineId()),
+                "historical receipt crossed actual writer machine/sequence");
+    }
+
+    private static void requireSameHistoricalReceipt(ActionReceipt exact, Historical actual, ActionPorts.OutcomeArchive archive) {
+        StrictJson.require(java.util.Arrays.equals(ActionReceiptCodec.encodeReceipt(exact, archive),
+                ActionReceiptCodec.encodeReceipt(actual.receipt(), archive)),
+                "historical action record has another complete original receipt body");
     }
     /** Fresh batch DATA validation. Each original record is decoded once in this invocation, never cached across calls. */
     public static List<org.xar.ck3.control.contracts.ExactRef> requireHistoricalReceipts(ContinuityState state,

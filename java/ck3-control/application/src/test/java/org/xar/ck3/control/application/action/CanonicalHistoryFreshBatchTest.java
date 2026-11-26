@@ -191,6 +191,51 @@ final class CanonicalHistoryFreshBatchTest {
         assertEquals(9, fresh.recordReads.size(), "a third independent invocation must traverse into the changed oldest original");
     }
 
+    @Test void olderExactSuffixUsesOneFreshWalkAndRetainsItsOwnHeadAndBounds() {
+        var f = new Fixture();
+        var predecessor = at(f, f.records.get(1), 20);
+        assertEquals(f.a, ContinuityActionJournal.lookupWithHistoricalMembership(f.state(), predecessor, "target", f.archive).orElseThrow());
+        assertEquals(List.of(f.records.get(2), f.records.get(1), f.records.get(0)), f.recordReads);
+        assertEquals(3, f.receiptReads.size());
+
+        var latest = at(f, f.records.get(2), 40);
+        assertEquals(MISSING, assertThrows(IllegalArgumentException.class, () -> ContinuityActionJournal.lookupWithHistoricalMembership(
+                latest, at(f, f.records.get(1), 35), "other", f.archive)).getMessage());
+        assertEquals(HEADER, assertThrows(IllegalArgumentException.class, () -> ContinuityActionJournal.lookupWithHistoricalMembership(
+                latest, at(f, f.records.get(1), 9), "target", f.archive)).getMessage());
+        assertEquals("action record chain sequence/machine drift", assertThrows(IllegalArgumentException.class,
+                () -> ContinuityActionJournal.lookupWithHistoricalMembership(latest, at(f, f.records.get(1), 19), "target", f.archive)).getMessage());
+
+        f.corrupt(f.recordReceipts.get(f.records.get(0)));
+        assertEquals("software original bytes/SHA changed", assertThrows(IllegalArgumentException.class,
+                () -> ContinuityActionJournal.lookupWithHistoricalMembership(latest, predecessor, "target", f.archive)).getMessage());
+    }
+
+    @Test void detachedCanonicalPredecessorStillReadsItsCompleteIndependentOriginals() {
+        var f = new Fixture();
+        f.add(receipt("past", 5, MACHINE), Optional.empty());
+        var past = f.records.get(3);
+        f.add(f.a, Optional.of(past));
+        var detached = f.records.get(4);
+        var predecessor = at(f, detached, 20);
+        assertEquals(f.a, ContinuityActionJournal.lookupWithHistoricalMembership(f.state(), predecessor, "target", f.archive).orElseThrow());
+        assertEquals(List.of(f.records.get(2), f.records.get(1), f.records.get(0), detached, past), f.recordReads);
+
+        var unknown = new ActionState.Unknown(Optional.empty(), Optional.empty(), "different detached original", List.of());
+        f.add(new ActionReceipt(1, f.a.sequence(), f.a.command(), f.a.bodySha256(), unknown), Optional.of(past));
+        assertEquals(BODY, assertThrows(IllegalArgumentException.class, () -> ContinuityActionJournal.lookupWithHistoricalMembership(
+                f.state(), at(f, f.records.get(5), 20), "target", f.archive)).getMessage());
+        f.corrupt(f.recordReceipts.get(past));
+        assertEquals("software original bytes/SHA changed", assertThrows(IllegalArgumentException.class,
+                () -> ContinuityActionJournal.lookupWithHistoricalMembership(f.state(), predecessor, "target", f.archive)).getMessage());
+    }
+
+    private static ContinuityState at(Fixture fixture, ExactRef head, long sequence) {
+        var state = fixture.state().toJson().put("sequence", sequence);
+        state.set(ContinuityActionJournal.STATE_FIELD, head.toJson());
+        return ContinuityState.fromJson(state, MACHINE);
+    }
+
     private static ActionReceipt receipt(String id, long sequence, String machine) {
         var game = new GameGeneration(42, new PythonOnlyUInt64(new BigInteger("9007199254740993")));
         var frame = new JointBudgetSelector.ProposalFrame(new JointBudgetSelector.Frame(BigInteger.valueOf(73),
