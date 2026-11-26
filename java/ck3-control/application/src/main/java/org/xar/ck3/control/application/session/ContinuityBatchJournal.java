@@ -19,6 +19,8 @@ import org.xar.ck3.control.application.action.CommandOrigin;
 import org.xar.ck3.control.application.action.NativeActionPort;
 import org.xar.ck3.control.application.action.ActionPorts;
 import org.xar.ck3.control.application.action.ContinuityActionJournal;
+import org.xar.ck3.control.application.action.CompositeOperatorQuarantineObservation;
+import org.xar.ck3.control.application.action.CompositeOperatorQuarantineSource;
 import org.xar.ck3.control.application.advance.LifeExpiredPartialAdvanceEvidence;
 import org.xar.ck3.control.application.checkpoint.CheckpointPairCodec;
 import org.xar.ck3.control.application.checkpoint.CheckpointRequestFactory;
@@ -4157,6 +4159,41 @@ public final class ContinuityBatchJournal implements BatchJournal {
         return readSameGameHistory(same, owner, false, ignored -> { });
     }
 
+    /** Replays the original imported history, including the exact exited decision if it has already committed.
+     * Neither the predecessor nor the administrative terminal issues any current-game or settled-recovery authority. */
+    public SettledSameGameData readExitedImportedHistory(ContinuityStorePort.Session same, SessionIdentity owner,
+            CompositeOperatorQuarantineSource source) throws IOException {
+        return readSameGameHistory(same,owner,false,ignored->{ },Optional.empty(),Optional.empty(),
+                Optional.of(Objects.requireNonNull(source)));
+    }
+
+    private record ExitedImportedHistory(ActionReceipt original, Optional<ActionReceipt> terminal) { }
+
+    private static ExitedImportedHistory requireExitedImportedHistory(ContinuityStorePort.Session same, WriterContracts.Head head,
+            SessionIdentity owner, CompositeOperatorQuarantineSource source, ActionPorts.OutcomeArchive originals) throws IOException {
+        var request=source.request();
+        var binding=request.exitedLife().orElseThrow();
+        StrictJson.require(request.machineId().equals(owner.machineId())&&request.game().equals(owner.game())
+                &&binding.ownerSessionId().equals(owner.sessionId())&&importedSavedInterruptedFrontier(head.state(),owner)
+                &&!head.snapshotNeedsRecovery()&&head.indexRepairs().isEmpty(),
+                "exited imported history requires its exact original interrupted owner and complete writer");
+        var canonical=ContinuityActionJournal.lookup(head.state(),request.parentActionId(),originals).orElseThrow();
+        if(head.state().sequence()==request.expectedHeadSequence()) {
+            source.requireExitedOriginals(head,canonical,originals);
+            return new ExitedImportedHistory(canonical,Optional.empty());
+        }
+        StrictJson.require(head.state().sequence()==Math.addExact(request.expectedHeadSequence(),1)
+                &&canonical.sequence()==head.state().sequence()&&canonical.state() instanceof ActionState.CompositeOperatorQuarantined,
+                "exited imported history requires its own dedicated terminal-only successor");
+        source.verify(same,head,canonical,originals);
+        var proof=CompositeOperatorQuarantineObservation.load(canonical,originals);
+        var terminalRecord=originals.loadRecord(ContinuityActionJournal.recordHead(head.state()).orElseThrow());
+        StrictJson.require(terminalRecord.receipt().equals(canonical)
+                &&terminalRecord.previous().equals(Optional.of(proof.originalActionHead())),
+                "exited imported history changed another original action");
+        return new ExitedImportedHistory(originals.loadReceipt(request.originalReceipt()),Optional.of(canonical));
+    }
+
     /** Canonical timeline children remain facts, but their ordinary parent owns cycle credit. */
     static java.util.List<ActionReceipt> ordinaryCycleRoots(java.util.List<ActionReceipt> actions) {
         return ordinaryCycleRoots(actions, false);
@@ -5155,13 +5192,21 @@ public final class ContinuityBatchJournal implements BatchJournal {
     private SettledSameGameData readSameGameHistory(ContinuityStorePort.Session same,SessionIdentity owner,boolean isolatedLife,
             java.util.function.Consumer<CleanBatchRestart> captures,Optional<ActionReceipt> pendingControl,
             Optional<org.xar.ck3.control.application.action.CompositeOperatorQuarantineRequest> operatorRequest)throws IOException {
+        return readSameGameHistory(same,owner,isolatedLife,captures,pendingControl,operatorRequest,Optional.empty());
+    }
+    private SettledSameGameData readSameGameHistory(ContinuityStorePort.Session same,SessionIdentity owner,boolean isolatedLife,
+            java.util.function.Consumer<CleanBatchRestart> captures,Optional<ActionReceipt> pendingControl,
+            Optional<org.xar.ck3.control.application.action.CompositeOperatorQuarantineRequest> operatorRequest,
+            Optional<CompositeOperatorQuarantineSource> exitedSource)throws IOException {
         store.requireSession(same);Objects.requireNonNull(owner);Objects.requireNonNull(pendingControl);Objects.requireNonNull(operatorRequest);
         return transitions.withLocked(same,()->{
             var head=same.head();var state=head.state();var whole=state.toJson();
+            var exited=exitedSource.isPresent()?Optional.of(requireExitedImportedHistory(same,head,owner,
+                    exitedSource.orElseThrow(),transitions.restartArchive(same))):Optional.<ExitedImportedHistory>empty();
             var savedMarker=whole.get(SavedContinuityBootstrap.FIELD);
             boolean importedPending=pendingControl.isPresent()&&initialImportedSavedPendingFrontier(state,owner);
             Optional<ActionReceipt> importedExpiry = Optional.empty();
-            if (!isolatedLife && state.status() == ContinuityState.Status.REPAIR_REQUIRED
+            if (exited.isEmpty() && !isolatedLife && state.status() == ContinuityState.Status.REPAIR_REQUIRED
                     && savedMarker != null && savedMarker.isObject() && importedSavedEntryMatches(state, whole, owner)) {
                 var originals = transitions.restartArchive(same);
                 var canonical = ContinuityActionJournal.receipts(state, originals);
@@ -5171,7 +5216,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
             var expiryAfterImportedCycle = importedExpiry.filter(receipt -> importedSavedCycleBasis(
                     state, whole, whole.path(WriterContracts.ORDINARY_CYCLE_FIELD), owner));
             boolean importedSettled=!isolatedLife&&pendingControl.isEmpty()&&importedSavedSettledFrontier(state,owner);
-            boolean importedInterrupted=operatorRequest.isEmpty() && (expiryAfterImportedCycle.isPresent()
+            boolean importedInterrupted=exited.isPresent() || operatorRequest.isEmpty() && (expiryAfterImportedCycle.isPresent()
                     || isolatedLife&&pendingControl.isEmpty()&&importedSavedInterruptedFrontier(state,owner));
             boolean importedClosedCycle=importedSettled||importedInterrupted;
             boolean importedWithSavedHistory=savedMarker!=null&&savedMarker.isObject()
@@ -5223,7 +5268,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 StrictJson.require(readOnlyObservedLifeRecoveryRoot(actions).isPresent(),
                         "isolated recovery retains one exact Life original and its canonical control prefix");
             } else {
-                StrictJson.require(!actions.isEmpty()&&(actions.stream().allMatch(ActionReceipt::settled) || isolatedSave || isolatedKnown || isolatedCouncil || isolatedEvent || isolatedSway || isolatedOperator),
+                StrictJson.require(!actions.isEmpty()&&(actions.stream().allMatch(ActionReceipt::settled) || isolatedSave || isolatedKnown || isolatedCouncil || isolatedEvent || isolatedSway || isolatedOperator || exited.isPresent()),
                         "settled recovery cannot discard an unresolved action outside its exact positive-ACK SAVE or known pending");
             }
             if (pendingControl.isPresent()) {
@@ -5236,6 +5281,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
             var newImportedLife = !importedInterrupted ? Optional.<ActionReceipt>empty()
                     : expiryAfterImportedCycle.flatMap(receipt -> LifeExpiredPartialAdvanceEvidence.readTerminalData(receipt, originals))
                         .map(LifeExpiredPartialAdvanceEvidence.TerminalData::original)
+                        .or(()->exited.map(ExitedImportedHistory::original))
                         .or(() -> readOnlyLifeRecoveryRoot(actions));
             StrictJson.require(!importedInterrupted||newImportedLife.isPresent(),"imported Saved interrupted batch requires the exact original Life prefix");
             ExactRef importedCycle=importedClosedCycle?ExactRef.fromJson(whole.path(WriterContracts.ORDINARY_CYCLE_FIELD).get("head")):null;
@@ -5344,7 +5390,9 @@ public final class ContinuityBatchJournal implements BatchJournal {
                         &&(importedInterrupted||tailIndex==state.sequence()),
                         "imported Saved restart does not end at its actual settled cycle or owned batch metadata");
                 if (importedInterrupted) {
-                    var tail = edges.subList(tailIndex,edges.size());
+                    // The independently verified administrative event did not change the original batch/cycle tail.
+                    int tailEnd=exited.flatMap(ExitedImportedHistory::terminal).isPresent()?edges.size()-1:edges.size();
+                    var tail = edges.subList(tailIndex,tailEnd);
                     var originalLife = newImportedLife.orElseThrow();
                     if (expiryAfterImportedCycle.isPresent()) {
                         // The newer settlement and RETAIN are replayed by the ordinary history loop.
@@ -6042,7 +6090,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     :new SameGameEntry.Observed(entry);
             var data=new SettledSameGameData(startingPoint,controller,retained.facts(),retained.fullDriver(),previousTransport,
                     source,Optional.ofNullable(latest),latestObserved,actions,state.sequence(),head.digest(),history);
-            boolean isolated = isolatedLife || isolatedSave || isolatedKnown || isolatedCouncil || isolatedEvent || isolatedSway || isolatedOperator || pendingControl.isPresent() || pendingKnownCompletion.isPresent() || pendingEventCompletion.isPresent();
+            boolean isolated = isolatedLife || isolatedSave || isolatedKnown || isolatedCouncil || isolatedEvent || isolatedSway || isolatedOperator || exited.isPresent() || pendingControl.isPresent() || pendingKnownCompletion.isPresent() || pendingEventCompletion.isPresent();
             if (!isolated && savedPair.isPresent()&&!importedCompleted) {
                 StrictJson.require(pending==null&&cycle.get("pending_receipt").isNull()
                         &&actions.stream().allMatch(ActionReceipt::settled)&&!confirmedSaves.isEmpty(),

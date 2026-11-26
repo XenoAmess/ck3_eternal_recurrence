@@ -215,6 +215,9 @@ public final class RootReservedRetirementArchive implements AutoCloseable {
             });
         }
         @Override public byte[] loadNativeFrame(ExactRef original){return checked(()->actual.loadNativeFrame(original));}
+        @Override public ExactRef nativeFrameReference(String sha256,long bytes){
+            return checked(()->actual.nativeFrameReference(sha256,bytes));
+        }
         @Override public byte[] readOriginalPacket(ExactRef original){return checked(()->actual.readOriginalPacket(original));}
         @Override public ExactRef preserveMaterial(RawJson original){
             return checked(()->{
