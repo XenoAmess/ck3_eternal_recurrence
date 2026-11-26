@@ -35,6 +35,7 @@ import org.xar.ck3.control.wave2.events.registered.RegisteredEventKnowledge;
 import org.xar.ck3.control.wave2.events.registered.RegisteredVanillaEventPolicy;
 import org.xar.ck3.control.wave2.events.unhandledevent.RetainedJson;
 import org.xar.ck3.control.wave2.events.unhandledevent.RetainedJson.*;
+import org.xar.ck3.control.wave2.planning.jointshortlist.JointShortlist.Domain;
 
 /**
  * Original strategy.py active-event branch at its real CORE call site.
@@ -65,6 +66,10 @@ public final class RegisteredEventCore implements OrdinaryCorePolicy.CoreProduce
 
     @FunctionalInterface public interface Full111EventRead {
         Optional<Full111EventObservation> observe(PlanningRequest actual, NativeFull111OrdinaryEvent foreground);
+    }
+
+    @FunctionalInterface public interface Full111EventSelection {
+        Optional<ActionCommand> propose(PlanningRequest request, Full111EventObservation observation, Full111RenderedOption option);
     }
 
     /** A stock widget observation preserves each flag independently and carries no selection role. */
@@ -138,6 +143,7 @@ public final class RegisteredEventCore implements OrdinaryCorePolicy.CoreProduce
     private final OrdinaryCorePolicy.CommandBinding binding;
     private final EventIncidentCapturePort incidentCapture;
     private final Full111EventRead full111Read;
+    private final Full111EventSelection full111Selection;
 
     public RegisteredEventCore(RegisteredEventKnowledge knowledge, PlanningReadPort reads, ReadContracts contracts,
             ContextValidator contextValidator, MaterialPlanner materials, PhaseProjector phases, OrdinaryCorePolicy.CommandBinding binding) {
@@ -152,8 +158,15 @@ public final class RegisteredEventCore implements OrdinaryCorePolicy.CoreProduce
     public RegisteredEventCore(RegisteredEventKnowledge knowledge, PlanningReadPort reads, ReadContracts contracts,
             ContextValidator contextValidator, MaterialPlanner materials, PhaseProjector phases, OrdinaryCorePolicy.CommandBinding binding,
             EventIncidentCapturePort incidentCapture, Full111EventRead full111Read) {
+        this(knowledge, reads, contracts, contextValidator, materials, phases, binding, incidentCapture, full111Read,
+                (request, observation, option) -> Optional.empty());
+    }
+    public RegisteredEventCore(RegisteredEventKnowledge knowledge, PlanningReadPort reads, ReadContracts contracts,
+            ContextValidator contextValidator, MaterialPlanner materials, PhaseProjector phases, OrdinaryCorePolicy.CommandBinding binding,
+            EventIncidentCapturePort incidentCapture, Full111EventRead full111Read, Full111EventSelection full111Selection) {
         this.incidentCapture = Objects.requireNonNull(incidentCapture);
         this.full111Read = Objects.requireNonNull(full111Read);
+        this.full111Selection = Objects.requireNonNull(full111Selection);
         this.knowledge = Objects.requireNonNull(knowledge); this.policy = new RegisteredVanillaEventPolicy(knowledge);
         this.reads = Objects.requireNonNull(reads); this.contracts = Objects.requireNonNull(contracts);
         this.contextValidator = Objects.requireNonNull(contextValidator);
@@ -216,8 +229,32 @@ public final class RegisteredEventCore implements OrdinaryCorePolicy.CoreProduce
                     "selected_option_number", RetainedJson.NULL, "selected_option_index", RetainedJson.NULL));
             var observed = plan("active_event_window_query_unavailable", FULL111_OPTIONS_UNAVAILABLE, summary);
             var baseline = opportunity(observed);
-            var diagnosis = full111Read.observe(request, event).filter(read -> read.instanceId() == event.instanceId())
-                    .map(read -> baseline.with(FULL111_EVENT_READ, read.diagnostic())).orElse(baseline);
+            var evidence = full111Read.observe(request, event).filter(read -> read.instanceId() == event.instanceId());
+            var diagnosis = evidence.map(read -> baseline.with(FULL111_EVENT_READ, read.diagnostic())).orElse(baseline);
+            if (evidence.isPresent()) {
+                var rendered = evidence.orElseThrow();
+                var firstVisible = rendered.renderer().stream().flatMap(renderer -> renderer.options().stream())
+                        .filter(Full111RenderedOption::widgetVisible).findFirst();
+                var selection = firstVisible.filter(option -> option.nativeCanSelect() && option.widgetEnabled())
+                        .flatMap(option -> full111Selection.propose(request, rendered, option));
+                if (selection.isPresent()) {
+                    var command = selection.orElseThrow();
+                    StrictJson.require(command.before().equals(request.before()) && command.source().equals(request.source())
+                            && command.sessionId().equals(request.sessionId()) && !command.deadline().isAfter(request.deadline())
+                            && request.observations().actionSteps().contains(command.operation()),
+                            "Full111 selection must retain the current executable ordinary observation");
+                    String reason = "select the first visible stock event option whose widget and native option both allow selection";
+                    String phase = "active_event_full111_stock_selection";
+                    var detail = diagnosis.with("phase", new OpportunityJson.Text(phase))
+                            .with("reason", new OpportunityJson.Text(reason))
+                            .with("selected_step", new OpportunityJson.Text(command.operation().value()))
+                            .with("selected_authored_option_index",
+                                    new OpportunityJson.IntegerValue(BigInteger.valueOf(firstVisible.orElseThrow().authoredOptionIndex())));
+                    return new OrdinaryPolicy.Replace(new OrdinaryPolicy.Draft("one-life-turn-v1", phase,
+                            reason, OrdinaryPolicy.Kind.FOREGROUND, selection, OrdinaryPolicy.Purpose.WORLD_ACTION,
+                            Optional.of(Domain.diplomacy), detail), reason);
+                }
+            }
             return new OrdinaryPolicy.Replace(new OrdinaryPolicy.Draft("one-life-turn-v1", text(observed.get("phase")),
                     FULL111_OPTIONS_UNAVAILABLE, OrdinaryPolicy.Kind.FOREGROUND, Optional.empty(), OrdinaryPolicy.Purpose.READ_ONLY,
                     Optional.empty(), diagnosis), "retain the actual Full111 event for the continuation diagnosis");

@@ -315,6 +315,47 @@ final class RegisteredEventCoreIntegrationTest {
         assertTrue(second.path("native_can_select").booleanValue());
     }
 
+    @Test void full111UsesTheFirstVisibleStockOptionInTheOrdinaryPlanner() throws Exception {
+        var operation = new OperationKey("select-current-ordinary-event-option-26785313-v2");
+        var input = full111ActiveEvent(Set.of(operation));
+        for (boolean firstEnabled : List.of(true, false)) {
+            var captured = new ArrayList<OpportunityJson.Obj>();
+            var policies = registryEventPolicies((actual, plan) -> captured.add(plan));
+            var renderer = new RegisteredEventCore.Full111RendererObservation(SOURCE, List.of(
+                    new RegisteredEventCore.Full111RenderedOption(2, true, false, true),
+                    new RegisteredEventCore.Full111RenderedOption(1, true, true, firstEnabled),
+                    new RegisteredEventCore.Full111RenderedOption(0, true, true, true)));
+            var observation = new RegisteredEventCore.Full111EventObservation(17, "bookmark.1070",
+                    SOURCE, SOURCE, SOURCE, Optional.empty(), Optional.of(renderer));
+            var proposed = new ArrayList<ActionCommand>();
+            var registry = new RegisteredEventCore(RegisteredEventKnowledge.load(), NO_READS, ignored -> Optional.empty(),
+                    EventWindowService.validator(ignored -> Build.CROZIER4), RegisteredEventMaterial::plan,
+                    RegisteredEventCore.exactSourcePhases(), (actual, step, args, detail, purpose, domain) -> {
+                        throw new AssertionError("Full111 selection must use its exact stock-option binding");
+                    }, (actual, plan) -> captured.add(plan),
+                    (actual, foreground) -> Optional.of(observation), (actual, original, option) -> {
+                        assertSame(observation, original);
+                        assertEquals(1, option.authoredOptionIndex());
+                        var selection = command(actual, operation, object(StrictJson.object().put("authored_option_index", 1)));
+                        proposed.add(selection);
+                        return Optional.of(selection);
+                    });
+            var lower = new AtomicInteger();
+            var result = registryPlanner(registry, policies.get(1), policies.get(2), lower).plan(input);
+            assertEquals(0, lower.get());
+            if (firstEnabled) {
+                assertEquals(1, proposed.size());
+                assertEquals(proposed.getFirst(), result.trace().finalPlan().orElseThrow().command().orElseThrow());
+                assertEquals(OrdinaryPolicy.Purpose.WORLD_ACTION, result.trace().finalPlan().orElseThrow().purpose());
+                assertTrue(captured.isEmpty());
+            } else {
+                assertInstanceOf(PlanningResult.ReadOnlyWait.class, result);
+                assertTrue(proposed.isEmpty());
+                assertFalse(captured.isEmpty());
+            }
+        }
+    }
+
     private static PlanningRequest full111ActiveEvent(Set<OperationKey> steps) throws Exception {
         byte[] original;
         try (var input = RegisteredEventCoreIntegrationTest.class.getResourceAsStream("/current267-lyd-cpp-a749/full111-ordinary-snapshot-event.json")) {
