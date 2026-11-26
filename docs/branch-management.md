@@ -288,3 +288,14 @@ ref as part of delivery rather than as a later cleanup project.
 最后一条 DES 继承人分支的原始 28 个提交已纳入主线的[可恢复归档](handover/archives/dynastic-heir-stock-input-20261025.md)。
 已验证从 GitHub 取得单个主线前置提交即可在独立仓库恢复原 tip 和源码树。
 主线继续使用已验收的离线合同。公开帝国恢复的 S1 实机证据和旧编排的冻结类型依赖按原状态记录。
+
+15:26 UTC，旧实机冻结候选和后继线性重放是本轮本地分支存量的主要来源。依照已通过的
+`95df3809be`，35 条分支引用已退役。原提交、源码与恢复方法见
+[旧自动游玩分支归档](handover/archives/retired-local-autoplay-20261126.md)。原工作树维持原提交，
+已检出的干净工作树切到同一提交的 detached HEAD，写入冻结标记。未提交源码和在用工作树按现有所有权处理。
+分支审计和还原回执位于 `D:/ck3-state/ck3-mainline-closeout-20261126`。
+[主线官方 CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39957553119)
+
+旧分支中尚缺的七份静态研究原文和 Construction FIRST02 的离线记录已补回。战斗胜方所属 War 的
+1.20.0.3 专用原始实验完整保存于[独立归档](handover/archives/battle-winner-war-membership-12003.md)，
+原验证状态和当前原生运行资格各依原记录。

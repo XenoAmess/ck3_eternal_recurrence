@@ -161,5 +161,17 @@ Army query to this synthetic capability list and keeps the priority assertion.
 It changes no production code. FIRST01 remains preserved under
 `Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/`
 `m4-wartime-construction-first01/ROOT-FIRST-COMPOUND-RESULT.json` and `test.log`.
-Root owns FIRST02 for this fixture change; no successful whole result is
-claimed from the partial FIRST01 assertions.
+No successful whole result is claimed from the partial FIRST01 assertions.
+
+Root FIRST02 is **GREEN**, exit0/5.0902798s at source
+`a0358f2751f31b0ad34d8d8df8336e17ed01530a`. The exact war-priority assertion
+remained in place. Root's accepted receipt and whole compound evidence are
+under `Z:/ck3_mod_rewrite_process_assets/g2-background-20261008/`
+`m4-wartime-construction-first02/`: `ROOT-FIRST-COMPOUND-RESULT.json`,
+`COMPOUND-EVIDENCE` and `test.log`. This is static-ready registered
+Service/transport/ledger qualification with synthetic game inputs; no native
+fixture, game action, current SDK deployment, construction live outcome or
+M4 completion is credited. The previous RED is retained and this GREEN is
+reused without replay.
+
+The original FIRST02 receipt was read back on 2026-11-26 from machine xenoamess-full-tower-eb9d2c1186.
