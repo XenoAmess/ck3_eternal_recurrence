@@ -78,12 +78,16 @@ final class RootReconciliationAuthorityIntegrationTest {
         final AtomicReference<PlanningReadResult.Known<org.xar.ck3.control.reconciliation.LateOutcome.Status>> statusKnown=new AtomicReference<>();
         final boolean queryEnabled;
         final boolean decoderBoundary;
+        final boolean refreshBeforePush;
         final RootReconciliationAuthority.QueryKind kind;
         final OperationKey actualAction;
         ActionCommand command;
         ActionReceipt firstUnknown;
         Harness(Path root,boolean queryEnabled)throws IOException{
             this(root,queryEnabled,RootReconciliationAuthority.QueryKind.COMMANDER_CANDIDATES);
+        }
+        Harness(Path root,boolean queryEnabled,boolean refreshBeforePush)throws IOException{
+            this(root,queryEnabled,RootReconciliationAuthority.QueryKind.COMMANDER_CANDIDATES,false,false,false,refreshBeforePush);
         }
         Harness(Path root,boolean queryEnabled,RootReconciliationAuthority.QueryKind actualKind)throws IOException{
             this(root,queryEnabled,actualKind,false);
@@ -96,8 +100,12 @@ final class RootReconciliationAuthorityIntegrationTest {
         }
         Harness(Path root,boolean queryEnabled,RootReconciliationAuthority.QueryKind actualKind,boolean replaceSource,
                 boolean decoderBoundary,boolean full111Selection)throws IOException{
+            this(root,queryEnabled,actualKind,replaceSource,decoderBoundary,full111Selection,false);
+        }
+        Harness(Path root,boolean queryEnabled,RootReconciliationAuthority.QueryKind actualKind,boolean replaceSource,
+                boolean decoderBoundary,boolean full111Selection,boolean refreshBeforePush)throws IOException{
             this.queryEnabled=queryEnabled;
-            this.decoderBoundary=decoderBoundary;kind=actualKind;
+            this.decoderBoundary=decoderBoundary;this.refreshBeforePush=refreshBeforePush;kind=actualKind;
             actualAction=full111Selection?new OperationKey(CurrentFull111EventOption.Action.SELECT.step())
                     :actualKind==RootReconciliationAuthority.QueryKind.PENDING_SUCCESSOR_CLOSE_TIMELINE
                     ?new OperationKey(org.xar.ck3.control.wave2.governance.succession.NativeTimelineBlocker12004.CLOSE_STEP)
@@ -107,7 +115,10 @@ final class RootReconciliationAuthorityIntegrationTest {
             var authorityRef=new AtomicReference<RootReconciliationAuthority>();
             var queryRef=new AtomicReference<ReadContract<?>>();
             var guardRef=new AtomicReference<RootReconciliationReadGuard>();
-            var reads=new ActionWriterIntegrationFixture.SoftwareReadScenario(decoderBoundary?Build.CROZIER4.sha256().toLowerCase(java.util.Locale.ROOT):"0".repeat(64),"fixture",source->{
+            var reads=new ActionWriterIntegrationFixture.SoftwareReadScenario(
+                    refreshBeforePush?ExactCk3Build.CK3_12004.executableSha256()
+                        :decoderBoundary?Build.CROZIER4.sha256().toLowerCase(java.util.Locale.ROOT):"0".repeat(64),
+                    refreshBeforePush?ExactCk3Build.CK3_12004.coreFrameAdapterId():"fixture",source->{
                 if(actualKind==RootReconciliationAuthority.QueryKind.UNKNOWN_SENTINEL_STATUS){
                     var ordinary=ClockStatusRead.registeredContract(source);
                     ordinaryStatus.set(ordinary);
@@ -159,8 +170,10 @@ final class RootReconciliationAuthorityIntegrationTest {
                 if(!decoderBoundary)assertEquals(raw("{}"),request.additionalFields());
                 return actualKind==RootReconciliationAuthority.QueryKind.UNKNOWN_SENTINEL_STATUS
                         ?RootUnknownSentinelReadProfileTest.statusResult():raw("{\"software_read_only_observed\":true}");
-            },decoderBoundary?Optional.of(Build.CROZIER4.version()):Optional.empty(),
-                    actualKind==RootReconciliationAuthority.QueryKind.UNKNOWN_SENTINEL_STATUS?Set.of(ClockStatusRead.STATUS_CAP):Set.of());
+            },refreshBeforePush?Optional.of(ExactCk3Build.CK3_12004.version())
+                    :decoderBoundary?Optional.of(Build.CROZIER4.version()):Optional.empty(),
+                    refreshBeforePush?Set.of(NativeFreshSnapshotPort.CAPABILITY)
+                        :actualKind==RootReconciliationAuthority.QueryKind.UNKNOWN_SENTINEL_STATUS?Set.of(ClockStatusRead.STATUS_CAP):Set.of());
             var action=new ActionWriterIntegrationFixture.SoftwareActionScenario(actualAction,
                     full111Selection?CurrentFull111EventOption.Action.SELECT.capability():"game.command.pause-map",(original,attempt,dispatch)->{
                 if(!ActionReconciliationScope.activeFor(original))
@@ -226,6 +239,7 @@ final class RootReconciliationAuthorityIntegrationTest {
                 }catch(IOException failure){throw new UncheckedIOException(failure);}
             },()->{});
             actual=new ActionWriterIntegrationFixture(root,false,reads,List.of(action));fixtureRef.set(actual);query=queryRef.get();
+            if(refreshBeforePush)actual.configureSoftwareFreshRead179("success");
             var inputs=actual.physicalInputs();
             physical=new RootLifecycleAuthority(actual.writer,actual.archive,inputs.transport(),inputs.driverAssembler(),inputs.observationAssembler(),
                     inputs.source(),(same,session,source,packet,diagnostics,deadline)->{
@@ -317,23 +331,46 @@ final class RootReconciliationAuthorityIntegrationTest {
             }else command=actual.command("canonical-unresolved-software-action");
             firstUnknown=actual.coordinator.execute(command);assertInstanceOf(ActionState.Unknown.class,firstUnknown.state());
             assertEquals(1,actual.nativeActionWrites());assertEquals(0,actual.scenarioReadWrites());assertEquals(0,scopeCalls.get());
-            var previous=actual.physicalInputs().transport().latestObservedSnapshot().orElseThrow();
+            var transport=actual.physicalInputs().transport();
+            if(refreshBeforePush){
+                // The actual Native mutation invalidates its cache. Complete the exact supported legacy read
+                // first, then deliver a distinct unsolicited publication for the Root Push-only observer.
+                var fresh=assertInstanceOf(NativeFreshSnapshotPort.Received.class,transport.readFreshFullState(Instant.now().plusSeconds(15)));
+                NativeFreshSnapshotPort.verifyAfter(firstUnknown.ack().orElseThrow(),fresh);
+                assertEquals(1,actual.softwareFreshWrites179());
+            }
+            var previous=transport.latestObservedSnapshot().orElseThrow();
             ObjectNode envelope=StrictJson.object().put("type","state_snapshot").put("protocol_version",1)
                     .put("snapshot_id",decoderBoundary?"native:"+previous.nativeRevision().add(BigInteger.ONE):"actual-post-attempt-snapshot")
                     .put("revision",previous.nativeRevision().add(BigInteger.ONE));
-            ObjectNode state=(ObjectNode)StrictJson.parse(previous.state().bytes(),DriverJson.MAX_NATIVE_BYTES);
-            if(changedPlayer)state.set("played_character",StrictJson.object().put("character_id",74).put("alive",true));
+            ObjectNode state=(ObjectNode)StrictJson.parse(previous.state().bytes(),StrictJson.EXPLICIT_MAX_BYTES);
+            if(changedPlayer){
+                ((ObjectNode)state.get("played_character")).put("character_id",74);
+                state.putNull("succession_reconciliation");
+                state.putNull("one_life_settlement");
+            }
             envelope.set("state",state);
-            actual.enqueueSoftwareNativePacket(NativeWire.packet(StrictJson.canonical(envelope,DriverJson.MAX_NATIVE_BYTES)));
+            byte[] originalPush=NativeWire.packet(StrictJson.canonical(envelope,StrictJson.EXPLICIT_MAX_BYTES));
+            actual.enqueueSoftwareNativePacket(originalPush);
+            if(refreshBeforePush){
+                var deadline=Instant.now().plusSeconds(15);
+                var pushed=transport.observe(deadline);
+                if(pushed==previous)pushed=transport.observe(deadline); // Consume the prior correlated frame, if still undelivered.
+                assertArrayEquals(originalPush,pushed.originalPacket());
+                var occurrence=transport.acceptedSnapshotRevision(pushed).received();
+                assertTrue(occurrence.order().compareTo(firstUnknown.ack().orElseThrow().custody().orElseThrow().responseReceived().order())>0);
+                assertTrue(!pushed.observedAt().isBefore(previous.observedAt()));
+                assertEquals(1,actual.softwareFreshWrites179(),"the unsolicited frame must never be manufactured through a second Fresh request");
+            }
         }
         private void enqueueBoundarySnapshot()throws IOException{
             var previous=actual.physicalInputs().transport().latestObservedSnapshot().orElseThrow();
-            var state=(ObjectNode)StrictJson.parse(previous.state().bytes(),DriverJson.MAX_NATIVE_BYTES);
+            var state=(ObjectNode)StrictJson.parse(previous.state().bytes(),StrictJson.EXPLICIT_MAX_BYTES);
             var player=(ObjectNode)state.get("played_character");player.putArray("spouse_ids");player.putNull("betrothed_id");
             state.put("local_player_id",73);
             var revision=previous.nativeRevision().add(BigInteger.ONE);
             var envelope=StrictJson.object().put("type","state_snapshot").put("protocol_version",1).put("snapshot_id","native:"+revision).put("revision",revision);
-            envelope.set("state",state);actual.enqueueSoftwareNativePacket(NativeWire.packet(StrictJson.canonical(envelope,DriverJson.MAX_NATIVE_BYTES)));
+            envelope.set("state",state);actual.enqueueSoftwareNativePacket(NativeWire.packet(StrictJson.canonical(envelope,StrictJson.EXPLICIT_MAX_BYTES)));
         }
         private OpportunityJson.Obj boundaryArguments(ActionReceipt original,ReconciliationIdentity identity,DriverObservationAssembler.Complete current,Instant deadline){
             var attempt=ActionTransitions.attempt(original.state()).orElseThrow();
@@ -390,8 +427,9 @@ final class RootReconciliationAuthorityIntegrationTest {
     }
 
     @Test void canonicalUnknownUsesOneRealRootScopeAndTheSameCatalogTransportAndArchiveWithoutReplay()throws Exception{
-        try(var h=new Harness(temporary.resolve("query"),true)){
-            h.executeOriginal();h.reconcile();assertEquals(1,h.actual.scenarioReadWrites());assertTrue(h.sourceChecks.get()>2);
+        try(var h=new Harness(temporary.resolve("query"),true,true)){
+            h.executeOriginal();h.reconcile();assertEquals(1,h.actual.scenarioReadWrites());
+            assertEquals(1,h.sourceChecks.get(),"the one physical scope verifies its source before the guarded query");
             int queries=h.actual.scenarioReadWrites(),world=h.actual.nativeActionWrites();
             h.actual.writer.locked(same->{
                 var bound=h.actual.archive.withSession(same);var originals=h.actual.physicalInputs().originals();
@@ -607,12 +645,13 @@ final class RootReconciliationAuthorityIntegrationTest {
         }
     }
     @Test void changedPlayerReturnsActualQualifiedRawOriginalsWithoutFakeCompleteOrAQuery()throws Exception{
-        try(var h=new Harness(temporary.resolve("changed-player"),true)){
+        try(var h=new Harness(temporary.resolve("changed-player"),true,true)){
             h.executeOriginal(true);var result=h.actual.coordinator.reconcile(h.command.actionId());
             var unknown=assertInstanceOf(ActionState.Unknown.class,result.state());
             assertEquals(0,h.scopeCalls.get());assertNull(h.push.get());assertNull(h.issued.get());
             assertEquals(1,h.actual.nativeActionWrites());assertEquals(0,h.actual.scenarioReadWrites());
-            assertTrue(unknown.evidence().size()>=7,"raw-only Pending must preserve actual Native/hello/heartbeat/manifest/Driver/semantic/source originals");
+            assertTrue(unknown.evidence().size()>=7,()->"raw-only Pending must preserve actual Native/hello/heartbeat/manifest/Driver/semantic/source originals: "
+                    +unknown.reason()+", evidence count="+unknown.evidence().size());
             h.actual.writer.locked(same->{
                 for(var ref:unknown.evidence())assertEquals(ref.bytes(),h.actual.archive.readArtifact(same,ref,WriterContracts.MAX_PIN_BYTES).length);
                 assertFalse(h.reconciliation.hasActiveFor(same,h.command));return null;
