@@ -51,6 +51,7 @@ final class Current142ExclusiveModeTransportTest {
             var result=f.transport.readFreshArmyIdentity126(f.deadline);
             var received=assertInstanceOf(NativeGameTransport.ArmyIdentityReceived.class,result,result::toString);
             assertEquals(source(),received.source());f.transport.acceptedSnapshotRevision(received.frame()).requireOriginal(received.frame());
+            NativeFreshSnapshotPort.verifyOriginal(received.acknowledgement(),received.frame(),received.snapshotReceived());
             var rows=DriverJson.toNode(received.semantic()).path("player_armies");assertEquals(2,rows.size());
             assertEquals(-2080374784,rows.get(0).path("army_id").intValue());assertEquals(0,rows.get(1).path("army_id").intValue());
             for(var row:rows){assertEquals(3,row.size());assertEquals(-2130706431,row.path("owner_character_id").intValue());assertTrue(row.path("controllable").booleanValue());}

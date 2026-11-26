@@ -176,7 +176,7 @@ final class KnownPendingInteractionTypedAvailabilityTest {
         var changedDeadline=new PlanningRequest(request.before(),request.source(),request.sessionId(),request.deadline().minusSeconds(1),request.observations());
         for(var policy:List.of(legacy,typed,sixArgument))
             assertThrows(IllegalArgumentException.class,()->policy.evaluateCore(changedDeadline,OrdinaryPolicy.Draft.empty()));
-        var changedSnapshot=snapshot(held);changedSnapshot.with("diagnostics").put("bridge_pid",124);
+        var changedSnapshot=snapshot(held);changedSnapshot.withObjectProperty("diagnostics").put("bridge_pid",124);
         var changed=request(held,changedSnapshot,wire(held,"spar_with_knight_interaction"),steps());
         for(var policy:List.of(legacy,typed,sixArgument))
             assertThrows(IllegalArgumentException.class,()->policy.evaluateCore(changed,OrdinaryPolicy.Draft.empty()));

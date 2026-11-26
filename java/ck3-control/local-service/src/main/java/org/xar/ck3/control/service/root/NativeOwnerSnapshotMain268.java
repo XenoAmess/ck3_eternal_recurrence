@@ -24,6 +24,7 @@ import java.util.Set;
 import org.xar.ck3.control.application.action.NativeActionPort;
 import org.xar.ck3.control.application.action.NativeObservationPort;
 import org.xar.ck3.control.application.action.NativeRequestChronology;
+import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 import org.xar.ck3.control.build.SharedSourceFiles;
 import org.xar.ck3.control.build.WindowsJobProcess;
 import org.xar.ck3.control.contracts.ExactRef;
@@ -292,7 +293,8 @@ public final class NativeOwnerSnapshotMain268 {
         long overall = StrictJson.integer(config.get("overall_timeout_seconds"), 1, currentZg361OverallTimeoutLimit(observationMode));
         long readSeconds = StrictJson.integer(config.get("read_timeout_seconds"), 1, 60);
         int frames = Math.toIntExact(StrictJson.integer(config.get("maximum_frames_per_operation"), 1, 65536));
-        boolean corePrefixOnly=observationMode!=ObservationMode.SAVED_FULL;
+        boolean currentArmyIdentity=observationMode==ObservationMode.CURRENT_ARMY_IDENTITY_READONLY;
+        boolean corePrefixOnly=observationMode!=ObservationMode.SAVED_FULL&&!currentArmyIdentity;
         Instant entered = Instant.now(), deadline = entered.plusSeconds(overall);
         byte[] descriptorBytes = readExact(expectedDescriptor, GameSupervisorControl.MAXIMUM_DESCRIPTOR_BYTES);
         SharedSourceFiles.Witness descriptorWitness = SharedSourceFiles.observe(descriptorPath);
@@ -324,6 +326,8 @@ public final class NativeOwnerSnapshotMain268 {
             result.put("saved_basename",saved.basename());
             result.set("configured_saved_file",new ExactRef(saved.save().path(),saved.save().bytes(),saved.save().sha256()).toJson());
         } else result.put("schema","xar.native-owner-core-menu/v1").put("mode","menu_core_prefix");
+        if(currentArmyIdentity)result.put("schema","xar.native-owner-army-identity-readonly/v1")
+                .put("mode","current_army_identity_readonly");
         result.set("owner_descriptor", expectedDescriptor.toJson());
         result.set("owner_descriptor_native_identity", nativeIdentity(descriptorWitness.nativeFile()));
         result.set("supervisor", identity(owner.supervisorIdentity()));
@@ -468,7 +472,7 @@ public final class NativeOwnerSnapshotMain268 {
             try (ManagedGameSession game = NativeGameAttachment.attach(request, (currentZg361Scoreboard||currentZg361Combined||currentZg361Review||currentZg361Ae2||currentLivingOriginal||currentRmtmRemaining||currentRmtmTitleQuery||currentCcc||currentStockBookmark1070||currentRiteCreationBlockers||currentRiteText||currentRiteCreate||currentDesInitGuard||currentStockSeed||currentTed||currentLyd||currentSupermanSavedBaseline||currentSupermanHealth||currentCourtierChoices||currentCourtierConfiguration||currentDecisionsClose||currentCourtierControls||currentXqolThreshold||currentXqolPrompt||currentCuratedDecision||currentFullscreenEvent||currentLetterSet||djcSelectedCost||currentLetter||djcUiMode||currentFrontendMenu||currentSuccession||aubObserver||djcQuery||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
                 if (game.mode() != ManagedGameSession.Mode.ATTACHED) throw new IOException("actual attachment mode differs");
                 requireSupervisor(supervisor, owner.supervisorIdentity());
-                var transport = game.nativeTransport();
+                var transport = game.nativeTransport(nativeSourceMode(observationMode));
                 var hello = transport.diagnostics().originalHello().orElseThrow(() -> new IOException("actual received HELLO unavailable"));
                 originals.set("new_hello", write(output, "new-hello.bin", hello.original().packet().value()));
                 result.put("hello_observed_at_utc", hello.observedAt().toString());
@@ -831,20 +835,31 @@ if(riteDraftCosts) {
                     }
                 } else {
                 stage = "ONE_FRESH_READ";
-                NativeFreshSnapshotPort.Result read = transport.readFreshFullState(deadline);
-                archiveNaturalDiagnostics(output,originals,transport.diagnostics());
-                originals.set("dispatch", saveDispatch(output, read.dispatch()));
-                if (read instanceof NativeFreshSnapshotPort.Unavailable unavailable) {
-                    ObjectNode rejected = StrictJson.object().put("reason", unavailable.reason());
-                    if (unavailable.originalFrame().isPresent()) rejected.set("frame", saveFrame(output, unavailable.originalFrame().orElseThrow()));
-                    if (unavailable.snapshotReceived().isPresent()) rejected.set("snapshot_received", event(unavailable.snapshotReceived().orElseThrow()));
-                    rejected.set("originals", originals);
-                    write(output, "unavailable.json", FullJsonTree.encode(rejected, FullJsonTree.MAXIMUM_BYTES));
-                    throw new IOException("original fresh READ unavailable; no retry: " + unavailable.reason());
+                NativeActionPort.AckReceived acknowledgement;
+                NativeObservationPort.ObservedFrame frame;
+                NativeRequestChronology.Event snapshotReceived;
+                NativeGameTransport.ArmyIdentityReceived identityRead = null;
+                if (currentArmyIdentity) {
+                    var read = transport.readFreshArmyIdentity126(deadline);
+                    archiveNaturalDiagnostics(output,originals,transport.diagnostics());
+                    if (read instanceof NativeGameTransport.ArmyIdentityUnavailable unavailable)
+                        throw archiveUnavailableFreshRead(output, originals, unavailable.original(), unavailable.reason());
+                    identityRead = (NativeGameTransport.ArmyIdentityReceived) read;
+                    acknowledgement = identityRead.acknowledgement();
+                    frame = identityRead.frame();
+                    snapshotReceived = identityRead.snapshotReceived();
+                } else {
+                    var read = transport.readFreshFullState(deadline);
+                    archiveNaturalDiagnostics(output,originals,transport.diagnostics());
+                    if (read instanceof NativeFreshSnapshotPort.Unavailable unavailable)
+                        throw archiveUnavailableFreshRead(output, originals, unavailable, unavailable.reason());
+                    var received = (NativeFreshSnapshotPort.Received) read;
+                    acknowledgement = received.acknowledgement();
+                    frame = received.originalFrame();
+                    snapshotReceived = received.snapshotReceived();
                 }
-                var received = (NativeFreshSnapshotPort.Received) read;
-                NativeFreshSnapshotPort.verifyOriginal(received.acknowledgement(), received.originalFrame(), received.snapshotReceived());
-                var frame = received.originalFrame();
+                originals.set("dispatch", saveDispatch(output, acknowledgement));
+                NativeFreshSnapshotPort.verifyOriginal(acknowledgement, frame, snapshotReceived);
                 if (!frame.session().game().equals(owner.generation()) || !frame.session().machineId().equals(owner.machineId())
                         || !frame.session().sessionId().equals(owner.sessionId())
                         || !transport.diagnostics().session().filter(frame.session()::equals).isPresent()
@@ -853,10 +868,15 @@ if(riteDraftCosts) {
                     throw new IOException("actual READ/HELLO crossed expected owner Game/session/connection");
                 stage = "PRESERVE_READ";
                 originals.set("frame", saveFrame(output, frame));
+                if (identityRead != null) {
+                    result.set("identity_source", identityRead.source().toJson());
+                    originals.set("player_armies", write(output, "player-army-identities.json",
+                            OpportunityJson.encode(identityRead.semantic().get("player_armies"))));
+                }
                 result.set("session", session(frame.session()));
-                result.put("request_id", received.acknowledgement().requestId()).put("snapshot_id", frame.snapshotId())
+                result.put("request_id", acknowledgement.requestId()).put("snapshot_id", frame.snapshotId())
                         .put("native_revision", frame.nativeRevision().toString()).put("observed_at_utc", frame.observedAt().toString());
-                result.set("snapshot_received", event(received.snapshotReceived()));
+                result.set("snapshot_received", event(snapshotReceived));
                 JsonNode parsedState = FullJsonTree.parse(frame.state().bytes(), FullJsonTree.MAXIMUM_BYTES);
                 if (!(parsedState instanceof ObjectNode)) throw new IOException("actual full state must be an object");
                 ObjectNode state = (ObjectNode) parsedState;
@@ -880,6 +900,7 @@ if(riteDraftCosts) {
         stage = "PUBLISH_ARCHIVED_DATA";
         result.set("originals", originals);
         String archivedStatus = currentRmtmRemaining?"ARCHIVED_CURRENT_RMTM_DATA_ENDPOINT_RELEASED":currentRmtmTitleQuery?"ARCHIVED_CURRENT_RMTM_TITLE_READONLY_DATA_ENDPOINT_RELEASED":currentStockBookmark1070?"ARCHIVED_CURRENT_STOCK_BOOKMARK1070_DATA_ENDPOINT_RELEASED":currentRiteCreationBlockers?"ARCHIVED_CURRENT_RITE_CREATION_BLOCKERS_DATA_ENDPOINT_RELEASED":currentRiteText?"ARCHIVED_CURRENT_RITE_TEXT_DATA_ENDPOINT_RELEASED":currentRiteCreate?"ARCHIVED_CURRENT_RITE_CREATE_DATA_ENDPOINT_RELEASED":currentDesInitGuard?"ARCHIVED_CURRENT_DES_INIT_GUARD_DATA_ENDPOINT_RELEASED":currentStockSeed?"ARCHIVED_CURRENT_STOCK_NEWGAME_SEED_MATERIAL_ENDPOINT_RELEASED":currentTed?"ARCHIVED_CURRENT_TED_DATA_ENDPOINT_RELEASED":currentLyd?"ARCHIVED_CURRENT_LYD_DATA_ENDPOINT_RELEASED":currentSupermanSavedBaseline?"ARCHIVED_CURRENT_SUPERMAN_SAVED_BASELINE_DATA_ENDPOINT_RELEASED":currentSupermanHealth?"ARCHIVED_CURRENT_SUPERMAN_HEALTH_DATA_ENDPOINT_RELEASED":currentCourtierChoices?"ARCHIVED_CURRENT_COURTIER_CHOICES_DATA_ENDPOINT_RELEASED":currentCourtierConfiguration?"ARCHIVED_CURRENT_COURTIER_CONFIGURATION_DATA_ENDPOINT_RELEASED":currentDecisionsClose?"ARCHIVED_CURRENT_DECISIONS_CLOSE_DATA_ENDPOINT_RELEASED":currentCourtierControls?"ARCHIVED_CURRENT_COURTIER_CONTROLS_DATA_ENDPOINT_RELEASED":currentXqolThreshold?"ARCHIVED_CURRENT_XQOL_THRESHOLD_DATA_ENDPOINT_RELEASED":currentXqolPrompt?"ARCHIVED_CURRENT_XQOL_PROMPT_DATA_ENDPOINT_RELEASED":currentCuratedDecision?"ARCHIVED_CURRENT_CURATED_DECISIONS_DATA_ENDPOINT_RELEASED":currentFullscreenEvent?"ARCHIVED_CURRENT_FULLSCREEN_EVENT_DATA_ENDPOINT_RELEASED":currentLetterSet?"ARCHIVED_CURRENT_LETTER_SET_DATA_ENDPOINT_RELEASED":djcSelectedCost?"ARCHIVED_CURRENT_DJC_SELECTED_COST_DATA_ENDPOINT_RELEASED":currentLetter?"ARCHIVED_CURRENT_LETTER_DATA_ENDPOINT_RELEASED":djcUiMode?"ARCHIVED_CURRENT_DJC_DECLARATION_UI_DATA_ENDPOINT_RELEASED":riteFinalConfirmation?"ARCHIVED_CURRENT_RITE_FINAL_CALLBACK_DATA_ENDPOINT_RELEASED":currentDateAdvance?"ARCHIVED_CURRENT_NATIVE_ONE_DAY_ENDPOINT_RELEASED":riteDoctrine?"ARCHIVED_CURRENT_RITE_ACTION_DATA_ENDPOINT_RELEASED":guiNavigation?"ARCHIVED_LITERAL_NAVIGATION_SUBMISSION_ENDPOINT_RELEASED":checkpointSave?"ARCHIVED_CURRENT_CORE_CHECKPOINT_MATERIAL_ENDPOINT_RELEASED":guiControls?"ARCHIVED_NATIVE_GUI_CONTROLS_DATA_ENDPOINT_RELEASED":riteDraftCosts?"ARCHIVED_NATIVE_RITE_DRAFT_COSTS_DATA_ENDPOINT_RELEASED":guiWindow?"ARCHIVED_NATIVE_GUI_WINDOW_DATA_ENDPOINT_RELEASED":guiRootIndex?"ARCHIVED_NATIVE_GUI_ROOT_INDEX_DATA_ENDPOINT_RELEASED":dateAdvance?"ARCHIVED_NATIVE_DATE_SENTINEL_ADVANCE_ENDPOINT_RELEASED":personalCash?"ARCHIVED_NATIVE_PERSONAL_CASH_DATA_ENDPOINT_RELEASED":fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
+        if(currentArmyIdentity)archivedStatus="ARCHIVED_CURRENT_ARMY_IDENTITY_READONLY_ENDPOINT_RELEASED";
         result.put("status", archivedStatus).put("completed_at_utc", Instant.now().toString());
         ObjectNode published = write(output, "summary.json", FullJsonTree.encode(result, FullJsonTree.MAXIMUM_BYTES));
         System.out.println(StrictJson.object().put("schema", "xar.native-owner-snapshot-stage/v1")
@@ -5909,7 +5930,7 @@ if(riteDraftCosts) {
         }
     }
 
-    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE,CURRENT_DJC_TARGET_QUERY,CURRENT_SUCCESSION_QUERY,CURRENT_SUCCESSION_CONTINUE,CURRENT_DJC_DECLARATION_UI,CURRENT_DJC_DECLARATION_SUBMIT,CURRENT_LETTER_QUERY,CURRENT_LETTER_REPLY_KNOWN,CURRENT_DJC_SELECTED_COST,CURRENT_DJC_SELECTED_COST_PREVIEW,CURRENT_LETTER_SET_QUERY,CURRENT_LETTER_SET_REPLY_KNOWN_INSTANCE,CURRENT_FULLSCREEN_EVENT_QUERY,CURRENT_FULLSCREEN_EVENT_ACK_KNOWN_INTRO,CURRENT_CURATED_DECISIONS_QUERY,CURRENT_CURATED_DECISIONS_OPEN,CURRENT_CURATED_DECISION_DETAIL,CURRENT_CURATED_DECISION_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_QUERY,CURRENT_XQOL_CONVERSION_PROMPT_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_CANCEL,CURRENT_XQOL_CONVERSION_THRESHOLD_QUERY,CURRENT_XQOL_CONVERSION_THRESHOLD_SET,CURRENT_COURTIER_CREATOR_CONTROLS_QUERY,CURRENT_COURTIER_CREATOR_CONTROL_EXECUTE,CURRENT_DECISIONS_CLOSE_QUERY,CURRENT_DECISIONS_CLOSE,CURRENT_COURTIER_CONFIGURATION_QUERY,CURRENT_COURTIER_CONFIGURATION_EXECUTE,CURRENT_COURTIER_CHOICES_QUERY,CURRENT_COURTIER_CHOICE_SELECT,CURRENT_SUPERMAN_HEALTH_QUERY,CURRENT_SUPERMAN_HEALTH_BASELINE_SAVE_AND_BEGIN,CURRENT_SUPERMAN_HEALTH_COMPLETED_CLOSE,CURRENT_SUPERMAN_HEALTH_RESUME_SAVED_BASELINE_AND_BEGIN,CURRENT_LYD,CURRENT_TED,CURRENT_STOCK_NEWGAME_SEED,CURRENT_DES_SAVED_GAME_INIT_GUARD,CURRENT_RITE_CREATE,CURRENT_RITE_TEXT,CURRENT_RITE_CREATION_BLOCKERS,CURRENT_STOCK_BOOKMARK1070,CURRENT_CCC,CURRENT_RMTM_TITLE_QUERY,CURRENT_RMTM_REMAINING,CURRENT_LIVING_ORIGINAL,CURRENT_ZG361_AE2,CURRENT_ZG361_REVIEW,CURRENT_ZG361_REVIEW_AE2,CURRENT_ZG361_SCOREBOARD }
+    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE,CURRENT_DJC_TARGET_QUERY,CURRENT_SUCCESSION_QUERY,CURRENT_SUCCESSION_CONTINUE,CURRENT_DJC_DECLARATION_UI,CURRENT_DJC_DECLARATION_SUBMIT,CURRENT_LETTER_QUERY,CURRENT_LETTER_REPLY_KNOWN,CURRENT_DJC_SELECTED_COST,CURRENT_DJC_SELECTED_COST_PREVIEW,CURRENT_LETTER_SET_QUERY,CURRENT_LETTER_SET_REPLY_KNOWN_INSTANCE,CURRENT_FULLSCREEN_EVENT_QUERY,CURRENT_FULLSCREEN_EVENT_ACK_KNOWN_INTRO,CURRENT_CURATED_DECISIONS_QUERY,CURRENT_CURATED_DECISIONS_OPEN,CURRENT_CURATED_DECISION_DETAIL,CURRENT_CURATED_DECISION_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_QUERY,CURRENT_XQOL_CONVERSION_PROMPT_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_CANCEL,CURRENT_XQOL_CONVERSION_THRESHOLD_QUERY,CURRENT_XQOL_CONVERSION_THRESHOLD_SET,CURRENT_COURTIER_CREATOR_CONTROLS_QUERY,CURRENT_COURTIER_CREATOR_CONTROL_EXECUTE,CURRENT_DECISIONS_CLOSE_QUERY,CURRENT_DECISIONS_CLOSE,CURRENT_COURTIER_CONFIGURATION_QUERY,CURRENT_COURTIER_CONFIGURATION_EXECUTE,CURRENT_COURTIER_CHOICES_QUERY,CURRENT_COURTIER_CHOICE_SELECT,CURRENT_SUPERMAN_HEALTH_QUERY,CURRENT_SUPERMAN_HEALTH_BASELINE_SAVE_AND_BEGIN,CURRENT_SUPERMAN_HEALTH_COMPLETED_CLOSE,CURRENT_SUPERMAN_HEALTH_RESUME_SAVED_BASELINE_AND_BEGIN,CURRENT_LYD,CURRENT_TED,CURRENT_STOCK_NEWGAME_SEED,CURRENT_DES_SAVED_GAME_INIT_GUARD,CURRENT_RITE_CREATE,CURRENT_RITE_TEXT,CURRENT_RITE_CREATION_BLOCKERS,CURRENT_STOCK_BOOKMARK1070,CURRENT_CCC,CURRENT_RMTM_TITLE_QUERY,CURRENT_RMTM_REMAINING,CURRENT_LIVING_ORIGINAL,CURRENT_ZG361_AE2,CURRENT_ZG361_REVIEW,CURRENT_ZG361_REVIEW_AE2,CURRENT_ZG361_SCOREBOARD,CURRENT_ARMY_IDENTITY_READONLY }
     static void requireGuiRootIndexSelection(NativeLaunchPlan plan,GuiRootIndexFrame frame)throws IOException {
         Objects.requireNonNull(plan);Objects.requireNonNull(frame);
         if(!frame.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())
@@ -5941,6 +5962,13 @@ if(riteDraftCosts) {
     }
     static ObservationMode observationMode(ObjectNode config) {
         String schema=StrictJson.text(config.get("schema"));
+        if(schema.equals("xar.native-owner-snapshot-config/v53")) {
+            StrictJson.object(config, Set.of("schema", "mode", "owner_descriptor", "overall_timeout_seconds",
+                    "read_timeout_seconds", "maximum_frames_per_operation"));
+            StrictJson.require("current_army_identity_readonly".equals(StrictJson.text(config.get("mode"))),
+                    "explicit current army identity readonly mode required");
+            return ObservationMode.CURRENT_ARMY_IDENTITY_READONLY;
+        }
         if(schema.equals("xar.native-owner-snapshot-config/v52")) {currentZg361ScoreboardConfig(config);return ObservationMode.CURRENT_ZG361_SCOREBOARD;}
         if(schema.equals("xar.native-owner-snapshot-config/v51")) {currentZg361CombinedConfig(config);return ObservationMode.CURRENT_ZG361_REVIEW_AE2;}
         if(schema.equals("xar.native-owner-snapshot-config/v50")) {currentZg361ReviewConfig(config);return ObservationMode.CURRENT_ZG361_REVIEW;}
@@ -6228,6 +6256,27 @@ if(riteDraftCosts) {
         StrictJson.require(schema.equals("xar.native-owner-snapshot-config/v2")&&!config.has("core_prefix_only")
                 &&"menu_core_prefix".equals(StrictJson.text(config.get("mode"))),"explicit menu core mode requires the exact new configuration schema");
         return ObservationMode.MENU_CORE;
+    }
+    static NativeGameTransport.NativeSourceMode nativeSourceMode(ObservationMode mode) {
+        return mode==ObservationMode.CURRENT_ARMY_IDENTITY_READONLY
+                ? NativeGameTransport.NativeSourceMode.CURRENT_IDENTITY_READONLY
+                : NativeGameTransport.NativeSourceMode.DEFAULT_CONTROL;
+    }
+    private static IOException archiveUnavailableFreshRead(Path output, ObjectNode originals,
+            NativeFreshSnapshotPort.Result original, String reason) throws IOException {
+        originals.set("dispatch", saveDispatch(output, original.dispatch()));
+        ObjectNode rejected = StrictJson.object().put("reason", reason);
+        if (original instanceof NativeFreshSnapshotPort.Received received) {
+            rejected.set("frame", saveFrame(output, received.originalFrame()));
+            rejected.set("snapshot_received", event(received.snapshotReceived()));
+        } else if (original instanceof NativeFreshSnapshotPort.Unavailable unavailable
+                && unavailable.originalFrame().isPresent()) {
+            rejected.set("frame", saveFrame(output, unavailable.originalFrame().orElseThrow()));
+            rejected.set("snapshot_received", event(unavailable.snapshotReceived().orElseThrow()));
+        }
+        rejected.set("originals", originals);
+        write(output, "unavailable.json", FullJsonTree.encode(rejected, FullJsonTree.MAXIMUM_BYTES));
+        return new IOException("original fresh READ unavailable; no retry: " + reason);
     }
     private static ObjectNode saveDispatch(Path output, NativeActionPort.DispatchOutcome dispatch) throws IOException {
         ObjectNode row = StrictJson.object().put("request_id", dispatch.requestId()).put("class", dispatch.getClass().getSimpleName());

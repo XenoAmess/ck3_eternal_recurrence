@@ -853,6 +853,8 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             this.original=original;this.source=source;this.semantic=semantic;
         }
         public ObservedFrame frame(){return original.originalFrame();}
+        public AckReceived acknowledgement(){return original.acknowledgement();}
+        public NativeRequestChronology.Event snapshotReceived(){return original.snapshotReceived();}
         public ExactRef source(){return source;}
         public OpportunityJson.Obj semantic(){return semantic;}
     }
