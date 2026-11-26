@@ -2,6 +2,7 @@ package org.xar.ck3.control.build;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
@@ -1933,6 +1934,26 @@ public final class ControlCi {
                 selected.path(), Long.toString(selected.bytes()), selected.sha256()));
     }
 
+    private static ControlBuild.FileRef measureHostedToolsPostqualification(Path root, ControlBuild.BuildReceipt tools)
+            throws IOException {
+        Path actual = root.resolve("artifacts/tools-postqualification/actual.json");
+        try {
+            return ControlBuild.FileRef.measure(actual);
+        } catch (NoSuchFileException missing) {
+            List<String> missingBuildReceiptFacts = tools.workpackageAccountingRef() == null
+                    ? List.of("workpackage_accounting_ref") : List.of();
+            var requiredInputs = CiBootstrap.missingToolsPostqualification().missingDependencies();
+            throw new IOException(String.join(System.lineSeparator(),
+                    "Hosted Tools postqualification actual proof is missing",
+                    "status=" + PipelineState.RED,
+                    "expected_actual_path=" + actual,
+                    "input_producer=" + ToolsPostqualificationInputProducer41.class.getName(),
+                    "actual_producer=ControlCi --postqualify-tools",
+                    "missing_build_receipt_facts=" + missingBuildReceiptFacts,
+                    "required_postqualification_inputs=" + requiredInputs), missing);
+        }
+    }
+
     private static void runQualified(Path planPath, CiBootstrap.Plan plan, Path toolsReceiptPath,
             ControlBuild.FileRef fixtureRequestRef, ControlBuild.FileRef suppliedFixtureProductionRef,
             ControlBuild.FileRef plannedFixtureProductionRef, LocalExecution local) throws IOException, InterruptedException {
@@ -1945,7 +1966,8 @@ public final class ControlCi {
             throw new IOException("Actual running qualified jar/lib must exactly equal the qualified build closure");
         }
         ControlBuild.FileRef planRef = ControlBuild.FileRef.measure(planPath), releaseRef = ControlBuild.FileRef.measure(releasePath), toolsRef = ControlBuild.FileRef.measure(toolsReceiptPath);
-        ControlBuild.FileRef mechanicalRef = local == null ? ControlBuild.FileRef.measure(root.resolve("artifacts/tools-postqualification/actual.json")) : local.card().toolsPostqualificationRef();
+        ControlBuild.FileRef mechanicalRef = local == null ? measureHostedToolsPostqualification(root, tools)
+                : local.card().toolsPostqualificationRef();
         requireToolsPostqualification(mechanicalRef,toolsRef);
         requireOneFixtureRoute(fixtureRequestRef, suppliedFixtureProductionRef, plannedFixtureProductionRef);
         if (fixtureRequestRef != null || suppliedFixtureProductionRef != null || plannedFixtureProductionRef != null) {
