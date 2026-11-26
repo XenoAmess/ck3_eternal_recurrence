@@ -2,6 +2,8 @@ package org.xar.ck3.control.application.session;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Files;
@@ -15,12 +17,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.xar.ck3.control.application.action.*;
+import org.xar.ck3.control.application.capabilities.NativeActionSteps;
 import org.xar.ck3.control.application.checkpoint.*;
 import org.xar.ck3.control.application.lifecycle.NaturalSuccessionPreparation;
 import org.xar.ck3.control.application.lifecycle.SuccessorUiObligation;
@@ -227,6 +231,172 @@ final class SessionControllerRegressionTest {
         var original = report.reconciliations().getFirst().originalReceipt();
         assertEquals("original-action", original.command().actionId()); assertEquals(BASE.plusSeconds(1), original.command().deadline());
         assertEquals(0, report.committedSavedDays());
+    }
+    @Test void freshFull111PendingUsesOneReadAndOneTurnThenSettlesItsActualCycle() {
+        var fixture = full111Fixture();
+        var settled = new AtomicReference<ActionReceipt>();
+        var retainedCycles = new ArrayList<ActionReceipt>();
+        var settledCycles = new ArrayList<ActionReceipt>();
+        var journal = fixture.writer;
+        fixture.writer = new BatchJournal() {
+            @Override public JournalCommit commit(JournalInput input) throws IOException { return journal.commit(input); }
+            @Override public void validateOrdinarySubmission(SessionIdentity owner, SemanticEvidence semantic) throws IOException {
+                journal.validateOrdinarySubmission(owner, semantic);
+            }
+            @Override public void retainCycle(SessionIdentity owner, ActionReceipt receipt) { retainedCycles.add(receipt); }
+            @Override public CompletedCycleProof settleCycle(SessionIdentity owner, ActionReceipt receipt, SemanticEvidence semantic) {
+                assertEquals(retainedCycles, List.of(receipt));
+                settledCycles.add(receipt);
+                return new CompletedCycleProof(0, semantic, "d".repeat(64));
+            }
+        };
+        fixture.warmRead = original -> {
+            assertTrue(fixture.completedReceipts.isEmpty());
+            fixture.time.waitFor(Duration.ofMillis(31));
+            var applied = full111Applied(original, original.sequence() + 1);
+            settled.set(applied);
+            return applied;
+        };
+        var controller = fixture.controller();
+        var report = controller.autoTurn(BASE.plusSeconds(5)).execution();
+        assertEquals(BatchReport.Terminal.TURN_BOUND, report.terminal());
+        assertEquals(1, fixture.submitted.get());
+        assertEquals(1, fixture.reconciled.get());
+        assertTrue(report.reconciliations().isEmpty());
+        var turn = report.turns().getFirst();
+        assertEquals(1, report.turns().size());
+        assertEquals(1, turn.index());
+        assertSame(settled.get(), turn.receipt());
+        assertEquals(fixture.warmOriginal.command(), turn.receipt().command());
+        assertEquals(fixture.warmOriginal.sequence() + 1, turn.receipt().sequence());
+        assertEquals(List.of(turn.receipt()), fixture.completedReceipts);
+        assertEquals(List.of(turn.receipt()), settledCycles);
+        assertTrue(turn.facts().visibleGameplay());
+        assertFalse(turn.facts().eligibleAdvance());
+        assertEquals(0, report.committedSavedDays());
+        assertEquals("save-initial", report.lastSavedPair().orElseThrow().saveActionId());
+        assertFalse(controller.isQuarantined());
+        var phases = report.phases().stream().filter(span -> span.phase() == BatchReport.Phase.ACTION_RECONCILIATION).toList();
+        assertEquals(1, phases.size());
+        var phase = phases.getFirst();
+        assertTrue(phase.ended().elapsedNanos() - phase.began().elapsedNanos() >= Duration.ofMillis(31).toNanos());
+    }
+
+    @Test void freshFull111PendingStillUnknownConsumesTheOriginalOnceAndDoesNotTryOnNextBatch() {
+        var fixture = full111Fixture();
+        fixture.warmRead = original -> original;
+        var controller = fixture.controller();
+        var report = controller.runBatch(limits("stock-remains-unknown"));
+        assertEquals(BatchReport.Terminal.ACTION_UNKNOWN, report.terminal());
+        assertEquals(1, fixture.submitted.get());
+        assertEquals(1, fixture.reconciled.get());
+        assertEquals(List.of(fixture.warmOriginal), fixture.completedReceipts);
+        assertSame(fixture.warmOriginal, report.turns().getFirst().receipt());
+        assertTrue(report.reconciliations().isEmpty());
+        assertTrue(controller.isQuarantined());
+        controller.runBatch(limits("stock-remains-unknown-next"));
+        assertEquals(1, fixture.reconciled.get());
+        assertEquals(1, fixture.submitted.get());
+    }
+
+    @Test void freshFull111RejectsAReconciliationThatReusesTheOriginalSequenceForDifferentState() {
+        var fixture = full111Fixture();
+        fixture.warmRead = original -> full111Applied(original, original.sequence());
+        var controller = fixture.controller();
+        var report = controller.runBatch(limits("stock-changed-original-receipt"));
+        assertEquals(BatchReport.Terminal.ACTION_UNKNOWN, report.terminal());
+        assertEquals(1, fixture.submitted.get());
+        assertEquals(1, fixture.reconciled.get());
+        assertSame(fixture.warmOriginal, report.turns().getFirst().receipt());
+        assertEquals(List.of(fixture.warmOriginal), fixture.completedReceipts);
+        assertTrue(controller.isQuarantined());
+    }
+
+    @Test void freshFull111PendingNeedsAPositiveSelectAndTheSameRunningGame() {
+        var nonSelection = full111Fixture();
+        nonSelection.executeReceipt = command -> full111Pending(command, "available");
+        var refused = nonSelection.controller().runBatch(limits("stock-without-positive-select"));
+        assertEquals(BatchReport.Terminal.ACTION_UNKNOWN, refused.terminal());
+        assertEquals(0, nonSelection.reconciled.get());
+
+        var exited = full111Fixture();
+        exited.life = (owner, until) -> exited.submitted.get() == 0 ? new GameLifecycle.Running(GAME, REF)
+                : new GameLifecycle.Exited(GAME, 14, false, GameLifecycle.TerminalKind.NATURAL_EXIT, REF);
+        var controller = exited.controller();
+        var report = controller.runBatch(limits("stock-game-exits-before-reconciliation"));
+        assertEquals(BatchReport.Terminal.INNER_EXIT, report.terminal());
+        assertEquals(1, exited.submitted.get());
+        assertEquals(0, exited.reconciled.get());
+        assertEquals(List.of(exited.warmOriginal), exited.completedReceipts);
+        assertTrue(controller.isQuarantined());
+    }
+
+    private static Fixture full111Fixture() {
+        var fixture = new Fixture(true);
+        fixture.plannedCommand = SessionControllerRegressionTest::full111Command;
+        fixture.executeReceipt = command -> full111Pending(command, "selection_dispatched");
+        fixture.observer = (owner, until) -> {
+            fixture.observed.incrementAndGet();
+            var original = request(until);
+            var observation = new PlanningObservation(original.observations().snapshot(), List.of(),
+                    Set.of(new OperationKey(NativeActionSteps.FULL111_EVENT_SELECT_STEP)), NativeActionSteps.FULL111_EVENT_OPTION_CAPABILITIES,
+                    Optional.empty(), List.of(), Optional.empty(), Optional.empty(), false);
+            var ready = new PlanningRequest(original.before(), original.source(), original.sessionId(), until, observation);
+            return new Ready(ready, CheckpointEligibility.SAFE, Optional.empty(), Optional.of(semantic(ready)));
+        };
+        return fixture;
+    }
+
+    private static ActionCommand full111Command(PlanningRequest request) {
+        var body = StrictJson.object().put("instance_id", 7).put("recipient_character_id", 29829)
+                .put("definition_key", "bookmark.1070").put("authored_option_index", 0);
+        body.set("renderer_original", REF.toJson());
+        var arguments = DriverJson.object(StrictJson.canonical(body), 4096);
+        return new ActionCommand("fixture-stock-selection", request.before(), request.source(), request.sessionId(),
+                new OperationKey(NativeActionSteps.FULL111_EVENT_SELECT_STEP), arguments,
+                new ExpectedPostcondition(1, request.before(), request.source(), "xar.ck3.full111-event-queue-postcondition/v2",
+                        List.of(new ExpectedBoolean(new FieldKey("event_queue_absent"), true))),
+                new JointBudgetSelector.Claims(Set.of(), Set.of(), Set.of(), Set.of()), request.deadline());
+    }
+
+    private static ActionReceipt full111Pending(ActionCommand command, String status) {
+        String requestId = RequestIds.forCommand(command);
+        var guard = new GuardEvidence(command.before(), command.source(), command.sessionId(), BigInteger.ONE,
+                command.operation(), REF, REF, "fixture", BASE, command.deadline());
+        var prepared = new NativeRequest(command.operation().value(), NativeActionSteps.FULL111_EVENT_SELECT_CAPABILITY,
+                new RawJson(StrictJson.canonical(StrictJson.object())));
+        var attempt = new ActionState.Attempt(requestId, BASE, guard, prepared);
+        var outbound = packet(StrictJson.canonical(StrictJson.object().put("type", "execute").put("protocol_version", 1)
+                .put("request_id", requestId).put("step", prepared.step())));
+        var envelope = StrictJson.object().put("type", "command_result").put("protocol_version", 1).put("request_id", requestId).put("ok", true);
+        var token = envelope.putObject("result").put("schema", "ck3.full111.ordinary_event_option_result.v2")
+                .put("action", "select").put("status", status).put("cleanup_known", true).put("effect_attempted", true).put("native_returned", true);
+        token.putObject("lineage").put("effect_request_id", requestId);
+        var payload = StrictJson.canonical(envelope);
+        var incoming = packet(payload);
+        var transport = new NativeObservationPort.TransportSession(SESSION.machineId(), SESSION.game(), BigInteger.ONE, SESSION.sessionId());
+        var custody = new NativeRequestChronology(transport, new UUID(1, 2), requestId,
+                NativeRequestChronology.PacketIdentity.of(outbound), NativeRequestChronology.PacketIdentity.of(incoming),
+                new NativeRequestChronology.Event(BigInteger.ONE, BASE), new NativeRequestChronology.Event(BigInteger.TWO, BASE.plusMillis(1)),
+                new NativeRequestChronology.Event(BigInteger.valueOf(3), BASE.plusMillis(2)));
+        var ack = new NativeActionPort.AckReceived(requestId, true, Optional.of(new RawJson(StrictJson.canonical(token))),
+                new RawJson(payload), incoming, Optional.of(new NativeActionPort.OutboundPacket(requestId, outbound)), Optional.of(custody));
+        return new ActionReceipt(1, 11, command, ActionCodec.bodySha256(command),
+                new ActionState.Unknown(Optional.of(attempt), Optional.of(ack), "original queue observation remains incomplete", List.of(REF)));
+    }
+
+    private static byte[] packet(byte[] body) {
+        return ByteBuffer.allocate(Integer.BYTES + body.length).order(ByteOrder.LITTLE_ENDIAN).putInt(body.length).put(body).array();
+    }
+
+    private static ActionReceipt full111Applied(ActionReceipt original, long sequence) {
+        var command = original.command();
+        var observation = new ActionState.EffectObservation(command.before(), command.source(), command.sessionId(),
+                command.expected().observerSchema(), command.expected().values(), new ObservationProvenance.Query("complete-queue-read"),
+                BASE.plusMillis(10), REF);
+        return new ActionReceipt(1, sequence, command, original.bodySha256(),
+                new ActionState.Settled(ActionTransitions.attempt(original.state()).orElseThrow(), original.ack().orElseThrow(),
+                        new ActionState.Applied(observation)));
     }
     @Test void sameFinishedBatchRequestReturnsItsOriginalReportWithoutRepeatingWork() {
         Fixture fixture = new Fixture(false); SessionController controller = fixture.controller(); BatchLimits request = limits("same-batch");
@@ -1107,6 +1277,10 @@ final class SessionControllerRegressionTest {
         RetainedIncidentBatchSource retainedSource = List::of;
         boolean bindRetainedSource = true;
         java.util.function.Function<ActionCommand,RuntimeException> executionFailure;
+        java.util.function.Function<PlanningRequest,ActionCommand> plannedCommand = SessionControllerRegressionTest::command;
+        java.util.function.Function<ActionCommand,ActionReceipt> executeReceipt;
+        java.util.function.Function<ActionReceipt,ActionReceipt> warmRead;
+        ActionReceipt warmOriginal;
         Fixture(boolean completePlanner) { this.completePlanner = completePlanner; }
         private ActionReceipt confirmedFocus(PlanningRequest original) {
             var selected=command(original,"focus-original");
@@ -1154,7 +1328,7 @@ final class SessionControllerRegressionTest {
                     if(plannerStopReason!=null)return new Stop(plannerStopReason,"actual malformed relation material");
                     if (readOnlyWait) return new Wait("external stop signal expected during read-only wait");
                     if (reconcileExisting) return new ReconcileExisting("original-action", new OpportunityJson.Obj(Map.of()), "read original pending action only");
-                    return new Replace(new Draft("fixture", "fixture", "fixture", Kind.ORDINARY, Optional.of(command(input)), Purpose.WORLD_ACTION, Optional.empty(), new OpportunityJson.Obj(Map.of())), "fixture actual action selection");
+                    return new Replace(new Draft("fixture", "fixture", "fixture", Kind.ORDINARY, Optional.of(plannedCommand.apply(input)), Purpose.WORLD_ACTION, Optional.empty(), new OpportunityJson.Obj(Map.of())), "fixture actual action selection");
                 }
                 };
             }).toList() : List.of();
@@ -1168,10 +1342,20 @@ final class SessionControllerRegressionTest {
                 @Override public ActionReceipt execute(ActionCommand command) {
                     if(readRefreshBeforeDispatch&&!readRefreshIssued){readRefreshIssued=true;if(refreshHasParent)readParentOriginal=command;throw new ReadPublicationRefreshException(command,Optional.empty(),publication(),refreshHasParent?Optional.of(command.actionId()):Optional.empty());}
                     if(executionFailure!=null)throw executionFailure.apply(command);
-                    submitted.incrementAndGet(); return new ActionReceipt(1, 1, command, ActionCodec.bodySha256(command),
+                    submitted.incrementAndGet();
+                    if (executeReceipt != null) {
+                        warmOriginal = executeReceipt.apply(command);
+                        return warmOriginal;
+                    }
+                    return new ActionReceipt(1, 1, command, ActionCodec.bodySha256(command),
                             new ActionState.Unknown(Optional.empty(), Optional.empty(), "original completion lost", List.of(REF)));
                 }
                 @Override public ActionReceipt reconcile(String id) {
+                    if (warmRead != null) {
+                        assertEquals(warmOriginal.command().actionId(), id);
+                        reconciled.incrementAndGet();
+                        return warmRead.apply(warmOriginal);
+                    }
                     if (!reconcileExisting&&!refreshHasParent) throw new AssertionError("ordinary loop must not automatically reconcile UNKNOWN as a new turn");
                     reconciled.incrementAndGet(); var original = readParentOriginal!=null?readParentOriginal:terminalOriginal!=null?terminalOriginal:command(request(BASE.plusSeconds(1)), id);
                     return new ActionReceipt(1, 1, original, ActionCodec.bodySha256(original), new ActionState.Unknown(Optional.empty(), Optional.empty(), "original completion remains unknown", List.of(REF)));

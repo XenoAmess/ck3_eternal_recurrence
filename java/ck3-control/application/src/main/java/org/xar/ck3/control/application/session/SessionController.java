@@ -22,9 +22,12 @@ import org.xar.ck3.control.application.action.ActionCoordinatorPort;
 import org.xar.ck3.control.application.action.ActionReceipt;
 import org.xar.ck3.control.application.action.ActionState;
 import org.xar.ck3.control.application.action.ActionEffects;
+import org.xar.ck3.control.application.action.ActionTransitions;
+import org.xar.ck3.control.application.action.NativeActionPort.AckReceived;
 import org.xar.ck3.control.application.action.CompositeContinuationReport;
 import org.xar.ck3.control.application.action.LifecycleExpectedPostcondition;
 import org.xar.ck3.control.application.action.PreSubmissionRevisionMismatchException;
+import org.xar.ck3.control.application.capabilities.NativeActionSteps;
 import org.xar.ck3.control.application.checkpoint.CheckpointPair;
 import org.xar.ck3.control.application.checkpoint.CheckpointRequestFactory;
 import org.xar.ck3.control.application.checkpoint.CheckpointResult;
@@ -888,11 +891,11 @@ public final class SessionController {
                 else run.requireOrdinarySubmission(ready);
                 run.requireTime(); run.live();
                 if (stopRequested()) { run.terminal = Terminal.OPERATOR_STOP; break; }
-                ActionReceipt receipt;
+                ActionReceipt issued;
                 CheckpointInvocation checkpointCall=checkpoint(selected.command())?new CheckpointInvocation(selected.command()):null;
                 StrictJson.require(checkpointInvocation.get()==null,"no nested original checkpoint invocation");
                 if(checkpointCall!=null)checkpointInvocation.set(checkpointCall);
-                try { receipt = run.measured(Phase.ACTION, () -> actions.execute(selected.command())); }
+                try { issued = run.measured(Phase.ACTION, () -> actions.execute(selected.command())); }
                 catch(CapturedCheckpointDeferred pending){
                     ActionReceipt original=pending.actual.originalReceipt();
                     StrictJson.require(checkpointCall!=null&&sameCommand(original.command(),selected.command())
@@ -928,7 +931,15 @@ public final class SessionController {
                     quarantineUnresolved(); throw new End(Terminal.ACTION_UNKNOWN, failure.toString());
                 }
                 finally {checkpointInvocation.remove();}
-                StrictJson.require(receipt.command().equals(selected.command()), "coordinator returned another action body");
+                StrictJson.require(issued.command().equals(selected.command()), "coordinator returned another action body");
+                ActionReceipt reconciled = issued;
+                Exception warmFailure = null;
+                try { reconciled = run.reconcileFreshFull111Selection(issued); }
+                catch (IOException | InterruptedException | RuntimeException failure) {
+                    quarantineUnresolved();
+                    warmFailure = failure;
+                }
+                ActionReceipt receipt = reconciled;
                 boolean applied = receipt.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED;
                 List<ExactRef> nativeEvidence = ActionEffects.observation(receipt)
                         .map(effect -> List.of(effect.originalEvidence())).orElseGet(()->
@@ -940,7 +951,15 @@ public final class SessionController {
                 run.currentTurnRevisionReplans = 0;
                 run.currentTurnReadReplans=0;
                 var completed=run.afterExecution(receipt);
-                if (!receipt.settled()) { if(checkpoint(receipt.command()))quarantineCheckpoint(receipt.command());else quarantineUnresolved(); throw new End(Terminal.ACTION_UNKNOWN, "original action remains " + receipt.outcome()); }
+                if (!receipt.settled()) {
+                    if (checkpoint(receipt.command())) quarantineCheckpoint(receipt.command());
+                    else quarantineUnresolved();
+                    if (warmFailure instanceof End terminal) throw terminal;
+                    if (warmFailure instanceof IOException io) throw io;
+                    if (warmFailure instanceof InterruptedException interrupted) throw interrupted;
+                    throw new End(Terminal.ACTION_UNKNOWN, warmFailure == null ? "original action remains " + receipt.outcome()
+                            : "original Full111 read-only reconciliation failed: " + warmFailure);
+                }
                 if(receipt.outcome()==ActionReceipt.Outcome.TERMINAL_WITHOUT_EFFECT||receipt.outcome()==ActionReceipt.Outcome.SEND_CONFIRMED){run.requireCompletion(completed);continue;}
                 if (!applied) throw new End(Terminal.ACTION_REJECTED, "original native/coordinator result: " + receipt.outcome());
                 run.completeCycle(receipt);
@@ -1174,6 +1193,39 @@ public final class SessionController {
         return firstAction != Long.MAX_VALUE && finalCheckpoint > firstAction ? finalCheckpoint - firstAction : 0;
     }
 
+    private static boolean hasPositiveFull111Selection(ActionReceipt original) {
+        var command = original.command();
+        if (original.settled() || !NativeActionSteps.FULL111_EVENT_SELECT_STEP.equals(command.operation().value())
+                || !"xar.ck3.full111-event-queue-postcondition/v2".equals(command.expected().observerSchema())) return false;
+        var attempt = ActionTransitions.attempt(original.state()).orElse(null);
+        AckReceived ack = original.ack().orElse(null);
+        if (attempt == null || ack == null || !ack.nativeOk() || ack.custody().isEmpty() || ack.originalResultToken().isEmpty()
+                || !attempt.preparedRequest().step().equals(command.operation().value())
+                || attempt.preparedRequest().requiredCapability().filter(NativeActionSteps.FULL111_EVENT_SELECT_CAPABILITY::equals).isEmpty()) return false;
+        try {
+            // This gate only schedules the bounded read. The installed reconciliation source replays the original command and ACK.
+            var custody = ack.custody().orElseThrow();
+            custody.verify(ack, attempt.guard());
+            if (custody.writeEntered().observedAt().isBefore(attempt.submittedAt())
+                    || custody.writeEntered().observedAt().isAfter(command.deadline())) return false;
+            var envelope = StrictJson.parse(ack.originalFrame().bytes());
+            var result = StrictJson.parse(ack.originalResultToken().orElseThrow().bytes());
+            return "command_result".equals(envelope.path("type").textValue())
+                    && ack.requestId().equals(envelope.path("request_id").textValue())
+                    && envelope.path("protocol_version").isIntegralNumber()
+                    && BigInteger.ONE.equals(envelope.path("protocol_version").bigIntegerValue())
+                    && envelope.path("ok").booleanValue() && result.equals(envelope.get("result"))
+                    && "ck3.full111.ordinary_event_option_result.v2".equals(result.path("schema").textValue())
+                    && "select".equals(result.path("action").textValue())
+                    && "selection_dispatched".equals(result.path("status").textValue())
+                    && result.path("cleanup_known").booleanValue() && result.path("effect_attempted").booleanValue()
+                    && result.path("native_returned").booleanValue()
+                    && ack.requestId().equals(result.path("lineage").path("effect_request_id").textValue());
+        } catch (IllegalArgumentException malformed) {
+            return false;
+        }
+    }
+
     private final class Run {
         final BatchLimits limits; final SessionClock.Tick began; final long untilNanos; final long initialCommittedDays;
         final Optional<TerminalConstraint> terminalConstraint;
@@ -1332,6 +1384,22 @@ public final class SessionController {
             }
         }
         int completedCount(){return turns.size()+reconciliations.size()+lifecycleTurns.size()+readReconciliations.size();}
+        ActionReceipt reconcileFreshFull111Selection(ActionReceipt original) throws IOException, InterruptedException {
+            if (!hasPositiveFull111Selection(original) || stopRequested() || clock.now().elapsedNanos() >= untilNanos)
+                return original;
+            live();
+            if (stopRequested() || clock.now().elapsedNanos() >= untilNanos) return original;
+            var actual = measured(Phase.ACTION_RECONCILIATION, () -> actions.reconcile(original.command().actionId()));
+            StrictJson.require(actual != null && sameCommand(actual.command(), original.command())
+                    && actual.bodySha256().equals(original.bodySha256())
+                    && (actual.equals(original) || actual.sequence() > original.sequence())
+                    && ActionTransitions.attempt(actual.state()).equals(ActionTransitions.attempt(original.state()))
+                    && ActionTransitions.dispatch(actual.state()).equals(ActionTransitions.dispatch(original.state()))
+                    && (!actual.settled() || actual.state() instanceof ActionState.Settled settled
+                            && settled.settlement() instanceof ActionState.Applied),
+                    "Full111 read-only reconciliation changed its original receipt, attempt or dispatch");
+            return actual;
+        }
         Optional<PendingSuccessorUi> probePendingUi() throws IOException,InterruptedException {
             requireTime();Instant until=deadline();
             Optional<PendingSuccessorUi> found=Objects.requireNonNull(measured(Phase.OBSERVATION,
