@@ -16,6 +16,9 @@
 #include "xar_bridge/ck3_1210_character_roster_frame_v1.hpp"
 #endif
 #include "xar_bridge/ck3_1210_adapter.hpp"
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1
+#include "xar_bridge/ck3_121003_lyd26785313_v1.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1) && XAR_CK3_ENABLE_121003_26785313_RITE_DOCTRINE_V1
 #include "xar_bridge/ck3_121003_rite_doctrine26785313_v1.hpp"
 #endif
@@ -502,6 +505,10 @@ const AdapterDescriptor &Ck3_121003Full111AdapterDescriptor() noexcept {
     ,"game.command.research-arm-tactical-daily-sentinel-v1-N"
     ,"game.command.research-query-tactical-daily-sentinel-v1"
     ,"game.command.research-cancel-tactical-daily-sentinel-v1-generation-N"
+#endif
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1
+    ,ck3_121003::build26785313::kLydCapabilities267V1[
+      ck3_121003::build26785313::kLydEventQueryIndex267V1]
 #endif
   };
 #else

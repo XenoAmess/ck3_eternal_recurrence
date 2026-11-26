@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_121003_lyd26785313_v1.hpp"
+#include "xar_bridge/ck3_121003_full_profile111.hpp"
 #include <algorithm>
 #include <charconv>
 #include <unordered_set>
@@ -55,10 +56,10 @@ bool Core(Cursor&c,ck3_1210::CoreSnapshotPrefix&p)noexcept{
 }
 template<class T,std::size_t N>bool EnumText(Cursor&c,const std::array<std::string_view,N>&names,T&out)noexcept{std::string_view text;if(!c.String(text))return false;for(std::size_t n=0;n<N;++n)if(names[n]==text){out=static_cast<T>(n);return true;}return false;}
 template<class T,std::size_t N>bool NullableEnum(Cursor&c,const std::array<std::string_view,N>&names,std::optional<T>&out)noexcept{c.Space();if(c.text.substr(c.pos,4)=="null"){c.pos+=4;out.reset();return true;}T value{};if(!EnumText(c,names,value))return false;out=value;return true;}
-bool Claim(Cursor&c,LydRequest267V1&q)noexcept{
+bool Claim(Cursor&c,LydRequest267V1&q,std::string_view adapter)noexcept{
  if(!c.Take('{'))return false;unsigned seen=0;bool first=true;
  while(!c.Take('}')){if(!first&&!c.Take(','))return false;first=false;std::string_view key,value;if(!c.String(key)||!c.Take(':'))return false;unsigned bit=0;bool good=false;
-  if(key=="schema"){bit=1;good=c.Identity(kLydRequestSchema267V1);}else if(key=="game_version"){bit=2;good=c.Identity(kGameVersion);}else if(key=="executable_sha256"){bit=4;good=c.Identity(kExecutableSha256,true);}else if(key=="adapter_id"){bit=8;good=c.Identity(kAdapterId);}else if(key=="backend"){bit=16;good=c.Identity(kLydBackend267V1);}
+  if(key=="schema"){bit=1;good=c.Identity(kLydRequestSchema267V1);}else if(key=="game_version"){bit=2;good=c.Identity(kGameVersion);}else if(key=="executable_sha256"){bit=4;good=c.Identity(kExecutableSha256,true);}else if(key=="adapter_id"){bit=8;good=c.Identity(adapter);}else if(key=="backend"){bit=16;good=c.Identity(kLydBackend267V1);}
   else if(key=="action"){bit=32;good=EnumText(c,kLydActionNames267V1,q.action);}else if(key=="expected_core"){bit=64;good=Core(c,q.expected);}else if(key=="provider_generation"){bit=128;good=UIntText(c,q.provider_generation);}else if(key=="query_sequence"){bit=256;good=UIntText(c,q.query_sequence);}
   else if(key=="decision_key"){bit=512;good=NullableEnum(c,kLydDecisionKeys267V1,q.decision);}else if(key=="personal_key"){bit=1024;good=NullableEnum(c,kLydPersonalKeys267V1,q.personal);}else if(key=="event_role"){bit=2048;good=NullableEnum(c,kLydEventRoleNames267V1,q.event_role);}
   else if(key=="instance_id"){bit=4096;c.Space();if(c.text.substr(c.pos,4)=="null"){c.pos+=4;q.instance_id.reset();good=true;}else{std::int32_t n=0;good=c.Number(n);if(good)q.instance_id=n;}}
@@ -102,12 +103,24 @@ bool LydRequestShape267V1(const LydRequest267V1&q)noexcept{
  if(a<=11)return !q.decision&&!q.event_role&&!q.instance_id&&q.personal&&(a==9?KeyText(q.choice_token,96):q.choice_token.empty());
  return !q.decision&&!q.personal&&!q.event_role&&!q.instance_id&&q.choice_token.empty();
 }
-bool ParseLydRequest267V1(std::string_view text,LydRequest267V1&out)noexcept{
+namespace {
+bool ParseRequest(std::string_view text,LydRequest267V1&out,std::string_view adapter)noexcept{
  out={};if(text.size()>16384)return false;Cursor c{text};LydRequest267V1 q;std::string_view step;if(!c.Take('{'))return false;unsigned seen=0;bool first=true;
  while(!c.Take('}')){if(!first&&!c.Take(','))return false;first=false;std::string_view key,value;if(!c.String(key)||!c.Take(':'))return false;unsigned bit=0;bool good=false;std::uint64_t n=0;
-  if(key=="type"){bit=1;good=c.Identity("execute_step");}else if(key=="protocol_version"){bit=2;good=c.Number(n)&&n==1;}else if(key=="request_id"){bit=4;good=c.String(value)&&Id(value);if(good){std::copy(value.begin(),value.end(),q.request_id.begin());q.request_id_size=static_cast<std::uint8_t>(value.size());}}else if(key=="step"){bit=8;good=c.String(step);}else if(key=="expected_revision"){bit=16;good=c.Number(n)&&n==0;}else if(key=="arguments"){bit=32;good=c.Take('{')&&c.Take('}');}else if(key=="lyd"){bit=64;good=Claim(c,q);}else if(key=="core_control_deadline_unix_ms"){bit=128;good=c.Number(q.deadline_unix_ms)&&q.deadline_unix_ms;}
+  if(key=="type"){bit=1;good=c.Identity("execute_step");}else if(key=="protocol_version"){bit=2;good=c.Number(n)&&n==1;}else if(key=="request_id"){bit=4;good=c.String(value)&&Id(value);if(good){std::copy(value.begin(),value.end(),q.request_id.begin());q.request_id_size=static_cast<std::uint8_t>(value.size());}}else if(key=="step"){bit=8;good=c.String(step);}else if(key=="expected_revision"){bit=16;good=c.Number(n)&&n==0;}else if(key=="arguments"){bit=32;good=c.Take('{')&&c.Take('}');}else if(key=="lyd"){bit=64;good=Claim(c,q,adapter);}else if(key=="core_control_deadline_unix_ms"){bit=128;good=c.Number(q.deadline_unix_ms)&&q.deadline_unix_ms;}
   if(!bit||!good||(seen&bit))return false;seen|=bit;
  }c.Space();if(seen!=255||c.pos!=text.size()||!LydRequestShape267V1(q)||step!=kLydSteps267V1[static_cast<std::size_t>(q.action)])return false;out=std::move(q);return true;
+}
+}
+bool ParseLydRequest267V1(std::string_view text,LydRequest267V1&out)noexcept{
+ return ParseRequest(text,out,kAdapterId);
+}
+bool ParseFull111LydEventRequest267V1(std::string_view text,LydRequest267V1&out)noexcept{
+ LydRequest267V1 request;
+ if(!ParseRequest(text,request,full111::kAdapterId)||request.action!=LydAction267V1::query_events){
+  out={};return false;
+ }
+ out=std::move(request);return true;
 }
 bool LydPublicSourceShape267V1(const LydSource267V1&v)noexcept{
  if(static_cast<unsigned>(v.kind)>3||static_cast<unsigned>(bool(v.decisions))+static_cast<unsigned>(bool(v.events))+static_cast<unsigned>(bool(v.personal))+static_cast<unsigned>(bool(v.readback))!=1)return false;
@@ -164,10 +177,10 @@ void DecisionSource(Json&j,const LydDecisionSource267V1&s){
  j.data+="{\"list_found\":";j.data+=s.list_found?"true":"false";j.flag("list_visible",s.list_visible);j.flag("list_enabled",s.list_enabled);j.flag("detail_found",s.detail_found);j.flag("detail_visible",s.detail_visible);j.flag("detail_enabled",s.detail_enabled);j.flag("other_decision_selected",s.other_decision_selected);j.flag("open_list_admissible",s.open_list_admissible);j.flag("complete_model_census",s.complete_model_census);j.flag("blocked_by_visible_modal",s.blocked_by_visible_modal);j.flag("confirm_admissible",s.confirm_admissible);j.nullable("groups_count",s.groups_count);j.nullable("total_model_rows",s.total_model_rows);j.nullable("widget_state",s.widget_state);Enum(j,"selected_decision_key",kLydDecisionKeys267V1,s.selected_decision);j.nullable("native_can_confirm",s.native_can_confirm);j.key("rows");j.data+='[';
  for(std::size_t n=0;n<s.rows.size();++n){if(n)j.data+=',';const auto&r=s.rows[n];j.data+="{\"decision_key\":";String(j.data,LydDecisionKey267V1(r.decision));j.flag("can_open_detail",r.can_open_detail);j.flag("is_selected",r.is_selected);j.data+='}';}j.data+=']';j.nullable("conditions_text",s.conditions_text);j.data+='}';
 }
-void EventSource(Json&j,const LydEventSource267V1&s){
+void EventSource(Json&j,const LydEventSource267V1&s,bool include_permissions){
  j.data+="{\"census_complete\":";j.data+=s.census_complete?"true":"false";j.num("named_root_count",s.named_root_count);j.key("events");j.data+='[';
  for(std::size_t n=0;n<s.events.size();++n){if(n)j.data+=',';const auto&r=s.events[n];j.data+="{\"instance_id\":"+std::to_string(r.instance_id);j.num("recipient_character_id",r.recipient_character_id);j.num("authored_option_count",r.authored_option_count);j.str("definition_key",r.definition_key);j.str("opening",r.opening);j.str("description",r.description);j.flag("named_root_bound",r.named_root_bound);j.flag("window_visible",r.window_visible);j.flag("window_enabled",r.window_enabled);j.key("options");j.data+='[';
-  for(std::size_t k=0;k<r.options.size();++k){if(k)j.data+=',';const auto&o=r.options[k];j.data+="{\"authored_option_index\":"+std::to_string(o.authored_option_index);j.flag("native_can_select",o.native_can_select);j.str("text",o.text);j.str("disabled_reason",o.disabled_reason);j.nullable("source_bound_option_key",o.source_bound_option_key);Enum(j,"permitted_role",kLydEventRoleNames267V1,o.permitted_role);j.data+='}';}j.data+="]}";
+  for(std::size_t k=0;k<r.options.size();++k){if(k)j.data+=',';const auto&o=r.options[k];j.data+="{\"authored_option_index\":"+std::to_string(o.authored_option_index);j.flag("native_can_select",o.native_can_select);j.str("text",o.text);j.str("disabled_reason",o.disabled_reason);j.nullable("source_bound_option_key",include_permissions?o.source_bound_option_key:std::nullopt);Enum(j,"permitted_role",kLydEventRoleNames267V1,include_permissions?o.permitted_role:std::nullopt);j.data+='}';}j.data+="]}";
  }j.data+="]}";
 }
 void PersonalSource(Json&j,const LydPersonalSource267V1&s){
@@ -177,26 +190,39 @@ void PersonalSource(Json&j,const LydPersonalSource267V1&s){
  const auto&m=s.add_modal;j.key("add_modal");j.data+="{\"found\":";j.data+=m.found?"true":"false";j.flag("named_root_bound",m.named_root_bound);j.flag("visible",m.visible);j.flag("closed",m.closed);Enum(j,"personal_key",kLydPersonalKeys267V1,m.personal);j.nullable("native_can_accept",m.native_can_accept);j.flag("accept_admissible",m.accept_admissible);j.data+='}';j.raw("spiritual_fulfillment_raw",s.spiritual_fulfillment_raw);j.key("quoted_currency_costs");if(s.quoted_currency_costs)Resources(j,*s.quoted_currency_costs);else j.data+="null";j.data+='}';
 }
 void ReadbackSource(Json&j,const LydReadbackSource267V1&s){j.data+="{\"resources\":";if(s.resources)Resources(j,*s.resources);else j.data+="null";j.raw("legitimacy_raw",s.legitimacy_raw);j.raw("diplomacy_xp_raw",s.diplomacy_xp_raw);j.raw("learning_xp_raw",s.learning_xp_raw);j.raw("capital_control_raw",s.capital_control_raw);j.flag("original_case_readback_complete",s.original_case_readback_complete);j.data+='}';}
-void WriteSource(Json&j,const LydSource267V1&s){
- constexpr std::array<std::string_view,4>kinds{"decisions","events","personal","readback"};j.data+="{\"schema\":";String(j.data,kLydSourceSchema267V1);j.str("kind",kinds[static_cast<std::size_t>(s.kind)]);j.key("decisions");if(s.decisions)DecisionSource(j,*s.decisions);else j.data+="null";j.key("events");if(s.events)EventSource(j,*s.events);else j.data+="null";j.key("personal");if(s.personal)PersonalSource(j,*s.personal);else j.data+="null";j.key("readback");if(s.readback)ReadbackSource(j,*s.readback);else j.data+="null";j.data+='}';
+void WriteSource(Json&j,const LydSource267V1&s,bool include_event_permissions){
+ constexpr std::array<std::string_view,4>kinds{"decisions","events","personal","readback"};j.data+="{\"schema\":";String(j.data,kLydSourceSchema267V1);j.str("kind",kinds[static_cast<std::size_t>(s.kind)]);j.key("decisions");if(s.decisions)DecisionSource(j,*s.decisions);else j.data+="null";j.key("events");if(s.events)EventSource(j,*s.events,include_event_permissions);else j.data+="null";j.key("personal");if(s.personal)PersonalSource(j,*s.personal);else j.data+="null";j.key("readback");if(s.readback)ReadbackSource(j,*s.readback);else j.data+="null";j.data+='}';
 }
 }
-std::string SerializeLydResult267V1(std::string_view id,const LydResult267V1&r){
+namespace {
+std::string SerializeResult(std::string_view id,const LydResult267V1&r,std::string_view adapter){
+ const bool full111_events_only=adapter==full111::kAdapterId;
  const auto a=static_cast<std::size_t>(r.action);const bool facts=r.facts_available&&Prefix(r.facts)&&r.connection_generation&&r.ticket_sequence&&r.pump_epoch&&r.thread_id;
- const bool source=facts&&r.cleanup_known&&r.source_available&&r.source&&LydPublicSourceShape267V1(*r.source)&&r.source->kind==LydKindForAction267V1(r.action);
+ const bool source=facts&&r.cleanup_known&&r.source_available&&r.source&&LydPublicSourceShape267V1(*r.source)&&
+  r.source->kind==LydKindForAction267V1(r.action)&&(!full111_events_only||
+   (r.action==LydAction267V1::query_events&&r.status==LydStatus267V1::available&&
+    r.provider_generation&&r.query_sequence&&!r.claim_sequence&&!r.effect_attempted&&
+    !r.native_returned&&!r.native_handled&&!r.source->events->events.empty()));
  const bool lease=r.provider_generation&&r.query_sequence;LydRequest267V1 q;q.action=r.action;q.expected=r.facts;q.decision=r.decision;q.personal=r.personal;q.event_role=r.event_role;q.instance_id=r.instance_id;
  // The opaque selected token is preserved only in the private request. Public selection dispatch is independently authorized by the matching reviewed key/row.
  if(source&&q.personal&&static_cast<std::size_t>(*q.personal)<kLydPersonalKeys267V1.size()&&a==9){for(const auto&row:r.source->personal->rows)if(row.definition_key==kLydPersonalKeys267V1[static_cast<std::size_t>(*q.personal)]&&row.select_admissible){q.choice_token=row.choice_token;break;}}
  const bool read=a<13&&LydQueryAction267V1(r.action)&&r.status==LydStatus267V1::available&&source&&lease&&!r.effect_attempted&&!r.native_returned&&!r.native_handled&&!r.claim_sequence;
  const auto desired=a==3||a==5||a==11?LydStatus267V1::confirmation_dispatched:a==2||a==9?LydStatus267V1::selection_dispatched:LydStatus267V1::navigation_dispatched;
- const bool dispatched=a<13&&!LydQueryAction267V1(r.action)&&r.status==desired&&source&&lease&&r.claim_sequence&&r.effect_attempted&&r.native_returned&&(!r.native_handled||a==1||a==7)&&LydPublicAdmissible267V1(*r.source,q);
+ const bool dispatched=!full111_events_only&&a<13&&!LydQueryAction267V1(r.action)&&r.status==desired&&source&&lease&&r.claim_sequence&&r.effect_attempted&&r.native_returned&&(!r.native_handled||a==1||a==7)&&LydPublicAdmissible267V1(*r.source,q);
  const bool ok=read||dispatched;auto status=r.status;if(!ok&&(status==LydStatus267V1::available||status==LydStatus267V1::navigation_dispatched||status==LydStatus267V1::selection_dispatched||status==LydStatus267V1::confirmation_dispatched))status=LydStatus267V1::indeterminate;
  Json j;j.data=R"({"type":"command_result","protocol_version":1,"request_id":)";String(j.data,id);j.data+=ok?R"(,"ok":true,"result":{"schema":)":R"(,"ok":false,"result":{"schema":)";String(j.data,kLydResultSchema267V1);
- j.str("game_version",kGameVersion);j.str("executable_sha256",kExecutableSha256);j.str("backend",kLydBackend267V1);j.str("adapter_id",kAdapterId);j.str("action",a<13?kLydActionNames267V1[a]:"invalid");j.str("status",Status(status));j.flag("source_available",source);j.flag("effect_attempted",r.effect_attempted);j.flag("native_returned",r.native_returned);j.flag("native_handled",r.native_handled);j.flag("cleanup_known",r.cleanup_known);j.u64("provider_generation",r.provider_generation);j.u64("query_sequence",r.query_sequence);j.u64("claim_sequence",r.claim_sequence);
+ j.str("game_version",kGameVersion);j.str("executable_sha256",kExecutableSha256);j.str("backend",kLydBackend267V1);j.str("adapter_id",adapter);j.str("action",a<13?kLydActionNames267V1[a]:"invalid");j.str("status",Status(status));j.flag("source_available",source);j.flag("effect_attempted",r.effect_attempted);j.flag("native_returned",r.native_returned);j.flag("native_handled",r.native_handled);j.flag("cleanup_known",r.cleanup_known);j.u64("provider_generation",r.provider_generation);j.u64("query_sequence",r.query_sequence);j.u64("claim_sequence",r.claim_sequence);
  Enum(j,"decision_key",kLydDecisionKeys267V1,r.decision);Enum(j,"personal_key",kLydPersonalKeys267V1,r.personal);Enum(j,"event_role",kLydEventRoleNames267V1,r.event_role);j.nullable("instance_id",r.instance_id);
  j.key("facts_before");if(facts){const auto&p=r.facts;j.data+="{\"date_raw\":"+std::to_string(p.clock.date_raw);j.num("speed",p.clock.speed);j.flag("paused",p.clock.paused);j.num("local_player_id",p.local_player_id);j.flag("map_ready",p.map_ready);j.flag("has_played_character",p.has_played_character);j.num("played_character_id",p.played_character_id);j.flag("played_character_alive",p.played_character_alive);j.data+='}';}else j.data+="null";
  j.key("owner");if(facts){j.data+="{\"connection_generation\":";String(j.data,std::to_string(r.connection_generation));j.u64("ticket_sequence",r.ticket_sequence);j.u64("pump_epoch",r.pump_epoch);j.num("thread_id",r.thread_id);j.data+='}';}else j.data+="null";
- j.key("source");if(source)WriteSource(j,*r.source);else j.data+="null";
+ j.key("source");if(source)WriteSource(j,*r.source,!full111_events_only);else j.data+="null";
  j.flag("addresses_redacted",true);j.flag("event_closed",false);j.flag("personal_applied",false);j.flag("gold_paid",false);j.flag("piety_paid",false);j.flag("modifiers_applied",false);j.flag("new_date_observed",false);j.flag("physical_save_confirmed",false);j.key("unavailable_reason");if(ok)j.data+="null";else String(j.data,r.reason.empty()?"current_lyd_source_unavailable":r.reason);j.data+="}}";return j.data;
+}
+}
+std::string SerializeLydResult267V1(std::string_view id,const LydResult267V1&r){
+ return SerializeResult(id,r,kAdapterId);
+}
+std::string SerializeFull111LydEventResult267V1(std::string_view id,const LydResult267V1&r){
+ return SerializeResult(id,r,full111::kAdapterId);
 }
 }

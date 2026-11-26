@@ -114,6 +114,9 @@ struct LydResult267V1{
  std::optional<LydSource267V1>source;std::string reason;
 };
 bool LydRequestShape267V1(const LydRequest267V1&)noexcept;
+inline constexpr auto kLydEventQueryIndex267V1=static_cast<std::size_t>(LydAction267V1::query_events);
 bool ParseLydRequest267V1(std::string_view,LydRequest267V1&)noexcept;
+bool ParseFull111LydEventRequest267V1(std::string_view,LydRequest267V1&)noexcept;
 std::string SerializeLydResult267V1(std::string_view,const LydResult267V1&);
+std::string SerializeFull111LydEventResult267V1(std::string_view,const LydResult267V1&);
 }

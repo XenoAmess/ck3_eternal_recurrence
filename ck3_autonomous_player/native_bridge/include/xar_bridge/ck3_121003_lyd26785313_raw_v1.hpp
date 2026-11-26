@@ -44,6 +44,8 @@ bool LydQueryAction267V1(LydAction267V1)noexcept;
 bool VerifyLydImage267V1(std::uintptr_t)noexcept;
 bool ReadLydRaw267V1(const ReadonlyBindings&,const ck3_1210::CoreSnapshotPrefix&,const LydScene267V1&,
  std::uint64_t,const LydRequest267V1&,const std::optional<LydSelectionAssociation267V1>&,LydRaw267V1&,std::string&)noexcept;
+bool ReadFull111LydEventRaw267V1(const ReadonlyBindings&,const ck3_1210::CoreSnapshotPrefix&,
+ const LydScene267V1&,std::uint64_t,const LydRequest267V1&,std::uintptr_t,LydRaw267V1&,std::string&)noexcept;
 void TokenizeLydRaw267V1(LydRaw267V1&,std::uint64_t,std::uint64_t);
 bool SameLydRawForLease267V1(const LydRaw267V1&,const LydRaw267V1&)noexcept;
 bool LydRawAdmissible267V1(const LydRaw267V1&,const LydRequest267V1&)noexcept;

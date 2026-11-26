@@ -17,8 +17,12 @@ std::uint64_t Wall()noexcept{const auto t=std::chrono::duration_cast<std::chrono
  if(out.facts_verified){q.result.facts_available=true;q.result.facts=out.core;q.result.connection_generation=q.connection_generation;q.result.ticket_sequence=q.ticket.sequence;q.result.pump_epoch=s.pump_epoch;q.result.thread_id=s.thread_id;}
  if(!good){q.result.reason=reason;return false;}if(!SameCore(out.core,q.request.expected)){q.result.reason="lyd_actual_core_changed";return false;}return Time(q);
 }
-[[maybe_unused]]bool Observe(LydContext267V1&q,const LydFrame267V1&frame,const std::optional<LydSelectionAssociation267V1>&pending,LydRaw267V1&raw){std::string reason;
- const bool good=ReadLydRaw267V1(q.bindings,q.request.expected,frame.scene,q.monotonic_deadline_ms,q.request,pending,raw,reason);
+[[maybe_unused]]bool Observe(LydContext267V1&q,const LydFrame267V1&frame,const ck3_11906::MainThreadExecutionStampV1 &stamp,
+ const std::optional<LydSelectionAssociation267V1>&pending,LydRaw267V1&raw){std::string reason;
+ const bool good=q.full111_ordinary_events_only
+     ?ReadFull111LydEventRaw267V1(q.bindings,q.request.expected,frame.scene,q.monotonic_deadline_ms,
+         q.request,stamp.game_state,raw,reason)
+     :ReadLydRaw267V1(q.bindings,q.request.expected,frame.scene,q.monotonic_deadline_ms,q.request,pending,raw,reason);
  q.native_observation_entered=q.native_observation_entered||raw.native_read_entered;q.result.cleanup_known=raw.cleanup_known;
  if(!good){q.result.reason=reason;return false;}q.result.source_available=true;q.result.source=raw.source;return Time(q);
 }
@@ -47,6 +51,8 @@ bool ExecuteLydInner267V1(LydContext267V1&q,[[maybe_unused]]const ck3_11906::Mai
  q.result.decision=q.request.decision;q.result.personal=q.request.personal;q.result.event_role=q.request.event_role;q.result.instance_id=q.request.instance_id;q.result.reason="current_lyd_default_off";
 #if defined(XAR_CK3_ENABLE_121003_26785313_LYD_V1) && XAR_CK3_ENABLE_121003_26785313_LYD_V1
  try{using S=LydStatus267V1;const auto reject=[&](S status,const char*why){q.result.status=status;q.result.reason=why;return true;};
+  if(q.full111_ordinary_events_only&&q.request.action!=LydAction267V1::query_events)
+   return reject(S::unavailable,"current111_ordinary_event_query_only");
   if(!q.session||!LydRequestShape267V1(q.request))return reject(S::unavailable,"lyd_actual_request_or_retained_session_unavailable");auto&state=*q.session->state_;std::scoped_lock lock(state.mutex);
   for(const auto&claim:state.claims)if(claim.id==q.request.id()){q.result.claim_sequence=claim.sequence;return reject(S::claim_consumed,"lyd_original_effect_id_retained_no_replay");}
   if(state.unknown.load(std::memory_order_acquire)){q.result.cleanup_known=false;return reject(S::indeterminate,"lyd_prior_native_completion_unknown_no_retry");}
@@ -61,16 +67,24 @@ bool ExecuteLydInner267V1(LydContext267V1&q,[[maybe_unused]]const ck3_11906::Mai
     q.monotonic_deadline_ms=(std::min)(q.monotonic_deadline_ms,state.pending->monotonic_deadline);
     if(!Time(q))return reject(S::expired,"lyd_original_pending_selection_deadline_expired");
    }
-   state.latest.reset();const auto before=frame;LydRaw267V1 raw;if(!Observe(q,frame,state.pending,raw))return failed();
-   if(!Frame(q,s,frame)||!SameFrame(before,frame))return reject(S::stale_source,"lyd_actual_core_or_gui_changed_after_read");
-   const auto sequence=++state.query_sequence;TokenizeLydRaw267V1(raw,state.generation,sequence);q.result.source=raw.source;
-   LydSession267V1::State::Lease lease{frame,raw,q.request,sequence,q.connection_generation,q.monotonic_deadline_ms,false};state.latest=std::move(lease);
+   if(!q.full111_ordinary_events_only)state.latest.reset();
+   const auto before=frame;LydRaw267V1 raw;if(!Observe(q,frame,s,state.pending,raw))return failed();
+   if(!Frame(q,s,frame)||!SameFrame(before,frame)){
+    if(q.full111_ordinary_events_only){q.result.source_available=false;q.result.source.reset();}
+    return reject(S::stale_source,"lyd_actual_core_or_gui_changed_after_read");
+   }
+   const auto sequence=++state.query_sequence;
+   if(!q.full111_ordinary_events_only){
+    TokenizeLydRaw267V1(raw,state.generation,sequence);q.result.source=raw.source;
+    LydSession267V1::State::Lease lease{frame,raw,q.request,sequence,q.connection_generation,q.monotonic_deadline_ms,false};
+    state.latest=std::move(lease);
+   }
    q.result.provider_generation=state.generation;q.result.query_sequence=sequence;q.result.status=S::available;q.result.reason.clear();return true;
   }
   if(!state.latest)return reject(S::stale_source,"lyd_original_private_query_unavailable");auto&lease=*state.latest;
   if(q.request.provider_generation!=state.generation||q.request.query_sequence!=lease.query||q.connection_generation!=lease.connection||q.request.deadline_unix_ms!=lease.request.deadline_unix_ms||!SameSubject(q.request,lease.request)||!SameCore(q.request.expected,lease.request.expected)||q.request.id()==lease.request.id())return reject(S::stale_source,"lyd_original_private_query_source_mismatch");
   if(lease.consumed)return reject(S::claim_consumed,"lyd_original_private_query_consumed");if(GetTickCount64()>=lease.mono)return reject(S::expired,"lyd_original_query_deadline_expired");q.monotonic_deadline_ms=(std::min)(q.monotonic_deadline_ms,lease.mono);
-  LydRaw267V1 raw;if(!Observe(q,frame,state.pending,raw))return failed();TokenizeLydRaw267V1(raw,state.generation,lease.query);q.result.source=raw.source;const auto before=frame;
+  LydRaw267V1 raw;if(!Observe(q,frame,s,state.pending,raw))return failed();TokenizeLydRaw267V1(raw,state.generation,lease.query);q.result.source=raw.source;const auto before=frame;
   if(!Frame(q,s,frame)||!SameFrame(before,frame)||!SameFrame(lease.frame,frame)||!SameLydRawForLease267V1(raw,lease.raw))return reject(S::stale_source,"lyd_actual_complete_source_changed");
   if(!LydRawAdmissible267V1(raw,q.request))return reject(S::unavailable,"lyd_actual_typed_source_or_native_can_refused");
   if(!Time(q))return reject(S::expired,"lyd_original_preclaim_deadline_expired");const auto sequence=state.claim_sequence+1;

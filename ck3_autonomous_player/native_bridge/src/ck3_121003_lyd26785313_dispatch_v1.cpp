@@ -1,9 +1,17 @@
 #include "xar_bridge/ck3_121003_lyd26785313_owner_v1.hpp"
 #include "xar_bridge/ck3_121003_core_route26785313_v1.hpp"
+#include "xar_bridge/ck3_1210_adapter.hpp"
 #include <algorithm>
 namespace xar::ck3_121003::build26785313 {
 bool LydStepEnabled267V1([[maybe_unused]]const game::AdapterDescriptor&d,[[maybe_unused]]std::string_view step)noexcept{
 #if defined(XAR_CK3_ENABLE_121003_26785313_LYD_V1) && XAR_CK3_ENABLE_121003_26785313_LYD_V1
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1
+ if(game::IsCk3_121003Full111Descriptor(d)) {
+  const auto index=kLydEventQueryIndex267V1;
+  return step==kLydSteps267V1[index]&&
+      std::find(d.capabilities.begin(),d.capabilities.end(),kLydCapabilities267V1[index])!=d.capabilities.end();
+ }
+#endif
  if(!game::IsCk3_121003Core26785313Descriptor(d))return false;
  const auto found=std::find(kLydSteps267V1.begin(),kLydSteps267V1.end(),step);
  if(found==kLydSteps267V1.end())return false;const auto cap=kLydCapabilities267V1[static_cast<std::size_t>(found-kLydSteps267V1.begin())];
@@ -15,8 +23,23 @@ bool LydStepEnabled267V1([[maybe_unused]]const game::AdapterDescriptor&d,[[maybe
 std::string DispatchLydRequest267V1(const game::GameAdapter&game,std::uint64_t connection,
  std::string_view id,std::string_view step,std::string_view payload,ck3_11906::MainThreadQueryMailboxV1&mailbox){
  LydContext267V1 q;q.result.reason="lyd_request_or_profile_unavailable";
- const auto emit=[&]{return SerializeLydResult267V1(id,q.result);};
- if(!ParseLydRequest267V1(payload,q.request)||q.request.id()!=id)return emit();
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1
+ q.full111_ordinary_events_only=game::IsCk3_121003Full111Descriptor(game.descriptor());
+ if(q.full111_ordinary_events_only)q.result.action=LydAction267V1::query_events;
+#endif
+ const auto emit=[&]{
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1
+  if(q.full111_ordinary_events_only)return SerializeFull111LydEventResult267V1(id,q.result);
+#endif
+  return SerializeLydResult267V1(id,q.result);
+ };
+ bool parsed=false;
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1
+ if(q.full111_ordinary_events_only)parsed=ParseFull111LydEventRequest267V1(payload,q.request);
+ else
+#endif
+ parsed=ParseLydRequest267V1(payload,q.request);
+ if(!parsed||q.request.id()!=id)return emit();
  q.result.action=q.request.action;q.result.provider_generation=q.request.provider_generation;q.result.query_sequence=q.request.query_sequence;q.result.decision=q.request.decision;q.result.personal=q.request.personal;q.result.event_role=q.request.event_role;q.result.instance_id=q.request.instance_id;
  const auto index=static_cast<std::size_t>(q.request.action);if(index>=kLydSteps267V1.size())return emit();const auto wanted=kLydSteps267V1[index];
  if(step!=wanted||!game.enabled()||!connection||!LydStepEnabled267V1(game.descriptor(),step)||!game.supports_step(step))return emit();

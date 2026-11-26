@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_121003_lyd26785313_owner_v1.hpp"
+#include "xar_bridge/ck3_121003_full_profile111.hpp"
 #include <array>
 #include <iostream>
 #include <stdexcept>
@@ -22,6 +23,22 @@ int main(){try{
   d.capabilities={};require(!LydStepEnabled267V1(d,kLydSteps267V1[i]),"Missing actual capability");
   d.capabilities=caps;d.adapter_id="wrong-adapter";require(!LydStepEnabled267V1(d,kLydSteps267V1[i]),"Wrong actual descriptor");
  }
+ constexpr bool full111_enabled=
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1
+ true;
+#else
+ false;
+#endif
+ xar::game::AdapterDescriptor full{xar::ck3_121003::full111::kAdapterId,kGameVersion,
+  kExecutableSha256,"xar_checkpoint",kLydCapabilities267V1};
+ for(std::size_t i=0;i<kLydSteps267V1.size();++i)
+  require(LydStepEnabled267V1(full,kLydSteps267V1[i])==(full111_enabled&&i==kLydEventQueryIndex267V1),
+   "Full111 must grant at most the one actual read-only action");
+ full.capabilities={};
+ require(!LydStepEnabled267V1(full,kLydSteps267V1[kLydEventQueryIndex267V1]),"Full111 missing read capability");
+ full.capabilities=kLydCapabilities267V1;
+ full.executable_sha256="wrong-executable";
+ require(!LydStepEnabled267V1(full,kLydSteps267V1[kLydEventQueryIndex267V1]),"Full111 wrong executable");
  std::cout<<"PASS actual linked LydStepEnabled, expected="<<enabled<<", checks="<<checked<<", no transport/owner/native calls\n";return 0;
  }catch(const std::exception&e){std::cerr<<e.what()<<'\n';return 1;}}
 
@@ -30,6 +47,8 @@ int main(){try{
 namespace xar::game {bool GameAdapter::supports_step(std::string_view)const noexcept{std::abort();}}
 namespace xar::ck3_121003::build26785313 {
 bool ParseLydRequest267V1(std::string_view,LydRequest267V1&)noexcept{std::abort();}
+bool ParseFull111LydEventRequest267V1(std::string_view,LydRequest267V1&)noexcept{std::abort();}
+std::string SerializeFull111LydEventResult267V1(std::string_view,const LydResult267V1&){std::abort();}
 std::string SerializeLydResult267V1(std::string_view,const LydResult267V1&){std::abort();}
 LydSession267V1&RetainedLydSession267V1(){std::abort();}
 void BlockLydUnknown267V1(LydSession267V1&)noexcept{std::abort();}

@@ -12784,6 +12784,13 @@ public:
         reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
         game_->descriptor().executable_sha256,
         std::span<const xar::ck3_11906::MainThreadQueryExecutorV1>(executors.data(),count));
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1
+    namespace current=xar::ck3_121003::build26785313;
+    const auto event_query=current::kLydEventQueryIndex267V1;
+    if(xar::game::IsCk3_121003Full111Descriptor(game_->descriptor())&&
+        game_->supports(current::kLydCapabilities267V1[event_query]))
+      environment.permitted_executor_quinquevigintary=&current::ExecuteLydOnOwner267V1;
+#endif
     if(observer_ != nullptr && game_->supports_snapshot()) {
       environment.snapshot_observer_callback=game_->supports(xar::ck3_1210::kDateSentinelCapabilityV1)
           ?&ObserveFlorinFullAndDate1210:&xar::ck3_12002::ObserveAdapterSnapshot12002;
@@ -17197,6 +17204,15 @@ void RunConnectedSession(
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1) && XAR_CK3_ENABLE_121003_26785313_TED_TRANSITION_V1
         if(!early_step_dispatched&&std::find(xar::ck3_121003::build26785313::kTedTransitionSteps267V1.begin(),xar::ck3_121003::build26785313::kTedTransitionSteps267V1.end(),step)!=xar::ck3_121003::build26785313::kTedTransitionSteps267V1.end()&&xar::game::IsCk3_121003Core26785313Descriptor(game.descriptor())){connected=write_frame(pipe,xar::ck3_121003::build26785313::DispatchTedTransitionRequest267V1(game,state.connection_generation,request_id,step,incoming.payload,g_main_thread_query_mailbox_v1));early_step_dispatched=true;}
+#endif
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1
+        if(!early_step_dispatched&&xar::game::IsCk3_121003Full111Descriptor(game.descriptor())&&
+            step==xar::ck3_121003::build26785313::kLydSteps267V1[
+                xar::ck3_121003::build26785313::kLydEventQueryIndex267V1]){
+          connected=write_frame(pipe,xar::ck3_121003::build26785313::DispatchLydRequest267V1(
+              game,state.connection_generation,request_id,step,incoming.payload,g_main_thread_query_mailbox_v1));
+          early_step_dispatched=true;
+        }
 #endif
 #if defined(XAR_CK3_ENABLE_121003_26785313_LYD_V1) && XAR_CK3_ENABLE_121003_26785313_LYD_V1
         if(!early_step_dispatched&&std::find(xar::ck3_121003::build26785313::kLydSteps267V1.begin(),xar::ck3_121003::build26785313::kLydSteps267V1.end(),step)!=xar::ck3_121003::build26785313::kLydSteps267V1.end()&&xar::game::IsCk3_121003Core26785313Descriptor(game.descriptor())){connected=write_frame(pipe,xar::ck3_121003::build26785313::DispatchLydRequest267V1(game,state.connection_generation,request_id,step,incoming.payload,g_main_thread_query_mailbox_v1));early_step_dispatched=true;}

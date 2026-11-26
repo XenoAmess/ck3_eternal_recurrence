@@ -11,6 +11,9 @@
 namespace xar::ck3_121003::build26785313 {
 #if defined(XAR_CK3_ENABLE_121003_26785313_LYD_V1) && XAR_CK3_ENABLE_121003_26785313_LYD_V1
 #include "ck3_121003_lyd26785313_common_v1.inc"
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1
+#include "ck3_121003_lyd26785313_full111_queue_v1.inc"
+#endif
 #include "ck3_121003_lyd26785313_personal_native_v1.inc"
 namespace lyd_raw {
 using namespace lyd_common;
@@ -206,6 +209,27 @@ bool ReadLydRaw267V1([[maybe_unused]]const ReadonlyBindings&b,[[maybe_unused]]co
  out={};reason="current_lyd_default_off";
 #if defined(XAR_CK3_ENABLE_121003_26785313_LYD_V1) && XAR_CK3_ENABLE_121003_26785313_LYD_V1
  LydRaw267V1 a,z;try{if(!lyd_raw::Sample(b,core,s,mono,q,pending,a,reason)){out=std::move(a);return false;}if(!lyd_raw::Sample(b,core,s,mono,q,pending,z,reason)){z.native_read_entered=z.native_read_entered||a.native_read_entered;out=std::move(z);return false;}if(a!=z){out=std::move(z);reason="lyd_complete_source_changed_between_samples";return false;}out=std::move(z);reason.clear();return true;}catch(...){out.native_read_entered=a.native_read_entered||z.native_read_entered;out.cleanup_known=!out.native_read_entered;reason="lyd_actual_read_completion_unknown";return false;}
+#else
+ return false;
+#endif
+}
+bool ReadFull111LydEventRaw267V1([[maybe_unused]]const ReadonlyBindings&bindings,
+ [[maybe_unused]]const ck3_1210::CoreSnapshotPrefix&core,[[maybe_unused]]const LydScene267V1&scene,
+ [[maybe_unused]]std::uint64_t mono,[[maybe_unused]]const LydRequest267V1&request,
+ [[maybe_unused]]std::uintptr_t owner_game,LydRaw267V1&out,std::string&reason)noexcept{
+ out={};reason="current111_ordinary_event_read_default_off";
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1
+ full111_event_queue::Sample before{},after{};
+ if(request.action!=LydAction267V1::query_events||!core.clock.paused||
+     !full111_event_queue::Capture(bindings,owner_game,before)){
+  reason="current111_ordinary_event_queue_unavailable";return false;
+ }
+ if(!ReadLydRaw267V1(bindings,core,scene,mono,request,{},out,reason))return false;
+ if(!full111_event_queue::Capture(bindings,owner_game,after)||before!=after||
+     !full111_event_queue::Matches(after,owner_game,core.played_character_id,out)){
+  reason="current111_ordinary_events_do_not_cover_runtime_queue";return false;
+ }
+ return true;
 #else
  return false;
 #endif

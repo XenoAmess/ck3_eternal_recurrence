@@ -17,7 +17,8 @@ class LydSession267V1{
 struct LydContext267V1{
  ReadonlyBindings bindings{};ck3_11906::MainThreadQueryMailboxV1*mailbox=nullptr;ck3_11906::MainThreadQueryTicketV1 ticket{};
  LydRequest267V1 request{};LydResult267V1 result{};LydSession267V1*session=nullptr;
- std::uint64_t connection_generation=0,monotonic_deadline_ms=0;bool native_observation_entered=false;
+ std::uint64_t connection_generation=0,monotonic_deadline_ms=0;
+ bool native_observation_entered=false,full111_ordinary_events_only=false;
 };
 LydSession267V1&RetainedLydSession267V1();
 void ArmLydDeadline267V1(LydContext267V1&)noexcept;
