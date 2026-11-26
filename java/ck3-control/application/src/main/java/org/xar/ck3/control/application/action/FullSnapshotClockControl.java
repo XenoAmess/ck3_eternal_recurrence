@@ -31,7 +31,10 @@ public final class FullSnapshotClockControl {
                 &&"50b1b12bae59d5eb70b97978b86aabbb93a675e6e327bbcaa9a37aa5285cdb46".equalsIgnoreCase(bridge.sha256()))
                 // Independent142: control source only after the identical transport selects control mode.
                 ||(bridge.bytes()==12396032L
-                &&"3601748c4d4824509416d61c779f16eda6f97b85cd5608786ecf5645215b733c".equalsIgnoreCase(bridge.sha256())));
+                &&"3601748c4d4824509416d61c779f16eda6f97b85cd5608786ecf5645215b733c".equalsIgnoreCase(bridge.sha256()))
+                // Full111 ordinary snapshot and original sentinel expiry build from 394b0d2ee5.
+                ||(bridge.bytes()==27048960L
+                &&"6dc0b448fbe5ab46e0ef59127e00f893b5da71ad2c6e22c51c21f9a80e66602c".equalsIgnoreCase(bridge.sha256())));
     }
 
     public static NativeRequest requestMappedSave112(org.xar.ck3.control.contracts.ExactRef bridge,
