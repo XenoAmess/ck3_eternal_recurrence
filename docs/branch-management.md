@@ -316,3 +316,5 @@ ref as part of delivery rather than as a later cleanup project.
 2026-11-27 00:34（UTC+8），`6a97ab3450` 的官方 Java 检查完成并失败。两轮 Tools 各通过 1,248 项测试。随后 qualified 子进程因缺 `artifacts/tools-postqualification/actual.json` 退出，尚未进入完整 reactor、HTTP 和独立 SDK 夹具。归档已在主线并验证可恢复，继续保留最后一个远端旧分支引用。[官方检查](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/45837231107)
 
 2026-11-27，另对本机 11 条剩余引用逐条核查。在 `machine_id: xenoamess-full-tower-eb9d2c1186` 上，以 `84fe1d22e3` 为起点制作了五条旧 Native 分支的 Git bundle。原 tip 在独立 bare 仓库解包和读回，五个前置均是主线祖先。bundle 与校验为 `D:/ck3-state/ck3-mainline-closeout-20261126/remaining-native-backup-20261127/BUNDLE-VERIFIED.json`。Battle 分支使用主线已有归档。当前覆盖这些分支的官方验收仍在运行，引用保留。[历史归档 CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/45848944860)
+
+2026-11-27，`894f7d0bc1` 的历史归档正式检查终态失败。Java Tools 首轮 1,248 项通过，第二轮的定期磁盘统计对临时测试目录返回 AccessDenied，Job 退出 124。该次未进入 Tools 资格回执读取。相邻四次正式检查进入后继步骤，仍缺同一份 `tools-postqualification/actual.json`。原归档与分支引用保留。[历史归档 CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/45848944860) [相邻检查](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/45854956082)
