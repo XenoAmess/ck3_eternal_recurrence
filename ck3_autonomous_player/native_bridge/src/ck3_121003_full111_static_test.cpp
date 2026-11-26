@@ -130,7 +130,43 @@ void Run(){
  Put(f.peer_dead,0x18,std::bit_cast<std::int32_t>(0x83000002U));Need(!f.Read(out,d),"stale full generation not dropped");Put(f.peer_dead,0x18,f.dead_id);
  Put(f.actor,0x1A8,static_cast<void*>(nullptr));Need(f.Read(out,d)&&out.played_character_spouse_ids.empty()&&out.played_character_betrothed_id==-1,"actual default-vector null-family empty");Put(f.actor,0x1A8,f.family.data());
  f.mutate_gold=true;Need(!f.Read(out,d)&&!d.complete,"actual double-pass resource drift rejected");f.mutate_gold=false;
- Put(f.data,0x44BC0+0x1F24,std::int32_t{1});Need(!f.Read(out,d),"nonempty event remains unavailable");
+ constexpr std::size_t event_items=0x44BC0+0x1F18, event_count=0x44BC0+0x1F24;
+ const auto event_rejected=[&](std::string_view reason){
+  const bool available=f.Read(out,d);
+  if(d.stage!="event"||d.reason!=reason)
+   std::cerr<<"expected event diagnostic "<<reason<<", got "<<d.stage<<'/'<<d.reason<<'\n';
+  Need(!available&&!d.complete&&out==xar::game::Snapshot{}&&d.stage=="event"&&d.reason==reason,
+    reason.data());
+ };
+ Put(f.data,event_count,std::int32_t{-1});
+ event_rejected("current111_event_queue_header_invalid");
+ Put(f.data,event_count,std::int32_t{1});
+ event_rejected("current111_event_queue_header_invalid");
+ std::array<void*,1> event_rows{f.entry.data()};
+ Put(f.data,event_items,event_rows.data());
+ event_rejected("current111_nonempty_event_lifetime_unavailable");
+ Put(f.data,event_count,std::int32_t{0});
+ Need(f.Read(out,d)&&!out.has_active_event,"empty queue can retain allocated items storage");
+
+ // Place the items cell at the end of an owned committed page. The count
+ // cell then falls in the next reserved, inaccessible page.
+ constexpr std::size_t test_page_size=4096;
+ const auto test_page=f.image.base()+0x400000;
+ Need(VirtualAlloc(reinterpret_cast<void*>(test_page),test_page_size,MEM_COMMIT,PAGE_READWRITE)!=nullptr,
+   "own accessible event header page");
+ const auto test_data=test_page+test_page_size-sizeof(void*)-event_items;
+ for(const auto data_address:{test_data,test_data+test_page_size}){
+  // The Core read must still resolve the played character from the relocated data root.
+  const auto data_rva=data_address-f.image.base();
+  f.image.Value(data_rva+0x26FB0,f.entries.data());
+  f.image.Value(data_rva+0x26FBC,std::int32_t{1});
+ }
+ Put(f.state,0xA0,reinterpret_cast<void*>(test_data));
+ event_rejected("current111_event_count_slot_unreadable");
+ Put(f.state,0xA0,reinterpret_cast<void*>(test_data+test_page_size));
+ event_rejected("current111_event_items_slot_unreadable");
+ Put(f.state,0xA0,f.data.data());
+ Need(f.Read(out,d)&&!out.has_active_event,"normal empty queue restored");
  std::cout<<"PASS current Full pointer-cell/heap/global contract; embedded/mismatch reject; full32, Family3 finite extent and coherence; RAM only\n";
 }
 }

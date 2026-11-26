@@ -106,12 +106,16 @@ bool PendingOwner(const Roots&r,std::uintptr_t base) noexcept {
  At(r.data,kPendingManager+0x50,owned)&&At(reinterpret_cast<void*>(base+kPendingRegistry),0,global)&&
  owned&&owned==global&&At(global,0,vt)&&vt==base+kPendingRegistryVt;
 }
-bool EventEmpty(const Roots&r) noexcept {
+bool ReadEmptyEventQueue(const Roots&r,FullSnapshotDiagnosticsV1 &d) noexcept {
  const auto *manager=static_cast<const std::byte*>(r.data)+kEventManager;
  void *items=nullptr;std::int32_t count=0;
  // The current selector's complete native CFG consumes this exact queue.
+ if(!At(manager,0x1F18,items))return Fail(d,"event","current111_event_items_slot_unreadable");
+ if(!At(manager,0x1F24,count))return Fail(d,"event","current111_event_count_slot_unreadable");
+ if(count<0||(count>0&&!items))return Fail(d,"event","current111_event_queue_header_invalid");
  // A nonempty queue has no admitted event-row lifetime and remains unavailable.
- return At(manager,0x1F18,items)&&At(manager,0x1F24,count)&&count==0;
+ if(count>0)return Fail(d,"event","current111_nonempty_event_lifetime_unavailable");
+ return true;
 }
 #if defined(XAR_CK3_ENABLE_121003_OWNED_ARMY123)
 #include "owned_army_identity123.inc"
@@ -120,7 +124,7 @@ bool Pass(const FullSnapshotBindingsV1 &b,const CoreSnapshotPrefix &p,std::uintp
  Roots &r,xar::game::Snapshot &s,FullSnapshotDiagnosticsV1 &d) {
  s={};if(!Capture(b.core,p,r))return Fail(d,"root","current111_root_or_actor_unavailable");
  if(!Foundation(r,base,s))return Fail(d,"foundation","current111_resources_or_family3_unavailable");
- if(!EventEmpty(r))return Fail(d,"event","current111_nonempty_event_lifetime_unavailable");
+ if(!ReadEmptyEventQueue(r,d))return false;
  if(!PendingOwner(r,base))return Fail(d,"pending","current111_pending_owner_mismatch");
  PendingSnapshotObservationV1 pending{};
  if(!ReadPendingSnapshotV1(b.pending,p,pending))return Fail(d,"pending",pending.unavailable_reason);
