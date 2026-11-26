@@ -1,7 +1,10 @@
 package org.xar.ck3.control.service.root;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,6 +20,25 @@ final class RootExitedOwnerResultConsumerTest {
                 });
         assertEquals(List.of("business","transport","owner"),calls);
     }
+    @Test void exitedOwnerDirectoryIsStableAcrossPostStartBusinessFailure(@TempDir Path state) throws Exception {
+        String parent="software-original-imported-parent";
+        Path owner=RootOrdinaryRuntimeAssembly.exitedReplacementOwnerDirectory(state,parent);
+        assertEquals(state,owner.getParent());
+        assertTrue(owner.getFileName().toString().matches("restored-owner-[0-9a-f]{64}"));
+        assertNotEquals(owner,RootOrdinaryRuntimeAssembly.exitedReplacementOwnerDirectory(state,parent+"-other"));
+        // Only DATA and the real cleanup ordering are exercised. The file grants no Game or adoption authority.
+        Path retained=Files.writeString(Files.createDirectory(owner).resolve("software-owner-marker"),parent);
+        var called=new ArrayList<Path>();
+        var failure=new IOException("post-Started load verification failed");
+        assertSame(failure,assertThrows(IOException.class,()->RootOrdinaryRuntimeAssembly.awaitOwnerAfterBusinessRelease(
+                ()->{throw failure;},()->{},()->{
+                    var original=RootOrdinaryRuntimeAssembly.exitedReplacementOwnerDirectory(state,parent);
+                    assertEquals(parent,Files.readString(original.resolve(retained.getFileName())));
+                    called.add(original);
+                })));
+        assertEquals(List.of(owner),called);
+    }
+
     @Test void nonzeroResultIsVisibleAfterTheActualCleanupSequence() {
         for(int result:new int[]{1,-7}) {
             var calls=new ArrayList<String>();

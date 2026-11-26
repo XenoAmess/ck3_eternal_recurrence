@@ -982,7 +982,8 @@ public final class RootOrdinaryRuntimeAssembly {
             core.bindColdRestoreAdapters(original,adapters);
             products.domains().lifecycle().bindManagedLifecycle(lifecycle,plan);
             var physical=original.importedSource().isPresent()
-                    ?org.xar.ck3.control.platform.GameRestoreAdapter.importedExited(lifecycle,plan,exited,files,clock)
+                    ?org.xar.ck3.control.platform.GameRestoreAdapter.importedExited(lifecycle,plan,exited,files,clock,
+                            this::retainExitedStarted)
                     :new org.xar.ck3.control.platform.GameRestoreAdapter(lifecycle,plan,exited);
             var replacement=new org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.LifecyclePort() {
                 @Override public org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.LaunchResult replaceOnce(
@@ -1136,19 +1137,27 @@ public final class RootOrdinaryRuntimeAssembly {
             return exitedOriginalOwnership;
         }
         private synchronized void retainExitedReplacement(String requestId)throws IOException {
-            if(exitedOwnerLifetime!=null)return;
             rememberExitedReplacement(requestId);
-            var result=lifecycle.queryReplacement(requestId);
-            if(!(result instanceof JavaGameLifecycle.Replaced replaced))return;
-            var started=replaced.replacement();
+            if(lifecycle.queryReplacement(requestId) instanceof JavaGameLifecycle.Replaced replaced)
+                retainExitedStarted(requestId,replaced.replacement());
+        }
+        /** Actual child HELLO ownership can be published before the parent's load/acceptance checks. */
+        private synchronized void retainExitedStarted(String requestId,JavaGameLifecycle.Started started)throws IOException {
+            rememberExitedReplacement(requestId);
+            Path directory=exitedReplacementOwnerDirectory(config.stateDirectory(),requestId);
+            if(exitedOwnerLifetime!=null) {
+                if(exitedOwnerStart!=started||!directory.equals(exitedOwnerDirectory))
+                    throw new IOException("exited replacement changed its original Started owner publication");
+                return;
+            }
             var actual=lifecycle.captureStartedOwner(started);
             if(exitedOriginalOwnership!=null&&exitedOriginalOwnership!=actual)
                 throw new IOException("exited replacement changed its exact original creator custody");
-            exitedOriginalOwnership=actual;exitedOwnerStart=started;
-            Path directory=config.stateDirectory().resolve("restored-owner-"+org.xar.ck3.control.application.action.ActionCodec.sha256(
-                    requestId.getBytes(java.nio.charset.StandardCharsets.UTF_8)));
-            exitedOwnerLifetime=org.xar.ck3.control.platform.SavedGameOwnerLifetime249.retain(lifecycle,started,directory);
+            exitedOriginalOwnership=actual;
+            var retained=org.xar.ck3.control.platform.SavedGameOwnerLifetime249.retain(lifecycle,started,directory);
+            exitedOwnerStart=started;
             exitedOwnerDirectory=directory;
+            exitedOwnerLifetime=retained;
         }
         public synchronized ManagedGameSession exitedReplacementGame()throws IOException {
             if(exitedOwnerStart==null)throw new IOException("exited restoration has no retained original replacement");
@@ -1845,6 +1854,11 @@ public Running finishObservedMap(NativeFreshSnapshotPort.Received received, Init
         }else try {storage.close();}catch(IOException|RuntimeException|Error close){failure=close;}
         return failure;
     }
+    static Path exitedReplacementOwnerDirectory(Path stateDirectory,String parentRequestId) {
+        return stateDirectory.resolve("restored-owner-"+org.xar.ck3.control.application.action.ActionCodec.sha256(
+                parentRequestId.getBytes(java.nio.charset.StandardCharsets.UTF_8)));
+    }
+
     /** Cleanup failures remain observable after the original single-use owner wait, never bypass it. */
     static void awaitOwnerAfterBusinessRelease(BusinessRelease business,BusinessRelease transport,OwnerWait owner)
             throws IOException,InterruptedException {

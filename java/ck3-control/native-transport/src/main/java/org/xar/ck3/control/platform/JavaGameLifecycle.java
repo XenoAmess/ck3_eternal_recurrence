@@ -278,14 +278,19 @@ public final class JavaGameLifecycle {
     /** The original supervisor already proved exit and Job0. Import sends no old Game STOP. */
     public synchronized ReplacementResult replaceExitedSavedOnce(ReplacementRequest request,ExitedGeneration actual)
             throws IOException,InterruptedException {
-        return replaceExitedSavedOnce(request,actual,null);
+        return replaceExitedSavedOnce(request,actual,null,null);
     }
+    /** Publishes custody of the genuine Started child independently of any load or replacement ACK. */
+    @FunctionalInterface public interface ImportedStartedPublication {
+        void retain(String parentRequestId, Started started) throws IOException;
+    }
+
     synchronized ReplacementResult replaceImportedExitedSavedOnce(ReplacementRequest request,ExitedGeneration actual,
-            ImportedSavedGameTransfer.Prepared imported)throws IOException,InterruptedException {
-        return replaceExitedSavedOnce(request,actual,Objects.requireNonNull(imported));
+            ImportedSavedGameTransfer.Prepared imported,ImportedStartedPublication ownerPublication)throws IOException,InterruptedException {
+        return replaceExitedSavedOnce(request,actual,Objects.requireNonNull(imported),Objects.requireNonNull(ownerPublication));
     }
     private ReplacementResult replaceExitedSavedOnce(ReplacementRequest request,ExitedGeneration actual,
-            ImportedSavedGameTransfer.Prepared imported)throws IOException,InterruptedException {
+            ImportedSavedGameTransfer.Prepared imported,ImportedStartedPublication ownerPublication)throws IOException,InterruptedException {
         Objects.requireNonNull(request);Objects.requireNonNull(actual);String id=request.parentLifecycleIntentId();
         if(replacementRequests.containsKey(id)) {
             if(!replacementRequests.get(id).equals(request)||exitedReplacementSources.get(id)!=actual)
@@ -325,7 +330,10 @@ public final class JavaGameLifecycle {
                 }
                 captureStartedOwner(started); // before any post-Started replacement publication
                 if(started.session().generation().equals(actual.generation()))throw new IOException("exited replacement did not create a different measured Game birth");
-                if (imported!=null) imported.requireLoadedFile();
+                if (imported!=null) {
+                    ownerPublication.retain(id,started);
+                    imported.requireLoadedFile();
+                }
                 var accepted=exitedReplacementControl(id,"EXITED_SOURCE_NEW_HELLO_ACCEPTED_MAP_NOT_YET_VERIFIED",
                         actual,save.save(),started.launchEvidence(),imported);
                 atomic(generationClaim,accepted,false);atomic(claim,accepted,false);
