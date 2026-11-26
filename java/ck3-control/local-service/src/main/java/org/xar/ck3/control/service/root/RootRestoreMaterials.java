@@ -19,6 +19,7 @@ import org.xar.ck3.control.application.checkpoint.CheckpointFiles;
 import org.xar.ck3.control.application.checkpoint.DriverCheckpointStore;
 import org.xar.ck3.control.application.checkpoint.DriverStateSnapshot;
 import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService;
+import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.ImportedSaveTransfer;
 import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.NativeCandidate;
 import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.Request;
 import org.xar.ck3.control.application.checkpoint.SavedAttachmentSourceStore;
@@ -43,6 +44,7 @@ import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.GameGeneration;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.platform.JavaGameLifecycle;
+import org.xar.ck3.control.platform.ImportedSavedGameTransfer;
 import org.xar.ck3.control.platform.ManagedGameSession;
 import org.xar.ck3.control.platform.NativeLaunchPlan;
 import org.xar.ck3.control.nativebridge.NativeWire;
@@ -176,24 +178,37 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
     private final Optional<RootFrozenRunProfile.FrozenRunProfile> originalFrozen;
     private final Optional<ManagedGameSession> ordinaryPrevious;
     private final Map<String,Capture> captures=new LinkedHashMap<>();
-    private final Map<String,RestoreCheckpointService.ReadWindow> loadedReadWindows=new LinkedHashMap<>();
+    private final Map<String,RestoreCheckpointService.ReadWindow> readWindows=new LinkedHashMap<>();
 
     @Override public synchronized void bindReadWindow(Request request,RestoreCheckpointService.ReadWindow reads)throws IOException {
         Objects.requireNonNull(reads).requireOriginal(request);
-        if(coldPrevious==null||coldPrevious.loadedReplacement().isEmpty())return;
-        if(!loadedReadWindows.containsKey(request.requestId())&&loadedReadWindows.size()>=64)
-            throw new IOException("bounded loaded restoration read windows exhausted");
-        var loaded=coldPrevious.loadedReplacement().orElseThrow();
-        loaded.requireAck(loaded.cachedAck(),reads.deadline());
-        StrictJson.require(request.requestId().equals(loaded.originalParentId())&&request.deadline().equals(loaded.originalDeadline())
-                &&request.pair().equals(loaded.pair()),"loaded read window changed its original request or physical pair");
-        loadedReadWindows.put(request.requestId(),reads);
+        if (coldPrevious==null || coldPrevious.loadedReplacement().isEmpty() && !isImported(request)) return;
+        if (!readWindows.containsKey(request.requestId()) && readWindows.size()>=64)
+            throw new IOException("bounded restoration read windows exhausted");
+        if (coldPrevious.loadedReplacement().isPresent()) {
+            var loaded=coldPrevious.loadedReplacement().orElseThrow();
+            loaded.requireAck(loaded.cachedAck(),reads.deadline());
+            StrictJson.require(request.requestId().equals(loaded.originalParentId())&&request.deadline().equals(loaded.originalDeadline())
+                    &&request.pair().equals(loaded.pair()),"loaded read window changed its original request or physical pair");
+        }
+        readWindows.put(request.requestId(),reads);
     }
     private java.time.Instant operationDeadline(Request request)throws IOException {
         if(coldPrevious==null||coldPrevious.loadedReplacement().isEmpty())return request.deadline();
-        var reads=loadedReadWindows.get(request.requestId());
+        var reads=readWindows.get(request.requestId());
         if(reads==null)throw new IOException("loaded restore materials require the original service's actual read window");
         reads.requireOriginal(request);return reads.deadline();
+    }
+    private static boolean isImported(Request request) {
+        return request.savedMaterial() instanceof SavedAttachmentSourceStore.SavedMaterial ordinary && ordinary.importedOrigin().isPresent();
+    }
+    private Optional<ImportedSaveTransfer> importedTransfer(Request request) throws IOException {
+        if (!isImported(request)) return Optional.empty();
+        var reads = readWindows.get(request.requestId());
+        if (reads==null) throw new IOException("imported restore materials require the original service's actual read window");
+        reads.requireOriginal(request);
+        return Optional.of(reads.originalReplacement().importedSaveTransfer()
+                .orElseThrow(() -> new IOException("imported restore has no actual staged SAVE proof")));
     }
 
     public RootRestoreMaterials(ContinuityWriter writer,NativeOutcomeArchive archive,JavaGameLifecycle lifecycle,
@@ -369,9 +384,11 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
     private Originals readOriginals(Session borrowed,Request request,NativeCandidate actual,DriverStateSnapshot.Complete saved,
             DriverSnapshotFacts.Known abandoned,ManagedGameSession replacement) throws IOException {
         requireHead(borrowed,request);var pins=new ArrayList<WriterContracts.Pin>();
+        var transfer = importedTransfer(request);
         if(originalFrozen.isPresent()) {
             var frozen=originalFrozen.orElseThrow();
-            var metadata=coldPrevious!=null&&coldPrevious.loadedReplacement().isPresent()
+            var metadata=transfer.isPresent()?frozen.importedMetadataReferences(transfer.orElseThrow().original(),files):
+                    coldPrevious!=null&&coldPrevious.loadedReplacement().isPresent()
                     ?frozen.loadedMetadataReferences(replacement.launchPlan(),request.pair(),files):frozen.originalReferences();
             for(ExactRef ref:metadata)pin(borrowed,ref,WriterContracts.MAX_PIN_BYTES,pins);
         }
@@ -381,7 +398,9 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
         StrictJson.require(Arrays.equals(saved.encode(),drivers.readVerifiedOriginal(request.pair(),saved.session()).encode()),"cold source differs from the actual physical saved Driver");
         boolean physicalSaveWitness=(coldPrevious!=null&&coldPrevious.loadedReplacement().isPresent())
                 ||imported.isPresent()||SavedAttachmentSourceStore.requiresPhysicalSaveWitness(request.pair());
-        if(physicalSaveWitness)files.verify(request.pair().save());
+        if(physicalSaveWitness) {
+            if (transfer.isEmpty() || originalFrozen.isEmpty()) files.verify(request.pair().save());
+        }
         else pin(borrowed,request.pair().save().reference(),WriterContracts.MAX_PIN_BYTES,pins);
         pin(borrowed,request.pair().driver().reference(),DRIVER_LIMIT,pins);
         pin(borrowed,material.reference(),DOCUMENT_LIMIT,pins);
@@ -422,12 +441,27 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
         ExactRef lifecycleOriginal=loaded.isPresent()?loaded.orElseThrow().parentControl():replaced.lifecycleEvidence();
         Obj control=readObject(borrowed,lifecycleOriginal,LIFECYCLE_LIMIT,pins);
         boolean actualLoaded=loaded.isPresent();
-        StrictJson.require(control.members().keySet().equals(actualLoaded?
-                    Set.of("schema","parent_lifecycle_intent_id","phase","old_pid","old_birth_decimal","save","stop_evidence","launch_evidence"):
-                    Set.of("schema","parentLifecycleIntentId","phase","oldPid","oldBirthDecimal","save","stopEvidence","launchEvidence"))
-                &&reference(control.get("save")).equals(request.pair().save().reference()),"original lifecycle physical SAVE/control field contract drift");
-        ExactRef stopped=reference(control.get(actualLoaded?"stop_evidence":"stopEvidence")),
-                launched=reference(control.get(actualLoaded?"launch_evidence":"launchEvidence"));
+        boolean snake = actualLoaded && transfer.isEmpty();
+        if (transfer.isPresent()) {
+            var staged = transfer.orElseThrow();
+            var reads = readWindows.get(request.requestId());
+            StrictJson.require(reads.originalReplacement().lifecycleEvidence().equals(lifecycleOriginal)
+                            && text(control.get("schema"), RestoreCheckpointService.IMPORTED_REPLACEMENT_SCHEMA)
+                            && reference(control.get("save")).equals(staged.staged().reference())
+                            && reference(control.get("importedSaveTransfer")).equals(staged.proof()),
+                    "imported lifecycle lost its actual staged SAVE and separate transfer proof");
+            var originalTransfer = readPinned(borrowed,files,staged.proof(),LIFECYCLE_LIMIT);
+            pins.add(originalTransfer.pin());
+            ImportedSavedGameTransfer.verifyOriginal(originalTransfer.contents(),request.requestId(),request.current().observed().game(),
+                    staged.original(),staged.staged(),replacement.launchPlan());
+        } else {
+            StrictJson.require(control.members().keySet().equals(snake?
+                        Set.of("schema","parent_lifecycle_intent_id","phase","old_pid","old_birth_decimal","save","stop_evidence","launch_evidence"):
+                        Set.of("schema","parentLifecycleIntentId","phase","oldPid","oldBirthDecimal","save","stopEvidence","launchEvidence"))
+                    &&reference(control.get("save")).equals(request.pair().save().reference()),"original lifecycle physical SAVE/control field contract drift");
+        }
+        ExactRef stopped=reference(control.get(snake?"stop_evidence":"stopEvidence")),
+                launched=reference(control.get(snake?"launch_evidence":"launchEvidence"));
         StrictJson.require(launched.equals(actualLoaded?loaded.orElseThrow().launchEvidence():replaced.replacement().launchEvidence()),
                 "retained launch evidence differs from original replacement control");
         Obj stop=readObject(borrowed,stopped,LIFECYCLE_LIMIT,pins),launch=readObject(borrowed,launched,LIFECYCLE_LIMIT,pins);
@@ -482,7 +516,7 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
         }
         var input=new RootRestoreMaterialProjection.Input(request.requestId(),request.current().observed().game(),actual.actual().session(),
                 replacement.nativeTransport().pipeName(),actual.actual().snapshotId(),actual.actual().nativeRevision(),saved,abandoned.driver(),nativeState,
-                control,lifecycleOriginal,actual.originalNativePacket(),Optional.of(before.semantic()));
+                control,lifecycleOriginal,actual.originalNativePacket(),Optional.of(before.semantic()),transfer);
         material.requireRetained(borrowed);files.verify(material.witness());drivers.verifyOriginal(request.pair(),saved.session());
         if(physicalSaveWitness)files.verify(request.pair().save());
         for(var pin:pins)borrowed.verifyPin(pin);return new Originals(input,auxiliary,material.witness(),pins);
@@ -529,8 +563,9 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
         }
         if(coldPrevious!=null)coldPrevious.requireReplacement(writer.borrowedSession(),request,replacement,operationDeadline(request));
         var launchSave=((NativeLaunchPlan.SavedGame)replacement.launchPlan().load()).save();
-        StrictJson.require(launchSave.path().equals(request.pair().save().reference().path())&&launchSave.bytes()==request.pair().save().reference().bytes()
-                &&launchSave.sha256().equals(request.pair().save().reference().sha256()),"actual lifecycle loaded another physical saved source");return replacement;
+        var loadedSave=importedTransfer(request).map(transfer -> transfer.staged().reference()).orElse(request.pair().save().reference());
+        StrictJson.require(new ExactRef(launchSave.path(),launchSave.bytes(),launchSave.sha256()).equals(loadedSave),
+                "actual lifecycle loaded another physical saved source");return replacement;
     }
     private void requireHead(Session borrowed,Request request) throws IOException {
         writer.requireSession(borrowed);StrictJson.require(borrowed.head().digest().equals(request.expectedHeadDigest()),"restore material requires original unchanged writer head");
@@ -653,7 +688,8 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
                 &&Arrays.equals(first.saved().encode(),second.saved().encode())&&Arrays.equals(first.abandoned().encode(),second.abandoned().encode())
                 &&first.actualNativeState().equals(second.actualNativeState())&&first.actualLifecycleControl().equals(second.actualLifecycleControl())
                 &&first.lifecycleSource().equals(second.lifecycleSource())&&first.nativeSource().equals(second.nativeSource())
-                &&first.abandonedSnapshot().equals(second.abandonedSnapshot());
+                &&first.abandonedSnapshot().equals(second.abandonedSnapshot())
+                &&first.importedSaveTransfer().equals(second.importedSaveTransfer());
     }
     private static ExactRef reference(Value value){return DriverObservationEvidenceReader.reference(value);}
     private static boolean text(Value value,String expected){return value instanceof Text word&&word.value().equals(expected);}

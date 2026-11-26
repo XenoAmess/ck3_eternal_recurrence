@@ -112,10 +112,18 @@ public final class RootOrdinaryRuntimeAssembly {
             org.xar.ck3.control.application.checkpoint.CheckpointPair original)throws IOException {
         Path output=replacement.profileDirectory().resolve("save games/xar_checkpoint.ck3");
         Path source=Path.of(original.save().reference().path());
-        if(output.toAbsolutePath().normalize().equals(source.toAbsolutePath().normalize())
-                ||Files.exists(output)&&Files.isSameFile(output,source))
+        if (sameCheckpointFile(output,source))
             throw new IOException("replacement SAVE output overlaps the retained imported physical save");
+        if (replacement.load() instanceof NativeLaunchPlan.SavedGame loaded) {
+            Path actualLoaded=Path.of(loaded.save().path());
+            if (!actualLoaded.equals(source) && sameCheckpointFile(output,actualLoaded))
+                throw new IOException("replacement SAVE output overlaps the actual imported load copy");
+        }
         return output;
+    }
+    private static boolean sameCheckpointFile(Path output,Path source)throws IOException {
+        return output.toAbsolutePath().normalize().equals(source.toAbsolutePath().normalize())
+                || Files.exists(output) && Files.isSameFile(output,source);
     }
 
     /** Existing saved-replacement recovery can never initialize a missing or partial canonical writer. */
@@ -973,7 +981,9 @@ public final class RootOrdinaryRuntimeAssembly {
                     original.materials().ordinaryStore(),original.materials(),materials,publication);
             core.bindColdRestoreAdapters(original,adapters);
             products.domains().lifecycle().bindManagedLifecycle(lifecycle,plan);
-            var physical=new org.xar.ck3.control.platform.GameRestoreAdapter(lifecycle,plan,exited);
+            var physical=original.importedSource().isPresent()
+                    ?org.xar.ck3.control.platform.GameRestoreAdapter.importedExited(lifecycle,plan,exited,files,clock)
+                    :new org.xar.ck3.control.platform.GameRestoreAdapter(lifecycle,plan,exited);
             var replacement=new org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.LifecyclePort() {
                 @Override public org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.LaunchResult replaceOnce(
                         org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.Request actual)throws IOException,InterruptedException {

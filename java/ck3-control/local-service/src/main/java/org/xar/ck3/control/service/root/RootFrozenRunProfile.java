@@ -196,6 +196,16 @@ public final class RootFrozenRunProfile {
             var source=saved.save();var qualified=new ExactRef(source.path(),source.bytes(),source.sha256());
             return physicalSaveMetadataReferences(files,originals,pair.save(),qualified);
         }
+        List<ExactRef> importedMetadataReferences(
+                org.xar.ck3.control.application.checkpoint.CheckpointPair.FileWitness original,
+                org.xar.ck3.control.application.checkpoint.CheckpointFiles files)throws IOException {
+            if (!(request.legacyImport() instanceof EnabledNativeCampaign)
+                    || !(plan.load() instanceof NativeLaunchPlan.SavedGame saved)) {
+                throw new IOException("imported restore needs its actual frozen Saved campaign profile");
+            }
+            var source=saved.save();
+            return physicalSaveMetadataReferences(files,originals,original,new ExactRef(source.path(),source.bytes(),source.sha256()));
+        }
         public List<ExactRef> originalReferences(){
             var refs=new ArrayList<ExactRef>(originals.stream().map(item->new ExactRef(item.source().path(),item.source().bytes(),item.source().sha256())).toList());
             fixture.ifPresent(actual->refs.addAll(actual.inputClosure()));startupCase.ifPresent(actual->refs.addAll(actual.sourceClosure()));return refs.stream().distinct().toList();

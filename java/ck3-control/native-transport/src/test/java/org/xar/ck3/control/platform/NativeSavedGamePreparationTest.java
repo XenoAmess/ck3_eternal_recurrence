@@ -18,6 +18,8 @@ import org.xar.ck3.control.application.checkpoint.CheckpointPair.FileWitness;
 import org.xar.ck3.control.application.checkpoint.NativeCheckpointFiles;
 import org.xar.ck3.control.build.ControlBuild.FileRef;
 import org.xar.ck3.control.build.WindowsJobProcess;
+import org.xar.ck3.control.contracts.GameGeneration;
+import org.xar.ck3.control.contracts.PythonOnlyUInt64;
 
 /** Tiny physical test inputs; no Game, source qualification, canonical writer or production ENV. */
 final class NativeSavedGamePreparationTest {
@@ -27,7 +29,7 @@ final class NativeSavedGamePreparationTest {
         int copies;boolean rejectCopy;
         public Optional<FileWitness> observe(Path path)throws IOException{return nativeFiles.observe(path);}
         public byte[] read(FileWitness expected,int maximum)throws IOException{return nativeFiles.read(expected,maximum);}
-        public FileWitness createNew(Path target,byte[] bytes)throws IOException{throw new IOException("unused operation");}
+        public FileWitness createNew(Path target,byte[] bytes)throws IOException{return nativeFiles.createNew(target,bytes);}
         public FileWitness replace(Path target,byte[] bytes)throws IOException{throw new IOException("replace must never be requested");}
         public FileWitness copyNew(FileWitness source,Path target)throws IOException {
             copies++;if(rejectCopy)throw new IOException("actual storage owner denied the copy");return nativeFiles.copyNew(source,target);
@@ -52,6 +54,66 @@ final class NativeSavedGamePreparationTest {
         return nativeFiles.observe(Path.of(((NativeLaunchPlan.SavedGame)plan.load()).save().path())).orElseThrow();
     }
     private void directory(NativeLaunchPlan plan)throws IOException{Files.createDirectory(plan.profileDirectory().resolve("save games"));}
+
+
+    @Test void importedLoadUsesSeparatePhysicalSourceAndUniqueStageAcrossFutureSaves() throws Exception {
+        var template = plan();
+        var source = original(template);
+        directory(template);
+        var files = new AdmittedFiles();
+        var owner = departed();
+        String parent = "imported-software-parent";
+        Path future = template.profileDirectory().resolve("save games/xar_checkpoint.ck3");
+        Files.writeString(future, "exact original worker checkpoint output");
+        var oldFuture = nativeFiles.observe(future).orElseThrow();
+        assertThrows(IOException.class, () -> template.savedReplacement(parent,
+                ((NativeLaunchPlan.SavedGame)template.load()).save(), template.deadline()));
+
+        try (var prepared = ImportedSavedGameTransfer.prepare(template,parent,owner,source,files,template.deadline(),Clock.systemUTC())) {
+            var child = prepared.child();
+            var transfer = prepared.transfer();
+            var staged = Path.of(transfer.staged().reference().path());
+            assertEquals(1, files.copies);
+            assertEquals(source, transfer.original());
+            assertEquals(ImportedSavedGameTransfer.stagedPath(template,parent), staged);
+            assertNotEquals(future, staged);
+            assertNotEquals(source.identity(), transfer.staged().identity());
+            assertEquals(source.reference().sha256(), transfer.staged().reference().sha256());
+            assertEquals(transfer.staged().reference(), LifecycleEvidence.exact(((NativeLaunchPlan.SavedGame)child.load()).save()));
+            assertTrue(child.gameArguments().contains("-loadsave=" + staged.getFileName().toString().replace(".ck3","")));
+            assertEquals(NativeLaunchPlanCodec.describe(child), NativeLaunchPlanCodec.fromJson(
+                    NativeLaunchPlanCodec.toJson(NativeLaunchPlanCodec.describe(child))));
+            byte[] proof = Files.readAllBytes(Path.of(transfer.proof().path()));
+            assertEquals(transfer, ImportedSavedGameTransfer.decodeOriginal(proof,transfer.proof(),parent,owner,child));
+            assertThrows(IOException.class, () -> ImportedSavedGameTransfer.decodeOriginal(
+                    proof,transfer.proof(),parent+"-other",owner,child));
+            assertThrows(IOException.class, () -> ImportedSavedGameTransfer.verifyOriginal(
+                    proof,parent,owner,transfer.staged(),source,child));
+            assertThrows(IOException.class, () -> NativeSavedGameClone.observe(child,source));
+
+            prepared.releaseBeforeCreate();
+            nativeFiles.verify(oldFuture);
+            Files.writeString(future,"next actual ordinary checkpoint");
+            nativeFiles.verify(source);
+            prepared.requireLoadedFile();
+        }
+        try (var retained = ImportedSavedGameTransfer.prepare(template,parent,owner,source,files,template.deadline(),Clock.systemUTC())) {
+            assertEquals(1, files.copies);
+            var immutable = retained.transfer();
+            retained.releaseBeforeCreate();
+            Path stage = Path.of(immutable.staged().reference().path());
+            Files.move(stage,stage.resolveSibling("old.stage.ck3"));
+            Files.copy(stage.resolveSibling("old.stage.ck3"),stage);
+            assertThrows(IOException.class,retained::requireLoadedFile);
+        }
+        assertThrows(IOException.class, () -> ImportedSavedGameTransfer.prepare(
+                template,parent,owner,source,files,template.deadline(),Clock.systemUTC()));
+        assertEquals(1,files.copies);
+    }
+
+    private static GameGeneration departed() {
+        return new GameGeneration(1234,new PythonOnlyUInt64(java.math.BigInteger.valueOf(134401544000000000L)));
+    }
 
     @Test void precreateCopyUsesTheSuppliedAdapterAndKeepsOriginalPlanAndPair()throws Exception {
         var plan=plan();var source=original(plan);var declared=((NativeLaunchPlan.SavedGame)plan.load()).save();directory(plan);

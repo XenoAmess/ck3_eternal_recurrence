@@ -7,7 +7,6 @@ import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import org.xar.ck3.control.application.checkpoint.CheckpointPair.FileWitness;
-import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.source.IdentityBearingFileAttributes;
 import org.xar.ck3.control.contracts.source.IdentityBearingFileAttributes.DirectoryReadOnlyLease;
 import org.xar.ck3.control.contracts.source.IdentityBearingFileAttributes.ReadOnlyLease;
@@ -33,15 +32,22 @@ public final class QualifiedCloneCustody implements AutoCloseable {
     }
     public static QualifiedCloneCustody retain(NativeLaunchPlan plan,FileWitness original,int maximumFileBytes,
             Instant deadline,Clock clock)throws IOException {
+        return retain(plan,original,maximumFileBytes,deadline,clock,false);
+    }
+
+    static QualifiedCloneCustody retainImported(NativeLaunchPlan plan,FileWitness original,Clock clock)throws IOException {
+        return retain(plan,original,DEFAULT_MAXIMUM_FILE_BYTES,plan.deadline(),clock,true);
+    }
+
+    private static QualifiedCloneCustody retain(NativeLaunchPlan plan,FileWitness original,int maximumFileBytes,
+            Instant deadline,Clock clock,boolean imported)throws IOException {
         Objects.requireNonNull(plan);Objects.requireNonNull(original);Objects.requireNonNull(deadline);Objects.requireNonNull(clock);
         if(maximumFileBytes<=0||maximumFileBytes==Integer.MAX_VALUE||original.reference().bytes()<=0||original.reference().bytes()>maximumFileBytes)
             throw new IOException("original SAVE exceeds finite single-file lease cap");
         if(deadline.equals(Instant.MAX)||deadline.isAfter(plan.deadline())||!clock.instant().isBefore(deadline))
             throw new IOException("finite original-plan bounded clone preparation deadline required");
         Path actual=NativeSavedGameClone.actualPath(plan),source=Path.of(original.reference().path());
-        var saved=(NativeLaunchPlan.SavedGame)plan.load();
-        if(!new ExactRef(saved.save().path(),saved.save().bytes(),saved.save().sha256()).equals(original.reference()))
-            throw new IOException("clone custody source differs from the original plan SAVE");
+        NativeSavedGameClone.requireDeclaredSave(plan,original,imported);
         if(!source.isAbsolute()||!source.equals(source.normalize())||source.getParent()==null)throw new IOException("exact absolute original SAVE path required");
         var directories=new LinkedHashSet<Path>();directories.add(plan.profileDirectory());directories.add(actual.getParent());directories.add(source.getParent());
         QualifiedCloneCustody result=new QualifiedCloneCustody(plan,original,maximumFileBytes,deadline,clock,directories.toArray(Path[]::new));
@@ -57,7 +63,7 @@ public final class QualifiedCloneCustody implements AutoCloseable {
                 result.requireTime();result.fileLeases[1]=IdentityBearingFileAttributes.leaseBoundedWindows(actual,maximumFileBytes);
                 result.fileLeases[1].releaseOriginalBytes();
             }
-            result.verifyHandles();result.observation=NativeSavedGameClone.observe(plan,original);
+            result.verifyHandles();result.observation=NativeSavedGameClone.observe(plan,original,imported);
             result.phase=Phase.OPEN;result.requireCurrent(plan,original);return result;
         }catch(IOException|RuntimeException|Error problem) {
             result.phase=Phase.FAILED;

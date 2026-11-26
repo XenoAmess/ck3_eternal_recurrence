@@ -22,6 +22,7 @@ import org.xar.ck3.control.application.action.NativeObservationPort;
 import org.xar.ck3.control.application.action.RawJson;
 import org.xar.ck3.control.application.checkpoint.DriverStateSnapshot;
 import org.xar.ck3.control.application.checkpoint.NativeCheckpointFiles;
+import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService;
 import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.NativeCandidate;
 import org.xar.ck3.control.application.driver.DriverCapabilityStateProducer;
 import org.xar.ck3.control.application.driver.DriverJson;
@@ -90,6 +91,40 @@ class RootRestoreMaterialsTest {
         assertArrayEquals(ordinary.provisional().encode(),exited.provisional().encode());
         assertEquals(ordinary.completedRow(),exited.completedRow());
         assertEquals(ordinary.restoredSemantic(),exited.restoredSemantic());
+    }
+    @Test void importedControlRetainsTheOriginalDriverPairAndTheDistinctLoadedFile() throws IOException {
+        var files=new NativeCheckpointFiles();
+        var original=files.createNew(temporary.resolve("original.ck3"),new byte[4096]);
+        var staged=files.copyNew(original,temporary.resolve("xar_restore_fixture.ck3"));
+        var proof=files.createNew(temporary.resolve("transfer.json"),"{}".getBytes(StandardCharsets.UTF_8)).reference();
+        var transfer=new RestoreCheckpointService.ImportedSaveTransfer(original,staged,proof);
+        var acknowledgement=new RestoreCheckpointService.ReplacementAck(REQUEST,oldGame(),newGame(),staged.reference(),lifecycleRef(),Optional.of(transfer));
+        assertEquals(staged.reference(),acknowledgement.loadedSave());
+        assertEquals(original,acknowledgement.importedSaveTransfer().orElseThrow().original());
+        assertThrows(IllegalArgumentException.class,()->new RestoreCheckpointService.ImportedSaveTransfer(original,original,proof));
+        assertThrows(IllegalArgumentException.class,()->new RestoreCheckpointService.ReplacementAck(
+                REQUEST,oldGame(),newGame(),original.reference(),lifecycleRef(),Optional.of(transfer)));
+        var sourceDigest=original.reference().sha256();
+        var actualSaved=DriverStateSnapshot.decodeComplete(new String(saved().encode(),StandardCharsets.UTF_8)
+                .replace("a".repeat(64),sourceDigest).getBytes(StandardCharsets.UTF_8));
+        var actualAbandoned=DriverStateSnapshot.decodeComplete(new String(abandoned().encode(),StandardCharsets.UTF_8)
+                .replace("a".repeat(64),sourceDigest).getBytes(StandardCharsets.UTF_8));
+        var imported=control().with("schema",new Text(RestoreCheckpointService.IMPORTED_REPLACEMENT_SCHEMA))
+                .with("phase",new Text("EXITED_SOURCE_NEW_HELLO_ACCEPTED_MAP_NOT_YET_VERIFIED"))
+                .with("save",DriverObservationRef(staged.reference())).with("importedSaveTransfer",DriverObservationRef(proof))
+                .with("stopEvidence",DriverObservationRef(lifecycleRef())).with("launchEvidence",DriverObservationRef(nativeRef()));
+        java.util.function.Function<Obj,RootRestoreMaterialProjection.Input> withControl=controlValue -> new RootRestoreMaterialProjection.Input(
+                REQUEST,oldGame(),transport(),"actual-replacement-pipe","actual-native-frame",BigInteger.TWO,
+                actualSaved,actualAbandoned,nativeState(),controlValue,lifecycleRef(),nativeRef(),Optional.empty(),Optional.of(transfer));
+        var projected=RootRestoreMaterialProjection.reduce(withControl.apply(imported));
+        assertEquals(actualSaved.lastCheckpoint(),projected.provisional().lastCheckpoint());
+        assertThrows(IllegalArgumentException.class,()->RootRestoreMaterialProjection.reduce(withControl.apply(
+                imported.with("save",DriverObservationRef(original.reference())))));
+        assertThrows(IllegalArgumentException.class,()->RootRestoreMaterialProjection.reduce(withControl.apply(
+                imported.with("importedSaveTransfer",DriverObservationRef(nativeRef())))));
+        assertThrows(IllegalArgumentException.class,()->RootRestoreMaterialProjection.reduce(
+                input(nativeState(),imported,actualSaved,actualAbandoned)));
+        files.verify(original);files.verify(staged);
     }
     @Test void lifecycleControlCannotSubstituteBooleanPidWrongParentOrRoundedBirth() {
         for(String raw:List.of(encoded(control()).replace("\"oldPid\":7","\"oldPid\":true"),

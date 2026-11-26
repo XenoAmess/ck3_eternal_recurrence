@@ -23,6 +23,25 @@ final class GameRestoreFreshReadDataTest {
         var locators=new RestoreCheckpointService.IndependentReadPair(ref("manifest"),decoded.first().acknowledgement(),decoded.first().nativePacket(),decoded.second().acknowledgement(),decoded.second().nativePacket());
         assertEquals(5,locators.references().size());
     }
+    @Test void importedArchiveBindsTheActualStageAndItsSeparateOriginalTransfer() {
+        var original = data();
+        var transfer = ref("transfer-proof");
+        var imported = new GameRestoreNativeAdapter.PairData(original.restoreRequestId(), original.lifecycleEvidence(),
+                ref("staged-save"), original.first(), original.second(), java.util.Optional.of(transfer));
+        var decoded = GameRestoreNativeAdapter.PairData.decode(imported.encode());
+        assertEquals(imported, decoded);
+        assertEquals(transfer, decoded.importedSaveTransfer().orElseThrow());
+        assertNotEquals(original.loadedSave(), decoded.loadedSave());
+        byte[] raw = imported.encode();
+        var mislabeled = (ObjectNode)StrictJson.parse(raw);
+        mislabeled.put("schema", "xar.restore.independent-read-pair/v1");
+        assertThrows(IllegalArgumentException.class,
+                () -> GameRestoreNativeAdapter.PairData.decode(StrictJson.canonical(mislabeled)));
+        var dropped = (ObjectNode)StrictJson.parse(raw);
+        dropped.remove("imported_save_transfer");
+        assertThrows(IllegalArgumentException.class,
+                () -> GameRestoreNativeAdapter.PairData.decode(StrictJson.canonical(dropped)));
+    }
     @Test void missingNullExtraAndWrongJsonTypesNeverBecomeReadOriginals(){
         for(String field:List.of("schema","restore_request_id","lifecycle_evidence","loaded_save","first","second")){
             var missing=(ObjectNode)StrictJson.parse(data().encode());missing.remove(field);

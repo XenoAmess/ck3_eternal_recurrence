@@ -8,7 +8,6 @@ import org.xar.ck3.control.application.checkpoint.CheckpointPair.FileWitness;
 import org.xar.ck3.control.application.checkpoint.CheckpointPairCodec;
 import org.xar.ck3.control.application.checkpoint.NativeCheckpointFiles;
 import org.xar.ck3.control.build.SharedSourceFiles;
-import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
 
 /** Read-only source/actual-load mapping. Neither an original pair replacement nor Game/adoption authority. */
@@ -38,11 +37,26 @@ public final class NativeSavedGameClone {
 
     /** Observes an already materialized target. This method never copies or rewrites either file. */
     public static Observation observe(NativeLaunchPlan identicalPlan,FileWitness originalSave)throws IOException {
-        Objects.requireNonNull(originalSave);
-        Path actual=actualPath(identicalPlan);
-        var saved=(NativeLaunchPlan.SavedGame)identicalPlan.load();
-        if(!new ExactRef(saved.save().path(),saved.save().bytes(),saved.save().sha256()).equals(originalSave.reference()))
+        return observe(identicalPlan, originalSave, false);
+    }
+
+    static void requireDeclaredSave(NativeLaunchPlan plan,FileWitness originalSave,boolean imported) throws IOException {
+        Path actual=actualPath(plan);
+        var declared=LifecycleEvidence.exact(((NativeLaunchPlan.SavedGame)plan.load()).save());
+        var original=originalSave.reference();
+        if(imported) {
+            if(!declared.path().equals(actual.toString()) || declared.path().equals(original.path())
+                    || declared.bytes()!=original.bytes() || !declared.sha256().equals(original.sha256()))
+                throw new IOException("Imported Saved plan requires its distinct staged load and unchanged original contents");
+        } else if(!declared.equals(original)) {
             throw new IOException("Saved plan differs from the exact original pair source");
+        }
+    }
+
+    static Observation observe(NativeLaunchPlan identicalPlan,FileWitness originalSave,boolean imported)throws IOException {
+        Objects.requireNonNull(originalSave);
+        requireDeclaredSave(identicalPlan,originalSave,imported);
+        Path actual=actualPath(identicalPlan);
         Path profile=identicalPlan.profileDirectory(),saves=actual.getParent();
         SharedSourceFiles.plainAncestors(profile);SharedSourceFiles.plainAncestors(saves);
         var profileIdentity=SharedSourceFiles.nativeDirectory(profile);
@@ -51,6 +65,8 @@ public final class NativeSavedGameClone {
         var source=SharedSourceFiles.observe(Path.of(originalSave.reference().path()));
         var target=SharedSourceFiles.observe(actual);
         var actualSave=files.observe(actual).orElseThrow(()->new IOException("materialized SAVE target is missing"));
+        if(imported && !actualSave.reference().equals(LifecycleEvidence.exact(((NativeLaunchPlan.SavedGame)identicalPlan.load()).save())))
+            throw new IOException("The observed imported load target differs from the exact child plan");
         if(actualSave.reference().bytes()!=originalSave.reference().bytes()
                 ||!actualSave.reference().sha256().equals(originalSave.reference().sha256()))
             throw new IOException("actual load target differs from the original SAVE contents");

@@ -9,6 +9,8 @@ import java.util.Optional;
 import org.xar.ck3.control.application.action.NativeObservationPort;
 import org.xar.ck3.control.application.checkpoint.DriverRollbackFailurePublication;
 import org.xar.ck3.control.application.checkpoint.DriverStateSnapshot;
+import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService;
+import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.ImportedSaveTransfer;
 import org.xar.ck3.control.application.driver.DriverCapabilityStateProducer;
 import org.xar.ck3.control.application.driver.DriverJson;
 import org.xar.ck3.control.application.driver.DriverSemanticReadState;
@@ -26,13 +28,20 @@ public final class RootRestoreMaterialProjection {
     public record Input(String requestId, GameGeneration previous, NativeObservationPort.TransportSession replacement,
             String actualPipe, String snapshotId, BigInteger nativeRevision, DriverStateSnapshot.Complete saved, DriverStateSnapshot.Complete abandoned,
             Obj actualNativeState, Obj actualLifecycleControl, ExactRef lifecycleSource, ExactRef nativeSource,
-            Optional<Obj> abandonedSnapshot) {
+            Optional<Obj> abandonedSnapshot, Optional<ImportedSaveTransfer> importedSaveTransfer) {
+        public Input(String requestId, GameGeneration previous, NativeObservationPort.TransportSession replacement,
+                String actualPipe, String snapshotId, BigInteger nativeRevision, DriverStateSnapshot.Complete saved, DriverStateSnapshot.Complete abandoned,
+                Obj actualNativeState, Obj actualLifecycleControl, ExactRef lifecycleSource, ExactRef nativeSource,
+                Optional<Obj> abandonedSnapshot) {
+            this(requestId, previous, replacement, actualPipe, snapshotId, nativeRevision, saved, abandoned, actualNativeState,
+                    actualLifecycleControl, lifecycleSource, nativeSource, abandonedSnapshot, Optional.empty());
+        }
         public Input {
             StrictJson.text(requestId); Objects.requireNonNull(previous); Objects.requireNonNull(replacement); StrictJson.text(actualPipe);
             StrictJson.text(snapshotId); Objects.requireNonNull(nativeRevision); StrictJson.require(nativeRevision.signum()>=0,"actual native revision required");
             Objects.requireNonNull(saved); Objects.requireNonNull(abandoned); Objects.requireNonNull(actualNativeState);
             Objects.requireNonNull(actualLifecycleControl); Objects.requireNonNull(lifecycleSource); Objects.requireNonNull(nativeSource);
-            Objects.requireNonNull(abandonedSnapshot);
+            Objects.requireNonNull(abandonedSnapshot); Objects.requireNonNull(importedSaveTransfer);
         }
     }
     public record Reduced(DriverStateSnapshot.Complete provisional, Obj completedRow, Obj restoredSemantic) {
@@ -47,6 +56,10 @@ public final class RootRestoreMaterialProjection {
         Obj checkpoint=slot(saved.lastCheckpoint(),"saved checkpoint"), priorCheckpoint=slot(abandoned.lastCheckpoint(),"abandoned checkpoint");
         StrictJson.require(checkpoint.equals(priorCheckpoint),"abandoned Driver does not retain the exact physical saved checkpoint");
         var checkpointIdentity=DriverHistoryProjection.checkpointIdentity(checkpoint).orElseThrow(()->new IllegalArgumentException("actual saved checkpoint identity missing"));
+        input.importedSaveTransfer().ifPresent(transfer -> StrictJson.require(
+                transfer.original().reference().sha256().equals(checkpointIdentity.sha256())
+                        && BigInteger.valueOf(transfer.original().reference().bytes()).equals(checkpointIdentity.size()),
+                "imported lifecycle source differs from the physical checkpoint retained by the Driver"));
         Obj player=OpportunityJson.object(raw.get("played_character"),"actual replacement player");
         StrictJson.require(OpportunityJson.bool(raw.get("map_ready"),"map_ready")&&OpportunityJson.bool(raw.get("paused"),"paused")
                 &&OpportunityJson.bool(player.get("alive"),"alive")
@@ -108,6 +121,22 @@ public final class RootRestoreMaterialProjection {
     }
     private static void requireLifecycle(Input input) {
         Obj control=input.actualLifecycleControl();
+        if (input.importedSaveTransfer().isPresent()) {
+            var transfer = input.importedSaveTransfer().orElseThrow();
+            StrictJson.require(control.members().keySet().equals(java.util.Set.of("schema", "parentLifecycleIntentId", "phase",
+                            "oldPid", "oldBirthDecimal", "save", "stopEvidence", "launchEvidence", "importedSaveTransfer"))
+                            && text(control.get("schema"), RestoreCheckpointService.IMPORTED_REPLACEMENT_SCHEMA)
+                            && text(control.get("parentLifecycleIntentId"), input.requestId())
+                            && text(control.get("phase"), "EXITED_SOURCE_NEW_HELLO_ACCEPTED_MAP_NOT_YET_VERIFIED")
+                            && OpportunityJson.integer(control.get("oldPid"), "original lifecycle PID").equals(BigInteger.valueOf(input.previous().pid()))
+                            && text(control.get("oldBirthDecimal"), input.previous().creationFiletime().value().toString())
+                            && control.get("save").equals(reference(transfer.staged().reference()))
+                            && control.get("importedSaveTransfer").equals(reference(transfer.proof())),
+                    "imported lifecycle control differs from the actual exited owner, staged SAVE or transfer proof");
+            lifecycleReference(control.get("stopEvidence"));
+            lifecycleReference(control.get("launchEvidence"));
+            return;
+        }
         if(control.members().containsKey("parent_lifecycle_intent_id")||control.members().containsKey("old_pid")
                 ||control.members().containsKey("old_birth_decimal")||control.members().containsKey("stop_evidence")
                 ||control.members().containsKey("launch_evidence")) {

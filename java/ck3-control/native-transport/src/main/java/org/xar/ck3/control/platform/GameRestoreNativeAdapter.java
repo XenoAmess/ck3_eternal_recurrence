@@ -137,7 +137,9 @@ public final class GameRestoreNativeAdapter implements RestoreCheckpointService.
         }
         JavaGameLifecycle.ReplacementResult retained=lifecycle.queryReplacement(ack.requestId());
         if(!(retained instanceof JavaGameLifecycle.Replaced replaced)||!replaced.previous().equals(ack.previous())
-                ||!replaced.lifecycleEvidence().equals(ack.lifecycleEvidence()))throw new IOException("no same-producer original replacement ACK retained");
+                ||!replaced.lifecycleEvidence().equals(ack.lifecycleEvidence())
+                ||!replaced.importedSaveTransfer().equals(ack.importedSaveTransfer()))
+            throw new IOException("no same-producer original replacement ACK/load transfer retained");
         ManagedGameSession session=lifecycle.currentSession().orElseThrow(()->new IOException("original replacement disappeared"));
         if(session!=replaced.replacement().session()||!session.generation().equals(ack.replacement())||!source.machineId().equals(session.machineId())
                 ||!(session.launchPlan().load() instanceof NativeLaunchPlan.SavedGame saved)||!LifecycleEvidence.exact(saved.save()).equals(ack.loadedSave()))
@@ -153,7 +155,8 @@ public final class GameRestoreNativeAdapter implements RestoreCheckpointService.
         NativeFreshSnapshotPort.verifyAfter(left.received().acknowledgement(),right.received());
         RestoreCheckpointService.requireStableReadProgression(first.actual(),second.actual());
         if(pairs.size()>=MAX_PAIRS)throw new IOException("bounded restore READ pair custody exhausted");
-        var data=new PairData(ack.requestId(),ack.lifecycleEvidence(),ack.loadedSave(),left.original(),right.original());
+        var transfer=ack.importedSaveTransfer().map(RestoreCheckpointService.ImportedSaveTransfer::proof);
+        var data=new PairData(ack.requestId(),ack.lifecycleEvidence(),ack.loadedSave(),left.original(),right.original(),transfer);
         return withWriter(same->{
             var original=archive.withSession(same);byte[] bytes=data.encode();
             if(!Arrays.equals(bytes,PairData.decode(bytes).encode()))throw new IOException("restore READ DATA round trip changed original roles");
@@ -161,6 +164,7 @@ public final class GameRestoreNativeAdapter implements RestoreCheckpointService.
             var pair=new IndependentReadPair(manifest,data.first().acknowledgement(),data.first().nativePacket(),data.second().acknowledgement(),data.second().nativePacket());
             var pins=new java.util.ArrayList<WriterContracts.Pin>();
             for(ExactRef ref:pair.references())pins.add(same.capturePin(ref,WriterContracts.MAX_PIN_BYTES));
+            if(transfer.isPresent()) pins.add(same.capturePin(transfer.orElseThrow(),WriterContracts.MAX_PIN_BYTES));
             pairs.put(pair,new PairCustody(ack,data,List.copyOf(pins)));requireHistoricalPair(same,ack,pair);return pair;
         });
     }
@@ -172,6 +176,7 @@ public final class GameRestoreNativeAdapter implements RestoreCheckpointService.
             var original=archive.withSession(same);byte[] manifest=original.loadMaterial(pair.manifest()).bytes();var data=PairData.decode(manifest);
             if(!Arrays.equals(data.encode(),custody.data().encode())||!Arrays.equals(manifest,data.encode())
                     ||!data.restoreRequestId().equals(ack.requestId())||!data.lifecycleEvidence().equals(ack.lifecycleEvidence())||!data.loadedSave().equals(ack.loadedSave())
+                    ||!data.importedSaveTransfer().equals(ack.importedSaveTransfer().map(RestoreCheckpointService.ImportedSaveTransfer::proof))
                     ||!pair.firstAck().equals(data.first().acknowledgement())||!pair.firstNative().equals(data.first().nativePacket())
                     ||!pair.secondAck().equals(data.second().acknowledgement())||!pair.secondNative().equals(data.second().nativePacket()))
                 throw new IOException("original restore READ manifest roles changed");
@@ -216,17 +221,39 @@ public final class GameRestoreNativeAdapter implements RestoreCheckpointService.
         static ReadOriginal decode(JsonNode value){var row=StrictJson.object(value,Set.of("acknowledgement","native_packet","received_order","received_at_utc"));
             return new ReadOriginal(ExactRef.fromJson(row.get("acknowledgement")),ExactRef.fromJson(row.get("native_packet")),StrictJson.text(row.get("received_order")),StrictJson.text(row.get("received_at_utc")));}
     }
-    record PairData(String restoreRequestId,ExactRef lifecycleEvidence,ExactRef loadedSave,ReadOriginal first,ReadOriginal second) {
+    record PairData(String restoreRequestId,ExactRef lifecycleEvidence,ExactRef loadedSave,ReadOriginal first,
+            ReadOriginal second,Optional<ExactRef> importedSaveTransfer) {
         private static final String SCHEMA="xar.restore.independent-read-pair/v1";
-        PairData {StrictJson.text(restoreRequestId);Objects.requireNonNull(lifecycleEvidence);Objects.requireNonNull(loadedSave);Objects.requireNonNull(first);Objects.requireNonNull(second);
-            StrictJson.require(lifecycleEvidence.bytes()>0&&loadedSave.bytes()>0,"nonempty original restore lifecycle/SAVE required");
+        private static final String IMPORTED_SCHEMA="xar.restore.independent-read-pair/v2";
+        private static final Set<String> FIELDS=Set.of("schema","restore_request_id","lifecycle_evidence","loaded_save","first","second");
+        private static final Set<String> IMPORTED_FIELDS=Set.of("schema","restore_request_id","lifecycle_evidence","loaded_save","first","second","imported_save_transfer");
+        PairData(String restoreRequestId,ExactRef lifecycleEvidence,ExactRef loadedSave,ReadOriginal first,ReadOriginal second) {
+            this(restoreRequestId,lifecycleEvidence,loadedSave,first,second,Optional.empty());
+        }
+        PairData {
+            StrictJson.text(restoreRequestId);Objects.requireNonNull(lifecycleEvidence);Objects.requireNonNull(loadedSave);
+            Objects.requireNonNull(first);Objects.requireNonNull(second);Objects.requireNonNull(importedSaveTransfer);
+            StrictJson.require(lifecycleEvidence.bytes()>0&&loadedSave.bytes()>0
+                    &&importedSaveTransfer.map(ref->ref.bytes()>0).orElse(true),"nonempty original restore lifecycle/SAVE required");
             StrictJson.require(!first.acknowledgement().equals(second.acknowledgement())&&!first.nativePacket().equals(second.nativePacket())
                     &&new BigInteger(first.receivedOrder()).compareTo(new BigInteger(second.receivedOrder()))<0
-                    &&!Instant.parse(second.receivedAtUtc()).isBefore(Instant.parse(first.receivedAtUtc())),"ordered independent restore READ DATA required");}
-        byte[] encode(){var row=StrictJson.object();row.put("schema",SCHEMA);row.put("restore_request_id",restoreRequestId);row.set("lifecycle_evidence",lifecycleEvidence.toJson());
-            row.set("loaded_save",loadedSave.toJson());row.set("first",first.toJson());row.set("second",second.toJson());return StrictJson.canonical(row);}
-        static PairData decode(byte[] bytes){var row=StrictJson.object(StrictJson.parse(bytes),Set.of("schema","restore_request_id","lifecycle_evidence","loaded_save","first","second"));
-            StrictJson.require(SCHEMA.equals(StrictJson.text(row.get("schema"))),"restore READ DATA schema required");
-            return new PairData(StrictJson.text(row.get("restore_request_id")),ExactRef.fromJson(row.get("lifecycle_evidence")),ExactRef.fromJson(row.get("loaded_save")),ReadOriginal.decode(row.get("first")),ReadOriginal.decode(row.get("second")));}
+                    &&!Instant.parse(second.receivedAtUtc()).isBefore(Instant.parse(first.receivedAtUtc())),"ordered independent restore READ DATA required");
+        }
+        byte[] encode() {
+            var row=StrictJson.object();row.put("schema",importedSaveTransfer.isPresent()?IMPORTED_SCHEMA:SCHEMA);
+            row.put("restore_request_id",restoreRequestId);row.set("lifecycle_evidence",lifecycleEvidence.toJson());row.set("loaded_save",loadedSave.toJson());
+            row.set("first",first.toJson());row.set("second",second.toJson());
+            importedSaveTransfer.ifPresent(ref->row.set("imported_save_transfer",ref.toJson()));
+            return StrictJson.canonical(row);
+        }
+        static PairData decode(byte[] bytes) {
+            var raw=StrictJson.parse(bytes);String schema=StrictJson.text(raw.get("schema"));
+            StrictJson.require(SCHEMA.equals(schema)||IMPORTED_SCHEMA.equals(schema),"restore READ DATA schema required");
+            boolean imported=IMPORTED_SCHEMA.equals(schema);
+            var row=StrictJson.object(raw,imported?IMPORTED_FIELDS:FIELDS);
+            return new PairData(StrictJson.text(row.get("restore_request_id")),ExactRef.fromJson(row.get("lifecycle_evidence")),
+                    ExactRef.fromJson(row.get("loaded_save")),ReadOriginal.decode(row.get("first")),ReadOriginal.decode(row.get("second")),
+                    imported?Optional.of(ExactRef.fromJson(row.get("imported_save_transfer"))):Optional.empty());
+        }
     }
 }

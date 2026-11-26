@@ -9,7 +9,6 @@ import java.util.Objects;
 import org.xar.ck3.control.application.checkpoint.CheckpointFiles;
 import org.xar.ck3.control.application.checkpoint.CheckpointPair.FileWitness;
 import org.xar.ck3.control.build.SharedSourceFiles;
-import org.xar.ck3.control.contracts.ExactRef;
 
 /**
  * Materializes the actual Saved load file before initial-policy preparation.
@@ -22,14 +21,21 @@ public final class NativeSavedGamePreparation {
 
     public static NativeSavedGameClone.Observation prepare(NativeLaunchPlan identicalPlan,
             FileWitness originalSave, CheckpointFiles admittedFiles, Clock clock) throws IOException {
+        return prepare(identicalPlan,originalSave,admittedFiles,clock,false);
+    }
+
+    static NativeSavedGameClone.Observation prepareImported(NativeLaunchPlan identicalPlan,
+            FileWitness originalSave,CheckpointFiles admittedFiles,Clock clock)throws IOException {
+        return prepare(identicalPlan,originalSave,admittedFiles,clock,true);
+    }
+
+    private static NativeSavedGameClone.Observation prepare(NativeLaunchPlan identicalPlan,
+            FileWitness originalSave,CheckpointFiles admittedFiles,Clock clock,boolean imported)throws IOException {
         Objects.requireNonNull(identicalPlan);Objects.requireNonNull(originalSave);
         Objects.requireNonNull(admittedFiles);Objects.requireNonNull(clock);
         requireBeforeDeadline(identicalPlan,clock);
         Path actual=NativeSavedGameClone.actualPath(identicalPlan);
-        var saved=(NativeLaunchPlan.SavedGame)identicalPlan.load();
-        var declared=new ExactRef(saved.save().path(),saved.save().bytes(),saved.save().sha256());
-        if(!declared.equals(originalSave.reference()))
-            throw new IOException("preparation requires the original exact Saved pair witness");
+        NativeSavedGameClone.requireDeclaredSave(identicalPlan,originalSave,imported);
         SharedSourceFiles.plainAncestors(identicalPlan.profileDirectory());
         SharedSourceFiles.plainAncestors(actual.getParent());
         if(!Files.isDirectory(actual.getParent(),LinkOption.NOFOLLOW_LINKS))
@@ -51,7 +57,7 @@ public final class NativeSavedGamePreparation {
         }
         admittedFiles.verify(originalSave);
         requireBeforeDeadline(identicalPlan,clock);
-        var observation=NativeSavedGameClone.observe(identicalPlan,originalSave);
+        var observation=NativeSavedGameClone.observe(identicalPlan,originalSave,imported);
         observation.requireCurrent(identicalPlan,originalSave);
         return observation;
     }

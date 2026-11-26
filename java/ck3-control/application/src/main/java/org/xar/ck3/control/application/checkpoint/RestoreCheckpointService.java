@@ -10,6 +10,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import org.xar.ck3.control.application.action.NativeObservationPort;
 import org.xar.ck3.control.application.history.DriverHistoryProjection;
@@ -32,6 +33,7 @@ import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 /** One replacement, raw map proof, original-lock attachment, full Driver publication, then admission. */
 public final class RestoreCheckpointService {
     private static final int MAX_NATIVE_BYTES = DriverJson.MAX_NATIVE_BYTES;
+    public static final String IMPORTED_REPLACEMENT_SCHEMA = "xar.java-imported-game-replacement/v2";
     public record Request(String requestId, CheckpointPair pair, CheckpointRequest.Readiness current,
             String expectedHeadDigest, Instant deadline,SavedCheckpointMaterial savedMaterial) {
         public Request {
@@ -43,12 +45,38 @@ public final class RestoreCheckpointService {
         }
     }
     public sealed interface LaunchResult permits ReplacementAck, LaunchRejected, LaunchUnknown { }
+    /** Distinct physical roles for an imported SAVE and the immutable file loaded in the replacement profile. */
+    public record ImportedSaveTransfer(CheckpointPair.FileWitness original, CheckpointPair.FileWitness staged, ExactRef proof) {
+        public ImportedSaveTransfer {
+            Objects.requireNonNull(original); Objects.requireNonNull(staged); Objects.requireNonNull(proof);
+            var source = original.reference();
+            var copy = staged.reference();
+            var originalPath = Path.of(source.path());
+            var stagedPath = Path.of(copy.path());
+            var proofPath = Path.of(proof.path());
+            StrictJson.require(originalPath.isAbsolute() && originalPath.equals(originalPath.normalize())
+                            && stagedPath.isAbsolute() && stagedPath.equals(stagedPath.normalize())
+                            && proofPath.isAbsolute() && proofPath.equals(proofPath.normalize())
+                            && !originalPath.equals(stagedPath) && !proofPath.equals(originalPath) && !proofPath.equals(stagedPath)
+                            && !original.identity().equals(staged.identity())
+                            && source.bytes() > 0 && source.bytes() == copy.bytes() && source.sha256().equals(copy.sha256())
+                            && proof.bytes() > 0 && proof.bytes() <= 65_536,
+                    "imported SAVE transfer requires exact equal bytes, distinct file witnesses and a bounded durable proof");
+        }
+    }
     public record ReplacementAck(String requestId, GameGeneration previous, GameGeneration replacement,
-            ExactRef loadedSave, ExactRef lifecycleEvidence) implements LaunchResult {
+            ExactRef loadedSave, ExactRef lifecycleEvidence, Optional<ImportedSaveTransfer> importedSaveTransfer) implements LaunchResult {
+        public ReplacementAck(String requestId, GameGeneration previous, GameGeneration replacement,
+                ExactRef loadedSave, ExactRef lifecycleEvidence) {
+            this(requestId, previous, replacement, loadedSave, lifecycleEvidence, Optional.empty());
+        }
         public ReplacementAck {
             StrictJson.text(requestId); Objects.requireNonNull(previous); Objects.requireNonNull(replacement);
-            Objects.requireNonNull(loadedSave); Objects.requireNonNull(lifecycleEvidence);
+            Objects.requireNonNull(loadedSave); Objects.requireNonNull(lifecycleEvidence); Objects.requireNonNull(importedSaveTransfer);
             StrictJson.require(!previous.equals(replacement) && lifecycleEvidence.bytes() > 0, "actual replacement generation and evidence");
+            importedSaveTransfer.ifPresent(transfer -> StrictJson.require(loadedSave.equals(transfer.staged().reference())
+                            && !lifecycleEvidence.equals(transfer.proof()),
+                    "imported replacement ACK requires its actual staged SAVE and separate transfer proof"));
         }
     }
     public record LaunchRejected(String reason) implements LaunchResult { public LaunchRejected { StrictJson.text(reason); } }
@@ -213,6 +241,12 @@ public final class RestoreCheckpointService {
             if(actual!=attempt.replacement)throw new IOException("restore READ requires the exact original private replacement ACK");
             requireAck(attempt.request,actual);
         }
+        public ReplacementAck originalReplacement() throws IOException {
+            var actual = attempt.replacement;
+            if (actual == null) throw new IOException("original restore has no retained replacement ACK");
+            requireReplacement(actual);
+            return actual;
+        }
         /** This proves only the current finite read scope of the actual original private attempt. */
         public void requireOriginal(Request exact)throws IOException {
             if(exact!=attempt.request||issuer.attempts.get(exact.requestId())!=attempt||attempt.reads!=this
@@ -359,6 +393,7 @@ public final class RestoreCheckpointService {
                         // Details/identity and the sole reducer are unchanged; old hash-only origins cannot gain this pin later.
                         var evidence=new java.util.LinkedHashSet<ExactRef>(source.request().evidence());
                         evidence.add(stage.replacement.lifecycleEvidence());
+                        stage.replacement.importedSaveTransfer().ifPresent(transfer -> evidence.add(transfer.proof()));
                         evidence.addAll(stage.originalReadPair.references());
                         var pinnedRequest=new WriterContracts.Request(source.request().kind(),source.request().details(),java.util.List.copyOf(evidence));
                         reads.requireOriginal(request);var prepared = session.preview(pinnedRequest);
@@ -440,6 +475,9 @@ public final class RestoreCheckpointService {
         borrowed.requireHistoricalState(committed.head().sequence(),ContinuityJson.digest(committed.head().toJson()));
         StrictJson.require(original.originalReadPair==binding.originalReadPair,"original private restore READ pair changed");
         for(ExactRef ref:binding.originalReadPair.references())readOriginalAttachment(borrowed,prepared,ref,MAX_NATIVE_BYTES+4);
+        if (binding.replacement.importedSaveTransfer().isPresent()) {
+            readOriginalAttachment(borrowed, prepared, binding.replacement.importedSaveTransfer().orElseThrow().proof(), 65_536);
+        }
         nativeFrames.requireHistoricalPair(borrowed,binding.replacement,binding.originalReadPair);
         StrictJson.require(committed.head().sequence()==Math.addExact(prepared.predecessor().state().sequence(),1),
                 "retained restoration must be the actual immediate original attachment successor");
@@ -616,8 +654,17 @@ public final class RestoreCheckpointService {
         return new Restored(binding.pair(), binding.published.readiness(), binding.replacement, binding.attachment, binding);
     }
     private static void requireAck(Request request, ReplacementAck ack) {
-        StrictJson.require(ack.requestId().equals(request.requestId()) && ack.previous().equals(request.current().observed().game())
-                && ack.loadedSave().equals(request.pair().save().reference()), "lifecycle ACK must bind exact old Game and SAVE source");
+        StrictJson.require(ack.requestId().equals(request.requestId()) && ack.previous().equals(request.current().observed().game()),
+                "lifecycle ACK must bind the exact old Game and restore request");
+        boolean imported = request.savedMaterial() instanceof SavedAttachmentSourceStore.SavedMaterial ordinary
+                && ordinary.importedOrigin().isPresent();
+        if (imported) {
+            StrictJson.require(ack.importedSaveTransfer().filter(transfer -> transfer.original().equals(request.pair().save())).isPresent(),
+                    "imported replacement ACK must bind the original physical pair to its actual staged SAVE");
+        } else {
+            StrictJson.require(ack.importedSaveTransfer().isEmpty() && ack.loadedSave().equals(request.pair().save().reference()),
+                    "ordinary replacement ACK must carry the original configured SAVE");
+        }
     }
     private void requireNative(Request request, ReplacementAck ack, NativeCandidate candidate) throws IOException {
         var actual = candidate.actual(); var transport = actual.session();

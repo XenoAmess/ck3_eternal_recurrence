@@ -1,12 +1,14 @@
 package org.xar.ck3.control.platform;
 
 import java.io.IOException;
-import java.nio.file.Path;
+import java.time.Clock;
 import java.time.Instant;
 import java.util.Objects;
-import java.util.UUID;
+import java.util.Optional;
+import org.xar.ck3.control.application.checkpoint.CheckpointFiles;
 import org.xar.ck3.control.application.checkpoint.NativeCheckpointFiles;
 import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService;
+import org.xar.ck3.control.application.checkpoint.SavedAttachmentSourceStore;
 import org.xar.ck3.control.build.ControlBuild;
 import org.xar.ck3.control.contracts.ExactRef;
 
@@ -14,36 +16,55 @@ import org.xar.ck3.control.contracts.ExactRef;
 public final class GameRestoreAdapter implements RestoreCheckpointService.LifecyclePort {
     private final JavaGameLifecycle lifecycle;
     private final NativeLaunchPlan template;
-    private final java.util.Optional<JavaGameLifecycle.ExitedGeneration> exitedSource;
-    private final java.util.Optional<RootProcessAttach.LoadedReplacement> loadedReplacement;
-    private final NativeCheckpointFiles files=new NativeCheckpointFiles();
+    private final Optional<JavaGameLifecycle.ExitedGeneration> exitedSource;
+    private final Optional<RootProcessAttach.LoadedReplacement> loadedReplacement;
+    private final CheckpointFiles files;
+    private final Optional<Clock> importedClock;
     public GameRestoreAdapter(JavaGameLifecycle lifecycle,NativeLaunchPlan reviewedTemplate){
-        this.lifecycle=Objects.requireNonNull(lifecycle);this.template=Objects.requireNonNull(reviewedTemplate);this.exitedSource=java.util.Optional.empty();this.loadedReplacement=java.util.Optional.empty();
+        this(lifecycle,reviewedTemplate,Optional.empty(),Optional.empty(),new NativeCheckpointFiles(),Optional.empty());
     }
     public GameRestoreAdapter(JavaGameLifecycle lifecycle,NativeLaunchPlan reviewedTemplate,JavaGameLifecycle.ExitedGeneration actualExitedSource){
-        this.lifecycle=Objects.requireNonNull(lifecycle);this.template=Objects.requireNonNull(reviewedTemplate);
-        this.exitedSource=java.util.Optional.of(Objects.requireNonNull(actualExitedSource));this.loadedReplacement=java.util.Optional.empty();
+        this(lifecycle,reviewedTemplate,Optional.of(actualExitedSource),Optional.empty(),new NativeCheckpointFiles(),Optional.empty());
     }
     public GameRestoreAdapter(JavaGameLifecycle lifecycle,NativeLaunchPlan reviewedTemplate,RootProcessAttach.LoadedReplacement actualLoadedReplacement){
-        this.lifecycle=Objects.requireNonNull(lifecycle);this.template=Objects.requireNonNull(reviewedTemplate);
-        this.exitedSource=java.util.Optional.empty();this.loadedReplacement=java.util.Optional.of(Objects.requireNonNull(actualLoadedReplacement));
+        this(lifecycle,reviewedTemplate,Optional.empty(),Optional.of(actualLoadedReplacement),new NativeCheckpointFiles(),Optional.empty());
+    }
+    public static GameRestoreAdapter importedExited(JavaGameLifecycle lifecycle,NativeLaunchPlan template,
+            JavaGameLifecycle.ExitedGeneration exited,CheckpointFiles admittedFiles,Clock clock) {
+        return new GameRestoreAdapter(lifecycle,template,Optional.of(exited),Optional.empty(),admittedFiles,Optional.of(clock));
+    }
+    private GameRestoreAdapter(JavaGameLifecycle lifecycle,NativeLaunchPlan template,Optional<JavaGameLifecycle.ExitedGeneration> exited,
+            Optional<RootProcessAttach.LoadedReplacement> loaded,CheckpointFiles files,Optional<Clock> importedClock) {
+        this.lifecycle=Objects.requireNonNull(lifecycle);
+        this.template=Objects.requireNonNull(template);
+        this.exitedSource=exited;
+        this.loadedReplacement=loaded;
+        this.files=Objects.requireNonNull(files);
+        this.importedClock=importedClock;
     }
     @Override public RestoreCheckpointService.LaunchResult replaceOnce(RestoreCheckpointService.Request request)throws IOException,InterruptedException{
         if(loadedReplacement.isPresent())throw new IOException("existing loaded replacement is query-only; CREATE and STOP are unavailable");
         Objects.requireNonNull(request);Win32Host.deadline(request.deadline());
         files.verify(request.pair());template.sources().verify();
-        var replacement=new JavaGameLifecycle.ReplacementRequest(request.requestId(),request.current().observed().game(),
-                replacementPlan(request),exitedSource.isEmpty());
         JavaGameLifecycle.ReplacementResult result;
         if(exitedSource.isPresent()) {
             var actual=exitedSource.orElseThrow();lifecycle.requireExitedSource(actual,template,request.deadline());
             if(!actual.generation().equals(request.current().observed().game())
                     ||!actual.sourceSessionId().equals(request.current().sessionId()))
                 throw new IOException("checkpoint restoration changed its actual exited source session or Game birth");
-            result=lifecycle.replaceExitedSavedOnce(replacement,actual);
-        } else result=lifecycle.replaceSavedOnce(replacement);
-        if(result instanceof JavaGameLifecycle.Replaced replaced)return new RestoreCheckpointService.ReplacementAck(request.requestId(),
-                replaced.previous(),replaced.replacement().session().generation(),request.pair().save().reference(),replaced.lifecycleEvidence());
+            if(importedClock.isPresent()) {
+                if(!(request.savedMaterial() instanceof SavedAttachmentSourceStore.SavedMaterial material)
+                        ||material.importedOrigin().filter(origin -> origin.owner().game().equals(actual.generation())
+                            && origin.owner().machineId().equals(actual.machineId())
+                            && origin.owner().sessionId().equals(actual.sourceSessionId())).isEmpty())
+                    throw new IOException("Imported lifecycle needs its exact private v5 material and departed owner");
+                try(var imported=ImportedSavedGameTransfer.prepare(template,request.requestId(),actual.generation(),
+                        request.pair().save(),files,request.deadline(),importedClock.orElseThrow())) {
+                    result=lifecycle.replaceImportedExitedSavedOnce(replacement(request,imported.child()),actual,imported);
+                }
+            } else result=lifecycle.replaceExitedSavedOnce(replacement(request,replacementPlan(request)),actual);
+        } else result=lifecycle.replaceSavedOnce(replacement(request,replacementPlan(request)));
+        if(result instanceof JavaGameLifecycle.Replaced replaced) return acknowledge(request.requestId(),replaced);
         if(result instanceof JavaGameLifecycle.ReplacementRejected rejected)return new RestoreCheckpointService.LaunchRejected(rejected.reason());
         return new RestoreCheckpointService.LaunchUnknown(result.toString());
     }
@@ -57,12 +78,21 @@ public final class GameRestoreAdapter implements RestoreCheckpointService.Lifecy
         JavaGameLifecycle.ReplacementResult result=lifecycle.queryReplacement(requestId);
         if(result instanceof JavaGameLifecycle.Replaced replaced){
             ExactRef proof=replaced.lifecycleEvidence();new ControlBuild.FileRef(proof.path(),proof.bytes(),proof.sha256()).verify();
-            NativeLaunchPlan.SavedGame source=(NativeLaunchPlan.SavedGame)replaced.replacement().session().launchPlan().load();
-            return new RestoreCheckpointService.ReplacementAck(requestId,replaced.previous(),replaced.replacement().session().generation(),
-                    LifecycleEvidence.exact(source.save()),proof);
+            return acknowledge(requestId,replaced);
         }
         if(result instanceof JavaGameLifecycle.ReplacementRejected rejected)return new RestoreCheckpointService.LaunchRejected(rejected.reason());
         return new RestoreCheckpointService.LaunchUnknown(result.toString());
+    }
+    private RestoreCheckpointService.ReplacementAck acknowledge(String requestId,JavaGameLifecycle.Replaced actual) throws IOException {
+        var replacement=actual.replacement().session();
+        var load=(NativeLaunchPlan.SavedGame)replacement.launchPlan().load();
+        if(importedClock.isPresent()!=actual.importedSaveTransfer().isPresent())
+            throw new IOException("Replacement result crossed the original imported or legacy load role");
+        return new RestoreCheckpointService.ReplacementAck(requestId,actual.previous(),replacement.generation(),
+                LifecycleEvidence.exact(load.save()),actual.lifecycleEvidence(),actual.importedSaveTransfer());
+    }
+    private JavaGameLifecycle.ReplacementRequest replacement(RestoreCheckpointService.Request request,NativeLaunchPlan child) {
+        return new JavaGameLifecycle.ReplacementRequest(request.requestId(),request.current().observed().game(),child,exitedSource.isEmpty());
     }
     private NativeLaunchPlan replacementPlan(RestoreCheckpointService.Request request)throws IOException{
         ExactRef raw=request.pair().save().reference();

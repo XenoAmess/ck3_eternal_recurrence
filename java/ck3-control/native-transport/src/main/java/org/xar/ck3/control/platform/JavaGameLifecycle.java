@@ -20,6 +20,8 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.Optional;
+import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService;
+import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.ImportedSaveTransfer;
 import org.xar.ck3.control.build.ControlBuild;
 import org.xar.ck3.control.build.SharedSourceFiles;
 import org.xar.ck3.control.build.WindowsJobProcess;
@@ -47,11 +49,17 @@ public final class JavaGameLifecycle {
         public ReplacementRequest(String parentLifecycleIntentId,GameGeneration expectedOld,NativeLaunchPlan savedPlan){this(parentLifecycleIntentId,expectedOld,savedPlan,false);}
     }
     public sealed interface ReplacementResult permits Replaced,ReplacementRejected,ReplacementUnknown { }
-    public record Replaced(GameGeneration previous,Started replacement,ExactRef lifecycleEvidence) implements ReplacementResult { }
+    public record Replaced(GameGeneration previous,Started replacement,ExactRef lifecycleEvidence,
+            Optional<ImportedSaveTransfer> importedSaveTransfer) implements ReplacementResult {
+        public Replaced { Objects.requireNonNull(importedSaveTransfer); }
+        public Replaced(GameGeneration previous,Started replacement,ExactRef lifecycleEvidence) {
+            this(previous,replacement,lifecycleEvidence,Optional.empty());
+        }
+    }
     public record ReplacementRejected(String reason) implements ReplacementResult { }
     public record ReplacementUnknown(String parentLifecycleIntentId,String reason) implements ReplacementResult { }
     private enum ClaimState { RESERVED, CREATE_ENTERED, STARTED, CLEANUP_PROVEN, UNKNOWN }
-    private sealed interface ControlRecord permits Claim,Tracking,ReplacementControl { }
+    private sealed interface ControlRecord permits Claim,Tracking,ReplacementControl,ImportedReplacementControl { }
     private record Claim(String schema,String machineId,String requestId,String sessionId,String nonce,ClaimState state,
             WindowsJobProcess.ProcessIdentity game,String observedAtUtc) implements ControlRecord {
         private Claim { Instant.parse(observedAtUtc); }
@@ -60,6 +68,9 @@ public final class JavaGameLifecycle {
             WindowsJobProcess.ProcessIdentity game,List<String> command,String kernelPolicy) implements ControlRecord { }
     private record ReplacementControl(String schema,String parentLifecycleIntentId,String phase,long oldPid,String oldBirthDecimal,
             ControlBuild.FileRef save,ExactRef stopEvidence,ExactRef launchEvidence) implements ControlRecord { }
+    private record ImportedReplacementControl(String schema,String parentLifecycleIntentId,String phase,long oldPid,
+            String oldBirthDecimal,ControlBuild.FileRef save,ExactRef stopEvidence,ExactRef launchEvidence,
+            ExactRef importedSaveTransfer) implements ControlRecord { }
     private static final ConcurrentHashMap<String,String> ACTIVE=new ConcurrentHashMap<>();
     static final String MUTEX="Local\\XarJavaGameLifecycle-v1";
     private final Map<String,LaunchResult> results=new ConcurrentHashMap<>();
@@ -267,6 +278,14 @@ public final class JavaGameLifecycle {
     /** The original supervisor already proved exit and Job0. Import sends no old Game STOP. */
     public synchronized ReplacementResult replaceExitedSavedOnce(ReplacementRequest request,ExitedGeneration actual)
             throws IOException,InterruptedException {
+        return replaceExitedSavedOnce(request,actual,null);
+    }
+    synchronized ReplacementResult replaceImportedExitedSavedOnce(ReplacementRequest request,ExitedGeneration actual,
+            ImportedSavedGameTransfer.Prepared imported)throws IOException,InterruptedException {
+        return replaceExitedSavedOnce(request,actual,Objects.requireNonNull(imported));
+    }
+    private ReplacementResult replaceExitedSavedOnce(ReplacementRequest request,ExitedGeneration actual,
+            ImportedSavedGameTransfer.Prepared imported)throws IOException,InterruptedException {
         Objects.requireNonNull(request);Objects.requireNonNull(actual);String id=request.parentLifecycleIntentId();
         if(replacementRequests.containsKey(id)) {
             if(!replacementRequests.get(id).equals(request)||exitedReplacementSources.get(id)!=actual)
@@ -282,6 +301,7 @@ public final class JavaGameLifecycle {
         var exactPlan=actual.template.savedReplacement(id,save.save(),plan.deadline());
         if(!NativeLaunchPlanCodec.describe(exactPlan).equals(NativeLaunchPlanCodec.describe(plan)))
             return new ReplacementRejected("exited replacement changed its original exact Saved child producer");
+        if(imported!=null) imported.requireCurrent(id,actual.generation(),plan);
         Path claim=plan.stateDirectory().resolve("control/"+plan.requestId()+"-parent.json");
         // Business workers are disposable. A new request ID or new lifecycle object cannot redispatch this old generation.
         String generationKey=actual.machineId()+":"+actual.generation().pid()+":"+actual.generation().creationFiletime().value();
@@ -290,30 +310,41 @@ public final class JavaGameLifecycle {
             mutex.requireHeld();requireExitedSource(actual,actual.template,plan.deadline());
             if(Files.exists(claim)||Files.exists(generationClaim))return new ReplacementUnknown(id,"persistent exited-generation replacement already entered; no replay/adoption");
             NativeLaunchPolicy.requireCurrent(plan);
-            var entered=new ReplacementControl("xar.java-game-replacement/v1",id,"EXITED_SOURCE_ACCEPTED_SAVED_LAUNCH_ENTERED",
-                    actual.generation().pid(),actual.generation().creationFiletime().value().toString(),save.save(),actual.evidence(),null);
+            var entered=exitedReplacementControl(id,"EXITED_SOURCE_ACCEPTED_SAVED_LAUNCH_ENTERED",
+                    actual,save.save(),null,imported);
             atomic(generationClaim,entered,true);atomic(claim,entered,true);
             replacementRequests.put(id,request);exitedReplacementSources.put(id,actual);
             replacements.put(id,new ReplacementUnknown(id,"original exited replacement entered; query only"));
             try {
                 // Attachments own only their old pipe/query handle. The supervisor already closed its original Job.
                 if(currentSession!=null&&currentSession.mode()==ManagedGameSession.Mode.ATTACHED)currentSession.close();
-                LaunchResult result=launchSaved(plan);
+                LaunchResult result=imported==null?launchSaved(plan):launchSaved(plan,imported::releaseBeforeCreate);
                 if(!(result instanceof Started started)) {
                     replacements.put(id,new ReplacementUnknown(id,"exited original retained; Saved child not proven: "+result));
                     return queryReplacement(id);
                 }
                 captureStartedOwner(started); // before any post-Started replacement publication
                 if(started.session().generation().equals(actual.generation()))throw new IOException("exited replacement did not create a different measured Game birth");
-                var accepted=new ReplacementControl("xar.java-game-replacement/v1",id,"EXITED_SOURCE_NEW_HELLO_ACCEPTED_MAP_NOT_YET_VERIFIED",
-                        actual.generation().pid(),actual.generation().creationFiletime().value().toString(),save.save(),actual.evidence(),started.launchEvidence());
+                if (imported!=null) imported.requireLoadedFile();
+                var accepted=exitedReplacementControl(id,"EXITED_SOURCE_NEW_HELLO_ACCEPTED_MAP_NOT_YET_VERIFIED",
+                        actual,save.save(),started.launchEvidence(),imported);
                 atomic(generationClaim,accepted,false);atomic(claim,accepted,false);
-                var replaced=new Replaced(actual.generation(),started,LifecycleEvidence.exact(ControlBuild.FileRef.measure(claim)));
+                var replaced=new Replaced(actual.generation(),started,LifecycleEvidence.exact(ControlBuild.FileRef.measure(claim)),
+                        Optional.ofNullable(imported).map(ImportedSavedGameTransfer.Prepared::transfer));
                 replacements.put(id,replaced);return replaced;
             }catch(IOException|RuntimeException failure) {
                 replacements.put(id,new ReplacementUnknown(id,"exited Saved replacement UNKNOWN: "+failure));return queryReplacement(id);
             }
         }
+    }
+    private static ControlRecord exitedReplacementControl(String id,String phase,ExitedGeneration actual,
+            ControlBuild.FileRef staged,ExactRef launch,ImportedSavedGameTransfer.Prepared imported) {
+        long pid=actual.generation().pid();
+        String birth=actual.generation().creationFiletime().value().toString();
+        return imported==null
+                ?new ReplacementControl("xar.java-game-replacement/v1",id,phase,pid,birth,staged,actual.evidence(),launch)
+                :new ImportedReplacementControl(RestoreCheckpointService.IMPORTED_REPLACEMENT_SCHEMA,id,phase,pid,birth,
+                        staged,actual.evidence(),launch,imported.transfer().proof());
     }
     /** Same producer for checkpoint restoration and immutable-seed next episode; no synthetic CheckpointPair needed. */
     public synchronized ReplacementResult replaceSavedOnce(ReplacementRequest request)throws IOException,InterruptedException{
