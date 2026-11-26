@@ -11,6 +11,7 @@ import java.net.Proxy;
 import java.net.Socket;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -20,15 +21,28 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 import org.xar.ck3.control.contracts.StrictJson;
 
 /** Original fixed read-only App getter protocol; never enables CDP or accepts caller JavaScript. */
 final class SteamOfflineCefWire {
     static final int MAXIMUM_BYTES = 256 * 1024;
+    private static final Map<String, Pattern> STARTUP_FIELDS = Map.of(
+            "LOCAL_HOSTNAME", Pattern.compile("[A-Za-z0-9_-]{1,128}"),
+            "LANGUAGE", Pattern.compile("[a-z_]{2,24}"),
+            "COUNTRY", Pattern.compile("[A-Z]{2}"),
+            "LAUNCHER_TYPE", Pattern.compile("0"),
+            "CLIENT_SESSION", Pattern.compile("[0-9]{1,20}"),
+            "PACKAGE_CL", Pattern.compile("[0-9]{1,20}"),
+            "IN_CLIENT", Pattern.compile("true"),
+            "PLATFORM", Pattern.compile("windows"),
+            "ARCH", Pattern.compile("x64"),
+            "SILENT_STARTUP", Pattern.compile("true|false"));
     record Target(String id, String url, String webSocketUrl) { }
     private SteamOfflineCefWire() { }
 
@@ -46,7 +60,7 @@ final class SteamOfflineCefWire {
                 "Both original App getters must be actual equal booleans bound to this nonce");
         return value.get("direct").booleanValue();
     }
-    static List<Target> targets(JsonNode version, JsonNode list) {
+    static List<Target> targets(JsonNode version, JsonNode list, boolean allowsStartupQuery) {
         StrictJson.require(version != null && version.isObject(), "Chromium discovery object required");
         String browser = StrictJson.text(version.get("Browser")).toLowerCase(Locale.ROOT);
         StrictJson.require((browser.startsWith("chrome/") || browser.startsWith("chromium/"))
@@ -57,17 +71,38 @@ final class SteamOfflineCefWire {
             StrictJson.require(node.isObject(), "CEF target object required");
             if (!node.path("type").isTextual() || !node.path("type").textValue().equals("page")) continue;
             String url = StrictJson.text(node.get("url"));
-            boolean shared = url.equals("about:blank") && node.path("title").isTextual()
-                    && node.path("title").textValue().equals("SharedJSContext");
+            boolean sharedTitle = "SharedJSContext".equals(node.path("title").textValue());
+            boolean shared = url.equals("about:blank") && sharedTitle;
             URI target = uri(url);
+            String query = target.getRawQuery();
             if (!shared && !("https".equalsIgnoreCase(target.getScheme()) && "steamloopback.host".equalsIgnoreCase(target.getHost())
-                    && target.getRawQuery() == null && target.getRawFragment() == null && target.getRawUserInfo() == null)) continue;
+                    && target.getRawFragment() == null && target.getRawUserInfo() == null
+                    && (query == null || allowsStartupQuery && sharedTitle
+                        && "/index.html".equals(target.getRawPath()) && startupQueryMatches(query)))) continue;
             String id = StrictJson.text(node.get("id")), socket = StrictJson.text(node.get("webSocketDebuggerUrl"));
             if (!("/devtools/page/" + id).equals(uri(socket).getRawPath())) continue;
             result.add(new Target(id, url, socket));
         }
         return List.copyOf(result);
     }
+    private static boolean startupQueryMatches(String query) {
+        String[] fields = query.split("&", STARTUP_FIELDS.size() + 1);
+        if (fields.length < STARTUP_FIELDS.size() - 1 || fields.length > STARTUP_FIELDS.size()) return false;
+        Set<String> seen = new HashSet<>();
+        for (String field : fields) {
+            int separator = field.indexOf('=');
+            if (separator <= 0) return false;
+            String name = URLDecoder.decode(field.substring(0, separator), StandardCharsets.UTF_8);
+            Pattern pattern = STARTUP_FIELDS.get(name);
+            if (pattern == null || !seen.add(name)
+                    || !pattern.matcher(URLDecoder.decode(field.substring(separator + 1), StandardCharsets.UTF_8)).matches()) {
+                return false;
+            }
+        }
+        seen.remove("SILENT_STARTUP");
+        return seen.size() == STARTUP_FIELDS.size() - 1;
+    }
+
     static URI endpoint(String value, int port) {
         URI uri = uri(value);
         StrictJson.require("ws".equalsIgnoreCase(uri.getScheme()) && uri.getHost() != null && Set.of("localhost", "127.0.0.1").contains(uri.getHost().toLowerCase(Locale.ROOT))
@@ -75,8 +110,8 @@ final class SteamOfflineCefWire {
                 && uri.getRawPath() != null && uri.getRawPath().matches("/devtools/page/[A-Za-z0-9_-]{1,128}"), "Owned loopback CEF websocket required");
         return uri;
     }
-    static List<Target> discover(int port, Instant deadline) throws IOException {
-        try { return targets(http(port, "/json/version", deadline), http(port, "/json/list", deadline)); }
+    static List<Target> discover(int port, Instant deadline, boolean allowsStartupQuery) throws IOException {
+        try { return targets(http(port, "/json/version", deadline), http(port, "/json/list", deadline), allowsStartupQuery); }
         catch (IllegalArgumentException invalid) { throw new IOException("CEF discovery rejected", invalid); }
     }
     private static JsonNode http(int port, String path, Instant deadline) throws IOException {

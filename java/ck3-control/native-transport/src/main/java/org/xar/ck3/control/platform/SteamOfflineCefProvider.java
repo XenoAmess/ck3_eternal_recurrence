@@ -42,10 +42,22 @@ import org.xar.ck3.control.platform.SteamOfflineObservation.Unavailable;
 
 /** Original CEF path: existing owned loopback debugger only, exact installed JS source, fixed getters. */
 final class SteamOfflineCefProvider {
-    static final String VERSION = "10.96.30.42";
-    static final long SOURCE_BYTES = 14382868;
-    static final String SOURCE_SHA256 = "f9606b111203c9140dcdd6fc016a0ee00e4c8406aeb786187c42873f08d071fb";
-    private static final Pattern PORT = Pattern.compile("(?:^|\\s)--remote-debugging-port(?:=|\\s+)([0-9]{1,5})(?=\\s|$)");
+    private static final Map<String, SourceProfile> SOURCES = Map.of(
+            "10.96.30.42", new SourceProfile("steamui/chunk~2dcc5aaf7.js", 14382868,
+                    "f9606b111203c9140dcdd6fc016a0ee00e4c8406aeb786187c42873f08d071fb", false),
+            "11.23.65.88", new SourceProfile("steamui/sp.js", 16224005,
+                    "4b818cd371388e06c66fe8c0bb592b7dfd4a6fb55eb56844d1b360b64aec3046", true));
+    private static final Pattern PORT = Pattern.compile(
+            "(?:^|\s)(?:--remote-debugging-port(?:=|\s+)([0-9]{1,5})"
+            + "|\"--remote-debugging-port=([0-9]{1,5})\")(?=\s|$)");
+    record SourceProfile(String relativePath, long bytes, String sha256, boolean allowsStartupQuery) {
+        boolean matches(long actualBytes, String actualSha256) {
+            return bytes == actualBytes && sha256.equals(actualSha256);
+        }
+    }
+    static Optional<SourceProfile> sourceProfile(String steamVersion) {
+        return Optional.ofNullable(SOURCES.get(steamVersion));
+    }
     record Observation(Result result, Optional<SteamOfflineProbe.ObservationLease> lease) { }
     private record Row(long pid, long parent, String name) { }
     private record Listener(long pid, int port) { }
@@ -87,19 +99,24 @@ final class SteamOfflineCefProvider {
             var steam = steamRows.get(0).identity(); String version = SteamOfflineProbe.version(Path.of(steam.executable()));
             steamData = Optional.of(SteamOfflineProbe.processIdentity(steam, version));
             if (!Path.of(steam.executable()).toRealPath().equals(Path.of(plan.steamExecutable().path()).toRealPath())) throw new IOException("Actual Steam executable differs");
-            Path root = Path.of(steam.executable()).getParent(); Path source = root.resolve("steamui/chunk~2dcc5aaf7.js");
-            if (!VERSION.equals(version)) {
+            var profile = sourceProfile(version);
+            if (profile.isEmpty()) {
                 return missing(plan, started, nonce, steamData, sourceData, diagnostics, Reason.SOURCE_NOT_QUALIFIED);
             }
+            SourceProfile expectedSource = profile.orElseThrow();
+            Path root = Path.of(steam.executable()).getParent();
+            Path source = root.resolve(expectedSource.relativePath());
             final SharedSourceFiles.Witness witness;
             try {
-                if (Files.size(source) != SOURCE_BYTES) return missing(plan, started, nonce, steamData, sourceData, diagnostics, Reason.SOURCE_NOT_QUALIFIED);
+                if (Files.size(source) != expectedSource.bytes()) {
+                    return missing(plan, started, nonce, steamData, sourceData, diagnostics, Reason.SOURCE_NOT_QUALIFIED);
+                }
                 witness = SharedSourceFiles.observe(source);
             } catch (IOException | RuntimeException failure) {
                 diagnostics.add("cef_source_not_qualified");
                 return missing(plan, started, nonce, steamData, sourceData, diagnostics, Reason.SOURCE_NOT_QUALIFIED);
             }
-            if (witness.source().bytes() != SOURCE_BYTES || !witness.source().sha256().equals(SOURCE_SHA256)) {
+            if (!expectedSource.matches(witness.source().bytes(), witness.source().sha256())) {
                 return missing(plan, started, nonce, steamData, sourceData, diagnostics, Reason.SOURCE_NOT_QUALIFIED);
             }
             Source sourceIdentity = SteamOfflineProbe.sourceIdentity(witness); sourceData = Optional.of(sourceIdentity);
@@ -134,7 +151,8 @@ final class SteamOfflineCefProvider {
             for (Candidate endpoint : endpoints.stream().limit(4).toList()) {
                 if (!Instant.now().isBefore(networkDeadline)) break;
                 try {
-                    for (SteamOfflineCefWire.Target target : SteamOfflineCefWire.discover(endpoint.port(), networkDeadline).stream().limit(8).toList()) {
+                    for (SteamOfflineCefWire.Target target : SteamOfflineCefWire.discover(
+                            endpoint.port(), networkDeadline, expectedSource.allowsStartupQuery()).stream().limit(8).toList()) {
                         if (!Instant.now().isBefore(networkDeadline)) break;
                         boolean offline = SteamOfflineCefWire.evaluate(target, endpoint.port(), nonce, networkDeadline);
                         requireIdentity(endpoint.owner());
@@ -236,7 +254,11 @@ final class SteamOfflineCefProvider {
     }
     static List<Integer> parsePorts(String command) {
         Matcher matches = PORT.matcher(command); Set<Integer> ports = new HashSet<>();
-        while (matches.find()) { int port = Integer.parseInt(matches.group(1)); if (port >= 1 && port <= 65535) ports.add(port); }
+        while (matches.find()) {
+            String value = matches.group(1) != null ? matches.group(1) : matches.group(2);
+            int port = Integer.parseInt(value);
+            if (port >= 1 && port <= 65535) ports.add(port);
+        }
         return ports.stream().sorted().toList();
     }
     private static List<Integer> ports(long pid, Instant deadline) throws IOException {
