@@ -36,11 +36,11 @@ final class CheckpointMaterialRestoreCompositionTest {
     private Harness actualSaved(String name)throws Exception{
         return actualSaved(name,false);
     }
-    private Harness actualSaved(String name,boolean guardedMaterialOutputs)throws Exception{
+    private Harness actualSaved(String name,boolean nativeAttachment)throws Exception{
         Path root=temporary.resolve(name);
         var f=new CheckpointSourceCompositionTest.Fixture(root,false,Clock.systemUTC(),java.util.Optional.empty(),java.util.Optional.empty(),
                 java.util.List.of(),java.time.Duration.ofSeconds(8),root.resolve("profile"),java.util.Optional.empty(),
-                java.util.Optional.of(CheckpointSourceCompositionTest.freshReconciliationReads()),guardedMaterialOutputs);
+                java.util.Optional.of(CheckpointSourceCompositionTest.freshReconciliationReads()),nativeAttachment,nativeAttachment);
         try{
             var actual=f.service.checkpoint(f.request);
             if(actual instanceof CheckpointResult.Unknown unknown&&unknown.action().flatMap(receipt->receipt.ack()).filter(ack->ack.nativeOk()).isPresent()) {
