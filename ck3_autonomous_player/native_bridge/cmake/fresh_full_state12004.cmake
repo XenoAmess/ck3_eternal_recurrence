@@ -90,6 +90,7 @@ function(xar_add_fresh_full_state12004_tests source_root fixture_root)
     )
     target_compile_features(xar_fresh_owner12004 PRIVATE cxx_std_20)
     target_compile_definitions(xar_fresh_owner12004 PRIVATE
+      XAR_CK3_TEST_WORKER_SNAPSHOT_WAIT=1
       NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE
       xar_ck3_bridge_EXPORTS
       XAR_BRIDGE_VERSION="0.1.0"
@@ -143,6 +144,7 @@ function(xar_add_fresh_full_state12004_tests source_root fixture_root)
     )
     target_compile_features(xar_ck3_fresh_full_state_owner12004_test PRIVATE cxx_std_20)
     target_compile_definitions(xar_ck3_fresh_full_state_owner12004_test PRIVATE
+      XAR_CK3_TEST_WORKER_SNAPSHOT_WAIT=1
       NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE
       xar_ck3_bridge_EXPORTS
       XAR_BRIDGE_VERSION="0.1.0"
@@ -158,6 +160,9 @@ function(xar_add_fresh_full_state12004_tests source_root fixture_root)
     target_link_libraries(xar_ck3_fresh_full_state_owner12004_test PRIVATE kernel32 user32)
     add_test(NAME xar_ck3_fresh_full_state_owner12004 COMMAND xar_ck3_fresh_full_state_owner12004_test)
     set_tests_properties(xar_ck3_fresh_full_state_owner12004 PROPERTIES TIMEOUT 10)
+    add_test(NAME xar_ck3_worker_snapshot_wait_publication
+      COMMAND xar_ck3_fresh_full_state_owner12004_test --worker-snapshot-wait)
+    set_tests_properties(xar_ck3_worker_snapshot_wait_publication PROPERTIES TIMEOUT 12)
     add_test(NAME xar_ck3_fresh_full_state_queued_cancel12004
       COMMAND xar_ck3_fresh_full_state_owner12004_test --no-pump-12004)
     add_test(NAME xar_ck3_fresh_full_state_queued_cancel1210

@@ -4,12 +4,15 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_1210.hpp"
+#include "xar_bridge/ck3_121003_full_profile111.hpp"
 #include "xar_bridge/ck3_1210_thread_runtime.hpp"
 #include "xar_bridge/fresh_full_state_diagnostic_v1.hpp"
 #include "xar_bridge/florin_event_pump_boundary_v1.hpp"
 
 #include <array>
 #include <atomic>
+#include <chrono>
+#include <condition_variable>
 #include <cstdio>
 #include <cstring>
 #include <thread>
@@ -91,8 +94,11 @@ public:
   bool patch3 = false;
   bool patch4 = false;
   bool florin = false;
+  bool florin_current_patch = false;
   bool wrong_build = false;
   mutable std::atomic<DWORD> read_delay_ms{0};
+  void *raw_read_context = nullptr;
+  bool (*raw_read_gate)(void *) noexcept = nullptr;
 
   FixtureAdapter() {
     frame.date_raw = 123456;
@@ -125,7 +131,12 @@ public:
       xar::ck3_1210::kAdapterId, xar::ck3_1210::kGameVersion,
       xar::ck3_12004::kExecutableSha256, "offline-wrong-build-fixture",
       std::span<const std::string_view>{florin_capabilities}};
+    static const game::AdapterDescriptor current_value{
+      xar::ck3_121003::full111::kAdapterId, xar::ck3_121003::full111::kGameVersion,
+      xar::ck3_121003::full111::kExecutableSha256, "offline-fresh-fixture",
+      std::span<const std::string_view>{florin_capabilities}};
     if (wrong_build) return wrong_value;
+    if (florin_current_patch) return current_value;
     if (florin) return florin_value;
     static constexpr std::array<std::string_view, 1> capabilities{
       "game.state.snapshot"};
@@ -144,6 +155,10 @@ public:
     ++raw_reads;
     if (GetCurrentThreadId() != owner) {
       ++wrong_owner;
+      output = {};
+      return false;
+    }
+    if (raw_read_gate && !raw_read_gate(raw_read_context)) {
       output = {};
       return false;
     }
@@ -625,6 +640,141 @@ bool TestFreshOwnerWake(bool florin, FreshWakeMode mode) {
 }
 
 
+enum class SnapshotWaitCase { cadence, original_epoch, replacement, owner_drift };
+
+struct SnapshotWaitFixture {
+  std::mutex mutex;
+  std::condition_variable changed;
+  build::WorkerAdapter *adapter = nullptr;
+  bool read_requested = false;
+  bool before_wait = false;
+  bool after_wait = false;
+  bool continue_after_wait = false;
+  bool boundary_timeout = false;
+  bool read_ok = false;
+  game::Snapshot output{};
+
+  static bool BeginWorkerRead(void *opaque) noexcept {
+    auto &state = *static_cast<SnapshotWaitFixture *>(opaque);
+    std::unique_lock lock(state.mutex);
+    state.read_requested = true;
+    state.changed.notify_all();
+    return state.changed.wait_for(lock, std::chrono::seconds(2), [&] { return state.before_wait; });
+  }
+
+  static void ObserveWait(void *opaque, build::WorkerSnapshotWaitBoundary boundary,
+      std::unique_lock<std::mutex> &cache) noexcept {
+    auto &state = *static_cast<SnapshotWaitFixture *>(opaque);
+    if (boundary == build::WorkerSnapshotWaitBoundary::before_wait) {
+      std::lock_guard lock(state.mutex);
+      state.before_wait = true;
+      state.changed.notify_all();
+      return;
+    }
+    cache.unlock();
+    {
+      std::unique_lock lock(state.mutex);
+      state.after_wait = true;
+      state.changed.notify_all();
+      state.boundary_timeout = !state.changed.wait_for(lock, std::chrono::seconds(2),
+          [&] { return state.continue_after_wait; });
+    }
+    cache.lock();
+  }
+};
+
+bool TestWorkerSnapshotWait(SnapshotWaitCase mode, bool florin) {
+  FixtureAdapter native;
+  native.patch4 = true;
+  native.florin_current_patch = florin;
+  native.frame.paused = true;
+  api::MainThreadQueryMailboxV1 mailbox{};
+  SnapshotWaitFixture fixture{};
+  std::jthread worker([&] {
+    build::WorkerAdapter adapter(native, mailbox, build::ConsoleFixtureBindings{});
+    build::BindWorkerSnapshotWaitObserver(&fixture, &SnapshotWaitFixture::ObserveWait);
+    {
+      std::unique_lock lock(fixture.mutex);
+      fixture.adapter = &adapter;
+      fixture.changed.notify_all();
+      if (!fixture.changed.wait_for(lock, std::chrono::seconds(2),
+            [&] { return fixture.read_requested; })) return;
+    }
+    fixture.read_ok = adapter.read_snapshot(fixture.output);
+  });
+  {
+    std::unique_lock lock(fixture.mutex);
+    CHECK(fixture.changed.wait_for(lock, std::chrono::seconds(2),
+        [&] { return fixture.adapter != nullptr; }));
+  }
+
+  api::MainThreadExecutionStampV1 stamp{};
+  stamp.pump_epoch = 10;
+  stamp.thread_id = GetCurrentThreadId();
+  stamp.date_raw = native.frame.date_raw;
+  stamp.paused = true;
+  stamp.tls_initialized = 1;
+  stamp.tls_main_thread_marker = 1;
+  stamp.tls_context = 1;
+  stamp.game_state = 2;
+  stamp.jomini_state = 3;
+  mailbox.iat_hook_installed.store(true);
+  mailbox.active_hook_calls.store(1);
+  mailbox.owner_verified_pump_epochs.store(api::kMainThreadQueryMinimumOwnerVerifiedPumpEpochs);
+  mailbox.paused_owner_verified_pump_epochs.store(api::kMainThreadQueryMinimumPausedOwnerVerifiedPumpEpochs);
+  const auto observe = [&] {
+    mailbox.pump_epochs.store(stamp.pump_epoch);
+    mailbox.owner_thread_id.store(stamp.thread_id);
+    mailbox.observed_current_thread_id.store(stamp.thread_id);
+    mailbox.observed_date_raw.store(stamp.date_raw);
+    mailbox.observed_paused.store(stamp.paused);
+    mailbox.observed_tls_initialized.store(stamp.tls_initialized);
+    mailbox.observed_tls_main_thread_marker.store(stamp.tls_main_thread_marker);
+    mailbox.observed_tls_context.store(stamp.tls_context);
+    mailbox.observed_game_state.store(stamp.game_state);
+    mailbox.observed_jomini_state.store(stamp.jomini_state);
+    mailbox.observed_stamp_read_success.store(true);
+    return fixture.adapter->Observe(stamp);
+  };
+  CHECK(observe() && native.raw_reads == 1);
+  stamp.date_raw = ++native.frame.date_raw;
+  ++stamp.pump_epoch;
+  const auto expected = native.frame;
+  native.raw_read_context = &fixture;
+  native.raw_read_gate = &SnapshotWaitFixture::BeginWorkerRead;
+  CHECK(observe());
+  native.raw_read_gate = nullptr;
+  {
+    std::unique_lock lock(fixture.mutex);
+    CHECK(fixture.changed.wait_for(lock, std::chrono::seconds(2),
+        [&] { return fixture.after_wait; }));
+  }
+  CHECK(native.raw_reads == 2);
+  if (mode != SnapshotWaitCase::original_epoch) {
+    ++stamp.pump_epoch;
+    if (mode == SnapshotWaitCase::replacement) stamp.date_raw = ++native.frame.date_raw;
+    CHECK(observe());
+    CHECK(native.raw_reads == (mode == SnapshotWaitCase::replacement ? 3U : 2U));
+    if (mode == SnapshotWaitCase::owner_drift) mailbox.owner_thread_id.store(stamp.thread_id + 1);
+  }
+  {
+    std::lock_guard lock(fixture.mutex);
+    fixture.continue_after_wait = true;
+    fixture.changed.notify_all();
+  }
+  worker.join();
+  CHECK(fixture.before_wait && fixture.after_wait && !fixture.boundary_timeout);
+  CHECK(native.wrong_owner == 0 && native.semantic_calls == 0);
+  const bool should_read = mode == SnapshotWaitCase::cadence || mode == SnapshotWaitCase::original_epoch;
+  if (fixture.read_ok != should_read) {
+    std::fprintf(stderr, "worker wait publication mismatch: build=%s mode=%d expected=%d actual=%d\n",
+        florin ? "1.21.0.3" : "1.20.0.4", static_cast<int>(mode), should_read, fixture.read_ok);
+    return false;
+  }
+  CHECK(fixture.output == (should_read ? expected : game::Snapshot{}));
+  return true;
+}
+
 struct FlorinExecutorSlotProbe {
   unsigned calls = 0;
   unsigned slot = 99;
@@ -762,6 +912,17 @@ bool TestFlorinSevenExecutorSlots() {
 } // namespace
 
 int main(int argc, char **argv) {
+  if (argc == 2 && std::string_view(argv[1]) == "--worker-snapshot-wait") {
+    bool passed = true;
+    for (bool florin : {false, true}) {
+      for (auto mode : {SnapshotWaitCase::cadence, SnapshotWaitCase::original_epoch,
+                        SnapshotWaitCase::replacement, SnapshotWaitCase::owner_drift})
+        passed = TestWorkerSnapshotWait(mode, florin) && passed;
+    }
+    if (!passed) return 1;
+    std::puts("PASS: eight WorkerAdapter wait/publication cases across 1.20.0.4 and 1.21.0.3");
+    return 0;
+  }
   if(argc==2 && std::strcmp(argv[1],"--florin-seven-executor-only")==0)
     return TestFlorinSevenExecutorSlots()?0:1;
   if (argc == 2 && std::string_view(argv[1]) == "--florin-six-executor-only")

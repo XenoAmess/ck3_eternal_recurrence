@@ -394,29 +394,42 @@ bool WorkerAdapter::read_snapshot(game::Snapshot &output) const noexcept {
       view.expected_wait_ticket =
           xar::bridge::ck3_12004::WorkerSnapshotWaitTicket12004{generation, epoch, owner_thread_id};
       capture_observation(ViewStage::before_wait);
+#if defined(XAR_CK3_TEST_WORKER_SNAPSHOT_WAIT)
+      ObserveWorkerSnapshotWaitBoundary(WorkerSnapshotWaitBoundary::before_wait, guard);
+#endif
       const bool terminal = snapshot_changed_.wait_until(guard, deadline, [&] {
         return snapshot_pending_generation_ != generation ||
             mailbox_->stop_requested.load(std::memory_order_acquire);
       });
+#if defined(XAR_CK3_TEST_WORKER_SNAPSHOT_WAIT)
+      ObserveWorkerSnapshotWaitBoundary(WorkerSnapshotWaitBoundary::after_wait, guard);
+#endif
       view.wait_terminal = terminal;
       capture_observation(ViewStage::after_wait);
+      const auto is_committed_ticket = [&]() noexcept {
+        return snapshot_.has_value() && snapshot_pending_generation_ == 0 &&
+            snapshot_published_generation_ == generation &&
+            snapshot_source_stamp_.pump_epoch == epoch &&
+            snapshot_source_stamp_.thread_id == owner_thread_id &&
+            snapshot_epoch_ >= epoch;
+      };
       if (!terminal || mailbox_->stop_requested.load(std::memory_order_acquire) ||
-          snapshot_pending_generation_ != 0 ||
-          snapshot_published_generation_ != generation || snapshot_epoch_ != epoch)
+          !is_committed_ticket())
         return unavailable(FailureStage::worker_snapshot_epoch_unpublished);
-      // Diagnostics are independent atomic loads. Refresh outside the cache
-      // lock, then require the same pump epoch on both sides of that read.
+      // Owner cadence can advance the cache epoch while retaining the raw ticket.
+      // Refresh diagnostics outside the cache lock and bind them to the cache epoch.
       guard.unlock();
       diagnostics = ck3_11906::ReadMainThreadQueryMailboxDiagnosticsV1(*mailbox_);
       diagnostic_sample_stage = MailboxStage::post_wait_cache_unlocked;
       guard.lock();
       capture_observation(ViewStage::after_diagnostics_refresh);
-      if (snapshot_pending_generation_ != 0 ||
-          snapshot_published_generation_ != generation || snapshot_epoch_ != epoch ||
+      if (!is_committed_ticket() ||
           diagnostics.stop_requested ||
           mailbox_->stop_requested.load(std::memory_order_acquire) ||
-          diagnostics.pump_epochs != epoch ||
-          mailbox_->pump_epochs.load(std::memory_order_acquire) != epoch ||
+          diagnostics.pump_epochs != snapshot_epoch_ ||
+          mailbox_->pump_epochs.load(std::memory_order_acquire) != snapshot_epoch_ ||
+          diagnostics.owner_thread_id != owner_thread_id ||
+          mailbox_->owner_thread_id.load(std::memory_order_acquire) != owner_thread_id ||
           diagnostics.observed_current_thread_id != owner_thread_id)
         return unavailable(FailureStage::worker_snapshot_epoch_unpublished);
     }

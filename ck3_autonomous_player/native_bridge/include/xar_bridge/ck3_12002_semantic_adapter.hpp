@@ -10,6 +10,15 @@
 
 namespace xar::ck3_12002 {
 
+#if defined(XAR_CK3_TEST_WORKER_SNAPSHOT_WAIT)
+enum class WorkerSnapshotWaitBoundary { before_wait, after_wait };
+using WorkerSnapshotWaitObserver = void (*)(
+    void *, WorkerSnapshotWaitBoundary, std::unique_lock<std::mutex> &) noexcept;
+void BindWorkerSnapshotWaitObserver(void *, WorkerSnapshotWaitObserver) noexcept;
+void ObserveWorkerSnapshotWaitBoundary(
+    WorkerSnapshotWaitBoundary, std::unique_lock<std::mutex> &) noexcept;
+#endif
+
 struct SnapshotObserverDiagnostics12002 {
   std::uint64_t started_ms = 0;
   std::uint64_t completed_ms = 0;

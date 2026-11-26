@@ -1,8 +1,28 @@
 #include "xar_bridge/ck3_12002_adapter.hpp"
 #include "xar_bridge/ck3_12002_context.hpp"
 #include "xar_bridge/ck3_12002_marriage_probe.hpp"
+#include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include <cstdio>
 #include <cstdlib>
+
+#if defined(XAR_CK3_TEST_WORKER_SNAPSHOT_WAIT)
+namespace xar::ck3_12002 {
+namespace {
+thread_local void *worker_wait_context = nullptr;
+thread_local WorkerSnapshotWaitObserver worker_wait_observer = nullptr;
+}
+
+void BindWorkerSnapshotWaitObserver(void *context, WorkerSnapshotWaitObserver observer) noexcept {
+  worker_wait_context = context;
+  worker_wait_observer = observer;
+}
+
+void ObserveWorkerSnapshotWaitBoundary(
+    WorkerSnapshotWaitBoundary boundary, std::unique_lock<std::mutex> &lock) noexcept {
+  if (worker_wait_observer) worker_wait_observer(worker_wait_context, boundary, lock);
+}
+} // namespace xar::ck3_12002
+#endif
 
 namespace xar::game {
 
