@@ -31,6 +31,7 @@ import org.xar.ck3.control.continuity.OriginalWindowReducer;
 import org.xar.ck3.control.continuity.SavedContinuityBootstrap;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session;
 import org.xar.ck3.control.continuity.writer.DomainBodies;
+import org.xar.ck3.control.continuity.writer.PortableRecoveryDataArchive;
 import org.xar.ck3.control.continuity.writer.WriterContracts;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.FullJsonTree;
@@ -122,6 +123,30 @@ final class RootImportedSavedOpeningAdvanceTest {
         var ending = f.loadSecondSettle();
         f.cycleBodies.remove(f.firstCycle);
         assertThrows(IOException.class, () -> f.project(ending.frame()));
+    }
+
+    @Test void aSettledControlTailPreservesTheLastLifeProofAndActualOpeningDate() throws Exception {
+        var f = new Fixture();
+        var originalGate = DomainBodies.reference(f.head, DomainBodies.Slot.OPENING_GATE);
+        var originalSaved = f.head.toJson().get(SavedContinuityBootstrap.FIELD);
+        var control = f.loadControlSuffix();
+        var before = f.head;
+        var projection = f.project(control.frame());
+        var gate = RootGovernanceOpeningInputs.openingGate(f.opening, control.frame(), Optional.empty(), projection);
+        assertEquals(OpeningStage.AWAIT_SUBMIT, gate.stage());
+        assertEquals(BigInteger.valueOf(53179392L), gate.dateRaw());
+        assertTrue(gate.action().isEmpty() && gate.checkpoint().isEmpty());
+        var proof = projection.orElseThrow();
+        assertEquals("7fce6e4f379e6377d12471b83b98420e0d50d71f9fe45eab44d7a1e3b88e1bac", proof.cycleRecord().sha256());
+        assertEquals("1a707ec8a3a336432eccd9753b0d700553b0dd1febe83878610b7ecdf18ae476", proof.lifeReceipt().sha256());
+        assertEquals("3110d087b33043133593b696abf8699994cbf9056ab25bce669e9a496d545d93", proof.semantic().semantic().sha256());
+        assertNotEquals(control, proof.semantic());
+        assertTrue(proof.evidence().containsAll(List.of(proof.cycleRecord(), proof.lifeReceipt(), proof.semantic().semantic())));
+        assertEquals(originalSaved, f.head.toJson().get(SavedContinuityBootstrap.FIELD));
+        assertEquals(originalGate, DomainBodies.reference(f.head, DomainBodies.Slot.OPENING_GATE));
+        assertEquals(56L, f.head.settledCycles());
+        assertEquals(53179344L, f.head.settledDateRaw());
+        assertSame(before, f.head);
     }
 
     private static ObservationIdentity nextFrame(ObservationIdentity first, BigInteger actor, BigInteger date) {
@@ -266,6 +291,48 @@ final class RootImportedSavedOpeningAdvanceTest {
             actionRecords.put(actionHead, actionRecord);
             requireBytes(DomainBodies.reference(head, DomainBodies.Slot.OPENING_GATE).orElseThrow().payload(), originalOpening);
             return OrdinaryCycleTransitions.semanticFromJson(last.get("semantic"));
+        }
+
+        private SemanticEvidence loadControlSuffix() throws IOException {
+            // Reuse the existing exact first Life body and receipt for the same retained prefix.
+            loadSecondSettle();
+            var data = readFixture("source56-opening-control-settle.json.gz");
+            byte[] importedHead = binary(data.get("head"));
+            assertEquals("dd1477cb8f11c913f5541d082f4a976a6fbf355d92d2878fc88f5ff1e2f2b5f0", ActionCodec.sha256(importedHead));
+            var state = ContinuityJson.parseObject(importedHead, 1 << 20);
+            head = ContinuityState.fromJson(state, head.machineId());
+            assertEquals(69, head.sequence());
+            var originals = data.get("originals");
+            PortableRecoveryDataArchive.DataSource read = (ref, maximum) -> {
+                var packed = originals.get(ref.sha256());
+                if (packed == null || ref.bytes() > maximum) throw new IOException("missing or oversized archived control DATA");
+                byte[] bytes = binary(packed);
+                requireBytes(ref, bytes);
+                return bytes;
+            };
+            var controlArchive = new PortableRecoveryDataArchive(session -> assertSame(same, session), read).proxy();
+            var actionRef = ContinuityActionJournal.recordHead(head).orElseThrow();
+            var control = controlArchive.loadRecord(actionRef).receipt();
+            assertEquals(ActionReceipt.Outcome.APPLIED_CONFIRMED, control.outcome());
+            assertFalse(control.visibleGameplay() || control.eligibleAdvance());
+            actionRecords.put(actionRef, read.read(actionRef, 1 << 20));
+            var controlRef = controlArchive.receiptReferenceOf(control);
+            receipts.put(controlRef, control);
+            var controlCycle = ExactRef.fromJson(state.get(OrdinaryCycleTransitions.STATE_FIELD).get("head"));
+            byte[] cycleBytes = read.read(controlCycle, 1 << 20);
+            cycleBodies.put(controlCycle, cycleBytes);
+            var record = ContinuityJson.parseObject(cycleBytes, 1 << 20);
+            assertEquals("CONTROL_ONLY", record.get("classification").textValue());
+            assertEquals(58, record.get("completed_cycles").longValue());
+            assertEquals(controlRef, ExactRef.fromJson(record.get("receipt_ref")));
+            var previousLife = ExactRef.fromJson(record.get("previous"));
+            byte[] previousBytes = read.read(previousLife, 1 << 20);
+            cycleBodies.put(previousLife, previousBytes);
+            var prior = ContinuityJson.parseObject(previousBytes, 1 << 20);
+            assertEquals(firstCycle, ExactRef.fromJson(prior.get("previous")));
+            var priorReceipt = ExactRef.fromJson(prior.get("receipt_ref"));
+            receipts.put(priorReceipt, controlArchive.loadReceipt(priorReceipt));
+            return OrdinaryCycleTransitions.semanticFromJson(record.get("semantic"));
         }
 
         private Optional<OrdinaryCycleTransitions.ImportedOpeningAdvance> project(ObservationIdentity frame) throws IOException {
