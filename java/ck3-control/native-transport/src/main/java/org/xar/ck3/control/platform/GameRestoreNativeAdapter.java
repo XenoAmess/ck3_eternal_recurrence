@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.xar.ck3.control.continuity.ContinuityJson;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 import org.xar.ck3.control.continuity.writer.WriterContracts;
 import org.xar.ck3.control.application.action.ActionPorts;
@@ -22,13 +23,23 @@ import org.xar.ck3.control.application.action.NativeActionPort;
 import org.xar.ck3.control.application.action.NativeObservationPort;
 import org.xar.ck3.control.application.action.NativeRequestChronology;
 import org.xar.ck3.control.application.action.RawJson;
+import org.xar.ck3.control.application.checkpoint.CheckpointPair;
+import org.xar.ck3.control.application.checkpoint.CheckpointPairCodec;
 import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService;
 import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.IndependentReadPair;
 import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.NativeCandidate;
 import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.ReadWindow;
 import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.ReplacementAck;
+import org.xar.ck3.control.application.checkpoint.SavedAttachmentAuthority;
+import org.xar.ck3.control.application.checkpoint.SavedAttachmentSourceStore;
+import org.xar.ck3.control.application.checkpoint.SavedAttachmentSourceStore.ImportedRecoveryBasis;
+import org.xar.ck3.control.application.driver.DriverJson;
+import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
 import org.xar.ck3.control.build.ControlBuild;
 import org.xar.ck3.control.contracts.ExactRef;
+import org.xar.ck3.control.contracts.FullJsonTree;
+import org.xar.ck3.control.contracts.GameGeneration;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.g2.common.G2Source;
 import org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort;
@@ -195,11 +206,144 @@ public final class GameRestoreNativeAdapter implements RestoreCheckpointService.
         if(!head.equals(same.head().digest()))throw new IOException("historical READ verification changed the canonical head");
         authority.require(same);store.requireSession(same);
     }
+    /** Historical packet data tied to the one actual attachment edge, retaining its original connection. */
+    public record CommittedImportedReads(WriterContracts.HistoricalTransition attachment,ImportedRecoveryBasis basis,
+            NativeObservationPort.ObservedFrame firstOriginal,NativeObservationPort.ObservedFrame secondOriginal) { }
+
+    /** Reads the immediate committed imported attachment from this writer and the same now reattached successor. */
+    public CommittedImportedReads readCommittedImportedOriginals(ContinuityStorePort.Session same,
+            WriterContracts.Pin actualAttachment,Instant readDeadline)throws IOException {
+        authority.require(same);store.requireSession(same);
+        var loaded=loadedReplacement.orElseThrow(()->new IOException("Committed imported READ recovery requires its actual attached successor owner"));
+        loaded.requireMembership(readDeadline);
+        var committed=readCommittedAttachment(same,actualAttachment);
+        var basis=committed.basis();var ack=loaded.cachedAck();
+        var transfer=ack.importedSaveTransfer().orElseThrow(()->new IOException("Committed imported recovery requires the original transferred LOAD"));
+        if(!committed.pair().equals(loaded.pair())||!lineageId.equals(committed.pair().lineageId())
+                ||!source.machineId().equals(basis.successor().machineId())||!basis.departed().equals(loaded.previousOwner())
+                ||!basis.requestId().equals(loaded.originalParentId())||!basis.lifecycleDeadline().equals(loaded.originalDeadline())
+                ||!basis.lifecycleControl().reference().equals(loaded.parentControl())||!basis.transferProof().reference().equals(transfer.proof())
+                ||!basis.stagedLoad().equals(transfer.staged().reference())||!committed.pair().save().equals(transfer.original()))
+            throw new IOException("Committed imported READ recovery crossed its original lifecycle, physical pair or stage");
+        loaded.requireCurrent(readDeadline);
+        var attached=loaded.attached();var current=attached.nativeTransport().diagnostics().session()
+                .orElseThrow(()->new IOException("Actual successor Native READ session is absent"));
+        try {
+            var result=readCommittedPair(same,archive.withSession(same),committed,current);
+            loaded.requireMembership(readDeadline);attached.verify();
+            var checked=attached.nativeTransport().diagnostics();
+            if(checked.session().filter(current::equals).isEmpty()||checked.terminalFailure().isPresent())
+                throw new IOException("Actual successor Native session changed during committed history read");
+            authority.require(same);store.requireSession(same);return result;
+        } catch(UncheckedIOException failure){throw failure.getCause();}
+    }
+
+    record CommittedAttachment(WriterContracts.HistoricalTransition edge,ImportedRecoveryBasis basis,CheckpointPair pair,ObjectNode opening) { }
+
+    static CommittedAttachment readCommittedAttachment(ContinuityStorePort.Session same,WriterContracts.Pin event)throws IOException {
+        var head=same.head();var edge=same.readHistoricalTransition(event);
+        if(!SavedAttachmentAuthority.KIND.equals(edge.kind())||head.snapshotNeedsRecovery()||!head.indexRepairs().isEmpty()
+                ||edge.sequence()!=head.state().sequence()||!ContinuityJson.digest(edge.after().toJson()).equals(head.digest()))
+            throw new IOException("Immediate clean committed imported attachment required");
+        try {
+            var details=ContinuityJson.parseObject(edge.details(),ContinuityJson.DOCUMENT_MAX_BYTES);
+            var basis=SavedAttachmentSourceStore.importedRecoveryBasis(details)
+                    .orElseThrow(()->new IOException("Original committed imported READ basis was not recorded"));
+            var sources=SavedAttachmentSourceStore.Sources.decode(details.get(SavedAttachmentSourceStore.SOURCES_DETAIL));
+            var origin=sources.importedOrigin().orElseThrow(()->new IOException("Committed READ basis requires its actual imported source occurrence"));
+            var pair=CheckpointPairCodec.decode(ContinuityJson.canonical(details.get(SavedAttachmentAuthority.PAIR_DETAIL)));
+            var before=edge.before().toJson();var after=edge.after().toJson();
+            var opening=ContinuityJson.object(after.get("latest_binding"));
+            if(edge.before().sequence()!=basis.predecessorSequence()||!ContinuityJson.digest(before).equals(basis.predecessorDigest())
+                    ||!basis.requestId().equals(StrictJson.text(details.get("evidence_id")))||!basis.departed().equals(origin.owner())
+                    ||!basis.departed().game().equals(GameGeneration.fromJson(before.get("game_binding")))
+                    ||!basis.successor().game().equals(GameGeneration.fromJson(after.get("game_binding")))
+                    ||!basis.successor().equals(openingOwner(opening))||!basis.successor().machineId().equals(edge.after().machineId())
+                    ||!pair.save().equals(sources.physicalSaveWitness().orElse(null))
+                    ||!basis.secondNative().reference().equals(sources.restoredNative())
+                    ||!basis.secondNative().reference().equals(ExactRef.fromJson(opening.get("original_native_packet")))
+                    ||!pair.lineageId().equals(StrictJson.text(opening.get("lineage_id")))
+                    ||!pair.frame().frame().episodeRunId().equals(StrictJson.text(opening.get("episode_run_id"))))
+                throw new IOException("Committed imported READ basis differs from its canonical predecessor, successor, physical pair or opening");
+            return new CommittedAttachment(edge,basis,pair,opening);
+        }catch(IllegalArgumentException|java.time.DateTimeException invalid){throw new IOException("Invalid committed imported attachment DATA",invalid);}
+    }
+
+    private static SessionIdentity openingOwner(ObjectNode opening) {
+        return new SessionIdentity(StrictJson.text(opening.get("machine_id")),GameGeneration.fromJson(opening.get("game")),
+                StrictJson.text(opening.get("session_id")));
+    }
+
+    static CommittedImportedReads readCommittedPair(ContinuityStorePort.Session same,ActionPorts.OutcomeArchive original,
+            CommittedAttachment committed,NativeObservationPort.TransportSession attached)throws IOException {
+        var basis=committed.basis();var owner=basis.successor();
+        if(!owner.equals(new SessionIdentity(attached.machineId(),attached.game(),attached.sessionId())))
+            throw new IOException("Committed READ recovery requires the actual same successor owner");
+        for(var pin:basis.pins())same.verifyPin(pin);
+        var manifest=same.readPinned(basis.readManifest(),65536);
+        try {
+            var pair=PairData.decode(manifest);
+            if(!Arrays.equals(manifest,pair.encode())||!Arrays.equals(manifest,original.loadMaterial(basis.readManifest().reference()).bytes()))
+                throw new IOException("Committed original independent READ manifest differs from its exact archive Pin");
+            requireCommittedPairRoles(pair,basis);
+            var first=readPinnedOriginal(same,original,pair.first(),basis.firstReadAck(),basis.firstNative());
+            var second=readPinnedOriginal(same,original,pair.second(),basis.secondReadAck(),basis.secondNative());
+            NativeFreshSnapshotPort.verifyAfterOriginal(first.ack(),second.ack(),second.frame(),second.received());
+            RestoreCheckpointService.requireStableReadProgression(first.frame(),second.frame());
+            var historical=second.frame().session();
+            if(!owner.equals(new SessionIdentity(historical.machineId(),historical.game(),historical.sessionId()))
+                    ||attached.connectionGeneration().compareTo(historical.connectionGeneration())<=0)
+                throw new IOException("Historical READs must retain their original connection before this actual successor attachment");
+            requireCommittedOpening(committed,second.frame());
+            for(var pin:basis.pins())same.verifyPin(pin);
+            if(!same.head().digest().equals(ContinuityJson.digest(committed.edge().after().toJson())))
+                throw new IOException("Committed original READ verification changed the canonical head");
+            return new CommittedImportedReads(committed.edge(),basis,first.frame(),second.frame());
+        }catch(IllegalArgumentException|java.time.DateTimeException invalid){throw new IOException("Invalid committed original READ archive DATA",invalid);}
+    }
+
+    static void requireCommittedPairRoles(PairData pair,ImportedRecoveryBasis basis)throws IOException {
+        if(!pair.restoreRequestId().equals(basis.requestId())||!pair.lifecycleEvidence().equals(basis.lifecycleControl().reference())
+                ||!pair.loadedSave().equals(basis.stagedLoad())||!pair.importedSaveTransfer().equals(Optional.of(basis.transferProof().reference()))
+                ||!pair.first().acknowledgement().equals(basis.firstReadAck().reference())||!pair.first().nativePacket().equals(basis.firstNative().reference())
+                ||!pair.second().acknowledgement().equals(basis.secondReadAck().reference())||!pair.second().nativePacket().equals(basis.secondNative().reference()))
+            throw new IOException("Committed original independent READ manifest crossed its labeled Pins");
+    }
+
+    private static ArchivedRead readPinnedOriginal(ContinuityStorePort.Session same,ActionPorts.OutcomeArchive archive,
+            ReadOriginal original,WriterContracts.Pin ack,WriterContracts.Pin packet)throws IOException {
+        byte[] receipt=same.readPinned(ack,DriverJson.MAX_NATIVE_BYTES+4);
+        if(!Arrays.equals(receipt,archive.loadMaterial(original.acknowledgement()).bytes()))
+            throw new IOException("Original committed restore ACK differs from its exact archive Pin");
+        byte[] bytes=same.readPinned(packet,DriverJson.MAX_NATIVE_BYTES+4);
+        if(!Arrays.equals(bytes,archive.loadNativeFrame(original.nativePacket())))
+            throw new IOException("Original committed restore snapshot differs from its exact archive Pin");
+        return readOriginal(archive,original,bytes);
+    }
+
+    private static void requireCommittedOpening(CommittedAttachment committed,NativeObservationPort.ObservedFrame second)throws IOException {
+        var opening=committed.opening();var physical=committed.pair().frame().frame().identity();
+        var state=FullJsonTree.parse(second.state().bytes(),DriverJson.MAX_NATIVE_BYTES);var actor=state.get("played_character");
+        if(!second.snapshotId().equals(StrictJson.text(opening.get("snapshot_id")))
+                ||!second.nativeRevision().toString().equals(StrictJson.text(opening.get("native_revision")))
+                ||!physical.player().equals(NativeCharacterId.fromJson(opening.get("actor_character_id")).asBigInteger())
+                ||physical.dateRaw().longValueExact()!=StrictJson.integer(opening.get("date_raw"),0,StrictJson.MAX_SAFE_INTEGER)
+                ||physical.dateRaw().longValueExact()!=StrictJson.integer(state.get("date_raw"),0,StrictJson.MAX_SAFE_INTEGER)
+                ||!state.path("map_ready").isBoolean()||!state.path("map_ready").booleanValue()
+                ||!state.path("paused").isBoolean()||!state.path("paused").booleanValue()
+                ||actor==null||!actor.path("alive").isBoolean()||!actor.path("alive").booleanValue()
+                ||!physical.player().equals(NativeCharacterId.fromJson(actor.get("character_id")).asBigInteger()))
+            throw new IOException("Historical second READ differs from the committed paused opening and original SAVE actor/date");
+    }
+
     private static ArchivedRead readOriginal(ActionPorts.OutcomeArchive original,ReadOriginal data)throws IOException {
+        return readOriginal(original,data,null);
+    }
+    private static ArchivedRead readOriginal(ActionPorts.OutcomeArchive original,ReadOriginal data,byte[] pinnedPacket)throws IOException {
         var outcome=original.load(data.acknowledgement());
         if(!(outcome instanceof NativeActionPort.AckReceived ack))throw new IOException("original restore READ ACK is unavailable");
         var custody=ack.custody().orElseThrow(()->new IOException("original restore READ chronology unavailable"));
-        byte[] packet=original.loadNativeFrame(data.nativePacket());var decoded=NativeWire.decode(packet);
+        byte[] packet=pinnedPacket!=null?pinnedPacket:original.loadNativeFrame(data.nativePacket());var decoded=NativeWire.decode(packet);
         if(!(decoded instanceof NativeWire.Snapshot snapshot))throw new IOException("original restore READ snapshot unavailable");
         var event=new NativeRequestChronology.Event(new BigInteger(data.receivedOrder()),Instant.parse(data.receivedAtUtc()));
         var frame=new NativeObservationPort.ObservedFrame(custody.session(),snapshot.snapshotId(),snapshot.revision(),new RawJson(snapshot.state().value()),packet,event.observedAt());

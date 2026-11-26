@@ -26,33 +26,7 @@ public interface NativeFreshSnapshotPort {
         private final NativeRequestChronology.Event snapshotReceived;
         Received(NativeActionPort.AckReceived actualAck,ObservedFrame actualFrame,NativeRequestChronology.Event actualReceived)throws IOException {
             acknowledgement=Objects.requireNonNull(actualAck);originalFrame=Objects.requireNonNull(actualFrame);snapshotReceived=Objects.requireNonNull(actualReceived);
-            var custody=actualAck.custody().orElseThrow(()->new IOException("actual fresh-read request chronology unavailable"));custody.verify(actualAck);
-            if(!actualAck.nativeOk()||!custody.session().equals(actualFrame.session())
-                    ||snapshotReceived.order().compareTo(custody.writeCompleted().order())<=0
-                    ||snapshotReceived.order().compareTo(custody.responseReceived().order())>=0
-                    ||snapshotReceived.observedAt().isBefore(custody.writeCompleted().observedAt())
-                    ||snapshotReceived.observedAt().isAfter(custody.responseReceived().observedAt())
-                    ||!snapshotReceived.observedAt().equals(actualFrame.observedAt()))throw new IOException("fresh state was not actually received between this read write and ACK");
-            var outbound=actualAck.outbound().orElseThrow(()->new IOException("fresh-read original outbound unavailable"));
-            ObjectNode request=payload(outbound.originalPacket());keys(request,Set.of("type","protocol_version","request_id","step","expected_revision"));
-            if(!"execute_step".equals(NativeWire.text(request.get("type")))||!BigInteger.ONE.equals(NativeWire.integer(request.get("protocol_version"),BigInteger.ONE,BigInteger.ONE))
-                    ||!STEP.equals(NativeWire.text(request.get("step")))||!actualAck.requestId().equals(NativeWire.text(request.get("request_id")))
-                    ||!BigInteger.ZERO.equals(NativeWire.integer(request.get("expected_revision"),BigInteger.ZERO,BigInteger.ZERO)))throw new IOException("fresh-read original request differs from its sole fixed contract");
-            ObjectNode rawSnapshot=payload(actualFrame.originalPacket());keys(rawSnapshot,Set.of("type","protocol_version","snapshot_id","revision","state","read_request_id"));
-            var decoded=NativeWire.decode(actualFrame.originalPacket());
-            if(!(decoded instanceof NativeWire.Snapshot frame)||!frame.snapshotId().equals(actualFrame.snapshotId())||!frame.revision().equals(actualFrame.nativeRevision())
-                    ||!Arrays.equals(frame.state().value(),actualFrame.state().bytes())
-                    ||!actualAck.requestId().equals(NativeWire.text(payload(actualFrame.originalPacket()).get("read_request_id"))))throw new IOException("fresh state packet is not this actual request's independently received original");
-            keys(payload(actualAck.originalPacket()),Set.of("type","protocol_version","request_id","ok","result"));
-            var decodedAck=NativeWire.decode(actualAck.originalPacket());
-            if(!(decodedAck instanceof NativeWire.CommandResult ack)||!ack.nativeOk()||!ack.requestId().equals(actualAck.requestId())
-                    ||!Arrays.equals(ack.payload().value(),actualAck.originalFrame().bytes())
-                    ||ack.result().token().isEmpty()||actualAck.originalResultToken().isEmpty()
-                    ||!Arrays.equals(ack.result().token().orElseThrow().value(),actualAck.originalResultToken().orElseThrow().bytes()))throw new IOException("fresh ACK differs from its actual framed original");
-            ObjectNode result=NativeWire.object(NativeWire.parse(ack.result().token().orElseThrow().value()));keys(result,Set.of("schema","request_id","snapshot_id","revision"));
-            if(!RESULT_SCHEMA.equals(NativeWire.text(result.get("schema")))||!actualAck.requestId().equals(NativeWire.text(result.get("request_id")))
-                    ||!actualFrame.snapshotId().equals(NativeWire.text(result.get("snapshot_id")))
-                    ||!actualFrame.nativeRevision().equals(NativeWire.integer(result.get("revision"),BigInteger.ONE,NativeWire.UINT64_MAX)))throw new IOException("fresh ACK does not bind the independent original state packet");
+            verifyOriginal(actualAck,actualFrame,actualReceived);
         }
         @Override public NativeActionPort.AckReceived dispatch(){return acknowledgement;}
         public NativeActionPort.AckReceived acknowledgement(){return acknowledgement;}
@@ -66,9 +40,36 @@ public interface NativeFreshSnapshotPort {
         public Unavailable(NativeActionPort.DispatchOutcome dispatch,String reason){this(dispatch,reason,Optional.empty(),Optional.empty());}
     }
     /** Pure archived original DATA validation. This returns no Received or live/source authority. */
-    static void verifyOriginal(NativeActionPort.AckReceived originalAck,ObservedFrame originalFrame,
-            NativeRequestChronology.Event originalReceived)throws IOException {
-        new Received(originalAck,originalFrame,originalReceived);
+    static void verifyOriginal(NativeActionPort.AckReceived actualAck,ObservedFrame actualFrame,
+            NativeRequestChronology.Event snapshotReceived)throws IOException {
+        Objects.requireNonNull(actualAck);Objects.requireNonNull(actualFrame);Objects.requireNonNull(snapshotReceived);
+        var custody=actualAck.custody().orElseThrow(()->new IOException("actual fresh-read request chronology unavailable"));custody.verify(actualAck);
+        if(!actualAck.nativeOk()||!custody.session().equals(actualFrame.session())
+                ||snapshotReceived.order().compareTo(custody.writeCompleted().order())<=0
+                ||snapshotReceived.order().compareTo(custody.responseReceived().order())>=0
+                ||snapshotReceived.observedAt().isBefore(custody.writeCompleted().observedAt())
+                ||snapshotReceived.observedAt().isAfter(custody.responseReceived().observedAt())
+                ||!snapshotReceived.observedAt().equals(actualFrame.observedAt()))throw new IOException("fresh state was not actually received between this read write and ACK");
+        var outbound=actualAck.outbound().orElseThrow(()->new IOException("fresh-read original outbound unavailable"));
+        ObjectNode request=payload(outbound.originalPacket());keys(request,Set.of("type","protocol_version","request_id","step","expected_revision"));
+        if(!"execute_step".equals(NativeWire.text(request.get("type")))||!BigInteger.ONE.equals(NativeWire.integer(request.get("protocol_version"),BigInteger.ONE,BigInteger.ONE))
+                ||!STEP.equals(NativeWire.text(request.get("step")))||!actualAck.requestId().equals(NativeWire.text(request.get("request_id")))
+                ||!BigInteger.ZERO.equals(NativeWire.integer(request.get("expected_revision"),BigInteger.ZERO,BigInteger.ZERO)))throw new IOException("fresh-read original request differs from its sole fixed contract");
+        ObjectNode rawSnapshot=payload(actualFrame.originalPacket());keys(rawSnapshot,Set.of("type","protocol_version","snapshot_id","revision","state","read_request_id"));
+        var decoded=NativeWire.decode(actualFrame.originalPacket());
+        if(!(decoded instanceof NativeWire.Snapshot frame)||!frame.snapshotId().equals(actualFrame.snapshotId())||!frame.revision().equals(actualFrame.nativeRevision())
+                ||!Arrays.equals(frame.state().value(),actualFrame.state().bytes())
+                ||!actualAck.requestId().equals(NativeWire.text(payload(actualFrame.originalPacket()).get("read_request_id"))))throw new IOException("fresh state packet is not this actual request's independently received original");
+        keys(payload(actualAck.originalPacket()),Set.of("type","protocol_version","request_id","ok","result"));
+        var decodedAck=NativeWire.decode(actualAck.originalPacket());
+        if(!(decodedAck instanceof NativeWire.CommandResult ack)||!ack.nativeOk()||!ack.requestId().equals(actualAck.requestId())
+                ||!Arrays.equals(ack.payload().value(),actualAck.originalFrame().bytes())
+                ||ack.result().token().isEmpty()||actualAck.originalResultToken().isEmpty()
+                ||!Arrays.equals(ack.result().token().orElseThrow().value(),actualAck.originalResultToken().orElseThrow().bytes()))throw new IOException("fresh ACK differs from its actual framed original");
+        ObjectNode result=NativeWire.object(NativeWire.parse(ack.result().token().orElseThrow().value()));keys(result,Set.of("schema","request_id","snapshot_id","revision"));
+        if(!RESULT_SCHEMA.equals(NativeWire.text(result.get("schema")))||!actualAck.requestId().equals(NativeWire.text(result.get("request_id")))
+                ||!actualFrame.snapshotId().equals(NativeWire.text(result.get("snapshot_id")))
+                ||!actualFrame.nativeRevision().equals(NativeWire.integer(result.get("revision"),BigInteger.ONE,NativeWire.UINT64_MAX)))throw new IOException("fresh ACK does not bind the independent original state packet");
     }
     /**
      * Verifies an independent full-state READ after an original command acknowledgement.

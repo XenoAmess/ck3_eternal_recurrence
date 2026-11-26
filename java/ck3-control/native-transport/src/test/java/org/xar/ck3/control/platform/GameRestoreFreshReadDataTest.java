@@ -68,4 +68,32 @@ final class GameRestoreFreshReadDataTest {
         assertThrows(IllegalArgumentException.class,()->new GameRestoreNativeAdapter.PairData(original.restoreRequestId(),original.lifecycleEvidence(),original.loadedSave(),original.second(),original.first()));
         assertThrows(IllegalArgumentException.class,()->new RestoreCheckpointService.IndependentReadPair(ref("manifest"),ref("same-ack"),ref("native-one"),ref("same-ack"),ref("native-two")));
     }
+    @Test void committedImportedBasisBindsEveryManifestRoleBeforeReplay()throws Exception {
+        var old=data();var imported=new GameRestoreNativeAdapter.PairData(old.restoreRequestId(),old.lifecycleEvidence(),ref("staged-save"),
+                old.first(),old.second(),java.util.Optional.of(ref("transfer-proof")));
+        var before=owner(42,"departed");var after=owner(43,"successor");
+        var basis=new org.xar.ck3.control.application.checkpoint.SavedAttachmentSourceStore.ImportedRecoveryBasis(imported.restoreRequestId(),
+                java.time.Instant.parse("2026-10-24T03:00:00Z"),9,"b".repeat(64),before,after,imported.loadedSave(),
+                pin(imported.lifecycleEvidence()),pin(imported.importedSaveTransfer().orElseThrow()),pin(ref("pair-manifest")),
+                pin(imported.first().acknowledgement()),pin(imported.first().nativePacket()),
+                pin(imported.second().acknowledgement()),pin(imported.second().nativePacket()));
+        GameRestoreNativeAdapter.requireCommittedPairRoles(imported,basis);
+        assertThrows(java.io.IOException.class,()->GameRestoreNativeAdapter.requireCommittedPairRoles(old,basis));
+        var crossed=new GameRestoreNativeAdapter.ReadOriginal(imported.first().acknowledgement(),imported.second().nativePacket(),
+                imported.first().receivedOrder(),imported.first().receivedAtUtc());
+        var other=new GameRestoreNativeAdapter.ReadOriginal(imported.second().acknowledgement(),imported.first().nativePacket(),
+                imported.second().receivedOrder(),imported.second().receivedAtUtc());
+        var swapped=new GameRestoreNativeAdapter.PairData(imported.restoreRequestId(),imported.lifecycleEvidence(),imported.loadedSave(),
+                crossed,other,imported.importedSaveTransfer());
+        assertThrows(java.io.IOException.class,()->GameRestoreNativeAdapter.requireCommittedPairRoles(swapped,basis));
+    }
+    private static org.xar.ck3.control.application.session.SessionPorts.SessionIdentity owner(int pid,String session){
+        return new org.xar.ck3.control.application.session.SessionPorts.SessionIdentity("machine",new org.xar.ck3.control.contracts.GameGeneration(pid,
+                new org.xar.ck3.control.contracts.PythonOnlyUInt64(java.math.BigInteger.valueOf(pid))),session);
+    }
+    private static org.xar.ck3.control.continuity.writer.WriterContracts.Pin pin(ExactRef ref){
+        return new org.xar.ck3.control.continuity.writer.WriterContracts.Pin(ref,
+                new org.xar.ck3.control.continuity.writer.WriterContracts.FileIdentity("1","9007199254740993","3",java.time.Instant.EPOCH.toString(),ref.bytes()));
+    }
+
 }

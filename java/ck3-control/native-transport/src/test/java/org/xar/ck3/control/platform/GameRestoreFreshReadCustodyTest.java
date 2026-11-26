@@ -85,6 +85,8 @@ final class GameRestoreFreshReadCustodyTest {
             assertSame(first,state.read(port,deadline(),unavailable->{throw new AssertionError();}));assertEquals(1,packets.writes);
             state.archived(first);var second=state.read(port,deadline(),unavailable->{throw new AssertionError();});
             NativeFreshSnapshotPort.verifyAfter(first.acknowledgement(),second);assertNotEquals(first.acknowledgement().requestId(),second.acknowledgement().requestId());
+            NativeFreshSnapshotPort.verifyOriginal(first.acknowledgement(),first.originalFrame(),first.snapshotReceived());
+            assertThrows(IOException.class,()->NativeFreshSnapshotPort.verifyOriginal(second.acknowledgement(),first.originalFrame(),first.snapshotReceived()));
             assertEquals(BigInteger.valueOf(7),first.originalFrame().nativeRevision());assertEquals(BigInteger.valueOf(8),second.originalFrame().nativeRevision());
             RestoreCheckpointService.requireStableReadProgression(first.originalFrame(),second.originalFrame());
             assertEquals(2,packets.writes);assertThrows(IOException.class,()->state.archived(first));
