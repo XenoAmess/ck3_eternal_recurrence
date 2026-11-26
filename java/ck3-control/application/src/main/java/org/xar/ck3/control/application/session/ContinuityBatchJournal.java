@@ -777,8 +777,11 @@ public final class ContinuityBatchJournal implements BatchJournal {
             GuardEvidence guard,DriverSnapshotFacts.Known known,ExactRef beforeRef,
             org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals,
             java.util.List<WriterContracts.Pin> pins,boolean retainPins)throws IOException {
-        var loader=new org.xar.ck3.control.application.effects.DriverFrameEvidenceLoader(new DriverObservationAssembler());
         RootGuardEvidence.requireHistory(guard,originals,same);
+        var loader = originals.scopedDriverDecoder();
+        if (loader == null) {
+            loader = new org.xar.ck3.control.application.effects.DriverFrameEvidenceLoader(new DriverObservationAssembler());
+        }
         var observed=RootGuardEvidence.loadFrame(guard,originals,loader);
         var guardFull=loader.loadFull(RootGuardEvidence.frameBasis(guard,originals),originals);
         var semantic=guardFull.facts().originalSemanticFields();
