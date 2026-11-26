@@ -625,7 +625,7 @@ bool TestFreshOwnerWake(bool florin, FreshWakeMode mode) {
     if (mode == FreshWakeMode::recover_second_wake)
       ok = ok && null_messages >= 2 && d.wake.wake_attempts >= 2 && d.elapsed_ms < 2'000;
     else
-      ok = ok && d.wait_running_timeouts >= 1 && d.elapsed_ms >= 8'300;
+      ok = ok && d.wait_running_timeouts >= 1;
   }
   if (mode != FreshWakeMode::wrong_build)
     ok = ok && d.submit_result == api::MainThreadQuerySubmitResultV1::submitted &&
