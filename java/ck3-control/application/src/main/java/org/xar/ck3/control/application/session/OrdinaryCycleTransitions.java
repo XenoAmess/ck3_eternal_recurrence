@@ -483,8 +483,8 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         settledObservation = new SettledObservation(owner, ContinuityJson.digest(branch.toJson()), checked.frame());
     }
 
-    /** An imported save's first completed Life already reopened its interrupted batch in the exact SETTLE. */
-    void requireFirstImportedSettlementReady(ContinuityStorePort.Session same,
+    /** An imported save's completed Life already reopened its interrupted batch in the exact SETTLE. */
+    void requireImportedLifeSettlementReady(ContinuityStorePort.Session same,
             ContinuityBatchJournal.SettledSameGameData data,SemanticEvidence fresh,ActionReceipt original)throws IOException {
         StrictJson.require(active.get()==same,"imported Saved adoption requires the original held writer scope");
         var head=same.head();var owner=data.controller().owner();var branch=state(head.state(),owner);
