@@ -15,6 +15,7 @@ import sys
 from product import CB_CONTRACT, EXPECTED_GAME_VERSION, LANGUAGES, ROOT, RUNTIME_FILES, SOURCE, SUPPORTED_VERSION, UPSTREAM_ITEM_ID, VERSION
 
 sys.path.insert(0, str(ROOT / "tools"))
+from ck3_florin_cb_compatibility import legacy_ticking_warscore_errors
 from extract_auto_upgrade_buildings import Block, Entry, ExtractionError, parse_clausewitz
 from translate_localization_minimax import parse_ck3_localization
 
@@ -135,6 +136,7 @@ def validate(game: Path | None = DEFAULT_GAME, *, release_localization: bool = F
             if [entry.key for entry in top.entries] != [f"{tier}_de_jure_greatwar"]:
                 raise ValueError(f"public CB ID changed: {tier}")
             cb = block(top, f"{tier}_de_jure_greatwar")
+            errors.extend(f"{tier}.{error}" for error in legacy_ticking_warscore_errors(cb))
             if len({entry.key for entry in cb.entries}) != len(cb.entries):
                 raise ValueError(f"duplicate CB fields: {tier}")
             scalar(cb, "ai", "no")

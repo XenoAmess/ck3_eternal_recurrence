@@ -1,5 +1,10 @@
 ﻿# Maintained CK3 1.20 branch; public CB key retained for saves.
 duchy_de_jure_greatwar = {
+	# Explicit legacy timing for Florin's zero defaults.
+	attacker_ticking_warscore = 0.055
+	defender_ticking_warscore = 0.055
+	attacker_ticking_warscore_delay = { days = 0 }
+	defender_ticking_warscore_delay = { days = 365 }
 	icon = invasion
 	group = invasion
 	combine_into_one = yes

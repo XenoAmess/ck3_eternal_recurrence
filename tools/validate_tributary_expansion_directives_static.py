@@ -15,6 +15,8 @@ from PIL import Image
 import build_tributary_expansion_directives_release as builder
 import compose_tributary_expansion_directives_key_art as art
 import compose_tributary_expansion_directives_workshop_media as workshop_media
+from ck3_florin_cb_compatibility import legacy_ticking_warscore_errors
+from extract_auto_upgrade_buildings import Block, ExtractionError, parse_clausewitz
 from translate_localization_minimax import protected_tokens
 from fixture_engine_prepare import balanced_excerpt
 
@@ -227,6 +229,15 @@ def validate(game_root: Path | None = None) -> list[str]:
             errors.append(f"subsidy reference vector failed: {income} -> {expected}")
 
     cb = text(SCRIPT_PATHS[0])
+    try:
+        cb_entries = parse_clausewitz(cb).entries
+    except ExtractionError as error:
+        errors.append(f"invalid directed CB source: {error}")
+    else:
+        if len(cb_entries) != 1 or not isinstance(cb_entries[0].value, Block):
+            errors.append("exactly one directed CB definition required")
+        else:
+            errors.extend(legacy_ticking_warscore_errors(cb_entries[0].value))
     for fragment in (
         "group = conquest",
         "has_character_flag = ted_directed_expansion_authorized",

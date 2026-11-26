@@ -96,6 +96,19 @@ class DeJureConquestStaticContracts(unittest.TestCase):
                 cb.write_bytes(original)
         self.assertEqual(self.command("validate_static.py", "--no-installed-game", "--release-localization").returncode, 0)
 
+    def test_missing_ticking_rate_fails_for_each_de_jure_tier(self) -> None:
+        for tier in ("duchy", "kingdom", "empire"):
+            with self.subTest(tier=tier):
+                cb = self.product / f"common/casus_belli_types/{tier}_de_jure_greatwar.txt"
+                original = cb.read_bytes()
+                rate = b"\tattacker_ticking_warscore = 0.055\n"
+                self.assertEqual(original.count(rate), 1)
+                cb.write_bytes(original.replace(rate, b""))
+                result = self.command("validate_static.py", "--no-installed-game")
+                self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+                self.assertIn(f"{tier}.attacker_ticking_warscore must explicitly preserve 0.055 per day", result.stdout)
+                cb.write_bytes(original)
+
     def test_upstream_and_foreign_Workshop_ids_reject_before_git_or_output(self) -> None:
         for item in ("3600021457", "3809999999", "0", "true"):
             with self.subTest(item=item):

@@ -1,4 +1,9 @@
 ﻿ted_directed_county_expansion_cb = {
+	# Explicit legacy timing for Florin's zero defaults.
+	attacker_ticking_warscore = 0.055
+	defender_ticking_warscore = 0.055
+	attacker_ticking_warscore_delay = { days = 0 }
+	defender_ticking_warscore_delay = { days = 365 }
 	icon = county_conquest_cb
 	group = conquest
 

@@ -144,5 +144,24 @@ class TributaryVanillaSourceTests(unittest.TestCase):
             self.assertTrue(all("unavailable" in error for error in errors))
 
 
+class TributaryWarTimingTests(unittest.TestCase):
+    def test_directed_war_timing_rejects_mutations(self) -> None:
+        relative = gate.SCRIPT_PATHS[0]
+        read = gate.text
+        original = read(relative)
+        rate = "defender_ticking_warscore = 0.055"
+        delay = "defender_ticking_warscore_delay = { days = 365 }"
+        for field, before, after in (
+            ("defender_ticking_warscore", rate, "defender_ticking_warscore = 0"),
+            ("defender_ticking_warscore", rate, rate + "\n\t" + rate),
+            ("defender_ticking_warscore_delay", delay, "defender_ticking_warscore_delay = { months = 12 }"),
+        ):
+            with self.subTest(after=after):
+                self.assertEqual(original.count(before), 1)
+                changed = original.replace(before, after, 1)
+                with patch.object(gate, "text", side_effect=lambda path: changed if path == relative else read(path)):
+                    self.assertTrue(any(error.startswith(f"{field} must explicitly preserve") for error in gate.validate()))
+
+
 if __name__ == "__main__":
     unittest.main()
