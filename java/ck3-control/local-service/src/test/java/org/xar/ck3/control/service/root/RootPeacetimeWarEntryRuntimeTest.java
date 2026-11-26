@@ -39,6 +39,7 @@ final class RootPeacetimeWarEntryRuntimeTest {
     private static final ExactRef SOURCE = new ExactRef("D:/fixture/peacetime-software-producer.java", 1, "a".repeat(64));
     private static final GameGeneration GAME = new GameGeneration(123,
             new PythonOnlyUInt64(new BigInteger("134000000000000001")));
+    private static final String ADMITTED_DECLARATION_CASE = "faction-False-False";
 
     @Test void qualifiedArchivedWarCooldownClipsNewLifeWithoutLosingEarlierLimits() {
         var input = cooldownFixture();
@@ -107,31 +108,31 @@ final class RootPeacetimeWarEntryRuntimeTest {
     }
 
     @Test void originalProducerDeclarationIdentityReachesRuntimeWithoutTupleProjectionLoss() throws IOException {
-        var row = row("general-actual-force-declare"); var selected = selected(row);
+        var row = row(ADMITTED_DECLARATION_CASE); var selected = selected(row);
         List<DeclarationContract.Choice> original = DeclarationContract.normalize(row.get("snapshot").get("declarable_wars"));
         assertEquals(1, original.size()); var actual = original.getFirst();
         var operation = new OperationKey(StrictJson.text(row.get("expected").get("selected_step")));
         RootPeacetimeWarEntryRuntime.requireSelectedDeclaration(selected, actual, operation);
         assertEquals(actual.claimantCharacterId(), BigInteger.valueOf(-1));
         assertEquals(List.of(BigInteger.valueOf(91)), actual.targetTitleIds());
-        assertEquals(selected, object(StrictJson.parse(OpportunityJson.encode(selected))));
+        assertEquals(selected, DriverJson.object(OpportunityJson.encode(selected), DriverJson.MAX_NATIVE_BYTES));
         for (String field : List.of("declaration_id", "target_character_id", "casus_belli_index", "casus_belli_key",
                 "configuration_index", "claimant_character_id", "target_title_ids")) {
             ObjectNode changed = (ObjectNode) OpportunityJson.toNode(selected);
             ((ObjectNode) changed.get("selected_declaration")).remove(field);
-            Obj missingField = object(changed);
+            Obj missingField = assertInstanceOf(Obj.class, DriverJson.fromNode(changed));
             assertThrows(IllegalArgumentException.class, () -> RootPeacetimeWarEntryRuntime.requireSelectedDeclaration(
                     missingField, actual, operation), field);
             changed = (ObjectNode) OpportunityJson.toNode(selected);
             ((ObjectNode) changed.get("selected_declaration")).put(field, true);
-            Obj boolField = object(changed);
+            Obj boolField = assertInstanceOf(Obj.class, DriverJson.fromNode(changed));
             assertThrows(IllegalArgumentException.class, () -> RootPeacetimeWarEntryRuntime.requireSelectedDeclaration(
                     boolField, actual, operation), field + " bool");
         }
     }
 
     @Test void chosenStrongCommandRetainsTheOriginalPlanAndCompleteRequestIdentity() throws IOException {
-        var row = row("general-actual-force-declare"); var plan = selected(row); var request = request(row);
+        var row = row(ADMITTED_DECLARATION_CASE); var plan = selected(row); var request = request(row);
         var calls = new AtomicInteger();
         var operation = new OperationKey(((Text) plan.get("selected_step")).value());
         ActionCommand fixtureCommand = command(request, operation);
@@ -150,7 +151,7 @@ final class RootPeacetimeWarEntryRuntimeTest {
     }
 
     @Test void absentStrongProducerStopsBeforeAnyReadyOrReplacementCanBeClaimed() throws IOException {
-        var row = row("general-actual-force-declare"); var request = request(row); var calls = new AtomicInteger();
+        var row = row(ADMITTED_DECLARATION_CASE); var request = request(row); var calls = new AtomicInteger();
         var decision = RootPeacetimeWarEntryRuntime.finishSelected(request, selected(row), (actual, step, plan) -> {
             calls.incrementAndGet(); return new PeacetimeWarEntryPlanner.Unavailable("actual same-writer Army declaration preparation missing");
         });
@@ -182,7 +183,13 @@ final class RootPeacetimeWarEntryRuntimeTest {
         assertSame(plan, read.detail());
         assertTrue(read.arguments().members().isEmpty());
         assertThrows(IllegalArgumentException.class, () -> RootPeacetimeWarEntryRuntime.readSelection(new Obj(Map.of())));
-        Obj world = selected(row("general-actual-force-declare"));
+        Obj missingAlert = selected(row("general-actual-force-declare"));
+        var alertRead = RootPeacetimeWarEntryRuntime.readSelection(missingAlert);
+        assertEquals(new OperationKey("query-player-faction-alerts-v1"), alertRead.operation());
+        assertEquals(OrdinaryPolicy.Purpose.READ_ONLY, alertRead.purpose());
+        assertSame(missingAlert, alertRead.detail());
+        Obj world = selected(row(ADMITTED_DECLARATION_CASE));
+        assertEquals(new Text("declare-war-909-17-0"), world.get("selected_step"));
         assertThrows(IllegalArgumentException.class, () -> RootPeacetimeWarEntryRuntime.readSelection(world));
     }
 
@@ -195,7 +202,7 @@ final class RootPeacetimeWarEntryRuntimeTest {
         assertEquals(original.nativeResultFrame(), available.nativeResultFrame());
         assertEquals(new BigInteger("18446744073709551615"), available.scope().currentBinding().connectionGeneration());
         assertEquals(encoded, ArmyDeclarationCollectionCodec.encode(available));
-        var selected = selected(row("general-actual-force-declare"));
+        var selected = selected(row(ADMITTED_DECLARATION_CASE));
         var actual = available.declarations().choices().getFirst();
         RootPeacetimeWarEntryRuntime.requireSelectedDeclaration(selected, actual,
                 new OperationKey(actual.step().wire()));
@@ -234,7 +241,7 @@ final class RootPeacetimeWarEntryRuntimeTest {
     }
 
     private static ArmyDeclarationCollection.Available lateAvailable() throws IOException {
-        JsonNode retained = row("general-actual-force-declare");
+        JsonNode retained = row(ADMITTED_DECLARATION_CASE);
         var choices = DeclarationContract.normalize(retained.get("snapshot").get("declarable_wars"));
         var frame = (ObjectNode) StrictJson.parse("{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"original-late-fixture\",\"ok\":true}".getBytes(java.nio.charset.StandardCharsets.UTF_8));
         var result = frame.putObject("result").put("step", "query-declarable-wars").put("accepted", true)
@@ -260,7 +267,10 @@ final class RootPeacetimeWarEntryRuntimeTest {
         return request(row, Set.of());
     }
     private static PlanningRequest request(JsonNode row, Set<String> capabilities) {
-        Obj snapshot = object(row.get("snapshot")); JsonNode raw = row.get("snapshot");
+        ObjectNode raw = row.get("snapshot").deepCopy();
+        // The older peaceful selector cases predate the full Driver's explicit owned-army roster.
+        if (!raw.has("player_armies")) raw.putArray("player_armies");
+        Obj snapshot = object(raw);
         String episode = StrictJson.text(raw.get("episode_run_id"));
         var before = new ObservationIdentity("fixture-machine", GAME, new JointBudgetSelector.ProposalFrame(
                 new JointBudgetSelector.Frame(raw.get("played_character").get("character_id").bigIntegerValue(),
