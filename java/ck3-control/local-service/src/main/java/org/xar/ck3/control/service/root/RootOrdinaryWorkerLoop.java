@@ -529,8 +529,7 @@ public final class RootOrdinaryWorkerLoop {
         if(!child.command().operation().value().equals("resume-map") || !child.bodySha256().equals(binding.bodySha256())
                 || child.ack().isEmpty() || !child.ack().orElseThrow().nativeOk() || child.ack().orElseThrow().outbound().isEmpty()) return Optional.empty();
         return child.state() instanceof ActionState.Unknown
-                || child.state() instanceof ActionState.Settled settled && settled.settlement() instanceof ActionState.Applied
-                    && child.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED ? Optional.of(child) : Optional.empty();
+                || org.xar.ck3.control.application.advance.AdvancePrimitives.confirmedResume(child) ? Optional.of(child) : Optional.empty();
     }
 
     private static void logNegativeLifeRead(BatchReport report,RootLifecycleAuthority.NegativeFreshRead failure,int attempt) {
@@ -555,8 +554,7 @@ public final class RootOrdinaryWorkerLoop {
                 || child.ack().isEmpty() || !child.ack().orElseThrow().nativeOk()
                 || child.ack().orElseThrow().outbound().isEmpty()) return false;
         return child.state() instanceof ActionState.Unknown pending && knownNegativeFreshRead(pending.reason())
-                || child.state() instanceof ActionState.Settled settled && settled.settlement() instanceof ActionState.Applied
-                    && child.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED && knownNegativeFreshRead(unknown.reason());
+                || org.xar.ck3.control.application.advance.AdvancePrimitives.confirmedResume(child) && knownNegativeFreshRead(unknown.reason());
     }
 
     static boolean knownNegativeFreshRead(String reason) {

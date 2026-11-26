@@ -2915,11 +2915,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 String operation = child.command().operation().value();
                 boolean bareResume = operation.equals("resume-map")
                         && child.state() instanceof org.xar.ck3.control.application.action.ActionState.IntentDurable;
-                boolean appliedResume = operation.equals("resume-map")
-                        && child.state() instanceof org.xar.ck3.control.application.action.ActionState.Settled settled
-                        && settled.settlement() instanceof org.xar.ck3.control.application.action.ActionState.Applied
-                        && child.outcome() == org.xar.ck3.control.application.action.ActionReceipt.Outcome.APPLIED_CONFIRMED
-                        && child.ack().isPresent() && child.ack().orElseThrow().nativeOk();
+                boolean appliedResume = org.xar.ck3.control.application.advance.AdvancePrimitives.confirmedResume(child);
                 StrictJson.require(child.bodySha256().equals(binding.bodySha256()) && child.command().arguments().members().isEmpty()
                         && org.xar.ck3.control.application.action.ActionTransitions.composite(child.state()).isEmpty()
                         && (child.settled() || child.state() instanceof org.xar.ck3.control.application.action.ActionState.Unknown || bareResume)

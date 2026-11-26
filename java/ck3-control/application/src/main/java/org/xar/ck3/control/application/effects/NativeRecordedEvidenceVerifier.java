@@ -295,6 +295,11 @@ public final class NativeRecordedEvidenceVerifier implements ActionPorts.Recorde
                     original.reconciliationGuard().ifPresent(actual -> guard(session, actual, archive, actualLockedHead, proposed));
                     original.independentReads().forEach(read -> verifyRead(session, read, archive, actualLockedHead, proposed));
                 });
+            } else if (settlement instanceof ActionState.ResumeCoreApplied) {
+                StrictJson.require(proposed.state() instanceof ActionState.Settled
+                                && proposed.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED
+                                && proposed.applied().isEmpty() && !proposed.visibleGameplay() && !proposed.eligibleAdvance(),
+                        "RESUME Core confirms only its original native primitive");
             } else if (settlement instanceof ActionState.PauseConfirmed pause) {
                 StrictJson.require(proposed.state() instanceof ActionState.Settled,
                         "pause confirmation requires its original native primitive attempt");

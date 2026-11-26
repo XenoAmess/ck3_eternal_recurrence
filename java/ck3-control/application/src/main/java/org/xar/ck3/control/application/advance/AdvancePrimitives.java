@@ -269,6 +269,10 @@ public final class AdvancePrimitives implements ActionPorts.PreparationPort, Act
                 return new ActionPorts.ControlObserved(new ActionState.ControlApplied(read.receipt(), CLOCK_OBSERVER, values));
             });
         }
+        if (!reconciling && controlStep.equals("resume-map")) {
+            var core = observations.resumeCore(command, attempt, ack, window);
+            if (core.isPresent()) return new ActionPorts.ResumeCoreObserved(core.orElseThrow());
+        }
         AdvanceObservationPort.Frame current;
         if (reconciling) {
             try {
@@ -340,6 +344,15 @@ public final class AdvancePrimitives implements ActionPorts.PreparationPort, Act
         JsonNode node = StrictJson.parse(ack.originalResultToken().orElseThrow().bytes());
         require(node.isObject() && node.path("step").isTextual() && node.path("step").textValue().equals(step)
                 && node.path("accepted").isBoolean() && node.path("accepted").booleanValue(), "native original result step/acceptance differs"); return node;
+    }
+    /** Receipt role only. The installed verifier replays the selected original evidence. */
+    public static boolean confirmedResume(ActionReceipt receipt) {
+        return receipt.command().operation().value().equals("resume-map")
+                && receipt.state() instanceof ActionState.Settled settled
+                && (settled.settlement() instanceof ActionState.Applied
+                    || settled.settlement() instanceof ActionState.ResumeCoreApplied)
+                && receipt.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED
+                && receipt.ack().filter(NativeActionPort.AckReceived::nativeOk).isPresent();
     }
     public static Status acknowledgedSentinel(NativeActionPort.AckReceived ack, String step) {
         return SentinelObservation.decode(nativeResult(ack, step).get("tactical_daily_sentinel"));

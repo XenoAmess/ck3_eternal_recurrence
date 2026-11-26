@@ -109,9 +109,7 @@ public final class AdvanceClockArchivedReplay {
                     && archive.receiptReferenceOf(originalParent).equals(watch.originalParentReceipt())
                     && archive.receiptReferenceOf(originalResume).equals(watch.originalResumeReceipt()),
                     "cold clock endpoint crossed its exact original unknown parent/resume receipts");
-            require(originalResume.command().operation().value().equals("resume-map")
-                    && originalResume.state() instanceof ActionState.Settled resumeState
-                    && resumeState.settlement() instanceof ActionState.Applied
+            require(AdvancePrimitives.confirmedResume(originalResume)
                     && children.stream().filter(child -> child.equals(originalResume)).count() == 1
                     && ActionTransitions.composite(originalParent.state()).orElseThrow().children().stream()
                         .filter(child -> child.actionId().equals(originalResume.command().actionId())

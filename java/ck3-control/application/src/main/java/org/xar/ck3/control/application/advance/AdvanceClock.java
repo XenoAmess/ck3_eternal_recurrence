@@ -237,6 +237,13 @@ public final class AdvanceClock {
         require(TimelineOwner.resumeOwner(owner(snapshot), owner(fresh)).sameFacts(), "native resume owner changed before submission");
         ActionReceipt resume = submit(parent, children, fresh, "resume-map", deadline);
         require(resume.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED, "native resume was definitively rejected; never retry resume");
+        if (resume.state() instanceof ActionState.Settled settled
+                && settled.settlement() instanceof ActionState.ResumeCoreApplied) {
+            var full = observations.next(parent, fresh.identity(), parent.deadline());
+            AdvanceWait.binding(parent, starting, full);
+            require(AdvancePolicy.truth(full.semantic(), "paused"), "original campaign clock did not publish a paused Full");
+            return full;
+        }
         AdvanceObservationPort.Frame result = current(parent);
         if (plan.dailyWatch().isPresent()) {
             Instant watchDeadline = bounded(parent, advanceTimeout);

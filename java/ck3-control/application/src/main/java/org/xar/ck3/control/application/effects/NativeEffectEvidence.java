@@ -31,6 +31,12 @@ public final class NativeEffectEvidence {
         default void verifyPhysicalAfterAcknowledgement(ObservationProvenance.PhysicalAfterAcknowledgement proof, Complete actual, ActionPorts.OutcomeArchive originals) {
             throw new IllegalArgumentException("actual physical after-acknowledgement verifier is not installed");
         }
+        default void verifyResumeCore(ActionReceipt child,
+                org.xar.ck3.control.application.advance.ResumeCoreObservation proof, Complete before,
+                java.util.Optional<org.xar.ck3.control.continuity.writer.WriterContracts.Head> head,
+                ActionPorts.OutcomeArchive originals) {
+            throw new IllegalStateException("actual RESUME Core verifier is not installed");
+        }
     }
     public record Original(NativeEffectSnapshots.Pair frames, List<PlanningReadReceipt> independentReads, RawJson compatibleResult,
             List<ExactRef> supportingMaterials, java.util.Optional<GuardEvidence> reconciliationGuard) {

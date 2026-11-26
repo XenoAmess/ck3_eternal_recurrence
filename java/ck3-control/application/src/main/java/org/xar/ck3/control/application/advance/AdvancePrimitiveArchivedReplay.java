@@ -186,6 +186,11 @@ public final class AdvancePrimitiveArchivedReplay {
         require((child.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED || confirmedPause) && ack.nativeOk(), "UNKNOWN or unconfirmed primitive cannot grant timeline credit");
         String step = command.operation().value();
         var original = AdvancePrimitives.nativeResult(ack, step);
+        if (settled.settlement() instanceof ActionState.ResumeCoreApplied core) {
+            requireOriginalReceipt(lockedHead, child, attempt, dispatch, archive);
+            frames.verifyResumeCore(child, core.observation(), before, lockedHead, archive);
+            return;
+        }
         if (settled.settlement() instanceof ActionState.ControlApplied control) {
             require(command.expected().observerSchema().equals(AdvancePrimitives.CLOCK_OBSERVER)
                     && control.observerSchema().equals(AdvancePrimitives.CLOCK_OBSERVER), "clock control observer differs");

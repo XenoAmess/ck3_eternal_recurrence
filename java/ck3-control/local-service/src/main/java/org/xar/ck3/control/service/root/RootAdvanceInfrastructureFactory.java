@@ -27,7 +27,10 @@ import org.xar.ck3.control.application.effects.NativeRecordedEvidenceVerifier;
 import org.xar.ck3.control.application.effects.RootGuardEvidence;
 import org.xar.ck3.control.application.effects.RootPlanningReadGuard;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
+import org.xar.ck3.control.continuity.writer.WriterContracts;
 import org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort;
+import org.xar.ck3.control.nativebridge.NativeGameTransport;
+import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFrame;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.contracts.ExactCk3Build;
@@ -558,6 +561,11 @@ public final class RootAdvanceInfrastructureFactory {
                     DriverObservationAssembler.Complete complete, ActionPorts.OutcomeArchive archive) {
                 RootAdvanceInfrastructureFactory.verifyFreshSnapshotQuery(proof,complete,archive,actual);
             }
+            @Override public void verifyResumeCore(ActionReceipt child, ResumeCoreObservation proof,
+                    DriverObservationAssembler.Complete before, Optional<WriterContracts.Head> head,
+                    ActionPorts.OutcomeArchive archive) {
+                RootResumeCoreEvidence.replay(child, proof, before, head, archive);
+            }
         };
     }
 
@@ -872,8 +880,7 @@ public final class RootAdvanceInfrastructureFactory {
         var bound=execution.children().getLast();var child=resume.command();
         require(bound.actionId().equals(child.actionId()) && bound.bodySha256().equals(resume.bodySha256())
                 && child.actionId().equals(ActionIds.child(parent.command().actionId(),execution.children().size(),child.operation()))
-                && child.operation().value().equals("resume-map") && resume.state() instanceof ActionState.Settled settled
-                && settled.settlement() instanceof ActionState.Applied && resume.ack().filter(NativeActionPort.AckReceived::nativeOk).isPresent()
+                && AdvancePrimitives.confirmedResume(resume)
                 && child.source().equals(parent.command().source())
                 && child.sessionId().equals(parent.command().sessionId())
                 && child.before().machineId().equals(parent.command().before().machineId())
@@ -995,6 +1002,57 @@ public final class RootAdvanceInfrastructureFactory {
                         output.append(next).append(value.charAt(index++));
                     } else output.append('\uFFFD');
                 } else output.append(Character.isLowSurrogate(next)?'\uFFFD':next);
+            }
+        }
+        @Override public Optional<ResumeCoreObservation> resumeCore(ActionCommand child, ActionState.Attempt attempt,
+                NativeActionPort.AckReceived acknowledged, Instant deadline) {
+            if (!explicitFull111Clock(child) || !child.operation().value().equals("resume-map")) return Optional.empty();
+            actual(child, deadline);
+            try {
+                return context.withSession(same -> {
+                    var head = same.head();
+                    var reserved = ActionChildPlanningScope.reservedParent(same, head, child);
+                    if (reserved.isEmpty()) return Optional.empty();
+                    var archive = context.archive().withSession(same);
+                    var parent = ContinuityActionJournal.lookup(head.state(), reserved.orElseThrow().actionId(), archive).orElseThrow();
+                    if (!RootResumeCoreEvidence.supports(parent.command(), child)) return Optional.empty();
+                    var receipt = ContinuityActionJournal.lookup(head.state(), child.actionId(), archive).orElseThrow();
+                    RootResumeCoreEvidence.requireOriginals(parent, receipt, attempt, acknowledged);
+                    context.adopted().authority().requireOutsideObservationScope(same);
+                    var before = RootGuardEvidence.loadFrame(attempt.guard(), archive, context.frameLoader());
+                    var transport = context.transport();
+                    NativeRequestChronology chronology = acknowledged.custody().orElseThrow();
+                    require(transport.originalRequestChronology(acknowledged.requestId()).filter(chronology::equals).isPresent()
+                                    && chronology.session().equals(context.adopted().session()),
+                            "warm RESUME requires its exact retained live ACK");
+                    // A successful enqueue can precede the native pause-bit change by a pump.
+                    int maximumSamples = Math.min(3, timings.maximumFrames());
+                    try {
+                        for (int n = 0; n < maximumSamples && context.clock().instant().isBefore(deadline); n++) {
+                            var read = transport.readCoreFrameReceived(deadline);
+                            if (!(read instanceof NativeGameTransport.CoreReceived core)
+                                    || !(core.frame() instanceof CoreFrame.Partial partial)) break;
+                            core.requireOriginal(transport, core.validUntil());
+                            if (partial.prefix().paused()) {
+                                if (!BigInteger.valueOf(partial.prefix().dateRaw()).equals(child.before().frame().identity().dateRaw())) break;
+                                continue;
+                            }
+                            RootResumeCoreEvidence.verify(parent.command(), child, attempt, acknowledged, core.original(),
+                                    core.validUntil(), before);
+                            require(same.head().digest().equals(head.digest()), "RESUME Core observation changed its canonical writer head");
+                            return Optional.of(new ResumeCoreObservation(archive.receiptReferenceOf(parent),
+                                    archive.preserve(core.original()), core.validUntil()));
+                        }
+                    } catch (InterruptedException interrupted) {
+                        Thread.currentThread().interrupt();
+                        var failure = new InterruptedIOException("original RESUME Core observation was interrupted");
+                        failure.initCause(interrupted);
+                        throw failure;
+                    }
+                    return Optional.empty();
+                });
+            } catch (IOException failure) {
+                throw new UncheckedIOException("original RESUME Core observation unavailable", failure);
             }
         }
         @Override public Frame next(ActionCommand parent,ObservationIdentity after,Instant deadline){
@@ -1179,7 +1237,9 @@ public final class RootAdvanceInfrastructureFactory {
                             ||afterNativeRevision!=null&&actual.nativeRevision().compareTo(afterNativeRevision)<=0) {
                         archive.preserveNativeFrame(actual);
                         if(receivedFrames>=timings.maximumFrames())break;
-                        var received=transport.observe(deadline);
+                        var received=setter.state() instanceof ActionState.Settled settled
+                                && settled.settlement() instanceof ActionState.ResumeCoreApplied
+                                ? awaitResumeFull(transport,deadline) : transport.observe(deadline);
                         // currentSnapshot does not consume an undelivered peek. Draining that same
                         // already accepted object once receives no new packet and consumes no frame budget.
                         if(received==peek&&!peekDelivered)peekDelivered=true;
@@ -1215,6 +1275,18 @@ public final class RootAdvanceInfrastructureFactory {
                 failure.initCause(interrupted);throw failure;
             }
             throw new IOException("no actual after-ACK snapshot arrived within the unchanged finite observation budget");
+        }
+
+        private NativeObservationPort.ObservedFrame awaitResumeFull(NativeGameTransport transport, Instant deadline)
+                throws IOException, InterruptedException {
+            for (Instant now = context.clock().instant(); now.isBefore(deadline); now = context.clock().instant()) {
+                Instant slice = now.plusSeconds(5);
+                if (!slice.isBefore(deadline)) slice = deadline.minusNanos(1);
+                if (!now.isBefore(slice)) break;
+                var result = transport.waitForSnapshot(slice, deadline);
+                if (result instanceof NativeSnapshotWaitPort.Received arrived) return arrived.frame();
+            }
+            throw new IOException("original campaign deadline elapsed before the paused Full after confirmed RESUME");
         }
 
         private Frame freshObservation(ContinuityStorePort.Session same,ActionCommand parent,Instant deadline,

@@ -2207,6 +2207,14 @@ public final class NativeOutcomeArchive implements ActionPorts.OutcomeArchive {
                     throw new IOException("pause needs its sole actual complete after-frame evidence sidecar");
                 verifyEffectOriginals(pause.observation());
             }
+            case ActionState.ResumeCoreApplied resume -> {
+                var proof = resume.observation();
+                verifyRetainedSourceOriginal(proof.parentReceipt());
+                var core = load(proof.coreAcknowledgement());
+                if (!(core instanceof NativeActionPort.AckReceived)
+                        || !proof.coreAcknowledgement().equals(referenceOf(core)))
+                    throw new IOException("RESUME Core receipt lost its original acknowledged query");
+            }
             case ActionState.ControlSequenceCompleted sequence -> {
                 var observation = sequence.observation(); byte[] bytes = observation.encode();
                 var decoded = org.xar.ck3.control.application.effects.control.ControlSequenceObservation.decode(bytes);

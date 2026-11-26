@@ -114,6 +114,10 @@ public final class PendingUiLifeAdvance {
                 @Override public Optional<ClockStatusRead.Observation> retainedCancellationPreflight(ActionCommand command, Instant deadline) {
                     return actualOrdinary.retainedCancellationPreflight(command, deadline);
                 }
+                @Override public Optional<ResumeCoreObservation> resumeCore(ActionCommand command, ActionState.Attempt attempt,
+                        NativeActionPort.AckReceived acknowledged, Instant deadline) {
+                    return active.get() == null ? actualOrdinary.resumeCore(command,attempt,acknowledged,deadline) : Optional.empty();
+                }
                 @Override public <T> T withClockControlBasis(ActionCommand command, Instant deadline,
                         java.util.function.Function<Frame,T> work) {
                     Objects.requireNonNull(work);

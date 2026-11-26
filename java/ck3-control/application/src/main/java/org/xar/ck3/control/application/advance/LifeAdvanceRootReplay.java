@@ -102,8 +102,7 @@ public final class LifeAdvanceRootReplay implements LifeAdvanceEvidence.EntryFra
                 var originalResume = archive.loadReceipt(watch.originalResumeReceipt());
                 require(originalParent.command().equals(parent) && (originalParent.state() instanceof ActionState.CompositeUnknown
                         ||org.xar.ck3.control.application.session.ContinuityBatchJournal.isReadOnlyRunningLifeRecovery(originalParent))
-                        && originalResume.command().operation().value().equals("resume-map")
-                        && originalResume.state() instanceof ActionState.Settled settled && settled.settlement() instanceof ActionState.Applied
+                        && AdvancePrimitives.confirmedResume(originalResume)
                         && archive.receiptReferenceOf(originalParent).equals(watch.originalParentReceipt())
                         && archive.receiptReferenceOf(originalResume).equals(watch.originalResumeReceipt())
                         && originalParent.bodySha256().equals(ActionCodec.bodySha256(parent))

@@ -4,6 +4,8 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import org.xar.ck3.control.application.action.ActionCommand;
+import org.xar.ck3.control.application.action.ActionState;
+import org.xar.ck3.control.application.action.NativeActionPort;
 import org.xar.ck3.control.application.action.ObservationProvenance;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
@@ -25,6 +27,12 @@ public interface AdvanceObservationPort {
     /** An actual source-owned continuation may expose its unchanged pre-CANCEL Status originals.
      * Empty keeps the ordinary real query path; a DATA constructor supplies no continuation authority. */
     default java.util.Optional<ClockStatusRead.Observation> retainedCancellationPreflight(ActionCommand command, Instant deadline) {
+        return java.util.Optional.empty();
+    }
+
+    /** A warm source may confirm this one primitive through its original connection's Core query. */
+    default java.util.Optional<ResumeCoreObservation> resumeCore(ActionCommand command, ActionState.Attempt attempt,
+            NativeActionPort.AckReceived acknowledged, Instant deadline) {
         return java.util.Optional.empty();
     }
 
