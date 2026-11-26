@@ -1254,8 +1254,12 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
                 ContinuityState committed = ContinuityState.fromJson(after, layout.machineId());
                 ContinuityEvent event = new ContinuityEvent(sequence, OffsetDateTime.ofInstant(clock.instant(), ZoneOffset.UTC).toString(),
                         request.kind(), request.details(), requestIdentity, actual.digest(), committed);
-                byte[] eventBytes = ContinuityJson.canonical(ContinuityEvent.fromJson(event.toJson(), actual.state()).toJson());
-                if (eventBytes.length + 1 > ContinuityJson.LEDGER_MAX_BYTES || committed.canonicalBytes().length + 1 > ContinuityJson.LEDGER_MAX_BYTES)
+                ObjectNode eventDocument = event.toJson();
+                // Validate the generated event against its predecessor before encoding the same tree.
+                ContinuityEvent.fromJson(eventDocument, actual.state());
+                byte[] eventBytes = ContinuityJson.canonical(eventDocument);
+                byte[] snapshotBytes = committed.canonicalBytes();
+                if (eventBytes.length + 1 > ContinuityJson.LEDGER_MAX_BYTES || snapshotBytes.length + 1 > ContinuityJson.LEDGER_MAX_BYTES)
                     throw new IOException("original writer output cap");
                 LedgerFiles.requireAbsent(layout.event(sequence));
                 String requestSourceKey = request.sourceKey();
@@ -1264,7 +1268,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
                 List<LedgerFiles.AtomicWrite> recovery=store.recoveryWrites(actual);
                 List<LedgerFiles.AtomicWrite> writes=new ArrayList<>(recovery);
                 LedgerFiles.AtomicWrite eventWrite=LedgerFiles.prepareAtomic(layout.event(sequence),eventBytes,false,ContinuityJson.LEDGER_MAX_BYTES);
-                LedgerFiles.AtomicWrite snapshotWrite=LedgerFiles.prepareAtomic(layout.snapshot(),committed.canonicalBytes(),true,ContinuityJson.LEDGER_MAX_BYTES);
+                LedgerFiles.AtomicWrite snapshotWrite=LedgerFiles.prepareAtomic(layout.snapshot(),snapshotBytes,true,ContinuityJson.LEDGER_MAX_BYTES);
                 LedgerFiles.AtomicWrite indexWrite=LedgerFiles.prepareAtomic(layout.sourceIndex(requestSourceKey),
                         ContinuityJson.canonical(new IndexRepair(layout.sourceIndex(requestSourceKey),sequence,requestIdentity).toJson()),false);
                 if(!unchanged){writes.add(eventWrite);writes.add(snapshotWrite);writes.add(indexWrite);}
