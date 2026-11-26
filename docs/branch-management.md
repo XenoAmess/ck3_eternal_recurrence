@@ -268,3 +268,7 @@ ref as part of delivery rather than as a later cleanup project.
 10:28 UTC 直接回读显示 5 条远端分支（含 `master`）和 66 条本地分支。金融市场 5 条、Save Core CI、礼仪融合菜单、DES 回调和交接、Jackson、家徽编辑器 Pillow 的额外 11 个远端 ref 均已退役。其提交经等价补丁核对，相关项目的官方检查已通过。家徽编辑器的部署 workflow 亦通过。当前保留两个已合入的 Dependabot ref 等一般 CI，以及两条仍有未验收内容的旧 DES ref。[金融市场](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/45799136613) [礼仪融合](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/45799137654) [DES](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/45799136517) [家徽编辑器](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/45794827652)
 
 55 个干净且在同一官方绿色主线覆盖的工作树完成逐一核对。54 个在原 SHA 上切换为 detached，保留工作树文件及冻结标记，再按原 SHA 删除本地 ref。`codex/person-entry-next-input-97321` 在同 SHA detach 后本机物理文件清单有变化，Git 工作状态仍干净，原 ref 保留。82 条本地 ref 已退役。带本地改动、锁定或仍属其他 owner 的工作树保持各自状态。精确祖先清单和可解包复验的 42 条原始引用 bundle 位于 `D:/ck3-state/ck3-master-integration-20261126/linked-clean-worktree-retirement01`。
+
+10:32 UTC，MCP 2.2.0 与战争 AI 录制 Pillow 13.0.0 的正式依赖图、线性历史和主线等价补丁分别确认。本机对应 MCP 共 36 项、录制 7 项离线用例通过，最后两个 Dependabot ref 已退役。远端仅余 `master`、`work/dynastic-heir-stock-input-20261025`、`work/dynastic-product-reactor-20261030`，开放 PR 为 0。[MCP 依赖图](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/45793880324) [录制依赖图](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/45794809522)
+
+两条 DES 分支的可用原件及离线工具已陆续进入主线。两阶段罪行 fixture 在 `c0a2c51fd3` 通过 13 项 Save Core、22 项 DES 和 Quarkus 打包。仍在分支内的公开帝国恢复接线需要真实原版 UI S1 与持有者快照，旧编排工具依赖冻结场次和仓库外类。现行 v4 和金融存档的重复检查维持原合同。对应分支继续保存，完整官方主线检查仍在运行。
