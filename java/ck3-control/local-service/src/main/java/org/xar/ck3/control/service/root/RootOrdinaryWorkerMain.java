@@ -358,7 +358,7 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
     static RootOrdinaryRuntimeConfiguration readImportedLoadedWorkerConfiguration(Path configuration,
             RootLoadedReplacementRecoveryInputs.ImportedRequest input)throws IOException {
         var original=RootSavedRuntimeConfigurationInputs.readSource(input.original().runtimeConfiguration());
-        var oldPlan=org.xar.ck3.control.platform.NativeLaunchPlanCodec.read(original.launchPlanFile());
+        var oldPlan=original.retainedSavedPlan().orElseThrow(()->new IOException("imported recovery requires the archived Saved plan"));
         var selected=RootOrdinaryRuntimeConfiguration.readSaved(configuration,oldPlan);
         if(!selected.stateDirectory().equals(original.stateDirectory()))
             throw new IOException("imported loaded recovery configuration crossed its original writer");
