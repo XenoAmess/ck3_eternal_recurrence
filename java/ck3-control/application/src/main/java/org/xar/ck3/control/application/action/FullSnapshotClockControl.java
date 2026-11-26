@@ -37,7 +37,10 @@ public final class FullSnapshotClockControl {
                 &&"6dc0b448fbe5ab46e0ef59127e00f893b5da71ad2c6e22c51c21f9a80e66602c".equalsIgnoreCase(bridge.sha256()))
                 // Full111 with read-only Opening uses the same mapped SAVE implementation.
                 ||(bridge.bytes()==21_515_776L
-                &&"f33eb6d59068ebd21ba78ef43d933222e15427352d2bb206bb60990152963c52".equalsIgnoreCase(bridge.sha256())));
+                &&"f33eb6d59068ebd21ba78ef43d933222e15427352d2bb206bb60990152963c52".equalsIgnoreCase(bridge.sha256()))
+                // Full111 with foreground event selection retains the same mapped SAVE implementation.
+                ||(bridge.bytes()==21_523_968L
+                &&"db2a814aaa702b322a53e76512b8c80d71fc3249c71c9d31a674a436effaee86".equalsIgnoreCase(bridge.sha256())));
     }
 
     public static NativeRequest requestMappedSave112(org.xar.ck3.control.contracts.ExactRef bridge,
