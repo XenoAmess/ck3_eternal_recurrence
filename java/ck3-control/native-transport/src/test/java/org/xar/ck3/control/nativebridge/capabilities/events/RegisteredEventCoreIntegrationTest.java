@@ -337,8 +337,8 @@ final class RegisteredEventCoreIntegrationTest {
         assertEquals("select-event-option-2",wire.get("selected_step").textValue());
         assertEquals("recommended",wire.path("event_decision").path("status").textValue());
         assertEquals("played_character_gold.raw",wire.path("event_material_postcondition").path("metric").textValue());
-        assertEquals(context.get("options").get(1),wire.get("selected_native_event_option"));
-        assertEquals(context,wire.get("event_window_context"));
+        assertArrayEquals(StrictJson.canonical(context.get("options").get(1)), StrictJson.canonical(wire.get("selected_native_event_option")));
+        assertArrayEquals(StrictJson.canonical(context), StrictJson.canonical(wire.get("event_window_context")));
         assertFalse(wire.get("material_effects_verified").booleanValue());
         assertEquals(plan,OpportunityJson.object(OpportunityJson.parse(OpportunityJson.encode(plan)),"serialized public plan"));
         assertEquals(request.before().frame().revision(),OpportunityJson.integer(request.observations().snapshot().get("revision"),"original revision"));
@@ -363,7 +363,7 @@ final class RegisteredEventCoreIntegrationTest {
             EventWindowService.validator(ignored->Build.CROZIER4));
         JsonNode wire=OpportunityJson.toNode(plan);
         assertEquals("select-event-option-2",wire.get("selected_step").textValue());
-        assertEquals(context,wire.path("unhandled_event_fallback").path("window_context"));
+        assertArrayEquals(StrictJson.canonical(context), StrictJson.canonical(wire.path("unhandled_event_fallback").path("window_context")));
         assertTrue(wire.path("unhandled_event_fallback").path("offline_followup_required").booleanValue());
         assertEquals(1,wire.path("unhandled_event_fallback").path("selection").path("native_option_index").intValue());
     }
