@@ -103,6 +103,94 @@ public final class RootLoadedReplacementRecoveryInputs {
         var row=(com.fasterxml.jackson.databind.node.ObjectNode)StrictJson.parse(encode(legacy),LIMIT);row.put("schema",ORDINARY_SCHEMA);
         row.put("recovery_mode","ordinary_profile3");return StrictJson.canonical(row,LIMIT);
     }
+    public static final String IMPORTED_SCHEMA="xar.java-existing-imported-saved-replacement-recovery/v3";
+
+    /** Fresh bounded READ request with the exact unchanged post-retirement predecessor. */
+    public record ImportedRequest(String machineId,Instant issuedAt,Instant deadline,ExactRef originalRecoveryRequest,
+            ExactRef ownerDescriptor,ExactRef parentControl,ExactRef generationClaim,Path evidenceDirectory,
+            long expectedPredecessorSequence,String expectedHeadDigest) {
+        public ImportedRequest {
+            StrictJson.text(machineId);
+            StrictJson.require(issuedAt.isBefore(deadline)&&Duration.between(issuedAt,deadline).compareTo(Duration.ofMinutes(45))<=0,
+                    "Fresh finite imported loaded recovery must fit forty-five minutes");
+            for(var ref:List.of(originalRecoveryRequest,ownerDescriptor,parentControl,generationClaim))
+                StrictJson.require(ref.bytes()>0&&ref.bytes()<=(1L<<20)&&Path.of(ref.path()).isAbsolute(),"Bounded exact imported loaded original required");
+            StrictJson.require(parentControl.bytes()<=LIMIT&&generationClaim.bytes()<=LIMIT&&originalRecoveryRequest.bytes()<=LIMIT,
+                    "Imported replacement controls and historical request must fit 64 KiB");
+            StrictJson.require(evidenceDirectory.isAbsolute()&&evidenceDirectory.normalize().equals(evidenceDirectory),
+                    "Exact fresh imported loaded evidence directory required");
+            StrictJson.require(expectedPredecessorSequence>0&&expectedHeadDigest!=null&&expectedHeadDigest.matches("[0-9a-f]{64}"),
+                    "Exact imported post-retirement predecessor sequence and digest required");
+        }
+        public void requireCurrent(Clock clock)throws IOException {
+            Instant now=clock.instant();
+            if(now.isBefore(issuedAt)||!now.isBefore(deadline))throw new IOException("Imported loaded recovery READ window expired");
+            for(var ref:List.of(originalRecoveryRequest,parentControl,generationClaim))readStable(ref,LIMIT);
+            readStable(ownerDescriptor,1<<20);
+        }
+        /** Reads the selected exact3 without refreshing an old operation or re-labeling either saved source. */
+        public OriginalImportedRequest original()throws IOException {
+            try {
+                var row=StrictJson.parse(readStable(originalRecoveryRequest,LIMIT),LIMIT);
+                if(RootLoadedSavedResumeMain250.requestMode(row)!=3||!machineId.equals(StrictJson.text(row.get("machineId"))))
+                    throw new IOException("Imported loaded recovery requires the same machine's exact original recovery request");
+                return new OriginalImportedRequest(ExactRef.fromJson(row.get("sourceRuntimeConfiguration")),
+                        ExactRef.fromJson(row.get("newRuntimeConfiguration")),ExactRef.fromJson(row.get("sourceConfirmation")),
+                        ExactRef.fromJson(row.get("checkpointPair")),Path.of(StrictJson.text(row.get("ownerDirectory"))));
+            } catch(IllegalArgumentException invalid) {
+                throw new IOException("Invalid exact original recovery request",invalid);
+            }
+        }
+    }
+    public record OriginalImportedRequest(ExactRef sourceRuntimeConfiguration,ExactRef runtimeConfiguration,
+            ExactRef sourceConfirmation,ExactRef checkpointPair,Path originalOwnerDirectory) {
+        public OriginalImportedRequest {
+            for(var ref:List.of(sourceRuntimeConfiguration,runtimeConfiguration,sourceConfirmation,checkpointPair))
+                StrictJson.require(ref.bytes()>0&&Path.of(ref.path()).isAbsolute(),"Nonempty exact historical source reference required");
+            StrictJson.require(originalOwnerDirectory.isAbsolute()&&originalOwnerDirectory.equals(originalOwnerDirectory.normalize()),
+                    "Exact original owner directory required");
+        }
+        public CheckpointPair pair()throws IOException {return CheckpointPairCodec.decode(readStable(checkpointPair,LIMIT));}
+    }
+
+    public static ImportedRequest readImportedExact(ExactRef original,Clock clock)throws IOException {
+        try {
+            var result=decodeImported(readStable(original,LIMIT));
+            result.requireCurrent(clock);return result;
+        } catch(IllegalArgumentException|java.time.DateTimeException invalid) {
+            throw new IOException("Invalid loaded imported recovery source",invalid);
+        }
+    }
+    public static ImportedRequest decodeImported(byte[] bytes) {
+        var row=StrictJson.object(StrictJson.parse(bytes,LIMIT),Set.of("schema","machine_id","issued_at_utc","deadline_utc",
+                "original_recovery_request","owner_descriptor","parent_control","generation_claim","evidence_directory",
+                "expected_predecessor_sequence","expected_head_digest"));
+        StrictJson.require(IMPORTED_SCHEMA.equals(StrictJson.text(row.get("schema"))),"Exact imported loaded recovery source version required");
+        return new ImportedRequest(StrictJson.text(row.get("machine_id")),Instant.parse(StrictJson.text(row.get("issued_at_utc"))),
+                Instant.parse(StrictJson.text(row.get("deadline_utc"))),ExactRef.fromJson(row.get("original_recovery_request")),
+                ExactRef.fromJson(row.get("owner_descriptor")),ExactRef.fromJson(row.get("parent_control")),ExactRef.fromJson(row.get("generation_claim")),
+                Path.of(StrictJson.text(row.get("evidence_directory"))),StrictJson.integer(row.get("expected_predecessor_sequence"),1,Long.MAX_VALUE),
+                StrictJson.text(row.get("expected_head_digest")));
+    }
+    public static byte[] encodeImported(ImportedRequest value) {
+        var row=StrictJson.object().put("schema",IMPORTED_SCHEMA).put("machine_id",value.machineId())
+                .put("issued_at_utc",value.issuedAt().toString()).put("deadline_utc",value.deadline().toString())
+                .put("evidence_directory",value.evidenceDirectory().toString()).put("expected_head_digest",value.expectedHeadDigest())
+                .put("expected_predecessor_sequence",value.expectedPredecessorSequence());
+        row.set("original_recovery_request",value.originalRecoveryRequest().toJson());
+        row.set("owner_descriptor",value.ownerDescriptor().toJson());row.set("parent_control",value.parentControl().toJson());
+        row.set("generation_claim",value.generationClaim().toJson());return StrictJson.canonical(row,LIMIT);
+    }
+    private static byte[] readStable(ExactRef ref,int maximum)throws IOException {
+        if(ref.bytes()<1||ref.bytes()>maximum)throw new IOException("Loaded original exceeds its finite role bound");
+        Path path=Path.of(ref.path());
+        var held=SharedSourceFiles.nativeFile(path);
+        if(held.logicalBytes()!=ref.bytes())throw new IOException("Loaded original differs from its exact size");
+        var bytes=read(ref,maximum);
+        if(!held.equals(SharedSourceFiles.nativeFile(path)))throw new IOException("Loaded original native identity changed");
+        return bytes;
+    }
+
     static byte[] read(ExactRef ref,int maximum)throws IOException {
         if(ref.bytes()<1||ref.bytes()>maximum)throw new IOException("loaded source exceeds its finite role bound");
         byte[] bytes;try(var in=Files.newInputStream(Path.of(ref.path()))){bytes=in.readNBytes(maximum+1);}

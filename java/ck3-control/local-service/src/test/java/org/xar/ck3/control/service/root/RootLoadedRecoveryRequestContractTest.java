@@ -46,6 +46,25 @@ final class RootLoadedRecoveryRequestContractTest {
         row.put("request_id","another-request");
         assertThrows(IllegalArgumentException.class,()->RootRestoreMaterials.requireLoadedLaunch(DriverJson.object(StrictJson.canonical(row),65536),join));
     }
+    @Test void importedRecoveryVersionRetainsHistoricalRequestAndExactPredecessorSeparately() {
+        var ordinary=request();var root=ordinary.evidenceDirectory().getParent();var now=ordinary.issuedAt();
+        var imported=new RootLoadedReplacementRecoveryInputs.ImportedRequest(ordinary.machineId(),now,now.plusSeconds(90),
+                ref(root,"historical-exact3"),ordinary.ownerDescriptor(),ordinary.parentControl(),ordinary.generationClaim(),
+                ordinary.evidenceDirectory(),58,"c".repeat(64));
+        byte[] raw=RootLoadedReplacementRecoveryInputs.encodeImported(imported);
+        assertEquals(imported,RootLoadedReplacementRecoveryInputs.decodeImported(raw));
+        assertThrows(IllegalArgumentException.class,()->RootLoadedReplacementRecoveryInputs.decode(raw));
+        assertThrows(IllegalArgumentException.class,()->RootLoadedReplacementRecoveryInputs.decodeImported(RootLoadedReplacementRecoveryInputs.encode(ordinary)));
+        var edited=(com.fasterxml.jackson.databind.node.ObjectNode)StrictJson.parse(raw);
+        edited.put("expected_predecessor_sequence",true);
+        assertThrows(IllegalArgumentException.class,()->RootLoadedReplacementRecoveryInputs.decodeImported(StrictJson.canonical(edited)));
+        edited.put("expected_predecessor_sequence",58).put("deadline_utc",now.plusSeconds(2701).toString());
+        assertThrows(IllegalArgumentException.class,()->RootLoadedReplacementRecoveryInputs.decodeImported(StrictJson.canonical(edited)));
+        edited.put("deadline_utc",now.plusSeconds(90).toString());
+        ((com.fasterxml.jackson.databind.node.ObjectNode)edited.get("parent_control")).put("bytes",65537);
+        assertThrows(IllegalArgumentException.class,()->RootLoadedReplacementRecoveryInputs.decodeImported(StrictJson.canonical(edited)));
+    }
+
     private static RootLoadedReplacementRecoveryInputs.Request request() {
         Path root=Path.of("loaded-source-contract").toAbsolutePath();Instant at=Instant.now();
         return new RootLoadedReplacementRecoveryInputs.Request("machine",at,at.plusSeconds(2700),ref(root,"config"),

@@ -60,4 +60,53 @@ final class LoadedReplacementControlSourceTest {
         var extra=original();extra.put("may_create",true);assertThrows(IOException.class,()->decode(extra));
         var changedRef=original();((ObjectNode)changedRef.get("save")).put("bytes",true);assertThrows(IOException.class,()->decode(changedRef));
     }
+    @Test void importedControlRoundTripsActualProducerAndKeepsTheSeparateProof()throws Exception {
+        byte[] bytes=producedImported("EXITED_SOURCE_NEW_HELLO_ACCEPTED_MAP_NOT_YET_VERIFIED",reference("new-hello-event.json"));
+        var exact=RootProcessAttach.decodeImportedLoadedControl(bytes,bytes.clone());
+        assertEquals(PARENT,exact.replacement().parentId());
+        assertEquals(50372,exact.replacement().previous().pid());
+        assertEquals("134401544348311914",exact.replacement().previous().creationFiletime().value().toString());
+        assertEquals(reference("staged.ck3"),exact.replacement().save());
+        assertEquals(reference("exited-original.json"),exact.replacement().stopped());
+        assertEquals(reference("new-hello-event.json"),exact.replacement().launched());
+        assertEquals(reference("transfer-original.json"),exact.transferProof());
+        assertThrows(IOException.class,()->RootProcessAttach.decodeLoadedReplacementControl(bytes));
+    }
+
+    @Test void importedEnteredTornNullAliasedAndOversizedControlsRemainIneligible()throws Exception {
+        String accepted="EXITED_SOURCE_NEW_HELLO_ACCEPTED_MAP_NOT_YET_VERIFIED";
+        byte[] valid=producedImported(accepted,reference("new-hello-event.json"));
+        byte[] entered=producedImported("EXITED_SOURCE_ACCEPTED_SAVED_LAUNCH_ENTERED",null);
+        assertThrows(IOException.class,()->RootProcessAttach.decodeImportedLoadedControl(entered,entered));
+        assertThrows(IOException.class,()->RootProcessAttach.decodeImportedLoadedControl(entered,valid));
+        assertThrows(IOException.class,()->RootProcessAttach.decodeImportedLoadedControl(valid,entered));
+        byte[] other=producedImported(accepted,reference("different-hello-event.json"));
+        assertThrows(IOException.class,()->RootProcessAttach.decodeImportedLoadedControl(valid,other));
+        for(var field:java.util.List.of("save","stop_evidence","launch_evidence","imported_save_transfer")){
+            var row=(ObjectNode)StrictJson.parse(valid);
+            row.putNull(field);
+            byte[] absent=StrictJson.canonical(row,65536);
+            assertThrows(IOException.class,()->RootProcessAttach.decodeImportedLoadedControl(absent,absent),field);
+        }
+        var alias=(ObjectNode)StrictJson.parse(valid);
+        alias.set("importedSaveTransfer",alias.remove("imported_save_transfer"));
+        byte[] camel=StrictJson.canonical(alias,65536);
+        assertThrows(IOException.class,()->RootProcessAttach.decodeImportedLoadedControl(camel,camel));
+        byte[] oversized=java.util.Arrays.copyOf(valid,65537);
+        assertThrows(IOException.class,()->RootProcessAttach.decodeImportedLoadedControl(oversized,oversized));
+    }
+
+    private static byte[] producedImported(String phase,ExactRef launch)throws Exception {
+        // Exercise the real private producer DTO and mapper without constructing any Game or lifecycle authority.
+        var producer=Class.forName(JavaGameLifecycle.class.getName()+"$ImportedReplacementControl");
+        var constructor=producer.getDeclaredConstructor(String.class,String.class,String.class,long.class,String.class,
+                org.xar.ck3.control.build.ControlBuild.FileRef.class,ExactRef.class,ExactRef.class,ExactRef.class);
+        constructor.setAccessible(true);
+        var ref=reference("staged.ck3");
+        var stage=new org.xar.ck3.control.build.ControlBuild.FileRef(ref.path(),ref.bytes(),ref.sha256());
+        var row=constructor.newInstance(org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.IMPORTED_REPLACEMENT_SCHEMA,
+                PARENT,phase,50372L,"134401544348311914",stage,reference("exited-original.json"),launch,reference("transfer-original.json"));
+        return org.xar.ck3.control.build.ControlBuild.strictMapper().writeValueAsBytes(row);
+    }
+
 }

@@ -130,8 +130,12 @@ public final class GameRestoreNativeAdapter implements RestoreCheckpointService.
     private ManagedGameSession requireReplacement(ReplacementAck ack,Instant readDeadline)throws IOException {
         if(loadedReplacement.isPresent()){
             var actual=loadedReplacement.orElseThrow();actual.requireAck(ack,readDeadline);ManagedGameSession session=actual.attached();
+            var originalSave=actual.pair().save();
+            boolean exactSave=ack.importedSaveTransfer().map(transfer->transfer.original().equals(originalSave)
+                    &&transfer.staged().reference().equals(ack.loadedSave()))
+                    .orElseGet(()->originalSave.reference().equals(ack.loadedSave()));
             if(!session.generation().equals(ack.replacement())||!session.machineId().equals(source.machineId())
-                    ||!actual.pair().lineageId().equals(lineageId)||!actual.pair().save().reference().equals(ack.loadedSave()))
+                    ||!actual.pair().lineageId().equals(lineageId)||!exactSave)
                 throw new IOException("loaded replacement READ crossed its exact Game/source/SAVE lineage");
             var origin=source.sourceRef();new ControlBuild.FileRef(origin.path(),origin.bytes(),origin.sha256()).verify();return session;
         }
