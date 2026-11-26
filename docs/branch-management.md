@@ -276,3 +276,5 @@ ref as part of delivery rather than as a later cleanup project.
 10:37 UTC，`work/dynastic-product-reactor-20261030` 已退役。它与继承人分支自 `4680f73aea` 分叉后仅有两个独有提交。其类型检查环境已由主线的完整 DES CI 步骤覆盖，别名回归由 `b0a5305979` 和 `399c31ec15` 覆盖。共享历史仍由 `work/dynastic-heir-stock-input-20261025` 保留，退役前两条完整引用仍在 bundle。远端现为 `master` 与这一条待验分支，本地为 66 条。[DES CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/45801837726) [线性历史](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/45801837661)
 
 11:06 UTC，剩余继承人分支的补丁清单已逐项与主线对照。`a2a423d6ba` 补齐已移植的 Root 协作停止测试的严格类型覆盖，55 项回归通过。`192a4a9446` 接通 DES 验收实际需要的 campaign-root 能力，修复其离线测试的子进程输出等待，3 项产品验收测试及 Quarkus 构建通过。`2bc37bc628` 把当前 HELLO 的攻城能力值传到 Python 兼容入口，常规和优化模式各 8 项通过，相邻 18 项通过。旧场次专属 Java 执行工具依赖未入库的类型，孤立编译可复现失败。公开帝国恢复仍缺真实 S1 及有效原生 Title 证据，Decisions 同帧兼容代码继续核对。远端仍为两条引用，开放 PR 为 0。
+
+`d037addd4d` 移植旧 R28 已复现的 Decisions 可见性读取。原公开 revision 上已有成功 claim 时，使用本次实际可见树返回读取结果。原 UNKNOWN 阻断及原 v1 文件保留，旧分支的同 revision 关闭再开缺少当帧关闭原件。固定 CI 依赖下 156 项通过、4 项预计跳过，另有 31 项消费方回归通过。`ea2a17731d` 修复 Steam 离线配置夹具的两处严格类型失败，183 次相关离线测试通过。最后继承人分支的精确原 tip `c3e46759b397f2f1950b6b46066a67c2df631dcb` 已在原 bundle。官方 CI 尚在运行，公开帝国恢复缺原件的状态保留。
