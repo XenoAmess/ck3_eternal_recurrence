@@ -3,11 +3,13 @@ package org.xar.ck3.control.service.root;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import org.xar.ck3.control.application.action.*;
+import org.xar.ck3.control.application.advance.AdvancePlan;
 import org.xar.ck3.control.application.advance.LifeAdvanceComposite;
 import org.xar.ck3.control.application.driver.DriverJson;
 import org.xar.ck3.control.application.planning.*;
@@ -254,10 +256,11 @@ public final class RootPeacetimeWarEntryRuntime implements OrdinaryCorePolicy.Co
     private PeacetimeWarEntryPlanner.CommandProposal command(PlanningRequest request, String step, Obj plan) {
         try {
             var operation = new OperationKey(step);
+            Obj arguments = commandArguments(request, operation, plan);
             var selected = new MilitaryPlanningDecision.Select(text(plan, "policy"), text(plan, "phase"),
-                    text(plan, "reason"), operation, empty(), purpose(operation), plan);
+                    text(plan, "reason"), operation, arguments, purpose(operation), plan);
             var prepared = commands.prepare(request, selected);
-            ActionCommand actual = prepared.requireOriginalChoice(request, operation, empty(), plan);
+            ActionCommand actual = prepared.requireOriginalChoice(request, operation, arguments, plan);
             OriginalCommandClocks.requireCurrentProposal(request, actual);
             return new PeacetimeWarEntryPlanner.Ready(actual);
         } catch (IllegalArgumentException | IllegalStateException | UncheckedIOException unavailable) {
@@ -265,6 +268,31 @@ public final class RootPeacetimeWarEntryRuntime implements OrdinaryCorePolicy.Co
                     + Objects.toString(unavailable.getMessage(), unavailable.getClass().getSimpleName()));
         }
     }
+
+    static Obj commandArguments(PlanningRequest request, OperationKey operation, Obj plan) {
+        if (!operation.value().equals("life-advance")
+                || !new Text(operation.value()).equals(plan.get("selected_step"))
+                || !new Text("native_war_discovery_cooldown").equals(plan.get("phase"))
+                || request.observations().warInProgress()) return empty();
+        String key = DeclarationOpportunityCooldown.VIEW_KEY;
+        if (!(plan.get(key) instanceof Obj cooldown)
+                || !cooldown.equals(request.observations().snapshot().get(key))) return empty();
+        var before = request.before();
+        var frame = before.frame();
+        BigInteger start = frame.identity().dateRaw();
+        try {
+            var source = new DeclarationOpportunityCooldown.Frame(frame.identity().player(), frame.episodeRunId(), start,
+                    frame.identity().nativeRevision(), BigInteger.valueOf(before.game().pid()), Optional.of(frame.snapshotId()));
+            var view = DeclarationOpportunityCooldown.decodeView(DriverJson.toNode(cooldown), source);
+            if (!view.active()) return empty();
+            // The first whole-day target at or after expiry reopens discovery without skipping an eligible turn.
+            BigInteger target = start.add(AdvancePlan.DAY.multiply(view.remainingDays()));
+            return empty().with("maximum_target_date_raw", new IntegerValue(target));
+        } catch (IllegalArgumentException absent) {
+            return empty();
+        }
+    }
+
     /** Single final protocol adapter; policy selection and scoring remain with PeacetimeWarEntryPlanner. */
     static OrdinaryPolicy.Decision finishSelected(PlanningRequest request, Obj plan,
             PeacetimeWarEntryPlanner.CommandFactory commands) {

@@ -14,7 +14,11 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.zip.ZipInputStream;
 import org.junit.jupiter.api.Test;
+import org.xar.ck3.control.admission.deadlinecredit.CampaignDeadline;
 import org.xar.ck3.control.application.action.*;
+import org.xar.ck3.control.application.advance.AdvancePlan;
+import org.xar.ck3.control.application.advance.AdvanceRewrite;
+import org.xar.ck3.control.application.advance.ClockStatusRead;
 import org.xar.ck3.control.application.planning.*;
 import org.xar.ck3.control.application.planning.warentry.*;
 import org.xar.ck3.control.application.driver.DriverJson;
@@ -35,6 +39,72 @@ final class RootPeacetimeWarEntryRuntimeTest {
     private static final ExactRef SOURCE = new ExactRef("D:/fixture/peacetime-software-producer.java", 1, "a".repeat(64));
     private static final GameGeneration GAME = new GameGeneration(123,
             new PythonOnlyUInt64(new BigInteger("134000000000000001")));
+
+    @Test void qualifiedArchivedWarCooldownClipsNewLifeWithoutLosingEarlierLimits() {
+        var input = cooldownFixture();
+        PlanningRequest request = request(input, Set.of(ClockStatusRead.ARM_CAP, ClockStatusRead.STATUS_CAP, ClockStatusRead.CANCEL_CAP));
+        Obj plan = selected(input);
+        var operation = new OperationKey("life-advance");
+        var original = command(request, operation);
+        assertEquals(53158200, AdvancePlan.decode(AdvanceRewrite.rewriteBound(request, original, operation.value(), Optional.empty(), 8)).targetDateRaw().intValueExact(),
+                "archived batch 129 originally requested eight days");
+        Obj arguments = RootPeacetimeWarEntryRuntime.commandArguments(request, operation, plan);
+        assertEquals(new IntegerValue(BigInteger.valueOf(53158152)), arguments.get("maximum_target_date_raw"));
+        var bounded = command(request, operation, arguments);
+        var polled = AdvanceRewrite.rewriteBound(request, bounded, operation.value(), Optional.empty(), 8);
+        assertEquals(53158152, AdvancePlan.decode(polled).targetDateRaw().intValueExact());
+        assertEquals(6, AdvancePlan.decode(polled).horizonDays());
+        assertEquals(original.deadline(), polled.deadline());
+        assertEquals(original.origin(), polled.origin());
+        var start = request.before().frame().identity().dateRaw();
+        var requested = start.add(AdvancePlan.DAY.multiply(BigInteger.valueOf(8)));
+        var campaign = new CampaignDeadline.Cap("fixture-campaign", "ck3-1.20.0.4-cdate-fixed365-raw24/v1", start,
+                requested, BigInteger.valueOf(53158176), BigInteger.valueOf(53407128), BigInteger.valueOf(53158176), CampaignDeadline.Status.ADVANCE);
+        assertEquals(53158176, AdvancePlan.decode(AdvanceRewrite.rewriteBound(request, original, operation.value(), Optional.of(campaign), 8)).targetDateRaw().intValueExact(),
+                "archived batch 130's campaign boundary was still one day after the actual cooldown");
+        var sentinel = AdvancePlan.decode(AdvanceRewrite.rewriteBound(request, bounded, operation.value(), Optional.of(campaign), 8));
+        assertEquals(53158152, sentinel.targetDateRaw().intValueExact());
+        assertEquals(AdvancePlan.ClockMode.CAMPAIGN_SENTINEL, sentinel.clockMode());
+        assertEquals(53158080, AdvancePlan.decode(AdvanceRewrite.rewriteBound(request, bounded, operation.value(), Optional.of(campaign), 3)).targetDateRaw().intValueExact(),
+                "an already smaller bound must win");
+    }
+
+    @Test void staleForeignOrUnchangedLegacyWarPlansGainNoCooldownBound() {
+        var input = cooldownFixture();
+        Obj original = selected(input);
+        var operation = new OperationKey("life-advance");
+        var qualified = request(input);
+        String key = DeclarationOpportunityCooldown.VIEW_KEY;
+        Obj actualCooldown = object(input.path("snapshot").get(key));
+        assertTrue(RootPeacetimeWarEntryRuntime.commandArguments(qualified, operation,
+                original.with(key, actualCooldown.with("remaining_days", new IntegerValue(BigInteger.ONE)))).members().isEmpty());
+        assertTrue(RootPeacetimeWarEntryRuntime.commandArguments(qualified, operation,
+                original.with("phase", new Text("native_war_discovery_progress"))).members().isEmpty());
+        for (Obj unqualified : List.of(
+                actualCooldown.with("remaining_days", new IntegerValue(BigInteger.ONE)),
+                actualCooldown.with("actor_character_id", new IntegerValue(BigInteger.ONE)),
+                actualCooldown.with("episode_run_id", new Text("foreign-episode")),
+                actualCooldown.with("cooldown_until_date_raw", new IntegerValue(BigInteger.valueOf(53158008))),
+                new Obj(Map.of("status", new Text("active"))))) {
+            var variant = input.deepCopy();
+            ((ObjectNode) variant.get("snapshot")).set(key, DriverJson.toNode(unqualified));
+            assertTrue(RootPeacetimeWarEntryRuntime.commandArguments(request(variant), operation, selected(variant)).members().isEmpty());
+        }
+    }
+
+    private static ObjectNode cooldownFixture() {
+        // Batch 130 supplies the actor, date, episode, revision and original cooldown. The remaining fields are software fixture setup.
+        return (ObjectNode) StrictJson.parse("""
+                {"snapshot":{"snapshot_id":"native:1433","revision":1328,"native_revision":1433,"date_raw":53158008,
+                  "episode_run_id":"resume91_latest268_20261101_a02","paused":true,"map_ready":true,
+                  "played_character":{"character_id":31254,"alive":true},"active_wars":[],"player_armies":[],
+                  "diagnostics":{"bridge_pid":123,"connection_generation":1},
+                  "declaration_opportunity_cooldown_v1":{"schema":"xar.ck3.declaration-opportunity-cooldown/v1",
+                  "status":"active","actor_character_id":31254,"episode_run_id":"resume91_latest268_20261101_a02",
+                  "consecutive_no_war_rounds":2,"cooldown_until_date_raw":53158152,"remaining_days":6,"pending_query_sequence":null}},
+                 "history":[],"steps":["life-advance","set-speed-5","query-declarable-wars"]}
+                """.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+    }
 
     @Test void originalProducerDeclarationIdentityReachesRuntimeWithoutTupleProjectionLoss() throws IOException {
         var row = row("general-actual-force-declare"); var selected = selected(row);
@@ -187,6 +257,9 @@ final class RootPeacetimeWarEntryRuntimeTest {
         return PeacetimeWarEntryPlanner.select(snapshot, history, steps).orElseThrow();
     }
     private static PlanningRequest request(JsonNode row) {
+        return request(row, Set.of());
+    }
+    private static PlanningRequest request(JsonNode row, Set<String> capabilities) {
         Obj snapshot = object(row.get("snapshot")); JsonNode raw = row.get("snapshot");
         String episode = StrictJson.text(raw.get("episode_run_id"));
         var before = new ObservationIdentity("fixture-machine", GAME, new JointBudgetSelector.ProposalFrame(
@@ -199,11 +272,14 @@ final class RootPeacetimeWarEntryRuntimeTest {
         List<Obj> history = java.util.stream.StreamSupport.stream(row.get("history").spliterator(), false)
                 .map(RootPeacetimeWarEntryRuntimeTest::object).toList();
         return new PlanningRequest(before, source, "fixture-session", NOW.plusSeconds(60),
-                new PlanningObservation(snapshot, history, steps, Set.of(), Optional.empty(), List.of(), Optional.empty(), Optional.empty(), false));
+                new PlanningObservation(snapshot, history, steps, capabilities, Optional.empty(), List.of(), Optional.empty(), Optional.empty(), false));
     }
     private static ActionCommand command(PlanningRequest request, OperationKey operation) {
+        return command(request, operation, new Obj(Map.of()));
+    }
+    private static ActionCommand command(PlanningRequest request, OperationKey operation, Obj arguments) {
         return new ActionCommand("fixture-peacetime-command", request.before(), request.source(), request.sessionId(), operation,
-                new Obj(Map.of()), new ExpectedPostcondition(1, request.before(), request.source(), "fixture-observer/v1",
+                arguments, new ExpectedPostcondition(1, request.before(), request.source(), "fixture-observer/v1",
                         List.of(new ExpectedBoolean(new FieldKey("native.gameplay_verified"), true))),
                 new JointBudgetSelector.Claims(Set.of(), Set.of(), Set.of(), Set.of()), request.deadline());
     }
