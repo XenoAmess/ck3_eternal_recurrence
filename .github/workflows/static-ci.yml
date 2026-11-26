@@ -864,7 +864,7 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -B -X utf8 -m unittest discover -s tools -p test_ck3_mod_acceptance_prelaunch_unrun_admission.py -v
           if not "%errorlevel%"=="0" exit /b %errorlevel%
-          python -B -X utf8 -m mypy --strict --strict-equality --follow-imports=silent --no-incremental --cache-dir nul tools/test_ck3_mod_acceptance_capacity_timeout_unrun.py tools/test_ck3_mod_acceptance_unrun_stages.py
+          python -B -X utf8 -m mypy --strict --strict-equality --follow-imports=silent --no-incremental --cache-dir nul tools/test_ck3_mod_acceptance_capacity_timeout_unrun.py tools/test_ck3_mod_acceptance_unrun_stages.py tools/test_ck3_mod_acceptance_prelaunch_unrun_admission.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test shared CK3 acceptance without installed CK3
         env:
