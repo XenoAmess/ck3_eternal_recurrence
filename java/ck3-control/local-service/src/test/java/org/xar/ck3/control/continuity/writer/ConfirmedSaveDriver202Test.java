@@ -317,9 +317,9 @@ final class ConfirmedSaveDriver202Test {
                 var constructor = type.getDeclaredConstructor(DriverSnapshotFacts.Known.class, ExactRef.class); constructor.setAccessible(true);
                 var previous = constructor.newInstance(sample.known(), sample.beforeRef());
                 var method = ContinuityBatchJournal.class.getDeclaredMethod("retainConfirmedSaveDriver", SessionPorts.SessionIdentity.class,
-                        HistoricalTransition.class, HistoricalTransition.class, type, CheckpointPair.class, ActionReceipt.class, ActionPorts.OutcomeArchive.class);
+                        HistoricalTransition.class, List.class, HistoricalTransition.class, type, CheckpointPair.class, ActionReceipt.class, ActionPorts.OutcomeArchive.class);
                 method.setAccessible(true);
-                return method.invoke(sample.journal(), sample.owner(), sample.savedEdge(), read, previous, sample.pair(), save,
+                return method.invoke(sample.journal(), sample.owner(), sample.savedEdge(), List.of(), read, previous, sample.pair(), save,
                         sample.fixture().archive.withSession(same));
             } catch (java.lang.reflect.InvocationTargetException failure) {
                 if (failure.getCause() instanceof IOException io) throw io;
