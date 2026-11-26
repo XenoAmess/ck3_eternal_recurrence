@@ -11,18 +11,22 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.zip.GZIPInputStream;
 import org.junit.jupiter.api.Test;
 import org.xar.ck3.control.application.action.ActionCodec;
+import org.xar.ck3.control.application.action.ActionCommand;
 import org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive;
 import org.xar.ck3.control.application.action.ActionReceipt;
 import org.xar.ck3.control.application.action.ActionReceiptCodec;
 import org.xar.ck3.control.application.action.ActionRecordCodec;
 import org.xar.ck3.control.application.action.ContinuityActionJournal;
 import org.xar.ck3.control.application.action.RawJson;
+import org.xar.ck3.control.application.checkpoint.CheckpointPairCodec;
 import org.xar.ck3.control.application.planning.governance.GovernanceOpeningDocument;
 import org.xar.ck3.control.application.planning.governance.GovernanceObservationSupplier.OpeningStage;
+import org.xar.ck3.control.application.planning.governance.GovernancePolicies;
 import org.xar.ck3.control.application.session.OrdinaryCycleTransitions;
 import org.xar.ck3.control.application.session.SessionPorts.SemanticEvidence;
 import org.xar.ck3.control.continuity.ContinuityJson;
@@ -35,13 +39,92 @@ import org.xar.ck3.control.continuity.writer.PortableRecoveryDataArchive;
 import org.xar.ck3.control.continuity.writer.WriterContracts;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.FullJsonTree;
+import org.xar.ck3.control.contracts.GameGeneration;
+import org.xar.ck3.control.contracts.PythonOnlyUInt64;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector.Claims;
 import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector.Frame;
 import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector.ProposalFrame;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
+import org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedBoolean;
+import org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedPostcondition;
+import org.xar.ck3.control.g2.planning.ProposalLifecycle.FieldKey;
+import org.xar.ck3.control.g2.planning.ProposalLifecycleCodec;
+import org.xar.ck3.control.g2.common.G2Source;
+import org.xar.ck3.control.g2.common.G2Wire;
+import org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj;
 
 /** Exact Source56 originals and the real SETTLE reducer, behind bounded software-only archive and writer ports. */
 final class RootImportedSavedOpeningAdvanceTest {
+    @Test void importedColdOpeningRebindsItsActualTargetGateAndKeepsTheExistingPendingReducer() throws Exception {
+        var f=new Fixture();
+        var retained=DomainBodies.reference(f.head,DomainBodies.Slot.OPENING_GATE).orElseThrow();
+        assertEquals("793ad907e8387ea78b2b0d6ec153a176943336e632a6b920cccb85efdfc2171c",retained.payload().sha256());
+        var marker=f.head.toJson().get(SavedContinuityBootstrap.FIELD);
+        var target=OrdinaryCycleTransitions.sessionFromJson(marker.get("session"));
+        var entry=ProposalLifecycleCodec.decodeObservation(marker.get("opening"));
+        var oldSource=G2Wire.source(marker.get("source"));
+        var pair=CheckpointPairCodec.decode(StrictJson.canonical(marker.get("checkpoint_pair")));
+        assertEquals(50372,target.game().pid());
+        assertEquals(241448,pair.frame().game().pid());
+        var replacement=new GameGeneration(61127,new PythonOnlyUInt64(new BigInteger("134401647999999999")));
+        var frame=new ObservationIdentity(entry.machineId(),replacement,entry.frame(),entry.observationVersion());
+        var source=new G2Source(entry.machineId(),"2026-11-27T01:00:00Z",oldSource.exactBuild(),retained.payload());
+        String session="isolated-v5-restored-opening";
+        assertThrows(IllegalArgumentException.class,()->GovernanceOpeningDocument.requireSameEpisode(f.opening,frame,source));
+
+        var bytes=OpeningTransitions.importedUnissuedDocument(f.opening,target,entry,oldSource,pair,frame,source,session,List.of(retained.payload()));
+        var rebound=GovernanceOpeningDocument.decode(bytes);
+        GovernanceOpeningDocument.requireSameEpisode(rebound,frame,source);
+        assertEquals(frame,rebound.observed());
+        assertEquals(session,rebound.sessionId());
+        assertEquals(OpeningStage.AWAIT_SUBMIT,rebound.stage());
+        assertTrue(rebound.originals().containsAll(f.opening.originals()));
+        assertTrue(rebound.originals().contains(retained.payload()));
+        assertTrue(rebound.preparedCommand().isEmpty()&&rebound.actionReceipt().isEmpty()&&rebound.checkpoint().isEmpty());
+        assertEquals(pair.frame().frame().identity().dateRaw(),
+                RootGovernanceOpeningInputs.openingGate(rebound,frame,Optional.empty()).dateRaw());
+
+        var command=new ActionCommand("isolated-new-opening-intent",frame,source,session,GovernancePolicies.FOCUS,
+                new Obj(Map.of()),new ExpectedPostcondition(1,frame,source,"software.opening/1",
+                        List.of(new ExpectedBoolean(new FieldKey("focus_selected"),true))),
+                new Claims(Set.of(),Set.of(),Set.of(),Set.of()),java.time.Instant.parse("2026-11-27T01:01:00Z"));
+        var pending=GovernanceOpeningDocument.decode(OpeningTransitions.pending(rebound,command,retained.payload(),
+                rebound.originals(),Optional.empty(),Optional.empty()));
+        assertEquals(OpeningStage.AWAIT_RECEIPT,pending.stage());
+        assertEquals(frame,pending.observed());
+        assertEquals(source,pending.source());
+        assertArrayEquals(f.originalOpening,GovernanceOpeningDocument.encode(f.opening));
+    }
+
+    @Test void importedColdOpeningRefusesPriorFocusWorkOrAnUnrelatedReplacement() throws Exception {
+        var f=new Fixture();
+        var marker=f.head.toJson().get(SavedContinuityBootstrap.FIELD);
+        var target=OrdinaryCycleTransitions.sessionFromJson(marker.get("session"));
+        var entry=ProposalLifecycleCodec.decodeObservation(marker.get("opening"));
+        var source=G2Wire.source(marker.get("source"));
+        var pair=CheckpointPairCodec.decode(StrictJson.canonical(marker.get("checkpoint_pair")));
+        var replacement=new GameGeneration(61127,new PythonOnlyUInt64(new BigInteger("134401647999999999")));
+        var current=new ObservationIdentity(entry.machineId(),replacement,entry.frame(),entry.observationVersion());
+        var pending=new GovernanceOpeningDocument.Document(entry,source,target.sessionId(),OpeningStage.AWAIT_RECEIPT,
+                Optional.empty(),Optional.empty(),f.opening.originals(),Optional.of(f.life),Optional.empty());
+        assertThrows(IllegalArgumentException.class,()->OpeningTransitions.importedUnissuedDocument(pending,target,entry,source,pair,
+                current,source,"successor-session",List.of(f.life)));
+        var observedFocus=new GovernanceOpeningDocument.Document(entry,source,target.sessionId(),OpeningStage.AWAIT_SUBMIT,
+                Optional.empty(),Optional.empty(),f.opening.originals(),Optional.empty(),Optional.of(entry));
+        assertThrows(IllegalArgumentException.class,()->OpeningTransitions.importedUnissuedDocument(observedFocus,target,entry,source,pair,
+                current,source,"successor-session",List.of(f.life)));
+        var foreignBuild=new G2Source(source.machineId(),source.observedAtUtc(),"different-build",source.sourceRef());
+        assertThrows(IllegalArgumentException.class,()->OpeningTransitions.importedUnissuedDocument(f.opening,target,entry,source,pair,
+                current,foreignBuild,"successor-session",List.of(f.life)));
+        var earlier=nextFrame(current,entry.frame().identity().player(),entry.frame().identity().dateRaw().subtract(BigInteger.ONE));
+        assertThrows(IllegalArgumentException.class,()->OpeningTransitions.importedUnissuedDocument(f.opening,target,entry,source,pair,
+                earlier,source,"successor-session",List.of(f.life)));
+        var foreignActor=nextFrame(current,entry.frame().identity().player().add(BigInteger.ONE),entry.frame().identity().dateRaw());
+        assertThrows(IllegalArgumentException.class,()->OpeningTransitions.importedUnissuedDocument(f.opening,target,entry,source,pair,
+                foreignActor,source,"successor-session",List.of(f.life)));
+    }
+
     @Test void actualHead40RetainAndItsLaterOwnedObservationCannotMoveTheOpeningGate() throws Exception {
         var f = new Fixture();
         assertEquals(40, f.head.sequence());

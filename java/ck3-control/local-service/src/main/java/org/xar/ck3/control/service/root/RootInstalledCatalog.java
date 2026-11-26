@@ -719,12 +719,15 @@ public final class RootInstalledCatalog {
         // FIRST already consumed the common transform. Ordinary restoration retains its existing import path.
         requireBaseDomainBodies(same);
         if(!first)construction.restore(same,proof);
+        var actualOriginal=context.restorationOriginal(same);
+        if(material instanceof org.xar.ck3.control.application.checkpoint.SavedAttachmentSourceStore.SavedMaterial imported
+                &&imported.importedOrigin().isPresent())
+            factory.sources().governance().openingTransitions().rebindImportedUnissued(same,actualOriginal);
         factory.sources().crossRun().attachContext(context);
         StrictJson.require(factory.sources().crossRun().domain().read(same) instanceof CrossRunPlanningDomain.KnownState,
                 "restoration requires the actual complete retained cross-run strategy, not missing state");
         factory.sources().crossRun().requireRestoredFirst(context,same);
         var beforeFeast=same.head().digest();
-        var actualOriginal=context.restorationOriginal(same);
         var feastOriginal=factory.sources().governance().captureRestoredFeastOriginal(same,actualOriginal);
         StrictJson.require(same.head().digest().equals(beforeFeast),"restored FEAST original capture must not mutate the original writer");
         synchronized(this) {restoredFeastOriginal=feastOriginal;}

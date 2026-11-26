@@ -10,8 +10,14 @@ import org.xar.ck3.control.application.planning.*;
 import org.xar.ck3.control.application.planning.governance.*;
 import org.xar.ck3.control.application.session.SessionPorts.SemanticEvidence;
 import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
+import org.xar.ck3.control.application.session.OrdinaryCycleTransitions;
+import org.xar.ck3.control.continuity.ContinuityJson;
+import org.xar.ck3.control.continuity.SavedContinuityBootstrap;
 import org.xar.ck3.control.continuity.writer.*;
 import org.xar.ck3.control.contracts.*;
+import org.xar.ck3.control.g2.common.G2Source;
+import org.xar.ck3.control.g2.common.G2Wire;
+import org.xar.ck3.control.g2.planning.ProposalLifecycleCodec;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
 import static org.xar.ck3.control.application.planning.governance.GovernanceObservationSupplier.*;
 import org.xar.ck3.control.nativebridge.capabilities.governance.GovernancePlanningReads.OpeningReadProfile;
@@ -23,7 +29,7 @@ public final class OpeningTransitions implements OrdinaryPlanCompletion {
         public CheckpointRequired {Objects.requireNonNull(originalFocus);StrictJson.require(originalFocus.command().operation().equals(GovernancePolicies.FOCUS)
                 &&originalFocus.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED,"actual applied opening focus required");}
     }
-    private enum Kind { PENDING,RECEIPT,CHECKPOINT,EXISTING,CONSUME }
+    private enum Kind { PENDING,RECEIPT,CHECKPOINT,EXISTING,CONSUME,IMPORTED_UNISSUED_REBIND }
     private record Input(Kind kind,ExactRef previous,ExactRef original) { }
     private final RootRuntimeContext context;private final List<ExactRef> producers;
     private GovernanceRuntimeInstaller.Installed nativeGovernance;
@@ -36,6 +42,13 @@ public final class OpeningTransitions implements OrdinaryPlanCompletion {
     }
 
     private ContinuityStorePort.Session session()throws IOException{var same=context.borrowedSession();context.writer().requireSession(same);return same;}
+    void rebindImportedUnissued(ContinuityStorePort.Session same,RootRestorationOriginalProof.Original restored)throws IOException {
+        var current=body(same);
+        if(!unissuedAtImportedEntry(GovernanceOpeningDocument.decode(current.canonicalBody())))return;
+        var input=StrictJson.object();
+        input.set("restoration_basis",restored.basis().toJson());
+        publish(same,Kind.IMPORTED_UNISSUED_REBIND,current.reference().payload(),input);
+    }
     public RootDomainIntentPreparation.Binding pendingBinding(ExactRef implementation){return new RootDomainIntentPreparation.Binding("opening-focus",implementation,
             command->command.operation().equals(GovernancePolicies.FOCUS),(same,command)->{try{
                 context.writer().requireSession(same);context.requireCurrent(command.deadline());var before=body(same);var document=GovernanceOpeningDocument.decode(before.canonicalBody());
@@ -155,6 +168,30 @@ public final class OpeningTransitions implements OrdinaryPlanCompletion {
     private byte[] reduce(ContinuityStorePort.Session same,WriterContracts.Head head,DomainBodies.BodyRef previous,Input input)throws IOException{
         requireRetainedPrevious(head,previous,input.previous());
         var old=GovernanceOpeningDocument.decode(readBody(same,previous.payload()));var payload=StrictJson.parse(load(same,input.original()));var refs=new ArrayList<>(old.originals());old.preparedCommand().ifPresent(refs::add);refs.add(input.original());
+        if(input.kind()==Kind.IMPORTED_UNISSUED_REBIND){
+            var exact=StrictJson.object(payload,Set.of("restoration_basis"));
+            var basis=ExactRef.fromJson(exact.get("restoration_basis"));
+            var restored=context.restorationOriginal(same);
+            StrictJson.require(restored.basis().equals(basis)&&DomainBodies.reference(restored.attachmentHead(),DomainBodies.Slot.OPENING_GATE)
+                    .filter(previous::equals).isPresent(),"imported Opening must start at its retained target attachment member");
+            restored.requireImportPredecessor(same,head);
+            if(!(restored.material() instanceof SavedAttachmentSourceStore.SavedMaterial saved))
+                throw new IOException("imported Opening rebind requires ordinary saved material");
+            var imported=saved.importedOrigin().orElseThrow(()->new IOException("Opening rebind requires its exact independent imported SAVE"));
+            var entry=same.readHistoricalTransition(imported.targetEntry());
+            var marker=ContinuityJson.parseObject(entry.details(),1_048_576);
+            StrictJson.require(imported.owner().equals(OrdinaryCycleTransitions.sessionFromJson(marker.get("session"))),
+                    "imported Opening lost the original target entry owner");
+            boolean pending=context.core().journal().locked(same,view->view.unresolved().stream().anyMatch(receipt->
+                    receipt.command().operation().equals(GovernancePolicies.FOCUS)
+                            &&receipt.command().origin().game().equals(imported.owner().game())
+                            &&receipt.command().sessionId().equals(imported.owner().sessionId())));
+            StrictJson.require(!pending,"imported Opening cannot replace an unresolved original focus command");
+            refs.add(previous.payload());refs.add(basis);refs.add(imported.targetEntry().reference());
+            refs.add(restored.semantic().semantic());
+            return importedUnissuedDocument(old,imported.owner(),ProposalLifecycleCodec.decodeObservation(marker.get("opening")),
+                    G2Wire.source(marker.get("source")),restored.pair(),restored.semantic().frame(),restored.source(),restored.sessionId(),refs);
+        }
         if(input.kind()==Kind.PENDING){StrictJson.object(payload,Set.of("command"));var original=ExactRef.fromJson(payload.get("command"));var command=command(same,original);
             Optional<ActionReceipt> previousCanonical=Optional.empty();
             if(old.preparedCommand().isPresent())previousCanonical=canonical(same,command(same,old.preparedCommand().orElseThrow()).actionId());
@@ -223,6 +260,32 @@ public final class OpeningTransitions implements OrdinaryPlanCompletion {
         StrictJson.require(document.actionReceipt().isEmpty()&&document.checkpoint().isEmpty()
                 &&(document.preparedCommand().isEmpty()||document.stage()==OpeningStage.AWAIT_RECEIPT&&canonical.isEmpty()),
                 "submitted opening action precedes observing existing focus");
+    }
+    private static boolean unissuedAtImportedEntry(GovernanceOpeningDocument.Document original) {
+        return original.stage()==OpeningStage.AWAIT_SUBMIT&&original.preparedCommand().isEmpty()
+                &&original.actionReceipt().isEmpty()&&original.checkpoint().isEmpty()&&original.existingObserved().isEmpty();
+    }
+    /** Material projection after replay of the actual v5 target entry and replacement attachment. */
+    static byte[] importedUnissuedDocument(GovernanceOpeningDocument.Document old,SessionIdentity target,
+            ObservationIdentity entry,G2Source entrySource,CheckpointPair physical,
+            ObservationIdentity restored,G2Source restoredSource,String session,List<ExactRef> evidence) {
+        var saved=physical.frame();
+        StrictJson.require(unissuedAtImportedEntry(old)&&old.observed().equals(entry)&&old.source().equals(entrySource)
+                &&old.sessionId().equals(target.sessionId())&&entry.game().equals(target.game())&&entry.machineId().equals(target.machineId())
+                &&!target.game().equals(saved.game())&&!restored.game().equals(target.game())&&!restored.game().equals(saved.game())
+                &&!session.equals(target.sessionId())&&restored.machineId().equals(target.machineId())
+                &&entrySource.exactBuild().equals(restoredSource.exactBuild())
+                &&entry.frame().identity().dateRaw().equals(saved.frame().identity().dateRaw())
+                &&restored.frame().identity().dateRaw().equals(saved.frame().identity().dateRaw()),
+                "imported Opening requires its original unissued target anchor and actual restored physical date");
+        GovernanceOpeningDocument.requireSameEpisode(old,restored,entrySource);
+        StrictJson.require(saved.machineId().equals(restored.machineId())
+                &&saved.frame().episodeRunId().equals(restored.frame().episodeRunId())
+                &&saved.frame().identity().player().equals(restored.frame().identity().player()),
+                "imported Opening SAVE and restored actor/episode differ");
+        var originalEvidence=new LinkedHashSet<>(old.originals());originalEvidence.addAll(evidence);
+        return GovernanceOpeningDocument.encode(new GovernanceOpeningDocument.Document(restored,restoredSource,session,
+                OpeningStage.AWAIT_SUBMIT,Optional.empty(),Optional.empty(),List.copyOf(originalEvidence)));
     }
     static byte[] pending(GovernanceOpeningDocument.Document old,ActionCommand command,ExactRef original,List<ExactRef> refs,
             Optional<ActionReceipt> previousCanonical,Optional<ActionReceipt> nextCanonical) {
