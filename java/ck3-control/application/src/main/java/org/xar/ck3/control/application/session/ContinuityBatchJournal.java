@@ -5224,25 +5224,17 @@ public final class ContinuityBatchJournal implements BatchJournal {
             if(importedClosedCycle) {
                 var settle=importedSettlements.getLast().settle();
                 var tailIndex=Math.toIntExact(settle.sequence());
-                if(tailIndex<edges.size()) {
+                var prior=settle;
+                while(tailIndex<edges.size()) {
                     var after=edges.get(tailIndex);
-                    if(after.kind().equals(OrdinaryCycleTransitions.BATCH_KIND)&&importedClosedBatchBoundary(
-                            after.after().toJson().path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD).path("boundary").asText())) {
-                        importedBatchTail.add(requireImportedBatchBoundary(settle,after,owner));
-                        tailIndex++;
-                    }
-                }
-                if(importedSettled) {
-                    var prior=importedBatchTail.isEmpty()?settle:importedBatchTail.getLast();
-                    while(tailIndex<edges.size()) {
-                        var after=edges.get(tailIndex);
-                        if(!after.kind().equals(OrdinaryCycleTransitions.BATCH_KIND)
-                                ||!JournalKind.BATCH_STARTED.name().equals(after.after().toJson()
-                                    .path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD).path("boundary").asText()))break;
-                        prior=requireImportedBatchBoundary(prior,after,owner);
-                        importedBatchTail.add(prior);
-                        tailIndex++;
-                    }
+                    if(!after.kind().equals(OrdinaryCycleTransitions.BATCH_KIND))break;
+                    String boundary=after.after().toJson().path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD)
+                            .path("boundary").asText();
+                    if(!importedClosedBatchBoundary(boundary)
+                            &&!(importedSettled&&JournalKind.BATCH_STARTED.name().equals(boundary)))break;
+                    prior=requireImportedBatchBoundary(prior,after,owner);
+                    importedBatchTail.add(prior);
+                    tailIndex++;
                 }
                 StrictJson.require(importedCycle.equals(ExactRef.fromJson(ContinuityJson.parseObject(
                         settle.details(),ContinuityJson.LEDGER_MAX_BYTES).get("cycle_record_ref")))
