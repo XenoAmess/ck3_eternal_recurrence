@@ -860,6 +860,10 @@ public final class RootApplicationAssembly {
             org.xar.ck3.control.contracts.GameGeneration generation(){return loaded==null?original.generation():loaded.previousOwner().game();}
             String sourceSessionId(){return loaded==null?original.sourceSessionId():loaded.previousOwner().sessionId();}
             org.xar.ck3.control.contracts.ExactRef evidence(){return loaded==null?original.evidence():loaded.oldSourceEvidence();}
+            Optional<org.xar.ck3.control.contracts.ExactRef> terminalForOperator() {
+                if(original!=null)return Optional.of(original.terminalReference());
+                return loaded.cachedAck().importedSaveTransfer().map(ignored->loaded.oldTerminal());
+            }
             void requireOwner(org.xar.ck3.control.platform.JavaGameLifecycle same,Instant until)throws IOException {
                 owner(same);if(loaded==null)original.requireOwner(same,until);else loaded.requireCurrent(until);
             }
@@ -941,8 +945,7 @@ public final class RootApplicationAssembly {
                     boolean scope = exited == null
                             ? request.reservedTailInterruption() && request.machineId().equals(machine)
                                 && request.game().equals(generation) && request.episodeRunId().equals(episode)
-                            : request.matchesExitedOwner(machine, generation, episode,
-                                Optional.ofNullable(exited.original).map(org.xar.ck3.control.platform.JavaGameLifecycle.ExitedGeneration::terminalReference));
+                            : request.matchesExitedOwner(machine, generation, episode,exited.terminalForOperator());
                     StrictJson.require(reservedRetirement.get()==this&&operatorQuarantine==source&&scope
                             &&activeSession==null&&!finished&&!router.isSealed()&&clock.instant().isBefore(deadline),
                             "private retirement scope lost its actual uninstalled Core/Game/source/writer ownership");
@@ -1271,6 +1274,69 @@ public final class RootApplicationAssembly {
 
         record ExitedImportedRestore(ColdRestoreSource source,Optional<RootFrozenRunProfile.FrozenRunProfile> profile) { }
 
+        private record ImportedColdHistory(SavedCheckpointMaterial material,ColdRestoreHistory history,
+                Optional<RootFrozenRunProfile.FrozenRunProfile> profile) { }
+
+        private ImportedColdHistory readImportedColdHistory(ReservedRetirementScope scope,
+                RootExitedSavedMaterialSource.PreparedImportedRestore prepared,
+                org.xar.ck3.control.platform.NativeLaunchPlan plan,Path expectedState,
+                OriginalWindowReducer.Policy policy)throws IOException {
+            var same=scope.same;
+            var owner=new SessionIdentity(scope.exited.machineId(),scope.exited.generation(),scope.exited.sourceSessionId());
+            var expected=prepared.imported();
+            var material=prepared.material(same);
+            var origin=material.importedOrigin().orElseThrow();
+            prepared.materialStore().requireOwn(material);
+            material.requirePhysical(same);
+            var binding=scope.source.request().exitedLife().orElseThrow();
+            StrictJson.require(owner.equals(expected.owner())&&owner.equals(origin.owner())
+                    &&expected.physicalSaveOwner().equals(material.session())&&!material.session().game().equals(owner.game())
+                    &&origin.targetEntry().equals(expected.entry())&&origin.physicalConfirmation().equals(expected.sourceConfirmation())
+                    &&expected.pair().equals(material.pair())
+                    &&binding.savedPairSha256().equals(ActionCodec.sha256(CheckpointPairCodec.encode(material.pair()))),
+                    "imported restore changed its original target runtime or independent physical SAVE");
+            var saveOutput=RootOrdinaryRuntimeAssembly.importedCheckpointOutput(plan,material.pair());
+            var profile=RootExitedSavedMaterialSource.nativeCampaignProfile(material,plan,clock);
+            var proof=readColdRestoreHistory(scope,owner,material,policy,true);
+            StrictJson.require(proof.history().startingPoint() instanceof ContinuityBatchJournal.SameGameEntry.ImportedSaved entry
+                    &&entry.canonicalEntry().equals(origin.targetEntry().reference())
+                    &&entry.opening().equals(expected.archivedBefore().identity())&&entry.savedPair().equals(material.pair()),
+                    "imported restore changed its target entry, archived opening or saved frontier");
+            var physical=prepared.readOriginalPhysicalSave(same);
+            new RootRestoreMaterials.ImportedRestoreOriginal(expected,physical).requireAbandoned(owner,proof.history().retainedFacts());
+            RootRestoreMaterials.requireImportedRuntimeAuxiliary(same,archive,proof.history().retainedFacts(),
+                    proof.before(),owner,expectedState,saveOutput.getParent());
+            return new ImportedColdHistory(material,proof,profile);
+        }
+
+        /** Existing v5 successor, with the administrative retirement already canonical. */
+        synchronized ExitedImportedRestore qualifyLoadedImportedRestoreSource(
+                org.xar.ck3.control.platform.JavaGameLifecycle lifecycle,
+                org.xar.ck3.control.platform.RootProcessAttach.LoadedReplacement loaded,
+                RootExitedSavedMaterialSource.PreparedImportedRestore prepared,
+                org.xar.ck3.control.platform.NativeLaunchPlan plan,Path expectedState,
+                OriginalWindowReducer.Policy policy,Instant deadline)throws IOException {
+            StrictJson.require(coldRestoreSource==null&&activeSession==null&&!staged&&!finished&&!router.isSealed()
+                    &&adopted.isEmpty()&&reservedRetirement.get()==null&&clock.instant().isBefore(deadline)
+                    &&loaded.cachedAck().importedSaveTransfer().isPresent()&&loaded.previousOwner().equals(prepared.imported().owner())
+                    &&loaded.pair().equals(prepared.imported().pair()),
+                    "loaded imported restore requires its exact retired owner, physical SAVE and unused Core");
+            var source=operatorQuarantineSource().orElseThrow(()->new IOException("loaded imported restore requires its original operator source"));
+            return writer.locked(same->archive.inSession(same,ignored->{
+                var scope=new ReservedRetirementScope(same,lifecycle,loaded,source,deadline);
+                reservedRetirement.set(scope);
+                try(scope) {
+                    scope.initialize(); // The loaded role verifies the existing retirement without appending an ACTION.
+                    var proof=readImportedColdHistory(scope,prepared,plan,expectedState,policy);
+                    var result=new ColdRestoreSource(this,lifecycle,scope.exited,prepared.materialStore(),proof.material(),
+                            prepared.driverCheckpoints(),proof.history().history(),proof.history().before(),policy,deadline,prepared);
+                    coldRestoreSource=result;result.requireCurrent(same);
+                    return new ExitedImportedRestore(result,proof.profile());
+                }catch(IOException failure){throw new UncheckedIOException(failure);}
+                finally{reservedRetirement.remove();}
+            }));
+        }
+
         /** Two actual sources must pass qualification before the original administrative append; no CREATE runs here. */
         synchronized ExitedImportedRestore qualifyAndRetireExitedImported(
                 org.xar.ck3.control.platform.JavaGameLifecycle lifecycle,
@@ -1282,34 +1348,10 @@ public final class RootApplicationAssembly {
                     "imported restore must bind to an unused original Core");
             var owner=new SessionIdentity(exited.machineId(),exited.generation(),exited.sourceSessionId());
             return withExitedLifeRetirement(lifecycle,exited,deadline,(scope,actualArchive)->{
-                var request=scope.source.request();
-                var binding=request.exitedLife().orElseThrow();
-                var expected=prepared.imported();
                 var same=scope.same;
-                var material=prepared.material(same);
-                var origin=material.importedOrigin().orElseThrow();
-                var materials=prepared.materialStore();
-                materials.requireOwn(material);
-                material.requirePhysical(same);
-                StrictJson.require(owner.equals(expected.owner())&&owner.equals(origin.owner())
-                        &&expected.physicalSaveOwner().equals(material.session())&&!material.session().game().equals(owner.game())
-                        &&origin.targetEntry().equals(expected.entry())&&origin.physicalConfirmation().equals(expected.sourceConfirmation())
-                        &&expected.pair().equals(material.pair())
-                        &&binding.savedPairSha256().equals(ActionCodec.sha256(CheckpointPairCodec.encode(material.pair()))),
-                        "imported restore changed its original target runtime or independent physical SAVE");
-                var saveOutput=RootOrdinaryRuntimeAssembly.importedCheckpointOutput(plan,material.pair());
-                var profile=RootExitedSavedMaterialSource.nativeCampaignProfile(material,plan,clock);
-                var preflight=readColdRestoreHistory(scope,owner,material,policy,true);
-                StrictJson.require(preflight.history().startingPoint() instanceof ContinuityBatchJournal.SameGameEntry.ImportedSaved entry
-                        &&entry.canonicalEntry().equals(origin.targetEntry().reference())
-                        &&entry.opening().equals(expected.archivedBefore().identity())&&entry.savedPair().equals(material.pair()),
-                        "imported restore changed its target entry, archived opening or saved frontier");
-                // Capability originals still belong to the physical source's independent archive.
-                var physical=prepared.readOriginalPhysicalSave(same);
-                new RootRestoreMaterials.ImportedRestoreOriginal(expected,physical)
-                        .requireAbandoned(owner,preflight.history().retainedFacts());
-                RootRestoreMaterials.requireImportedRuntimeAuxiliary(same,archive,preflight.history().retainedFacts(),
-                        preflight.before(),owner,expectedState,saveOutput.getParent());
+                var qualified=readImportedColdHistory(scope,prepared,plan,expectedState,policy);
+                var material=qualified.material();
+                var preflight=qualified.history();
 
                 var terminal=retireExitedLife(scope,actualArchive);
                 var proof=preflight.history().canonicalSequence()==terminal.sequence()?preflight:
@@ -1321,11 +1363,11 @@ public final class RootApplicationAssembly {
                         &&proof.history().canonicalSequence()==terminal.sequence()
                         &&proof.history().settledActions().contains(terminal),
                         "imported restore did not retain the qualified original frontier and its exact administrative terminal");
-                var result=new ColdRestoreSource(this,lifecycle,scope.exited,materials,material,prepared.driverCheckpoints(),
+                var result=new ColdRestoreSource(this,lifecycle,scope.exited,prepared.materialStore(),material,prepared.driverCheckpoints(),
                         proof.history(),proof.before(),policy,deadline,prepared);
                 coldRestoreSource=result;
                 result.requireCurrent(same);
-                return new ExitedImportedRestore(result,profile);
+                return new ExitedImportedRestore(result,qualified.profile());
             });
         }
         public ContinuityWriter writer() { return writer; }

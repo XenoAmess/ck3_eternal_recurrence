@@ -41,22 +41,38 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
     }
 
     public int runWithHost(org.xar.ck3.control.service.OrdinarySessionHost ordinaryHost, String... args) throws Exception {
+        return runPrepared(ordinaryHost,null,Optional.empty(),args);
+    }
+
+    int runPrepared(org.xar.ck3.control.service.OrdinarySessionHost ordinaryHost,RootOrdinaryRuntimeConfiguration retainedConfiguration,
+            Optional<GameSupervisorControl.Descriptor> retainedOwner,String... args)throws Exception {
         java.util.Objects.requireNonNull(ordinaryHost);
         if(args.length<3)throw new IllegalArgumentException("ordinary-worker requires owner.json, configuration and mode");
         String mode = args[2];
         boolean loaded="resume-loaded-replacement".equals(mode);
+        boolean importedLoaded="resume-imported-loaded-replacement".equals(mode);
         boolean imported="restore-exited".equals(mode)&&args.length==6;
         boolean resume="resume".equals(mode);
-        if(args.length!=(loaded||imported?6:3))
+        if(args.length!=(loaded||imported||importedLoaded?6:3))
             throw new IllegalArgumentException("recovery request requires its original path, byte count and SHA-256");
         if (!"fresh".equals(mode) && !"resume".equals(mode) && !"current-map".equals(mode) && !"operator-quarantine".equals(mode)
-                &&!"retire-exited".equals(mode)&&!"restore-exited".equals(mode)&&!loaded) throw new IllegalArgumentException("unknown ordinary-worker mode");
+                &&!"retire-exited".equals(mode)&&!"restore-exited".equals(mode)&&!loaded&&!importedLoaded) throw new IllegalArgumentException("unknown ordinary-worker mode");
         Clock clock = Clock.systemUTC();
-        var descriptor = GameSupervisorControl.readDescriptor(Path.of(args[0]));
+        Path configPath=Path.of(args[1]).toAbsolutePath().normalize();
+        var descriptor = retainedOwner.isPresent()?retainedOwner.orElseThrow():GameSupervisorControl.readDescriptor(Path.of(args[0]));
         NativeLaunchPlan plan = descriptor.configuration().accept();
-        RootOrdinaryRuntimeConfiguration config=imported?RootOrdinaryRuntimeConfiguration.readSaved(Path.of(args[1]),plan):
-                resume?RootOrdinaryRuntimeConfiguration.readResume(Path.of(args[1]),plan):
-                        RootOrdinaryRuntimeConfiguration.read(Path.of(args[1]));
+        RootLoadedReplacementRecoveryInputs.ImportedRequest importedLoadedInput=null;
+        if(importedLoaded) {
+            if(!args[4].matches("[1-9][0-9]{0,5}"))throw new IOException("bounded exact imported loaded recovery request required");
+            importedLoadedInput=RootLoadedReplacementRecoveryInputs.readImportedExact(new ExactRef(args[3],Long.parseLong(args[4]),args[5]),clock);
+            if(!Path.of(importedLoadedInput.ownerDescriptor().path()).equals(Path.of(args[0]).toAbsolutePath().normalize()))
+                throw new IOException("imported loaded entry requires its actual successor owner descriptor");
+        }
+        RootOrdinaryRuntimeConfiguration config=retainedConfiguration!=null?retainedConfiguration:
+                importedLoaded?readImportedLoadedWorkerConfiguration(configPath,importedLoadedInput):
+                imported?RootOrdinaryRuntimeConfiguration.readSaved(configPath,plan):
+                resume?RootOrdinaryRuntimeConfiguration.readResume(configPath,plan):RootOrdinaryRuntimeConfiguration.read(configPath);
+        if(!configPath.equals(config.configurationFile()))throw new IOException("retained worker configuration crossed its original path");
         boolean savedResume=resume&&config.initialPolicy().kind()==
                 org.xar.ck3.control.application.driver.InitialEpisodePolicy.Lifecycle.NATIVE_CAMPAIGN_SAVED;
         Optional<ExactRef> importedRequest=Optional.empty();
@@ -76,7 +92,7 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
         RootOrdinaryWorkerLoop.Result result = null;
         Throwable primary = null;
         try {
-            prepared = imported||savedResume?RootOrdinaryRuntimeAssembly.prepareExistingSaved(config,clock):
+            prepared = imported||savedResume||importedLoaded?RootOrdinaryRuntimeAssembly.prepareExistingSaved(config,clock):
                     loaded?RootOrdinaryRuntimeAssembly.prepareLoadedReplacement(config,clock):RootOrdinaryRuntimeAssembly.prepare(config,clock);
             prepared.bindOrdinaryHost(ordinaryHost);
             if("retire-exited".equals(mode)) {
@@ -89,7 +105,22 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
                         .put("game_launch_requested",false).put("native_attachment_requested",false);
                 emit(retired);return 0;
             }
-            if(loaded) {
+            if(importedLoaded) {
+                var input=importedLoadedInput;
+                var originals=prepared.prepareImportedLoadedRecovery(input);
+                if(!originals.owner().equals(descriptor))throw new IOException("imported loaded owner changed before Native attachment");
+                Instant attachDeadline=clock.instant().plus(config.operationTimeout());
+                if(attachDeadline.isAfter(input.deadline()))attachDeadline=input.deadline();
+                attached=NativeGameAttachment.attach(new NativeGameAttachment.Request(plan,descriptor.generation(),
+                        prepared.privatePermissions(),config.maximumFramesPerOperation(),config.maximumSubmissions()),attachDeadline,config.operationTimeout());
+                loadedRole=org.xar.ck3.control.platform.RootProcessAttach.retainImportedLoadedReplacement(
+                        attached,originals,input.evidenceDirectory(),input.deadline());
+                running=prepared.openImportedLoadedCheckpointRecovery(attached,loadedRole,input);
+                var restored=event(clock,"LOADED_SAVED_RESTORATION_ADOPTED");restored.set("game",attached.generation().toJson());
+                restored.put("owner_descriptor",input.ownerDescriptor().path()).put("imported_saved",true).put("new_saved_day_credit",0)
+                        .put("new_game_days",0).put("lifecycle_create_requested",false).put("ordinary_batch_started",false);
+                emit(restored);
+            } else if(loaded) {
                 if(!args[4].matches("[1-9][0-9]{0,5}"))throw new IOException("bounded exact loaded recovery request required");
                 var requestRef=new org.xar.ck3.control.contracts.ExactRef(args[3],Long.parseLong(args[4]),args[5]);
                 var input=RootLoadedReplacementRecoveryInputs.readExact(requestRef,clock);
@@ -324,6 +355,16 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
 
     @FunctionalInterface interface CleanupPhase {void run()throws Exception;}
     /** Real owner wait runs first. Its diagnostic failure cannot skip independent remaining releases. */
+    static RootOrdinaryRuntimeConfiguration readImportedLoadedWorkerConfiguration(Path configuration,
+            RootLoadedReplacementRecoveryInputs.ImportedRequest input)throws IOException {
+        var original=RootSavedRuntimeConfigurationInputs.readSource(input.original().runtimeConfiguration());
+        var oldPlan=org.xar.ck3.control.platform.NativeLaunchPlanCodec.read(original.launchPlanFile());
+        var selected=RootOrdinaryRuntimeConfiguration.readSaved(configuration,oldPlan);
+        if(!selected.stateDirectory().equals(original.stateDirectory()))
+            throw new IOException("imported loaded recovery configuration crossed its original writer");
+        return selected;
+    }
+
     static void finishOwnerCleanup(Throwable primary,CleanupPhase owner,CleanupPhase resources,CleanupPhase loaded)throws Exception {
         Throwable failure=primary;
         for(var phase:java.util.List.of(owner,resources,loaded)) {

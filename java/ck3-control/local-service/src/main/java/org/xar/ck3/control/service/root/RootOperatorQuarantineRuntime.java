@@ -59,19 +59,30 @@ final class RootOperatorQuarantineRuntime {
         loaded.requireCurrent(deadline);
         byte[] bytes=readExact(configuredRequest);var request=CompositeOperatorQuarantineRequest.decode(bytes);
         var old=loaded.previousOwner();
-        StrictJson.require(request.exitedLife().isEmpty() && request.lifeInterruption()&&!request.reservedTailInterruption()
-                &&request.machineId().equals(old.machineId())&&request.game().equals(old.game())
-                &&request.episodeRunId().equals(old.sessionId()),"loaded recovery requires its actual old configured Life terminal source");
+        boolean imported=loaded.cachedAck().importedSaveTransfer().isPresent();
+        var terminalRef=imported?java.util.Optional.of(loaded.oldTerminal()):java.util.Optional.<ExactRef>empty();
+        StrictJson.require(imported==request.exitedLife().isPresent()
+                &&request.matchesExitedOwner(old.machineId(),old.game(),old.sessionId(),terminalRef),
+                "loaded recovery requires its actual old configured Life terminal source");
+        var terminal=java.util.Optional.<org.xar.ck3.control.application.action.RawJson>empty();
+        if(imported) {
+            StrictJson.require(!request.issuedAt().isBefore(loaded.oldTerminalObservedAt()),
+                    "exited Life decision predates the original supervisor exit");
+            terminal=java.util.Optional.of(new org.xar.ck3.control.application.action.RawJson(readExact(loaded.oldTerminal(),262144)));
+        }
         var source=new CompositeOperatorQuarantineSource(configuredRequest,bytes,readExact(request.authorizedBy()),old.game(),old.sessionId(),
                 new org.xar.ck3.control.application.action.OperationKey("life-advance"),
-                org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER,clock);
+                org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER,clock,terminal);
         loaded.requireCurrent(deadline);core.bindOperatorQuarantineSource(source);
     }
     static void requireRestorableOperatorRequest(ExactRef configuredRequest,boolean imported)throws IOException {
-        boolean exitedLife=CompositeOperatorQuarantineRequest.decode(readExact(configuredRequest)).exitedLife().isPresent();
+        boolean exitedLife=readConfigured(configuredRequest).exitedLife().isPresent();
         if (exitedLife!=imported) throw new IOException(imported
                 ?"imported Saved recovery requires its own exited positive-RESUME operator decision"
                 :"exited positive-RESUME recovery requires its explicit original imported Saved source");
+    }
+    static CompositeOperatorQuarantineRequest readConfigured(ExactRef configuredRequest)throws IOException {
+        return CompositeOperatorQuarantineRequest.decode(readExact(configuredRequest));
     }
     private static byte[] readExact(ExactRef reference)throws IOException {
         return readExact(reference,65536);

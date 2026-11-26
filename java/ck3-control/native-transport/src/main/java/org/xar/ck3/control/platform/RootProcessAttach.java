@@ -377,6 +377,8 @@ public final class RootProcessAttach {
         public String originalPipe(){return originalConfiguration().pipeName();}
         public ExactRef oldSourceEvidence(){return old.source().currentObservation();}
         public ExactRef oldOwner(){return old.source().descriptorReference();}
+        public ExactRef oldTerminal(){return old.source().terminalReference();}
+        public Instant oldTerminalObservedAt(){return old.source().terminal().observedAt();}
         public ExactRef parentControl(){return parentControl;}
         public ExactRef generationClaim(){return generationClaim;}
         public ExactRef ownerDescriptor(){return custody.descriptorRef;}

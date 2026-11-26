@@ -2,9 +2,20 @@ package org.xar.ck3.control.service.root;
 
 import java.nio.file.Path;
 import java.time.Instant;
+import java.util.Base64;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.zip.GZIPInputStream;
 import org.junit.jupiter.api.Test;
+import org.xar.ck3.control.application.action.ActionCodec;
+import org.xar.ck3.control.application.action.CompositeOperatorQuarantineRequest;
 import org.xar.ck3.control.application.driver.DriverJson;
+import org.xar.ck3.control.application.session.OrdinaryCycleTransitions;
+import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
+import org.xar.ck3.control.continuity.ContinuityState;
+import org.xar.ck3.control.continuity.SavedContinuityBootstrap;
+import org.xar.ck3.control.continuity.writer.WriterContracts;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.GameGeneration;
 import org.xar.ck3.control.contracts.PythonOnlyUInt64;
@@ -63,6 +74,48 @@ final class RootLoadedRecoveryRequestContractTest {
         edited.put("deadline_utc",now.plusSeconds(90).toString());
         ((com.fasterxml.jackson.databind.node.ObjectNode)edited.get("parent_control")).put("bytes",65537);
         assertThrows(IllegalArgumentException.class,()->RootLoadedReplacementRecoveryInputs.decodeImported(StrictJson.canonical(edited)));
+    }
+
+    @Test void importedPreAttachGateSeparatesArchivedCampaignEpisodeFromRetiredRuntimeOwner()throws Exception {
+        String resource="/org/xar/ck3/control/application/session/source56-interrupted-recovery-prefix.json.gz";
+        com.fasterxml.jackson.databind.node.ObjectNode archived;
+        try(var original=getClass().getResourceAsStream(resource)) {
+            assertNotNull(original);
+            try(var compressed=new GZIPInputStream(original)) {
+                var fixture=StrictJson.parse(compressed.readNBytes(1<<20),1<<20);
+                byte[] snapshot=Base64.getDecoder().decode(fixture.get("head").textValue());
+                assertEquals("2712b29737154b0fa7ac10c814961fb36f310df560aaf3f566d3438f77656718",ActionCodec.sha256(snapshot));
+                archived=(com.fasterxml.jackson.databind.node.ObjectNode)StrictJson.parse(snapshot,1<<20);
+            }
+        }
+        var entry=SavedContinuityBootstrap.request((com.fasterxml.jackson.databind.node.ObjectNode)archived.get(
+                SavedContinuityBootstrap.FIELD)).detailsObject();
+        var owner=OrdinaryCycleTransitions.sessionFromJson(entry.get("session"));
+        String episode=archived.path("latest_binding").path("episode_run_id").textValue();
+        assertNotEquals(episode,owner.sessionId());
+        var originalHead=head(archived,owner);
+        assertEquals(57,originalHead.state().sequence());
+        assertEquals("0f11c4aef77c2529e60a790bea068cd425fac9d61a949db27ac272ebf9f1ee1c",originalHead.digest());
+        var retiredMetadata=head(archived.deepCopy().put("sequence",58),owner);
+        var ordinary=request();var root=ordinary.evidenceDirectory().getParent();var now=ordinary.issuedAt();
+        var originalDecision=new CompositeOperatorQuarantineRequest(ref(root,"decision"),owner.machineId(),owner.game(),episode,
+                "actual-life-parent",ordinary.expectedHeadDigest(),ref(root,"action"),57,originalHead.digest(),
+                List.of(new CompositeOperatorQuarantineRequest.Child(1,"arm",ordinary.expectedHeadDigest()),
+                        new CompositeOperatorQuarantineRequest.Child(2,"resume",ordinary.expectedHeadDigest())),
+                now,now.plusSeconds(30),CompositeOperatorQuarantineRequest.EXITED_LIFE_SCOPE,List.of(),
+                Optional.of(new CompositeOperatorQuarantineRequest.ExitedLife(owner.sessionId(),ref(root,"old-terminal"),ordinary.expectedHeadDigest())));
+        var input=new RootLoadedReplacementRecoveryInputs.ImportedRequest(owner.machineId(),now,now.plusSeconds(90),
+                ref(root,"historical-exact3"),ordinary.ownerDescriptor(),ordinary.parentControl(),ordinary.generationClaim(),
+                ordinary.evidenceDirectory(),58,retiredMetadata.digest());
+        RootOrdinaryRuntimeAssembly.requireImportedLoadedPredecessor(retiredMetadata,input,originalDecision,owner);
+        assertThrows(java.io.IOException.class,()->RootOrdinaryRuntimeAssembly.requireImportedLoadedPredecessor(originalHead,input,originalDecision,owner));
+        assertThrows(java.io.IOException.class,()->RootOrdinaryRuntimeAssembly.requireImportedLoadedPredecessor(
+                retiredMetadata,input,originalDecision,new SessionIdentity(owner.machineId(),owner.game(),episode)));
+        var later=head(archived.deepCopy().put("sequence",59),owner);
+        assertThrows(java.io.IOException.class,()->RootOrdinaryRuntimeAssembly.requireImportedLoadedPredecessor(later,input,originalDecision,owner));
+    }
+    private static WriterContracts.Head head(com.fasterxml.jackson.databind.JsonNode value,SessionIdentity owner) {
+        return new WriterContracts.Head(ContinuityState.fromJson(value,owner.machineId()),List.of(),List.of(),List.of(),false);
     }
 
     private static RootLoadedReplacementRecoveryInputs.Request request() {
