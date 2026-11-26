@@ -533,7 +533,7 @@ final class CleanRestartCanonicalWriterTest {
             });
         }
     }
-    @Test void restartCaptureRetainsLargeActualKnownAndKeepsOrdinaryTransportBound()throws Exception {
+    @Test void restartCaptureRetainsLargeActualKnownOutsideTheTransportLimit()throws Exception {
         String step="preview-move-army-0-to-4",capability="game.command.preview-move-army-N-to-N";
         var installed=new java.util.concurrent.atomic.AtomicReference<ReadContract<MilitaryReadObservation>>();
         var scenario=new ActionWriterIntegrationFixture.SoftwareReadScenario("0".repeat(64),"captured-actual-read-history",source->{
@@ -586,7 +586,8 @@ final class CleanRestartCanonicalWriterTest {
                     return null;
                 });assertTrue(publisher.flushActualReads(same).isPresent());return null;
             });
-            // Publication deliberately clears old receive custody; use the real collector for a current observation.
+            // Consume the fixture's next physical publication before the collector checks retained age.
+            fixture.physicalInputs().transport().observe(Instant.now().plusSeconds(60));
             dirtyReady(fixture,Instant.now().plusSeconds(60));
             var current=fixture.writer.locked(same->fixture.driverAuthority().withFrozenFacts(same,frozen->(DriverSnapshotFacts.Known)frozen.state()));
             assertEquals(before.driver().commandHistory().size()+6,current.driver().commandHistory().size());
@@ -597,15 +598,15 @@ final class CleanRestartCanonicalWriterTest {
             var ticket=fixture.writer.locked(same->input.controller().captureCleanRestart(same,"large-known-worker",0));
             var admitted=fixture.writer.locked(same->input.batches().admitCleanRestart(same,ticket));
             assertTrue(admitted.manifest().driverFacts().bytes()>ContinuityJson.TRANSPORT_MAX_BYTES);
-            assertArrayEquals(expected,fixture.archive.loadFullMaterial(admitted.manifest().driverFacts()).bytes());
+            byte[] archivedDriverFacts=fixture.archive.loadFullMaterial(admitted.manifest().driverFacts()).bytes();
+            assertArrayEquals(expected,archivedDriverFacts);
             assertArrayEquals(current.driver().encode(),fixture.archive.loadFullMaterial(admitted.manifest().fullDriver()).bytes());
             assertArrayEquals(current.driver().encode(),admitted.facts().driver().encode());assertEquals(current.stamp(),admitted.facts().stamp());
             assertEquals(current.auxiliary(),admitted.facts().auxiliary());assertEquals(current.loop(),admitted.facts().loop());
             assertEquals(current.actionRows(),admitted.facts().actionRows());assertEquals(current.originalHistoryBasis(),admitted.facts().originalHistoryBasis());
             var head=fixture.writer.locked(same->same.head().digest());
-            var ordinary=StrictJson.object().put("evidence_id","ordinary-transport-does-not-inherit-known-material").put("source","actual-ordinary-transport-test");
-            var ordinaryRequest=new org.xar.ck3.control.continuity.writer.WriterContracts.Request("fixture.ordinary_transport",ContinuityJson.canonical(ordinary),List.of(admitted.manifest().driverFacts()));
-            assertThrows(IOException.class,()->fixture.writer.locked(same->same.preview(ordinaryRequest)));
+            assertThrows(ContractViolationException.class,
+                    ()->ContinuityJson.parseObject(archivedDriverFacts,ContinuityJson.TRANSPORT_MAX_BYTES));
             Files.writeString(Path.of(admitted.manifest().driverFacts().path()),"{}");
             assertThrows(IOException.class,()->fixture.writer.locked(same->input.batches().admitCleanRestart(same,ticket)));
             assertEquals(head,fixture.writer.locked(same->same.head().digest()));
@@ -613,7 +614,7 @@ final class CleanRestartCanonicalWriterTest {
         }
     }
 
-    @Test void capturedRecoveryRetainsLargeSemanticDataAndKeepsOrdinaryTransportBound()throws Exception {
+    @Test void capturedRecoveryRetainsLargeSemanticDataOutsideTheTransportLimit()throws Exception {
         try(var fixture=fixture(root.resolve("large-semantic-recovery"))) {
             var first=dirtyReady(fixture,Instant.now().plusSeconds(60));var owner=fixture.observationIdentity();
             var verifier=new org.xar.ck3.control.application.readiness.NativeSemanticEvidenceVerifier((same,ref,max)->fixture.archive.readArtifact(same,ref,max));
@@ -634,8 +635,12 @@ final class CleanRestartCanonicalWriterTest {
             packet.put("snapshot_id","actual-large-semantic");packet.put("revision",nativeFrame.revision().add(BigInteger.ONE));
             var state=FullJsonTree.parse(nativeFrame.state().value(),DriverJson.MAX_NATIVE_BYTES);
             ((com.fasterxml.jackson.databind.node.ObjectNode)state).put("controlled_semantic_DATA","x".repeat(266240));packet.set("state",state);
-            fixture.enqueueSoftwareNativePacket(NativeWire.packet(FullJsonTree.encode(packet,DriverJson.MAX_NATIVE_BYTES)));
+            byte[] enlargedPacket=NativeWire.packet(FullJsonTree.encode(packet,DriverJson.MAX_NATIVE_BYTES));
+            fixture.enqueueSoftwareNativePacket(enlargedPacket);
+            var received=fixture.physicalInputs().transport().observe(Instant.now().plusSeconds(60));
+            assertArrayEquals(enlargedPacket,received.originalPacket());
             var semantic=dirtyReady(fixture,Instant.now().plusSeconds(60)).semanticEvidence().orElseThrow();
+            assertEquals(received.observedAt(),semantic.observedAt());
             assertTrue(semantic.semantic().bytes()>ContinuityJson.TRANSPORT_MAX_BYTES);
             assertTrue(semantic.semantic().bytes()<=org.xar.ck3.control.continuity.writer.WriterContracts.MAX_PIN_BYTES);
             var before=fixture.writer.locked(same->same.head().state());
@@ -647,9 +652,9 @@ final class CleanRestartCanonicalWriterTest {
             var retainedDigest=fixture.writer.locked(same->same.head().digest());
             fixture.writer.locked(same->{batches.finishInitialNoDispatchRecovery(same,retained,semantic);return null;});
             assertEquals(retainedDigest,fixture.writer.locked(same->same.head().digest()));
-            var ordinary=StrictJson.object().put("evidence_id","ordinary-transport-does-not-inherit-full-semantic").put("source","actual-ordinary-transport-test");
-            var ordinaryRequest=new org.xar.ck3.control.continuity.writer.WriterContracts.Request("fixture.ordinary_transport",ContinuityJson.canonical(ordinary),List.of(semantic.semantic()));
-            assertThrows(IOException.class,()->fixture.writer.locked(same->same.preview(ordinaryRequest)));
+            byte[] archivedSemantic=fixture.archive.loadFullMaterial(semantic.semantic()).bytes();
+            assertThrows(ContractViolationException.class,
+                    ()->ContinuityJson.parseObject(archivedSemantic,ContinuityJson.TRANSPORT_MAX_BYTES));
             batches.commit(new JournalInput(owner,"large-worker-1",JournalKind.BATCH_STARTED,Optional.empty(),Optional.empty(),Optional.empty(),List.of()));
             batches.commit(new JournalInput(owner,"large-worker-1",JournalKind.BATCH_INTERRUPTED,Optional.empty(),Optional.empty(),Optional.empty(),List.of()));
             var next=fixture.writer.locked(same->batches.admitInitialNoDispatchRecovery(same,owner));
