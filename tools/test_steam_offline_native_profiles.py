@@ -77,25 +77,24 @@ class ProfilesTest(unittest.TestCase):
         reader.steam = replace(reader.steam, file_version='11.23.65.88')
         endpoint = EndpointIdentity(12002, '134000000000000002', 8080, 'target',
                                     'https://steamloopback.host/index.html')
+        source = SourceIdentity(str(Path('steamui/sp.js').resolve()), 16224005, 'a'*64, '1', '2')
         live = ProbeResult('synthetic-profile-machine', str(value['observed_at_utc']),
-            'nonce', 'offline', 'observed', reader.steam,
-            SourceIdentity(str(Path('steamui/sp.js').resolve()), 16224005, 'a'*64, '1', '2'),
-            endpoint, (), 'cef_app_getters', None)
-        value = live.to_wire()
+            'nonce', 'offline', 'observed', reader.steam, source, endpoint, (), 'cef_app_getters', None)
+        live_wire = live.to_wire()
         with patch('steam_offline_state_probe.run_probe', return_value=live) as probe:
-            self.assertEqual(validate_observation(value, machine_id=live.machine_id, reader=reader), live)
+            self.assertEqual(validate_observation(live_wire, machine_id=live.machine_id, reader=reader), live)
             probe.assert_called_once_with(live.machine_id)
         for changed in [replace(live, status='online'), replace(live, endpoint=None),
-                        replace(live, source=replace(live.source, sha256='b'*64)),
+                        replace(live, source=replace(source, sha256='b'*64)),
                         replace(live, steam=replace(reader.steam, birth_filetime='134000000000000003'))]:
             with patch('steam_offline_state_probe.run_probe', return_value=changed):
                 with self.assertRaisesRegex(ValueError, 'live CEF'):
-                    validate_observation(value, machine_id=live.machine_id, reader=reader)
+                    validate_observation(live_wire, machine_id=live.machine_id, reader=reader)
         with patch('steam_offline_state_probe.run_probe') as probe:
             with self.assertRaises(ValueError):
-                validate_observation(value, machine_id='other-machine', reader=reader)
+                validate_observation(live_wire, machine_id='other-machine', reader=reader)
             with self.assertRaises(ValueError):
-                validate_observation(value, machine_id=live.machine_id, reader=reader,
+                validate_observation(live_wire, machine_id=live.machine_id, reader=reader,
                                      now=datetime.now(timezone.utc)+timedelta(seconds=31))
             probe.assert_not_called()
 
