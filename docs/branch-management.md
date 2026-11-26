@@ -299,3 +299,16 @@ ref as part of delivery rather than as a later cleanup project.
 旧分支中尚缺的七份静态研究原文和 Construction FIRST02 的离线记录已补回。战斗胜方所属 War 的
 1.20.0.3 专用原始实验完整保存于[独立归档](handover/archives/battle-winner-war-membership-12003.md)，
 原验证状态和当前原生运行资格各依原记录。
+
+第二批以同一绿色主线为依据，又退役主仓库 17 条和独立克隆 6 条引用，本轮合计 58 条。
+带改动的旧工作树在原 SHA 上解除分支绑定，状态、二进制差异及 Git index 摘要前后一致。
+锁定初始化的 `nw-activity-guest-value-20260930` 保留。`migration-mods-20261118` 原工作树有未提交改动，按原目录保留。
+其 14 条已提交改动分别核对了正式后继，其中 Ox Here 普通冠军薪资由 `6d05e69e67` 接回当前原版计算。
+8 项静态用例与 22 文件的可复现打包检查通过。原召唤冠军免费，原发布标签维持原提交。
+本轮未发布新 Workshop 版本。独立克隆与第二批回执保存在 `D:/ck3-state/ck3-mainline-closeout-20261126`。
+
+余下远端 `work/dynastic-heir-stock-input-20261025` 的源码归档已入主线，等待 exact `6a97ab3450` 的官方检查。
+已补回的历史文档和研究归档由 `894f7d0bc1` 发表，对应本地历史 ref 依该提交的官方结果退役。
+旧 Java Tools/休假候选的后继已在主线，更新到其覆盖范围的完整托管检查仍待通过。
+[DES 归档 CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/45837231107)
+[历史资料归档 CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/45848944860)
