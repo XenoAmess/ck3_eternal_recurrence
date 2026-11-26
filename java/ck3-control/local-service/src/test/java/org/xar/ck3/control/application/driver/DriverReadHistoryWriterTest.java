@@ -1,10 +1,16 @@
 package org.xar.ck3.control.application.driver;
 
 import static org.junit.jupiter.api.Assertions.*;
+import java.io.OutputStream;
+import java.io.RandomAccessFile;
 import java.math.BigInteger;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.security.DigestInputStream;
+import java.security.MessageDigest;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HexFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -20,6 +26,8 @@ import org.xar.ck3.control.application.planning.military.MilitaryReadObservation
 import org.xar.ck3.control.continuity.ContinuityJson;
 import org.xar.ck3.control.continuity.ContinuityState;
 import org.xar.ck3.control.continuity.writer.WriterContracts;
+import org.xar.ck3.control.contracts.ContractViolationException;
+import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.g2.planning.ProposalLifecycleCodec;
 import org.xar.ck3.control.nativebridge.ActionWriterIntegrationFixture;
@@ -258,7 +266,16 @@ final class DriverReadHistoryWriterTest {
             });
         }
     }
-    @Test void actualReadPublicationPinsFullDriverBeyondTransportAndKeepsDataAndTransportGuards() throws Exception {
+    @Test void actualReadPublicationUsesTheFullMaterialBoundForNamedEvidence() throws Exception {
+        Path oversizedPath=temporary.resolve("oversized-named-evidence.bin");
+        try(var file=new RandomAccessFile(oversizedPath.toFile(),"rw")) {
+            file.setLength(WriterContracts.MAX_PIN_BYTES+1L);
+        }
+        var digest=MessageDigest.getInstance("SHA-256");
+        try(var file=new DigestInputStream(Files.newInputStream(oversizedPath),digest)) {
+            file.transferTo(OutputStream.nullOutputStream());
+        }
+        var oversized=new ExactRef(oversizedPath.toString(),Files.size(oversizedPath),HexFormat.of().formatHex(digest.digest()));
         String padding="p".repeat(140000);
         var installed=new AtomicReference<ReadContract<MilitaryReadObservation>>();
         var scenario=new ActionWriterIntegrationFixture.SoftwareReadScenario("0".repeat(64),"full-driver-beyond-transport",source->{
@@ -281,10 +298,13 @@ final class DriverReadHistoryWriterTest {
         try(var fixture=new ActionWriterIntegrationFixture(temporary.resolve("full-driver-physical"),false,scenario)) {
             var contract=installed.get();var publisher=new DriverReadHistoryPublisher(fixture.driverAuthority(),fixture.archive,fixture.reads.catalog(),List.of(contract.sourceRef()));
             fixture.bindAdditionalTransitionAuthority(WriterContracts.DRIVER_READ_HISTORY_KIND,publisher);
-            fixture.bindAdditionalTransitionAuthority("fixture_transport_limit_control",new WriterContracts.TransitionAuthority(){
-                @Override public String revalidate(ContinuityState before,WriterContracts.Request request){throw new AssertionError("ordinary oversized evidence must be rejected before authority");}
-                @Override public String revalidate(WriterContracts.Head before,WriterContracts.Request request){throw new AssertionError("ordinary oversized evidence must be rejected before authority");}
-                @Override public ContinuityState reduce(ContinuityState before,WriterContracts.Request request){throw new AssertionError("ordinary oversized evidence must be rejected before reducer");}
+            fixture.bindAdditionalTransitionAuthority("fixture_named_evidence_limit",new WriterContracts.TransitionAuthority(){
+                @Override public String revalidate(ContinuityState before,WriterContracts.Request request){throw new AssertionError("actual Head required");}
+                @Override public String revalidate(WriterContracts.Head before,WriterContracts.Request request){
+                    assertFalse(request.evidence().contains(oversized),"over-limit evidence reached the authority");
+                    return before.digest();
+                }
+                @Override public ContinuityState reduce(ContinuityState before,WriterContracts.Request request){return before;}
             });
             var initial=assertInstanceOf(SessionPorts.Ready.class,fixture.collector.observe(fixture.observationIdentity(),Instant.now().plusSeconds(60)));
             var afterDriver=new AtomicReference<org.xar.ck3.control.contracts.ExactRef>();
@@ -328,17 +348,23 @@ final class DriverReadHistoryWriterTest {
                     var known=assertInstanceOf(DriverSnapshotFacts.Known.class,frozen.state());assertEquals(2,known.driver().commandHistory().size());
                     assertArrayEquals(full,known.driver().encode());return null;
                 });
-                var details=StrictJson.object().put("evidence_id","ordinary-transport-cap-control");
+                assertThrows(ContractViolationException.class,()->ContinuityJson.parseObject(full,ContinuityJson.TRANSPORT_MAX_BYTES));
+                var details=StrictJson.object().put("evidence_id","named-evidence-limit-control");
                 details.set("source",ProposalLifecycleCodec.source(fixture.observationSource()));
-                var ordinary=new WriterContracts.Request("fixture_transport_limit_control",StrictJson.canonical(details),List.of(after));
-                var tooLarge=assertThrows(java.io.IOException.class,()->same.preview(ordinary));
-                assertTrue(tooLarge.getMessage().contains("262144"));assertTrue(tooLarge.getMessage().contains(Long.toString(after.bytes())));
+                byte[] detailsBytes=StrictJson.canonical(details);
+                var ordinary=new WriterContracts.Request("fixture_named_evidence_limit",detailsBytes,List.of(after));
+                assertEquals(List.of(after),same.preview(ordinary).evidence().stream().map(WriterContracts.Pin::reference).toList());
+                var oversizedRequest=new WriterContracts.Request(ordinary.kind(),detailsBytes,List.of(oversized));
+                var tooLarge=assertThrows(java.io.IOException.class,()->same.preview(oversizedRequest));
+                assertTrue(tooLarge.getMessage().startsWith("named ledger source exceeds finite cap:"));
+                assertTrue(tooLarge.getMessage().contains(Long.toString(oversized.bytes())));
+                assertTrue(tooLarge.getMessage().contains(Integer.toString(WriterContracts.MAX_PIN_BYTES)));
                 java.nio.file.Files.write(Path.of(after.path()),new byte[]{'{','}'});
                 var tampered=assertThrows(java.io.UncheckedIOException.class,()->fixture.archive.withSession(same).loadFullMaterial(after));
                 assertTrue(tampered.getCause().getMessage().startsWith("named source bytes/SHA/path changed"));
                 assertEquals(1,same.head().state().sequence());assertEquals(2,fixture.scenarioReadWrites());assertEquals(0,fixture.nativeActionWrites());
                 System.out.println("FULL_DRIVER_READ_PUBLICATION_COMMITTED after_driver="+after+" successor_head="+head.digest()
-                        +" ordinary_transport_rejected="+tooLarge.getMessage()+" full_data_tamper_rejected="+tampered.getCause());
+                        +" named_evidence_limit_rejected="+tooLarge.getMessage()+" full_data_tamper_rejected="+tampered.getCause());
                 return null;
             });
         }
