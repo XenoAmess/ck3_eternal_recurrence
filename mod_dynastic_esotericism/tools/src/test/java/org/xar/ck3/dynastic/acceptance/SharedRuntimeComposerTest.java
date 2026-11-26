@@ -42,20 +42,39 @@ final class SharedRuntimeComposerTest {
 
     private record PythonResult(int exitCode, String output) { }
 
-    private static PythonResult python(String program, List<String> arguments) throws IOException, InterruptedException {
+    private PythonResult python(String program, List<String> arguments) throws IOException, InterruptedException {
         String interpreter = System.getProperty("dynastic.python", "python");
         List<String> command = new ArrayList<>(List.of(interpreter, "-B", "-X", "utf8", "-c", program));
         command.addAll(arguments);
-        Process process = new ProcessBuilder(command).redirectErrorStream(true).start();
-        if (!process.waitFor(30, TimeUnit.SECONDS)) {
-            process.destroyForcibly();
-            process.waitFor();
-            throw new IOException("Existing public Selection consumer timed out");
+        Path log = Files.createTempFile(temporary, "des-selection-consumer-", ".log");
+        Process process = new ProcessBuilder(command).redirectErrorStream(true).redirectOutput(log.toFile()).start();
+        boolean completed;
+        try {
+            completed = process.waitFor(30, TimeUnit.SECONDS);
+        } finally {
+            if (process.isAlive() && !process.destroyForcibly().waitFor(5, TimeUnit.SECONDS)) {
+                throw new IOException("Public Selection consumer did not stop");
+            }
         }
-        return new PythonResult(process.exitValue(), new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8));
+        int maximumOutputBytes = 1024 * 1024;
+        byte[] bytes;
+        try (var input = Files.newInputStream(log)) {
+            bytes = input.readNBytes(maximumOutputBytes + 1);
+        }
+        if (bytes.length > maximumOutputBytes) throw new IOException("Public Selection consumer output exceeded 1 MiB");
+        String output = new String(bytes, StandardCharsets.UTF_8);
+        if (!completed) throw new IOException("Public Selection consumer timed out: " + output);
+        return new PythonResult(process.exitValue(), output);
     }
 
-    private static void assertPublicSelectionConsumesProducedRuntime(Path runtime, Path products,
+    @Test
+    void consumerOutputLargerThanThePipeKeepsItsOriginalExitAndBytes() throws Exception {
+        PythonResult result = python("import sys; sys.stdout.write('x' * 65536)", List.of());
+        assertEquals(0, result.exitCode());
+        assertEquals("x".repeat(65536), result.output());
+    }
+
+    private void assertPublicSelectionConsumesProducedRuntime(Path runtime, Path products,
             Path presetManifest, Path initialReformManifest, Path coreManifest, Path presetProduct, List<Path> headManifests)
             throws IOException, InterruptedException {
         Path repository = Path.of(System.getProperty("dynastic.source")).toAbsolutePath().normalize().getParent();
@@ -102,6 +121,20 @@ final class SharedRuntimeComposerTest {
                     rejected=Selection(candidate_runtime,products_path,'authored-product','core').preflight()
                     assert rejected['status']=='BLOCKED',rejected
                     assert rejected['blockers']==[failure],rejected
+                root_tool='ck3_query_campaign_root_context_v1'
+                root_status=result['tool_status'][root_tool]
+                assert root_status['source_build_ready'] is True and root_status['actual_live_qualified'] is False
+                root_failure='Required MCP tool has no shared build-ready evidence: '+root_tool
+                for label,value in [('root-missing',None),('root-false',False),('root-integer',1),('root-null',None)]:
+                    candidate_manifest=copy.deepcopy(original_manifest)
+                    if label=='root-missing':del candidate_manifest['capabilities'][root_tool]
+                    else:candidate_manifest['capabilities'][root_tool]={'source_build_ready':value,'actual_live_qualified':False}
+                    mp=runtime_path.parent/(label+'-manifest.json')
+                    mp.write_text(json.dumps(candidate_manifest),encoding='utf-8')
+                    candidate=copy.deepcopy(original_runtime);candidate['manifest']=pin(mp)
+                    rp=runtime_path.parent/(label+'-runtime.json');rp.write_text(json.dumps(candidate),encoding='utf-8')
+                    rejected=Selection(rp,products_path,'authored-product','core').preflight()
+                    assert rejected['status']=='BLOCKED' and rejected['blockers']==[root_failure],rejected
                 assert manifest_path.read_bytes()==original_bytes
                 sys.path[:0]=[str(repository/'ck3_autonomous_player/src'),
                               str(repository/'ck3_autonomous_player/tests/unit')]
@@ -216,6 +249,17 @@ final class SharedRuntimeComposerTest {
                         result=bad.preflight()
                         assert any('Pinned input changed:' in e and str(config) in e for e in result['blockers']),result
                     finally:config.write_bytes(original)
+                for case_id,catalog,prepared_path,_ in prepared_cases:
+                    if case_id in ('sect_presets','initial_reform'):
+                        preflight=Selection(runtime_path,catalog,'dynastic-esotericism',case_id,prepared_path=prepared_path).preflight()
+                        root_tool='ck3_query_campaign_root_context_v1'
+                        assert root_tool in preflight['required_mcp_tools']
+                        assert 'Required MCP tool has no shared build-ready evidence: '+root_tool not in preflight['blockers']
+                        assert preflight['business_acceptance']=='NOT_ASSESSED'
+                        root_status=preflight['tool_status'][root_tool]
+                        assert root_status['source_build_ready'] is True,root_status
+                        assert root_status['actual_live_qualified'] is False,root_status
+                        assert pin(Path(root_status['evidence']['path']))==root_status['evidence']
                 """;
         PythonResult presetResult = python(presetProgram, List.of(repository.toString(), runtime.toString(),
                 presetManifest.toString(), initialReformManifest.toString(), coreManifest.toString(), presetProduct.toString()));
@@ -643,6 +687,12 @@ final class SharedRuntimeComposerTest {
                 result.qualification());
         assertFalse(actualManifest.path("capabilities").path("ck3_execute_player_rite_creation_action_v1").path("actual_live_qualified").booleanValue());
         assertEquals(retainedCapability, actualManifest.path("capabilities").path("ck3_take_snapshot"));
+        JsonNode campaignRoot = actualManifest.path("capabilities").path("ck3_query_campaign_root_context_v1");
+        assertTrue(campaignRoot.path("source_build_ready").isBoolean());
+        assertTrue(campaignRoot.path("source_build_ready").booleanValue());
+        assertTrue(campaignRoot.path("actual_live_qualified").isBoolean());
+        assertFalse(campaignRoot.path("actual_live_qualified").booleanValue());
+        assertEquals(pin(output.resolve("SOURCE-BUILD-ADMISSION.json")), campaignRoot.path("evidence"));
         JsonNode members = actualManifest.path("capabilities").path("ck3_query_player_rite_members_v1");
         assertTrue(members.path("source_build_ready").isBoolean());
         assertTrue(members.path("source_build_ready").booleanValue());
@@ -660,7 +710,7 @@ final class SharedRuntimeComposerTest {
         write(plan, JSON.createArrayNode());
         selectedCase.put("initial_plan", plan.toString());
         selectedCase.putArray("required_mcp_tools").add("ck3_take_snapshot").add("ck3_query_player_rite_members_v1")
-                .add("ck3_query_player_prisoner_collection_private_v1");
+                .add("ck3_query_player_prisoner_collection_private_v1").add("ck3_query_campaign_root_context_v1");
         selectedCase.putArray("opt_in_read_only_mcp_tools").add("ck3_query_player_rite_members_v1")
                 .add("ck3_query_player_prisoner_collection_private_v1");
         selectedCase.putObject("budgets").put("command_timeout", 300).put("readiness_timeout", 1800)
