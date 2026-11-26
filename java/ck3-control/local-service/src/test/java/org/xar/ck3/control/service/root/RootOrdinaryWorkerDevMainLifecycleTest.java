@@ -12,6 +12,7 @@ import java.io.PrintStream;
 import java.nio.channels.FileChannel;
 import java.nio.channels.OverlappingFileLockException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
@@ -29,6 +30,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.io.CleanupMode;
 import org.junit.jupiter.api.io.TempDir;
+import org.xar.ck3.control.application.driver.InitialEpisodePolicy;
 import org.xar.ck3.control.contracts.StrictJson;
 
 /** Actual adapter lifecycle, with the real worker failing before any Game or Native setup. */
@@ -48,6 +50,39 @@ public class RootOrdinaryWorkerDevMainLifecycleTest {
 
     @Test void failedWorkerPreservesOperatorReplacementOfItsStop() throws Exception {
         exercise(Stop.REPLACED_BY_OPERATOR);
+    }
+
+    @Test void ordinaryAndLoadedPreparationLeaveOwnerReadingToTheDelegate() throws Exception {
+        String configuration = configuration().toString();
+        String absentOwner = temp.resolve("missing-owner.json").toString();
+        var resume = RootOrdinaryWorkerDevMain.prepareInvocation(absentOwner, configuration);
+        assertArrayEquals(new String[]{absentOwner, configuration, "resume"}, resume.arguments());
+        assertEquals(InitialEpisodePolicy.Lifecycle.ORDINARY_CAMPAIGN_SUCCESSION, resume.configuration().initialPolicy().kind());
+        assertTrue(resume.retainedOwner().isEmpty());
+
+        var legacyRestore = RootOrdinaryWorkerDevMain.prepareInvocation(absentOwner, configuration, "restore-exited");
+        assertArrayEquals(new String[]{absentOwner, configuration, "restore-exited"}, legacyRestore.arguments());
+        assertTrue(legacyRestore.retainedOwner().isEmpty());
+
+        String[] loaded = {absentOwner, configuration, "resume-loaded-replacement", "exact-request.json", "123", "a".repeat(64)};
+        var loadedInvocation = RootOrdinaryWorkerDevMain.prepareInvocation(loaded);
+        assertArrayEquals(loaded, loadedInvocation.arguments());
+        assertTrue(loadedInvocation.retainedOwner().isEmpty());
+    }
+
+    @Test void savedResumeAndImportedRestoreRequireTheOriginalOwnerBeforeTakingTheDevLock() throws Exception {
+        String configuration = configuration().toString();
+        String absentOwner = temp.resolve("missing-owner.json").toString();
+        var savedPolicy = StrictJson.object().put("schema", InitialEpisodePolicy.MATERIALIZED_SAVED_SCHEMA);
+        savedPolicy.putNull("succession_lifecycle");
+        Files.write(temp.resolve("initial-policy.json"), StrictJson.canonical(savedPolicy));
+
+        assertThrows(NoSuchFileException.class, () -> RootOrdinaryWorkerDevMain.prepareInvocation(absentOwner, configuration));
+        assertThrows(NoSuchFileException.class, () -> RootOrdinaryWorkerDevMain.prepareInvocation(
+                absentOwner, configuration, "restore-exited", "exact-request.json", "123", "a".repeat(64)));
+        assertThrows(IllegalArgumentException.class, () -> RootOrdinaryWorkerDevMain.prepareInvocation(
+                absentOwner, configuration, "restore-exited", "incomplete-request.json", "123"));
+        assertFalse(Files.exists(temp.resolve("state")));
     }
 
     private void exercise(Stop scenario) throws Exception {

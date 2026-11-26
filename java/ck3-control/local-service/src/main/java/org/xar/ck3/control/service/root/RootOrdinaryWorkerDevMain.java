@@ -19,11 +19,15 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import org.eclipse.microprofile.config.ConfigProvider;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.platform.GameSupervisorControl;
+import org.xar.ck3.control.platform.NativeLaunchPlan;
+import org.xar.ck3.control.service.OrdinarySessionHost;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /** Dev-only CDI lifecycle delegation. The existing worker owns every business transition. */
@@ -59,14 +63,8 @@ public class RootOrdinaryWorkerDevMain implements QuarkusApplication {
     void start(@Observes StartupEvent event) throws Exception {
         // Other Quarkus dev mains must not read worker arguments/configuration or create worker resources.
         if(LaunchMode.current()!=LaunchMode.DEVELOPMENT||!enabled())return;
-        boolean loaded=arguments.length>=3&&"resume-loaded-replacement".equals(arguments[2]);
-        if(loaded?arguments.length!=6:arguments.length!=2&&arguments.length!=3)
-            throw new IllegalArgumentException("ordinary-worker-dev requires owner/config/mode; loaded replacement also needs exact recovery request3");
-        String mode=arguments.length>=3?arguments[2]:"resume";
-        if(!"resume".equals(mode)&&!"current-map".equals(mode)&&!"operator-quarantine".equals(mode)&&!"retire-exited".equals(mode)&&!"restore-exited".equals(mode)&&!loaded)
-            throw new IllegalArgumentException("unknown ordinary-worker-dev mode");
-        configuration=RootOrdinaryRuntimeConfiguration.read(Path.of(arguments[1]));
-        String[] actual=loaded?arguments.clone():new String[]{arguments[0],arguments[1],mode};
+        Invocation invocation = prepareInvocation(arguments);
+        configuration = invocation.configuration();
         Files.createDirectories(configuration.stateDirectory());
         try {
             lockChannel=FileChannel.open(configuration.stateDirectory().resolve("ordinary-worker-dev.lock"),StandardOpenOption.CREATE,StandardOpenOption.WRITE);
@@ -78,7 +76,7 @@ public class RootOrdinaryWorkerDevMain implements QuarkusApplication {
         }
         started=true;
         try {
-            Thread.ofPlatform().name("ordinary-worker-dev-business").start(()->execute(actual));
+            Thread.ofPlatform().name("ordinary-worker-dev-business").start(() -> execute(invocation));
         } catch(RuntimeException|Error failure) {
             started=false;
             closeOwnership(failure);
@@ -87,14 +85,53 @@ public class RootOrdinaryWorkerDevMain implements QuarkusApplication {
         }
     }
 
-    private void execute(String[] actual) {
+    record Invocation(RootOrdinaryRuntimeConfiguration configuration,
+            Optional<GameSupervisorControl.Descriptor> retainedOwner, String[] arguments) {}
+
+    private static final class OwnerPlanReader {
+        private GameSupervisorControl.Descriptor descriptor;
+
+        NativeLaunchPlan read(Path path) throws IOException {
+            descriptor = GameSupervisorControl.readDescriptor(path);
+            return descriptor.configuration().accept();
+        }
+    }
+
+    static Invocation prepareInvocation(String... arguments) throws IOException {
+        String mode = arguments.length >= 3 ? arguments[2] : "resume";
+        boolean loaded = "resume-loaded-replacement".equals(mode);
+        boolean importedRestore = "restore-exited".equals(mode) && arguments.length == 6;
+        boolean exactRecovery = loaded || importedRestore;
+        if (exactRecovery ? arguments.length != 6 : arguments.length != 2 && arguments.length != 3)
+            throw new IllegalArgumentException("ordinary-worker-dev requires owner/config/mode and the exact original recovery tuple for a loaded or imported restore");
+        if (!"resume".equals(mode) && !"current-map".equals(mode) && !"operator-quarantine".equals(mode)
+                && !"retire-exited".equals(mode) && !"restore-exited".equals(mode) && !loaded)
+            throw new IllegalArgumentException("unknown ordinary-worker-dev mode");
+
+        Path configurationFile = Path.of(arguments[1]);
+        OwnerPlanReader owner = new OwnerPlanReader();
+        RootOrdinaryRuntimeConfiguration configuration;
+        if (importedRestore) {
+            configuration = RootOrdinaryRuntimeConfiguration.readSaved(configurationFile, owner.read(Path.of(arguments[0])));
+        } else if ("resume".equals(mode)) {
+            configuration = RootOrdinaryRuntimeConfiguration.readResume(configurationFile,
+                    () -> owner.read(Path.of(arguments[0])));
+        } else {
+            configuration = RootOrdinaryRuntimeConfiguration.read(configurationFile);
+        }
+        String[] actual = exactRecovery ? arguments.clone() : new String[]{arguments[0], arguments[1], mode};
+        return new Invocation(configuration, Optional.ofNullable(owner.descriptor), actual);
+    }
+
+    private void execute(Invocation invocation) {
         int exit=4;
         Throwable failure=null;
         boolean delegateReturned=false;
         try {
             emitObservation(Phase.DELEGATE_STARTED, null, null);
             // This returns only after the existing Main's actual business-resource finally.
-            exit=new RootOrdinaryWorkerMain().run(actual);
+            exit = new RootOrdinaryWorkerMain().runPrepared(new OrdinarySessionHost(), invocation.configuration(),
+                    invocation.retainedOwner(), invocation.arguments());
             delegateReturned=true;
         } catch(Throwable failed) {
             failure=failed;
