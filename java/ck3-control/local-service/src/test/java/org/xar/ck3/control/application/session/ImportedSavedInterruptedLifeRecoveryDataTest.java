@@ -187,6 +187,81 @@ final class ImportedSavedInterruptedLifeRecoveryDataTest {
             var foreign = new SessionIdentity(fixture.owner.machineId(), game, "different-software-game-session");
             assertThrows(ContractViolationException.class, () -> ContinuityActionJournal.committedImportedRestoreRetirement(
                     same, prepared, committed, snapshot, archive, foreign));
+            assertImportedKeeperRestartClean(fixture, same, archive, request, sources, replacement, raw);
+            return null;
+        });
+    }
+
+    private static void assertImportedKeeperRestartClean(Fixture fixture, ContinuityStorePort.Session same,
+            OutcomeArchive archive, WriterContracts.Request attachment, JsonNode sources, SessionIdentity replacement,
+            List<ActionReceipt> originalActions) throws IOException {
+        var attached = fixture.state.toJson();
+        var pair = SavedAttachmentAuthority.pairFromDetails(attachment);
+        var loaded = ContinuityJson.parseObject(binary(sources.get("opening")), 1 << 20);
+        var retainedCycle = ContinuityJson.parseObject(archive.loadMaterial(
+                ExactRef.fromJson(attached.path(WriterContracts.ORDINARY_CYCLE_FIELD).get("head"))).bytes(), 1 << 20);
+        var oldSemantic = OrdinaryCycleTransitions.semanticFromJson(retainedCycle.get("semantic"));
+        // The new ordinary cycle uses the archived restoration coordinates. These references recur only as
+        // reducer DATA in this fixture. The fixture cannot publish a fresh observation or issue a native action.
+        var observed = ProposalLifecycleCodec.observation(pair.frame());
+        observed.set("game", replacement.game().toJson());
+        ((ObjectNode) observed.get("frame")).put("snapshot_id", StrictJson.text(loaded.get("snapshot_id")))
+                .put("native_revision", StrictJson.text(loaded.get("native_revision")));
+        var semantic = new SessionPorts.SemanticEvidence(ProposalLifecycleCodec.decodeObservation(observed),
+                oldSemantic.semantic(), ExactRef.fromJson(loaded.get("original_native_packet")), oldSemantic.driverStamp(),
+                oldSemantic.originalDriver(), oldSemantic.observedAt());
+        var retainedPending = StrictJson.object();
+        for (String field : List.of("pending_cycle", "pending_checkpoint")) {
+            var entry = retainedPending.putObject(field).put("present", attached.has(field));
+            if (attached.has(field)) entry.set("value", attached.get(field));
+        }
+        String pendingDigest = ContinuityJson.digest(retainedPending);
+        var cycle = StrictJson.object().put("schema", "xar.java-ordinary-cycle-state/v2")
+                .put("basis_cycles", fixture.state.settledCycles()).put("completed_cycles", fixture.state.settledCycles())
+                .putNull("head").putNull("pending_receipt").putNull("episode_origin").put("retained_legacy_pending_digest", pendingDigest);
+        cycle.set("session", OrdinaryCycleTransitions.sessionToJson(replacement));
+        cycle.set("origin_frame", observed);
+        var tombstone = StrictJson.object().put("schema", "xar.java-ordinary-cycle-restore-tombstone/v2")
+                .put("attachment_identity", attachment.identity()).put("retained_legacy_pending_digest", pendingDigest);
+        tombstone.set("restored_session", cycle.get("session"));
+        tombstone.set("restore_pair", attachment.detailsObject().get(SavedAttachmentAuthority.PAIR_DETAIL));
+        for (String field : List.of(WriterContracts.ORDINARY_CYCLE_FIELD, WriterContracts.ORDINARY_SAVED_CYCLE_FIELD,
+                WriterContracts.ORDINARY_CYCLE_REBIND_FIELD)) {
+            var entry = tombstone.putObject(field).put("present", attached.has(field));
+            if (attached.has(field)) entry.set("value", attached.get(field));
+        }
+        tombstone.set("original_action_head", ContinuityActionJournal.recordHead(fixture.state).orElseThrow().toJson());
+        var original = archive.preserveMaterial(new RawJson(ContinuityJson.canonical(tombstone)));
+        var rebind = StrictJson.object().put("evidence_id", "software-imported-keeper-rebind")
+                .put("source", WriterContracts.ORDINARY_IMPORTED_CYCLE_RESTORE_SOURCE).put("operation", "REBIND")
+                .put("attachment_identity", attachment.identity()).put("attachment_head_digest", same.head().digest());
+        rebind.set("session", cycle.get("session"));
+        rebind.set("restore_pair", tombstone.get("restore_pair"));
+        rebind.set("semantic", OrdinaryCycleTransitions.semanticToJson(semantic));
+        rebind.set("previous_state_ref", original.toJson());
+        rebind.set("new_cycle_state", cycle);
+        fixture.applyCycle(rebind);
+
+        var keeperCycles = new OrdinaryCycleTransitions(archive,
+                (session, identity, evidence) -> { throw Fixture.unavailable(); },
+                (session, identity, saved, settlement) -> { throw Fixture.unavailable(); },
+                new OriginalWindowReducer.Policy(fixture.state.origin().targetDays()), fixture::requireSession);
+        keeperCycles.withLocked(same, () -> {
+            var keeperPredecessor = fixture.state;
+            keeperCycles.requireRestartClean(same, replacement);
+            assertSame(keeperPredecessor, fixture.state);
+            assertEquals(originalActions, ContinuityActionJournal.receipts(fixture.state, archive));
+            assertEquals(56, fixture.state.settledCycles());
+            assertEquals(53179344, fixture.state.settledDateRaw());
+            try {
+                var incomplete = fixture.state.toJson();
+                incomplete.remove(WriterContracts.ORDINARY_IMPORTED_CYCLE_ORIGIN_FIELD);
+                fixture.state = ContinuityState.fromJson(incomplete, replacement.machineId());
+                var failure = assertThrows(ContractViolationException.class, () -> keeperCycles.requireRestartClean(same, replacement));
+                assertTrue(failure.getMessage().contains("unresolved original action remains retained"), failure::getMessage);
+            } finally {
+                fixture.state = keeperPredecessor;
+            }
             return null;
         });
     }
