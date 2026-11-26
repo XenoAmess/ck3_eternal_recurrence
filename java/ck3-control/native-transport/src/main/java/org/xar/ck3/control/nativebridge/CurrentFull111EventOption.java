@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -24,6 +25,7 @@ import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFrame;
 public final class CurrentFull111EventOption {
     public static final String REQUEST_SCHEMA = "ck3.full111.ordinary_event_option_request.v2";
     public static final String RESULT_SCHEMA = "ck3.full111.ordinary_event_option_result.v2";
+    public static final Duration RENDERER_RENEWAL_WINDOW = Duration.ofSeconds(8);
     private static final ExactCk3Build BUILD = ExactCk3Build.CK3_121003_STEAM_26785313_FULL111;
     private static final Set<String> TARGET_FIELDS = Set.of("instance_id", "recipient_character_id",
             "definition_key", "authored_option_index");
@@ -103,6 +105,16 @@ public final class CurrentFull111EventOption {
             return new Target(CurrentLyd.i32(target.get("instance_id")), CurrentLyd.i32(target.get("recipient_character_id")),
                     NativeWire.text(target.get("definition_key")), CurrentLyd.i32(target.get("authored_option_index")));
         }
+    }
+
+    /** The same planned action may use a different renderer receipt only when its complete evidence still agrees. */
+    public static boolean matchesPlannedRenderer(CurrentFull111EventRenderer planned, CurrentFull111EventRenderer fresh, Target target) {
+        return planned.status() == CurrentFull111EventRenderer.Status.AVAILABLE
+                && fresh.status() == CurrentFull111EventRenderer.Status.AVAILABLE
+                && planned.providerGeneration().equals(fresh.providerGeneration())
+                && fresh.querySequence().compareTo(planned.querySequence()) > 0
+                && planned.factsBefore().equals(fresh.factsBefore()) && planned.source().equals(fresh.source())
+                && target.matchesSelectable(fresh.source().orElseThrow());
     }
 
     public record Lineage(BigInteger sourceRevision, String rendererRequestId, BigInteger rendererProviderGeneration,

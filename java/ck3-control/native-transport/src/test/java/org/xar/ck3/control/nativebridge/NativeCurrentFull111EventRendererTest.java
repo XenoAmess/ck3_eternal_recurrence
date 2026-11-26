@@ -6,7 +6,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
+import java.time.Clock;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.ArrayDeque;
 import java.util.Optional;
 import java.util.List;
@@ -125,6 +128,57 @@ final class NativeCurrentFull111EventRendererTest {
         }
     }
 
+    @Test void aFreshRendererCanRevalidateThePlanAfterTheOriginalWireCutoff() throws Exception {
+        var clock = new SoftwareClock(Instant.ofEpochMilli(Instant.now().toEpochMilli()));
+        Instant canonicalDeadline = clock.instant().plusSeconds(60).plusNanos(123456);
+        try (var endpoint = new SoftwareEndpoint(true); var actual = transport(endpoint, clock)) {
+            endpoint.softwareSelectable = true;
+            var target = new CurrentFull111EventOption.Target(7, PREFIX.playedCharacterId(), "bookmark.1070", 1);
+            var planned = renderer(actual, clock.instant().plusSeconds(8));
+            Instant plannedDeadline = CurrentFull111EventOption.rendererDeadline(planned);
+            clock.now = clock.instant().plusMillis(38921);
+            assertTrue(clock.instant().isAfter(plannedDeadline));
+            assertTrue(clock.instant().isBefore(canonicalDeadline));
+
+            Instant lateDeadline = clock.instant().plusSeconds(8);
+            var fresh = renderer(actual, lateDeadline);
+            assertNotEquals(fresh.requestId(), planned.requestId());
+            assertEquals(plannedDeadline.plusMillis(38921), CurrentFull111EventOption.rendererDeadline(fresh));
+            assertEquals(lateDeadline, CurrentFull111EventOption.rendererDeadline(fresh));
+            assertTrue(CurrentFull111EventOption.rendererDeadline(fresh).isBefore(canonicalDeadline));
+            var plannedModel = CurrentFull111EventRenderer.decodeOutcome(planned);
+            var freshModel = CurrentFull111EventRenderer.decodeOutcome(fresh);
+            assertTrue(CurrentFull111EventOption.matchesPlannedRenderer(plannedModel, freshModel, target));
+            assertFalse(CurrentFull111EventOption.matchesPlannedRenderer(plannedModel, plannedModel, target));
+            assertTrue(fresh.custody().orElseThrow().writeEntered().order()
+                    .compareTo(planned.custody().orElseThrow().responseReceived().order()) > 0);
+            assertEquals(planned.custody().orElseThrow().custodyEpoch(), fresh.custody().orElseThrow().custodyEpoch());
+
+            endpoint.changeRenderer = true;
+            var changed = renderer(actual, lateDeadline);
+            assertFalse(CurrentFull111EventOption.matchesPlannedRenderer(plannedModel,
+                    CurrentFull111EventRenderer.decodeOutcome(changed), target));
+            assertEquals(List.of(CoreFrame.STEP, CurrentFull111EventRenderer.STEP, CoreFrame.STEP,
+                    CurrentFull111EventRenderer.STEP, CoreFrame.STEP, CurrentFull111EventRenderer.STEP), endpoint.writes);
+        }
+    }
+
+    private static AckReceived renderer(NativeGameTransport actual, Instant deadline) throws InterruptedException {
+        var core = assertInstanceOf(NativeGameTransport.CoreReceived.class, actual.readCoreFrameReceived(deadline));
+        return assertInstanceOf(AckReceived.class, actual.readFull111EventRenderer(core, 7, deadline));
+    }
+
+    private static final class SoftwareClock extends Clock {
+        private Instant now;
+        private SoftwareClock(Instant now) { this.now = now; }
+        @Override public ZoneId getZone() { return ZoneOffset.UTC; }
+        @Override public Clock withZone(ZoneId zone) {
+            if (!ZoneOffset.UTC.equals(zone)) throw new IllegalArgumentException("UTC expected");
+            return this;
+        }
+        @Override public Instant instant() { return now; }
+    }
+
     private static byte[] read(String file) throws Exception {
         try (var resource = NativeCurrentFull111EventRendererTest.class.getResourceAsStream("/current267-full111-renderer-cpp/" + file)) {
             assertNotNull(resource);
@@ -160,10 +214,14 @@ final class NativeCurrentFull111EventRendererTest {
     }
 
     private static NativeGameTransport transport(SoftwareEndpoint source) {
+        return transport(source, Clock.systemUTC());
+    }
+
+    private static NativeGameTransport transport(SoftwareEndpoint source, Clock clock) {
         String slash = Character.toString(92);
         var config = new NativePipeEndpoint.Config(slash + slash + "." + slash + "pipe" + slash + "render-fixture",
                 "software-renderer", GAME, "render-fixture", "software-renderer", BUILD.executableSha256(), BUILD.coreFrameAdapterId());
-        return new NativeGameTransport(source, config, 16, 16);
+        return new NativeGameTransport(source, config, 16, 16, List.of(), clock);
     }
 
     /** Exact C++ result token returned through a controlled endpoint without a physical Game or snapshot. */
@@ -171,6 +229,8 @@ final class NativeCurrentFull111EventRendererTest {
         private final ArrayDeque<byte[]> packets = new ArrayDeque<>();
         private final java.util.ArrayList<String> writes = new java.util.ArrayList<>();
         private final byte[] rendererReply;
+        private boolean softwareSelectable, changeRenderer;
+        private int rendererQueries;
 
         SoftwareEndpoint(boolean renderer) throws Exception {
             rendererReply = read(AVAILABLE);
@@ -209,7 +269,13 @@ final class NativeCurrentFull111EventRendererTest {
             var rebound = payload.replace("\"request_id\":\"lyd-native-real-producer\"",
                     "\"request_id\":\"" + read.requestId() + "\"");
             assertNotEquals(payload, rebound);
-            packets.add(NativeWire.packet(rebound.getBytes(StandardCharsets.UTF_8)));
+            if (softwareSelectable) {
+                var reply = NativeWire.object(NativeWire.parse(rebound.getBytes(StandardCharsets.UTF_8)));
+                result(reply).put("query_sequence", Integer.toString(++rendererQueries));
+                row(reply, 1).put("widget_enabled", true);
+                if (changeRenderer) row(reply, 0).put("text", "Changed stock content");
+                packets.add(NativeWire.packet(StrictJson.canonical(reply)));
+            } else packets.add(NativeWire.packet(rebound.getBytes(StandardCharsets.UTF_8)));
         }
         @Override public void close() { }
     }
