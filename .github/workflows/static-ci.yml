@@ -110,11 +110,11 @@ jobs:
           if errorlevel 1 exit /b %errorlevel%
           ctest --test-dir "%RUNNER_TEMP%\native-florin-core-ci" -C Release -R "^xar_ck3_121003_full111_(synthetic|disabled)$" --no-tests=error --output-on-failure
 
-      - name: Test Full111 ordinary event read and scope without CK3
+      - name: Test Full111 ordinary event reads and stock option selection without CK3
         run: |
-          python -B -X utf8 tools/run_native_msvc.py --build-dir "%RUNNER_TEMP%\native-florin-core-ci" --configuration Release --jobs 1 --build --target xar_ck3_current_lyd_wire_test xar_ck3_current_lyd_off_test xar_ck3_current_lyd_native_call_test xar_ck3_current_lyd_route_test xar_ck3_current_lyd_session_test xar_ck3_current_lyd_step_on_test xar_ck3_current_lyd_step_off_test xar_ck3_current_lyd_step_health_only_test xar_ck3_current_lyd_step_full111_test
+          python -B -X utf8 tools/run_native_msvc.py --build-dir "%RUNNER_TEMP%\native-florin-core-ci" --configuration Release --jobs 1 --build --target xar_ck3_current_lyd_wire_test xar_ck3_current_lyd_off_test xar_ck3_current_lyd_native_call_test xar_ck3_current_lyd_route_test xar_ck3_current_lyd_session_test xar_ck3_current_lyd_step_on_test xar_ck3_current_lyd_step_off_test xar_ck3_current_lyd_step_health_only_test xar_ck3_current_lyd_step_full111_test xar_ck3_current_lyd_step_full111_option_test xar_ck3_full111_event_option_v2_test
           if errorlevel 1 exit /b %errorlevel%
-          ctest --test-dir "%RUNNER_TEMP%\native-florin-core-ci" -C Release -R "^xar_ck3_current_lyd_" --no-tests=error --output-on-failure
+          ctest --test-dir "%RUNNER_TEMP%\native-florin-core-ci" -C Release -R "^xar_ck3_(current_lyd_|full111_event_option_v2_test$)" --no-tests=error --output-on-failure
 
       - name: Test native Workshop publication text bounds without Steam
         env:
