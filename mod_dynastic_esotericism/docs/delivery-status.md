@@ -6,6 +6,10 @@
 
 下方为按原时间保留的历史事实，旧失败、UNKNOWN和当时未发表状态不回改。
 
+2026-10-30T11:08:32Z，机器 `desktop-3fevhd2-1c74096080`。0.2.0 更新了原 Workshop 条目 3826991345。56 文件源码与发布包一致，原生提交为 EResult1，公开描述及 21 行更新说明已回读。R0040 通过前四阶段，第五阶段部分验证后拒签，第六阶段未到达。[0.2.0 发布记录](../../docs/release-changelogs/dynastic-esotericism/0.2.0.md)
+
+2026-10-27T04:25:16Z，机器 `desktop-3fevhd2-1c74096080`。R0022 通过四个阶段，跨礼仪选择发生在第二礼仪实际绑定前，原输入未确认。本次通过正常闭场，完整业务矩阵仍待后续验证。[R0022 原始范围](acceptance/R0022-2026-10-27.json)
+
 2026-10-27T00:50Z, `machine_id: desktop-3fevhd2-1c74096080`: **R0021 accepted 1/6; Core remains incomplete; 0.2.0 has not been uploaded.** The original H2 engine conjunction failed because the fixture equated factory creation day389351 with the actual first request day389352. Independent H1/H2 Saves preserve the same requesters/date and prove binding completion on389353. Both requested actors are actual House heads and Dynasts; the whole failed conjunction is not reclassified as passed. [Evidence and callback repair](2026-10-27-head-cell-callback-date.md), [machine-readable facts](acceptance/r0021-first-request-callback-2026-10-27.json).
 
 The fixture now independently witnesses the actual engine adoption callback date, once, without product writes or a synthetic date. H0+2 and all head/founder/member/source guards remain. New Maven/producer checks and a fresh cold Game are pending. R0021 closed with actual Game/host/keeper exit0 and exact SCREEN CAS release9207; three real 1280x720 promotional PNGs are retained for the requested Workshop gallery, not yet uploaded.

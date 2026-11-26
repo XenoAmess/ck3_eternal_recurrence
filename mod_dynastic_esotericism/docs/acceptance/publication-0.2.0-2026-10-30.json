@@ -1,0 +1,64 @@
+{
+  "schema": "xar.dynastic-esotericism-publication-020.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "published_at_utc": "2026-10-30T11:08:32.595441+00:00",
+  "workshop_item_id": "3826991345",
+  "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3826991345",
+  "version": "0.2.0",
+  "operation": "update",
+  "submit_result": 1,
+  "visibility": "public",
+  "formal_files": 56,
+  "formal_logical_bytes": 1952622,
+  "payload_source_HEAD": "c0a9e71115e7263fa318f96f484e385d17b6eb4d",
+  "publishing_tools_source_HEAD": "254f61d352a7d1f75dd7656803dbcace777cabcc",
+  "current_product_payload_equal_to_formal_source_verified": true,
+  "public_title_description_tags_exact": true,
+  "public_complete_change_notes_exact": true,
+  "public_change_notes_entry_id": "1793358518",
+  "public_change_notes_characters": 774,
+  "public_change_notes_lines": 21,
+  "steam_offline_restored_at_utc": "2026-10-30T11:15:31.321314+00:00",
+  "steam_offline_status": "offline",
+  "steam_offline_mode": true,
+  "full_business_acceptance": false,
+  "latest_core": {
+    "run": "R0040",
+    "P1_P4": "accepted",
+    "P5": "partial_refused",
+    "P6": "not_reached"
+  },
+  "matrix_13_complete": false,
+  "cache_acceptance": "NOT_RUN_AFTER_020_PUBLICATION",
+  "new_promotional_screenshots": 0,
+  "existing_gallery_retained": true,
+  "user_order": "Publish immediately, then continue remaining tests; supersedes the previous full-acceptance-before-publication order.",
+  "evidence": {
+    "native_submit": {
+      "path": "C:/ck3-dynastic-esotericism-20261024/resume-product-a20/core-a30-administration/publish-020-20261030-a01/publish-receipt.json",
+      "bytes": 659,
+      "sha256": "f96bcb9f9c516653261a04cbd3bd8f6fac1f3e3aebed0d15d15bd797395b6074"
+    },
+    "public_full_text": {
+      "path": "C:/ck3-dynastic-esotericism-20261024/resume-product-a20/core-a30-administration/publish-020-20261030-a01/PUBLIC-FULL-TEXT-VERIFIED.actual.json",
+      "bytes": 880,
+      "sha256": "b5c16e9d57ced02e7e586ad1b6d84cfbc958486040e0e87b55fa190bf7bfe44e"
+    },
+    "offline_restored": {
+      "path": "C:/ck3-dynastic-esotericism-20261024/resume-product-a20/core-a30-administration/publish-020-20261030-a01/STEAM-OFFLINE-RESTORED.actual.json",
+      "bytes": 2461,
+      "sha256": "ef11176e9268d65cf7527ab7950ba1b30a92448a7ae52a85118fe956ef673c88"
+    },
+    "formal_manifest": {
+      "path": "C:/ck3-dynastic-esotericism-20261024/resume-product-a20/operations-core-a41/source98-a01/formal56.manifest.json",
+      "bytes": 9954,
+      "sha256": "41ae0e2d67d0b8f3e038c37838ad2cb6239861bd36fe9b90af9e78119d2ce3b0"
+    }
+  },
+  "remaining": [
+    "Complete Core including natural birth, succession, doctrine editing, native pardon and timed followup.",
+    "Complete remaining 13-case matrix, including cold/old-save and both empire-head acquisition/restore chains.",
+    "Download the actual 0.2.0 Workshop cache, verify exact formal payload and test actual mounted loading.",
+    "Capture the five remaining real promotional scenes when their business states are reached."
+  ]
+}
