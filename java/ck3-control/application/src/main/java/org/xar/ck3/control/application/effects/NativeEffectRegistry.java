@@ -120,6 +120,7 @@ public final class NativeEffectRegistry implements ActionPorts.PreparationPort, 
     }
     private static ActionState.Settlement primitiveSettlement(ActionPorts.PostconditionResult result) {
         if (result instanceof ActionPorts.PauseObserved pause) return new ActionState.PauseConfirmed(pause.observation());
+        if (result instanceof ActionPorts.ResumeCoreObserved resume) return new ActionState.ResumeCoreApplied(resume.observation());
         if (result instanceof ActionPorts.OperatorRebindObserved rebound) return new ActionState.OperatorRebound(rebound.observation());
         if (result instanceof ActionPorts.NativeSourceObserved source) return new ActionState.NativeSourceCompleted(source.observation());
         if (result instanceof ActionPorts.NormalExitPhaseObserved phase) return new ActionState.NormalExitPhaseConfirmed(phase.observation());

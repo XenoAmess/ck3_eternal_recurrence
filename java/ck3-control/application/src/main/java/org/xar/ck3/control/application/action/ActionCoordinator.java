@@ -508,6 +508,15 @@ public final class ActionCoordinator implements ActionCoordinatorPort {
                     StrictJson.require(entered[0] || result instanceof ActionPorts.Pending, "raw-only observation cannot invent a semantic settlement");
                 }
             } else result = Objects.requireNonNull(postcondition.observe(command, attempt, dispatch));
+            if (result instanceof ActionPorts.ResumeCoreObserved) {
+                StrictJson.require(!reconciliation && current.state() instanceof ActionState.AckReceived original
+                        && original.attempt().equals(attempt) && original.dispatch().equals(dispatch),
+                        "Core resume requires the current original positive ACK");
+                var same = locked.writerSession();
+                StrictJson.require(ActionChildPlanningScope.reservedParent(same, same.head(), command)
+                        .filter(parent -> parent.handlerId().equals(org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER))
+                        .isPresent(), "Core resume requires the exact reserved Life child under its writer");
+            }
         } catch (InterruptedException interrupted) {
             Thread.interrupted();
             try { return append(locked, command, digest, unknown(attempt, Optional.of(dispatch), "read-only reconciliation interrupted; original request retained, no replay")); }
@@ -568,6 +577,7 @@ public final class ActionCoordinator implements ActionCoordinatorPort {
             case ActionPorts.NormalExitPhaseObserved phase -> new ActionState.NormalExitPhaseConfirmed(phase.observation());
             case ActionPorts.FamilySendObserved sent -> new ActionState.FamilySendConfirmed(sent.observation());
             case ActionPorts.EffectObserved effect -> new ActionState.Applied(effect.observation());
+            case ActionPorts.ResumeCoreObserved resume -> new ActionState.ResumeCoreApplied(resume.observation());
             case ActionPorts.ControlObserved control -> control.observation();
             case ActionPorts.FrontendObserved frontend -> new ActionState.FrontendApplied(frontend.observation());
             case ActionPorts.GameplayEntryObserved entered -> new ActionState.GameplayEntered(entered.observation());

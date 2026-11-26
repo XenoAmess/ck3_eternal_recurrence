@@ -3,6 +3,7 @@ package org.xar.ck3.control.application.action;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import org.xar.ck3.control.application.advance.ResumeCoreObservation;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
 
@@ -95,7 +96,7 @@ public final class ActionPorts {
     public record ControlSequenceObserved(org.xar.ck3.control.application.effects.control.ControlSequenceObservation observation) implements PostconditionResult {
         public ControlSequenceObserved { Objects.requireNonNull(observation); }
     }
-    public sealed interface PostconditionResult permits FixtureStartObserved, FixtureBusinessObserved, DirectFixedWindowObserved, PauseObserved, ControlSequenceObserved, EffectObserved, RejectionObserved, ControlObserved, CompositeControlObserved, FrontendObserved, GameplayEntryObserved, LifecycleObserved, TerminalObserved, CompositeRejectionObserved, LifecycleControlObserved, SwaySchedulerObserved, FamilySendObserved, NativeSourceObserved, NormalExitPhaseObserved, OperatorRebindObserved, CompositeNoGameplayWriteObserved, LifeControlPrefixInterruptedObserved, Pending { }
+    public sealed interface PostconditionResult permits FixtureStartObserved, FixtureBusinessObserved, DirectFixedWindowObserved, PauseObserved, ResumeCoreObserved, ControlSequenceObserved, EffectObserved, RejectionObserved, ControlObserved, CompositeControlObserved, FrontendObserved, GameplayEntryObserved, LifecycleObserved, TerminalObserved, CompositeRejectionObserved, LifecycleControlObserved, SwaySchedulerObserved, FamilySendObserved, NativeSourceObserved, NormalExitPhaseObserved, OperatorRebindObserved, CompositeNoGameplayWriteObserved, LifeControlPrefixInterruptedObserved, Pending { }
     public record FixtureStartObserved(FixtureStartObservation observation) implements PostconditionResult {public FixtureStartObserved {Objects.requireNonNull(observation);}}
     public record FixtureBusinessObserved(FixtureBusinessObservation observation) implements PostconditionResult {public FixtureBusinessObserved {Objects.requireNonNull(observation);}}
     /** An observed outgoing request has no relationship, payment, alliance, game-day or SAVE credit. */
@@ -115,6 +116,9 @@ public final class ActionPorts {
     }
     public record LifecycleObserved(org.xar.ck3.control.application.lifecycle.LifecycleTransitionProof proof) implements PostconditionResult { public LifecycleObserved { Objects.requireNonNull(proof); } }
     public record EffectObserved(ActionState.EffectObservation observation) implements PostconditionResult { public EffectObserved { Objects.requireNonNull(observation); } }
+    public record ResumeCoreObserved(ResumeCoreObservation observation) implements PostconditionResult {
+        public ResumeCoreObserved { Objects.requireNonNull(observation); }
+    }
     public record RejectionObserved(ActionState.Rejected rejection) implements PostconditionResult { public RejectionObserved { Objects.requireNonNull(rejection); } }
     public record ControlObserved(ActionState.ControlApplied observation) implements PostconditionResult { public ControlObserved { Objects.requireNonNull(observation); } }
     public record CompositeControlObserved(CompositeControlObservation observation) implements PostconditionResult { public CompositeControlObserved { Objects.requireNonNull(observation); } }

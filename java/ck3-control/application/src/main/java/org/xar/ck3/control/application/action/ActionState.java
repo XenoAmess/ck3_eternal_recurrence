@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import org.xar.ck3.control.application.advance.ResumeCoreObservation;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.g2.common.G2Source;
@@ -67,7 +68,7 @@ public sealed interface ActionState permits ActionState.IntentDurable, ActionSta
                     "reserved cleanup NoEffect needs distinct bounded original preparation and proof");
         }
     }
-    sealed interface Settlement permits FixtureStarted, FixtureBusinessCompleted, DirectFixedWindowCompleted, PauseConfirmed, ControlSequenceCompleted, Applied, Rejected, ControlApplied, CompositeControlApplied, FrontendApplied, GameplayEntered, LifecycleApplied, NonAppliedTerminal, CompositeRejected, LifecycleControlApplied, SwaySchedulerCompleted, FamilySendConfirmed, NativeSourceCompleted, NormalExitPhaseConfirmed, OperatorRebound, CompositeNoGameplayWrite, LifeControlPrefixInterrupted { }
+    sealed interface Settlement permits FixtureStarted, FixtureBusinessCompleted, DirectFixedWindowCompleted, PauseConfirmed, ResumeCoreApplied, ControlSequenceCompleted, Applied, Rejected, ControlApplied, CompositeControlApplied, FrontendApplied, GameplayEntered, LifecycleApplied, NonAppliedTerminal, CompositeRejected, LifecycleControlApplied, SwaySchedulerCompleted, FamilySendConfirmed, NativeSourceCompleted, NormalExitPhaseConfirmed, OperatorRebound, CompositeNoGameplayWrite, LifeControlPrefixInterrupted { }
     record FixtureStarted(FixtureStartObservation observation) implements Settlement {public FixtureStarted {Objects.requireNonNull(observation);}}
     record FixtureBusinessCompleted(FixtureBusinessObservation observation) implements Settlement {public FixtureBusinessCompleted {Objects.requireNonNull(observation);}}
     /** Finite execution completion; no gameplay, Closed, day or SAVE credit. */
@@ -78,6 +79,10 @@ public sealed interface ActionState permits ActionState.IntentDurable, ActionSta
     /** A real native pause and independent Push prove only the paused control state. */
     record PauseConfirmed(EffectObservation observation) implements Settlement {
         public PauseConfirmed { Objects.requireNonNull(observation); }
+    }
+    /** Same-connection Core proof of the original resume, without a semantic after-frame. */
+    record ResumeCoreApplied(ResumeCoreObservation observation) implements Settlement {
+        public ResumeCoreApplied { Objects.requireNonNull(observation); }
     }
     /** Bounded original pause children and the installed source prove this control sequence. */
     record ControlSequenceCompleted(org.xar.ck3.control.application.effects.control.ControlSequenceObservation observation) implements Settlement {
@@ -176,7 +181,10 @@ public sealed interface ActionState permits ActionState.IntentDurable, ActionSta
         public CompositeOperatorQuarantined { Objects.requireNonNull(execution); Objects.requireNonNull(observationRef); }
     }
     record CompositeSettled(CompositeExecution execution, Settlement settlement) implements ActionState {
-        public CompositeSettled { Objects.requireNonNull(execution); Objects.requireNonNull(settlement); }
+        public CompositeSettled {
+            Objects.requireNonNull(execution); Objects.requireNonNull(settlement);
+            StrictJson.require(!(settlement instanceof ResumeCoreApplied), "Core resume can only settle its original primitive");
+        }
     }
     private static void matching(Attempt attempt, NativeActionPort.DispatchOutcome dispatch) {
         StrictJson.require(attempt.requestId().equals(dispatch.requestId()), "native outcome must match the original request ID");

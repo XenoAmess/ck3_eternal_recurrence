@@ -12,6 +12,7 @@ import org.xar.ck3.control.application.driver.DriverJson;
 import org.xar.ck3.control.application.driver.PublicDataJson;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 import org.xar.ck3.control.contracts.CrossJsDecimalUInt64;
+import org.xar.ck3.control.application.advance.ResumeCoreObservation;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.FullJsonTree;
 import org.xar.ck3.control.contracts.DecimalTokenNode;
@@ -39,6 +40,7 @@ public final class ActionReceiptCodec {
     public static final String INTENT_ABANDONED_SCHEMA = "xar.java-action-receipt/v14";
     public static final String FRESH_SNAPSHOT_QUERY_SCHEMA = "xar.java-action-receipt/v15";
     public static final String TIMELINE_AFTER_ACK_SCHEMA = "xar.java.timeline-physical-after-ack-receipt/v1";
+    public static final String RESUME_CORE_SCHEMA = "xar.java.resume-core-action-receipt/v1";
     public static final int MAXIMUM_RECEIPT_BYTES = 2 * 1024 * 1024;
     private ActionReceiptCodec() { }
     private static final String CLEANUP_NO_EFFECT_SCHEMA="xar.java.cleanup-noeffect-action-receipt/v1";
@@ -48,7 +50,7 @@ public final class ActionReceiptCodec {
         if (receipt.state() instanceof ActionState.CompositeOperatorQuarantined) return CompositeOperatorQuarantineReceiptCodec.encodeReceipt(receipt, archive);
         boolean evolved = !(receipt.command().origin() instanceof CommandOrigin.Gameplay) || evolved(receipt.state());
         boolean typed = containsPush(receipt.state()) || containsFreshSnapshotQuery(receipt.state()) || containsPhysicalAfterAcknowledgement(receipt.state()); boolean family = containsFamilySend(receipt.state());
-        ObjectNode row = StrictJson.object(); row.put("schema", receipt.state() instanceof ActionState.ReservedPreparedCleanupNoEffectConfirmed ? RESERVED_NO_EFFECT_SCHEMA : receipt.state() instanceof ActionState.PreparedCleanupNoEffectConfirmed ? PREPARED_NO_EFFECT_SCHEMA : receipt.state() instanceof PreparedCleanupAction ? PreparedCleanupActionCodec.SCHEMA : receipt.state() instanceof ActionState.CleanupNoEffectConfirmed ? CLEANUP_NO_EFFECT_SCHEMA : containsPhysicalAfterAcknowledgement(receipt.state()) ? TIMELINE_AFTER_ACK_SCHEMA : containsFreshSnapshotQuery(receipt.state()) ? FRESH_SNAPSHOT_QUERY_SCHEMA : receipt.state() instanceof ActionState.IntentAbandoned ? INTENT_ABANDONED_SCHEMA : lifeControlPrefix(receipt) ? LIFE_CONTROL_PREFIX_SCHEMA : compositeNoGameplayWrite(receipt) ? COMPOSITE_NO_GAMEPLAY_WRITE_SCHEMA : fixture(receipt) ? FIXTURE_SCHEMA : compositeFailureEvidence(receipt) ? COMPOSITE_FAILURE_EVIDENCE_SCHEMA : directWindow(receipt) ? DIRECT_WINDOW_SCHEMA : pauseControl(receipt) ? PAUSE_CONTROL_SCHEMA : operator(receipt) ? OPERATOR_SCHEMA : containsReconciledControl(receipt.state()) ? RECONCILED_CONTROL_SCHEMA : extended(receipt.state()) ? PHYSICAL_SCHEMA : family ? FAMILY_SEND_SCHEMA : containsFreshSnapshotQuery(receipt.state()) ? FRESH_SNAPSHOT_QUERY_SCHEMA : typed ? PROVENANCE_SCHEMA : evolved ? EVOLVED_SCHEMA : SCHEMA); row.put("version", receipt.version()); row.put("sequence", receipt.sequence());
+        ObjectNode row = StrictJson.object(); row.put("schema", resumeCore(receipt) ? RESUME_CORE_SCHEMA : receipt.state() instanceof ActionState.ReservedPreparedCleanupNoEffectConfirmed ? RESERVED_NO_EFFECT_SCHEMA : receipt.state() instanceof ActionState.PreparedCleanupNoEffectConfirmed ? PREPARED_NO_EFFECT_SCHEMA : receipt.state() instanceof PreparedCleanupAction ? PreparedCleanupActionCodec.SCHEMA : receipt.state() instanceof ActionState.CleanupNoEffectConfirmed ? CLEANUP_NO_EFFECT_SCHEMA : containsPhysicalAfterAcknowledgement(receipt.state()) ? TIMELINE_AFTER_ACK_SCHEMA : containsFreshSnapshotQuery(receipt.state()) ? FRESH_SNAPSHOT_QUERY_SCHEMA : receipt.state() instanceof ActionState.IntentAbandoned ? INTENT_ABANDONED_SCHEMA : lifeControlPrefix(receipt) ? LIFE_CONTROL_PREFIX_SCHEMA : compositeNoGameplayWrite(receipt) ? COMPOSITE_NO_GAMEPLAY_WRITE_SCHEMA : fixture(receipt) ? FIXTURE_SCHEMA : compositeFailureEvidence(receipt) ? COMPOSITE_FAILURE_EVIDENCE_SCHEMA : directWindow(receipt) ? DIRECT_WINDOW_SCHEMA : pauseControl(receipt) ? PAUSE_CONTROL_SCHEMA : operator(receipt) ? OPERATOR_SCHEMA : containsReconciledControl(receipt.state()) ? RECONCILED_CONTROL_SCHEMA : extended(receipt.state()) ? PHYSICAL_SCHEMA : family ? FAMILY_SEND_SCHEMA : containsFreshSnapshotQuery(receipt.state()) ? FRESH_SNAPSHOT_QUERY_SCHEMA : typed ? PROVENANCE_SCHEMA : evolved ? EVOLVED_SCHEMA : SCHEMA); row.put("version", receipt.version()); row.put("sequence", receipt.sequence());
         row.put("body_sha256", receipt.bodySha256()); row.set("state", state(receipt.state(), archive, evolved || typed || family, typed, family));
         // The sole command codec owns numeric tokens in arguments. A JsonNode round trip here
         // would erase decimal category/negative zero and change the durable command body SHA.
@@ -69,7 +71,7 @@ public final class ActionReceiptCodec {
         JsonNode document = ProposalLifecycleCodec.decodePayload(bytes, MAXIMUM_RECEIPT_BYTES);
         if (CompositeOperatorQuarantineReceiptCodec.SCHEMA.equals(document.path("schema").asText())) return CompositeOperatorQuarantineReceiptCodec.decodeReceipt(document, archive);
         ObjectNode row = StrictJson.object(document, Set.of("schema", "version", "sequence", "command", "body_sha256", "state"));
-        String schema = text(row, "schema"); StrictJson.require(SCHEMA.equals(schema) || EVOLVED_SCHEMA.equals(schema) || PROVENANCE_SCHEMA.equals(schema) || FAMILY_SEND_SCHEMA.equals(schema) || PHYSICAL_SCHEMA.equals(schema) || RECONCILED_CONTROL_SCHEMA.equals(schema) || OPERATOR_SCHEMA.equals(schema) || PAUSE_CONTROL_SCHEMA.equals(schema) || DIRECT_WINDOW_SCHEMA.equals(schema) || COMPOSITE_FAILURE_EVIDENCE_SCHEMA.equals(schema) || FIXTURE_SCHEMA.equals(schema) || COMPOSITE_NO_GAMEPLAY_WRITE_SCHEMA.equals(schema) || LIFE_CONTROL_PREFIX_SCHEMA.equals(schema) || INTENT_ABANDONED_SCHEMA.equals(schema) || FRESH_SNAPSHOT_QUERY_SCHEMA.equals(schema) || TIMELINE_AFTER_ACK_SCHEMA.equals(schema) || CLEANUP_NO_EFFECT_SCHEMA.equals(schema) || PREPARED_NO_EFFECT_SCHEMA.equals(schema) || RESERVED_NO_EFFECT_SCHEMA.equals(schema) || PreparedCleanupActionCodec.SCHEMA.equals(schema), "exact action receipt schema required");
+        String schema = text(row, "schema"); StrictJson.require(SCHEMA.equals(schema) || EVOLVED_SCHEMA.equals(schema) || PROVENANCE_SCHEMA.equals(schema) || FAMILY_SEND_SCHEMA.equals(schema) || PHYSICAL_SCHEMA.equals(schema) || RECONCILED_CONTROL_SCHEMA.equals(schema) || OPERATOR_SCHEMA.equals(schema) || PAUSE_CONTROL_SCHEMA.equals(schema) || DIRECT_WINDOW_SCHEMA.equals(schema) || COMPOSITE_FAILURE_EVIDENCE_SCHEMA.equals(schema) || FIXTURE_SCHEMA.equals(schema) || COMPOSITE_NO_GAMEPLAY_WRITE_SCHEMA.equals(schema) || LIFE_CONTROL_PREFIX_SCHEMA.equals(schema) || INTENT_ABANDONED_SCHEMA.equals(schema) || FRESH_SNAPSHOT_QUERY_SCHEMA.equals(schema) || TIMELINE_AFTER_ACK_SCHEMA.equals(schema) || RESUME_CORE_SCHEMA.equals(schema) || CLEANUP_NO_EFFECT_SCHEMA.equals(schema) || PREPARED_NO_EFFECT_SCHEMA.equals(schema) || RESERVED_NO_EFFECT_SCHEMA.equals(schema) || PreparedCleanupActionCodec.SCHEMA.equals(schema), "exact action receipt schema required");
         OpportunityJson.Obj originalCommand = originalReceiptCommand(bytes);
         byte[] canonicalCommand = PublicDataJson.encodeTypedBytes(originalCommand, RawJson.MAXIMUM_BYTES);
         // The encoder returns a fresh local array; keep encodeTyped's original
@@ -79,7 +81,7 @@ public final class ActionReceiptCodec {
                 : archive.decodeCanonicalCommand(canonicalCommand);
         ActionReceipt receipt = new ActionReceipt(Math.toIntExact(StrictJson.integer(row.get("version"), 1, 1)), StrictJson.integer(row.get("sequence"), 1, StrictJson.MAX_SAFE_INTEGER),
                 command, text(row, "body_sha256"), state(row.get("state"), archive, !SCHEMA.equals(schema), PROVENANCE_SCHEMA.equals(schema) || PAUSE_CONTROL_SCHEMA.equals(schema) || FRESH_SNAPSHOT_QUERY_SCHEMA.equals(schema) || TIMELINE_AFTER_ACK_SCHEMA.equals(schema), FAMILY_SEND_SCHEMA.equals(schema)));
-        String expectedSchema = receipt.state() instanceof ActionState.ReservedPreparedCleanupNoEffectConfirmed ? RESERVED_NO_EFFECT_SCHEMA : receipt.state() instanceof ActionState.PreparedCleanupNoEffectConfirmed ? PREPARED_NO_EFFECT_SCHEMA : receipt.state() instanceof PreparedCleanupAction ? PreparedCleanupActionCodec.SCHEMA : receipt.state() instanceof ActionState.CleanupNoEffectConfirmed ? CLEANUP_NO_EFFECT_SCHEMA : containsPhysicalAfterAcknowledgement(receipt.state()) ? TIMELINE_AFTER_ACK_SCHEMA : containsFreshSnapshotQuery(receipt.state()) ? FRESH_SNAPSHOT_QUERY_SCHEMA : receipt.state() instanceof ActionState.IntentAbandoned ? INTENT_ABANDONED_SCHEMA : lifeControlPrefix(receipt) ? LIFE_CONTROL_PREFIX_SCHEMA : compositeNoGameplayWrite(receipt) ? COMPOSITE_NO_GAMEPLAY_WRITE_SCHEMA : fixture(receipt) ? FIXTURE_SCHEMA : compositeFailureEvidence(receipt) ? COMPOSITE_FAILURE_EVIDENCE_SCHEMA : directWindow(receipt) ? DIRECT_WINDOW_SCHEMA : pauseControl(receipt) ? PAUSE_CONTROL_SCHEMA : operator(receipt) ? OPERATOR_SCHEMA : containsReconciledControl(receipt.state()) ? RECONCILED_CONTROL_SCHEMA : extended(receipt.state()) ? PHYSICAL_SCHEMA : containsFamilySend(receipt.state()) ? FAMILY_SEND_SCHEMA : containsFreshSnapshotQuery(receipt.state()) ? FRESH_SNAPSHOT_QUERY_SCHEMA : containsPush(receipt.state()) ? PROVENANCE_SCHEMA
+        String expectedSchema = resumeCore(receipt) ? RESUME_CORE_SCHEMA : receipt.state() instanceof ActionState.ReservedPreparedCleanupNoEffectConfirmed ? RESERVED_NO_EFFECT_SCHEMA : receipt.state() instanceof ActionState.PreparedCleanupNoEffectConfirmed ? PREPARED_NO_EFFECT_SCHEMA : receipt.state() instanceof PreparedCleanupAction ? PreparedCleanupActionCodec.SCHEMA : receipt.state() instanceof ActionState.CleanupNoEffectConfirmed ? CLEANUP_NO_EFFECT_SCHEMA : containsPhysicalAfterAcknowledgement(receipt.state()) ? TIMELINE_AFTER_ACK_SCHEMA : containsFreshSnapshotQuery(receipt.state()) ? FRESH_SNAPSHOT_QUERY_SCHEMA : receipt.state() instanceof ActionState.IntentAbandoned ? INTENT_ABANDONED_SCHEMA : lifeControlPrefix(receipt) ? LIFE_CONTROL_PREFIX_SCHEMA : compositeNoGameplayWrite(receipt) ? COMPOSITE_NO_GAMEPLAY_WRITE_SCHEMA : fixture(receipt) ? FIXTURE_SCHEMA : compositeFailureEvidence(receipt) ? COMPOSITE_FAILURE_EVIDENCE_SCHEMA : directWindow(receipt) ? DIRECT_WINDOW_SCHEMA : pauseControl(receipt) ? PAUSE_CONTROL_SCHEMA : operator(receipt) ? OPERATOR_SCHEMA : containsReconciledControl(receipt.state()) ? RECONCILED_CONTROL_SCHEMA : extended(receipt.state()) ? PHYSICAL_SCHEMA : containsFamilySend(receipt.state()) ? FAMILY_SEND_SCHEMA : containsFreshSnapshotQuery(receipt.state()) ? FRESH_SNAPSHOT_QUERY_SCHEMA : containsPush(receipt.state()) ? PROVENANCE_SCHEMA
                 : !(command.origin() instanceof CommandOrigin.Gameplay) || evolved(receipt.state()) ? EVOLVED_SCHEMA : SCHEMA;
         StrictJson.require(expectedSchema.equals(schema), "receipt schema must describe its exact origin/evidence/provenance version");
         return receipt;
@@ -116,6 +118,10 @@ public final class ActionReceiptCodec {
         if (value.isBoolean()) return new OpportunityJson.Bool(value.booleanValue());
         if (value.isNull()) return OpportunityJson.Nil.INSTANCE;
         throw new IllegalArgumentException("unsupported original native JSON node type");
+    }
+    private static boolean resumeCore(ActionReceipt receipt) {
+        return receipt.state() instanceof ActionState.Settled settled
+                && settled.settlement() instanceof ActionState.ResumeCoreApplied;
     }
     private static boolean fixture(ActionReceipt receipt){
         var settlement=receipt.state() instanceof ActionState.Settled settled?settled.settlement()
@@ -377,6 +383,13 @@ public final class ActionReceiptCodec {
     }
     private static ObjectNode settlement(ActionState.Settlement settlement, ActionPorts.OutcomeArchive archive, boolean evolved, boolean typed, boolean family) {
         ObjectNode row = StrictJson.object();
+        if (settlement instanceof ActionState.ResumeCoreApplied resume) {
+            row.put("kind", "RESUME_CORE_APPLIED");
+            row.set("parent_receipt", resume.observation().parentReceipt().toJson());
+            row.set("core_acknowledgement", resume.observation().coreAcknowledgement().toJson());
+            row.put("observation_deadline", resume.observation().observationDeadline().toString());
+            return row;
+        }
         if (settlement instanceof ActionState.LifeControlPrefixInterrupted interrupted) {
             StrictJson.require(evolved, "Life control-prefix interruption requires receipt v13");
             row.put("kind", "LIFE_CONTROL_PREFIX_INTERRUPTED");
@@ -486,6 +499,15 @@ public final class ActionReceiptCodec {
     }
     private static ActionState.Settlement settlement(JsonNode node, ActionPorts.OutcomeArchive archive, boolean evolved, boolean typed, boolean family) {
         StrictJson.require(node instanceof ObjectNode, "settlement object required"); ObjectNode row = (ObjectNode) node;
+        if (text(row, "kind").equals("RESUME_CORE_APPLIED")) {
+            StrictJson.require(evolved && !typed && !family, "Core resume requires its exact receipt schema");
+            StrictJson.object(row, Set.of("kind", "parent_receipt", "core_acknowledgement", "observation_deadline"));
+            String deadline = text(row, "observation_deadline");
+            Instant actualDeadline = Instant.parse(deadline);
+            StrictJson.require(deadline.equals(actualDeadline.toString()), "canonical Core resume deadline required");
+            return new ActionState.ResumeCoreApplied(new ResumeCoreObservation(ExactRef.fromJson(row.get("parent_receipt")),
+                    ExactRef.fromJson(row.get("core_acknowledgement")), actualDeadline));
+        }
         if (text(row,"kind").equals("LIFE_CONTROL_PREFIX_INTERRUPTED")) {
             StrictJson.require(evolved, "Life control-prefix interruption requires receipt v13");
             StrictJson.object(row, Set.of("kind", "action_id", "body_sha256", "execution", "ending"));

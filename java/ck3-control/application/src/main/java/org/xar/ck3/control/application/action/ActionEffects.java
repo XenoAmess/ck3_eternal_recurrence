@@ -9,7 +9,7 @@ public final class ActionEffects {
     /** Structural legacy entry. Read-dependent qualification requires the original dispatch as well. */
     public static void validate(ActionCommand command, ActionState.Attempt attempt, ActionState.Settlement settlement) {
         StrictJson.require(!(settlement instanceof ActionState.LifeControlPrefixInterrupted), "Life control-prefix interruption belongs only to its registered composite");
-        StrictJson.require(!(settlement instanceof ActionState.FixtureStarted || settlement instanceof ActionState.FixtureBusinessCompleted || settlement instanceof ActionState.DirectFixedWindowCompleted || settlement instanceof ActionState.PauseConfirmed || settlement instanceof ActionState.ControlSequenceCompleted || settlement instanceof ActionState.ControlApplied || settlement instanceof ActionState.LifecycleControlApplied
+        StrictJson.require(!(settlement instanceof ActionState.FixtureStarted || settlement instanceof ActionState.FixtureBusinessCompleted || settlement instanceof ActionState.DirectFixedWindowCompleted || settlement instanceof ActionState.PauseConfirmed || settlement instanceof ActionState.ResumeCoreApplied || settlement instanceof ActionState.ControlSequenceCompleted || settlement instanceof ActionState.ControlApplied || settlement instanceof ActionState.LifecycleControlApplied
                 || settlement instanceof ActionState.NonAppliedTerminal || settlement instanceof ActionState.FamilySendConfirmed || settlement instanceof ActionState.NativeSourceCompleted || settlement instanceof ActionState.NormalExitPhaseConfirmed || settlement instanceof ActionState.OperatorRebound), "actual original dispatch and request chronology required for read-dependent settlement");
         validateStructure(command, attempt, settlement);
     }
@@ -33,6 +33,10 @@ public final class ActionEffects {
             completed.completion().validate(command, attempt, actualDispatch); return;
         }
         if (settlement instanceof ActionState.PauseConfirmed pause) { PauseConfirmation.validate(command, attempt, actualDispatch, pause.observation()); return; }
+        if (settlement instanceof ActionState.ResumeCoreApplied resume) {
+            resume.observation().validate(command, attempt, actualDispatch);
+            return;
+        }
         StrictJson.require(!(settlement instanceof ActionState.ControlSequenceCompleted), "control sequence belongs to its registered composite");
         if (settlement instanceof ActionState.NativeSourceCompleted source) { source.observation().validate(command, attempt, actualDispatch); return; }
         if (settlement instanceof ActionState.NormalExitPhaseConfirmed phase) { phase.observation().validate(command, attempt, actualDispatch); return; }
@@ -151,6 +155,7 @@ public final class ActionEffects {
                 "fresh independent postcondition did not match");
     }
     public static void validateComposite(ActionCommand command, CompositeExecution execution, ActionState.Settlement settlement) {
+        StrictJson.require(!(settlement instanceof ActionState.ResumeCoreApplied), "Core resume can only settle its original primitive");
         if(settlement instanceof ActionState.FixtureBusinessCompleted completed){
             completed.observation().validateParent(command);
             StrictJson.require(execution.guard().origin() instanceof CommandOrigin.Frontend
@@ -211,6 +216,7 @@ public final class ActionEffects {
     }
     /** Original physical material to be re-decoded by the exact registered archived verifier. */
     public static java.util.List<org.xar.ck3.control.contracts.ExactRef> supportingEvidence(ActionState.Settlement settlement) {
+        if (settlement instanceof ActionState.ResumeCoreApplied resume) return resume.observation().references();
         if (settlement instanceof ActionState.ControlApplied control)
             return org.xar.ck3.control.application.advance.FullSnapshotSentinelCancellation.references(control);
         if(settlement instanceof ActionState.FixtureStarted started)return started.observation().references();

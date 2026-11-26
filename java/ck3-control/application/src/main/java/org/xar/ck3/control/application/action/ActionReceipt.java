@@ -11,6 +11,8 @@ public record ActionReceipt(int version, long sequence, ActionCommand command, S
         StrictJson.require(version == 1, "action receipt version 1 required"); StrictJson.safe(sequence, 1);
         Objects.requireNonNull(command); Objects.requireNonNull(state);
         StrictJson.require(bodySha256 != null && bodySha256.matches("[0-9a-f]{64}") && bodySha256.equals(ActionCodec.bodySha256(command)), "complete canonical action body SHA required");
+        if (state instanceof ActionState.Settled settled && settled.settlement() instanceof ActionState.ResumeCoreApplied resume)
+            resume.observation().validate(command, settled.attempt(), settled.dispatch());
     }
     public Outcome outcome() {
         if (state instanceof ActionState.CompositeOperatorQuarantined) return Outcome.OPERATOR_ABANDONED_UNKNOWN_EFFECT;
