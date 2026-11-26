@@ -20,6 +20,7 @@ import org.xar.ck3.control.application.action.ActionState.Attempt;
 import org.xar.ck3.control.application.action.GuardEvidence;
 import org.xar.ck3.control.application.action.NativeActionPort.AckReceived;
 import org.xar.ck3.control.application.action.NativeActionPort.OutboundPacket;
+import org.xar.ck3.control.application.action.NativeObservationPort.ObservedFrame;
 import org.xar.ck3.control.application.action.NativeObservationPort.TransportSession;
 import org.xar.ck3.control.application.action.NativeRequest;
 import org.xar.ck3.control.application.action.NativeRequestChronology;
@@ -128,6 +129,100 @@ final class NativeCurrentFull111EventOptionTest {
         var altered = ack("v2-queue-absent", "v2-prepare-request", SOFTWARE_EPOCH, 10, QUEUE_WRITE);
         assertThrows(IOException.class, () -> Request.decodeQueueRequest(altered));
         assertFalse(CurrentFull111EventOption.confirmsAbsence(attempt, dispatch, query, altered));
+    }
+
+    @Test
+    void originalSelectionCanBeReadConfirmedWhileTheAcceptedRawIsStillTheBeforeRevision() throws Exception {
+        var dispatch = effect();
+        var attempt = attempt(dispatch, SOURCE_REVISION, ACTOR);
+        var custody = dispatch.custody().orElseThrow();
+        var outbound = dispatch.outbound().orElseThrow();
+        var selection = NativeGameTransport.readFull111SelectionOriginal(attempt, dispatch, outbound, custody,
+                raw(SESSION, 12, "native:12", ACTOR, RAW_DATE, true)).orElseThrow();
+        assertEquals(Status.SELECTION_DISPATCHED, selection.result().status());
+        assertEquals(EFFECT_DEADLINE, selection.request().deadline());
+        assertTrue(selection.result().queue().isEmpty());
+        assertTrue(NativeGameTransport.readFull111SelectionOriginal(attempt, dispatch, outbound, custody,
+                raw(SESSION, 13, "native:13", ACTOR, RAW_DATE, true)).isPresent());
+    }
+
+    @Test
+    void originalSelectionRejectsAChangedRawOrAnUnretainedAck() throws Exception {
+        var dispatch = effect();
+        var attempt = attempt(dispatch, SOURCE_REVISION, ACTOR);
+        var custody = dispatch.custody().orElseThrow();
+        var outbound = dispatch.outbound().orElseThrow();
+        var current = raw(SESSION, 12, "native:12", ACTOR, RAW_DATE, true);
+        var other = new TransportSession(MACHINE, SESSION.game(), BigInteger.valueOf(22), SESSION.sessionId());
+        var foreignEpoch = new NativeRequestChronology(SESSION, new UUID(2, 3), custody.requestId(),
+                custody.originalRequest(), custody.originalResponse(), custody.writeEntered(),
+                custody.writeCompleted(), custody.responseReceived());
+        for (var wrong : List.of(raw(SESSION, 11, "native:11", ACTOR, RAW_DATE, true),
+                raw(SESSION, 12, "wrong-native:12", ACTOR, RAW_DATE, true),
+                raw(SESSION, 13, "native:13", BigInteger.valueOf(88), RAW_DATE, true),
+                raw(SESSION, 13, "native:13", ACTOR, RAW_DATE.add(BigInteger.valueOf(24)), true),
+                raw(SESSION, 13, "native:13", ACTOR, RAW_DATE, false), raw(other, 13, "native:13", ACTOR, RAW_DATE, true))) {
+            assertTrue(NativeGameTransport.readFull111SelectionOriginal(attempt, dispatch, outbound, custody, wrong).isEmpty());
+        }
+        assertThrows(IllegalArgumentException.class,
+                () -> NativeGameTransport.readFull111SelectionOriginal(attempt, dispatch, outbound, foreignEpoch, current));
+        var wrongOutbound = new OutboundPacket(dispatch.requestId(), NativeWire.packet(load("v2-prepare-request")));
+        assertTrue(NativeGameTransport.readFull111SelectionOriginal(attempt, dispatch, wrongOutbound, custody, current).isEmpty());
+        var negativePacket = NativeWire.packet(load("v2-queue-unavailable"));
+        var altered = new AckReceived(dispatch.requestId(), true, dispatch.originalResultToken(), dispatch.originalFrame(),
+                negativePacket, dispatch.outbound(), dispatch.custody());
+        assertTrue(NativeGameTransport.readFull111SelectionOriginal(attempt, altered, outbound, custody, current).isEmpty());
+        var staleAttempt = new Attempt(attempt.requestId(), EFFECT_WRITE.plusMillis(1), attempt.guard(), attempt.preparedRequest());
+        assertTrue(NativeGameTransport.readFull111SelectionOriginal(staleAttempt, dispatch, outbound, custody, current).isEmpty());
+    }
+
+    @Test
+    void aDifferentHeldReceiverUsesNoIoToRejectAnArchivedSelection() throws Exception {
+        var original = effect();
+        var attempt = attempt(original, SOURCE_REVISION, ACTOR);
+        var hello = StrictJson.object().put("type", "hello").put("protocol_version", 1).put("pid", SESSION.game().pid())
+                .put("connection_generation", SESSION.connectionGeneration()).put("bridge_version", "option-test")
+                .put("expected_ck3_version", BUILD.version()).put("expected_ck3_sha256", BUILD.executableSha256())
+                .put("game_adapter_id", BUILD.coreFrameAdapterId()).put("game_adapter_status", "ready").put("ck3_build_match", true);
+        hello.putArray("capabilities").add(Action.QUERY_QUEUE.capability());
+        var endpoint = new HelloOnlyPort(NativeWire.packet(StrictJson.canonical(hello)));
+        String slash = Character.toString(92);
+        var config = new NativePipeEndpoint.Config(slash + slash + "." + slash + "pipe" + slash + "option-test",
+                MACHINE, SESSION.game(),
+                SESSION.sessionId(), "option-test", BUILD.executableSha256(), BUILD.coreFrameAdapterId());
+        var until = Instant.now().plusSeconds(10);
+        try (var actual = new NativeGameTransport(endpoint, config, 4, 4)) {
+            assertEquals(SESSION, actual.awaitHello(until));
+            assertEquals(1, endpoint.reads);
+            int verifies = endpoint.verifies;
+            assertFalse(actual.canConfirmFull111EventSelection(attempt, original));
+            assertTrue(actual.readFull111EventQueue(attempt, original, until).isEmpty());
+            assertEquals(1, endpoint.reads);
+            assertEquals(verifies, endpoint.verifies);
+        }
+    }
+
+    private static ObservedFrame raw(TransportSession session, long revision, String snapshot, BigInteger actor,
+            BigInteger date, boolean paused) {
+        var body = StrictJson.object().put("date_raw", date).put("paused", paused).put("map_ready", true);
+        body.putObject("played_character").put("character_id", actor).put("alive", true);
+        return new ObservedFrame(session, snapshot, BigInteger.valueOf(revision), new RawJson(StrictJson.canonical(body)),
+                new byte[]{1}, EFFECT_WRITE.minusMillis(20));
+    }
+
+    private static final class HelloOnlyPort implements NativePacketPort {
+        private final byte[] hello;
+        private int reads;
+        private int verifies;
+        private HelloOnlyPort(byte[] hello) { this.hello = hello; }
+        @Override public void verify() { verifies++; }
+        @Override public void awaitConnection(Instant deadline) { }
+        @Override public byte[] readPacket(Instant deadline) {
+            assertEquals(0, reads++, "no new read is authorized");
+            return hello.clone();
+        }
+        @Override public void writePacket(byte[] packet, Instant deadline) { throw new AssertionError("no write is authorized"); }
+        @Override public void close() { }
     }
 
     private static Attempt attempt(AckReceived dispatch, BigInteger revision, BigInteger actor) throws IOException {

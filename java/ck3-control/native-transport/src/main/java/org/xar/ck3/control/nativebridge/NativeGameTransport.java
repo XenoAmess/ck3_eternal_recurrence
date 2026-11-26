@@ -3103,21 +3103,82 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         return custody;
     }
 
+    /** Eligibility for a separate confirmation read. This checks only already-held originals and performs no I/O. */
+    public synchronized boolean canConfirmFull111EventSelection(ActionState.Attempt attempt, AckReceived originalSelect) {
+        return heldFull111Selection(attempt, originalSelect).isPresent();
+    }
+
+    record Full111SelectionOriginal(CurrentFull111EventOption.Request request, CurrentFull111EventOption.Result result,
+            NativeRequestChronology custody) { }
+
+    /** Validated packet DATA only. The receiver must supply the exact original write and response custody it retained. */
+    static Optional<Full111SelectionOriginal> readFull111SelectionOriginal(ActionState.Attempt attempt, AckReceived originalSelect,
+            NativeActionPort.OutboundPacket retained, NativeRequestChronology custody, ObservedFrame before) throws IOException {
+        var guard = attempt.guard();
+        if (!originalSelect.nativeOk() || !(guard.origin() instanceof CommandOrigin.Gameplay gameplay)
+                || !guard.operation().value().equals(CurrentFull111EventOption.Action.SELECT.step())
+                || !attempt.requestId().equals(originalSelect.requestId()) || !before.session().equals(custody.session())
+                || originalSelect.outbound().filter(retained::equals).isEmpty()
+                || !Arrays.equals(originalSelect.originalPacket(), NativeWire.packet(originalSelect.originalFrame().bytes())))
+            return Optional.empty();
+
+        var request = CurrentFull111EventOption.Request.decodeSelectionRequest(attempt.preparedRequest());
+        var expected = gameplay.before().frame().identity();
+        if (!expected.nativeRevision().equals(request.lineage().sourceRevision())
+                || !expected.player().equals(BigInteger.valueOf(request.target().recipientCharacterId()))
+                || !expected.dateRaw().equals(BigInteger.valueOf(request.core().prefix().dateRaw()))
+                || !Arrays.equals(retained.originalPacket(), NativeWire.execute(attempt.requestId(),
+                    attempt.preparedRequest().step(), expected.nativeRevision(), attempt.preparedRequest().additionalFields().bytes())))
+            return Optional.empty();
+
+        custody.verify(originalSelect, guard);
+        var write = custody.writeEntered().observedAt();
+        if (write.isBefore(attempt.submittedAt()) || !write.isBefore(request.deadline())) return Optional.empty();
+        var result = CurrentFull111EventOption.decodeOutcome(originalSelect);
+        if (!result.matchesSuccessfulRequest(request)
+                || !result.owner().orElseThrow().connectionGeneration().equals(custody.session().connectionGeneration()))
+            return Optional.empty();
+
+        int revision = before.nativeRevision().compareTo(expected.nativeRevision());
+        if (revision < 0 || revision == 0 && !before.snapshotId().equals(gameplay.before().frame().snapshotId()))
+            return Optional.empty();
+        var raw = NativeWire.object(NativeWire.parse(before.state().bytes()));
+        var player = NativeWire.object(raw.get("played_character"));
+        if (!CurrentLyd.bool(raw, "paused") || !CurrentLyd.bool(raw, "map_ready") || !CurrentLyd.bool(player, "alive")
+                || !expected.player().equals(NativeCharacterId.fromJson(player.get("character_id")).asBigInteger())
+                || !expected.dateRaw().equals(NativeWire.integer(raw.get("date_raw"), BigInteger.ZERO, null)))
+            return Optional.empty();
+        return Optional.of(new Full111SelectionOriginal(request, result, custody));
+    }
+
+    private Optional<Full111SelectionOriginal> heldFull111Selection(ActionState.Attempt attempt, AckReceived originalSelect) {
+        var before = acceptedSnapshotFrame;
+        if (attempt == null || originalSelect == null || closed || terminalFailure != null || !stateConnected
+                || before == null || hello == null || !hello.capabilities().contains(CurrentFull111EventOption.Action.QUERY_QUEUE.capability()))
+            return Optional.empty();
+
+        try {
+            var custody = originalRequestChronology(attempt.requestId());
+            var outbound = originalOutboundPacket(attempt.requestId());
+            if (custody.isEmpty() || outbound.isEmpty() || !custody.orElseThrow().session().equals(session())
+                    || !attempt.guard().source().exactBuild().equalsIgnoreCase(hello.gameSha256())) return Optional.empty();
+            return readFull111SelectionOriginal(attempt, originalSelect, outbound.orElseThrow(), custody.orElseThrow(), before);
+        } catch (IOException | IllegalArgumentException | ArithmeticException invalid) {
+            return Optional.empty();
+        }
+    }
+
     /** The queue evidence is a read in a new time window following the known original selection ACK. */
     public synchronized Optional<Full111EventQueueProof> readFull111EventQueue(ActionState.Attempt attempt,
             AckReceived originalSelect, Instant independentDeadline) throws IOException, InterruptedException {
-        var original = CurrentFull111EventOption.Request.decodeSelectionRequest(attempt.preparedRequest());
-        var select = CurrentFull111EventOption.decodeOutcome(originalSelect);
-        if (!attempt.requestId().equals(originalSelect.requestId()) || !select.matchesSuccessfulRequest(original))
-            return Optional.empty();
-        var custody = originalSelect.custody().orElseThrow(() -> new IOException("Original Full111 SELECT custody unavailable"));
-        custody.verify(originalSelect, attempt.guard());
-
+        var held = heldFull111Selection(attempt, originalSelect);
+        if (held.isEmpty()) return Optional.empty();
+        var selection = held.orElseThrow();
+        var original = selection.request();
+        var custody = selection.custody();
         var after = currentSnapshot(independentDeadline);
         var occurrence = acceptedSnapshotRevision(after);
-        if (!after.session().equals(custody.session()) || !custody.custodyEpoch().equals(custodyEpoch)
-                || !originalRequestChronology(originalSelect.requestId()).filter(custody::equals).isPresent()
-                || after.nativeRevision().compareTo(original.lineage().sourceRevision()) <= 0
+        if (after.nativeRevision().compareTo(original.lineage().sourceRevision()) <= 0
                 || occurrence.received().order().compareTo(custody.responseReceived().order()) <= 0
                 || occurrence.received().observedAt().isBefore(custody.responseReceived().observedAt())) return Optional.empty();
         requireOriginalFull111OptionFrame(occurrence, independentDeadline);
@@ -3129,7 +3190,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         if (!(fresh instanceof CoreReceived core) || !(core.frame() instanceof CoreFrame.Partial prefix)
                 || !prefix.prefix().equals(original.core().prefix())) return Optional.empty();
         requireOriginalFull111OptionFrame(occurrence, independentDeadline);
-        var query = new CurrentFull111EventOption.Request(action, prefix, original.target(), select.lineage().orElseThrow(),
+        var query = new CurrentFull111EventOption.Request(action, prefix, original.target(), selection.result().lineage().orElseThrow(),
                 Instant.ofEpochMilli(core.validUntil().toEpochMilli()));
         var reply = readFull111OptionPhase(core, occurrence, query);
         if (reply.isEmpty()) return Optional.empty();
