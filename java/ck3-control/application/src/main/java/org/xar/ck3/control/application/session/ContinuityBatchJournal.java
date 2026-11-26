@@ -4016,7 +4016,10 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 issuedSavedSettledHistory.requireCurrent(same, data);
             }
             requireSettledObservedContinuation(data.latestObservedFrame(),fresh.frame());
-            if (!savedRole && same.head().state().status()==ContinuityState.Status.RUNNING&&!issuedSettledSameGameOpenBatch) {
+            boolean adoptedSavedBoundary = savedRole && issuedSettledSameGameRecovery != null
+                    && issuedSettledSameGameRecovery.sequence() == data.canonicalSequence();
+            if (adoptedSavedBoundary || (!savedRole && same.head().state().status()==ContinuityState.Status.RUNNING
+                    && !issuedSettledSameGameOpenBatch)) {
                 StrictJson.require(issuedSettledSameGameRecovery!=null,"READY recovery requires its actual committed history");
                 transitions.requireSettledSameGameReady(same,data,fresh,issuedSettledSameGameRecovery);
                 committedSettledSameGameData=data;
@@ -5024,7 +5027,10 @@ public final class ContinuityBatchJournal implements BatchJournal {
             boolean importedInterrupted=operatorRequest.isEmpty() && (expiryAfterImportedCycle.isPresent()
                     || isolatedLife&&pendingControl.isEmpty()&&importedSavedInterruptedFrontier(state,owner));
             boolean importedClosedCycle=importedSettled||importedInterrupted;
-            boolean imported=importedClosedCycle||(isolatedLife&&!whole.hasNonNull(WriterContracts.ORDINARY_CYCLE_FIELD)
+            boolean importedWithSavedHistory=savedMarker!=null&&savedMarker.isObject()
+                    &&!whole.hasNonNull(WriterContracts.GAMEPLAY_ENTRY_FIELD)
+                    &&whole.hasNonNull(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD);
+            boolean imported=importedWithSavedHistory||importedClosedCycle||(isolatedLife&&!whole.hasNonNull(WriterContracts.ORDINARY_CYCLE_FIELD)
                     ||importedPending||firstImportedExpiry.isPresent())
                     &&savedMarker!=null&&savedMarker.isObject()
                     &&state.status()==ContinuityState.Status.REPAIR_REQUIRED
@@ -5036,6 +5042,9 @@ public final class ContinuityBatchJournal implements BatchJournal {
             var entry=imported?null:org.xar.ck3.control.continuity.ObservedGameplayEntry.decode(whole.get(WriterContracts.GAMEPLAY_ENTRY_FIELD));
             var importedRequest=imported?SavedContinuityBootstrap.request(ContinuityJson.object(savedMarker)):null;
             var importedOpening=imported?org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.decodeObservation(savedMarker.get("opening")):null;
+            var initialPair=imported?Optional.of(CheckpointPairCodec.decode(
+                    ContinuityJson.canonical(savedMarker.get("checkpoint_pair")))):Optional.<CheckpointPair>empty();
+            long initialCycles=imported?StrictJson.integer(savedMarker.get("saved_completed_cycles"),0,StrictJson.MAX_SAFE_INTEGER):0;
             var initialDriver=imported?ExactRef.fromJson(savedMarker.get("full_driver")):entry.fullDriver();
             var initialFacts=imported?ExactRef.fromJson(savedMarker.get("driver_facts")):entry.driverFacts();
             StrictJson.require(imported
@@ -5157,9 +5166,11 @@ public final class ContinuityBatchJournal implements BatchJournal {
             return same.<CheckedSameGameHistory>withHistoricalTransitions(requested, edges -> {
             var importedSettlements=new java.util.ArrayList<ImportedLifeSettlement>();
             Optional<WriterContracts.HistoricalTransition> importedBatchFinish=Optional.empty();
-            if(importedClosedCycle) {
+            if (importedClosedCycle || importedWithSavedHistory) {
                 for(int i=1;i<edges.size();i++) {
                     var settle=edges.get(i);
+                    // Once a new SAVE is committed, ordinary cycle and SAVE history own the live frontier.
+                    if (importedWithSavedHistory && settle.after().toJson().hasNonNull(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD)) break;
                     if(!settle.kind().equals(OrdinaryCycleTransitions.CYCLE_KIND))continue;
                     var details=ContinuityJson.parseObject(settle.details(),ContinuityJson.LEDGER_MAX_BYTES);
                     if(!"SETTLE".equals(details.path("operation").asText()))continue;
@@ -5171,6 +5182,8 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     importedSettlements.add(new ImportedLifeSettlement(retain,settle,original,Optional.empty()));
                 }
                 StrictJson.require(!importedSettlements.isEmpty(),"imported Saved restart has no actual Life settlement");
+            }
+            if(importedClosedCycle) {
                 var settle=importedSettlements.getLast().settle();
                 var tailIndex=Math.toIntExact(settle.sequence());
                 if(tailIndex<edges.size()) {
@@ -5237,9 +5250,8 @@ public final class ContinuityBatchJournal implements BatchJournal {
             ExactRef pending=null,lastCycleRef=null;
             Optional<CompletedEventOutcomeWitness> lastCompletedEventOutcome=Optional.empty();
             SemanticEvidence latest=null;
-            long completedCycles=imported?state.settledCycles():0;
-            Optional<CheckpointPair> savedPair=imported?Optional.of(CheckpointPairCodec.decode(
-                    ContinuityJson.canonical(savedMarker.get("checkpoint_pair")))):Optional.empty();
+            long completedCycles=initialCycles;
+            Optional<CheckpointPair> savedPair=initialPair;
             com.fasterxml.jackson.databind.JsonNode savedBranch=null;
             long savedThroughSequence=imported?1:0;
             int savedDriverIndex=-1;
@@ -5259,7 +5271,8 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     restoredImportedCapabilities=facts.auxiliary().members().containsKey("capability_configuration");
                 }
                 if(imported&&i==0) {
-                    requireImportedSavedEntry(same,edge,importedRequest,savedMarker,state,savedPair.orElseThrow(),importedOpening);
+                    requireImportedSavedEntry(same,edge,importedRequest,savedMarker,state,initialPair.orElseThrow(),
+                            importedOpening,initialCycles);
                 } else if(edge.kind().equals(org.xar.ck3.control.continuity.ObservedGameplayEntry.KIND)) {
                     StrictJson.require(!imported&&edge.sequence()==1,"settled initial recovery has another gameplay entry");
                 } else if(edge.kind().equals(WriterContracts.DRIVER_READ_HISTORY_KIND)) {
@@ -5668,7 +5681,15 @@ public final class ContinuityBatchJournal implements BatchJournal {
                                     &&java.util.Objects.equals(edge.before().toJson().get(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD),operatorLifeRecovery.after().toJson().get(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD))
                                     &&java.util.Objects.equals(edge.before().toJson().get(OrdinaryCycleTransitions.OPERATOR_LIFE_INTERRUPTION_FIELD),operatorLifeRecovery.after().toJson().get(OrdinaryCycleTransitions.OPERATOR_LIFE_INTERRUPTION_FIELD));
                         }
-                        StrictJson.require((openBatch==null||(retainedRecovery!=null||firstOperatorOpen)&&openBatch.equals(used.getLast()))
+                        var previousBoundary=edge.before().toJson().path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD);
+                        boolean firstSavedOpen=openBatch!=null&&savedBranch!=null&&savedThroughSequence>0
+                                &&JournalKind.SAVE_CONFIRMED.name().equals(previousBoundary.path("boundary").asText())
+                                &&openBatch.equals(StrictJson.text(previousBoundary.get("batch_id")))
+                                &&OrdinaryCycleTransitions.sessionFromJson(previousBoundary.get("session")).equals(owner)
+                                &&ContinuityJson.same(savedBranch,edge.before().toJson().get(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD))
+                                &&ContinuityJson.same(savedBranch.get("state"),edge.before().toJson().get(WriterContracts.ORDINARY_CYCLE_FIELD));
+                        StrictJson.require((openBatch==null||(retainedRecovery!=null||firstOperatorOpen||firstSavedOpen)
+                                                &&openBatch.equals(used.getLast()))
                                 &&pending==null&&latest!=null&&!used.isEmpty()
                                 &&StrictJson.text(details.get("batch_id")).equals(used.getLast())
                                 &&StrictJson.integer(details.get("next_sequence"),1,StrictJson.MAX_SAFE_INTEGER)==used.size()
@@ -5738,7 +5759,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                                 "settled recovery cannot grant new cycle credit");
                         latest=OrdinaryCycleTransitions.semanticFromJson(details.get("semantic"));
                         var parsedSemantic=captureSettledSemanticBody(latest,originals);
-                        retained=retainSettledCapabilities(latest,retained,originals,parsedSemantic,importedClosedCycle);
+                        retained=retainSettledCapabilities(latest,retained,originals,parsedSemantic,importedClosedCycle||importedWithSavedHistory);
                         requireSettledObservedContinuation(latestObserved,latest.frame());
                         latestObserved=latest.frame();
                         previousTransport=settledSemanticTransport(latest,owner,originals,parsedSemantic);
@@ -5791,7 +5812,10 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     &&latest!=null&&lastCycleRef!=null&&openBatch==null&&retainedRecovery==null
                     &&!used.isEmpty()
                     &&completedCycles==Math.addExact(state.settledCycles(),importedSettlements.size());
-            if(imported)StrictJson.require(initialImported||firstImportedPending||importedCompleted,
+            if(importedWithSavedHistory) {
+                StrictJson.require(pendingImportedOpening&&existingOpeningRead&&restoredImportedCapabilities&&!confirmedSaves.isEmpty(),
+                        "imported Saved recovery needs its original opening and an actual later confirmed SAVE");
+            } else if(imported)StrictJson.require(initialImported||firstImportedPending||importedCompleted,
                     "imported Saved recovery requires its original guard capability DATA and closed interrupted Life batch");
             StrictJson.require(state.status()!=ContinuityState.Status.RUNNING||retainedRecovery!=null||savedPair.isPresent()||pendingControl.isPresent(),
                     "running history requires its actual prior recovery or complete saved DATA");
@@ -5847,7 +5871,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
             StrictJson.require(same.head().state().sequence()==state.sequence()&&same.head().digest().equals(head.digest()),
                     "settled canonical recovery head changed during read");
             SameGameEntry startingPoint=imported
-                    ?new SameGameEntry.ImportedSaved(requested.getFirst().reference(),savedPair.orElseThrow(),importedOpening,state.settledCycles())
+                    ?new SameGameEntry.ImportedSaved(requested.getFirst().reference(),initialPair.orElseThrow(),importedOpening,initialCycles)
                     :new SameGameEntry.Observed(entry);
             var data=new SettledSameGameData(startingPoint,controller,retained.facts(),retained.fullDriver(),previousTransport,
                     source,Optional.ofNullable(latest),latestObserved,actions,state.sequence(),head.digest(),history);
@@ -5857,7 +5881,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                         &&actions.stream().allMatch(ActionReceipt::settled)&&!confirmedSaves.isEmpty(),
                         "saved settled recovery requires its complete confirmed SAVE and closed canonical actions");
             }
-            var finalImported=importedSettlements.isEmpty()?null:importedSettlements.getLast();
+            var finalImported=importedClosedCycle?importedSettlements.getLast():null;
             if(finalImported!=null&&importedBatchFinish.isPresent())finalImported=new ImportedLifeSettlement(
                     finalImported.retain(),finalImported.settle(),finalImported.original(),importedBatchFinish);
             return new CheckedSameGameHistory(data, isolated, confirmedSaves, retainedRecovery,
@@ -5878,6 +5902,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 return data;
             }
             if (data.controller().savedPair().isPresent()) {
+                issuedSettledSameGameRecovery=checkedHistory.retainedRecovery();
                 issuedSavedSettledHistory = new SavedSettledHistory(this, data, checkedHistory.confirmedSaveReceipts());
                 return data;
             }
@@ -5889,16 +5914,15 @@ public final class ContinuityBatchJournal implements BatchJournal {
 
     private static void requireImportedSavedEntry(ContinuityStorePort.Session same,WriterContracts.HistoricalTransition edge,
             WriterContracts.Request request,com.fasterxml.jackson.databind.JsonNode marker,ContinuityState head,
-            CheckpointPair pair,ObservationIdentity opening)throws IOException {
+            CheckpointPair pair,ObservationIdentity opening,long initialCycles)throws IOException {
         var details=ContinuityJson.parseObject(edge.details(),StrictJson.INPUT_MAX_BYTES);
         StrictJson.require(edge.sequence()==1&&edge.kind().equals(org.xar.ck3.control.continuity.SavedContinuityBootstrap.KIND)
                 &&request.identity().equals(edge.eventIdentity())&&ContinuityJson.same(marker,details),
                 "imported Saved history requires the original canonical admission");
         org.xar.ck3.control.continuity.SavedContinuityBootstrap.requireSavedAdmissionReduction(edge.before(),edge.after(),request,true);
         same.requireHistoricalCanonicalState(edge.sequence(),ContinuityJson.digest(edge.after().toJson()));
-        StrictJson.require(head.origin().equals(edge.after().origin())&&head.settledCycles()==edge.after().settledCycles()
-                &&head.settledDateRaw()==edge.after().settledDateRaw()
-                &&opening.frame().identity().dateRaw().longValueExact()==head.settledDateRaw()
+        StrictJson.require(head.origin().equals(edge.after().origin())&&initialCycles==edge.after().settledCycles()
+                &&opening.frame().identity().dateRaw().longValueExact()==edge.after().settledDateRaw()
                 &&pair.frame().frame().identity().dateRaw().equals(opening.frame().identity().dateRaw()),
                 "imported Saved history changed the original confirmed frontier");
     }

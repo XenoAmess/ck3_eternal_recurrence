@@ -17,12 +17,14 @@ import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
 import org.xar.ck3.control.g2.planning.ProposalLifecycleCodec;
 import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector;
-import org.junit.jupiter.api.Test;
+import org.xar.ck3.control.application.session.SessionPorts.JournalKind;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Implementation-aware DATA witness for the actual private static
- * OrdinaryCycleTransitions.isFullySavedFinishedBatch. It invokes the real helper
+ * OrdinaryCycleTransitions.isFullySavedBatchBoundary. It invokes the real helper
  * and the real private parseState via reflection only. No live authority, writer,
  * Native, Pin, or external artifact is used.
  */
@@ -35,11 +37,13 @@ final class FullySavedFinishedRecovery308Test {
     private static final String STATE_SCHEMA = "xar.java-ordinary-cycle-state/v2";
     private static final String PAIR_SCHEMA = "xar.java-checkpoint-pair/v1";
 
-    @Test void actualPureHelperAcceptsCleanProfileAndRejectsFiniteMutations() throws Throwable {
-        var clean = cleanState();
+    @ParameterizedTest
+    @EnumSource(value = JournalKind.class, names = {"BATCH_FINISHED", "SAVE_CONFIRMED"})
+    void actualPureHelperAcceptsCleanProfileAndRejectsFiniteMutations(JournalKind boundary) throws Throwable {
+        var clean = cleanState(boundary);
         var owner = ownerFor(clean);
         var branch = parseState(clean);
-        assertTrue(invokeIsFullySavedFinishedBatch(clean, owner, branch), "clean fully-saved finished profile must satisfy the actual pure helper");
+        assertTrue(invokeIsFullySavedBatchBoundary(clean, owner, branch), "clean fully-saved boundary must satisfy the actual pure helper");
 
         var mutations = new TreeSet<String>();
         mutations.add("wrong-boundary");
@@ -55,12 +59,12 @@ final class FullySavedFinishedRecovery308Test {
             var state = mutate(clean, mutation);
             var mutatedOwner = ownerFor(state);
             var mutatedBranch = parseState(state);
-            assertFalse(invokeIsFullySavedFinishedBatch(state, mutatedOwner, mutatedBranch),
+            assertFalse(invokeIsFullySavedBatchBoundary(state, mutatedOwner, mutatedBranch),
                     "actual pure helper must reject mutation: " + mutation);
         }
     }
 
-    private static ContinuityState cleanState() {
+    private static ContinuityState cleanState(JournalKind kind) {
         ObjectNode row = StrictJson.object();
         row.put("schema", "root.ck3.continuity-window/v1");
         row.put("machine_id", MACHINE);
@@ -75,9 +79,9 @@ final class FullySavedFinishedRecovery308Test {
         row.put("last_event_identity", "0000000000000000000000000000000000000000000000000000000000000000");
 
         ObjectNode boundary = StrictJson.object();
-        boundary.put("evidence_id", BATCH + ":BATCH_FINISHED");
+        boundary.put("evidence_id", BATCH + ":" + kind.name());
         boundary.put("batch_id", BATCH);
-        boundary.put("boundary", "BATCH_FINISHED");
+        boundary.put("boundary", kind.name());
         boundary.set("session", sessionJson());
         row.set(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD, boundary);
 
@@ -216,8 +220,8 @@ final class FullySavedFinishedRecovery308Test {
         return row;
     }
 
-    private static boolean invokeIsFullySavedFinishedBatch(ContinuityState state, SessionIdentity owner, Object branch) throws Throwable {
-        var method = OrdinaryCycleTransitions.class.getDeclaredMethod("isFullySavedFinishedBatch", ContinuityState.class, SessionIdentity.class, branch.getClass());
+    private static boolean invokeIsFullySavedBatchBoundary(ContinuityState state, SessionIdentity owner, Object branch) throws Throwable {
+        var method = OrdinaryCycleTransitions.class.getDeclaredMethod("isFullySavedBatchBoundary", ContinuityState.class, SessionIdentity.class, branch.getClass());
         method.setAccessible(true);
         try {
             var result = method.invoke(null, state, owner, branch);
