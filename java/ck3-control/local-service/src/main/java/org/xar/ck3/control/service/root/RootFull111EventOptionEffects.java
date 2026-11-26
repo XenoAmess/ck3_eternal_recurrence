@@ -15,6 +15,8 @@ import org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive;
 import org.xar.ck3.control.application.action.ActionReceipt;
 import org.xar.ck3.control.application.action.ActionReconciliationScope;
 import org.xar.ck3.control.application.action.ActionState;
+import org.xar.ck3.control.application.action.ActionTransitions;
+import org.xar.ck3.control.application.action.GuardEvidence;
 import org.xar.ck3.control.application.action.NativeActionPort.AckReceived;
 import org.xar.ck3.control.application.action.NativeActionPort.DispatchOutcome;
 import org.xar.ck3.control.application.action.NativeObservationPort.ObservedFrame;
@@ -74,11 +76,17 @@ final class RootFull111EventOptionEffects implements NativeEffectRegistry.Observ
     }
 
     @Override public NativeEffectRegistry.Projected observe(ActionCommand command, ActionState.Attempt attempt, DispatchOutcome dispatch) {
-        if (!(dispatch instanceof AckReceived selected) || !selected.nativeOk() || ActionReconciliationScope.activeFor(command))
+        if (!(dispatch instanceof AckReceived selected) || !selected.nativeOk())
             return pending(attempt, "Full111 queue proof requires the known positive SELECT in its original held connection");
         try {
             var selectedCustody = custody(selected);
             selectedCustody.verify(selected, attempt.guard());
+            var same = context.borrowedSession();
+            var archive = context.archive().withSession(same);
+            if (ActionReconciliationScope.activeFor(command))
+                return context.reconciliation().currentForCommand(same, command,
+                        lease -> recover(command, attempt, selected, lease, archive));
+
             var deadline = selectedCustody.responseReceived().observedAt().plus(ActionObservationWindow.MAXIMUM_WINDOW);
             if (!context.clock().instant().isBefore(deadline))
                 return pending(attempt, "Full111 queue observation window expired after SELECT");
@@ -89,20 +97,11 @@ final class RootFull111EventOptionEffects implements NativeEffectRegistry.Observ
             if (proof.isEmpty() || proof.orElseThrow().after() != fresh.originalFrame())
                 return pending(attempt, "Full111 independent complete queue did not verify the selected instance absent");
             var queue = proof.orElseThrow();
-            var same = context.borrowedSession();
-            var archive = context.archive().withSession(same);
             var before = RootGuardEvidence.loadFrame(attempt.guard(), archive, context.frameLoader());
             return context.remainingDomains().lifecycle().physical().withReceivedSnapshot(same, deadline, fresh.originalFrame(), lease -> {
                 var after = lease.ordinary().orElseThrow(() -> new IOException("No complete Full111 ordinary after observation"));
-                var frames = new NativeEffectSnapshots.Pair(before, after);
-                var projected = project(command, attempt, frames, selected, fresh.acknowledgement(), fresh.snapshotReceived(),
-                        queue.original(), archive, List.of());
-                var originals = new Originals(archive.preserve(selected), archive.preserve(fresh.acknowledgement()),
-                        fresh.snapshotReceived(), archive.preserve(queue.original()));
-                var material = archive.preserveMaterial(originals.encode());
-                var basis = NativeEffectEvidence.preserve(command, attempt, frames, List.of(),
-                        projected.compatibleResult().orElseThrow(), List.of(material), archive);
-                return NativeEffectSnapshots.withEvidence(projected, List.of(basis, material));
+                return settle(command, attempt, new NativeEffectSnapshots.Pair(before, after), selected,
+                        fresh.acknowledgement(), fresh.snapshotReceived(), queue.original(), archive, deadline);
             });
         } catch (InterruptedException interrupted) {
             Thread.currentThread().interrupt();
@@ -110,6 +109,49 @@ final class RootFull111EventOptionEffects implements NativeEffectRegistry.Observ
         } catch (IOException | UncheckedIOException | ContractViolationException unavailable) {
             return pending(attempt, "Full111 queue or exact after originals unavailable: " + unavailable.getMessage());
         }
+    }
+
+    private NativeEffectRegistry.Projected recover(ActionCommand command, ActionState.Attempt attempt, AckReceived selected,
+            RootReconciliationAuthority.Lease lease, OutcomeArchive archive) throws IOException {
+        var after = ActionReconciliationScope.requireFrame(command, attempt);
+        var guard = ActionReconciliationScope.requireObservationGuard(command, attempt);
+        var identity = guard.origin().requireReconciliation();
+        var provenance = ActionReconciliationScope.requireProvenance(command, attempt);
+        StrictJson.require(after == lease.complete() && guard.equals(lease.observationGuard())
+                && identity.equals(lease.identity()) && provenance.equals(lease.provenance())
+                && attempt.equals(lease.attempt()), "Full111 recovery changed its actual pending observer or frame");
+        if (!(provenance instanceof ObservationProvenance.FreshSnapshotQuery read)
+                || !(read.basis() instanceof ObservationProvenance.ColdAfterAcknowledgement original)
+                || !original.originalReceipt().equals(identity.pending().originalReceipt()))
+            return pending(attempt, "Full111 recovery requires its already authenticated post-SELECT snapshot");
+        requirePendingOriginal(lease.canonical(), command, attempt, selected);
+        var fresh = originalAck(archive, read.readAcknowledgement());
+        StrictJson.require(read.requestId().equals(fresh.requestId()), "Full111 recovery changed its original Full query");
+        var actual = lease.fullSnapshot().actual();
+        NativeFreshSnapshotPort.verifyAfterOriginal(selected, fresh, actual, read.snapshotReceived());
+        var deadline = recoveryEnd(command, guard);
+        try {
+            var proof = transport.readFull111EventQueue(attempt, selected, deadline);
+            if (proof.isEmpty() || proof.orElseThrow().after() != actual)
+                return pending(attempt, "Full111 recovery did not verify absence in the complete original queue");
+            var frames = new NativeEffectSnapshots.Pair(lease.before(), after, Optional.of(identity));
+            return settle(command, attempt, frames, selected, fresh, read.snapshotReceived(),
+                    proof.orElseThrow().original(), archive, deadline);
+        } catch (InterruptedException interrupted) {
+            Thread.currentThread().interrupt();
+            return pending(attempt, "Full111 queue reconciliation interrupted");
+        }
+    }
+
+    private static NativeEffectRegistry.Projected settle(ActionCommand command, ActionState.Attempt attempt,
+            NativeEffectSnapshots.Pair frames, AckReceived selected, AckReceived fresh, NativeRequestChronology.Event snapshotReceived,
+            AckReceived queue, OutcomeArchive archive, Instant deadline) throws IOException {
+        var projected = project(command, attempt, frames, selected, fresh, snapshotReceived, queue, archive, deadline, List.of());
+        var originals = new Originals(archive.preserve(selected), archive.preserve(fresh), snapshotReceived, archive.preserve(queue));
+        var material = archive.preserveMaterial(originals.encode());
+        var basis = NativeEffectEvidence.preserve(command, attempt, frames, List.of(),
+                projected.compatibleResult().orElseThrow(), List.of(material), archive);
+        return NativeEffectSnapshots.withEvidence(projected, List.of(basis, material));
     }
 
     static NativeRecordedEvidenceVerifier.Binding archivedVerifier(OperationKey operation, ExactRef definitionSource,
@@ -123,23 +165,33 @@ final class RootFull111EventOptionEffects implements NativeEffectRegistry.Observ
     static NativeEffectEvidence.Original replay(ActionReceipt receipt, OutcomeArchive archive,
             NativeEffectEvidence.FrameLoader frames) throws IOException {
         var original = NativeEffectEvidence.load(receipt, archive, frames);
-        StrictJson.require(original.independentReads().isEmpty() && original.supportingMaterials().size() == 1
-                && original.reconciliationGuard().isEmpty(), "Full111 option requires its one same-connection queue proof");
+        StrictJson.require(original.independentReads().isEmpty() && original.supportingMaterials().size() == 1,
+                "Full111 option requires its one same-connection queue proof");
         var settled = (ActionState.Settled) receipt.state();
         var proof = Originals.decode(archive.loadMaterial(original.supportingMaterials().getFirst()));
         var selected = originalAck(archive, proof.selected());
         StrictJson.require(selected.equals(settled.dispatch()), "Full111 option proof changed its canonical original SELECT");
+        Instant deadline = observationEnd(selected);
+        if (original.reconciliationGuard().isPresent()) {
+            var guard = original.reconciliationGuard().orElseThrow();
+            var reference = guard.origin().requireReconciliation().pending().originalReceipt();
+            var pending = archive.loadReceipt(reference);
+            StrictJson.require(reference.equals(archive.receiptReferenceOf(pending)),
+                    "Full111 option recovery lost its exact original pending receipt");
+            requirePendingOriginal(pending, receipt.command(), settled.attempt(), selected);
+            deadline = recoveryEnd(receipt.command(), guard);
+        }
         var applied = (ActionState.Applied) settled.settlement();
         var projected = project(receipt.command(), settled.attempt(), original.frames(), selected,
                 originalAck(archive, proof.fresh()), proof.snapshotReceived(), originalAck(archive, proof.queue()),
-                archive, applied.observation().supportingEvidence());
+                archive, deadline, applied.observation().supportingEvidence());
         NativeEffectEvidence.requireSame(settled.settlement(), projected, original.compatibleResult());
         return original;
     }
 
     private static NativeEffectRegistry.Projected project(ActionCommand command, ActionState.Attempt attempt,
             NativeEffectSnapshots.Pair frames, AckReceived selected, AckReceived fresh, NativeRequestChronology.Event snapshotReceived,
-            AckReceived queue, OutcomeArchive archive, List<ExactRef> supporting) throws IOException {
+            AckReceived queue, OutcomeArchive archive, Instant deadline, List<ExactRef> supporting) throws IOException {
         var target = RootFull111EventOptionPreparation.target(command);
         var selection = Request.decodeSelectionRequest(attempt.preparedRequest());
         StrictJson.require(command.operation().value().equals(Action.SELECT.step()) && command.expected().observerSchema().equals(SCHEMA)
@@ -150,7 +202,7 @@ final class RootFull111EventOptionEffects implements NativeEffectRegistry.Observ
                 "Full111 option proof crossed its original command, target, deadline or private Native revision");
         var before = full(frames.before());
         var after = full(frames.after());
-        var sampled = requireQueue(attempt, selected, fresh, before, after, snapshotReceived, queue);
+        var sampled = requireQueue(attempt, selected, fresh, before, after, snapshotReceived, queue, deadline);
 
         var beforeRaw = NativeWire.object(NativeWire.parse(before.state().bytes()));
         var afterRaw = NativeWire.object(NativeWire.parse(after.state().bytes()));
@@ -170,13 +222,17 @@ final class RootFull111EventOptionEffects implements NativeEffectRegistry.Observ
 
     static Request requireQueue(ActionState.Attempt attempt, AckReceived selected, AckReceived fresh, ObservedFrame before,
             ObservedFrame after, NativeRequestChronology.Event snapshotReceived, AckReceived queue) throws IOException {
+        return requireQueue(attempt, selected, fresh, before, after, snapshotReceived, queue, observationEnd(selected));
+    }
+
+    static Request requireQueue(ActionState.Attempt attempt, AckReceived selected, AckReceived fresh, ObservedFrame before,
+            ObservedFrame after, NativeRequestChronology.Event snapshotReceived, AckReceived queue, Instant deadline) throws IOException {
         var sampled = Request.decodeQueueRequest(queue);
         StrictJson.require(CurrentFull111EventOption.confirmsAbsence(attempt, selected, sampled, queue),
                 "Original Full111 queue did not independently prove complete absence of the selected instance");
         NativeFreshSnapshotPort.verifyAfterOriginal(selected, fresh, after, snapshotReceived);
         var freshCustody = custody(fresh);
         var queueCustody = custody(queue);
-        var deadline = custody(selected).responseReceived().observedAt().plus(ActionObservationWindow.MAXIMUM_WINDOW);
         var selectedOwner = CurrentFull111EventOption.decodeOutcome(selected).owner().orElseThrow();
         var queueOwner = CurrentFull111EventOption.decodeOutcome(queue).owner().orElseThrow();
         StrictJson.require(before.session().equals(queueCustody.session()) && after.nativeRevision().compareTo(before.nativeRevision()) > 0
@@ -184,6 +240,24 @@ final class RootFull111EventOptionEffects implements NativeEffectRegistry.Observ
                 && queueOwner.ticketSequence().compareTo(selectedOwner.ticketSequence()) > 0
                 && !sampled.deadline().isAfter(deadline), "Full111 queue escaped the exact later Full or original observation window");
         return sampled;
+    }
+
+    static void requirePendingOriginal(ActionReceipt pending, ActionCommand command, ActionState.Attempt attempt, AckReceived selected) {
+        StrictJson.require((pending.state() instanceof ActionState.Unknown || pending.state() instanceof ActionState.AckReceived)
+                && !pending.settled() && pending.command().equals(command)
+                && ActionTransitions.attempt(pending.state()).filter(attempt::equals).isPresent()
+                && selected.nativeOk() && pending.ack().filter(selected::equals).isPresent(),
+                "Full111 recovery requires the exact pending command, attempt and positive SELECT");
+    }
+
+    private static Instant observationEnd(AckReceived selected) throws IOException {
+        return custody(selected).responseReceived().observedAt().plus(ActionObservationWindow.MAXIMUM_WINDOW);
+    }
+
+    private static Instant recoveryEnd(ActionCommand command, GuardEvidence guard) {
+        StrictJson.require(!guard.validUntil().isAfter(command.deadline()),
+                "Full111 recovery exceeded its original ordinary batch deadline");
+        return guard.validUntil();
     }
 
     private static void requirePreparation(ActionCommand command, ActionState.Attempt attempt, AckReceived selected,

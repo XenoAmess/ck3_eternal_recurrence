@@ -7,9 +7,15 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
+import org.xar.ck3.control.application.action.ActionCodec;
+import org.xar.ck3.control.application.action.ActionCommand;
+import org.xar.ck3.control.application.action.ActionReceipt;
+import org.xar.ck3.control.application.action.ActionState;
 import org.xar.ck3.control.application.action.ActionState.Attempt;
 import org.xar.ck3.control.application.action.GuardEvidence;
 import org.xar.ck3.control.application.action.NativeActionPort.AckReceived;
@@ -28,9 +34,13 @@ import org.xar.ck3.control.contracts.GameGeneration;
 import org.xar.ck3.control.contracts.PythonOnlyUInt64;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.contracts.semantic.NativeFull111OrdinaryEvent;
+import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector.Claims;
 import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector.Frame;
 import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector.ProposalFrame;
 import org.xar.ck3.control.g2.common.G2Source;
+import org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedBoolean;
+import org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedPostcondition;
+import org.xar.ck3.control.g2.planning.ProposalLifecycle.FieldKey;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
 import org.xar.ck3.control.nativebridge.CurrentFull111EventOption;
 import org.xar.ck3.control.nativebridge.CurrentFull111EventOption.*;
@@ -39,6 +49,7 @@ import org.xar.ck3.control.nativebridge.CurrentLyd;
 import org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort;
 import org.xar.ck3.control.nativebridge.NativeWire;
 import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFrame;
+import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 
 final class RootFull111EventOptionEffectsTest {
     private static final Instant BASE = Instant.parse("2026-11-27T04:00:00Z");
@@ -73,6 +84,36 @@ final class RootFull111EventOptionEffectsTest {
         var other = snapshot("a-foreign-fresh-request", 13, proof.received());
         assertThrows(IOException.class, () -> RootFull111EventOptionEffects.requireQueue(proof.attempt(), proof.select(),
                 proof.fresh(), proof.before(), other, proof.received(), queue(5, 30, false, BASE.plusSeconds(60))));
+    }
+
+    @Test void laterSameReceiverQueueUsesTheRecoveryObservationWindow() throws Exception {
+        var proof = fixture(13, 129_990);
+        var queue = queue(5, 130_010, false, BASE.plusSeconds(131));
+        assertThrows(ContractViolationException.class, () -> proof.prove(queue));
+        assertEquals(TARGET, RootFull111EventOptionEffects.requireQueue(proof.attempt(), proof.select(), proof.fresh(),
+                proof.before(), proof.after(), proof.received(), queue, BASE.plusSeconds(132)).target());
+        assertThrows(ContractViolationException.class, () -> RootFull111EventOptionEffects.requireQueue(proof.attempt(),
+                proof.select(), proof.fresh(), proof.before(), proof.after(), proof.received(), queue, BASE.plusSeconds(130)));
+    }
+
+    @Test void recoveryKeepsTheExactUnresolvedCommandAndAcknowledgement() throws Exception {
+        var proof = fixture(13);
+        var guard = proof.attempt().guard();
+        var expected = new ExpectedPostcondition(1, guard.observed(), guard.source(), RootFull111EventOptionEffects.SCHEMA,
+                List.of(new ExpectedBoolean(new FieldKey("event_queue_absent"), true)));
+        var command = new ActionCommand("event-original", guard.observed(), guard.source(), guard.sessionId(), guard.operation(),
+                new OpportunityJson.Obj(java.util.Map.of()), expected, new Claims(Set.of(), Set.of(), Set.of(), Set.of()),
+                BASE.plusSeconds(180));
+        var pending = new ActionReceipt(1, 7, command, ActionCodec.bodySha256(command),
+                new ActionState.Unknown(Optional.of(proof.attempt()), Optional.of(proof.select()), "complete queue unavailable", List.of()));
+        RootFull111EventOptionEffects.requirePendingOriginal(pending, command, proof.attempt(), proof.select());
+        var noAcknowledgement = new ActionReceipt(1, 7, command, pending.bodySha256(),
+                new ActionState.Unknown(Optional.of(proof.attempt()), Optional.empty(), "write outcome unavailable", List.of()));
+        assertThrows(ContractViolationException.class, () ->
+                RootFull111EventOptionEffects.requirePendingOriginal(noAcknowledgement, command, proof.attempt(), proof.select()));
+        var differentAcknowledgement = selectAck(request(Action.SELECT, BASE.plusSeconds(30)), 4, 13);
+        assertThrows(ContractViolationException.class, () ->
+                RootFull111EventOptionEffects.requirePendingOriginal(pending, command, proof.attempt(), differentAcknowledgement));
     }
 
     @Test void preservesDistinctReferencesAndTheExactIndependentOccurrence() {
@@ -129,6 +170,10 @@ final class RootFull111EventOptionEffectsTest {
     }
 
     private static Fixture fixture(int afterRevision) throws IOException {
+        return fixture(afterRevision, 20);
+    }
+
+    private static Fixture fixture(int afterRevision, int freshEntered) throws IOException {
         var request = request(Action.SELECT, BASE.plusSeconds(30));
         var nativeRequest = request.selectionRequest();
         var select = selectAck(request, 3, 10);
@@ -138,11 +183,11 @@ final class RootFull111EventOptionEffectsTest {
         var guard = new GuardEvidence(identity, source, SESSION.sessionId(), SESSION.connectionGeneration(),
                 new OperationKey(Action.SELECT.step()), ref(1), ref(2), "fixture", BASE, request.deadline());
         var attempt = new Attempt(SELECT, BASE, guard, nativeRequest);
-        var received = event(22);
+        var received = event(freshEntered + 2);
         var freshResult = StrictJson.object().put("schema", NativeFreshSnapshotPort.RESULT_SCHEMA).put("request_id", FRESH)
                 .put("snapshot_id", "native:" + afterRevision).put("revision", afterRevision);
         var fresh = ack(FRESH, NativeWire.execute(FRESH, NativeFreshSnapshotPort.STEP, BigInteger.ZERO, new byte[]{'{', '}'}),
-                freshResult, 20, 24);
+                freshResult, freshEntered, freshEntered + 4);
         return new Fixture(attempt, select, fresh, snapshot("", 12, event(8)), snapshot(FRESH, afterRevision, received), received);
     }
 
