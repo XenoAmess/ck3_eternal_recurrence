@@ -3,22 +3,15 @@ package org.xar.ck3.control.build;
 import static org.junit.jupiter.api.Assertions.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.jna.Memory;
-import com.sun.jna.platform.win32.Kernel32;
-import com.sun.jna.platform.win32.WinBase;
-import com.sun.jna.platform.win32.WinDef.DWORD;
-import com.sun.jna.platform.win32.WinNT;
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.nio.file.AccessDeniedException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.FileVisitor;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.List;
 import java.util.Map;
@@ -268,47 +261,50 @@ final class ControlBuildTest {
         assertEquals(1, recoveredAttributes.get()); assertEquals(2, opens.get());
     }
 
-    @Test void actualPendingScratchDirectoryRestartsCompleteCensusAndChargesRemainingEntries() throws Exception {
+    @Test void scratchTraversalDenialRestartsCompleteCensusAndChargesRemainingEntries() throws Exception {
         Path scratch = Files.createDirectory(temporary.resolve("scratch"));
-        Files.writeString(scratch.resolve("retained.bin"), "keep");
-        Path pending = Files.createDirectories(scratch.resolve("junit-delete/root-cold/source/src/main/java"));
-        var kernel = Kernel32.INSTANCE;
-        var handle = kernel.CreateFile(SharedSourceFiles.nativePath(pending), WinNT.DELETE | WinNT.FILE_READ_ATTRIBUTES,
-                WinNT.FILE_SHARE_READ | WinNT.FILE_SHARE_WRITE | WinNT.FILE_SHARE_DELETE,
-                null, WinNT.OPEN_EXISTING, WinNT.FILE_FLAG_BACKUP_SEMANTICS, null);
-        assertNotNull(handle); assertNotEquals(WinBase.INVALID_HANDLE_VALUE, handle);
-        var closed = new AtomicBoolean();
-        // FileDispositionInfo keeps the directory delete-pending until the real native handle closes.
-        int fileDispositionInfo = 4;
-        try (var disposition = new Memory(Integer.BYTES)) {
-            disposition.setInt(0, 1);
-            assertTrue(kernel.SetFileInformationByHandle(handle, fileDispositionInfo, disposition, new DWORD(Integer.BYTES)));
-            assertThrows(AccessDeniedException.class, () -> Files.newDirectoryStream(pending).close());
-            var persistent = new ControlBuild.InventoryIo() {};
-            assertThrows(AccessDeniedException.class,
-                    () -> ControlBuild.sizes(temporary, Map.of("scratch", 7L), () -> {}, persistent));
-
-            var scans = new AtomicInteger();
-            var recovering = new ControlBuild.InventoryIo() {
-                @Override public void walk(Path root, FileVisitor<Path> visitor) throws IOException {
-                    if (root.equals(scratch) && scans.incrementAndGet() == 2) {
-                        assertTrue(kernel.CloseHandle(handle));
-                        closed.set(true);
-                        assertThrows(NoSuchFileException.class, () -> Files.newDirectoryStream(pending).close());
-                        Files.createDirectory(pending);
-                        Files.writeString(pending.resolve("new.bin"), "new");
-                    }
-                    ControlBuild.InventoryIo.super.walk(root, visitor);
-                }
-            };
-            assertEquals(Map.of("scratch", 7L), ControlBuild.sizes(temporary, Map.of("scratch", 7L), () -> {}, recovering));
-            assertEquals(2, scans.get());
-            var quota = assertThrows(IOException.class,
-                    () -> ControlBuild.sizes(temporary, Map.of("scratch", 6L), () -> {}, persistent));
-            assertEquals("Workpackage cap exceeded: scratch", quota.getMessage());
-        } finally {
-            if (!closed.get()) assertTrue(kernel.CloseHandle(handle));
+        for (String part : List.of("m2", "build", "tools", "logs", "artifacts")) {
+            Files.createDirectory(temporary.resolve(part));
         }
+        Path retained = Files.writeString(scratch.resolve("retained.bin"), "keep");
+        Path denied = Files.createDirectory(scratch.resolve("readable-directory"));
+        Files.writeString(denied.resolve("retained.bin"), "new");
+        var scans = new AtomicInteger();
+        var deniedScans = new AtomicInteger(1);
+        var io = new ControlBuild.InventoryIo() {
+            @Override public void walk(Path root, FileVisitor<Path> visitor) throws IOException {
+                if (!root.equals(scratch) || scans.incrementAndGet() > deniedScans.get()) {
+                    ControlBuild.InventoryIo.super.walk(root, visitor);
+                    return;
+                }
+                // The outer bootstrap census still has access while the local walker observes a denial.
+                CiBootstrap.guard(temporary, Map.of(), Instant.now().plusSeconds(5), () -> {},
+                        path -> Files.readAttributes(path, BasicFileAttributes.class, java.nio.file.LinkOption.NOFOLLOW_LINKS));
+                visitor.preVisitDirectory(root, attributes(root));
+                ControlBuild.InventoryIo.super.walk(retained, visitor);
+                visitor.visitFileFailed(denied, new AccessDeniedException(denied.toString()));
+                visitor.postVisitDirectory(root, null);
+            }
+            @Override public BasicFileAttributes attributes(Path path) throws IOException {
+                if (path.equals(denied) && scans.get() <= deniedScans.get()) throw new AccessDeniedException(path.toString());
+                return ControlBuild.InventoryIo.super.attributes(path);
+            }
+        };
+
+        assertEquals(Map.of("scratch", 7L), ControlBuild.sizes(temporary, Map.of("scratch", 7L), () -> {}, io));
+        assertEquals(2, scans.get());
+
+        scans.set(0);
+        var quota = assertThrows(IOException.class,
+                () -> ControlBuild.sizes(temporary, Map.of("scratch", 6L), () -> {}, io));
+        assertEquals("Workpackage cap exceeded: scratch", quota.getMessage());
+        assertEquals(2, scans.get());
+
+        scans.set(0);
+        deniedScans.set(3);
+        assertThrows(AccessDeniedException.class,
+                () -> ControlBuild.sizes(temporary, Map.of("scratch", 7L), () -> {}, io));
+        assertEquals(3, scans.get());
     }
 
     @Test void scratchRetryRemainsBoundedAndCannotRelaxRootOrOtherPartPermissions() throws Exception {
