@@ -811,7 +811,6 @@ public final class RootOrdinaryRuntimeAssembly {
             opened.installed=installed;
             record RetainedAdoption(RootJavaSavedBootstrap.RetainedSaved source,DriverBootstrap.Adopted driver) { }
             var adoption=runOperationPhase(clock,Duration.ofMinutes(10),until->{
-                config.initialPolicy().requireInitialSavedProjection(plan,source.pair().save());
                 config.initialPolicy().requireInitialSavedProjection(plan,source.pair().save(),custody.savedClone());
                 var retained=RootJavaSavedBootstrap.reopenLoaded(source,installed.context(),custody,until);
                 return new RetainedAdoption(retained,core.adoptRetainedSaved(retained,sourceG2,config.retainedFrames(),until));
