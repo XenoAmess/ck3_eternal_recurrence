@@ -29,7 +29,12 @@ import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
  */
 public final class PortableRecoveryDataArchive {
 
+    @FunctionalInterface public interface DataSource {
+        byte[] read(ExactRef original, int maximumBytes) throws IOException;
+    }
+
     private final OrdinaryCycleTransitions.SessionAuthority authority;
+    private final DataSource source;
     private final NativeArchiveDataCodec codec;
     private final Map<ExactRef, byte[]> exactBytes = new HashMap<>();
     private final Map<ExactRef, ActionReceipt> receiptCache = new HashMap<>();
@@ -46,7 +51,12 @@ public final class PortableRecoveryDataArchive {
     private final Map<RawJson, ExactRef> materialRefs = new HashMap<>();
 
     public PortableRecoveryDataArchive(OrdinaryCycleTransitions.SessionAuthority authority) {
+        this(authority, PortableRecoveryDataArchive::readFile);
+    }
+
+    public PortableRecoveryDataArchive(OrdinaryCycleTransitions.SessionAuthority authority, DataSource source) {
         this.authority = Objects.requireNonNull(authority);
+        this.source = Objects.requireNonNull(source);
         this.codec = new NativeArchiveDataCodec(this::readBytes);
     }
 
@@ -55,12 +65,20 @@ public final class PortableRecoveryDataArchive {
     }
 
     public static byte[] readExact(ExactRef original, int maximumBytes) throws IOException {
+        return readExact(original, maximumBytes, PortableRecoveryDataArchive::readFile);
+    }
+
+    private static byte[] readFile(ExactRef original, int maximumBytes) throws IOException {
+        return java.nio.file.Files.readAllBytes(java.nio.file.Path.of(original.path()));
+    }
+
+    private static byte[] readExact(ExactRef original, int maximumBytes, DataSource source) throws IOException {
         Objects.requireNonNull(original);
         if (maximumBytes < 1 || maximumBytes > WriterContracts.MAX_PIN_BYTES
                 || original.bytes() < 0 || original.bytes() > maximumBytes) {
             throw new IOException("explicit finite original DATA bound required");
         }
-        byte[] bytes = java.nio.file.Files.readAllBytes(java.nio.file.Path.of(original.path()));
+        byte[] bytes = source.read(original, maximumBytes);
         if (bytes.length != original.bytes() || bytes.length > maximumBytes) {
             throw new IOException("retained DATA length differs from original ref");
         }
@@ -83,7 +101,7 @@ public final class PortableRecoveryDataArchive {
         }
         byte[] bytes = exactBytes.get(original);
         if (bytes == null) {
-            bytes = readExact(original, maximumBytes);
+            bytes = readExact(original, maximumBytes, source);
             exactBytes.put(original, bytes);
         }
         return bytes.clone();
