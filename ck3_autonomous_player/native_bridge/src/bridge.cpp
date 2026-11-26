@@ -117,6 +117,7 @@
 #include "xar_bridge/preview_move_army_unavailable_reason_v1.hpp"
 #include "xar_bridge/army_strength_result_write_diagnostic_v1.hpp"
 #include "xar_bridge/game_adapter.hpp"
+#include "ck3_active_event_frame.hpp"
 #if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
 #include "xar_bridge/native_mandatory_choice_transport_v1.hpp"
 #include "xar_bridge/native_modal_choice_hint_policy_v1.hpp"
@@ -6158,24 +6159,7 @@ std::string StateSnapshotFrame(const xar::game::Snapshot &snapshot,
   } else {
     AppendOneLifeSettlement(result, snapshot.one_life_settlement);
   }
-  result += ",\"active_event\":";
-  if (!snapshot.has_active_event) {
-    result += "null";
-  } else {
-    result += "{\"instance_id\":";
-    result += SignedNumber(snapshot.active_event_instance_id);
-    result += ",\"option_count\":";
-    result += SignedNumber(snapshot.active_event_option_count);
-    result += ",\"option_indexes\":[";
-    for (std::int32_t public_index = 1;
-         public_index <= snapshot.active_event_option_count; ++public_index) {
-      if (public_index != 1) {
-        result += ',';
-      }
-      result += SignedNumber(public_index);
-    }
-    result += "]}";
-  }
+  xar::bridge::AppendActiveEventFrame(result,snapshot,descriptor);
   result += ",\"pending_character_interaction\":";
   if (!snapshot.has_pending_character_interaction) {
     result += "null";
@@ -16477,6 +16461,7 @@ std::string RunFullClockControl1210(const xar::game::GameAdapter &game,
       state.checkpoint_submission.sequence==std::numeric_limits<std::uint64_t>::max()) return answer();
   const auto expected=*state.previous_snapshot;
   if(!expected.paused || !expected.map_ready || !expected.has_played_character || !expected.played_character_alive) return answer();
+  if(IsFull111(image_build) && expected.has_active_event) return answer();
   query.request.operation=request.operation;query.request.step=request.step;
   query.request.public_speed=request.public_speed;query.request.deadline_unix_ms=request.deadline_unix_ms;
   query.request.expected={{expected.date_raw,expected.speed,expected.paused},expected.player_id,
@@ -16490,7 +16475,8 @@ std::string RunFullClockControl1210(const xar::game::GameAdapter &game,
   ArmCoreControlDeadlineV1(query);
   if(query.monotonic_deadline_ms==0) {query.result.status=CoreControlStatusV1::expired;return answer();}
   xar::game::Snapshot fresh{};
-  if(!xar::ck3_12002::ReadFreshFullSnapshot12002(game,fresh) || fresh!=expected) {
+  if(!xar::ck3_12002::ReadFreshFullSnapshot12002(game,fresh) ||
+      (IsFull111(image_build) && fresh.has_active_event) || fresh!=expected) {
     query.result.status=CoreControlStatusV1::stale_full_snapshot;return answer();
   }
   const auto submit=xar::ck3_11906::TrySubmitMainThreadQueryV1(
@@ -16526,6 +16512,7 @@ std::string RunDateSentinelArm1210(const xar::game::GameAdapter &game,WorkerStat
   const auto expected=*state.previous_snapshot;
   if(!expected.paused || !expected.map_ready || !expected.has_played_character || !expected.played_character_alive ||
       expected.date_raw!=parsed.starting_date_raw || expected.speed!=parsed.speed ||
+      (IsFull111(image_build) && expected.has_active_event) ||
       !expected.active_wars.empty() || !expected.player_armies.empty())return answer();
   xar::ck3_11906::TacticalDailySentinelArmRequestV1 request{};
   request.starting_date_raw=parsed.starting_date_raw;request.target_date_raw=parsed.target_date_raw;
@@ -16543,7 +16530,8 @@ std::string RunDateSentinelArm1210(const xar::game::GameAdapter &game,WorkerStat
   ArmCoreControlDeadlineV1(query);
   if(!query.monotonic_deadline_ms){query.result.status=CoreControlStatusV1::expired;return answer();}
   xar::game::Snapshot fresh{};
-  if(!xar::ck3_12002::ReadFreshFullSnapshot12002(game,fresh) || fresh!=expected) {
+  if(!xar::ck3_12002::ReadFreshFullSnapshot12002(game,fresh) ||
+      (IsFull111(image_build) && fresh.has_active_event) || fresh!=expected) {
     query.result.status=CoreControlStatusV1::stale_full_snapshot;return answer();
   }
   const auto submit=xar::ck3_11906::TrySubmitMainThreadQueryV1(

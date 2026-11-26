@@ -1,13 +1,5 @@
 // The Full111 queue and the ordinary GUI census are independent witnesses.
 namespace full111_event_queue {
-constexpr std::size_t kMaximumRows=32;
-struct Sample {
- std::uintptr_t game_data=0,items=0;
- std::int32_t capacity=0,count=0;
- std::array<std::uintptr_t,kMaximumRows> rows{};
- friend bool operator==(const Sample&,const Sample&)=default;
-};
-
 bool Capture(const ReadonlyBindings&bindings,std::uintptr_t owner_game,Sample&out)noexcept{
  using lyd_common::At;
  constexpr std::size_t queue_offset=0x44BC0+0x1F18;

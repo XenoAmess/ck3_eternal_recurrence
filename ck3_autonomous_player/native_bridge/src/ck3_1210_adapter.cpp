@@ -16,6 +16,10 @@
 #include "xar_bridge/ck3_1210_character_roster_frame_v1.hpp"
 #endif
 #include "xar_bridge/ck3_1210_adapter.hpp"
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1
+#include "ck3_121003_full111_event_read_v1.hpp"
+#include <chrono>
+#endif
 #if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1
 #include "xar_bridge/ck3_121003_lyd26785313_v1.hpp"
 #endif
@@ -133,7 +137,12 @@ public:
 #endif
     }
 #endif
-    bool result=full111_?ck3_121003::full111::ReadFull(current,output,diagnostics):
+    bool result=full111_?
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1
+        ReadFull111WithOrdinaryEvent(current,output,diagnostics,read111):
+#else
+        ck3_121003::full111::ReadFull(current,output,diagnostics):
+#endif
         ck3_1210::ReadFullSnapshotV1(current,output,diagnostics,ingame_ready_witness_);
     if(full111_ && !AdmitFullRead111(read111)) {
       output={};diagnostics.complete=false;diagnostics.stage="owner";
@@ -361,6 +370,49 @@ private:
       m.executor_started_pump_epoch.load()==s.owner.pump_epoch && m.pump_epochs.load()==s.owner.pump_epoch &&
       !m.stop_requested.load() && !m.proof_reset_requested.load() && !m.failure_flags.load() && m.active_hook_calls.load();
   }
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1
+  // Reuse the original observer or mailbox owner for both positive Full passes.
+  struct Full111EventReadContext {
+    const FlorinAdapter &adapter;
+    const FullReadScope111 &scope;
+    ck3_121003::build26785313::ReadonlyBindings bindings{};
+    std::uint64_t wall_deadline=0,monotonic_deadline=0;
+  };
+  static bool AdmitFull111EventRead(const void *opaque) noexcept {
+    const auto &context=*static_cast<const Full111EventReadContext *>(opaque);
+    return context.adapter.AdmitFullRead111(context.scope);
+  }
+  static bool CaptureFull111OrdinaryEvent(void *opaque,const ck3_1210::CoreSnapshotPrefix &core,
+      ck3_121003::build26785313::Full111OrdinaryEventWitnessV1 &out) {
+    namespace current=ck3_121003::build26785313;
+    auto &context=*static_cast<Full111EventReadContext *>(opaque);
+    const auto &owner=context.scope.owner;
+    if(!AdmitFull111EventRead(&context) || core.played_character_id!=owner.actor) return false;
+    if(!context.wall_deadline) {
+      const auto now=std::chrono::duration_cast<std::chrono::milliseconds>(
+          std::chrono::system_clock::now().time_since_epoch()).count();
+      if(now<=0) return false;
+      constexpr std::uint64_t budget_ms=8000;
+      context.wall_deadline=static_cast<std::uint64_t>(now)+budget_ms;
+      context.monotonic_deadline=GetTickCount64()+budget_ms;
+      context.bindings=current::BindReadonlyImage(owner.mailbox->module_base,ck3_121003::full111::kExecutableSha256);
+    }
+    const auto &bound=context.bindings.core;
+    const auto &expected=context.adapter.core_;
+    if(!context.bindings.exact_image_admitted || bound.game_state_slot!=expected.game_state_slot ||
+        bound.jomini_state_slot!=expected.jomini_state_slot ||
+        bound.character_storage_slot!=expected.character_storage_slot || bound.get_local_player!=expected.get_local_player)
+      return false;
+    return current::ReadFull111OrdinaryEventOnOwnerV1(context.bindings,core,owner.state,owner.jomini,
+        context.wall_deadline,context.monotonic_deadline,&context,&AdmitFull111EventRead,out);
+  }
+  bool ReadFull111WithOrdinaryEvent(const ck3_1210::FullSnapshotBindingsV1 &bindings,Snapshot &out,
+      ck3_1210::FullSnapshotDiagnosticsV1 &diagnostics,const FullReadScope111 &scope) const noexcept {
+    Full111EventReadContext context{*this,scope};
+    return ck3_121003::full111::ReadFullWithOrdinaryEventV1(
+        bindings,out,diagnostics,{&context,&CaptureFull111OrdinaryEvent});
+  }
+#endif
 #if defined(XAR_CK3_ENABLE_1210_ARMY_BASE_FULL_V1)
 #include "military_owner58.inc"
 #endif
@@ -509,6 +561,9 @@ const AdapterDescriptor &Ck3_121003Full111AdapterDescriptor() noexcept {
 #if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1
     ,ck3_121003::build26785313::kLydCapabilities267V1[
       ck3_121003::build26785313::kLydEventQueryIndex267V1]
+#endif
+#if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1
+    ,ck3_121003::full111::kOrdinaryEventCapabilityV1
 #endif
   };
 #else

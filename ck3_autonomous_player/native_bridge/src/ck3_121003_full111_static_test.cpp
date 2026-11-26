@@ -1,4 +1,5 @@
-#include "xar_bridge/ck3_121003_full111.hpp"
+#include "ck3_121003_full111_event_read_v1.hpp"
+#include "ck3_active_event_frame.hpp"
 #include <windows.h>
 #include <array>
 #include <bit>
@@ -10,6 +11,7 @@
 namespace {
 namespace ck=xar::ck3_1210;
 namespace current=xar::ck3_121003::full111;
+namespace producer=xar::ck3_121003::build26785313;
 void Need(bool ok,const char *why){if(!ok)throw std::runtime_error(why);}
 template<class Buffer,class T> void Put(Buffer &buffer,std::size_t offset,T value){
  Need(offset<=buffer.size()&&sizeof(value)<=buffer.size()-offset,"owned RAM extent");
@@ -109,6 +111,95 @@ void *LocalPlayer(void*){
  if(++active->core_calls==2&&active->mutate_gold)Put(active->living,0x100,std::int64_t{99});
  return active->player.data();
 }
+struct EventFixture {
+ Fixture &full;
+ std::array<void*,2> rows{full.entry.data(),full.living.data()};
+ unsigned calls=0;
+ bool hidden=false,different_actor=false,wrong_runtime=false,mixed=false,owner_lost=false,window_drift=false,queue_drift=false;
+ std::int32_t instance=17,authored_count=3;
+ static constexpr std::size_t items=0x44BC0+0x1F18,capacity=items+8,count=items+12;
+ explicit EventFixture(Fixture &f):full(f){
+  Put(f.data,items,rows.data());Put(f.data,capacity,std::int32_t{2});Put(f.data,count,std::int32_t{1});
+ }
+ static bool Capture(void *opaque,const ck::CoreSnapshotPrefix &core,producer::Full111OrdinaryEventWitnessV1 &w){
+  auto &f=*static_cast<EventFixture *>(opaque);
+  ++f.calls;
+  if(f.owner_lost&&f.calls==2)return false;
+  w.queue.game_data=reinterpret_cast<std::uintptr_t>(f.full.data.data());
+  w.queue.items=reinterpret_cast<std::uintptr_t>(f.rows.data());
+  w.queue.capacity=2+(f.queue_drift&&f.calls==2?1:0);
+  w.queue.count=1;
+  w.queue.rows[0]=reinterpret_cast<std::uintptr_t>(f.rows.front());
+  w.scene.kind=producer::LydKind267V1::events;
+  w.raw.source.kind=w.scene.kind;
+  w.scene.jomini=reinterpret_cast<std::uintptr_t>(f.full.jomini.data());
+  const std::uintptr_t root=f.window_drift&&f.calls==2?0x2000:0x1000;
+  w.scene.event_roots.push_back({root,!f.hidden,true});
+  w.raw.manager_census.game=reinterpret_cast<std::uintptr_t>(f.full.state.data());
+  auto &public_events=w.raw.source.events.emplace();
+  public_events.census_complete=true;
+  public_events.named_root_count=f.mixed?2:1;
+  auto &event=public_events.events.emplace_back();
+  event.instance_id=f.instance;
+  event.recipient_character_id=f.different_actor?7:core.played_character_id;
+  event.authored_option_count=f.authored_count;
+  event.window_visible=!f.hidden;
+  event.named_root_bound=true;
+  auto &row=w.raw.event_rows.emplace_back();
+  row.controller=0x3000;row.root=root;
+  row.runtime=f.wrong_runtime?0x4000:w.queue.rows[0];row.definition=0x5000;
+  row.instance_id=f.instance;row.material.authored_option_count=f.authored_count;
+  return true;
+ }
+ bool Read(xar::game::Snapshot &out,ck::FullSnapshotDiagnosticsV1 &d){
+  calls=0;full.core_calls=0;
+  return current::ReadFullWithOrdinaryEventV1(full.bindings,out,d,{this,&Capture});
+ }
+};
+void RunEventFixture(Fixture &full,xar::game::Snapshot &out,ck::FullSnapshotDiagnosticsV1 &d){
+ EventFixture event(full);
+ Need(event.Read(out,d)&&d.complete&&d.completed_passes==2&&event.calls==2&&
+      out.has_active_event&&out.active_event_instance_id==17&&out.active_event_option_count==3,
+      "same visible ordinary identity produces only the authored summary");
+ constexpr std::array caps{current::kOrdinaryEventCapabilityV1};
+ const xar::game::AdapterDescriptor opted_in{current::kAdapterId,current::kGameVersion,current::kExecutableSha256,"",caps};
+ auto unavailable=opted_in;unavailable.capabilities={};
+ auto unrelated=opted_in;unrelated.adapter_id="foreign";
+ const auto serialize=[&](const auto &snapshot,const auto *descriptor){
+  std::string result="{\"type\":\"state_snapshot\"";
+  xar::bridge::AppendActiveEventFrame(result,snapshot,descriptor);
+  return result+'}';
+ };
+ const auto encoded=serialize(out,&opted_in);
+ Need(encoded==R"({"type":"state_snapshot","active_event":{"schema":"ck3_121003_full111_ordinary_event_v1","instance_id":17,"authored_option_count":3}})",
+      "exact three-field Full111 read-only event JSON");
+ std::cout<<encoded<<'\n';
+ constexpr std::string_view legacy=R"({"type":"state_snapshot","active_event":{"instance_id":17,"option_count":3,"option_indexes":[1,2,3]}})";
+ Need(serialize(out,&unavailable)==legacy&&serialize(out,&unrelated)==legacy,"legacy event bytes with missing capability or other descriptor");
+ Need(serialize(xar::game::Snapshot{},&opted_in)==R"({"type":"state_snapshot","active_event":null})","unchanged null event JSON");
+
+ const auto refused=[&](std::string_view why){
+  Need(!event.Read(out,d)&&out==xar::game::Snapshot{}&&!d.complete&&d.reason==why,why.data());
+ };
+ Put(full.data,event.count,std::int32_t{2});
+ refused("current111_ordinary_event_queue_not_single");
+ Need(event.calls==0,"ambiguous runtime count refuses before the GUI read");
+ Put(full.data,event.count,std::int32_t{1});
+ event.hidden=true;refused("current111_ordinary_event_witness_mismatch");event.hidden=false;
+ event.mixed=true;refused("current111_ordinary_event_witness_mismatch");event.mixed=false;
+ event.different_actor=true;refused("current111_ordinary_event_identity_mismatch");event.different_actor=false;
+ event.wrong_runtime=true;refused("current111_ordinary_event_identity_mismatch");event.wrong_runtime=false;
+ event.owner_lost=true;refused("current111_ordinary_event_owner_observation_unavailable");event.owner_lost=false;
+ event.window_drift=true;refused("current111_full_observations_changed");event.window_drift=false;
+ event.queue_drift=true;refused("current111_full_observations_changed");event.queue_drift=false;
+ event.instance=0;refused("current111_ordinary_event_identity_mismatch");event.instance=17;
+ event.authored_count=65;refused("current111_ordinary_event_identity_mismatch");
+ event.authored_count=64;Need(event.Read(out,d)&&out.active_event_option_count==64,"inclusive authored upper bound");
+ event.authored_count=0;Need(event.Read(out,d)&&out.active_event_option_count==0,"zero authored options stay zero");
+ Put(full.data,event.count,std::int32_t{0});
+ Need(event.Read(out,d)&&!out.has_active_event&&event.calls==0,"unchanged empty fast path");
+ Put(full.data,event.items,static_cast<void *>(nullptr));
+}
 void Run(){
  Fixture f;xar::game::Snapshot out{};ck::FullSnapshotDiagnosticsV1 d{};
  const bool first=f.Read(out,d);
@@ -167,6 +258,7 @@ void Run(){
  event_rejected("current111_event_items_slot_unreadable");
  Put(f.state,0xA0,f.data.data());
  Need(f.Read(out,d)&&!out.has_active_event,"normal empty queue restored");
+ RunEventFixture(f,out,d);
  std::cout<<"PASS current Full pointer-cell/heap/global contract; embedded/mismatch reject; full32, Family3 finite extent and coherence; RAM only\n";
 }
 }

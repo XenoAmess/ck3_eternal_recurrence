@@ -2,6 +2,7 @@
 // This exercises process-private query/claim/connection state; it grants no Raw/Native/live qualification.
 #include "ck3_121003_lyd26785313_wire_v1.cpp"
 #include "ck3_121003_lyd26785313_owner_v1.cpp"
+#include "ck3_121003_full111_event_read_v1.hpp"
 #include <stdexcept>
 #include <cstring>
 using namespace xar::ck3_121003::build26785313;

@@ -78,8 +78,12 @@ bool VerifyFullBefore(CoreControlContextV1 &c) noexcept {
   if(c.native_full_adapter==nullptr && c.expected_full_snapshot==nullptr) return true;
   c.result.full_snapshot_before_verified=false;
   game::Snapshot current{};
+  // A Full111 ordinary event summary is read-only evidence. Keep the empty-event
+  // requirement at the owning read and immediately before queue submission.
   if(c.native_full_adapter==nullptr || c.expected_full_snapshot==nullptr ||
-      !c.native_full_adapter->read_snapshot(current) || current!=*c.expected_full_snapshot) {
+      (IsFull111(c.core.image_build)&&c.expected_full_snapshot->has_active_event) ||
+      !c.native_full_adapter->read_snapshot(current) ||
+      (IsFull111(c.core.image_build)&&current.has_active_event) || current!=*c.expected_full_snapshot) {
     c.result.status=CoreControlStatusV1::stale_full_snapshot;return false;
   }
   c.result.full_snapshot_before_verified=true;return true;

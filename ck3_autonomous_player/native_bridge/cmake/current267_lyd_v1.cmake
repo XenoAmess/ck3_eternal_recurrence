@@ -1,6 +1,12 @@
 option(XAR_CK3_ENABLE_121003_26785313_LYD_V1 "Enable finite LYD decisions/events/personal ADD with actual owner source" OFF)
 option(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1
  "Enable only the exact ordinary event census through the Full111 mailbox" OFF)
+option(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1
+ "Enable the same-owner Full111 ordinary event snapshot summary" OFF)
+if(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1 AND
+    NOT XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1)
+ message(FATAL_ERROR "The Full111 ordinary event snapshot requires the exact Full111 ordinary event census")
+endif()
 if(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1 AND
     (NOT XAR_CK3_ENABLE_121003_FULL111 OR NOT XAR_CK3_ENABLE_121003_26785313_LYD_V1))
  message(FATAL_ERROR "Full111 ordinary event read requires Full111 and the exact current LYD producer")
@@ -34,6 +40,13 @@ if(WIN32 AND TARGET xar_ck3_bridge AND XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EV
  endforeach()
  set_property(SOURCE "${_xar_courtier_root}/src/bridge.cpp" APPEND PROPERTY COMPILE_DEFINITIONS
    "$<$<STREQUAL:$<TARGET_PROPERTY:NAME>,xar_ck3_bridge>:XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1=1>")
+endif()
+
+if(WIN32 AND TARGET xar_ck3_bridge AND XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1)
+ foreach(_source IN ITEMS ck3_1210_adapter.cpp ck3_121003_readonly26785313_v1.cpp)
+  set_property(SOURCE "${_xar_courtier_root}/src/${_source}" APPEND PROPERTY COMPILE_DEFINITIONS
+    "$<$<STREQUAL:$<TARGET_PROPERTY:NAME>,xar_ck3_12002_runtime>:XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1=1>")
+ endforeach()
 endif()
 
 if(BUILD_TESTING AND WIN32)

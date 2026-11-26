@@ -1,6 +1,7 @@
 #include "xar_bridge/ck3_1210_core_frame_v1.hpp"
 #include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_1210_core_control_v1.hpp"
+#include "xar_bridge/ck3_121003_full_profile111.hpp"
 #include "xar_bridge/ck3_1210_thread_runtime.hpp"
 #include "xar_bridge/ck3_1210_date_sentinel_v1.hpp"
 #include <array>
@@ -39,6 +40,7 @@ public:
     ++full_reads;
     if(!full_read_ok) {output={};return false;}
     if(change_full_on_read!=0 && full_reads==change_full_on_read) ++full_value.played_character_gold.raw;
+    if(event_on_full_read!=0 && full_reads==event_on_full_read) full_value.has_active_event=true;
     output=full_value;
     if(after_full_read) after_full_read();
     return true;
@@ -47,6 +49,7 @@ public:
   mutable unsigned full_reads=0;
   bool full_read_ok=false;
   unsigned change_full_on_read=0;
+  unsigned event_on_full_read=0;
   void (*after_full_read)() noexcept=nullptr;
   xar::game::PauseSubmitResult
   submit_pause_map(xar::game::Snapshot *observed_snapshot) const noexcept override {
@@ -458,6 +461,10 @@ int main() {
   const auto full_ack=SerializeCoreControlCommandResultV1("full-clock-fixture",context.request.step,context.result,kFullClockControlResultSchemaV1);
   CHECK(full_ack.find("ck3_1210_full_clock_control_result_v1")!=std::string::npos);
   CHECK(full_ack.find("full_snapshot_before_verified")!=std::string::npos);
+  full_expected.has_active_event=true;
+  full_reset();CHECK(ExecuteCoreControlMailboxV1(&context,stamp));
+  CHECK(context.result.status==CoreControlStatusV1::submitted && queues==1);
+  full_expected.has_active_event=false;
   full_reset();context.request.operation=CoreControlOperationV1::save;context.request.step="save-checkpoint";
   object_size=sizeof(AutoSaveCommand);CHECK(ExecuteCoreControlMailboxV1(&context,stamp));
   CHECK(context.result.status==CoreControlStatusV1::submitted && queues==1 && context.result.full_snapshot_before_verified);
@@ -518,6 +525,39 @@ int main() {
   CHECK(context.result.status==CoreControlStatusV1::expired && queues==0 && clones==0);
   full_reset();context.native_full_adapter=nullptr;
   CHECK(ExecuteCoreControlMailboxV1(&context,stamp));CHECK(queues==0 && clones==0);
+
+  namespace full111=xar::ck3_121003::full111;
+  constexpr std::array<std::string_view,6> current_caps{kCoreControlCapabilityV1,kFullClockControlCapabilityV1,
+      kDateSentinelCapabilityV1,xar::ck3_11906::kTacticalDailySentinelCapabilityV1,
+      "game.state.snapshot","game.command.set-speed-3"};
+  const AdapterDescriptor current_descriptor{full111::kAdapterId,full111::kGameVersion,
+      full111::kExecutableSha256,"xar_checkpoint",current_caps};
+  FixtureAdapter current_full(current_descriptor);
+  current_full.full_read_ok=true;
+  const auto current_reset=[&]{
+    reset();current_full.full_value=full_expected;current_full.full_reads=0;current_full.event_on_full_read=0;
+    context.game=&current_full;context.native_full_adapter=&current_full;context.expected_full_snapshot=&full_expected;
+    context.core.image_build=ImageBuildV1::full11126785313;
+  };
+  full_expected.has_active_event=true;
+  for(const auto operation:{CoreControlOperationV1::speed,CoreControlOperationV1::sentinel_arm}) {
+    current_reset();
+    context.request.operation=operation;
+    if(operation==CoreControlOperationV1::sentinel_arm)
+      context.request.step="research-arm-tactical-daily-sentinel-v1-123480";
+    CHECK(ExecuteCoreControlMailboxV1(&context,stamp));
+    CHECK(context.result.status==CoreControlStatusV1::stale_full_snapshot && queues==0 && clones==0 &&
+          !context.result.effect_attempted && current_full.full_reads==0);
+  }
+  full_expected.has_active_event=false;
+  current_reset();current_full.event_on_full_read=1;
+  CHECK(ExecuteCoreControlMailboxV1(&context,stamp));
+  CHECK(context.result.status==CoreControlStatusV1::stale_full_snapshot && queues==0 && clones==0 &&
+        !context.result.effect_attempted && current_full.full_reads==1);
+  current_reset();current_full.event_on_full_read=2;
+  CHECK(ExecuteCoreControlMailboxV1(&context,stamp));
+  CHECK(context.result.status==CoreControlStatusV1::stale_full_snapshot && queues==0 && clones==1 &&
+        deletes==1 && !context.result.effect_attempted && current_full.full_reads==2);
   reset();
   std::array<unsigned char,0x100> app{};void *app_slot=app.data();
   const std::uintptr_t app_vtable=0x12340;std::memcpy(app.data(),&app_vtable,sizeof(app_vtable));

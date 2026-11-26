@@ -1,7 +1,8 @@
-#include "xar_bridge/ck3_121003_full111.hpp"
+#include "ck3_121003_full111_event_read_v1.hpp"
 #include <array>
 #include <cstring>
 #include <limits>
+#include <optional>
 #include <type_traits>
 #include <vector>
 #include <windows.h>
@@ -18,6 +19,7 @@ bool ReadActiveWarsEmptyV1(const MilitaryEmptyBindingsV1 &,
 namespace xar::ck3_121003::full111 {
 namespace {
 #if defined(XAR_CK3_ENABLE_121003_FULL111)
+using EventWitness=build26785313::Full111OrdinaryEventWitnessV1;
 using namespace ck3_1210;
 constexpr std::uintptr_t kUnitRegistry=0x6A66AA0,kWarRegistry=0x6A669D0;
 constexpr std::uintptr_t kPendingRegistry=0x6A67480;
@@ -106,25 +108,56 @@ bool PendingOwner(const Roots&r,std::uintptr_t base) noexcept {
  At(r.data,kPendingManager+0x50,owned)&&At(reinterpret_cast<void*>(base+kPendingRegistry),0,global)&&
  owned&&owned==global&&At(global,0,vt)&&vt==base+kPendingRegistryVt;
 }
-bool ReadEmptyEventQueue(const Roots&r,FullSnapshotDiagnosticsV1 &d) noexcept {
+bool ReadEventQueue(const Roots &r,const CoreSnapshotPrefix &p,xar::game::Snapshot &s,
+ const OrdinaryEventReaderV1 *reader,std::optional<EventWitness> &observed,
+ FullSnapshotDiagnosticsV1 &d) {
  const auto *manager=static_cast<const std::byte*>(r.data)+kEventManager;
  void *items=nullptr;std::int32_t count=0;
  // The current selector's complete native CFG consumes this exact queue.
  if(!At(manager,0x1F18,items))return Fail(d,"event","current111_event_items_slot_unreadable");
  if(!At(manager,0x1F24,count))return Fail(d,"event","current111_event_count_slot_unreadable");
  if(count<0||(count>0&&!items))return Fail(d,"event","current111_event_queue_header_invalid");
- // A nonempty queue has no admitted event-row lifetime and remains unavailable.
- if(count>0)return Fail(d,"event","current111_nonempty_event_lifetime_unavailable");
+ if(count==0)return true;
+ if(!reader||!reader->read)return Fail(d,"event","current111_nonempty_event_lifetime_unavailable");
+ if(count!=1)return Fail(d,"event","current111_ordinary_event_queue_not_single");
+ auto &witness=observed.emplace();
+ if(!reader->read(reader->context,p,witness))
+  return Fail(d,"event","current111_ordinary_event_owner_observation_unavailable");
+ const auto &queue=witness.queue;
+ const auto &roots=witness.scene.event_roots;
+ const auto &raw=witness.raw;
+ const auto &source=raw.source.events;
+ if(queue.game_data!=reinterpret_cast<std::uintptr_t>(r.data)||
+     queue.items!=reinterpret_cast<std::uintptr_t>(items)||queue.count!=count||
+     witness.scene.kind!=build26785313::LydKind267V1::events||raw.source.kind!=witness.scene.kind||
+     witness.scene.jomini!=reinterpret_cast<std::uintptr_t>(r.jomini)||
+     roots.size()!=1||!roots.front().visible||!source||!source->census_complete||
+     source->named_root_count!=1||source->events.size()!=1||raw.event_rows.size()!=1||
+     !raw.cleanup_known||raw.manager_census.game!=reinterpret_cast<std::uintptr_t>(r.game))
+  return Fail(d,"event","current111_ordinary_event_witness_mismatch");
+ const auto &event=source->events.front();
+ const auto &row=raw.event_rows.front();
+ if(event.instance_id<=0||event.instance_id!=row.instance_id||
+     event.recipient_character_id!=p.played_character_id||!event.window_visible||!event.named_root_bound||
+     event.authored_option_count<0||event.authored_option_count>64||
+     event.authored_option_count!=row.material.authored_option_count||
+     !row.controller||!row.root||row.root!=roots.front().widget||
+     !row.runtime||row.runtime!=queue.rows.front()||!row.definition)
+  return Fail(d,"event","current111_ordinary_event_identity_mismatch");
+ s.has_active_event=true;
+ s.active_event_instance_id=event.instance_id;
+ s.active_event_option_count=event.authored_option_count;
  return true;
 }
 #if defined(XAR_CK3_ENABLE_121003_OWNED_ARMY123)
 #include "owned_army_identity123.inc"
 #endif
 bool Pass(const FullSnapshotBindingsV1 &b,const CoreSnapshotPrefix &p,std::uintptr_t base,
- Roots &r,xar::game::Snapshot &s,FullSnapshotDiagnosticsV1 &d) {
+ Roots &r,xar::game::Snapshot &s,FullSnapshotDiagnosticsV1 &d,const OrdinaryEventReaderV1 *reader,
+ std::optional<EventWitness> &event) {
  s={};if(!Capture(b.core,p,r))return Fail(d,"root","current111_root_or_actor_unavailable");
  if(!Foundation(r,base,s))return Fail(d,"foundation","current111_resources_or_family3_unavailable");
- if(!ReadEmptyEventQueue(r,d))return false;
+ if(!ReadEventQueue(r,p,s,reader,event,d))return false;
  if(!PendingOwner(r,base))return Fail(d,"pending","current111_pending_owner_mismatch");
  PendingSnapshotObservationV1 pending{};
  if(!ReadPendingSnapshotV1(b.pending,p,pending))return Fail(d,"pending",pending.unavailable_reason);
@@ -142,7 +175,7 @@ bool Pass(const FullSnapshotBindingsV1 &b,const CoreSnapshotPrefix &p,std::uintp
 #endif
  s.date_raw=p.clock.date_raw;s.speed=p.clock.speed;s.paused=p.clock.paused;s.player_id=p.local_player_id;
  s.map_ready=p.map_ready;s.has_played_character=p.has_played_character;s.played_character_id=p.played_character_id;
- s.played_character_alive=p.played_character_alive;s.has_active_event=false;
+ s.played_character_alive=p.played_character_alive;
  s.has_pending_character_interaction=pending.found;s.pending_character_interaction_id=pending.pending_character_interaction_id;
  s.pending_sender_character_id=pending.pending_sender_character_id;s.pending_auto_accept_notification=pending.pending_auto_accept_notification;
  d.pending_slots_scanned=pending.slots_scanned;d.war_slots_scanned=military.war_slots_scanned;
@@ -180,8 +213,9 @@ ck3_1210::FullSnapshotBindingsV1 BindFull(std::uintptr_t base,std::string_view s
  static_cast<void>(base);static_cast<void>(sha);return {};
 #endif
 }
-bool ReadFull(const ck3_1210::FullSnapshotBindingsV1&b,xar::game::Snapshot &out,
- ck3_1210::FullSnapshotDiagnosticsV1 &d) noexcept {
+namespace {
+bool ReadFullImpl(const ck3_1210::FullSnapshotBindingsV1&b,xar::game::Snapshot &out,
+ ck3_1210::FullSnapshotDiagnosticsV1 &d,[[maybe_unused]]const OrdinaryEventReaderV1 *reader) noexcept {
 #if defined(XAR_CK3_ENABLE_121003_FULL111)
  using namespace ck3_1210;out={};d={};
  if(!b.exact_build_admitted||!b.core.enabled)return Fail(d,"binding","current111_exact_profile_unavailable");
@@ -191,13 +225,24 @@ bool ReadFull(const ck3_1210::FullSnapshotBindingsV1&b,xar::game::Snapshot &out,
   if(!Core(b.core,p)||!p.clock.paused||!p.map_ready||!p.has_played_character||!p.played_character_alive)
    return Fail(d,"core","full_snapshot_requires_paused_played_map");
   Roots first_roots{},second_roots{};xar::game::Snapshot first{},second{};
-  if(!Pass(b,p,base,first_roots,first,d))return false;d.completed_passes=1;
-  if(!Pass(b,p,base,second_roots,second,d))return false;d.completed_passes=2;
-  if(first_roots!=second_roots||first!=second)return Fail(d,"coherence","current111_full_observations_changed");
+  std::optional<EventWitness> first_event,second_event;
+  if(!Pass(b,p,base,first_roots,first,d,reader,first_event))return false;d.completed_passes=1;
+  if(!Pass(b,p,base,second_roots,second,d,reader,second_event))return false;d.completed_passes=2;
+  if(first_roots!=second_roots||first!=second||first_event!=second_event)
+   return Fail(d,"coherence","current111_full_observations_changed");
   out=std::move(second);d.complete=true;d.stage="complete";d.reason={};return true;
  }catch(...){out={};return Fail(d,"exception","current111_full_read_exception");}
 #else
  static_cast<void>(b);out={};d={};d.stage="binding";d.reason="current111_feature_disabled";return false;
 #endif
+}
+}
+bool ReadFull(const ck3_1210::FullSnapshotBindingsV1&b,xar::game::Snapshot &out,
+ ck3_1210::FullSnapshotDiagnosticsV1 &d) noexcept {
+ return ReadFullImpl(b,out,d,nullptr);
+}
+bool ReadFullWithOrdinaryEventV1(const ck3_1210::FullSnapshotBindingsV1&b,xar::game::Snapshot &out,
+ ck3_1210::FullSnapshotDiagnosticsV1 &d,const OrdinaryEventReaderV1 &reader) noexcept {
+ return ReadFullImpl(b,out,d,&reader);
 }
 }

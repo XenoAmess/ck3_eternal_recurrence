@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_121003_lyd26785313_raw_v1.hpp"
+#include "ck3_121003_full111_event_read_v1.hpp"
 #include "xar_bridge/ck3_121003_lyd_personal26785313_pins_v1.hpp"
 #include "xar_bridge/ck3_121003_xqol_threshold26785313_pins_v1.hpp"
 #include <algorithm>
@@ -213,15 +214,16 @@ bool ReadLydRaw267V1([[maybe_unused]]const ReadonlyBindings&b,[[maybe_unused]]co
  return false;
 #endif
 }
-bool ReadFull111LydEventRaw267V1([[maybe_unused]]const ReadonlyBindings&bindings,
+bool ReadFull111LydEventsWithQueueV1([[maybe_unused]]const ReadonlyBindings&bindings,
  [[maybe_unused]]const ck3_1210::CoreSnapshotPrefix&core,[[maybe_unused]]const LydScene267V1&scene,
  [[maybe_unused]]std::uint64_t mono,[[maybe_unused]]const LydRequest267V1&request,
- [[maybe_unused]]std::uintptr_t owner_game,LydRaw267V1&out,std::string&reason)noexcept{
+ [[maybe_unused]]std::uintptr_t owner_game,LydRaw267V1&out,std::string&reason,
+ [[maybe_unused]]full111_event_queue::Sample* witness)noexcept{
  out={};reason="current111_ordinary_event_read_default_off";
 #if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1
  full111_event_queue::Sample before{},after{};
  if(request.action!=LydAction267V1::query_events||!core.clock.paused||
-     !full111_event_queue::Capture(bindings,owner_game,before)){
+     !full111_event_queue::Capture(bindings,owner_game,before)||(witness&&before.count!=1)){
   reason="current111_ordinary_event_queue_unavailable";return false;
  }
  if(!ReadLydRaw267V1(bindings,core,scene,mono,request,{},out,reason))return false;
@@ -229,10 +231,16 @@ bool ReadFull111LydEventRaw267V1([[maybe_unused]]const ReadonlyBindings&bindings
      !full111_event_queue::Matches(after,owner_game,core.played_character_id,out)){
   reason="current111_ordinary_events_do_not_cover_runtime_queue";return false;
  }
+ if(witness)*witness=after;
  return true;
 #else
  return false;
 #endif
+}
+bool ReadFull111LydEventRaw267V1(const ReadonlyBindings& bindings,const ck3_1210::CoreSnapshotPrefix& core,
+ const LydScene267V1& scene,std::uint64_t mono,const LydRequest267V1& request,
+ std::uintptr_t owner_game,LydRaw267V1& out,std::string& reason)noexcept{
+ return ReadFull111LydEventsWithQueueV1(bindings,core,scene,mono,request,owner_game,out,reason,nullptr);
 }
 void TokenizeLydRaw267V1(LydRaw267V1&raw,std::uint64_t generation,std::uint64_t query){
  raw.token_generation=generation;raw.token_query=query;if(!raw.source.personal)return;auto&s=*raw.source.personal;std::unordered_set<std::string>tokens;
