@@ -25,6 +25,8 @@ import org.xar.ck3.control.application.checkpoint.CheckpointPair;
 import org.xar.ck3.control.application.checkpoint.CheckpointPairCodec;
 import org.xar.ck3.control.application.checkpoint.DriverStateSnapshot;
 import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.RestoreBinding;
+import org.xar.ck3.control.application.driver.DriverJson;
+import org.xar.ck3.control.application.driver.DriverObservationEvidenceReader;
 import org.xar.ck3.control.application.effects.NativeEffectEvidence;
 import org.xar.ck3.control.application.lifecycle.LifecycleEpisodeInputs;
 import org.xar.ck3.control.application.lifecycle.LifecycleComposites;
@@ -42,6 +44,7 @@ import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.GameGeneration;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.g2.common.G2Source;
+import org.xar.ck3.control.g2.common.G2Wire;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
 import org.xar.ck3.control.g2.planning.ProposalLifecycleCodec;
 import static org.xar.ck3.control.application.session.SessionPorts.*;
@@ -478,6 +481,42 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                         && checked.frame().frame().identity().nativeRevision().compareTo(observation.nativeRevision()) >= 0,
                 "settled adoption regressed its retained Driver observation"));
         settledObservation = new SettledObservation(owner, ContinuityJson.digest(branch.toJson()), checked.frame());
+    }
+
+    /** An imported save's first completed Life already reopened its interrupted batch in the exact SETTLE. */
+    void requireFirstImportedSettlementReady(ContinuityStorePort.Session same,
+            ContinuityBatchJournal.SettledSameGameData data,SemanticEvidence fresh,ActionReceipt original)throws IOException {
+        StrictJson.require(active.get()==same,"imported Saved adoption requires the original held writer scope");
+        var head=same.head();var owner=data.controller().owner();var branch=state(head.state(),owner);
+        StrictJson.require(data.startingPoint() instanceof ContinuityBatchJournal.SameGameEntry.ImportedSaved
+                &&head.state().sequence()==data.canonicalSequence()&&head.digest().equals(data.canonicalHeadDigest())
+                &&data.source().equals(original.command().source())&&branch.pending().isEmpty(),
+                "imported Saved restart lost its exact completed frontier");
+        requireFrontier(head.state(),branch);requireLegacyPendingClear(head.state(),branch);validateChain(branch);
+        var record=load(branch.head().orElseThrow());var retained=data.latestCycleSemantic();
+        StrictJson.require(record.receipt().equals(archive.receiptReferenceOf(original))&&record.semantic().equals(retained)
+                &&ContinuityActionJournal.receipts(head.state(),archive).equals(data.settledActions()),
+                "imported Saved restart changed its already completed cycle or canonical actions");
+        requireFirstImportedSemantic(same,owner,original,fresh);
+        requireObservedContinuation(retained.frame(),fresh.frame());
+        requireObservedBindingNotRegressed(head.state(),fresh.frame());
+        StrictJson.require(fresh.observedAt().isAfter(retained.observedAt())
+                &&fresh.frame().frame().identity().dateRaw().equals(retained.frame().frame().identity().dateRaw())
+                &&fresh.originalDriver().sha256().equals(data.retainedFullDriver().sha256())
+                &&head.digest().equals(same.head().digest()),
+                "imported Saved restart requires a fresh same-date SEM with the original Driver and head");
+        settledObservation=new SettledObservation(owner,ContinuityJson.digest(branch.toJson()),fresh.frame());
+    }
+
+    void requireFirstImportedSemantic(ContinuityStorePort.Session same,SessionIdentity owner,ActionReceipt original,
+            SemanticEvidence semantic)throws IOException {
+        var verified=verify(same,owner,semantic);freshAfter(original,verified);
+        var originalSemantic=archive.loadFullMaterial(semantic.semantic());
+        var body=DriverJson.object(originalSemantic.bytes(),DriverJson.MAX_NATIVE_BYTES);
+        var manifestRef=DriverObservationEvidenceReader.reference(body.get("java_driver_facts_evidence"));
+        var manifest=archive.loadFullMaterial(manifestRef);
+        StrictJson.require(G2Wire.source(StrictJson.parse(manifest.bytes()).get("source")).equals(original.command().source()),
+                "imported Saved restart SEM changed the actual original Life source");
     }
 
     private String revalidateSettledSameGameRecovery(ContinuityStorePort.Session same,
