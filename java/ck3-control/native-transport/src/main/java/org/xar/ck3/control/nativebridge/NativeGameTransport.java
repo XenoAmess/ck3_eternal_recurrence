@@ -143,11 +143,12 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     /** One bounded original READ custody slot, not another canonical action or command store. */
     private static final class FreshSnapshotCapture {
         private final String requestId;
+        private final boolean ordinary;
         private ObservedFrame frame;
         private NativeRequestChronology.Event received;
         private String invalid;
         private DispatchOutcome outcome;
-        private FreshSnapshotCapture(String requestId){this.requestId=requestId;}
+        private FreshSnapshotCapture(String requestId,boolean ordinary){this.requestId=requestId;this.ordinary=ordinary;}
     }
     private NativeWire.Snapshot snapshot;
     private Instant snapshotObservedAt;
@@ -8424,6 +8425,60 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                 "explicit identity-only source cannot issue an ordinary Full/clock receipt");
         return readFreshFullStateInternal(deadline,false);
     }
+    /** A new independent READ after the original selection, only while its actual receiver still holds the originals. */
+    public synchronized NativeFreshSnapshotPort.Result readFreshFullStateAfterFull111Selection(ActionState.Attempt attempt,
+            AckReceived originalSelect,Instant deadline)throws IOException,InterruptedException {
+        var selection=heldFull111Selection(attempt,originalSelect)
+                .orElseThrow(()->new IOException("actual original Full111 SELECT custody is unavailable"));
+        return readFreshFullStateAfterRetainedAcknowledgement(selection.custody(),deadline);
+    }
+    /** The caller has verified the positive original action; only registered ordinary READ custody is examined here. */
+    synchronized NativeFreshSnapshotPort.Result readFreshFullStateAfterRetainedAcknowledgement(NativeRequestChronology selected,
+            Instant deadline)throws IOException,InterruptedException {
+        if(!chronologyClock.instant().isBefore(deadline)||closed||terminalFailure!=null||!stateConnected
+                ||originalRequestChronology(selected.requestId()).filter(selected::equals).isEmpty())
+            throw new IOException("actual held acknowledgement or independent READ window is unavailable");
+        var capture=pendingFreshSnapshot;
+        if(capture!=null) {
+            var written=writtenRequests.get(capture.requestId);
+            if(!capture.ordinary||written==null||!written.session().equals(selected.session())
+                    ||!freshWriteFollowsAcknowledgement(written.entered(),selected))
+                throw new IOException("held original fresh READ was not written after this acknowledgement");
+            if(!(capture.outcome instanceof AckReceived ack)||!ack.nativeOk())
+                return freshUnavailable(capture,"original fresh READ remains unresolved; collect its original outcome without resubmission");
+            var custody=originalRequestChronology(capture.requestId)
+                    .orElseThrow(()->new IOException("actual terminal fresh READ custody is unavailable"));
+            var outbound=originalOutboundPacket(capture.requestId)
+                    .orElseThrow(()->new IOException("actual terminal fresh READ outbound is unavailable"));
+            custody.verify(ack);
+            if(!custody.session().equals(selected.session())||!custody.custodyEpoch().equals(selected.custodyEpoch())
+                    ||!ack.requestId().equals(capture.requestId)||ack.outbound().filter(outbound::equals).isEmpty()
+                    ||!Arrays.equals(outbound.originalPacket(),NativeWire.execute(capture.requestId,NativeFreshSnapshotPort.STEP,
+                        BigInteger.ZERO,new byte[]{'{','}'}))
+                    ||!Arrays.equals(ack.originalPacket(),NativeWire.packet(ack.originalFrame().bytes())))
+                throw new IOException("terminal fresh READ changed its actual request or ACK");
+            if(!terminalFreshCaptureInvalid(capture,ack))
+                return finishFreshRead(capture,ack);
+
+            // The required frame would have had to arrive before this already received ACK.
+            // Leave the returned Unavailable and both retained wire originals intact.
+            pendingFreshSnapshot=null;
+        }
+        return readFreshFullState(deadline);
+    }
+    private static boolean freshWriteFollowsAcknowledgement(NativeRequestChronology.Event entered,NativeRequestChronology selected) {
+        return entered.order().compareTo(selected.responseReceived().order())>0
+                &&!entered.observedAt().isBefore(selected.responseReceived().observedAt());
+    }
+    private static boolean terminalFreshCaptureInvalid(FreshSnapshotCapture capture,AckReceived ack) {
+        if(capture.invalid!=null||capture.frame==null||capture.received==null)return true;
+        try {
+            NativeFreshSnapshotPort.verifyOriginal(ack,capture.frame,capture.received);
+            return false;
+        } catch(IOException|RuntimeException invalid) {
+            return true;
+        }
+    }
     public synchronized ArmyIdentityRead readFreshArmyIdentity126(Instant deadline)throws InterruptedException {
         return armyIdentityResult(readFreshFullStateInternal(deadline,true));
     }
@@ -8460,11 +8515,11 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             }else if(exactFlorin)requireCurrentFull111Source(florinProfile.orElseThrow());
             if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
             byte[] request=NativeWire.execute(id,NativeFreshSnapshotPort.STEP,BigInteger.ZERO,new byte[]{'{','}'});
-            var capture=new FreshSnapshotCapture(id);pendingFreshSnapshot=capture;
+            var capture=new FreshSnapshotCapture(id,!identityOnly126);pendingFreshSnapshot=capture;
             return finishFreshRead(capture,retainReadOutcome(dispatchRead(id,request,readDeadline(deadline),()->{})));
         } catch(IOException|RuntimeException failure) {
             if(sentRequestIds.contains(id)) {
-                if(pendingFreshSnapshot==null)pendingFreshSnapshot=new FreshSnapshotCapture(id);
+                if(pendingFreshSnapshot==null)pendingFreshSnapshot=new FreshSnapshotCapture(id,!identityOnly126);
                 if(pendingFreshSnapshot.outcome==null)pendingFreshSnapshot.outcome=new Unknown(id,
                         "fresh READ failed after actual write entry; never replay: "+reason(failure),retainedOutbound(id),Optional.empty());
                 return freshUnavailable(pendingFreshSnapshot,reason(failure));
@@ -9007,7 +9062,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         if(pendingFreshSnapshot!=null)throw new IOException("original fresh READ unresolved; no second prepared fresh read");
         open(deadline);verifyEndpoint();requirePreparedCleanupHello();
         if(sentRequestIds.contains(id)||sentRequestIds.size()>=maximumSubmissions)throw new IOException("original prepared fresh identity already attempted or exhausted");
-        var capture=new FreshSnapshotCapture(id);pendingFreshSnapshot=capture;
+        var capture=new FreshSnapshotCapture(id,false);pendingFreshSnapshot=capture;
         var dispatch=dispatchPreparedCleanup(id,NativeWire.execute(id,NativeFreshSnapshotPort.STEP,BigInteger.ZERO,new byte[]{'{','}'}),deadline,()->{},null);
         originals.add(dispatch.original());capture.outcome=dispatch.original();
         if(dispatch.original() instanceof RejectedBeforeDispatch||dispatch.original() instanceof AckReceived negative&&!negative.nativeOk())pendingFreshSnapshot=null;

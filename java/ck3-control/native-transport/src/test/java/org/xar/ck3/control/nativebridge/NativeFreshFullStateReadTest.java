@@ -288,22 +288,44 @@ final class NativeFreshFullStateReadTest {
             }
         }
     }
-    @Test void recognizedFlorinCannotWriteFreshReadsBeforeItsNativeCapabilityMigration()throws Exception {
+    @Test void recognizedFlorinNeedsItsReadyExactBuildAndBothCapabilitiesBeforeRead()throws Exception {
         var build=org.xar.ck3.control.contracts.ExactCk3Build.CK3_1210;
-        String adapter="ck3-1.21.0-msvc-x64";
-        for(boolean advertisedReady:new boolean[]{false,true}) {
+        String adapter=build.coreFullAdapterId(),sha=build.executableSha256();
+        for(String missing:List.of("not-ready","build-version","fresh-capability","snapshot-capability")) {
             var replay=valid();replay.packets.clear();
             var advertised=hello().put("expected_ck3_version",build.version())
-                    .put("expected_ck3_sha256",build.executableSha256()).put("game_adapter_id",adapter)
-                    .put("game_adapter_status",advertisedReady?"ready":"unsupported_build")
-                    .put("ck3_build_match",advertisedReady);
-            if(!advertisedReady)advertised.putArray("capabilities");
-            replay.add(advertised);
-            try(var actual=transport(replay,build.executableSha256(),adapter)) {
-                var result=assertInstanceOf(NativeFreshSnapshotPort.Unavailable.class,actual.readFreshFullState(deadline()));
-                assertInstanceOf(NativeActionPort.RejectedBeforeDispatch.class,result.dispatch());
-                assertEquals(0,replay.writes);
+                    .put("expected_ck3_sha256",sha).put("game_adapter_id",adapter);
+            switch(missing) {
+                case "not-ready"->advertised.put("game_adapter_status","unsupported_build").put("ck3_build_match",false);
+                case "build-version"->advertised.put("expected_ck3_version","1.21.0.3");
+                case "fresh-capability"->advertised.putArray("capabilities").add("game.state.snapshot");
+                case "snapshot-capability"->advertised.putArray("capabilities").add(NativeFreshSnapshotPort.CAPABILITY);
+                default->throw new AssertionError(missing);
             }
+            replay.add(advertised);
+            try(var actual=transport(replay,sha,adapter)) {
+                var result=assertInstanceOf(NativeFreshSnapshotPort.Unavailable.class,actual.readFreshFullState(deadline()));
+                assertInstanceOf(NativeActionPort.RejectedBeforeDispatch.class,result.dispatch(),missing);
+                assertEquals(0,replay.writes,missing);
+            }
+        }
+
+        var replay=new Replay((port,request)->{
+            try(var input=NativeFreshFullStateReadTest.class.getResourceAsStream("/newnative/full1210/full-snapshot-producer-002.json")) {
+                assertNotNull(input);
+                // Actual C++ Full payload, delivered through the software port with this request ID.
+                var frame=NativeWire.object(NativeWire.parse(input.readAllBytes()));
+                frame.put("read_request_id",port.id());
+                var response=ack(port.id(),true);
+                ((ObjectNode)response.get("result")).put("snapshot_id","native:10").put("revision",10);
+                port.fresh(frame,response);
+            }
+        });
+        replay.packets.clear();
+        replay.add(hello().put("expected_ck3_version",build.version()).put("expected_ck3_sha256",sha).put("game_adapter_id",adapter));
+        try(var actual=transport(replay,sha,adapter)) {
+            var result=assertInstanceOf(NativeFreshSnapshotPort.Received.class,actual.readFreshFullState(deadline()));
+            assertEquals("native:10",result.originalFrame().snapshotId());assertEquals(1,replay.writes);
         }
     }
     @Test void independentReadKeepsBothActualPacketsChronologyAndUnchangedStateInsteadOfTheCachedFrame()throws Exception {
@@ -396,23 +418,123 @@ final class NativeFreshFullStateReadTest {
             assertEquals(1,replay.writes);assertEquals(reads,replay.reads);
         }
     }
+    @Test void retainedAcknowledgementCanReplaceOnlyItsTerminalInvalidOrdinaryRead()throws Exception {
+        for(boolean ackBeforeFrame:List.of(true,false)) {
+            var replay=actionReplay();
+            try(var actual=transport(replay,FOUR_SHA,FOUR_ADAPTER)) {
+                var before=actual.observe(deadline());
+                var permit=mutationPermit(actual,before,"retained-read-anchor");
+                var selected=assertInstanceOf(NativeActionPort.AckReceived.class,actual.submit(permit,permit.preparedRequest(),deadline()));
+                var original=selected.custody().orElseThrow();
+                replay.producer=(port,request)->{
+                    var frame=snapshot("native:6",6,port.id());
+                    var response=ack(port.id(),true);
+                    if(ackBeforeFrame) {port.add(response);port.add(frame);}
+                    else {((ObjectNode)response.get("result")).put("revision",7);port.fresh(frame,response);}
+                };
+                var failed=assertInstanceOf(NativeFreshSnapshotPort.Unavailable.class,actual.readFreshFullState(deadline()));
+                var originalAck=assertInstanceOf(NativeActionPort.AckReceived.class,failed.dispatch());
+                assertTrue(originalAck.nativeOk());assertEquals(!ackBeforeFrame,failed.originalFrame().isPresent());assertEquals(2,replay.writes);
+                var rejectedFrame=failed.originalFrame().map(frame->frame.originalPacket());
+                int reads=replay.reads;
+                assertThrows(IOException.class,()->actual.readFreshFullStateAfterRetainedAcknowledgement(original,Instant.EPOCH));
+                assertEquals(reads,replay.reads);assertEquals(2,replay.writes);
+                assertSame(originalAck,assertInstanceOf(NativeFreshSnapshotPort.Unavailable.class,
+                        actual.collectFreshFullState(originalAck.requestId(),deadline())).dispatch());
+                assertEquals(reads,replay.reads);assertEquals(2,replay.writes);
+
+                replay.producer=(port,request)->freshAt(port,7);
+                var next=assertInstanceOf(NativeFreshSnapshotPort.Received.class,
+                        actual.readFreshFullStateAfterRetainedAcknowledgement(original,deadline()));
+                assertEquals("native:7",next.originalFrame().snapshotId());
+                assertNotEquals(originalAck.requestId(),next.acknowledgement().requestId());
+                NativeFreshSnapshotPort.verifyAfter(originalAck,next);
+                assertEquals(3,replay.writes);assertEquals(1,replay.actionWrites);
+                assertThrows(IOException.class,()->actual.collectFreshFullState(originalAck.requestId(),deadline()));
+                assertEquals(3,replay.writes);assertSame(next.originalFrame(),actual.currentSnapshot(deadline()));
+                rejectedFrame.ifPresent(old->assertArrayEquals(old,failed.originalFrame().orElseThrow().originalPacket()));
+            }
+        }
+    }
+
+    @Test void terminalFreshReadWrittenBeforeOriginalAcknowledgementCannotBeReplaced()throws Exception {
+        var replay=actionReplay();
+        try(var actual=transport(replay,FOUR_SHA,FOUR_ADAPTER)) {
+            var before=actual.observe(deadline());
+            replay.producer=(port,request)->port.add(ack(port.id(),true));
+            var failed=assertInstanceOf(NativeFreshSnapshotPort.Unavailable.class,actual.readFreshFullState(deadline()));
+            var permit=mutationPermit(actual,before,"retained-read-unrelated");
+            var selected=assertInstanceOf(NativeActionPort.AckReceived.class,actual.submit(permit,permit.preparedRequest(),deadline()));
+            int reads=replay.reads;
+            assertThrows(IOException.class,()->actual.readFreshFullStateAfterRetainedAcknowledgement(selected.custody().orElseThrow(),deadline()));
+            assertEquals(reads,replay.reads);assertEquals(2,replay.writes);assertEquals(1,replay.actionWrites);
+            assertSame(failed.dispatch(),assertInstanceOf(NativeFreshSnapshotPort.Unavailable.class,actual.readFreshFullState(deadline())).dispatch());
+        }
+    }
+
+    @Test void scopedFreshReadLeavesUnknownImmutableAndCollectsItsSameId()throws Exception {
+        var replay=actionReplay();
+        try(var actual=transport(replay,FOUR_SHA,FOUR_ADAPTER)) {
+            var before=actual.observe(deadline());
+            var permit=mutationPermit(actual,before,"retained-read-pending");
+            var selected=assertInstanceOf(NativeActionPort.AckReceived.class,actual.submit(permit,permit.preparedRequest(),deadline()));
+            replay.producer=(port,request)->port.add(snapshot("native:6",6,port.id()));
+            var unavailable=assertInstanceOf(NativeFreshSnapshotPort.Unavailable.class,actual.readFreshFullState(deadline()));
+            var unknown=assertInstanceOf(NativeActionPort.Unknown.class,unavailable.dispatch());
+            int reads=replay.reads;
+            var pending=assertInstanceOf(NativeFreshSnapshotPort.Unavailable.class,
+                    actual.readFreshFullStateAfterRetainedAcknowledgement(selected.custody().orElseThrow(),deadline()));
+            assertSame(unknown,pending.dispatch());assertEquals(reads,replay.reads);assertEquals(2,replay.writes);
+            replay.add(ack(unknown.requestId(),true));
+            var received=assertInstanceOf(NativeFreshSnapshotPort.Received.class,actual.collectFreshFullState(unknown.requestId(),deadline()));
+            assertEquals(unknown.requestId(),received.acknowledgement().requestId());
+            assertEquals(2,replay.writes);
+            NativeFreshSnapshotPort.verifyAfter(selected,received);
+        }
+    }
+
+    private static void freshAt(Replay port,int revision)throws IOException {
+        String snapshotId="native:"+revision;
+        var response=ack(port.id(),true);
+        ((ObjectNode)response.get("result")).put("snapshot_id",snapshotId).put("revision",revision);
+        port.fresh(snapshot(snapshotId,revision,port.id()),response);
+    }
+
     @Test void allMarkerAndAckClosedFieldFailuresKeepRealAckButNeverBecomeFreshProof()throws Exception {
-        for(String failure:List.of("marker-missing","marker-bool","marker-other","snapshot-extra","semantic-rejected","ack-outer-extra","ack-schema","ack-other-id","ack-snapshot","ack-revision-bool","ack-revision-float","ack-revision-text","ack-revision-mismatch","ack-revision-null","ack-extra")) {
+        for(String failure:List.of("marker-missing","marker-bool","marker-other","snapshot-extra","semantic-rejected","ack-outer-extra","ack-schema","ack-other-id","ack-snapshot","ack-revision-bool","ack-revision-float","ack-revision-malformed-float","ack-revision-text","ack-revision-mismatch","ack-revision-null","ack-extra")) {
             var replay=new Replay((actual,request)->{
                 var frame=snapshot("native:6",6,actual.id());var response=ack(actual.id(),true);var result=(ObjectNode)response.get("result");
                 switch(failure) {
                     case "marker-missing"->frame.remove("read_request_id");case "marker-bool"->frame.put("read_request_id",true);case "marker-other"->frame.put("read_request_id","different-original");
                     case "snapshot-extra"->frame.put("extra",true);case "semantic-rejected"->((ObjectNode)frame.get("state")).put("active_wars",true);case "ack-outer-extra"->response.putNull("error");
                     case "ack-schema"->result.put("schema","other");case "ack-other-id"->result.put("request_id","different-original");case "ack-snapshot"->result.put("snapshot_id","old");
-                    case "ack-revision-bool"->result.put("revision",true);case "ack-revision-float"->result.put("revision",6.0);case "ack-revision-text"->result.put("revision","6");
+                    case "ack-revision-bool"->result.put("revision",true);case "ack-revision-float","ack-revision-malformed-float"->result.put("revision",6.0);case "ack-revision-text"->result.put("revision","6");
                     case "ack-revision-mismatch"->result.put("revision",7);case "ack-revision-null"->result.putNull("revision");case "ack-extra"->result.put("extra",true);
                     default->throw new AssertionError(failure);
                 }
-                actual.fresh(frame,response);
+                if(failure.equals("ack-revision-float")||failure.equals("ack-revision-malformed-float")) {
+                    // Emit floating-point wire bytes, which the canonical integer-only fixture encoder rejects.
+                    String reply=response.toString();
+                    if(failure.equals("ack-revision-malformed-float")) {
+                        String malformed=reply.replace("\"revision\":6.0","\"revision\":6.0e");
+                        assertNotEquals(reply,malformed);reply=malformed;
+                    }
+                    actual.add(frame);
+                    actual.ackPacket=NativeWire.packet(reply.getBytes(StandardCharsets.UTF_8));
+                    actual.packets.add(actual.ackPacket);
+                } else actual.fresh(frame,response);
             });try(var actual=transport(replay)) {
                 actual.observe(deadline());var failed=assertInstanceOf(NativeFreshSnapshotPort.Unavailable.class,actual.readFreshFullState(deadline()),failure);
-                assertInstanceOf(NativeActionPort.AckReceived.class,failed.dispatch(),failure);assertEquals(1,replay.writes);
-                assertArrayEquals(replay.ackPacket,((NativeActionPort.AckReceived)failed.dispatch()).originalPacket());
+                assertEquals(1,replay.writes);
+                if(failure.equals("ack-revision-malformed-float")) {
+                    var unknown=assertInstanceOf(NativeActionPort.Unknown.class,failed.dispatch(),failure);
+                    assertArrayEquals(replay.ackPacket,actual.lastOriginalPacket());int reads=replay.reads;
+                    assertSame(unknown,assertInstanceOf(NativeFreshSnapshotPort.Unavailable.class,actual.readFreshFullState(deadline())).dispatch());
+                    assertEquals(1,replay.writes);assertEquals(reads,replay.reads);
+                } else {
+                    var ack=assertInstanceOf(NativeActionPort.AckReceived.class,failed.dispatch(),failure);
+                    assertArrayEquals(replay.ackPacket,ack.originalPacket());
+                }
             }
         }
     }
