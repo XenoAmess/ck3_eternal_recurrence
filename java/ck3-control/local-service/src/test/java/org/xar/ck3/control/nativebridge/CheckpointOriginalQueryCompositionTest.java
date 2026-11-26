@@ -62,6 +62,8 @@ final class CheckpointOriginalQueryCompositionTest {
             assertEquals(1,f.actual.nativeActionWrites());
             assertFalse(clock.instant().isBefore(originalDeadline));
             Instant readDeadline=clock.instant().plusSeconds(30);
+            Instant originalObservationDeadline=f.lastCheckpointObservationDeadline.get();
+            int originalFreshWrites=f.actual.softwareFreshWrites179();
             var confirmed=assertInstanceOf(CheckpointResult.Confirmed.class,
                     f.service.queryOriginal(unknown.actionId(),readDeadline));
             assertEquals(ActionReceipt.Outcome.APPLIED_CONFIRMED,confirmed.action().outcome());
@@ -69,9 +71,10 @@ final class CheckpointOriginalQueryCompositionTest {
             assertEquals(originalDeadline,confirmed.action().command().deadline());
             assertEquals(retained.bodySha256(),confirmed.action().bodySha256());
             assertEquals(unknown.actionId(),confirmed.pair().saveActionId());
-            assertTrue(f.lastCheckpointObservationDeadline.get().isAfter(originalDeadline),
-                    "the real poststate collector must receive the central original-action read window");
-            assertFalse(f.lastCheckpointObservationDeadline.get().isAfter(readDeadline));
+            assertEquals(originalFreshWrites+1,f.actual.softwareFreshWrites179(),
+                    "late original reconciliation uses the actual independent Fresh source");
+            assertEquals(originalObservationDeadline,f.lastCheckpointObservationDeadline.get(),
+                    "held reconciliation must not fall back to a second generic poststate observation");
             assertInstanceOf(SeedAdoption.Available.class,confirmed.seedAdoption());
             f.drivers.verify(confirmed.pair());
             assertEquals(confirmed.pair(),CheckpointPairCodec.decode(CheckpointPairCodec.encode(confirmed.pair())));
