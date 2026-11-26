@@ -57,6 +57,15 @@ final class NativeOwnerSnapshotArmyIdentitySelectionTest {
         assertThrows(IllegalArgumentException.class, () -> NativeOwnerSnapshotMain268.observationMode(status.deepCopy().put("maximum_status_polls", 4)));
     }
 
+    @Test
+    void heldFull111EventsHasNoCallerSelectedActionOrEvent() {
+        var events = config().put("schema", "xar.native-owner-snapshot-config/v55").put("mode", "held_full111_ordinary_events");
+        assertEquals(ObservationMode.HELD_FULL111_ORDINARY_EVENTS, NativeOwnerSnapshotMain268.observationMode(events));
+        assertThrows(IllegalArgumentException.class, () -> NativeOwnerSnapshotMain268.observationMode(events.deepCopy().put("mode", "held_date_sentinel_status")));
+        assertThrows(IllegalArgumentException.class, () -> NativeOwnerSnapshotMain268.observationMode(events.deepCopy().put("instance_id", 7)));
+        assertThrows(IllegalArgumentException.class, () -> NativeOwnerSnapshotMain268.observationMode(events.deepCopy().put("control_step", "resume-map")));
+    }
+
     private static ObjectNode config() {
         var config = StrictJson.object().put("schema", SCHEMA).put("overall_timeout_seconds", 30)
                 .put("read_timeout_seconds", 10).put("maximum_frames_per_operation", 8);

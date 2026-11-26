@@ -2922,11 +2922,9 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             Objects.requireNonNull(basis);
             Instant requested=readDeadline(Objects.requireNonNull(deadline));
             Instant until=requested.isBefore(basis.validUntil())?requested:basis.validUntil();
-            basis.requireOriginal(this,until);
-            if(!(basis.frame() instanceof CoreFrame.Partial)
-                    ||requireFlorinFullClockProfile()!=ExactCk3Build.CK3_121003_STEAM_26785313_FULL111
-                    ||!hello.capabilities().containsAll(Set.of(ClockStatusRead.STATUS_CAP,"game.guard.date-only-postday.v1")))
-                throw new IOException("held Date status requires the actual Full111 Core and advertised read capability");
+            requireHeldFull111ReadBasis(basis,until,ClockStatusRead.STATUS_CAP);
+            if(!hello.capabilities().contains("game.guard.date-only-postday.v1"))
+                throw new IOException("held Date status requires the advertised date-only postday guard");
             if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
             byte[] packet=NativeWire.execute(id,ClockStatusRead.STEP,BigInteger.ZERO,new byte[]{'{','}'});
             return retainReadOutcome(dispatchRead(id,packet,until,()->{
@@ -2934,6 +2932,30 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                 catch(IOException invalid){throw new UncheckedIOException(invalid);}
             }));
         } catch(IOException|RuntimeException invalid){return retainReadOutcome(zero(id,reason(invalid)));}
+    }
+    /** The Full111 path only returns raw evidence. It never creates the original Core267 LYD action role. */
+    public synchronized DispatchOutcome readFull111OrdinaryEvents(CoreReceived basis,Instant deadline)throws InterruptedException{
+        String id="held-ordinary-events-"+UUID.randomUUID().toString().replace("-","");
+        try {
+            Objects.requireNonNull(basis);
+            Instant requested=readDeadline(Objects.requireNonNull(deadline));
+            Instant until=requested.isBefore(basis.validUntil())?requested:basis.validUntil();
+            var action=CurrentLyd.Action.QUERY_EVENTS;
+            requireHeldFull111ReadBasis(basis,until,action.capability());
+            if(sentRequestIds.size()>=maximumSubmissions)throw new IOException("Native request identity retention limit reached");
+            byte[] packet=lydPacket(id,action,basis,BigInteger.ZERO,BigInteger.ZERO,CurrentLyd.Target.none(),until);
+            return retainReadOutcome(dispatchRead(id,packet,until,()->{
+                try { basis.requireOriginal(this,until); }
+                catch(IOException invalid){throw new UncheckedIOException(invalid);}
+            }));
+        } catch(IOException|RuntimeException invalid){return retainReadOutcome(zero(id,reason(invalid)));}
+    }
+    private void requireHeldFull111ReadBasis(CoreReceived basis,Instant until,String capability)throws IOException{
+        basis.requireOriginal(this,until);
+        if(!(basis.frame() instanceof CoreFrame.Partial)
+                ||requireFlorinFullClockProfile()!=ExactCk3Build.CK3_121003_STEAM_26785313_FULL111
+                ||!hello.capabilities().contains(capability))
+            throw new IOException("held query requires its actual Full111 Core and advertised read capability");
     }
     /** Pure cleanup only after the same actual generation reports paused; CANCEL never requests a pause. */
     public synchronized DispatchOutcome cancelDateSentinel(DateArmReceived before,Instant deadline)throws InterruptedException{

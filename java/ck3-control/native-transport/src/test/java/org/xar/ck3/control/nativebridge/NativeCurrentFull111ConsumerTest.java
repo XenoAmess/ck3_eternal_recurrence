@@ -198,6 +198,19 @@ final class NativeCurrentFull111ConsumerTest {
         }
     }
 
+    @Test void heldFull111OrdinaryEventsUsesTheFixedQueryAndRetainsNativeRefusal() throws Exception {
+        try(var fixture=new Fixture(FULL,false,true);var old=new Fixture(FULL)) {
+            var basis=assertInstanceOf(NativeGameTransport.CoreReceived.class,fixture.actual.readCoreFrameReceived(fixture.deadline));
+            var ack=assertInstanceOf(NativeActionPort.AckReceived.class,fixture.actual.readFull111OrdinaryEvents(basis,fixture.deadline));
+            assertFalse(ack.nativeOk());
+            assertEquals(2,fixture.source.writes);
+            assertTrue(fixture.actual.latestAcceptedSnapshotRevision().isEmpty());
+            var oldBasis=assertInstanceOf(NativeGameTransport.CoreReceived.class,old.actual.readCoreFrameReceived(old.deadline));
+            zero(old.actual.readFull111OrdinaryEvents(oldBasis,old.deadline));
+            assertEquals(1,old.source.writes);
+        }
+    }
+
     private static ObjectNode identity(String schema) {
         return StrictJson.object().put("schema",schema).put("game_version",FULL.version()).put("executable_sha256",FULL.executableSha256())
                 .put("adapter_id",FULL.coreFullAdapterId()).put("backend",FULL.coreFullBackend());
@@ -215,8 +228,9 @@ final class NativeCurrentFull111ConsumerTest {
     private static final class Fixture implements AutoCloseable {
         final Instant deadline=Instant.now().plusSeconds(120);final Replay source;final NativeGameTransport actual;
         Fixture(ExactCk3Build build)throws Exception {this(build,false);}
-        Fixture(ExactCk3Build build,boolean statusAdvertised)throws Exception {
-            source=new Replay(build,statusAdvertised);String slash=Character.toString(92);
+        Fixture(ExactCk3Build build,boolean statusAdvertised)throws Exception {this(build,statusAdvertised,false);}
+        Fixture(ExactCk3Build build,boolean statusAdvertised,boolean eventsAdvertised)throws Exception {
+            source=new Replay(build,statusAdvertised,eventsAdvertised);String slash=Character.toString(92);
             var config=new NativePipeEndpoint.Config(slash+slash+"."+slash+"pipe"+slash+"current111-software","current111-software",GAME,
                     "current111-software-session","current111-software",build.executableSha256(),build.coreFrameAdapterId());
             actual=new NativeGameTransport(source,config,16,16,List.of(),Clock.systemUTC());
@@ -226,16 +240,19 @@ final class NativeCurrentFull111ConsumerTest {
     private static final class Replay implements NativePacketPort {
         final ArrayDeque<byte[]> packets=new ArrayDeque<>();final ExactCk3Build build;int writes;boolean closed;
         final boolean statusAdvertised;
+        final boolean eventsAdvertised;
         boolean statusNativeOk=true;
-        Replay(ExactCk3Build build,boolean statusAdvertised)throws IOException {
+        Replay(ExactCk3Build build,boolean statusAdvertised,boolean eventsAdvertised)throws IOException {
             this.build=build;
             this.statusAdvertised=statusAdvertised;
+            this.eventsAdvertised=eventsAdvertised;
             var hello=StrictJson.object().put("type","hello").put("protocol_version",1).put("pid",GAME.pid()).put("connection_generation",1)
                     .put("bridge_version","current111-software").put("expected_ck3_version",build.version()).put("expected_ck3_sha256",build.executableSha256())
                     .put("game_adapter_id",build.coreFrameAdapterId()).put("game_adapter_status","ready").put("ck3_build_match",true);
             hello.putArray("capabilities").add(CoreFrame.CAPABILITY).add(NativeFreshSnapshotPort.CAPABILITY).add("game.state.snapshot")
                     .add("game.command.set-speed-3").add("game.command.pause-map").add("game.command.save-checkpoint");
             if(statusAdvertised)hello.withArray("capabilities").add(ClockStatusRead.STATUS_CAP).add("game.guard.date-only-postday.v1");
+            if(eventsAdvertised)hello.withArray("capabilities").add(CurrentLyd.Action.QUERY_EVENTS.capability());
             packets.add(NativeWire.packet(StrictJson.canonical(hello)));
         }
         @Override public void verify()throws IOException{if(closed)throw new IOException("software endpoint closed");}
@@ -244,9 +261,10 @@ final class NativeCurrentFull111ConsumerTest {
         @Override public void writePacket(byte[] packet,Instant deadline)throws IOException {
             verify();var request=NativeWire.decodeExecuteRequest(packet);writes++;
             assertEquals(Optional.of(BigInteger.ZERO),request.expectedRevision());
-            assertTrue(NativeWire.object(NativeWire.parse(request.normalizedAdditionalFields().value())).isEmpty());
+            var fields=NativeWire.object(NativeWire.parse(request.normalizedAdditionalFields().value()));
             var ack=StrictJson.object().put("type","command_result").put("protocol_version",1).put("request_id",request.requestId());
             if(request.step().equals(ClockStatusRead.STEP)) {
+                assertTrue(fields.isEmpty());
                 assertTrue(statusAdvertised);
                 ack.put("ok",statusNativeOk);
                 var result=ack.putObject("result").put("step",ClockStatusRead.STEP).put("accepted",statusNativeOk);
@@ -260,9 +278,23 @@ final class NativeCurrentFull111ConsumerTest {
                             .put("pause_wrapper_called",true).put("pause_observed",true).put("terminal_observed",false).put("abnormal",true);
                     status.putArray("trigger_reasons").add("evaluation_failure");
                 } else result.put("error","date-only sentinel unavailable");
+            } else if(request.step().equals(CurrentLyd.Action.QUERY_EVENTS.step())) {
+                assertTrue(eventsAdvertised);
+                assertTrue(fields.path("arguments").isEmpty());
+                assertTrue(fields.path("core_control_deadline_unix_ms").isIntegralNumber());
+                var query=fields.path("lyd");
+                assertEquals(FULL.coreFrameAdapterId(),query.path("adapter_id").textValue());
+                assertEquals("query_events",query.path("action").textValue());
+                assertEquals("0",query.path("provider_generation").textValue());
+                assertEquals("0",query.path("query_sequence").textValue());
+                assertTrue(query.path("event_role").isNull());
+                assertTrue(query.path("instance_id").isNull());
+                ack.put("ok",false).putObject("result").put("error","ordinary event source unavailable");
             } else {
+                assertTrue(fields.isEmpty());
                 assertEquals(CoreFrame.STEP,request.step(),"unqualified Full111 must not enter a full-state or control write");
-                ack.put("ok",true).set("result",object(CoreFramePublicCodec.encode(new CoreFrame.Partial(build,PREFIX))));
+                var prefix=eventsAdvertised?new CoreFrame.Prefix(PREFIX.dateRaw(),3,true,0,true,true,PREFIX.playedCharacterId(),true):PREFIX;
+                ack.put("ok",true).set("result",object(CoreFramePublicCodec.encode(new CoreFrame.Partial(build,prefix))));
             }
             packets.add(NativeWire.packet(StrictJson.canonical(ack)));
         }

@@ -11,12 +11,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
+import org.xar.ck3.control.application.action.NativeActionPort.AckReceived;
 import org.xar.ck3.control.application.action.RawJson;
 import org.xar.ck3.control.contracts.ExactCk3Build;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFrame;
 
-/** Only the nineteen SHA-pinned resources are genuine C++ bytes. Mutations are Java contract DATA, never Native observations. */
+/** SHA-pinned wire fixtures come from the C++ serializers. Mutations are Java contract DATA. */
 class NativeCurrentLyd26785313ProducerTest {
     private record Artifact(String name,int bytes,String sha256) { }
     private static final List<Artifact> CPP=List.of(
@@ -40,8 +41,14 @@ class NativeCurrentLyd26785313ProducerTest {
         new Artifact("select-refused-spent-claim.json",2566,"7901744b01d0929c2fbaba4c85a732e54e8d514b9223156835c3cf4f28d988bd"),
         new Artifact("select.request.json",923,"0a6ba569ec8add113e4108d141874b10a6fab3bef5729abadd6180b61bd87540")
     );
+    private static final List<Artifact> FULL111_CPP=List.of(
+        new Artifact("full111-ordinary-event-query.json",1985,"dc91e270a2e443901aea3520d58db350c10dc0abc8be811847b128556417f68f"),
+        new Artifact("full111-ordinary-event-query.request.json",828,"6896d15edd2b338a3e6dc5b67002dcdf4ca62efe99e65a59729b464ea4316738"),
+        new Artifact("full111-runtime-queue-unavailable.json",1299,"dc7939bce27cf98231d3101b6834cf576c313da36f8ec32c85783f256b8f344a")
+    );
     private static byte[] raw(String name)throws Exception {
-        var expected=CPP.stream().filter(a->a.name().equals(name)).findFirst().orElseThrow(()->new IOException("Unknown original C++ resource: "+name));
+        var expected=java.util.stream.Stream.concat(CPP.stream(),FULL111_CPP.stream()).filter(a->a.name().equals(name)).findFirst()
+                .orElseThrow(()->new IOException("Unknown original C++ resource: "+name));
         try(var in=NativeCurrentLyd26785313ProducerTest.class.getResourceAsStream("/current267-lyd-cpp-a749/"+name)) {
             if(in==null)throw new IOException("Original C++ LYD resource absent: "+name);
             byte[] bytes=in.readAllBytes();assertEquals(expected.bytes(),bytes.length,name);
@@ -114,6 +121,51 @@ class NativeCurrentLyd26785313ProducerTest {
         ((ObjectNode)event.get("options").get(1)).put("authored_option_index",2).put("permitted_role","knowing_acting_cancel");
         reject(n); // Known inquiry identity cannot authorize the reserved authored practice slot1.
         n=token("event-choose-pay.json");n.put("instance_id",8);reject(n);
+    }
+
+    @Test void full111AcceptsOnlyTheOrdinaryReadAndNoWriteRoles()throws Exception {
+        var build=ExactCk3Build.CK3_121003_STEAM_26785313_FULL111;
+        var wireRequest=envelope("full111-ordinary-event-query.request.json");
+        var claim=NativeWire.object(wireRequest.get("lyd"));
+        var core=new CoreFrame.Partial(build,CurrentLyd.readCore(claim.get("expected_core")));
+        var request=CurrentLyd.request(core,CurrentLyd.Action.QUERY_EVENTS,BigInteger.ZERO,BigInteger.ZERO,CurrentLyd.Target.none());
+        var fields=NativeWire.parse(request.additionalFields().bytes());
+        var generated=NativeWire.object(fields.get("lyd"));
+        assertEquals(claim.path("executable_sha256").textValue(),generated.path("executable_sha256").textValue().toUpperCase(Locale.ROOT));
+        generated.set("executable_sha256",claim.get("executable_sha256"));
+        assertEquals(claim,generated);
+        assertEquals(wireRequest.path("step").textValue(),request.step());
+        assertThrows(IllegalArgumentException.class,()->CurrentLyd.request(core,CurrentLyd.Action.QUERY_DECISIONS,BigInteger.ZERO,BigInteger.ZERO,CurrentLyd.Target.none()));
+        assertThrows(IllegalArgumentException.class,()->CurrentLyd.request(core,CurrentLyd.Action.CHOOSE_KNOWN_EVENT_OPTION,BigInteger.ONE,BigInteger.ONE,
+                CurrentLyd.Target.event(CurrentLyd.EventRole.RITUAL_MUSIC_PAY,7)));
+
+        var original=token("events-query.json");
+        assertThrows(IOException.class,()->CurrentLydResult.decodeFull111OrdinaryEvents(queryAck(original)));
+        assertThrows(IOException.class,()->CurrentLydResult.decodeFull111OrdinaryEvents(queryAck(original.deepCopy().put("adapter_id",build.coreFrameAdapterId()))));
+        byte[] payload=raw("full111-ordinary-event-query.json");
+        var source=CurrentLydResult.decodeFull111OrdinaryEvents(queryAckFromEnvelope(payload));
+        assertEquals(7,source.source().orElseThrow().events().orElseThrow().events().getFirst().instanceId());
+        assertThrows(IOException.class,()->CurrentLydResult.decodeOutcome(queryAckFromEnvelope(payload)));
+        var unavailable=CurrentLydResult.decodeFull111OrdinaryEvents(queryAckFromEnvelope(raw("full111-runtime-queue-unavailable.json")));
+        assertEquals(CurrentLydResult.Status.UNAVAILABLE,unavailable.status());
+        assertTrue(unavailable.source().isEmpty());
+        var readOnly=token("full111-ordinary-event-query.json");
+        var event=(ObjectNode)branch(readOnly,"events").get("events").get(0);
+        event.put("recipient_character_id",core.prefix().playedCharacterId()+1);
+        assertThrows(IOException.class,()->CurrentLydResult.decodeFull111OrdinaryEvents(queryAck(readOnly)));
+    }
+
+    private static AckReceived queryAck(ObjectNode token)throws IOException {
+        String id="full111-event-software";
+        var envelope=StrictJson.object().put("type","command_result").put("protocol_version",1).put("request_id",id).put("ok",true);
+        envelope.set("result",token);
+        return queryAckFromEnvelope(StrictJson.canonical(envelope));
+    }
+    private static AckReceived queryAckFromEnvelope(byte[] payload)throws IOException {
+        var packet=NativeWire.packet(payload);
+        var parsed=(NativeWire.CommandResult)NativeWire.decode(packet);
+        return new AckReceived(parsed.requestId(),parsed.nativeOk(),parsed.result().token().map(value->new RawJson(value.value())),
+                new RawJson(payload),packet,java.util.Optional.empty());
     }
 
     @Test void unionUnknownMissingAndNullableRolesFailWithoutNormalization()throws Exception {

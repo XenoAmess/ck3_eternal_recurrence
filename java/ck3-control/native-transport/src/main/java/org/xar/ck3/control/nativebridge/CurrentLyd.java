@@ -84,7 +84,9 @@ public final class CurrentLyd {
     public static NativeRequest request(CoreFrame.Partial actual,Action action,BigInteger provider,BigInteger query,Target target){
         Objects.requireNonNull(actual);Objects.requireNonNull(action);Objects.requireNonNull(target);
         CurrentLetter.unsigned(provider,false);CurrentLetter.unsigned(query,false);CurrentLetter.requirePrefix(actual.prefix());
-        StrictJson.require(actual.build()==ExactCk3Build.CK3_121003_STEAM_26785313,"Exact current267 Core required");
+        StrictJson.require(actual.build()==ExactCk3Build.CK3_121003_STEAM_26785313
+                ||actual.build()==ExactCk3Build.CK3_121003_STEAM_26785313_FULL111&&action==Action.QUERY_EVENTS,
+                "Exact current267 Core or Full111 ordinary-event read required");
         requireTarget(action,target,true);
         StrictJson.require(action.isQuery()?provider.signum()==0&&query.signum()==0:provider.signum()>0&&query.signum()>0,"Actual query/action lease roles differ");
         var b=actual.build();var claim=StrictJson.object().put("schema",SCHEMA).put("game_version",b.version()).put("executable_sha256",b.executableSha256())

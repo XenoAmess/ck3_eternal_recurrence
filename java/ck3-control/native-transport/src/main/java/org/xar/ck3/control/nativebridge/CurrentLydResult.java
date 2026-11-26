@@ -61,9 +61,11 @@ public record CurrentLydResult(CurrentLyd.Action action,Status status,boolean ef
         };
     }
     public static CurrentLydResult decode(RawJson raw)throws IOException {
+        return decode(raw,ExactCk3Build.CK3_121003_STEAM_26785313);
+    }
+    private static CurrentLydResult decode(RawJson raw,ExactCk3Build build)throws IOException {
         try {
             var r=StrictJson.object(NativeWire.parse(raw.bytes()),Set.of("schema","game_version","executable_sha256","backend","adapter_id","action","status","source_available","effect_attempted","native_returned","native_handled","cleanup_known","provider_generation","query_sequence","claim_sequence","decision_key","personal_key","event_role","instance_id","facts_before","owner","source","addresses_redacted","event_closed","personal_applied","gold_paid","piety_paid","modifiers_applied","new_date_observed","physical_save_confirmed","unavailable_reason"));
-            var build=ExactCk3Build.CK3_121003_STEAM_26785313;
             require(r,"schema",CurrentLyd.RESULT_SCHEMA);require(r,"game_version",build.version());require(r,"executable_sha256",build.executableSha256().toUpperCase(Locale.ROOT));
             require(r,"backend",CurrentLyd.BACKEND);require(r,"adapter_id",build.coreFrameAdapterId());
             if(!CurrentLyd.bool(r,"addresses_redacted")||CurrentLyd.bool(r,"event_closed")||CurrentLyd.bool(r,"personal_applied")||CurrentLyd.bool(r,"gold_paid")
@@ -85,13 +87,32 @@ public record CurrentLydResult(CurrentLyd.Action action,Status status,boolean ef
         }catch(IllegalArgumentException|ArithmeticException invalid){throw new IOException("Invalid exact current LYD DATA",invalid);}
     }
     public static CurrentLydResult decodeOutcome(AckReceived original)throws IOException {
+        return decodeOutcome(original,ExactCk3Build.CK3_121003_STEAM_26785313);
+    }
+    public static CurrentLydResult decodeFull111OrdinaryEvents(AckReceived original)throws IOException {
+        var result=decodeOutcome(original,ExactCk3Build.CK3_121003_STEAM_26785313_FULL111);
+        if(result.action()!=CurrentLyd.Action.QUERY_EVENTS)
+            throw new IOException("Full111 ordinary-event result requires the fixed read action");
+        if(result.source().isPresent()) {
+            var events=result.source().orElseThrow().events().orElseThrow();
+            int actor=result.factsBefore().orElseThrow().playedCharacterId();
+            for(var event:events.events()) {
+                if(event.recipientCharacterId()!=actor)
+                    throw new IOException("Full111 ordinary event belongs to another actor");
+                if(event.options().stream().anyMatch(option->option.sourceBoundOptionKey().isPresent()||option.permittedRole().isPresent()))
+                    throw new IOException("Full111 ordinary-event reader cannot grant an option role");
+            }
+        }
+        return result;
+    }
+    private static CurrentLydResult decodeOutcome(AckReceived original,ExactCk3Build build)throws IOException {
         try {
             var r=StrictJson.object(NativeWire.parse(original.originalFrame().bytes()),Set.of("type","protocol_version","request_id","ok","result"));
             require(r,"type","command_result");require(r,"request_id",original.requestId());NativeWire.integer(r.get("protocol_version"),BigInteger.ONE,BigInteger.ONE);
             if(CurrentLyd.bool(r,"ok")!=original.nativeOk())throw new IOException("Original LYD envelope ok mismatch");
             var token=original.originalResultToken().orElseThrow(()->new IOException("Original LYD result token absent"));
             if(!NativeWire.parse(token.bytes()).equals(r.get("result")))throw new IOException("LYD token differs from actual envelope");
-            var result=decode(new RawJson(token.bytes()));if(result.successful()!=original.nativeOk())throw new IOException("LYD envelope ok differs from coherent source/dispatch");return result;
+            var result=decode(new RawJson(token.bytes()),build);if(result.successful()!=original.nativeOk())throw new IOException("LYD envelope ok differs from coherent source/dispatch");return result;
         }catch(IllegalArgumentException invalid){throw new IOException("Invalid original LYD ACK",invalid);}
     }
     public RawJson encode(){

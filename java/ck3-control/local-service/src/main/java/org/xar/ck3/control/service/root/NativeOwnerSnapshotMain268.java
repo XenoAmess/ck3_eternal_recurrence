@@ -282,6 +282,8 @@ public final class NativeOwnerSnapshotMain268 {
         boolean fullClock=observationMode==ObservationMode.FULL_CLOCK;
         boolean dateAdvance=observationMode==ObservationMode.DATE_ADVANCE;
         boolean dateStatus=observationMode==ObservationMode.HELD_DATE_SENTINEL_STATUS;
+        boolean full111Events=observationMode==ObservationMode.HELD_FULL111_ORDINARY_EVENTS;
+        boolean heldCoreRead=dateStatus||full111Events;
         boolean currentDateAdvance=observationMode==ObservationMode.CURRENT_DATE_ADVANCE;
         int maximumStatusPolls=(dateAdvance||currentDateAdvance)?Math.toIntExact(StrictJson.integer(config.get("maximum_status_polls"),1,128)):0;
         long statusPollMillis=(dateAdvance||currentDateAdvance)?StrictJson.integer(config.get("status_poll_interval_ms"),100,5000):0;
@@ -468,7 +470,7 @@ public final class NativeOwnerSnapshotMain268 {
         stage = "ATTACH";
         try (var supervisor = WindowsJobProcess.retainReadOnlyProcess(owner.supervisorIdentity().pid())) {
             requireSupervisor(supervisor, owner.supervisorIdentity());
-            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,currentZg361Scoreboard?zg361ScoreboardConfig.submissions():currentZg361Combined?zg361CombinedConfig.submissions():currentZg361Review?zg361ReviewConfig.submissions():currentZg361Ae2?zg361Ae2Config.submissions():currentLivingOriginal?livingConfig.submissions():currentRmtmRemaining?rmtmConfig.submissions():currentRmtmTitleQuery?2:currentCcc?cccConfig.submissions():currentStockBookmark1070?stockBookmark1070Config.submissions():currentRiteCreationBlockers?2:currentRiteText?riteTextConfig.submissions():currentRiteCreate?riteCreateConfig.submissions():currentDesInitGuard?2:currentStockSeed?stockSeedConfig.submissions():currentTed?tedConfig.submissions():currentLyd?lydConfig.mode().submissions():currentSupermanSavedBaseline?3:currentSupermanHealth?(healthConfig.mode()==SupermanHealthMode.QUERY?2:healthConfig.mode()==SupermanHealthMode.BASELINE_SAVE_AND_BEGIN?5:3):currentCourtierChoices?(choicesConfig.action()==CurrentCourtierChoices.Action.QUERY_CHOICES?2:3):currentCourtierConfiguration?(configurationConfig.action()==CurrentCourtierConfiguration.Action.QUERY_CONFIGURATION?2:3):currentDecisionsClose?(decisionsCloseAction==CurrentDecisionsClose.Action.QUERY_CLOSE?2:3):currentCourtierControls?(courtierConfig.action()==CurrentCourtierControls.Action.QUERY_CONTROL?2:3):currentXqolThreshold?(thresholdConfig.action()==CurrentXqolThreshold.Action.QUERY_THRESHOLD?2:3):currentXqolPrompt?(xqolPromptAction==CurrentXqolPrompt.Action.QUERY_PROMPT?2:3):currentCuratedDecision?(curatedConfig.action()==CurrentCuratedDecisions.Action.QUERY?2:3):currentFullscreenEvent?(acknowledgeKnownIntro?3:2):currentLetterSet?(letterSetReply?3:2):djcSelectedCost?(djcCostPreview?9:3):currentLetter?(knownLetterReply?3:2):djcUiMode?(djcUiSubmit?declarationConfig.maximumWarningPolls()+12:2):currentSuccession?(continueSuccession?2:1):currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:dateStatus||checkpointSave||aubObserver||djcQuery||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
+            var request = new NativeGameAttachment.Request(plan, owner.generation(), List.of(), frames,currentZg361Scoreboard?zg361ScoreboardConfig.submissions():currentZg361Combined?zg361CombinedConfig.submissions():currentZg361Review?zg361ReviewConfig.submissions():currentZg361Ae2?zg361Ae2Config.submissions():currentLivingOriginal?livingConfig.submissions():currentRmtmRemaining?rmtmConfig.submissions():currentRmtmTitleQuery?2:currentCcc?cccConfig.submissions():currentStockBookmark1070?stockBookmark1070Config.submissions():currentRiteCreationBlockers?2:currentRiteText?riteTextConfig.submissions():currentRiteCreate?riteCreateConfig.submissions():currentDesInitGuard?2:currentStockSeed?stockSeedConfig.submissions():currentTed?tedConfig.submissions():currentLyd?lydConfig.mode().submissions():currentSupermanSavedBaseline?3:currentSupermanHealth?(healthConfig.mode()==SupermanHealthMode.QUERY?2:healthConfig.mode()==SupermanHealthMode.BASELINE_SAVE_AND_BEGIN?5:3):currentCourtierChoices?(choicesConfig.action()==CurrentCourtierChoices.Action.QUERY_CHOICES?2:3):currentCourtierConfiguration?(configurationConfig.action()==CurrentCourtierConfiguration.Action.QUERY_CONFIGURATION?2:3):currentDecisionsClose?(decisionsCloseAction==CurrentDecisionsClose.Action.QUERY_CLOSE?2:3):currentCourtierControls?(courtierConfig.action()==CurrentCourtierControls.Action.QUERY_CONTROL?2:3):currentXqolThreshold?(thresholdConfig.action()==CurrentXqolThreshold.Action.QUERY_THRESHOLD?2:3):currentXqolPrompt?(xqolPromptAction==CurrentXqolPrompt.Action.QUERY_PROMPT?2:3):currentCuratedDecision?(curatedConfig.action()==CurrentCuratedDecisions.Action.QUERY?2:3):currentFullscreenEvent?(acknowledgeKnownIntro?3:2):currentLetterSet?(letterSetReply?3:2):djcSelectedCost?(djcCostPreview?9:3):currentLetter?(knownLetterReply?3:2):djcUiMode?(djcUiSubmit?declarationConfig.maximumWarningPolls()+12:2):currentSuccession?(continueSuccession?2:1):currentFrontendMenu?(currentFrontendQuit?2:1):riteFinalConfirmation?maximumConfirmationPolls+5:currentDateAdvance?maximumStatusPolls+3:riteDoctrine?4:guiNavigation?3:guiControls?(controlWindow==GuiControlsFrameV2.Window.RITE?3:2):dateAdvance?maximumStatusPolls+6:heldCoreRead||checkpointSave||aubObserver||djcQuery||coreCommand||fullClock||personalCash||guiRootIndex||guiWindow||riteDraftCosts?2:1);
             // This factory returns ATTACHED only. Its close releases communication and readonly handles, never a Job.
             try (ManagedGameSession game = NativeGameAttachment.attach(request, (currentZg361Scoreboard||currentZg361Combined||currentZg361Review||currentZg361Ae2||currentLivingOriginal||currentRmtmRemaining||currentRmtmTitleQuery||currentCcc||currentStockBookmark1070||currentRiteCreationBlockers||currentRiteText||currentRiteCreate||currentDesInitGuard||currentStockSeed||currentTed||currentLyd||currentSupermanSavedBaseline||currentSupermanHealth||currentCourtierChoices||currentCourtierConfiguration||currentDecisionsClose||currentCourtierControls||currentXqolThreshold||currentXqolPrompt||currentCuratedDecision||currentFullscreenEvent||currentLetterSet||djcSelectedCost||currentLetter||djcUiMode||currentFrontendMenu||currentSuccession||aubObserver||djcQuery||riteFinalConfirmation||currentDateAdvance||checkpointSave||guiNavigation||riteDoctrine)&&plan.deadline().isBefore(deadline)?plan.deadline():deadline, Duration.ofSeconds(readSeconds))) {
                 if (game.mode() != ManagedGameSession.Mode.ATTACHED) throw new IOException("actual attachment mode differs");
@@ -775,7 +777,7 @@ if(riteDraftCosts) {
                     stage = "ONE_CORE_PREFIX_READ";
                     var coreRead=transport.readCoreFrameReceived(deadline);
                     // Snapshot already received evidence only: no additional Native query or window operation.
-                    if(!dateStatus||!(coreRead instanceof NativeGameTransport.CoreReceived))
+                    if(!heldCoreRead||!(coreRead instanceof NativeGameTransport.CoreReceived))
                         archiveNaturalDiagnostics(output,originals,transport.diagnostics());
                     NativeActionPort.DispatchOutcome dispatch = coreRead.original();
                     originals.set("dispatch", saveDispatch(output, dispatch));
@@ -816,8 +818,11 @@ if(riteDraftCosts) {
                             observed.putNull(field);
                     }
                     result.set("observed", observed);
-                    if(dateStatus) {
-                        try { readHeldDateStatus(transport,received,output,deadline,result,originals); }
+                    if(heldCoreRead) {
+                        try {
+                            if(dateStatus)readHeldDateStatus(transport,received,output,deadline,result,originals);
+                            else readFull111Events(transport,received,output,deadline,result,originals);
+                        }
                         finally { archiveNaturalDiagnostics(output,originals,transport.diagnostics()); }
                     }
                     if(coreCommand) {
@@ -908,6 +913,7 @@ if(riteDraftCosts) {
         String archivedStatus = currentRmtmRemaining?"ARCHIVED_CURRENT_RMTM_DATA_ENDPOINT_RELEASED":currentRmtmTitleQuery?"ARCHIVED_CURRENT_RMTM_TITLE_READONLY_DATA_ENDPOINT_RELEASED":currentStockBookmark1070?"ARCHIVED_CURRENT_STOCK_BOOKMARK1070_DATA_ENDPOINT_RELEASED":currentRiteCreationBlockers?"ARCHIVED_CURRENT_RITE_CREATION_BLOCKERS_DATA_ENDPOINT_RELEASED":currentRiteText?"ARCHIVED_CURRENT_RITE_TEXT_DATA_ENDPOINT_RELEASED":currentRiteCreate?"ARCHIVED_CURRENT_RITE_CREATE_DATA_ENDPOINT_RELEASED":currentDesInitGuard?"ARCHIVED_CURRENT_DES_INIT_GUARD_DATA_ENDPOINT_RELEASED":currentStockSeed?"ARCHIVED_CURRENT_STOCK_NEWGAME_SEED_MATERIAL_ENDPOINT_RELEASED":currentTed?"ARCHIVED_CURRENT_TED_DATA_ENDPOINT_RELEASED":currentLyd?"ARCHIVED_CURRENT_LYD_DATA_ENDPOINT_RELEASED":currentSupermanSavedBaseline?"ARCHIVED_CURRENT_SUPERMAN_SAVED_BASELINE_DATA_ENDPOINT_RELEASED":currentSupermanHealth?"ARCHIVED_CURRENT_SUPERMAN_HEALTH_DATA_ENDPOINT_RELEASED":currentCourtierChoices?"ARCHIVED_CURRENT_COURTIER_CHOICES_DATA_ENDPOINT_RELEASED":currentCourtierConfiguration?"ARCHIVED_CURRENT_COURTIER_CONFIGURATION_DATA_ENDPOINT_RELEASED":currentDecisionsClose?"ARCHIVED_CURRENT_DECISIONS_CLOSE_DATA_ENDPOINT_RELEASED":currentCourtierControls?"ARCHIVED_CURRENT_COURTIER_CONTROLS_DATA_ENDPOINT_RELEASED":currentXqolThreshold?"ARCHIVED_CURRENT_XQOL_THRESHOLD_DATA_ENDPOINT_RELEASED":currentXqolPrompt?"ARCHIVED_CURRENT_XQOL_PROMPT_DATA_ENDPOINT_RELEASED":currentCuratedDecision?"ARCHIVED_CURRENT_CURATED_DECISIONS_DATA_ENDPOINT_RELEASED":currentFullscreenEvent?"ARCHIVED_CURRENT_FULLSCREEN_EVENT_DATA_ENDPOINT_RELEASED":currentLetterSet?"ARCHIVED_CURRENT_LETTER_SET_DATA_ENDPOINT_RELEASED":djcSelectedCost?"ARCHIVED_CURRENT_DJC_SELECTED_COST_DATA_ENDPOINT_RELEASED":currentLetter?"ARCHIVED_CURRENT_LETTER_DATA_ENDPOINT_RELEASED":djcUiMode?"ARCHIVED_CURRENT_DJC_DECLARATION_UI_DATA_ENDPOINT_RELEASED":riteFinalConfirmation?"ARCHIVED_CURRENT_RITE_FINAL_CALLBACK_DATA_ENDPOINT_RELEASED":currentDateAdvance?"ARCHIVED_CURRENT_NATIVE_ONE_DAY_ENDPOINT_RELEASED":riteDoctrine?"ARCHIVED_CURRENT_RITE_ACTION_DATA_ENDPOINT_RELEASED":guiNavigation?"ARCHIVED_LITERAL_NAVIGATION_SUBMISSION_ENDPOINT_RELEASED":checkpointSave?"ARCHIVED_CURRENT_CORE_CHECKPOINT_MATERIAL_ENDPOINT_RELEASED":guiControls?"ARCHIVED_NATIVE_GUI_CONTROLS_DATA_ENDPOINT_RELEASED":riteDraftCosts?"ARCHIVED_NATIVE_RITE_DRAFT_COSTS_DATA_ENDPOINT_RELEASED":guiWindow?"ARCHIVED_NATIVE_GUI_WINDOW_DATA_ENDPOINT_RELEASED":guiRootIndex?"ARCHIVED_NATIVE_GUI_ROOT_INDEX_DATA_ENDPOINT_RELEASED":dateAdvance?"ARCHIVED_NATIVE_DATE_SENTINEL_ADVANCE_ENDPOINT_RELEASED":personalCash?"ARCHIVED_NATIVE_PERSONAL_CASH_DATA_ENDPOINT_RELEASED":fullClock?"ARCHIVED_NATIVE_FULL_CLOCK_SUBMISSION_ENDPOINT_RELEASED":actorFoundation?"ARCHIVED_NATIVE_ACTOR_FOUNDATION_DATA_ENDPOINT_RELEASED":personalGold?"ARCHIVED_NATIVE_PERSONAL_GOLD_DATA_ENDPOINT_RELEASED":applicationExit?"ARCHIVED_NATIVE_APPLICATION_EXIT_REQUEST_ENDPOINT_RELEASED":controlStep!=null?"ARCHIVED_NATIVE_CORE_CONTROL_SUBMISSION_ENDPOINT_RELEASED":corePrefixOnly ? "ARCHIVED_NATIVE_CORE_PREFIX_DATA_ENDPOINT_RELEASED" : "ARCHIVED_NATIVE_READ_DATA_ENDPOINT_RELEASED";
         if(currentArmyIdentity)archivedStatus="ARCHIVED_CURRENT_ARMY_IDENTITY_READONLY_ENDPOINT_RELEASED";
         if(dateStatus)archivedStatus="ARCHIVED_HELD_DATE_SENTINEL_STATUS_ENDPOINT_RELEASED";
+        if(full111Events)archivedStatus="ARCHIVED_HELD_FULL111_ORDINARY_EVENTS_ENDPOINT_RELEASED";
         result.put("status", archivedStatus).put("completed_at_utc", Instant.now().toString());
         ObjectNode published = write(output, "summary.json", FullJsonTree.encode(result, FullJsonTree.MAXIMUM_BYTES));
         System.out.println(StrictJson.object().put("schema", "xar.native-owner-snapshot-stage/v1")
@@ -5937,7 +5943,7 @@ if(riteDraftCosts) {
         }
     }
 
-    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,HELD_DATE_SENTINEL_STATUS,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE,CURRENT_DJC_TARGET_QUERY,CURRENT_SUCCESSION_QUERY,CURRENT_SUCCESSION_CONTINUE,CURRENT_DJC_DECLARATION_UI,CURRENT_DJC_DECLARATION_SUBMIT,CURRENT_LETTER_QUERY,CURRENT_LETTER_REPLY_KNOWN,CURRENT_DJC_SELECTED_COST,CURRENT_DJC_SELECTED_COST_PREVIEW,CURRENT_LETTER_SET_QUERY,CURRENT_LETTER_SET_REPLY_KNOWN_INSTANCE,CURRENT_FULLSCREEN_EVENT_QUERY,CURRENT_FULLSCREEN_EVENT_ACK_KNOWN_INTRO,CURRENT_CURATED_DECISIONS_QUERY,CURRENT_CURATED_DECISIONS_OPEN,CURRENT_CURATED_DECISION_DETAIL,CURRENT_CURATED_DECISION_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_QUERY,CURRENT_XQOL_CONVERSION_PROMPT_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_CANCEL,CURRENT_XQOL_CONVERSION_THRESHOLD_QUERY,CURRENT_XQOL_CONVERSION_THRESHOLD_SET,CURRENT_COURTIER_CREATOR_CONTROLS_QUERY,CURRENT_COURTIER_CREATOR_CONTROL_EXECUTE,CURRENT_DECISIONS_CLOSE_QUERY,CURRENT_DECISIONS_CLOSE,CURRENT_COURTIER_CONFIGURATION_QUERY,CURRENT_COURTIER_CONFIGURATION_EXECUTE,CURRENT_COURTIER_CHOICES_QUERY,CURRENT_COURTIER_CHOICE_SELECT,CURRENT_SUPERMAN_HEALTH_QUERY,CURRENT_SUPERMAN_HEALTH_BASELINE_SAVE_AND_BEGIN,CURRENT_SUPERMAN_HEALTH_COMPLETED_CLOSE,CURRENT_SUPERMAN_HEALTH_RESUME_SAVED_BASELINE_AND_BEGIN,CURRENT_LYD,CURRENT_TED,CURRENT_STOCK_NEWGAME_SEED,CURRENT_DES_SAVED_GAME_INIT_GUARD,CURRENT_RITE_CREATE,CURRENT_RITE_TEXT,CURRENT_RITE_CREATION_BLOCKERS,CURRENT_STOCK_BOOKMARK1070,CURRENT_CCC,CURRENT_RMTM_TITLE_QUERY,CURRENT_RMTM_REMAINING,CURRENT_LIVING_ORIGINAL,CURRENT_ZG361_AE2,CURRENT_ZG361_REVIEW,CURRENT_ZG361_REVIEW_AE2,CURRENT_ZG361_SCOREBOARD,CURRENT_ARMY_IDENTITY_READONLY }
+    enum ObservationMode { SAVED_FULL,SAVED_CORE,MENU_CORE,CORE_CONTROL,CORE_EXIT,CORE_CHECKPOINT_SAVE,RITE_DOCTRINE,GUI_NAVIGATION_V2,PERSONAL_GOLD,ACTOR_FOUNDATION,FULL_CLOCK,DATE_ADVANCE,HELD_DATE_SENTINEL_STATUS,HELD_FULL111_ORDINARY_EVENTS,PERSONAL_CASH,GUI_ROOT_INDEX,GUI_WINDOW,RITE_DRAFT_COSTS,GUI_CONTROLS_V2,CURRENT_DATE_ADVANCE,RITE_FINAL_CONFIRMATION,CURRENT_FRONTEND_MENU,CURRENT_FRONTEND_MENU_QUIT,CURRENT_AUB_OBSERVER_FIXTURE,CURRENT_DJC_TARGET_QUERY,CURRENT_SUCCESSION_QUERY,CURRENT_SUCCESSION_CONTINUE,CURRENT_DJC_DECLARATION_UI,CURRENT_DJC_DECLARATION_SUBMIT,CURRENT_LETTER_QUERY,CURRENT_LETTER_REPLY_KNOWN,CURRENT_DJC_SELECTED_COST,CURRENT_DJC_SELECTED_COST_PREVIEW,CURRENT_LETTER_SET_QUERY,CURRENT_LETTER_SET_REPLY_KNOWN_INSTANCE,CURRENT_FULLSCREEN_EVENT_QUERY,CURRENT_FULLSCREEN_EVENT_ACK_KNOWN_INTRO,CURRENT_CURATED_DECISIONS_QUERY,CURRENT_CURATED_DECISIONS_OPEN,CURRENT_CURATED_DECISION_DETAIL,CURRENT_CURATED_DECISION_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_QUERY,CURRENT_XQOL_CONVERSION_PROMPT_CONFIRM,CURRENT_XQOL_CONVERSION_PROMPT_CANCEL,CURRENT_XQOL_CONVERSION_THRESHOLD_QUERY,CURRENT_XQOL_CONVERSION_THRESHOLD_SET,CURRENT_COURTIER_CREATOR_CONTROLS_QUERY,CURRENT_COURTIER_CREATOR_CONTROL_EXECUTE,CURRENT_DECISIONS_CLOSE_QUERY,CURRENT_DECISIONS_CLOSE,CURRENT_COURTIER_CONFIGURATION_QUERY,CURRENT_COURTIER_CONFIGURATION_EXECUTE,CURRENT_COURTIER_CHOICES_QUERY,CURRENT_COURTIER_CHOICE_SELECT,CURRENT_SUPERMAN_HEALTH_QUERY,CURRENT_SUPERMAN_HEALTH_BASELINE_SAVE_AND_BEGIN,CURRENT_SUPERMAN_HEALTH_COMPLETED_CLOSE,CURRENT_SUPERMAN_HEALTH_RESUME_SAVED_BASELINE_AND_BEGIN,CURRENT_LYD,CURRENT_TED,CURRENT_STOCK_NEWGAME_SEED,CURRENT_DES_SAVED_GAME_INIT_GUARD,CURRENT_RITE_CREATE,CURRENT_RITE_TEXT,CURRENT_RITE_CREATION_BLOCKERS,CURRENT_STOCK_BOOKMARK1070,CURRENT_CCC,CURRENT_RMTM_TITLE_QUERY,CURRENT_RMTM_REMAINING,CURRENT_LIVING_ORIGINAL,CURRENT_ZG361_AE2,CURRENT_ZG361_REVIEW,CURRENT_ZG361_REVIEW_AE2,CURRENT_ZG361_SCOREBOARD,CURRENT_ARMY_IDENTITY_READONLY }
     static void requireGuiRootIndexSelection(NativeLaunchPlan plan,GuiRootIndexFrame frame)throws IOException {
         Objects.requireNonNull(plan);Objects.requireNonNull(frame);
         if(!frame.build().executableSha256().equalsIgnoreCase(plan.sources().review().gameExecutable().sha256())
@@ -5969,6 +5975,13 @@ if(riteDraftCosts) {
     }
     static ObservationMode observationMode(ObjectNode config) {
         String schema=StrictJson.text(config.get("schema"));
+        if(schema.equals("xar.native-owner-snapshot-config/v55")) {
+            StrictJson.object(config,Set.of("schema","mode","owner_descriptor","overall_timeout_seconds",
+                    "read_timeout_seconds","maximum_frames_per_operation"));
+            StrictJson.require("held_full111_ordinary_events".equals(StrictJson.text(config.get("mode"))),
+                    "fixed held Full111 ordinary-event read mode required");
+            return ObservationMode.HELD_FULL111_ORDINARY_EVENTS;
+        }
         if(schema.equals("xar.native-owner-snapshot-config/v54")) {
             StrictJson.object(config,Set.of("schema","mode","owner_descriptor","overall_timeout_seconds",
                     "read_timeout_seconds","maximum_frames_per_operation"));
@@ -6296,21 +6309,44 @@ if(riteDraftCosts) {
             Path output,Instant deadline,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
         stage="HELD_DATE_SENTINEL_STATUS";
         var dispatch=transport.readHeldDateSentinelStatus(core,deadline);
-        originals.set("date_status_dispatch",saveDispatch(Files.createDirectory(output.resolve("date-status")),dispatch));
-        result.put("read_calls",2);
-        if(!(dispatch instanceof NativeActionPort.AckReceived ack)||!ack.nativeOk())
-            throw new IOException("held Date status did not return a successful original ACK: "+dispatch.getClass().getSimpleName());
-        var basis=core.original().custody().orElseThrow(()->new IOException("Core ACK custody unavailable"));
-        var statusCustody=ack.custody().orElseThrow(()->new IOException("Date status ACK custody unavailable"));
-        if(!basis.session().equals(statusCustody.session())||!basis.custodyEpoch().equals(statusCustody.custodyEpoch())
-                ||statusCustody.writeEntered().order().compareTo(basis.responseReceived().order())<=0)
-            throw new IOException("held Date status crossed the actual Core connection or chronology");
+        var ack=archiveHeldCoreRead(core,output,result,originals,"date-status","date_status_dispatch",dispatch);
         var status=ClockStatusRead.decode(ack);
         result.put("date_status_request_id",ack.requestId()).put("date_sentinel_generation",status.generation().decimal())
                 .put("date_sentinel_state",status.state().name()).put("date_sentinel_last_observed_raw",status.lastObservedDateRaw())
                 .put("date_sentinel_starting_raw",status.startingDateRaw()).put("date_sentinel_target_raw",status.targetDateRaw())
                 .put("date_sentinel_speed",status.speed()).put("date_sentinel_mode",status.mode().name())
                 .put("date_sentinel_trigger_flags",status.triggerFlags()).put("date_sentinel_pause_observed",status.pauseObserved());
+    }
+
+    private static void readFull111Events(NativeGameTransport transport,NativeGameTransport.CoreReceived core,
+            Path output,Instant deadline,ObjectNode result,ObjectNode originals)throws IOException,InterruptedException {
+        stage="HELD_FULL111_ORDINARY_EVENTS";
+        var dispatch=transport.readFull111OrdinaryEvents(core,deadline);
+        var ack=archiveHeldCoreRead(core,output,result,originals,"ordinary-events","ordinary_events_dispatch",dispatch);
+        var current=CurrentLydResult.decodeFull111OrdinaryEvents(ack);
+        if(!current.successful())
+            throw new IOException("held Full111 ordinary-event read unavailable: "+current.unavailableReason().orElseThrow());
+        var coreFacts=((CoreFrame.Partial)core.frame()).prefix();
+        var actualConnection=ack.custody().orElseThrow().session().connectionGeneration();
+        if(!current.factsBefore().filter(coreFacts::equals).isPresent()
+                ||!current.owner().orElseThrow().connectionGeneration().equals(actualConnection))
+            throw new IOException("held Full111 ordinary-event result crossed its Core or owner connection");
+        result.put("ordinary_events_request_id",ack.requestId()).put("ordinary_events_available",true);
+        result.set("ordinary_events_source",current.source().orElseThrow().encode());
+    }
+
+    private static NativeActionPort.AckReceived archiveHeldCoreRead(NativeGameTransport.CoreReceived core,Path output,
+            ObjectNode result,ObjectNode originals,String folder,String key,NativeActionPort.DispatchOutcome dispatch)throws IOException {
+        originals.set(key,saveDispatch(Files.createDirectory(output.resolve(folder)),dispatch));
+        result.put("read_calls",2);
+        if(!(dispatch instanceof NativeActionPort.AckReceived ack))
+            throw new IOException("held query did not return an original ACK: "+dispatch.getClass().getSimpleName());
+        var basis=core.original().custody().orElseThrow(()->new IOException("Core ACK custody unavailable"));
+        var statusCustody=ack.custody().orElseThrow(()->new IOException("Held query ACK custody unavailable"));
+        if(!basis.session().equals(statusCustody.session())||!basis.custodyEpoch().equals(statusCustody.custodyEpoch())
+                ||statusCustody.writeEntered().order().compareTo(basis.responseReceived().order())<=0)
+            throw new IOException("held query crossed the actual Core connection or chronology");
+        return ack;
     }
 
     private static ObjectNode saveDispatch(Path output, NativeActionPort.DispatchOutcome dispatch) throws IOException {
