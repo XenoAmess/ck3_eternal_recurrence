@@ -7526,7 +7526,8 @@ void AppendTacticalDailySentinelTriggerReasons(
 
 std::string TacticalDailySentinelResultFrame(
     std::string_view request_id, std::string_view step,
-    const xar::ck3_11906::TacticalDailySentinelStatusV1 &status) {
+    const xar::ck3_11906::TacticalDailySentinelStatusV1 &status,
+    const std::optional<xar::ck3_1210::DateSentinelExpiryEvidenceV1> &expiry = std::nullopt) {
   std::string result =
       "{\"type\":\"command_result\",\"protocol_version\":1,"
       "\"request_id\":";
@@ -7574,7 +7575,22 @@ std::string TacticalDailySentinelResultFrame(
   result += status.terminal_observed ? "true" : "false";
   result += ",\"abnormal\":";
   result += status.abnormal ? "true" : "false";
-  result += "}}}";
+  result += '}';
+  if (expiry) {
+    result += ",\"date_sentinel_expiry\":{\"schema\":";
+    AppendJsonString(result, xar::ck3_1210::kDateSentinelExpiryEvidenceSchemaV1);
+    result += ",\"generation\":" + Number(expiry->generation);
+    result += ",\"original_deadline_unix_ms\":" + Number(expiry->original_deadline_unix_ms);
+    result += ",\"failure_flags\":" + Number(expiry->failure_flags);
+    result += ",\"armed\":";
+    result += expiry->armed ? "true" : "false";
+    result += ",\"shutdown_safe\":";
+    result += expiry->shutdown_safe ? "true" : "false";
+    result += ",\"access_cleanup_unknown\":";
+    result += expiry->access_cleanup_unknown ? "true" : "false";
+    result += '}';
+  }
+  result += "}}";
   return result;
 }
 
@@ -17466,9 +17482,15 @@ void RunConnectedSession(
         }
         if(!early_step_dispatched && xar::game::IsCk3_1210BasicDescriptor(game.descriptor()) &&
             step==xar::ck3_11906::kTacticalDailySentinelStatusStepV1) {
-          connected=write_frame(pipe,game.supports(xar::ck3_1210::kDateSentinelCapabilityV1)
-              ?TacticalDailySentinelResultFrame(request_id,step,xar::ck3_1210::ReadDateSentinelStatusV1(g_date_sentinel_1210_v1))
-              :CommandResultFrame(request_id,step,false,"date-only sentinel unavailable"));
+          if(!game.supports(xar::ck3_1210::kDateSentinelCapabilityV1)) {
+            connected=write_frame(pipe,CommandResultFrame(request_id,step,false,"date-only sentinel unavailable"));
+          } else if(xar::game::IsCk3_121003Full111Descriptor(game.descriptor())) {
+            const auto observed=xar::ck3_1210::ReadDateSentinelStatusWithExpiryV1(g_date_sentinel_1210_v1);
+            connected=write_frame(pipe,TacticalDailySentinelResultFrame(request_id,step,observed.status,observed.expiry));
+          } else {
+            connected=write_frame(pipe,TacticalDailySentinelResultFrame(request_id,step,
+                xar::ck3_1210::ReadDateSentinelStatusV1(g_date_sentinel_1210_v1)));
+          }
           early_step_dispatched=true;
         }
         if(!early_step_dispatched && xar::game::IsCk3_1210BasicDescriptor(game.descriptor()) &&
