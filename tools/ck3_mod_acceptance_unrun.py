@@ -3033,15 +3033,22 @@ def validate_allocated_unrun(previous: Path, freeze: object, close_path: Path, k
     if (prelaunch or capacity_wait) and 'prelaunch_orchestrator_started' in bundle:
         _recovery_input_validation(previous, json_object(freeze), Path(close_path), bundle,
             registry_support=serial or capacity_wait)
+    original_evidence: JsonObject = {key: value for key, value in bundle.items()
+                                    if key != 'counter' and isinstance(value, dict) and 'sha256' in value}
+    original_evidence.update(json_object(refusal_evidence))
+    failure_cleanup = json_object({
+        'close': pin(close_path), 'original_evidence': original_evidence,
+        'absent_launch_native_control_Save': absent, 'original_keeper_wait_proven': True,
+        'original_keeper_exit_code': 0, 'host_started': False, 'native_session_started': False,
+        'original_host_exit_code': None, 'original_ck3_exit_code': None,
+        'typed_normal_exit_proven': False, 'business_pass': False,
+    })
+    failure_cleanup.update(_serial_cleanup_waits(bundle) if serial else capacity_cleanup)
     return json_object({'mode':('previous-shared-allocated-unrun-prelaunch-orchestrator-failed' if prelaunch or capacity_wait else
         'previous-shared-allocated-unrun-launcher-pin-refused' if cooperative else
         'previous-shared-allocated-unrun-root-cooperative-stop' if root_stop else
         'previous-shared-allocated-unrun-idle'),'actual_process_inventory':inventory,
-        'failure_cleanup':{'close':pin(close_path),'original_evidence':{**{k:v for k,v in bundle.items() if k!='counter' and isinstance(v,dict) and 'sha256' in v},**refusal_evidence},
-            'absent_launch_native_control_Save':absent,'original_keeper_wait_proven':True,'original_keeper_exit_code':0,
-            'host_started':False,'native_session_started':False,'original_host_exit_code':None,
-            'original_ck3_exit_code':None,'typed_normal_exit_proven':False,'business_pass':False,
-            **(_serial_cleanup_waits(bundle) if serial else capacity_cleanup)}})
+        'failure_cleanup': failure_cleanup})
 
 def _write(path: str | Path, value: object) -> FilePin:
     path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)

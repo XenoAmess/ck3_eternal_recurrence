@@ -256,7 +256,8 @@ class CapacityWaitUnrunTests(unittest.TestCase):
         from mypy import api
         names={'_capacity_wait_source','_capacity_wait_root_paths','_capacity_wait_ready_prefix',
             'validate_capacity_wait','_capacity_wait_release',
-            '_exact','build_serial_prelaunch_bundle','validate_allocated_unrun','build_bundle','main'}
+            '_exact','_root_cooperative_stop','build_serial_prelaunch_bundle',
+            'validate_allocated_unrun','build_bundle','main'}
         tree=ast.parse(Path(subject.__file__).read_text(encoding='utf8'))
         nodes: list[ast.stmt]=[n for n in tree.body if isinstance(n,(ast.ClassDef,ast.FunctionDef)) and n.name in names]
         self.assertEqual({n.name for n in nodes if isinstance(n,(ast.ClassDef,ast.FunctionDef))},names)
@@ -280,7 +281,7 @@ from ck3_mod_acceptance_unrun import (SCHEMA, PRELAUNCH_KIND, SERIAL_PRELAUNCH_F
     validate_aborted_allocation_v1, validate_prelaunch_orchestrator,
     _allocator_argv, _release_stages, _recovery_input_validation, _serial_cleanup_waits,
     build_aborted_bundle_v1, build_pre_intent_offline_ttl_bundle, _phase_guard_evidence,
-    _prelaunch_guard_state, PRELAUNCH_KIND)
+    _prelaunch_guard_state, ROOT_COOPERATIVE_STOP_KIND, _evidence_pin)
 '''
         scoped=prelude+ast.unparse(ast.fix_missing_locations(ast.Module(body=nodes,type_ignores=[])))
         root=Path(__file__).resolve().parent.parent
