@@ -312,3 +312,5 @@ ref as part of delivery rather than as a later cleanup project.
 旧 Java Tools/休假候选的后继已在主线，更新到其覆盖范围的完整托管检查仍待通过。
 [DES 归档 CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/45837231107)
 [历史资料归档 CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/45848944860)
+
+2026-11-27 00:34（UTC+8），`6a97ab3450` 的官方 Java 检查完成并失败。两轮 Tools 各通过 1,248 项测试。随后 qualified 子进程因缺 `artifacts/tools-postqualification/actual.json` 退出，尚未进入完整 reactor、HTTP 和独立 SDK 夹具。归档已在主线并验证可恢复，继续保留最后一个远端旧分支引用。[官方检查](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/45837231107)
