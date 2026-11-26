@@ -6,13 +6,19 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.lang.reflect.Proxy;
+import java.time.Clock;
 import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.zip.GZIPInputStream;
 import org.junit.jupiter.api.Test;
 import org.xar.ck3.control.application.action.ActionCodec;
+import org.xar.ck3.control.application.action.CompositeOperatorQuarantineRequest;
+import org.xar.ck3.control.application.action.CompositeOperatorQuarantineSource;
+import org.xar.ck3.control.application.action.RawJson;
+import org.xar.ck3.control.application.checkpoint.CheckpointPairCodec;
 import org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive;
 import org.xar.ck3.control.application.action.ActionReceipt;
 import org.xar.ck3.control.application.action.ActionState;
@@ -28,6 +34,7 @@ import org.xar.ck3.control.continuity.writer.WriterContracts;
 import org.xar.ck3.control.contracts.ContractViolationException;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.FullJsonTree;
+import org.xar.ck3.control.contracts.StrictJson;
 
 /** Recovery04 through the original imported-save admission; the Driver payload and full event history are separate evidence. */
 final class ImportedSavedInterruptedLifeRecoveryDataTest {
@@ -50,6 +57,27 @@ final class ImportedSavedInterruptedLifeRecoveryDataTest {
         assertEquals(1, fixture.driverReads);
         assertArrayEquals(command, ActionCodec.encodeCommand(fixture.readOnlyParent().command()));
         assertEquals(HEAD_SHA, ActionCodec.sha256(fixture.originalHead));
+    }
+
+    @Test void exitedImportedPreflightRetainsItsExactTwoChildrenAndOriginalDriverPath() throws IOException {
+        var fixture=new Fixture();
+        fixture.locked(same->{
+            // The old numbered writer data is genuine. These software request bytes carry no decision or process authority.
+            var source=fixture.softwareExitedSource(same);
+            assertSame(fixture.driverRead,assertThrows(IllegalStateException.class,
+                    ()->fixture.journal.readExitedImportedHistory(same,fixture.owner,source)));
+            var campaignEpisode=source.request().episodeRunId();
+            var wrongOwner=new SessionIdentity(fixture.owner.machineId(),fixture.owner.game(),campaignEpisode);
+            var failure=assertThrows(ContractViolationException.class,
+                    ()->fixture.journal.readExitedImportedHistory(same,wrongOwner,source));
+            assertTrue(failure.getMessage().contains("exact original interrupted owner"));
+            assertEquals(1,fixture.driverReads);
+            var original=ContinuityActionJournal.receipts(fixture.state,fixture.archive.withSession(same));
+            assertTrue(original.stream().anyMatch(receipt->receipt.sequence()==55
+                    &&receipt.state() instanceof ActionState.Unknown && receipt.ack().orElseThrow().nativeOk()));
+            return null;
+        });
+        assertEquals(HEAD_SHA,ActionCodec.sha256(fixture.originalHead));
     }
 
     @Test void theHistoricalReaderRejectsAnotherBasisOrAnUninterruptedBatch() throws IOException {
@@ -222,6 +250,50 @@ final class ImportedSavedInterruptedLifeRecoveryDataTest {
                     (session, identity, pair, settlement) -> { throw unavailable(); },
                     new OriginalWindowReducer.Policy(originalState.origin().targetDays()), this::requireSession);
             journal = new ContinuityBatchJournal(this, transitions);
+        }
+
+        private CompositeOperatorQuarantineSource softwareExitedSource(Session same) throws IOException {
+            var originals=archive.withSession(same);
+            var parent=ContinuityBatchJournal.readOnlyLifeRecoveryRoot(ContinuityActionJournal.receipts(state,originals)).orElseThrow();
+            var requestHead=same.head();
+            var command=parent.command();
+            var issued=Instant.parse("2026-11-26T20:00:00Z");
+            var pair=CheckpointPairCodec.decode(ContinuityJson.canonical(
+                    state.toJson().path(SavedContinuityBootstrap.FIELD).get("checkpoint_pair")));
+            byte[] terminal=ContinuityJson.canonical(StrictJson.object().put("software_only",true));
+            var terminalReference=reference("terminal",terminal);
+            var identity=StrictJson.object().put("machine_id",owner.machineId())
+                    .put("episode_run_id",command.before().frame().episodeRunId()).put("parent_action_id",command.actionId())
+                    .put("parent_body_sha256",parent.bodySha256()).put("expected_head_sequence",state.sequence())
+                    .put("expected_head_digest",requestHead.digest()).put("issued_at_utc",issued.toString());
+            identity.set("game",owner.game().toJson());
+            String pairDigest=ActionCodec.sha256(CheckpointPairCodec.encode(pair));
+            var decision=identity.deepCopy().put("schema",CompositeOperatorQuarantineRequest.EXITED_LIFE_DECISION_SCHEMA)
+                    .put("decision",CompositeOperatorQuarantineRequest.EXITED_LIFE_DECISION)
+                    .put("owner_session_id",owner.sessionId()).put("saved_pair_sha256",pairDigest)
+                    .put("operator_statement","software test fixture has no authority");
+            decision.set("original_terminal",terminalReference.toJson());
+            byte[] decisionBytes=ContinuityJson.canonical(decision);
+            var request=identity.deepCopy().put("schema",CompositeOperatorQuarantineRequest.EXITED_LIFE_SCHEMA)
+                    .put("scope",CompositeOperatorQuarantineRequest.EXITED_LIFE_SCOPE)
+                    .put("observation_deadline_utc",issued.plusSeconds(90).toString());
+            request.set("authorized_by",reference("decision",decisionBytes).toJson());
+            request.set("original_receipt_ref",originals.receiptReferenceOf(parent).toJson());
+            request.putArray("prior_requests");
+            var children=request.putArray("children");
+            var execution=((ActionState.CompositeUnknown)parent.state()).execution();
+            for(var child:execution.children())children.addObject().put("ordinal",children.size())
+                    .put("action_id",child.actionId()).put("body_sha256",child.bodySha256());
+            request.putObject("exited_life").put("owner_session_id",owner.sessionId()).put("saved_pair_sha256",pairDigest)
+                    .set("original_terminal",terminalReference.toJson());
+            byte[] requestBytes=ContinuityJson.canonical(request);
+            return new CompositeOperatorQuarantineSource(reference("request",requestBytes),requestBytes,decisionBytes,owner.game(),
+                    command.before().frame().episodeRunId(),command.operation(),execution.handlerId(),Clock.fixed(issued,ZoneOffset.UTC),
+                    Optional.of(new RawJson(terminal)));
+        }
+
+        private static ExactRef reference(String name,byte[] bytes) {
+            return new ExactRef("software-only/"+name+".json",bytes.length,ActionCodec.sha256(bytes));
         }
 
         private ActionReceipt readOnlyParent() throws IOException {
