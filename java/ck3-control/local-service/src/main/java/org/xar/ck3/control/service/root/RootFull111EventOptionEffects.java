@@ -142,9 +142,8 @@ final class RootFull111EventOptionEffects implements NativeEffectRegistry.Observ
             AckReceived queue, OutcomeArchive archive, List<ExactRef> supporting) throws IOException {
         var target = RootFull111EventOptionPreparation.target(command);
         var selection = Request.decodeSelectionRequest(attempt.preparedRequest());
-        var expectedAt = Instant.ofEpochMilli(command.deadline().toEpochMilli());
         StrictJson.require(command.operation().value().equals(Action.SELECT.step()) && command.expected().observerSchema().equals(SCHEMA)
-                && selection.target().equals(target) && selection.deadline().equals(expectedAt)
+                && selection.target().equals(target) && !selection.deadline().isAfter(command.deadline())
                 && frames.before().identity().equals(command.before())
                 && frames.before().connectionGeneration().equals(attempt.guard().connectionGeneration())
                 && selection.lineage().sourceRevision().equals(command.before().frame().identity().nativeRevision()),
@@ -161,7 +160,7 @@ final class RootFull111EventOptionEffects implements NativeEffectRegistry.Observ
                 && RootFull111EventRead.prefix(afterRaw).equals(sampled.core().prefix())
                 && NativeFull111OrdinaryEvent.read(afterRaw).filter(event -> event.instanceId() == target.instanceId()).isEmpty(),
                 "Exact Full111 foreground, living actor or Core differs from original SELECT and complete queue data");
-        requirePreparation(command, attempt, selected, selection, foreground, archive);
+        requirePreparation(command, attempt, selected, selection, foreground, before.observedAt(), archive);
 
         var actual = CurrentFull111EventOption.decodeOutcome(queue).target().orElseThrow();
         return NativeEffectSnapshots.observed(command, attempt, frames.after(), SCHEMA,
@@ -188,40 +187,71 @@ final class RootFull111EventOptionEffects implements NativeEffectRegistry.Observ
     }
 
     private static void requirePreparation(ActionCommand command, ActionState.Attempt attempt, AckReceived selected,
-            Request selection, NativeFull111OrdinaryEvent foreground, OutcomeArchive archive) throws IOException {
+            Request selection, NativeFull111OrdinaryEvent foreground, Instant beforeObservedAt, OutcomeArchive archive) throws IOException {
         var refs = attempt.preparedRequest().preparationEvidence();
-        StrictJson.require(refs.size() == 2 && refs.getFirst().equals(RootFull111EventOptionPreparation.rendererOriginal(command)),
-                "Full111 option requires its command renderer and native prepare originals");
-        var renderer = originalAck(archive, refs.getFirst());
-        var prepared = originalAck(archive, refs.getLast());
-        var rendererModel = CurrentFull111EventRenderer.decodeOutcome(renderer);
-        var rendered = rendererModel.source().orElseThrow(() -> new IOException("Full111 renderer evidence unavailable"));
+        StrictJson.require(refs.size() == 3 && refs.getFirst().equals(RootFull111EventOptionPreparation.rendererOriginal(command)),
+                "Full111 option requires its planned renderer, fresh renderer and native prepare originals");
+        requirePreparedRenderers(command.deadline(), beforeObservedAt, selection, foreground,
+                originalAck(archive, refs.getFirst()), originalAck(archive, refs.get(1)), originalAck(archive, refs.getLast()), selected);
+    }
+
+    static void requirePreparedRenderers(Instant commandDeadline, Instant beforeObservedAt, Request selection,
+            NativeFull111OrdinaryEvent foreground, AckReceived planned, AckReceived fresh, AckReceived prepared,
+            AckReceived selected) throws IOException {
+        var plannedModel = CurrentFull111EventRenderer.decodeOutcome(planned);
+        var freshModel = CurrentFull111EventRenderer.decodeOutcome(fresh);
+        var rendered = freshModel.source().orElseThrow(() -> new IOException("Full111 fresh renderer evidence unavailable"));
         var selectionLineage = selection.lineage();
-        var claimed = new Lineage(selectionLineage.sourceRevision(), renderer.requestId(), rendererModel.providerGeneration(),
-                rendererModel.querySequence(), Optional.empty(), BigInteger.ZERO, Optional.empty(), BigInteger.ZERO);
+        var claimed = new Lineage(selectionLineage.sourceRevision(), fresh.requestId(), freshModel.providerGeneration(),
+                freshModel.querySequence(), Optional.empty(), BigInteger.ZERO, Optional.empty(), BigInteger.ZERO);
         var originalPrepare = new Request(Action.PREPARE, selection.core(), selection.target(), claimed, selection.deadline());
         var preparedResult = CurrentFull111EventOption.decodeOutcome(prepared);
-        var rendererOrder = custody(renderer);
+        var selectedResult = CurrentFull111EventOption.decodeOutcome(selected);
+        var plannedOrder = custody(planned);
+        var freshOrder = custody(fresh);
         var prepareOrder = custody(prepared);
         var selectOrder = custody(selected);
-        var rendererOwner = rendererModel.owner().orElseThrow();
+        var plannedOwner = plannedModel.owner().orElseThrow();
+        var freshOwner = freshModel.owner().orElseThrow();
         var prepareOwner = preparedResult.owner().orElseThrow();
-        var selectOwner = CurrentFull111EventOption.decodeOutcome(selected).owner().orElseThrow();
-        StrictJson.require(rendererOrder.session().equals(selectOrder.session()) && prepareOrder.session().equals(selectOrder.session())
-                && rendererOrder.custodyEpoch().equals(selectOrder.custodyEpoch()) && prepareOrder.custodyEpoch().equals(selectOrder.custodyEpoch())
-                && follows(rendererOrder.responseReceived(), prepareOrder.writeEntered())
+        var selectOwner = selectedResult.owner().orElseThrow();
+        StrictJson.require(List.of(planned.requestId(), fresh.requestId(), prepared.requestId(), selected.requestId()).stream().distinct().count() == 4
+                && List.of(plannedOrder, freshOrder, prepareOrder).stream().allMatch(order -> order.session().equals(selectOrder.session())
+                    && order.custodyEpoch().equals(selectOrder.custodyEpoch()))
+                && !plannedOrder.writeEntered().observedAt().isBefore(beforeObservedAt)
+                && follows(plannedOrder.responseReceived(), freshOrder.writeEntered())
+                && follows(freshOrder.responseReceived(), prepareOrder.writeEntered())
                 && follows(prepareOrder.responseReceived(), selectOrder.writeEntered())
-                && rendererOwner.connectionGeneration().equals(selectOrder.session().connectionGeneration())
+                && plannedOwner.connectionGeneration().equals(selectOrder.session().connectionGeneration())
+                && freshOwner.connectionGeneration().equals(selectOrder.session().connectionGeneration())
                 && prepareOwner.connectionGeneration().equals(selectOrder.session().connectionGeneration())
-                && prepareOwner.ticketSequence().compareTo(rendererOwner.ticketSequence()) > 0
+                && freshOwner.ticketSequence().compareTo(plannedOwner.ticketSequence()) > 0
+                && prepareOwner.ticketSequence().compareTo(freshOwner.ticketSequence()) > 0
                 && selectOwner.ticketSequence().compareTo(prepareOwner.ticketSequence()) > 0
-                && selection.target().matchesSelectable(rendered) && foreground.authoredOptionCount() == rendered.authoredOptionCount()
-                && rendererModel.factsBefore().filter(selection.core().prefix()::equals).isPresent()
-                && CurrentFull111EventOption.rendererDeadline(renderer).equals(selection.deadline())
+                && CurrentFull111EventOption.matchesPlannedRenderer(plannedModel, freshModel, selection.target())
+                && rendered.options().stream().filter(CurrentFull111EventRenderer.Option::widgetVisible).findFirst()
+                    .filter(first -> first.authoredOptionIndex() == selection.target().authoredOptionIndex()
+                        && first.nativeCanSelect() && first.widgetEnabled()).isPresent()
+                && foreground.instanceId() == rendered.instanceId() && foreground.authoredOptionCount() == rendered.authoredOptionCount()
+                && freshModel.factsBefore().filter(selection.core().prefix()::equals).isPresent(),
+                "Full111 option changed its planned stock source or the same-owner fresh renderer sequence");
+
+        var plannedUntil = CurrentFull111EventOption.rendererDeadline(planned);
+        var freshUntil = CurrentFull111EventOption.rendererDeadline(fresh);
+        StrictJson.require(!plannedUntil.isAfter(commandDeadline) && !freshUntil.isAfter(commandDeadline)
+                && !freshUntil.isAfter(freshOrder.writeEntered().observedAt().plus(CurrentFull111EventOption.RENDERER_RENEWAL_WINDOW))
+                && plannedOrder.writeEntered().observedAt().isBefore(plannedUntil)
+                && !plannedOrder.responseReceived().observedAt().isAfter(plannedUntil)
+                && freshOrder.writeEntered().observedAt().isBefore(freshUntil)
+                && !freshOrder.responseReceived().observedAt().isAfter(freshUntil)
+                && !prepareOrder.responseReceived().observedAt().isAfter(freshUntil)
+                && selectOrder.writeEntered().observedAt().isBefore(freshUntil)
+                && freshUntil.equals(selection.deadline())
                 && preparedResult.matchesSuccessfulRequest(originalPrepare)
                 && preparedResult.lineage().filter(selectionLineage::equals).isPresent()
+                && selectedResult.matchesSuccessfulRequest(selection)
                 && Arrays.equals(prepared.outbound().orElseThrow().originalPacket(), originalPrepare.readPacket(prepared.requestId())),
-                "Full111 option prepared target or native lease differs from its exact renderer and prepare originals");
+                "Full111 option changed or exceeded its exact fresh renderer and prepare deadlines");
     }
 
     private static ObservedFrame full(Complete frame) throws IOException {
