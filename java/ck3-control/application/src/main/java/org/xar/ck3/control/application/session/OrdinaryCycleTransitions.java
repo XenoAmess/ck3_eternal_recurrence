@@ -38,12 +38,15 @@ import org.xar.ck3.control.application.lifecycle.LifecycleComposites;
 import org.xar.ck3.control.application.lifecycle.LifecycleTransitionProof;
 import org.xar.ck3.control.application.lifecycle.LifecycleProofCodec;
 import org.xar.ck3.control.application.lifecycle.LifecycleProofMaterialJson;
+import org.xar.ck3.control.application.planning.governance.GovernanceObservationSupplier.OpeningStage;
+import org.xar.ck3.control.application.planning.governance.GovernanceOpeningDocument;
 import org.xar.ck3.control.continuity.ContinuityJson;
 import org.xar.ck3.control.continuity.ContinuityState;
 import org.xar.ck3.control.continuity.OriginalWindowReducer;
 import org.xar.ck3.control.continuity.SavedContinuityBootstrap;
 import org.xar.ck3.control.continuity.EpisodeWindow;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
+import org.xar.ck3.control.continuity.writer.DomainBodies;
 import org.xar.ck3.control.continuity.writer.WriterContracts;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.GameGeneration;
@@ -1176,14 +1179,19 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         List<ExactRef> evidence();
     }
 
-    public record ImportedOpeningAdvance(ExactRef cycleRecord, ExactRef lifeReceipt, SemanticEvidence semantic)
-            implements OpeningDateEvidence {
+    public record ImportedOpeningAdvance(ExactRef cycleRecord, ExactRef lifeReceipt, SemanticEvidence semantic,
+            List<ExactRef> restoredOpeningEvidence) implements OpeningDateEvidence {
+        public ImportedOpeningAdvance(ExactRef cycleRecord, ExactRef lifeReceipt, SemanticEvidence semantic) {
+            this(cycleRecord, lifeReceipt, semantic, List.of());
+        }
         public ImportedOpeningAdvance {
             Objects.requireNonNull(cycleRecord); Objects.requireNonNull(lifeReceipt); Objects.requireNonNull(semantic);
+            restoredOpeningEvidence = List.copyOf(restoredOpeningEvidence);
         }
         public List<ExactRef> evidence() {
             var refs = new ArrayList<>(List.of(cycleRecord, lifeReceipt));
             refs.addAll(semantic.references());
+            refs.addAll(restoredOpeningEvidence);
             return List.copyOf(refs);
         }
     }
@@ -1228,12 +1236,13 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                 || whole.hasNonNull(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD) != saved.isPresent()) return Optional.empty();
 
         var imported = SavedContinuityBootstrap.request(ContinuityJson.object(whole.get(SavedContinuityBootstrap.FIELD))).detailsObject();
-        if (!owner.equals(sessionFromJson(imported.get("session")))
+        boolean restored = whole.has(WriterContracts.ORDINARY_IMPORTED_CYCLE_ORIGIN_FIELD);
+        if (!restored && (!owner.equals(sessionFromJson(imported.get("session")))
                 || !originalOpening.equals(ProposalLifecycleCodec.decodeObservation(imported.get("opening")))
-                || !ContinuityJson.same(imported.get("source"), ProposalLifecycleCodec.source(source))
-                || !ContinuityJson.same(whole.get("game_binding"), owner.game().toJson())
-                || !ContinuityJson.same(whole.get(WriterContracts.DRIVER_HISTORY_BASELINE_FIELD), imported.get("full_driver")))
-            return Optional.empty();
+                || !ContinuityJson.same(imported.get("source"), ProposalLifecycleCodec.source(source)))) return Optional.empty();
+        if (!ContinuityJson.same(whole.get("game_binding"), owner.game().toJson())
+                || !ContinuityJson.same(whole.get(WriterContracts.DRIVER_HISTORY_BASELINE_FIELD), imported.get("full_driver"))
+                || (restored && !owner.equals(sessionFromJson(whole.get(STATE_FIELD).get("session"))))) return Optional.empty();
         requireOwner(retained, owner);
         requireSameOwner(originalOpening, current);
         long importedCycles = number(imported, "saved_completed_cycles");
@@ -1252,9 +1261,15 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         if (retained.settledCycles() != anchorCycles || retained.settledDateRaw() != anchorDate) return Optional.empty();
         CycleState cycle = state(retained, owner);
         long advances = cycle.completedCycles() - anchorCycles;
-        if (cycle.pending().isPresent() || cycle.head().isEmpty() || cycle.originFrame().isPresent()
+        if (cycle.pending().isPresent() || cycle.head().isEmpty() || cycle.originFrame().isPresent() != restored
                 || cycle.episodeOrigin().isPresent() || cycle.basisCycles() != importedCycles
                 || advances < 0 || advances > MAX_RECORDS || (anchor == null && advances == 0)) return Optional.empty();
+        List<ExactRef> restoredEvidence = List.of();
+        if (restored) {
+            var selected = restoredImportedOpeningEvidence(retained, whole, imported, cycle, originalOpening, source);
+            if (selected.isEmpty()) return Optional.empty();
+            restoredEvidence = selected.orElseThrow();
+        }
         requireLegacyPendingClear(retained, cycle);
         ExactRef recordRef = cycle.head().orElseThrow();
         CycleRecord record = load(recordRef);
@@ -1293,7 +1308,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
             freshAfter(receipt, terminal, record.semantic().frame(), record.semantic().observedAt());
             if (advance) {
                 remaining--;
-                if (latestLife == null) latestLife = new ImportedOpeningAdvance(recordRef, record.receipt(), record.semantic());
+                if (latestLife == null) latestLife = new ImportedOpeningAdvance(recordRef, record.receipt(), record.semantic(), restoredEvidence);
             }
             if (record.previous().isEmpty()) {
                 if (anchor != null || !advance || remaining != 0
@@ -1324,6 +1339,47 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         requireSavedContinuation(saved, following);
         StrictJson.require(following.frame().revision().compareTo(saved.frame().revision()) >= 0,
                 "opening date projection regressed the actual SAVE public revision");
+    }
+
+    private Optional<List<ExactRef>> restoredImportedOpeningEvidence(ContinuityState retained, ObjectNode whole,
+            ObjectNode imported, CycleState cycle, ObservationIdentity originalOpening, G2Source source) {
+        if (cycle.originFrame().filter(originalOpening::equals).isEmpty()) return Optional.empty();
+        var body = DomainBodies.reference(retained, DomainBodies.Slot.OPENING_GATE);
+        if (body.isEmpty()) return Optional.empty();
+        var openingRef = body.orElseThrow().payload();
+        var opening = GovernanceOpeningDocument.decode(archive.loadMaterial(openingRef).bytes());
+        if (!opening.observed().equals(originalOpening) || !opening.source().equals(source)
+                || !opening.sessionId().equals(cycle.session().sessionId())
+                || opening.stage() != OpeningStage.AWAIT_SUBMIT || opening.preparedCommand().isPresent()
+                || opening.actionReceipt().isPresent() || opening.checkpoint().isPresent())
+            return Optional.empty();
+
+        var originRef = ExactRef.fromJson(whole.get(WriterContracts.ORDINARY_IMPORTED_CYCLE_ORIGIN_FIELD));
+        var origin = StrictJson.object(ContinuityJson.parseObject(archive.loadMaterial(originRef).bytes(),
+                ContinuityJson.DOCUMENT_MAX_BYTES), Set.of("schema", "attachment_identity", "restored_session", "restore_pair",
+                        "retained_legacy_pending_digest", STATE_FIELD, WriterContracts.ORDINARY_SAVED_CYCLE_FIELD,
+                        WriterContracts.ORDINARY_CYCLE_REBIND_FIELD, "original_action_head"));
+        if (!text(origin, "schema").equals("xar.java-ordinary-cycle-restore-tombstone/v2")
+                || !cycle.session().equals(sessionFromJson(origin.get("restored_session")))) return Optional.empty();
+        var attachment = ContinuityJson.object(whole.get("last_current_saved_cold"));
+        var sources = SavedAttachmentSourceStore.Sources.decode(attachment.get(SavedAttachmentSourceStore.SOURCES_DETAIL));
+        var v5 = sources.importedOrigin().orElseThrow();
+        var pair = CheckpointPairCodec.decode(ContinuityJson.canonical(origin.get("restore_pair")));
+        var oldCycle = StrictJson.object(origin.get(STATE_FIELD), Set.of("present", "value"));
+        var actor = originalOpening.frame();
+        var physical = pair.frame().frame();
+        boolean exact = oldCycle.get("present").isBoolean() && oldCycle.get("present").booleanValue()
+                && v5.owner().equals(sessionFromJson(oldCycle.get("value").get("session")))
+                && v5.owner().equals(sessionFromJson(imported.get("session")))
+                && !cycle.session().game().equals(v5.owner().game()) && !cycle.session().game().equals(pair.frame().game())
+                && sources.physicalSaveWitness().filter(pair.save()::equals).isPresent()
+                && ContinuityJson.same(origin.get("restore_pair"), attachment.get(SavedAttachmentAuthority.PAIR_DETAIL))
+                && ContinuityJson.same(origin.get("restore_pair"), imported.get("checkpoint_pair"))
+                && opening.originals().contains(v5.targetEntry().reference())
+                && actor.episodeRunId().equals(physical.episodeRunId())
+                && actor.identity().player().equals(physical.identity().player())
+                && actor.identity().dateRaw().equals(physical.identity().dateRaw());
+        return exact ? Optional.of(List.of(openingRef, originRef, v5.targetEntry().reference())) : Optional.empty();
     }
 
     private static SavedOpeningAdvance savedOpeningEvidence(ContinuityBatchJournal.OpeningSaveAnchor anchor,
