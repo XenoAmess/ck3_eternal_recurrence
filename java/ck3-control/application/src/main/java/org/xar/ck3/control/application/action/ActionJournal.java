@@ -24,6 +24,8 @@ public interface ActionJournal {
         /** Only the canonical journal can derive this proof from its complete chain under the held writer lock. */
         default Optional<ActionState.IntentAbandoned> abandonableIntent(ActionReceipt original) { return Optional.empty(); }
         List<ActionReceipt> unresolved();
+        /** Current submission blockers. The raw unresolved journal remains available for original recovery. */
+        default List<ActionReceipt> blockingUnresolved(ActionCommand command) { return unresolved(); }
         /** Must check ActionTransitions under this lock and return only after durable writer commit. */
         ActionReceipt append(ActionCommand command, String bodySha256, ActionState next);
         default Snapshot snapshot() { throw new IllegalStateException("complete durable action snapshot is unavailable"); }

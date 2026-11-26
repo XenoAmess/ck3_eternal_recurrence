@@ -6,11 +6,18 @@ import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
+import org.xar.ck3.control.application.advance.AdvancePrimitives;
+import org.xar.ck3.control.application.checkpoint.CheckpointPairCodec;
+import org.xar.ck3.control.application.session.OrdinaryCycleTransitions;
+import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
 import org.xar.ck3.control.continuity.ContinuityJson;
 import org.xar.ck3.control.continuity.ContinuityState;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 import org.xar.ck3.control.continuity.writer.WriterContracts;
+import org.xar.ck3.control.contracts.ExactRef;
+import org.xar.ck3.control.contracts.GameGeneration;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.g2.planning.ProposalLifecycleCodec;
 
@@ -54,6 +61,14 @@ public final class ContinuityActionJournal implements ActionJournal {
             @Override public List<ActionReceipt> unresolved() {
                 try { return cachedReceipts(session.head()).stream().filter(receipt -> !receipt.settled()).toList(); }
                 catch (IOException failure) { throw new UncheckedIOException(failure); }
+            }
+            @Override public List<ActionReceipt> blockingUnresolved(ActionCommand command) {
+                if (command.origin() instanceof CommandOrigin.Frontend) return unresolved();
+                try {
+                    var head = session.head();
+                    return ContinuityActionJournal.blockingUnresolved(session, head, archive, command.origin().machineId(),
+                            command.origin().game(), command.sessionId(), cachedReceipts(head));
+                } catch (IOException failure) { throw new UncheckedIOException(failure); }
             }
             @Override public ActionReceipt append(ActionCommand command, String bodySha256, ActionState next) {
                 boolean traceSubmitting = next instanceof ActionState.Submitting;
@@ -212,6 +227,90 @@ public final class ContinuityActionJournal implements ActionJournal {
         for (Historical item : historical(state, archive)) if (item.receipt().command().actionId().equals(actionId)) return java.util.Optional.of(item.receipt());
         return java.util.Optional.empty();
     }
+    /**
+     * Current-action eligibility under the original writer. Only the exact retained child of
+     * an exited Life, bound by the canonical imported restore, can cease to block a new owner.
+     * The canonical receipt still remains UNKNOWN and the retired IDs remain non-dispatchable.
+     */
+    public static List<ActionReceipt> blockingUnresolved(ContinuityStorePort.Session same, WriterContracts.Head head,
+            ActionPorts.OutcomeArchive archive, SessionIdentity owner, List<ActionReceipt> canonical) throws IOException {
+        return blockingUnresolved(same, head, archive, owner.machineId(), owner.game(), owner.sessionId(), canonical);
+    }
+
+    private static List<ActionReceipt> blockingUnresolved(ContinuityStorePort.Session same, WriterContracts.Head head,
+            ActionPorts.OutcomeArchive archive, String machineId, GameGeneration game, String sessionId,
+            List<ActionReceipt> canonical) throws IOException {
+        var unresolved = canonical.stream().filter(receipt -> !receipt.settled()).toList();
+        if (unresolved.isEmpty()) return unresolved;
+        var whole = head.state().toJson();
+        String importedOrigin = WriterContracts.ORDINARY_IMPORTED_CYCLE_ORIGIN_FIELD;
+        if (!whole.has(importedOrigin) || !whole.hasNonNull(WriterContracts.ORDINARY_CYCLE_FIELD)
+                || !head.state().machineId().equals(machineId)
+                || !ContinuityJson.same(whole.get("game_binding"), game.toJson())) return unresolved;
+        var owner = OrdinaryCycleTransitions.sessionFromJson(whole.get(WriterContracts.ORDINARY_CYCLE_FIELD).get("session"));
+        if (!owner.machineId().equals(machineId) || !owner.game().equals(game) || !owner.sessionId().equals(sessionId)) return unresolved;
+        StrictJson.require(same.head().digest().equals(head.digest()), "current action eligibility requires its original locked head");
+        var exact = importedRetiredResume(ExactRef.fromJson(whole.get(importedOrigin)), archive, owner, canonical, unresolved);
+        StrictJson.require(same.head().digest().equals(head.digest()), "current action eligibility changed its original locked head");
+        return exact.map(old -> unresolved.stream().filter(receipt -> !receipt.equals(old)).toList()).orElse(unresolved);
+    }
+
+    private static Optional<ActionReceipt> importedRetiredResume(ExactRef tombstoneRef, ActionPorts.OutcomeArchive archive,
+            SessionIdentity owner, List<ActionReceipt> canonical, List<ActionReceipt> unresolved) {
+        var tombstone = StrictJson.object(ContinuityJson.parseObject(archive.loadMaterial(tombstoneRef).bytes(),
+                ContinuityJson.DOCUMENT_MAX_BYTES), Set.of("schema", "attachment_identity", "restored_session", "restore_pair",
+                        "retained_legacy_pending_digest", WriterContracts.ORDINARY_CYCLE_FIELD, WriterContracts.ORDINARY_SAVED_CYCLE_FIELD,
+                        WriterContracts.ORDINARY_CYCLE_REBIND_FIELD, "original_action_head"));
+        StrictJson.require(StrictJson.text(tombstone.get("schema")).equals("xar.java-ordinary-cycle-restore-tombstone/v2"),
+                "imported action eligibility requires the original restore tombstone");
+        var restored = OrdinaryCycleTransitions.sessionFromJson(tombstone.get("restored_session"));
+        var priorCycle = StrictJson.object(tombstone.get(WriterContracts.ORDINARY_CYCLE_FIELD), Set.of("present", "value"));
+        StrictJson.require(priorCycle.get("present").isBoolean() && priorCycle.get("present").booleanValue(),
+                "imported action eligibility requires the original interrupted cycle");
+        var departed = OrdinaryCycleTransitions.sessionFromJson(priorCycle.get("value").get("session"));
+        if (owner.game().equals(departed.game())) return Optional.empty();
+        var oldPair = CheckpointPairCodec.decode(ContinuityJson.canonical(tombstone.get("restore_pair")));
+        StrictJson.require(owner.machineId().equals(restored.machineId()) && owner.machineId().equals(departed.machineId())
+                && !restored.game().equals(departed.game()) && !restored.game().equals(oldPair.frame().game()),
+                "imported action eligibility crossed the original restore owners");
+
+        var retiredRecord = archive.loadRecord(ExactRef.fromJson(tombstone.get("original_action_head")));
+        var retired = retiredRecord.receipt();
+        StrictJson.require(canonical.contains(retired) && retired.state() instanceof ActionState.CompositeOperatorQuarantined
+                && retired.command().origin() instanceof CommandOrigin.Gameplay && retired.command().origin().game().equals(departed.game())
+                && retired.command().sessionId().equals(departed.sessionId()), "imported action eligibility lost the exact canonical exited Life terminal");
+        var proof = CompositeOperatorQuarantineObservation.load(retired, archive);
+        var request = CompositeOperatorQuarantineRequest.decode(archive.loadMaterial(proof.requestMaterial()).bytes());
+        var exit = request.exitedLife().orElseThrow();
+        var original = archive.loadReceipt(proof.originalReceipt());
+        request.requireParent(original);
+        StrictJson.require(request.originalReceipt().equals(proof.originalReceipt())
+                && request.expectedHeadSequence() == proof.predecessorSequence() && request.expectedHeadDigest().equals(proof.predecessorDigest())
+                && request.machineId().equals(departed.machineId()) && request.game().equals(departed.game())
+                && exit.ownerSessionId().equals(departed.sessionId())
+                && exit.savedPairSha256().equals(ActionCodec.sha256(CheckpointPairCodec.encode(oldPair)))
+                && retiredRecord.previous().equals(Optional.of(proof.originalActionHead())),
+                "imported action eligibility changed the canonical retirement predecessor or physical pair");
+        var resume = request.children().getLast();
+        var binding = ((ActionState.CompositeOperatorQuarantined) retired.state()).execution().children().getLast();
+        StrictJson.require(resume.ordinal() == 2 && resume.actionId().equals(binding.actionId())
+                && resume.bodySha256().equals(binding.bodySha256()), "imported action eligibility changed the retired RESUME reservation");
+        return unresolved.stream().filter(receipt -> exactRetiredResume(receipt, original.command(), resume, original.sequence())).findFirst();
+    }
+
+    private static boolean exactRetiredResume(ActionReceipt receipt, ActionCommand parent,
+            CompositeOperatorQuarantineRequest.Child resume, long parentSequence) {
+        var child = receipt.command();
+        return receipt.state() instanceof ActionState.Unknown && receipt.sequence() < parentSequence
+                && child.operation().value().equals("resume-map") && child.arguments().members().isEmpty()
+                && child.actionId().equals(resume.actionId()) && receipt.bodySha256().equals(resume.bodySha256())
+                && child.actionId().equals(ActionIds.child(parent.actionId(), resume.ordinal(), child.operation()))
+                && child.origin().equals(parent.origin()) && child.sessionId().equals(parent.sessionId())
+                && child.source().equals(parent.source()) && child.deadline().equals(parent.deadline()) && child.claims().equals(parent.claims())
+                && child.expected().equals(AdvancePrimitives.expected(child.before(), child.source(), child.operation(), child.arguments()))
+                && receipt.ack().filter(NativeActionPort.AckReceived::nativeOk).isPresent();
+    }
+
     public static List<ActionReceipt> receipts(ContinuityState state, ActionPorts.OutcomeArchive archive) {
         java.util.LinkedHashMap<String, ActionReceipt> latest = new java.util.LinkedHashMap<>();
         for (Historical item : historical(state, archive)) latest.putIfAbsent(item.receipt().command().actionId(), item.receipt());

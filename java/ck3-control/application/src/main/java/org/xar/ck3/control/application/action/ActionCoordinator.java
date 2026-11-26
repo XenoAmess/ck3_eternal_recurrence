@@ -175,7 +175,7 @@ public final class ActionCoordinator implements ActionCoordinatorPort {
             PhysicalActionRegistry.VerifiedPresentations optional;
             try{optional=physicalActions==null?null:physicalActions.verified(locked.writerSession(),locked.snapshot());}
             catch(java.io.IOException failure){throw new java.io.UncheckedIOException(failure);}
-            StrictJson.require(locked.unresolved().stream().allMatch(receipt -> ancestors.contains(receipt.command().actionId()) || optional!=null&&optional.contains(receipt)), "another action is unresolved; global action authority remains isolated");
+            StrictJson.require(locked.blockingUnresolved(command).stream().allMatch(receipt -> ancestors.contains(receipt.command().actionId()) || optional!=null&&optional.contains(receipt)), "another action is unresolved; global action authority remains isolated");
             ProtocolIdentityAdmission.requireUnique(locked.snapshot().actions(), command);
             PhysicalActionRegistry physical = physicalActions;
             if (physical != null && physical.find(command.operation()).isPresent())

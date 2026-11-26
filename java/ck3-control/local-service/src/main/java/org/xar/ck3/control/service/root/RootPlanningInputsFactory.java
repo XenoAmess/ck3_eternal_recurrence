@@ -18,6 +18,7 @@ import org.xar.ck3.control.application.planning.campaign.CrossRunPlanningDomain;
 import org.xar.ck3.control.application.planning.governance.GovernanceObservationSupplier.OpeningGate;
 import org.xar.ck3.control.application.planning.governance.GovernanceObservationSupplier.OpeningStage;
 import org.xar.ck3.control.application.readiness.NativeReadinessCollector;
+import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
@@ -310,9 +311,17 @@ public final class RootPlanningInputsFactory {
             return capture.context().core().actions().withFrozen(capture.session(), lease -> {
                 var originals = capture.context().archive().withSession(capture.session());
                 List<ExternalFact> facts = new ArrayList<>();
+                var originalSnapshot = lease.snapshot();
+                var frame = capture.frame();
+                var owner = new SessionIdentity(frame.identity().machineId(), frame.identity().game(), frame.sessionId());
                 PhysicalActionRegistry.VerifiedPresentations presentation;
-                try{presentation=capture.context().core().physicalActions().verified(capture.session(),lease.snapshot());}catch(IOException failure){throw new UncheckedIOException(failure);}
-                for (ActionReceipt receipt : lease.snapshot().actions()) {
+                List<ActionReceipt> blocking;
+                try {
+                    presentation = capture.context().core().physicalActions().verified(capture.session(), originalSnapshot);
+                    blocking = ContinuityActionJournal.blockingUnresolved(capture.session(), capture.session().head(), originals,
+                            owner, originalSnapshot.actions());
+                } catch (IOException failure) { throw new UncheckedIOException(failure); }
+                for (ActionReceipt receipt : originalSnapshot.actions()) {
                     ActionCommand command = receipt.command();
                     if(presentation.contains(receipt))continue;
                     boolean current = command.origin() instanceof CommandOrigin.Gameplay
@@ -320,7 +329,7 @@ public final class RootPlanningInputsFactory {
                             && command.before().game().equals(capture.frame().identity().game())
                             && command.before().frame().episodeRunId().equals(capture.frame().identity().frame().episodeRunId());
                     if (!current) {
-                        StrictJson.require(receipt.settled(), "a prior Game/episode or frontend action is unresolved; sole authority must reconcile it");
+                        StrictJson.require(!blocking.contains(receipt), "a prior Game/episode or frontend action is unresolved; sole authority must reconcile it");
                         continue;
                     }
                     if (parent.filter(actual -> actual.actionId().equals(command.actionId())
