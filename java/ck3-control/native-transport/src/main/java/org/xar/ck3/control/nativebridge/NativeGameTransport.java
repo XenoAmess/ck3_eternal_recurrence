@@ -1047,16 +1047,22 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                 ||!FullSnapshotClockControl.isMappedSave112Bridge(bridge))
             throw new IOException("corrected112 source crossed its actual managed Game/machine/session/endpoint/selection");
     }
-    private ExactRef requireFull112Source()throws IOException {
+    private Full112Binding requireCurrentFull112Binding()throws IOException {
         var bound=full112Source;
         if(closed||terminalFailure!=null||bound==null||bound.endpoint!=endpoint)
             throw new IOException("corrected112 independent actual Managed source is not bound or current");
-        verifyEndpoint();requireFull112Owner(bound.owner,bound.bridge);
+        verifyEndpoint();
+        return bound;
+    }
+    private ExactRef requireFull112Source()throws IOException {
+        var bound=requireCurrentFull112Binding();
+        requireFull112Owner(bound.owner,bound.bridge);
         org.xar.ck3.control.build.SharedSourceFiles.assertUnchanged(bound.artifact);
         return bound.bridge;
     }
     public synchronized Optional<ExactRef> bindMappedSave112(org.xar.ck3.control.platform.ManagedGameSession owner)throws IOException {
         var selected=bindFull112Source(owner);if(selected.isEmpty())return Optional.empty();
+        requireCurrentFull112Binding();
         return Optional.of(requireMappedSave112OnVerifiedSource(requireFlorinFullClockProfile()));
     }
     private ExactRef requireMappedSave112()throws IOException {
