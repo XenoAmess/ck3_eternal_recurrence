@@ -2,10 +2,12 @@ package org.xar.ck3.control.contracts.semantic;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.math.BigInteger;
 import java.util.Objects;
 import java.util.Set;
+import org.xar.ck3.control.contracts.ExactCk3Build;
 import org.xar.ck3.control.contracts.StrictJson;
 
 /** Shared seven-field native projection. Raw and normalized trees are distinct DATA domains. */
@@ -50,7 +52,13 @@ public final class NativeSemanticNormalizer {
             result.set("player_armies", FlorinPlayerArmies.normalize(raw, original.armyMode));
         result.put("format_version", 1); result.put("snapshot_id", snapshotId); result.put("revision", nativeRevision);
         result.set("history", raw.path("history").isArray() ? raw.path("history").deepCopy() : JSON.arrayNode());
-        result.set("active_event", NativeActiveEvent.normalize(input(raw, "active_event"), "native"));
+        if (florin && isFull111(raw)) {
+            var event = NativeFull111OrdinaryEvent.read(raw);
+            result.set("active_event", event.<JsonNode>map(NativeFull111OrdinaryEvent::semantic)
+                    .orElseGet(NullNode::getInstance));
+        } else {
+            result.set("active_event", NativeActiveEvent.normalize(input(raw, "active_event"), "native"));
+        }
         result.set("one_life_settlement", NativeOneLifeSettlement.normalize(input(raw, "one_life_settlement")));
         result.set("played_character",florin
                 ?NativePlayedCharacter.normalizeFlorin(raw.path("played_character"),nativeRevision,raw.path("date_raw"))
@@ -76,17 +84,14 @@ public final class NativeSemanticNormalizer {
                 StrictJson.require(raw.path("executable_sha256").textValue().equalsIgnoreCase(played.path("executable_sha256").textValue()),
                         "Florin actor/root executable mismatch");
             }
-            if(org.xar.ck3.control.contracts.ExactCk3Build.CK3_121003_STEAM_26785313_FULL111.coreFullAdapterId()
-                    .equals(raw.path("adapter_id").textValue())) {
-                StrictJson.require(raw.has("active_event")&&raw.path("active_event").isNull(),
-                        "Full111 initial DATA requires an explicit null active_event");
+            if(isFull111(raw)) {
                 for(String field:java.util.List.of("active_wars","player_armies")) {
                     if ("player_armies".equals(field) && armyMode == FlorinPlayerArmies.ObservationMode.IDENTITY_ONLY126) continue;
                     StrictJson.require(raw.path(field).isArray()&&raw.path(field).isEmpty(),
                             "Full111 initial DATA requires an explicit empty "+field);
                 }
             }
-            if(org.xar.ck3.control.contracts.ExactCk3Build.CK3_1210_STEAM_26757580.matches(
+            if(ExactCk3Build.CK3_1210_STEAM_26757580.matches(
                     raw.path("game_version").textValue(),raw.path("executable_sha256").textValue())) {
                 StrictJson.require(raw.has("active_event")&&raw.path("active_event").isNull(),
                         "hotfix initial Full profile requires an explicit null active_event");
@@ -102,6 +107,10 @@ public final class NativeSemanticNormalizer {
         StrictJson.require(!actorMarker.isTextual()||!NativePlayedCharacter.FLORIN_SCHEMA.equals(actorMarker.textValue()),
                 "Florin actor marker requires its explicit full-state root marker");
         return false;
+    }
+    private static boolean isFull111(ObjectNode raw) {
+        return ExactCk3Build.CK3_121003_STEAM_26785313_FULL111.coreFullAdapterId()
+                .equals(raw.path("adapter_id").textValue());
     }
     private static JsonNode input(ObjectNode raw, String field) { return pythonFloatingPoint(raw.path(field), 0); }
 

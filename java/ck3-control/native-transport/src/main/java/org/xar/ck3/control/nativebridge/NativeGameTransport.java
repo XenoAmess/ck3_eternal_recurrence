@@ -47,6 +47,7 @@ import org.xar.ck3.control.nativebridge.capabilities.registry.PersonalGoldFrameP
 import org.xar.ck3.control.nativebridge.capabilities.registry.ActorFoundationFrame;
 import org.xar.ck3.control.nativebridge.capabilities.registry.ActorFoundationFramePublicCodec;
 import org.xar.ck3.control.nativebridge.capabilities.registry.ActorResourceLeafV2;
+import org.xar.ck3.control.contracts.semantic.NativeFull111OrdinaryEvent;
 import org.xar.ck3.control.contracts.semantic.NativeSemanticFingerprint;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 import org.xar.ck3.control.contracts.NativeCharacterId;
@@ -2340,6 +2341,13 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                 throw new IOException("Full clock source requires its actual living paused map");
         return profile;
     }
+    private void requireEventFreeFull111ClockBasis(ObservedFrame frame)throws IOException {
+        if(frame==null || !hello.adapterId().equals(ExactCk3Build.CK3_121003_STEAM_26785313_FULL111.coreFullAdapterId())
+                || !hello.capabilities().contains(NativeFull111OrdinaryEvent.CAPABILITY))return;
+        var state=NativeWire.object(NativeWire.parse(frame.state().bytes()));
+        if(!state.path("active_event").isNull())
+            throw new IOException("Full111 clock action requires an event-free Full");
+    }
     public sealed interface EventOptionsRead permits EventOptionsReceived, EventOptionsUnavailable {
         DispatchOutcome original();
     }
@@ -2735,6 +2743,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         try {
             Objects.requireNonNull(before);Objects.requireNonNull(prepared);Objects.requireNonNull(deadline);
             var profile=requireFullClockOriginal(before,deadline);
+            requireEventFreeFull111ClockBasis(before.frame());
             boolean mappedSave61=hotfixSave(prepared),mappedSave112=current112Save(prepared);
             if(applicationExitAttempted||before.writeAttempted||activeMailbox!=null||activeCouncilRecovery!=null||activeRecoveredSeatMailbox!=null)
                 throw new IOException("Full clock source cannot reuse a write or borrow another active continuation");
@@ -2752,6 +2761,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                 requireBackgroundAtCoreWrite();
                 try {
                     var writeProfile=requireFullClockOriginal(before,deadline);
+                    requireEventFreeFull111ClockBasis(before.frame());
                     if(mappedSave61)requireMappedSave61();
                     if(mappedSave112)requireMappedSave112OnVerifiedSource(writeProfile);
                     requireCurrent112SpeedData(writeProfile,prepared.step(),before.frame().state());
@@ -2828,6 +2838,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             Objects.requireNonNull(before);Objects.requireNonNull(prepared);Objects.requireNonNull(acknowledgementDeadline);
             if(before.issuer!=this||before.armed!=null)throw new IOException("Date ARM requires its original private actual Full source");
             var profile=requireFullClockOriginal(before.full,acknowledgementDeadline);
+            requireEventFreeFull111ClockBasis(before.frame());
             var expected=FullSnapshotDateSentinelArm.request(profile,prepared.step(),before.frame().snapshotId(),before.frame().nativeRevision(),before.activeDeadline);
             if(!prepared.equals(expected))throw new IOException("Date ARM changed its original parent deadline or canonical Full preparation");
             var spec=AdvancePrimitives.armSpec(prepared.step());
@@ -2846,7 +2857,10 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             byte[] packet=NativeWire.execute(id,prepared.step(),before.frame().nativeRevision(),prepared.additionalFields().bytes());
             var outcome=dispatch(id,packet,acknowledgementDeadline,()->{
                 requireBackgroundAtCoreWrite();
-                try{requireFullClockOriginal(before.full,acknowledgementDeadline);}catch(IOException invalid){throw new java.io.UncheckedIOException(invalid);}
+                try {
+                    requireFullClockOriginal(before.full,acknowledgementDeadline);
+                    requireEventFreeFull111ClockBasis(before.frame());
+                }catch(IOException invalid){throw new java.io.UncheckedIOException(invalid);}
                 if(!chronologyClock.instant().isBefore(before.activeDeadline)||before.full.writeAttempted)throw new IllegalStateException("Date ARM original lease or write is consumed");
                 before.full.writeAttempted=true;heldSnapshotInvalidated=true;
             });
@@ -2976,6 +2990,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             if(before.cancelAttempted||before.lastStatus==null)throw new IOException("Date cleanup requires its actual generation and a fresh cleanup attempt");
             if(actualPaused!=null){
                 requireFullClockOriginal(actualPaused,deadline);
+                requireEventFreeFull111ClockBasis(actualPaused.frame());
                 var initial=NativeWire.object(NativeWire.parse(before.frame().state().bytes()));
                 var paused=NativeWire.object(NativeWire.parse(actualPaused.frame().state().bytes()));
                 if(!org.xar.ck3.control.contracts.NativeCharacterId.fromJson(initial.path("played_character").get("character_id"))
@@ -2988,7 +3003,10 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             var outcome=dispatchLifecycle(id,NativeWire.execute(id,step,before.frame().nativeRevision(),new byte[]{'{','}'}),deadline,()->{
                 requireBackgroundAtCoreWrite();
                 if(actualPaused!=null){
-                    try{requireFullClockOriginal(actualPaused,deadline);}catch(IOException invalid){throw new java.io.UncheckedIOException(invalid);}
+                    try {
+                        requireFullClockOriginal(actualPaused,deadline);
+                        requireEventFreeFull111ClockBasis(actualPaused.frame());
+                    }catch(IOException invalid){throw new java.io.UncheckedIOException(invalid);}
                     if(actualPaused.writeAttempted)throw new IllegalStateException("paused cleanup Full source is consumed");
                     actualPaused.writeAttempted=true;heldSnapshotInvalidated=true;
                 }
@@ -8913,6 +8931,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             if (!permit.origin().acceptsGuard(permit.guard().origin())) throw new IOException("submission origin differs from its actual guard");
             requireIdentity(permit.guard().origin());
             requireRawEvidence(permit.guard());
+            if(requiresClockSource)requireEventFreeFull111ClockBasis(acceptedSnapshotFrame);
             requireCurrent112SpeedForPermit(permit,request,deadline);
             if (request.requiredCapability().isPresent()) {
                 String requiredCapability = request.requiredCapability().orElseThrow();
@@ -8940,7 +8959,10 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                 if(requiresClockSource)requireBackgroundAtCoreWrite();
                 if(hotfixSave(request))try{requireMappedSave61();}catch(IOException invalid){throw new java.io.UncheckedIOException(invalid);}
                 if(mappedSave112)try{requireMappedSave112();}catch(IOException invalid){throw new java.io.UncheckedIOException(invalid);}
-                try{requireCurrent112SpeedForPermit(permit,request,deadline);}catch(IOException invalid){throw new java.io.UncheckedIOException(invalid);}
+                try {
+                    if(requiresClockSource)requireEventFreeFull111ClockBasis(acceptedSnapshotFrame);
+                    requireCurrent112SpeedForPermit(permit,request,deadline);
+                }catch(IOException invalid){throw new java.io.UncheckedIOException(invalid);}
                 permit.consumeOnce();
                 heldSnapshotInvalidated = true;
             });
@@ -9454,8 +9476,10 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             requireFlorinFullTuple(raw,"ck3_1210_full_state_v1",profile.orElseThrow());
             if(actor!=null&&!actor.isNull())requireFlorinFullTuple(NativeWire.object(actor),"ck3_1210_played_character_v1",profile.orElseThrow());
             if(profile.orElseThrow()==ExactCk3Build.CK3_121003_STEAM_26785313_FULL111) {
-                StrictJson.require(raw.has("active_event")&&raw.path("active_event").isNull(),
-                        "Full111 initial Full requires an explicit null active_event");
+                var event=NativeFull111OrdinaryEvent.read(raw);
+                StrictJson.require(event.isEmpty() || (armyIdentity126Source==null
+                                && hello.capabilities().contains(NativeFull111OrdinaryEvent.CAPABILITY)),
+                        "Full111 ordinary event summary requires its advertised Full capability and control source");
                 if(armyIdentity126Source!=null) {
                     requireArmyIdentity126Source(true);
                     StrictJson.require(raw.path("active_wars").isArray()&&raw.path("active_wars").isEmpty(),

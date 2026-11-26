@@ -22,6 +22,7 @@ import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.GameGeneration;
 import org.xar.ck3.control.contracts.PythonOnlyUInt64;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.semantic.NativeFull111OrdinaryEvent;
 import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector.Claims;
 import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector.Frame;
 import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector.ProposalFrame;
@@ -115,13 +116,13 @@ final class Current132ControlSourceDataTest {
         }
     }
 
-    @Test void actualReceivePathPreservesCurrentEmptyArmyWarAndEventGates()throws Exception{
+    @Test void actualReceivePathPreservesCurrentEmptyArmyWarAndExactEventGates()throws Exception{
         for(String field:List.of("active_event","active_wars","player_armies")){
             var state=emptyFull();
             final String expected;
             if(field.equals("active_event")){
                 state.putObject(field).put("software_unqualified_event",true);
-                expected="Full111 initial Full requires an explicit null active_event";
+                expected="exact JSON fields required";
             }else{
                 var row=state.putArray(field).addObject();
                 if(field.equals("player_armies"))row.put("army_id",0).put("owner_character_id",73).put("controllable",true);
@@ -136,6 +137,24 @@ final class Current132ControlSourceDataTest {
                 assertArrayEquals(original,actual.diagnostics().lastOriginalPacket().value());
                 assertTrue(actual.latestAcceptedSnapshotRevision().isEmpty());
                 assertEquals(0,source.writes,"unsolicited software packet inspection cannot query or act");
+            }
+        }
+    }
+
+    @Test void fullOrdinaryEventSummaryRequiresBothAdvertisedCapabilityAndBoundSource()throws Exception{
+        var state=emptyFull();
+        state.putObject("active_event").put("schema",NativeFull111OrdinaryEvent.SCHEMA)
+                .put("instance_id",42).put("authored_option_count",3);
+        byte[] original=snapshot(state);
+        for(boolean advertised:List.of(false,true)){
+            var source=new Replay(original,advertised);
+            try(var actual=transport(source)){
+                assertThrows(UncheckedIOException.class,()->actual.observe(Instant.now().plusSeconds(30)));
+                String expected=advertised?"actual Managed source is not bound":"requires its advertised Full capability";
+                assertTrue(actual.diagnostics().toString().contains(expected),actual.diagnostics()::toString);
+                assertArrayEquals(original,actual.diagnostics().lastOriginalPacket().value());
+                assertTrue(actual.latestAcceptedSnapshotRevision().isEmpty());
+                assertEquals(0,source.writes);
             }
         }
     }
@@ -199,12 +218,16 @@ final class Current132ControlSourceDataTest {
     private static final class Replay implements NativePacketPort{
         final ArrayDeque<byte[]> packets=new ArrayDeque<>();int writes;boolean closed;
         Replay(byte[] candidate)throws IOException{
+            this(candidate,false);
+        }
+        Replay(byte[] candidate,boolean ordinaryEventFull)throws IOException{
             var hello=StrictJson.object().put("type","hello").put("protocol_version",1).put("pid",42)
                     .put("connection_generation",1).put("bridge_version","current132-software")
                     .put("expected_ck3_version",FULL.version()).put("expected_ck3_sha256",FULL.executableSha256())
                     .put("game_adapter_id",FULL.coreFullAdapterId()).put("game_adapter_status","ready").put("ck3_build_match",true);
             hello.putArray("capabilities").add(NativeFreshSnapshotPort.CAPABILITY).add("game.state.snapshot")
                     .add("game.command.save-checkpoint").add("game.command.set-speed-3");
+            if(ordinaryEventFull)hello.withArray("capabilities").add(NativeFull111OrdinaryEvent.CAPABILITY);
             packets.add(NativeWire.packet(StrictJson.canonical(hello)));if(candidate!=null)packets.add(candidate);
         }
         @Override public void verify()throws IOException{if(closed)throw new IOException("software endpoint closed");}

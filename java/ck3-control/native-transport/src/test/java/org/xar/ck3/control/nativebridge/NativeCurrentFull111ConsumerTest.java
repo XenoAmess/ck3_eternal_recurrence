@@ -20,6 +20,8 @@ import org.xar.ck3.control.contracts.ExactCk3Build;
 import org.xar.ck3.control.contracts.GameGeneration;
 import org.xar.ck3.control.contracts.PythonOnlyUInt64;
 import org.xar.ck3.control.contracts.StrictJson;
+import org.xar.ck3.control.contracts.semantic.NativeActiveEvent;
+import org.xar.ck3.control.contracts.semantic.NativeFull111OrdinaryEvent;
 import org.xar.ck3.control.contracts.semantic.NativePlayedCharacter;
 import org.xar.ck3.control.contracts.semantic.NativeSemanticNormalizer;
 import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFrame;
@@ -134,6 +136,39 @@ final class NativeCurrentFull111ConsumerTest {
         assertThrows(IllegalArgumentException.class,()->NativeSemanticNormalizer.normalize(NativeSemanticNormalizer.original(mismatch),"native:1",BigInteger.ONE));
         var oldBackend=actor.deepCopy().put("backend",NativePlayedCharacter.FLORIN_BACKEND);
         assertThrows(IllegalArgumentException.class,()->NativePlayedCharacter.normalizeFlorin(oldBackend,BigInteger.ONE,root.path("date_raw")));
+    }
+
+    @Test void fullOrdinaryEventSummaryRetainsFactsWithoutCreatingChoices() {
+        var root=identity(NativeSemanticNormalizer.FLORIN_SCHEMA).put("date_raw",PREFIX.dateRaw())
+                .put("paused",true).put("map_ready",true);
+        root.set("played_character",identity(NativePlayedCharacter.FLORIN_SCHEMA).put("character_id",73).put("alive",true));
+        root.putArray("active_wars");root.putArray("player_armies");
+        var summary=root.putObject("active_event").put("schema",NativeFull111OrdinaryEvent.SCHEMA)
+                .put("instance_id",42).put("authored_option_count",3);
+        var event=NativeSemanticNormalizer.normalize(NativeSemanticNormalizer.original(root),"native:1",BigInteger.ONE)
+                .semantic().path("active_event");
+        assertEquals(42,event.path("instance_id").intValue());
+        assertEquals(3,event.path("authored_option_count").intValue());
+        assertTrue(event.path("option_count").isNull());
+        assertTrue(event.path("options").isEmpty());
+        assertTrue(NativeActiveEvent.chooseOptionNumber(NativeActiveEvent.normalize(event,"native")).isEmpty());
+
+        var withOptions=summary.deepCopy();
+        withOptions.putArray("options");
+        for(var changed:List.of(summary.deepCopy().put("authored_option_count",65),
+                summary.deepCopy().put("authored_option_count",false), summary.deepCopy().put("instance_id",0),
+                summary.deepCopy().put("instance_id",Integer.MAX_VALUE+1L), summary.deepCopy().put("schema","unqualified"),
+                withOptions)) {
+            var invalid=root.deepCopy();invalid.set("active_event",changed);
+            assertThrows(IllegalArgumentException.class,
+                    ()->NativeSemanticNormalizer.normalize(NativeSemanticNormalizer.original(invalid),"native:1",BigInteger.ONE));
+        }
+        var running=root.deepCopy().put("paused",false);
+        assertThrows(IllegalArgumentException.class,
+                ()->NativeSemanticNormalizer.normalize(NativeSemanticNormalizer.original(running),"native:1",BigInteger.ONE));
+        root.remove("active_event");
+        assertThrows(IllegalArgumentException.class,
+                ()->NativeSemanticNormalizer.normalize(NativeSemanticNormalizer.original(root),"native:1",BigInteger.ONE));
     }
 
     @Test void sourceOnlyFull111ReceiverRefusesFullBeforeAnyQueryOrToken() throws Exception {
