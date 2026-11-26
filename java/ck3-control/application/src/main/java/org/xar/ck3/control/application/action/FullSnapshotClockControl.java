@@ -34,7 +34,10 @@ public final class FullSnapshotClockControl {
                 &&"3601748c4d4824509416d61c779f16eda6f97b85cd5608786ecf5645215b733c".equalsIgnoreCase(bridge.sha256()))
                 // Full111 ordinary snapshot and original sentinel expiry build from 394b0d2ee5.
                 ||(bridge.bytes()==27048960L
-                &&"6dc0b448fbe5ab46e0ef59127e00f893b5da71ad2c6e22c51c21f9a80e66602c".equalsIgnoreCase(bridge.sha256())));
+                &&"6dc0b448fbe5ab46e0ef59127e00f893b5da71ad2c6e22c51c21f9a80e66602c".equalsIgnoreCase(bridge.sha256()))
+                // Full111 with read-only Opening uses the same mapped SAVE implementation.
+                ||(bridge.bytes()==21_515_776L
+                &&"f33eb6d59068ebd21ba78ef43d933222e15427352d2bb206bb60990152963c52".equalsIgnoreCase(bridge.sha256())));
     }
 
     public static NativeRequest requestMappedSave112(org.xar.ck3.control.contracts.ExactRef bridge,

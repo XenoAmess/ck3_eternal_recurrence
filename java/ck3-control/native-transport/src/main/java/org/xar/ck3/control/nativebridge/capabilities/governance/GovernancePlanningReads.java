@@ -261,7 +261,8 @@ public final class GovernancePlanningReads {
             private boolean matches(ExactRef actual) { return bytes == actual.bytes() && sha256.equals(actual.sha256()); }
         }
         // Add only a reviewed Full111 bridge that actually contains both Opening producers and the pinned reader/ABI.
-        private static final List<DllIdentity> FULL111_PRODUCERS = List.of();
+        private static final List<DllIdentity> FULL111_PRODUCERS = List.of(
+                new DllIdentity(21_515_776L, "f33eb6d59068ebd21ba78ef43d933222e15427352d2bb206bb60990152963c52"));
         private static final SourcePins FULL111_PINS = new SourcePins(
                 "d31b5b369f4e121009cdb3b941fc362992e8155782ac5a894daafd48c6f87cc9",
                 "6db7725c631d02cbed843b7c0ebf085ac120448cb1719a5b46f9df0831f0f2b8");
