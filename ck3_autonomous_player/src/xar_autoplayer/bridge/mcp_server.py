@@ -4504,7 +4504,7 @@ def create_server(
 
     @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False, idempotentHint=False, openWorldHint=False))
     def ck3_open_ingame_decisions_v1(expected_revision: int | None = None) -> dict[str, object]:
-        """Open the fixed exact .3 Decisions HUD button once, with later native visibility proof."""
+        """Open Decisions once per public revision or read its current verified visibility on exact .3/.4."""
         return service.open_ingame_decisions_v1(expected_revision=expected_revision)
 
     @server.tool(annotations=read_only_tool)

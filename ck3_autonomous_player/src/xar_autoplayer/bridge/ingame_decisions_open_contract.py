@@ -15,6 +15,14 @@ def result_build(raw: object) -> NativeBuildIdentity:
         raise ValueError("requires exact .3/.4 native result")
     return build
 
+def opening_snapshot_build(snapshot: dict[str, object]) -> NativeBuildIdentity:
+    diagnostics = snapshot.get("diagnostics")
+    hello = diagnostics.get("hello") if isinstance(diagnostics, dict) else None
+    if not isinstance(hello, dict):
+        raise ValueError("missing exact native hello")
+    return require_exact_native_build(hello.get("expected_ck3_version"), hello.get("expected_ck3_sha256"))
+
+
 def opening_binding(snapshot: object) -> dict[str, object]:
     if not isinstance(snapshot, dict):
         raise ValueError("missing paused native snapshot")
@@ -25,7 +33,7 @@ def opening_binding(snapshot: object) -> dict[str, object]:
     hello = diagnostics.get("hello")
     if not isinstance(hello, dict):
         raise ValueError("missing exact native hello")
-    build = require_exact_native_build(hello.get("expected_ck3_version"), hello.get("expected_ck3_sha256"))
+    build = opening_snapshot_build(snapshot)
     if (snapshot.get("paused") is not True or snapshot.get("map_ready") is not True
             or not isinstance(character, dict) or character.get("alive") is not True
             or not isinstance(hello, dict) or hello.get("ck3_build_match") is not True
@@ -87,3 +95,29 @@ def actual_visible_decisions_tree(tree: object) -> bool:
     if len(roots) != 1 or roots[0].get("runtime_name") != "decisions_view":
         raise ValueError("actual Decisions root is unverified")
     return roots[0].get("effective_visible") is True
+
+
+def validate_current_decisions_observation(
+    result: dict[str, object], *, expected_revision: int | None,
+) -> None:
+    """Validate the SDK's fresh read-only proof separately from the native opener ACK."""
+    from .gui_window_tree_contract import normalize_gui_window_tree_v1
+
+    result_build(result)
+    revision = result.get("queried_revision")
+    tree = result.get("later_decisions_tree")
+    if (result.get("schema") != "ck3-ingame-decisions-open-v1" or result.get("step") != STEP
+            or result.get("status") != "verified_visible"
+            or result.get("completion_source") != "observed_already_visible"
+            or result.get("read_only") is not True or result.get("dispatch_invoked") is not False
+            or result.get("postcondition_verified") is not True
+            or result.get("verification_pending") is not False
+            or any(key not in result or result[key] is not None
+                   for key in ("native_ack", "action_request_id", "action_claim_path"))
+            or type(revision) is not int or revision < 0
+            or (expected_revision is not None and revision != expected_revision)
+            or not isinstance(tree, dict)
+            or tree.get("schema") != "ck3-native-gui-window-tree-inspection-v1"
+            or tree.get("window_kind") != "decisions" or tree.get("read_only") is not True
+            or not actual_visible_decisions_tree(normalize_gui_window_tree_v1(tree, "decisions"))):
+        raise ValueError("Decisions requires a complete current visible root without action evidence")

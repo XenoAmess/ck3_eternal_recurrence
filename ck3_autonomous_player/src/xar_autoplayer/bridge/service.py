@@ -14902,13 +14902,20 @@ class GameplayBridgeService:
         return result
 
     def open_ingame_decisions_v1(self, *, expected_revision: int | None = None) -> dict[str, object]:
-        """Open only the exact .3 HUD Decisions entry and verify actual visibility."""
+        """Open the exact .3/.4 HUD Decisions entry or read its current verified visibility."""
         method = getattr(self.driver, "open_ingame_decisions_v1", None)
         if not callable(method):
             raise UnsupportedStepError("selected backend lacks the typed Decisions opener")
         result = method(expected_revision=expected_revision)
         if not isinstance(result, dict) or result.get("schema") != "ck3-ingame-decisions-open-v1" or result.get("postcondition_verified") is not True:
             raise BridgeUnavailableError("typed Decisions opener lacks later visibility proof")
+        if result.get("read_only") is True or "completion_source" in result:
+            from .ingame_decisions_open_contract import validate_current_decisions_observation
+
+            try:
+                validate_current_decisions_observation(result, expected_revision=expected_revision)
+            except ValueError as error:
+                raise BridgeUnavailableError(str(error)) from error
         return result
 
     def query_current_interface_toast_v1(self, *, expected_revision: int) -> CurrentInterfaceToastV1:

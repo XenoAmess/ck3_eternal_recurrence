@@ -1,4 +1,5 @@
 """Synthetic opening proof and durable one-claim regressions; never use a game endpoint."""
+import asyncio
 from copy import deepcopy
 import json
 import os
@@ -34,6 +35,19 @@ def pending_native_ack():
             "postcondition_verified": False, "verification_pending": True}
 
 
+def decisions_tree(visible=True):
+    return {
+        "schema": "ck3-native-gui-window-tree-inspection-v1",
+        "step": "inspect-gui-window-tree-v1", "window_kind": "decisions",
+        "accepted": True, "status": "available", "read_only": True,
+        "scope_root_name": "decisions_view", "root_available": True,
+        "truncated": False, "widget_count": 1,
+        "widgets": [{"child_path": "", "runtime_name": "decisions_view", "depth": 0,
+                     "child_count": 0, "vtable_rva": 1, "effective_visible": visible,
+                     "enabled": True}],
+    }
+
+
 class SyntheticDriver:
     open_ingame_decisions_v1 = NativeHeadlessGameplayDriver.open_ingame_decisions_v1
 
@@ -59,9 +73,7 @@ class SyntheticDriver:
 
     def inspect_gui_window_tree_v1(self, kind):
         self.queries.append(kind)
-        return {"scope_root_name": "decisions_view", "root_available": True,
-                "truncated": False, "widgets": [{"child_path": "", "runtime_name": "decisions_view",
-                                                  "effective_visible": True}]}
+        return decisions_tree()
 
 
 class DecisionsOpeningProofTests(unittest.TestCase):
@@ -128,6 +140,64 @@ class DecisionsOpeningProofTests(unittest.TestCase):
         self.assertFalse(result["verification_pending"])
         self.assertEqual(result["later_decisions_tree"]["scope_root_name"], "decisions_view")
         self.assertEqual(driver.submissions[0][1]["request_fields"]["expected_game_pid"], 12700)
-        with self.assertRaisesRegex(BridgeUnavailableError, "already claimed"):
-            driver.open_ingame_decisions_v1()
         self.assertEqual(len(driver.submissions), 1)
+
+    def test_existing_verified_claim_still_rejects_hidden_or_incomplete_current_tree(self) -> None:
+        directory = self.state_directory()
+        original = SyntheticDriver(directory)
+        original.open_ingame_decisions_v1(expected_revision=1)
+        for tree in (decisions_tree(visible=False), dict(decisions_tree(), truncated=True),
+                     dict(decisions_tree(), root_available=False), dict(decisions_tree(), widget_count=2)):
+            with self.subTest(tree=tree):
+                current = SyntheticDriver(directory)
+                current.inspect_gui_window_tree_v1 = lambda _: deepcopy(tree)
+                with self.assertRaises(BridgeUnavailableError):
+                    current.open_ingame_decisions_v1(expected_revision=1)
+                self.assertEqual(current.submissions, [])
+
+    def test_existing_verified_claim_rejects_a_current_public_revision_change(self) -> None:
+        directory = self.state_directory()
+        SyntheticDriver(directory).open_ingame_decisions_v1(expected_revision=1)
+        current = SyntheticDriver(directory)
+
+        def changed_during_inspection(_):
+            current.frame["revision"] = 2
+            return decisions_tree()
+
+        current.inspect_gui_window_tree_v1 = changed_during_inspection
+        with self.assertRaisesRegex(BridgeUnavailableError, "crossed its episode/frame"):
+            current.open_ingame_decisions_v1(expected_revision=1)
+        self.assertEqual(current.submissions, [])
+
+    def test_registered_mcp_reads_current_visible_root_without_replaying_v1_claim(self) -> None:
+        from xar_autoplayer.bridge.mcp_server import create_server
+
+        ack = pending_native_ack()
+        ack.update(before_visible=True, dispatch_invoked=False, native_after_visible=True,
+                   native_after_tree_complete=True, postcondition_verified=True,
+                   verification_pending=False)
+        directory = self.state_directory()
+        original = SyntheticDriver(directory, ack=ack)
+        opened = original.open_ingame_decisions_v1(expected_revision=1)
+        claim = Path(opened["action_claim_path"])
+        originals = {path.name: path.read_bytes() for path in claim.parent.iterdir()}
+        self.assertEqual(json.loads(claim.read_bytes())["schema"], "ck3-ingame-decisions-once-claim-v1")
+
+        current = SyntheticDriver(directory)
+        current.frame["diagnostics"]["connection_generation"] = 2
+        tool = asyncio.run(create_server(current).call_tool(
+            "ck3_open_ingame_decisions_v1", {"expected_revision": 1}))
+        self.assertFalse(tool.is_error, tool)
+        result = tool.structured_content
+        self.assertIsNotNone(result)
+        self.assertEqual(result["status"], "verified_visible")
+        self.assertEqual(result["completion_source"], "observed_already_visible")
+        self.assertEqual(result["connection_generation"], 2)
+        self.assertTrue(result["read_only"])
+        self.assertFalse(result["dispatch_invoked"])
+        for key in ("native_ack", "action_request_id", "action_claim_path"):
+            self.assertIn(key, result)
+            self.assertIsNone(result[key])
+        self.assertEqual(current.queries, ["decisions"])
+        self.assertEqual(current.submissions, [])
+        self.assertEqual({path.name: path.read_bytes() for path in claim.parent.iterdir()}, originals)

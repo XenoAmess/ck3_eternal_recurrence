@@ -8577,10 +8577,10 @@ class NativeHeadlessGameplayDriver:
         return result
 
     def open_ingame_decisions_v1(self, *, expected_revision: int | None = None) -> dict[str, object]:
-        """Dispatch the fixed .3 HUD button once; observe later actual Decisions visibility."""
+        """Open Decisions once per public revision or independently observe its current visibility."""
         from .ingame_decisions_open_contract import (
-            STEP, CAPABILITY, opening_binding, normalize_open_result,
-            actual_visible_decisions_tree,
+            STEP, CAPABILITY, opening_binding, opening_snapshot_build, normalize_open_result,
+            actual_visible_decisions_tree, validate_current_decisions_observation,
         )
         import hashlib
         import os
@@ -8610,15 +8610,48 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(str(error)) from error
         key = hashlib.sha256(json.dumps(identity, sort_keys=True).encode("utf-8")).hexdigest()
         claim = claim_dir / f"{key}.claim.json"
-        request_id = f"decisions-{uuid.uuid4().hex}"
-        claim_data = {"schema": "ck3-ingame-decisions-once-claim-v1", "request_id": request_id,
-                      "binding": binding, "action_identity": identity, "status": "claimed_result_unknown_no_retry"}
         try:
             with claim.open("x", encoding="utf-8", newline="\n") as stream:
+                request_id = f"decisions-{uuid.uuid4().hex}"
+                claim_data = {"schema": "ck3-ingame-decisions-once-claim-v1", "request_id": request_id,
+                              "binding": binding, "action_identity": identity, "status": "claimed_result_unknown_no_retry"}
                 json.dump(claim_data, stream, ensure_ascii=False, indent=2)
                 stream.write("\n"); stream.flush(); os.fsync(stream.fileno())
-        except FileExistsError as error:
-            raise BridgeUnavailableError("Decisions opener already claimed for this episode; no action retry") from error
+        except FileExistsError:
+            try:
+                previous = json.loads(claim.read_text(encoding="utf-8"))
+                if (not isinstance(previous, dict)
+                        or previous.get("schema") != "ck3-ingame-decisions-once-claim-v1"
+                        or previous.get("action_identity") != identity):
+                    raise ValueError("original Decisions claim identity is invalid")
+                # The claim could have been created since the first check.
+                reject_unresolved_claims(claim_dir, identity)
+                build = opening_snapshot_build(starting)
+                snapshot_id = starting.get("snapshot_id")
+                if type(starting["revision"]) is not int or not isinstance(snapshot_id, str) or not snapshot_id:
+                    raise ValueError("Decisions lacks its starting frame identity")
+                tree = self.inspect_gui_window_tree_v1("decisions")
+                ending = self.take_snapshot()
+                if (type(ending.get("revision")) is not int or ending["revision"] != revision
+                        or opening_binding(ending) != binding or opening_snapshot_build(ending) != build
+                        or not _same_paused_native_frame(starting, ending)):
+                    raise ValueError("Decisions current observation crossed its episode/frame")
+                observed = {
+                    **binding, "schema": "ck3-ingame-decisions-open-v1", "step": STEP,
+                    "game_version": build.game_version, "executable_sha256": build.executable_sha256,
+                    "queried_revision": revision, "status": "verified_visible",
+                    "completion_source": "observed_already_visible", "read_only": True,
+                    "dispatch_invoked": False, "postcondition_verified": True, "verification_pending": False,
+                    "native_ack": None, "action_request_id": None, "action_claim_path": None,
+                    "later_decisions_tree": tree, "uses_mouse": False, "uses_keyboard": False, "uses_ocr": False,
+                }
+                validate_current_decisions_observation(observed, expected_revision=revision)
+                reject_unresolved_claims(claim_dir, identity)
+            except (OSError, ValueError) as error:
+                raise BridgeUnavailableError(
+                    f"Decisions opener already claimed for this episode; no action retry: {error}"
+                ) from error
+            return observed
         raw = None
         try:
             raw = self._execute_primitive_step(

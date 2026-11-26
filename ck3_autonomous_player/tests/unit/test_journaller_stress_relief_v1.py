@@ -15,7 +15,7 @@ from xar_autoplayer.bridge.ingame_decisions_open_contract import opening_binding
 from xar_autoplayer.bridge.event_window_context_contract import _EVENT_PROVENANCE_BY_BACKEND
 from test_turn_bundle_v1 import _snapshot, _root
 from test_ingame_decision_item_actions import frame, model, ack
-from test_ingame_decisions_open_contract import pending_native_ack
+from test_ingame_decisions_open_contract import decisions_tree, pending_native_ack
 from test_event_window_context_v1_bridge import _frame
 
 
@@ -72,8 +72,7 @@ class SyntheticDriver:
         return result
 
     def inspect_gui_window_tree_v1(self, kind):
-        return {"scope_root_name": "decisions_view", "root_available": True, "truncated": False,
-                "widgets": [{"child_path": "", "runtime_name": "decisions_view", "effective_visible": True}]}
+        return decisions_tree()
 
     def _execute_primitive_step(self, step, **kwargs):
         self.calls.append(step)
@@ -170,6 +169,18 @@ class JournallerTests(unittest.TestCase):
                     "stress": {"status": "available", "value": {"points": 120}}}):
                 self.assertEqual(self.start(d)["status"], "actor_attempt_already_claimed_no_replay")
             self.assertEqual(len(d.calls), 3)
+
+    def test_current_visible_observation_has_no_new_open_action(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            driver = SyntheticDriver(directory)
+            driver.open_ingame_decisions_v1(expected_revision=driver.frame["revision"])
+            self.assertEqual(driver.calls, ["activate-ingame-decisions-v1"])
+            result = self.start(driver)
+            self.assertEqual(result["status"], "exact_event_observed_choice_pending")
+            self.assertEqual(driver.calls, [
+                "activate-ingame-decisions-v1", "select-ingame-decision-item-v1",
+                "confirm-ingame-decision-outcome-v1",
+            ])
 
     def test_unknown_result_never_replays(self):
         for stage in ("activate-ingame-decisions-v1", "select-ingame-decision-item-v1",

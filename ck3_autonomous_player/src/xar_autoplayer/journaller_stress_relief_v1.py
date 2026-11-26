@@ -17,6 +17,7 @@ from .bridge.ingame_decision_item_action_contract import actual_selected_detail
 from .bridge.ingame_decision_outcome_contract import actual_expected_event
 from .bridge.ingame_decisions_open_contract import (
     actual_visible_decisions_tree, normalize_open_result, opening_binding,
+    validate_current_decisions_observation,
 )
 from .ck3_live_run_identity_v1 import current_machine_id
 from .ordinary_player_risk_context_v1 import build_ordinary_player_risk_context_v1
@@ -181,12 +182,18 @@ def start_journaller_stress_relief_v1(
 
     display("open_decisions")
     opened = driver.open_ingame_decisions_v1(expected_revision=expected_revision)
-    _exact_build(opened.get("native_ack"), snapshot)
-    normalize_open_result(opened.get("native_ack"), binding)
-    if (opened.get("postcondition_verified") is not True
-            or opened.get("verification_pending") is not False
-            or not actual_visible_decisions_tree(opened.get("later_decisions_tree"))):
-        raise ValueError("journaller Decisions visibility is unproved")
+    if opened.get("read_only") is True:
+        _exact_build(opened, snapshot)
+        validate_current_decisions_observation(opened, expected_revision=expected_revision)
+        if any(opened.get(key) != value for key, value in binding.items()):
+            raise ValueError("journaller Decisions observation crossed its original frame")
+    else:
+        _exact_build(opened.get("native_ack"), snapshot)
+        normalize_open_result(opened.get("native_ack"), binding)
+        if (opened.get("postcondition_verified") is not True
+                or opened.get("verification_pending") is not False
+                or not actual_visible_decisions_tree(opened.get("later_decisions_tree"))):
+            raise ValueError("journaller Decisions visibility is unproved")
     _same_frame(driver, snapshot)
     model = driver.query_ingame_decision_item_v1(DECISION, expected_revision=expected_revision)
     _exact_build(model, snapshot)

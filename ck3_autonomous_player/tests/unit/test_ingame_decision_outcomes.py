@@ -26,7 +26,7 @@ from xar_autoplayer.bridge.ingame_decision_outcome_contract import (
 from xar_autoplayer.bridge.service import GameplayBridgeService
 from xar_autoplayer.bridge.event_window_context_contract import _EVENT_PROVENANCE_BY_BACKEND
 from test_ingame_decision_item_actions import frame, model, ack, SyntheticDriver as SelectDriver, KEY as VIVHITE_KEY
-from test_ingame_decisions_open_contract import SyntheticDriver as OpenDriver
+from test_ingame_decisions_open_contract import SyntheticDriver as OpenDriver, decisions_tree
 from test_event_window_context_v1_bridge import _frame
 
 KEY = "generic_decision_open_event"
@@ -361,11 +361,15 @@ class OutcomeTests(unittest.TestCase):
         later.frame["diagnostics"]["connection_generation"]=2
         with self.assertRaisesRegex(BridgeUnavailableError,"unresolved"):later.select_ingame_decision_item_v1(VIVHITE_KEY,expected_revision=10)
         self.assertEqual(later.submissions,[]);self.assertEqual(later.model_queries,[])
-    def test_verified_open_can_use_a_fresh_revision_but_not_same_revision(self):
+    def test_verified_open_can_use_fresh_revision_while_same_revision_hidden_stays_blocked(self):
         driver=OpenDriver(self.directory())
         driver.open_ingame_decisions_v1(expected_revision=1)
+        visible_reader=driver.inspect_gui_window_tree_v1
+        driver.inspect_gui_window_tree_v1=lambda _: decisions_tree(visible=False)
         with self.assertRaisesRegex(BridgeUnavailableError,"already claimed"):
             driver.open_ingame_decisions_v1(expected_revision=1)
+        self.assertEqual(len(driver.submissions),1)
+        driver.inspect_gui_window_tree_v1=visible_reader
         driver.frame["revision"]=2
         driver.open_ingame_decisions_v1(expected_revision=2)
         self.assertEqual(len(driver.submissions),2)
