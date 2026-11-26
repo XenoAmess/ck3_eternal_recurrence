@@ -5737,11 +5737,17 @@ public final class ContinuityBatchJournal implements BatchJournal {
                         }
                         var previousBoundary=edge.before().toJson().path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD);
                         boolean firstSavedOpen=openBatch!=null&&savedBranch!=null&&savedThroughSequence>0
-                                &&JournalKind.SAVE_CONFIRMED.name().equals(previousBoundary.path("boundary").asText())
+                                &&java.util.Set.of(JournalKind.SAVE_CONFIRMED.name(),JournalKind.BATCH_STARTED.name())
+                                    .contains(previousBoundary.path("boundary").asText())
                                 &&openBatch.equals(StrictJson.text(previousBoundary.get("batch_id")))
                                 &&OrdinaryCycleTransitions.sessionFromJson(previousBoundary.get("session")).equals(owner)
                                 &&ContinuityJson.same(savedBranch,edge.before().toJson().get(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD))
                                 &&ContinuityJson.same(savedBranch.get("state"),edge.before().toJson().get(WriterContracts.ORDINARY_CYCLE_FIELD));
+                        if(firstSavedOpen&&JournalKind.BATCH_STARTED.name().equals(previousBoundary.path("boundary").asText())) {
+                            var save=originals.loadRecord(ContinuityActionJournal.recordHead(edge.before()).orElseThrow()).receipt();
+                            firstSavedOpen=savedPair.filter(pair->pair.saveActionId().equals(save.command().actionId())).isPresent()
+                                    &&confirmedSaves.contains(originals.receiptReferenceOf(save));
+                        }
                         StrictJson.require((openBatch==null||(retainedRecovery!=null||firstOperatorOpen||firstSavedOpen)
                                                 &&openBatch.equals(used.getLast()))
                                 &&pending==null&&latest!=null&&!used.isEmpty()

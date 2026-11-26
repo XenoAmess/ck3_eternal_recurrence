@@ -390,13 +390,15 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
             var head=same.head();
             var owner=data.controller().owner();
             var branch=state(head.state(),owner);
-            if (isFullySavedBatchBoundary(head.state(),owner,branch)
+            boolean open=isOpenReadOnlyBatch(head.state());
+            if ((open||isFullySavedBatchBoundary(head.state(),owner,branch))
                     && ContinuityJson.same(head.state().toJson().get("latest_binding"),originalFrame(semantic.frame()))) {
                 // A fresh paused read can have the identical frame. The writer would have no state change to commit.
                 var fresh=verify(same,owner,semantic);
                 var retained=data.latestCycleSemantic();
                 requireObservedContinuation(data.latestObservedFrame(),fresh.frame());
                 requireSettledRecoveryFrontier(head.state(),owner,branch);
+                if(open)requireOpenReadOnlyRecovery(same,head.state(),owner,branch);
                 StrictJson.require(fresh.observedAt().isAfter(retained.observedAt())
                         && fresh.observedAt().isAfter(data.controller().savedPair().orElseThrow().observedAt())
                         && load(branch.head().orElseThrow()).semantic().equals(retained)
@@ -741,6 +743,20 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                 "saved open recovery changed its complete actual canonical action set");
         var latest=actions.stream().max(java.util.Comparator.comparingLong(ActionReceipt::sequence)).orElseThrow();
         var anchored=bound.loadRecord(ContinuityActionJournal.recordHead(current).orElseThrow()).receipt();
+        if(context.role().confirmedSaveReceipts().contains(bound.receiptReferenceOf(latest))) {
+            var saved=StrictJson.object(current.toJson().get(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD),Set.of("pair","state"));
+            var pair=CheckpointPairCodec.decode(ContinuityJson.canonical(saved.get("pair")));
+            StrictJson.require(anchored.equals(latest)&&latest.sequence()<=current.sequence()
+                    &&latest.command().source().equals(data.source())&&latest.bodySha256().equals(ActionCodec.bodySha256(latest.command()))
+                    &&"save-checkpoint".equals(latest.command().operation().value())
+                    &&latest.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED&&pair.saveActionId().equals(latest.command().actionId())
+                    &&data.controller().savedPair().filter(pair::equals).isPresent()
+                    &&branch.completedCycles()==current.settledCycles()&&branch.toJson().equals(parseState(saved.get("state")).toJson()),
+                    "saved open recovery changed its verified SAVE, owner or unchanged completed cycle");
+            ContinuityActionJournal.requireHistoricalReceipt(current,latest,bound);
+            context.role().requireCurrent(same,data);
+            return;
+        }
         if(latest.state() instanceof ActionState.CompositeOperatorQuarantined retired) {
             StrictJson.require(anchored.equals(latest)&&latest.sequence()<=current.sequence()&&latest.command().source().equals(data.source())
                     &&latest.bodySha256().equals(ActionCodec.bodySha256(latest.command()))
