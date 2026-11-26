@@ -4876,7 +4876,8 @@ def _c20_inputs(context: JsonObject, *, allow_discovery_preflight: bool = False)
         expected_mode={'schema': 'ck3-controlled-crisis20-discovery-v1', 'discovery_only': True, 'read_only_finance': True, 'private_namespace': 'xfmc20d_', 'maximum_registry_rows': 65536, 'maximum_candidates': 52, 'maximum_typed_references': 104, 'per_role_maximum': 2, 'context_count': 20, 'case_credit': False}
         successor_mode={**expected_mode,'schema':'ck3-controlled-crisis20-discovery-v2','private_namespace':'xfmc20e_','complete_role_mask_bits':26,'complete_positive_recorded':True}
         actual_discovery_mode=read_json(mode_path)
-        if (actual_mode['bytes']>4096 or any(actual_mode[k]!=mode_entry.get(k)for k in ('bytes','sha256'))
+        if (actual_mode['bytes'] > 4096 or actual_mode['bytes'] != mode_entry.get('bytes')
+                or actual_mode['sha256'] != mode_entry.get('sha256')
                 or actual_discovery_mode not in (expected_mode,successor_mode)
                 or (actual_discovery_mode==successor_mode and any(type(actual_discovery_mode[k])is not type(v)for k,v in successor_mode.items()))):
             raise ValueError('Exact immutable discovery-only sidecar required; never infer mode from GUI enabled')
@@ -4900,7 +4901,12 @@ def _c20_inputs(context: JsonObject, *, allow_discovery_preflight: bool = False)
         source_path = Path(text_field(context,'repo_root')).resolve() / ('mod_financial_markets/'+relative)
         found = [file_pin(p) for p in sources if Path(file_pin(p)['path']).resolve() == source_path]
         staged = pin(Path(text_field(object_field(context,'case_inputs'),'product_dir')) / relative)
-        if len(found) != 1 or any(pin(source_path)[k] != found[0][k] or staged[k] != found[0][k] for k in ('bytes','sha256')):
+        if len(found) != 1:
+            raise ValueError('Selected runtime terminal/selector differ from source-bound emission')
+        source = pin(source_path)
+        declared = found[0]
+        if (source['bytes'] != declared['bytes'] or source['sha256'] != declared['sha256']
+                or staged['bytes'] != declared['bytes'] or staged['sha256'] != declared['sha256']):
             raise ValueError('Selected runtime terminal/selector differ from source-bound emission')
     return json_object({'request':request,'source_archive':values['source_archive'],**({'discovery_only':True} if discovery else {})})
 
@@ -4932,19 +4938,25 @@ def _c20_sample_day(client: CaseClient, context: JsonObject, reference: object) 
     date=json_object(read_json(file_pin(json_object(queries[0])['dto'])['path'])).get('date_raw')
     started=time.monotonic();pairs: list[FilePin]=[];known: set[str]=set();reason='BOUNDED_WINDOW_COMPLETE'
     failure: JsonObject | None=None;failure_retention: JsonObject | None=None;attempted: list[str]=[];submitted_at: list[float]=[]
-    def guard() -> JsonObject:
+    def guard() -> set[str]:
         if client.remaining()<=183:raise ValueError('Original180s Quit reserve plus one query wait required')
         report=json_object(client.guard(180));rows=report.get('steps')
         if not isinstance(rows,list) or report.get('control_inflight'):raise ValueError('Original controls still pending')
-        ids=[];saves=[]
+        ids: list[str] = []
+        save_count = 0
         for value in rows:
-            row=json_object(value);identity=text_field(row,'id');ids.append(identity)
+            row = json_object(value)
+            ids.append(text_field(row, 'id'))
             if (row.get('ok') is not True or not row.get('finished_at') or row.get('error')
                     or object_field(row,'result').get('result_unknown') is True):
                 raise ValueError('Original failure/pending/UNKNOWN stops further submissions')
-            if object_field(row,'plan').get('tool')=='ck3_save_checkpoint':saves.append(row)
-        if len(set(ids))!=len(ids) or len(saves)!=2:raise ValueError('Exactly S1/S2 completed; no S3 submission allowed')
-        if known and not set(ids)<=known:raise ValueError('Another control writer appeared; stop without retry')
+            if object_field(row, 'plan').get('tool') == 'ck3_save_checkpoint':
+                save_count += 1
+        completed_ids = set(ids)
+        if len(completed_ids) != len(ids) or save_count != 2:
+            raise ValueError('Exactly S1/S2 completed; no S3 submission allowed')
+        if known and not completed_ids <= known:
+            raise ValueError('Another control writer appeared; stop without retry')
         for index in (0,1):
             name,_,requirements=CRISIS20_PHASES[index]
             accepted=json_object(read_json(output/(name+'-accepted.json')))
@@ -4952,17 +4964,20 @@ def _c20_sample_day(client: CaseClient, context: JsonObject, reference: object) 
         final=CRISIS20_PHASES[2][0]
         if any((output/(final+suffix)).exists() for suffix in ('-root-result.json','-accepted.json')):
             raise ValueError('Original final phase already consumed; no further queries')
-        return report
+        return completed_ids
     try:
-        initial=guard();known={text_field(json_object(row),'id') for row in initial['steps']}
+        known = guard()
         for number in range(1,16):
             target=max(started+(number-1)*3,started+submitted_at[-1]+3 if submitted_at else started)
             while time.monotonic()<target:
                 guard();time.sleep(max(0.0,min(.1,target-time.monotonic())))
             if time.monotonic()-started>42:reason='BOUNDED_WINDOW_COMPLETE_NO_NEW_PAIR';break
             guard();name=day_name+'-passive-pair'+str(number).zfill(2)
-            steps=[{'id':name+'-toast0'+str(i),'kind':'tool','tool':'ck3_query_current_interface_toast_v1','args':{}}for i in (1,2)]
-            ids=[step['id']for step in steps]
+            ids = [name + '-toast0' + str(i) for i in (1, 2)]
+            steps: list[JsonObject] = [
+                {'id': identity, 'kind': 'tool', 'tool': 'ck3_query_current_interface_toast_v1', 'args': {}}
+                for identity in ids
+            ]
             if any(identity in known for identity in ids):raise ValueError('Original query IDs consumed; never replay')
             attempted.extend(ids);known.update(ids);submitted_at.append(time.monotonic()-started)
             # Existing execute_plan consumes IDs, retains queue publication and whole
@@ -5016,7 +5031,7 @@ def _c20_sample_day(client: CaseClient, context: JsonObject, reference: object) 
                     if 'result'in row:
                         # Even null stays null. Never manufacture a successful DTO.
                         dto_path=client.checkpoint(day_name+'-stopped-original-result'+str(number),row['result'])
-                        dtos.append({'id':row.get('id'),'original_result':pin(dto_path)})
+                        dtos.append({'id': row.get('id'), 'original_result': json_object(pin(dto_path))})
                 failure_retention=json_object({'selected_original':pin(selected_path),'original_results':dtos,
                     'report_observation_only':True,'new_query_or_await_or_retry':False})
             except Exception as retain_error:
@@ -5043,12 +5058,16 @@ def _c20_pair(context: JsonObject, reference: object, phase: JsonObject, date: o
     plan_pin=checked_capture_pin(capture.get('plan'));rows_pin=checked_capture_pin(capture.get('actual_results'))
     if Path(plan_pin['path']).resolve().parent!=output/'plans' or Path(rows_pin['path']).resolve().parent!=output:
         raise ValueError('Original same-client plan/selected result paths required')
-    plan=json_object(read_json(plan_pin['path']));rows=json_object(read_json(rows_pin['path'])).get('rows');queries=capture.get('queries')
-    if not crisis20_plan_matches(context,plan.get('steps'),capture.get('name'),3) or not isinstance(rows,list) or len(rows)!=2 or not isinstance(queries,list) or len(queries)!=2:
+    plan = read_json(plan_pin['path'])
+    steps = plan.get('steps')
+    rows = read_json(rows_pin['path']).get('rows')
+    queries = capture.get('queries')
+    if (not crisis20_plan_matches(context, steps, capture.get('name'), 3) or not isinstance(steps, list)
+            or not isinstance(rows, list) or len(rows) != 2 or not isinstance(queries, list) or len(queries) != 2):
         raise ValueError('Exactly two original readonly rows required')
     pid=object_field(capture,'retained_process').get('pid');identities=[]
     if type(pid)is not int or not isinstance(pid,int) or pid<=0:raise ValueError('Original retained Game identity required')
-    for value,step,item in zip(rows,plan['steps'],queries):
+    for value, step, item in zip(rows, steps, queries):
         row=json_object(value);query=json_object(item);dto=checked_capture_pin(query.get('dto'));result=object_field(row,'result')
         if (row.get('id')!=json_object(step)['id'] or row.get('plan')!=step or row.get('ok')is not True
                 or not row.get('finished_at') or row.get('error') or result.get('result_unknown')is True
@@ -5067,7 +5086,8 @@ def _c20_pair(context: JsonObject, reference: object, phase: JsonObject, date: o
                 or object_field(full,'played_character').get('character_id')!=result.get('viewer_played_character_id')
                 or any(result.get(k)is not True for k in ('accepted','application_main_observed','full_snapshot_before_verified','full_snapshot_after_verified','source_abi_pins_verified'))):
             raise ValueError('Actual same retained process/generation/current paused Full and qualified readonly DTO required')
-        if type(result.get('owner_thread_id'))is not int or not isinstance(result.get('owner_thread_id'),int) or result['owner_thread_id']<=0:
+        owner_thread_id = result.get('owner_thread_id')
+        if type(owner_thread_id) is not int or owner_thread_id <= 0:
             raise ValueError('Actual positive Native thread ID required')
         _irt_number(result.get('query_sequence'),positive=True)
         _irt_number(result.get('completed_application_frame'),positive=True)
@@ -5093,16 +5113,27 @@ def _c20_window(context: JsonObject, reference: object, phase: JsonObject, day_p
             or row.get('reason')not in ('BOUNDED_WINDOW_COMPLETE_NO_NEW_PAIR','TWO_ACTUAL_EMPTY_OBSERVATIONS','MAXIMUM_PAIRS_COMPLETE')
             or not isinstance(pairs,list) or not 1<=len(pairs)<=15 or not isinstance(offsets,list) or len(offsets)!=len(pairs)):
         raise ValueError('Original successful bounded observation window required; no rotation or delivery inference')
-    if any(type(v)not in (int,float) or not isinstance(v,(int,float)) or not math.isfinite(v) or v<0 or v>42.1 for v in offsets):
-        raise ValueError('Actual finite within-window submission times required')
-    if any(b-a<2.99 for a,b in zip(offsets,offsets[1:])):raise ValueError('Actual pair submissions must remain spaced')
-    elapsed=row.get('elapsed_seconds')
-    if type(elapsed)not in (int,float) or not isinstance(elapsed,(int,float)) or not math.isfinite(elapsed) or not offsets[-1]<=elapsed<=45.1:
+    submission_offsets: list[int | float] = []
+    for offset in offsets:
+        if (type(offset) not in (int, float) or not isinstance(offset, (int, float))
+                or not math.isfinite(offset) or not 0 <= offset <= 42.1):
+            raise ValueError('Actual finite within-window submission times required')
+        submission_offsets.append(offset)
+    if any(b - a < 2.99 for a, b in zip(submission_offsets, submission_offsets[1:])):
+        raise ValueError('Actual pair submissions must remain spaced')
+    elapsed = row.get('elapsed_seconds')
+    if (type(elapsed) not in (int, float) or not isinstance(elapsed, (int, float))
+            or not math.isfinite(elapsed) or not submission_offsets[-1] <= elapsed <= 45.1):
         raise ValueError('Original bounded wall-clock window required')
     accepted: list[FilePin] = []; ids: list[object] = []
     for item in pairs:
-        p=checked_capture_pin(item);capture=_c20_pair(context,p,json_object({'evidence':[p]}),date)
-        accepted.append(p);ids.extend(json_object(v)['id']for v in capture['queries'])
+        p = checked_capture_pin(item)
+        capture = _c20_pair(context, p, json_object({'evidence': [p]}), date)
+        queries = capture.get('queries')
+        if not isinstance(queries, list):
+            raise ValueError('Complete unique original query union required; never replay or omit attempts')
+        accepted.append(p)
+        ids.extend(json_object(value)['id'] for value in queries)
     if len({p['path']for p in accepted})!=len(accepted) or row.get('attempted_ids')!=ids or len(set(ids))!=len(ids):
         raise ValueError('Complete unique original query union required; never replay or omit attempts')
     return accepted
@@ -5178,13 +5209,13 @@ def _c20_capture(context: JsonObject, reference: object, phase: JsonObject) -> J
                      or original.get('status')!='available' or original.get('result_unknown')is True):
                 raise ValueError('Unchanged exact Native readonly DTO required')
     day=object_field(json_object(rows[0]),'result')
-    before=object_field(day,'before');after=object_field(day,'after')
-    if (day.get('requested_days')!=1 or day.get('requested_interval_complete') is not True
-            or type(before.get('date_raw')) is not int or type(after.get('date_raw')) is not int
-            or after['date_raw']!=before['date_raw']+24):
+    before_date = object_field(day, 'before').get('date_raw')
+    after_date = object_field(day, 'after').get('date_raw')
+    if (day.get('requested_days') != 1 or day.get('requested_interval_complete') is not True
+            or type(before_date) is not int or type(after_date) is not int or after_date != before_date + 24):
         raise ValueError('Actual exact one-day completion required; no event-boundary interpolation')
-    for item in queries:
-        if json_object(read_json(file_pin(json_object(item)['dto'])['path'])).get('date_raw')!=after['date_raw']:
+    for query in queries:
+        if read_json(file_pin(json_object(query)['dto'])['path']).get('date_raw') != after_date:
             raise ValueError('Readonly queries must be the same actual completed day')
     return capture
 
@@ -5223,7 +5254,10 @@ def _c20_review(context: JsonObject, compiled: JsonObject, phases: JsonObject,
         raise ValueError('Actual role accounts crossed the emitted request')
     for value in bindings:
         binding=json_object(value);_irt_character(binding['actor_id']);_futures_gui_evidence(binding['evidence'],base_phase)
-    if not all(isinstance(v,list) and len(v)==20 for v in (scenes,journal,visible)) or not isinstance(controls,list) or len(controls)!=6:
+    if (not isinstance(scenes, list) or len(scenes) != 20
+            or not isinstance(journal, list) or len(journal) != 20
+            or not isinstance(visible, list) or len(visible) != 20
+            or not isinstance(controls, list) or len(controls) != 6):
         raise ValueError('Twenty distinct scene/journal/local columns and six controls required')
     branch_count=journal_count=visible_count=0
     actor_map={_coin_campaign_uint(json_object(v)['account_id']):_irt_character(json_object(v)['actor_id']) for v in bindings}
