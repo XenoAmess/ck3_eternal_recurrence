@@ -11,6 +11,8 @@ import org.xar.ck3.save.SaveContracts.*;
 
 /** Bounded selected records; inventory IDs are deliberately absent from this wire contract. */
 public final class SelectedInspection {
+    private static final int MAX_SELECTED_IDS = SaveContracts.MAX_SELECTED_TABLES * SaveContracts.MAX_SELECTED_IDS_PER_TABLE;
+
     private SelectedInspection() { }
     public enum InventoryAssessment { OMITTED_NOT_QUALIFIED }
     public record Selected(List<Scope> scopes, List<RecordObservation> records, List<ProjectionScope> projections,
@@ -19,8 +21,8 @@ public final class SelectedInspection {
         public Selected {
             scopes = List.copyOf(scopes); records = List.copyOf(records); projections = List.copyOf(projections);
             projectionObservations = List.copyOf(projectionObservations); rootKeys = List.copyOf(rootKeys); rootScalars = List.copyOf(rootScalars);
-            if (tokens < 0 || selectedTokenBytes < 0 || selectedTokenBytes > 4 * 1024 * 1024 || scopes.size() > 897
-                    || records.size() > 896 || projections.size() > 65536 || rootKeys.size() > 512 || rootScalars.size() > 512)
+            if (tokens < 0 || selectedTokenBytes < 0 || selectedTokenBytes > 4 * 1024 * 1024 || scopes.size() > MAX_SELECTED_IDS + 1
+                    || records.size() > MAX_SELECTED_IDS || projections.size() > 65536 || rootKeys.size() > 512 || rootScalars.size() > 512)
                 throw new IllegalArgumentException("bounded selected projection required");
         }
     }

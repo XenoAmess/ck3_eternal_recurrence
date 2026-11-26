@@ -92,7 +92,7 @@ public final class SaveStream {
             if (kind == ScopeKind.METADATA) continue;
             TableSelection table = selection.tables().stream().filter(t -> t.kind() == kind).findFirst().orElse(null);
             if (table == null) {
-                inventories.add(new Inventory(kind, List.of(), Availability.UNKNOWN_LAYOUT, List.of()));
+                if (kind != ScopeKind.TITLE) inventories.add(new Inventory(kind, List.of(), Availability.UNKNOWN_LAYOUT, List.of()));
                 continue;
             }
             boolean observed = seen.contains(kind);

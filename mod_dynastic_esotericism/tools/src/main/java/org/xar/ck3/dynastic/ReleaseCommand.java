@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import org.xar.ck3.dynastic.acceptance.EmpireRestoreEvidence;
 import org.xar.ck3.dynastic.acceptance.FixtureEmitter;
 import org.xar.ck3.dynastic.acceptance.SharedRuntimeComposer;
 import org.xar.ck3.dynastic.artwork.SectArtworkImporter;
@@ -29,7 +30,7 @@ public final class ReleaseCommand implements QuarkusApplication {
     @Override
     public int run(String... args) {
         try {
-            if (args.length == 0) throw new IllegalArgumentException("expected validate, build, verify, check, fixture, runtime, artwork, inspect-save-v4, inspect-save-selected-v1, inspect-save-opinions-v1 or inspect-save-house-parents-v1");
+            if (args.length == 0) throw new IllegalArgumentException("expected validate, build, verify, check, fixture, runtime, artwork, inspect-save-v4, inspect-save-selected-v1, inspect-save-opinions-v1, inspect-save-house-parents-v1, empire-restore or empire-restore-package");
             if (args[0].equals("artwork")) {
                 if (args.length != 3) throw new IllegalArgumentException("expected artwork <uploaded-zip> <mod-source>");
                 System.out.println(JSON.writerWithDefaultPrettyPrinter().writeValueAsString(
@@ -40,6 +41,8 @@ public final class ReleaseCommand implements QuarkusApplication {
             if (args[0].equals("inspect-save-selected-v1")) return org.xar.ck3.save.SelectedInspection.run(Arrays.copyOfRange(args, 1, args.length), saveDecoder);
             if (args[0].equals("inspect-save-opinions-v1")) return org.xar.ck3.save.OpinionInspection.run(Arrays.copyOfRange(args, 1, args.length), saveDecoder);
             if (args[0].equals("inspect-save-house-parents-v1")) return org.xar.ck3.save.HouseParentInspection.run(Arrays.copyOfRange(args, 1, args.length), saveDecoder);
+            if (args[0].equals("empire-restore")) return EmpireRestoreEvidence.run(Arrays.copyOfRange(args, 1, args.length));
+            if (args[0].equals("empire-restore-package")) return EmpireRestoreEvidence.packageRun(Arrays.copyOfRange(args, 1, args.length));
             if (args[0].equals("fixture")) return FixtureEmitter.run(Arrays.copyOfRange(args, 1, args.length));
             if (args[0].equals("runtime")) return SharedRuntimeComposer.run(Arrays.copyOfRange(args, 1, args.length));
             ParsedOptions parsed = parse(Arrays.copyOfRange(args, 1, args.length));
