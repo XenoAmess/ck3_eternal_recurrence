@@ -92,8 +92,8 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
         RootOrdinaryWorkerLoop.Result result = null;
         Throwable primary = null;
         try {
-            prepared = imported||savedResume||importedLoaded?RootOrdinaryRuntimeAssembly.prepareExistingSaved(config,clock):
-                    loaded?RootOrdinaryRuntimeAssembly.prepareLoadedReplacement(config,clock):RootOrdinaryRuntimeAssembly.prepare(config,clock);
+            prepared = loaded||importedLoaded?RootOrdinaryRuntimeAssembly.prepareLoadedReplacement(config,clock):
+                    imported||savedResume?RootOrdinaryRuntimeAssembly.prepareExistingSaved(config,clock):RootOrdinaryRuntimeAssembly.prepare(config,clock);
             prepared.bindOrdinaryHost(ordinaryHost);
             if("retire-exited".equals(mode)) {
                 // This branch precedes NativeGameAttachment: an exited original cannot supply a HELLO or current map.
