@@ -30,8 +30,9 @@ bool LydGuiSceneSample267V1(std::uintptr_t image,LydFrame267V1 &out,std::string 
   if(!children(events,"character_event",unused,&e.event_roots)||e.event_roots.size()>32)
    return fail("lyd_complete_character_event_root_census_invalid");
   if(full111_ordinary_only){
-   if(e.event_roots.size()!=1||!e.event_roots.front().visible)
-    return fail("current111_ordinary_visible_event_not_single");
+   if(e.event_roots.empty()||std::any_of(e.event_roots.begin(),e.event_roots.end(),
+       [](const LydNamedRoot267V1 &root){return !root.visible;}))
+    return fail("current111_ordinary_visible_event_unavailable");
    GuiWindowNodeV1 top,fullscreen;
    for(const auto &node:out.witness){
     if(node.parent==events.widget&&node.visible&&node.name!="character_event")
@@ -69,6 +70,33 @@ bool ReadLydFrameOnOwner267V1(const ReadonlyBindings&b,ck3_11906::MainThreadQuer
  }catch(...){reason="lyd_actual_owner_frame_exception";return false;}
 }
 #if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_SNAPSHOT_V1
+namespace {
+bool SameFull111ForegroundSourcesV1(std::uintptr_t image,const Full111OrdinaryEventWitnessV1 &witness) noexcept {
+ const auto &scene=witness.scene;
+ const auto &census=witness.raw.manager_census;
+ std::array<std::uint8_t,full111_event_top_pins::kIsOnTopBody.size()> entry{};
+ if(!At(image,full111_event_top_pins::kIsOnTopRva,entry)||entry!=full111_event_top_pins::kIsOnTopBody)
+  return false;
+ std::uintptr_t manager=0,owner=0;
+ std::array<std::byte,16> header{};
+ if(!At(scene.gfx,0x28,manager)||!manager||manager!=census.manager||
+     !At(manager,0,owner)||owner!=scene.jomini||!At(manager,0x18,header)||header!=census.windows_header)
+  return false;
+ for(std::size_t i=0;i<census.window_pointers.size();++i){
+  std::uintptr_t resident=0;
+  if(!At(census.windows,i*sizeof(resident),resident)||resident!=census.window_pointers[i])return false;
+ }
+ for(const auto &row:witness.raw.event_rows){
+  std::uintptr_t vt=0,root=0,context=0,popup_owner=0;
+  // This is the controller and owner read by the stock predicate.
+  if(!At(row.controller,0,vt)||vt!=image+0x4C5D448||
+     !At(row.controller,0x70,root)||root!=row.root||
+     !At(row.controller,0x78,context)||context!=scene.context||
+     !At(row.controller,0xB0,popup_owner)||popup_owner!=manager)return false;
+ }
+ return true;
+}
+}
 bool ReadFull111OrdinaryEventOnOwnerV1(const ReadonlyBindings &bindings,
  const ck3_1210::CoreSnapshotPrefix &core,std::uintptr_t game,std::uintptr_t jomini,
  std::uint64_t wall,std::uint64_t mono,const void *owner_context,
@@ -94,7 +122,12 @@ bool ReadFull111OrdinaryEventOnOwnerV1(const ReadonlyBindings &bindings,
      !LydGuiSceneSample267V1(bindings.module_base,second,reason,unexpired,true)||
      first.scene!=second.scene||first.witness!=second.witness||!still_owned(owner_context))return false;
  out.scene=std::move(second.scene);out.widgets=std::move(second.witness);
- return true;
+ if(out.queue.count==1)return true;
+ full111_event_queue::Sample final_queue{};
+ return Full111ForegroundEventRootV1(out)!=0 &&
+     SameFull111ForegroundSourcesV1(bindings.module_base,out) &&
+     full111_event_queue::Capture(bindings,game,final_queue) && final_queue==out.queue &&
+     unexpired() && still_owned(owner_context);
 }
 #endif
 #endif

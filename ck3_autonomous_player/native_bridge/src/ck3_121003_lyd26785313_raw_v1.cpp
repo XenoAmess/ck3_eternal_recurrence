@@ -223,7 +223,7 @@ bool ReadFull111LydEventsWithQueueV1([[maybe_unused]]const ReadonlyBindings&bind
 #if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_READ_V1
  full111_event_queue::Sample before{},after{};
  if(request.action!=LydAction267V1::query_events||!core.clock.paused||
-     !full111_event_queue::Capture(bindings,owner_game,before)||(witness&&before.count!=1)){
+     !full111_event_queue::Capture(bindings,owner_game,before)){
   reason="current111_ordinary_event_queue_unavailable";return false;
  }
  if(!ReadLydRaw267V1(bindings,core,scene,mono,request,{},out,reason))return false;

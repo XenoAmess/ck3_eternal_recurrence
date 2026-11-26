@@ -116,10 +116,45 @@ struct EventFixture {
  std::array<void*,2> rows{full.entry.data(),full.living.data()};
  unsigned calls=0;
  bool hidden=false,different_actor=false,wrong_runtime=false,mixed=false,owner_lost=false,window_drift=false,queue_drift=false;
+ bool multiple=false,reverse_gui=false,gui_drift=false,unread_child=false,unread_child_hidden=false,missing_queue_row=false;
  std::int32_t instance=17,authored_count=3;
  static constexpr std::size_t items=0x44BC0+0x1F18,capacity=items+8,count=items+12;
  explicit EventFixture(Fixture &f):full(f){
   Put(f.data,items,rows.data());Put(f.data,capacity,std::int32_t{2});Put(f.data,count,std::int32_t{1});
+ }
+ void CaptureMultiple(const ck::CoreSnapshotPrefix &core,producer::Full111OrdinaryEventWitnessV1 &w){
+  constexpr std::uintptr_t global=0x9000,layer=0xA000,first_root=0x1000,another_root=0x1100;
+  w.queue.count=2;
+  std::transform(rows.begin(),rows.end(),w.queue.rows.begin(),[](const void *row){
+   return reinterpret_cast<std::uintptr_t>(row);
+  });
+  w.scene.global=global;w.scene.events_layer=layer;
+  auto &events_layer=w.widgets.emplace_back();
+  events_layer.widget=layer;events_layer.parent=global;events_layer.name="events";
+  events_layer.child_count=unread_child?3:2;
+  const bool reversed=reverse_gui!=(gui_drift&&calls==2);
+  for(std::uint32_t i=0;i<2;++i){
+   const bool first=(i==0)!=reversed;
+   const auto root=first?first_root:another_root;
+   w.scene.event_roots.push_back({root,true,true});
+   auto &widget=w.widgets.emplace_back();
+   widget.widget=root;widget.parent=layer;widget.sibling_index=i;widget.name="character_event";widget.visible=true;
+   auto &event=w.raw.source.events->events.emplace_back();
+   event.instance_id=first?17:41;event.authored_option_count=first?3:5;
+   event.recipient_character_id=core.played_character_id;event.window_visible=event.named_root_bound=true;
+   auto &row=w.raw.event_rows.emplace_back();
+   row.controller=first?0x3000:0x3100;row.root=root;row.definition=0x5000;
+   row.runtime=reinterpret_cast<std::uintptr_t>(first?full.entry.data():full.living.data());
+   row.instance_id=event.instance_id;row.material.authored_option_count=event.authored_option_count;
+   row.material.game=w.raw.manager_census.game;
+  }
+  if(unread_child){
+   auto &widget=w.widgets.emplace_back();
+   widget.widget=0x6000;widget.parent=layer;widget.sibling_index=2;widget.name="unread_popup";
+   widget.flags=unread_child_hidden?8U:16U;
+  }
+  if(missing_queue_row)w.queue.rows[1]=0x4000;
+  w.raw.source.events->named_root_count=2;
  }
  static bool Capture(void *opaque,const ck::CoreSnapshotPrefix &core,producer::Full111OrdinaryEventWitnessV1 &w){
   auto &f=*static_cast<EventFixture *>(opaque);
@@ -134,10 +169,11 @@ struct EventFixture {
   w.raw.source.kind=w.scene.kind;
   w.scene.jomini=reinterpret_cast<std::uintptr_t>(f.full.jomini.data());
   const std::uintptr_t root=f.window_drift&&f.calls==2?0x2000:0x1000;
-  w.scene.event_roots.push_back({root,!f.hidden,true});
   w.raw.manager_census.game=reinterpret_cast<std::uintptr_t>(f.full.state.data());
   auto &public_events=w.raw.source.events.emplace();
   public_events.census_complete=true;
+  if(f.multiple){f.CaptureMultiple(core,w);return true;}
+  w.scene.event_roots.push_back({root,!f.hidden,true});
   public_events.named_root_count=f.mixed?2:1;
   auto &event=public_events.events.emplace_back();
   event.instance_id=f.instance;
@@ -181,9 +217,31 @@ void RunEventFixture(Fixture &full,xar::game::Snapshot &out,ck::FullSnapshotDiag
  const auto refused=[&](std::string_view why){
   Need(!event.Read(out,d)&&out==xar::game::Snapshot{}&&!d.complete&&d.reason==why,why.data());
  };
+ Put(full.data,event.count,std::int32_t{33});
+ refused("current111_ordinary_event_queue_out_of_bounds");
+ Need(event.calls==0,"out-of-bounds runtime count refuses before the GUI read");
  Put(full.data,event.count,std::int32_t{2});
- refused("current111_ordinary_event_queue_not_single");
- Need(event.calls==0,"ambiguous runtime count refuses before the GUI read");
+ refused("current111_ordinary_event_witness_mismatch");
+ event.multiple=true;
+ Need(event.Read(out,d)&&d.completed_passes==2&&out.active_event_instance_id==41&&
+      out.active_event_option_count==5,"second GUI child is stock foreground despite first queued event");
+ const auto two_event_encoded=serialize(out,&opted_in);
+ Need(two_event_encoded==R"({"type":"state_snapshot","active_event":{"schema":"ck3_121003_full111_ordinary_event_v1","instance_id":41,"authored_option_count":5}})",
+      "proved foreground keeps the same authored summary schema");
+ std::cout<<two_event_encoded<<'\n';
+ std::swap(event.rows[0],event.rows[1]);
+ Need(event.Read(out,d)&&out.active_event_instance_id==41,"runtime order does not choose foreground");
+ event.reverse_gui=true;
+ Need(event.Read(out,d)&&out.active_event_instance_id==17&&out.active_event_option_count==3,
+      "same queue, changed stock GUI order changes foreground");
+ event.gui_drift=true;refused("current111_full_observations_changed");event.gui_drift=false;
+ event.unread_child=true;refused("current111_ordinary_event_foreground_unavailable");
+ event.unread_child_hidden=true;
+ Need(event.Read(out,d)&&out.active_event_instance_id==17,"stock hidden bit excludes the extra popup");
+ event.unread_child=event.unread_child_hidden=false;
+ event.missing_queue_row=true;refused("current111_ordinary_event_foreground_unavailable");event.missing_queue_row=false;
+ event.multiple=event.reverse_gui=false;
+ std::swap(event.rows[0],event.rows[1]);
  Put(full.data,event.count,std::int32_t{1});
  event.hidden=true;refused("current111_ordinary_event_witness_mismatch");event.hidden=false;
  event.mixed=true;refused("current111_ordinary_event_witness_mismatch");event.mixed=false;

@@ -119,7 +119,8 @@ bool ReadEventQueue(const Roots &r,const CoreSnapshotPrefix &p,xar::game::Snapsh
  if(count<0||(count>0&&!items))return Fail(d,"event","current111_event_queue_header_invalid");
  if(count==0)return true;
  if(!reader||!reader->read)return Fail(d,"event","current111_nonempty_event_lifetime_unavailable");
- if(count!=1)return Fail(d,"event","current111_ordinary_event_queue_not_single");
+ if(static_cast<std::size_t>(count)>build26785313::full111_event_queue::kMaximumRows)
+  return Fail(d,"event","current111_ordinary_event_queue_out_of_bounds");
  auto &witness=observed.emplace();
  if(!reader->read(reader->context,p,witness))
   return Fail(d,"event","current111_ordinary_event_owner_observation_unavailable");
@@ -127,26 +128,39 @@ bool ReadEventQueue(const Roots &r,const CoreSnapshotPrefix &p,xar::game::Snapsh
  const auto &roots=witness.scene.event_roots;
  const auto &raw=witness.raw;
  const auto &source=raw.source.events;
+ const auto size=static_cast<std::size_t>(count);
  if(queue.game_data!=reinterpret_cast<std::uintptr_t>(r.data)||
      queue.items!=reinterpret_cast<std::uintptr_t>(items)||queue.count!=count||
      witness.scene.kind!=build26785313::LydKind267V1::events||raw.source.kind!=witness.scene.kind||
      witness.scene.jomini!=reinterpret_cast<std::uintptr_t>(r.jomini)||
-     roots.size()!=1||!roots.front().visible||!source||!source->census_complete||
-     source->named_root_count!=1||source->events.size()!=1||raw.event_rows.size()!=1||
+     roots.size()!=size||!source||!source->census_complete||
+     source->named_root_count!=count||source->events.size()!=size||raw.event_rows.size()!=size||
      !raw.cleanup_known||raw.manager_census.game!=reinterpret_cast<std::uintptr_t>(r.game))
   return Fail(d,"event","current111_ordinary_event_witness_mismatch");
- const auto &event=source->events.front();
- const auto &row=raw.event_rows.front();
- if(event.instance_id<=0||event.instance_id!=row.instance_id||
-     event.recipient_character_id!=p.played_character_id||!event.window_visible||!event.named_root_bound||
-     event.authored_option_count<0||event.authored_option_count>64||
-     event.authored_option_count!=row.material.authored_option_count||
-     !row.controller||!row.root||row.root!=roots.front().widget||
-     !row.runtime||row.runtime!=queue.rows.front()||!row.definition)
-  return Fail(d,"event","current111_ordinary_event_identity_mismatch");
+ const auto foreground=count==1?roots.front().widget:build26785313::Full111ForegroundEventRootV1(witness);
+ if(!foreground || (count>1 && !build26785313::full111_event_queue::Matches(queue,
+     reinterpret_cast<std::uintptr_t>(r.game),p.played_character_id,raw)))
+  return Fail(d,"event","current111_ordinary_event_foreground_unavailable");
+ const build26785313::LydEventRow267V1 *selected=nullptr;
+ for(std::size_t i=0;i<size;++i){
+  const auto &root=roots[i];const auto &event=source->events[i];const auto &row=raw.event_rows[i];
+  if(!root.visible||event.instance_id<=0||event.instance_id!=row.instance_id||
+      event.recipient_character_id!=p.played_character_id||!event.window_visible||!event.named_root_bound||
+      event.authored_option_count<0||event.authored_option_count>64||
+      event.authored_option_count!=row.material.authored_option_count||
+      !row.controller||!row.root||row.root!=root.widget||!row.runtime||!row.definition||
+      (count==1&&row.runtime!=queue.rows.front()))
+   return Fail(d,"event",!root.visible?"current111_ordinary_event_witness_mismatch":
+       "current111_ordinary_event_identity_mismatch");
+  if(root.widget==foreground){
+   if(selected)return Fail(d,"event","current111_ordinary_event_foreground_unavailable");
+   selected=&event;
+  }
+ }
+ if(!selected)return Fail(d,"event","current111_ordinary_event_foreground_unavailable");
  s.has_active_event=true;
- s.active_event_instance_id=event.instance_id;
- s.active_event_option_count=event.authored_option_count;
+ s.active_event_instance_id=selected->instance_id;
+ s.active_event_option_count=selected->authored_option_count;
  return true;
 }
 #if defined(XAR_CK3_ENABLE_121003_OWNED_ARMY123)

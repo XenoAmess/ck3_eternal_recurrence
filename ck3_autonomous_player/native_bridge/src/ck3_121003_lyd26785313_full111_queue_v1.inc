@@ -19,22 +19,4 @@ bool Capture(const ReadonlyBindings&bindings,std::uintptr_t owner_game,Sample&ou
  return true;
 }
 
-bool Matches(const Sample&queue,std::uintptr_t owner_game,std::int32_t played_character,
- const LydRaw267V1&raw)noexcept{
- if(raw.manager_census.game!=owner_game||!raw.source.events||
-     raw.event_rows.size()!=static_cast<std::size_t>(queue.count)||
-     raw.event_rows.size()!=raw.source.events->events.size())return false;
- const auto end=queue.rows.begin()+queue.count;
- std::array<bool,kMaximumRows> matched{};
- for(std::size_t i=0;i<raw.event_rows.size();++i){
-  const auto&typed=raw.event_rows[i];
-  const auto&event=raw.source.events->events[i];
-  if(typed.material.game!=owner_game||typed.instance_id!=event.instance_id||
-      event.recipient_character_id!=played_character||!typed.runtime)return false;
-  const auto row=std::find(queue.rows.begin(),end,typed.runtime);
-  if(row==end||matched[static_cast<std::size_t>(row-queue.rows.begin())])return false;
-  matched[static_cast<std::size_t>(row-queue.rows.begin())]=true;
- }
- return true;
-}
 }
