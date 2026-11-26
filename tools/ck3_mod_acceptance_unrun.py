@@ -19,6 +19,7 @@ ABORTED_KIND = 'wrapper-aborted-before-launch-without-terminal-waits'
 CLOSED_KEEPER_ABORTED_KIND: Literal['wrapper-aborted-before-launch-with-closed-keeper'] = 'wrapper-aborted-before-launch-with-closed-keeper'
 OFFLINE_TTL_KIND: Literal['pre-intent-background-offline-ttl-refused'] = 'pre-intent-background-offline-ttl-refused'
 PRELAUNCH_KIND: Literal['prelaunch-orchestrator-failed-with-observed-waits'] = 'prelaunch-orchestrator-failed-with-observed-waits'
+ROOT_COOPERATIVE_STOP_KIND = 'root-cooperative-stop-before-public-run'
 SERIAL_PRELAUNCH_FORMAT: Literal['root-serial-prepublic-original-waits-v1'] = 'root-serial-prepublic-original-waits-v1'
 CAPACITY_WAIT_KIND: Literal['root-capacity-wait-timeout-before-public'] = 'root-capacity-wait-timeout-before-public'
 CAPACITY_WAIT_FORMAT: Literal['root-serial-external-capacity-wait-v1'] = 'root-serial-external-capacity-wait-v1'
@@ -2227,15 +2228,36 @@ def _allocator_argv(bundle: Mapping[str, object], machine: str, keeper_stamps: l
          or (external and not combined and not any(k in bundle for k in keys))
          or (not combined and not external and all(k in bundle for k in keys)),
          'One complete original allocator evidence form required')
-    def original(key):
-        ref=bundle[key];check_pin(Path(ref['path']),ref);return _read(ref['path'])
+    def original(key: str) -> JsonObject:
+        return json_object(_pinned_object(bundle.get(key), 'Original allocator ' + key))
     if external:
         external_command=parse_external_exec_completion(original('allocator_external_exec'),machine,
             keeper_stamps,bundle.get('allocator_stdout'))
         argv=list(external_command.argv)
     elif combined:
         command=original('allocator_result')
-        if command.get('original_subprocess_wait_observed') is True:
+        if (bundle.get('closure_kind') == ROOT_COOPERATIVE_STOP_KIND
+                and command.get('schema') == 'xar.resume-original-command-wait.v1'):
+            request = json_object(_pinned_object(command.get('request'), 'Original allocator request'))
+            stdout = _evidence_pin(command.get('stdout'), 'Original allocator stdout')
+            stderr = _evidence_pin(command.get('stderr'), 'Original allocator stderr')
+            for reference in (stdout, stderr):
+                check_pin(Path(reference['path']), dict(reference))
+            started = _timestamp(command.get('started_at_utc'), 'Original allocator start')
+            finished = _timestamp(command.get('finished_at_utc'), 'Original allocator wait')
+            argv = strings_field(command, 'argv')
+            _integer(command.get('pid'), 'Original allocator PID', 1)
+            if (command.get('machine_id') != machine or request.get('machine_id') != machine
+                    or command.get('actual_original_popen_wait') is not True
+                    or command.get('timed_out') is not False
+                    or _integer(command.get('exit_code'), 'Original allocator exit') != 0
+                    or strings_field(request, 'argv') != argv
+                    or 'timeout_seconds' not in request
+                    or type(request['timeout_seconds']) not in (int, type(None))
+                    or _evidence_pin(bundle.get('allocator_stdout'), 'Closure allocator stdout') != stdout
+                    or not started <= keeper_stamps[0] <= keeper_stamps[-1] <= finished):
+                raise ValueError('Actual original Java ProcessBuilder allocator wait0 differs')
+        elif command.get('original_subprocess_wait_observed') is True:
             argv,finished=public_operation_argv(bundle['allocator_command'],bundle['allocator_result'],
                 machine_id=machine,mode='allocate',exit_code=0)
             need(keeper_stamps[-1]<=finished,'Actual allocator completion predates keeper exit')
@@ -2838,22 +2860,46 @@ def _capacity_wait_release(bundle: Mapping[str,object], keeper: JsonObject, rele
         'closed_task_stale':stale,'expired_waiting_release_sequence':_sequence(event,'sequence')})
 
 
+def _root_cooperative_stop(bundle: JsonObject, keeper_root: Path, machine: str,
+                           ready_at: datetime, closed_at: datetime) -> FilePin:
+    stop_path = keeper_root / 'STOP'
+    stop_ref = _evidence_pin(bundle.get('keeper_STOP'), 'Cooperative STOP pin')
+    if Path(stop_ref['path']).resolve() != stop_path.resolve():
+        raise ValueError('Cooperative STOP path differs')
+    check_pin(stop_path, dict(stop_ref))
+    stop = _read(stop_path)
+    if set(stop) != {'machine_id', 'reason', 'observed_at_utc'} or stop.get('machine_id') != machine:
+        raise ValueError('Cooperative STOP shape or machine differs')
+    reason = text_field(stop, 'reason')
+    if len(reason) > 512 or not reason.isprintable():
+        raise ValueError('Cooperative STOP reason must be bounded printable text')
+    stopped_at = _timestamp(stop.get('observed_at_utc'), 'Cooperative STOP time')
+    if not ready_at <= stopped_at <= closed_at:
+        raise ValueError('Cooperative STOP chronology differs')
+    return stop_ref
+
+
 def validate_allocated_unrun(previous: Path, freeze: object, close_path: Path, keeper_root: Path,
         release: object, bus_packet: object, *, next_state: Path | None = None) -> JsonObject:
     freeze=json_object(freeze);release=json_object(release);bus_packet=json_object(bus_packet)
-    capacity_wait = _read(close_path).get('closure_kind') == CAPACITY_WAIT_KIND
-    serial = _read(close_path).get('receipt_format') == SERIAL_PRELAUNCH_FORMAT
-    if serial or capacity_wait:
-        state = Path(text_field(json_object(freeze), 'state_dir')).resolve()
-        if (not isinstance(next_state, Path) or next_state.resolve() == state
-                or next_state.resolve().is_relative_to(state) or state.is_relative_to(next_state.resolve())):
-            raise ValueError('Serial prelaunch recovery requires a separate next state')
-    if _read(close_path).get('closure_kind') == OFFLINE_TTL_KIND:
+    bundle = _read(close_path)
+    kind = bundle.get('closure_kind')
+    capacity_wait = kind == CAPACITY_WAIT_KIND
+    root_stop = kind == ROOT_COOPERATIVE_STOP_KIND
+    serial = bundle.get('receipt_format') == SERIAL_PRELAUNCH_FORMAT
+    if serial or capacity_wait or root_stop:
+        state = Path(text_field(freeze, 'state_dir')).resolve()
+        if not isinstance(next_state, Path):
+            raise ValueError('Prelaunch recovery requires a separate next state')
+        successor = next_state.resolve()
+        if successor.is_relative_to(state) or state.is_relative_to(successor):
+            raise ValueError('Prelaunch recovery requires a separate next state')
+    if kind == OFFLINE_TTL_KIND:
         if not isinstance(next_state, Path):
             raise ValueError('TTL-refused allocation requires a separate next state')
         return validate_pre_intent_offline_ttl_refusal(Path(previous), freeze, Path(close_path),
             Path(keeper_root), release, bus_packet, next_state)
-    if _read(close_path).get('closure_kind') in (ABORTED_KIND, CLOSED_KEEPER_ABORTED_KIND):
+    if kind in (ABORTED_KIND, CLOSED_KEEPER_ABORTED_KIND):
         if not isinstance(next_state,Path):raise ValueError('Aborted allocation requires a new separate state')
         return validate_aborted_allocation_v1(Path(previous),freeze,Path(close_path),Path(keeper_root),release,bus_packet,next_state)
     control_allocator = same_directory_control_peer('ck3_mod_acceptance_allocate')
@@ -2863,7 +2909,7 @@ def validate_allocated_unrun(previous: Path, freeze: object, close_path: Path, k
     resources=_serial_resources()
     import ck3_live_run_id as ids
     previous,keeper_root=Path(previous).resolve(),Path(keeper_root).resolve()
-    bundle=_read(close_path);machine=ids.current_machine_id();run=text_field(freeze,'run_id');task=text_field(freeze,'screen_task')
+    machine=ids.current_machine_id();run=text_field(freeze,'run_id');task=text_field(freeze,'screen_task')
     need(bundle.get('schema')==SCHEMA and bundle.get('run_id')==run and bundle.get('machine_id')==machine
          ==object_field(freeze,'identity_allocation').get('machine_id'),'Unrun full run/machine identity differs')
     need(all(bundle.get(k) is False for k in ('host_started','native_session_started','game_started',
@@ -2882,9 +2928,10 @@ def validate_allocated_unrun(previous: Path, freeze: object, close_path: Path, k
          and keeper.get('entry_error') is None and keeper.get('game_actions') is False
          and parent.get('run_id')==run and parent.get('keeper_actual_exit_code')==0
          and parent.get('keeper_report')==keeper,'Original idle keeper STOP/wait0 unavailable')
-    cooperative=bundle.get('closure_kind')=='launcher-pin-admission-refused-before-launch-intent'
-    prelaunch=bundle.get('closure_kind')==PRELAUNCH_KIND
-    need(bundle.get('closure_kind') is None or cooperative or prelaunch or capacity_wait,'Unknown allocated-unrun closure kind')
+    cooperative=kind=='launcher-pin-admission-refused-before-launch-intent'
+    prelaunch=kind==PRELAUNCH_KIND
+    need(kind is None or cooperative or prelaunch or capacity_wait or root_stop,
+         'Unknown allocated-unrun closure kind')
     refusal_evidence={}
     keeper_ready=_exact(bundle,'keeper_ready',keeper_root/'ready.json')
     if capacity_wait:
@@ -2899,6 +2946,12 @@ def validate_allocated_unrun(previous: Path, freeze: object, close_path: Path, k
         refusal_evidence=validate_prelaunch_orchestrator(bundle,previous=previous,keeper=keeper_root,machine=machine,
             ready_at=_timestamp(keeper_ready.get('at_utc'),'Prelaunch keeper ready'),
             keeper_closed_at=_timestamp(keeper.get('at_utc'),'Prelaunch keeper finished'))
+    elif root_stop:
+        if (previous / 'product-acceptance-purpose.json').exists():
+            raise ValueError('Cooperative early STOP cannot follow public run')
+        refusal_evidence = {'root_cooperative_stop': _root_cooperative_stop(bundle, keeper_root, machine,
+            _timestamp(keeper_ready.get('at_utc'), 'Keeper ready'),
+            _timestamp(keeper.get('at_utc'), 'Keeper closed'))}
     else:
         idle=_exact(bundle,'idle_timeout',previous/'allocation-unused-idle-timeout.json')
         stop=file_pin(bundle.get('keeper_STOP'));need(Path(stop['path']).resolve()==keeper_root/'STOP','Original STOP crossed keeper')
@@ -2907,10 +2960,11 @@ def validate_allocated_unrun(previous: Path, freeze: object, close_path: Path, k
              and idle.get('reason')=='NEVER_LAUNCHED_ALLOCATION_IDLE_TIMEOUT' and idle.get('idle_seconds')==600
              and all(idle.get(k) is False for k in ('game_started','native_session_started','normal_close_qualified','business_pass')),
              'Original unused idle STOP differs')
-    stamps=[_timestamp(v,'Original unused interval') for v in ((keeper_ready['at_utc'],keeper['at_utc']) if cooperative or prelaunch or capacity_wait else
+    bounded_end = cooperative or prelaunch or capacity_wait or root_stop
+    stamps=[_timestamp(v,'Original unused interval') for v in ((keeper_ready['at_utc'],keeper['at_utc']) if bounded_end else
         (keeper_ready['at_utc'],idle['utc'],keeper['at_utc']))]
     need(all(x.tzinfo is not None for x in stamps) and stamps==sorted(stamps)
-         and (cooperative or prelaunch or capacity_wait or (stamps[1]-stamps[0]).total_seconds()>=600),'Original unused interval unproven')
+         and (bounded_end or (stamps[1]-stamps[0]).total_seconds()>=600),'Original unused interval unproven')
     argv=list(_serial_allocator(bundle,machine).argv) if capacity_wait else _allocator_argv(bundle,machine,stamps)
     def argument(name: str) -> str:
         need(argv.count(name)==1 and argv.index(name)+1<len(argv),'Original allocator argument missing: '+name)
@@ -2980,7 +3034,9 @@ def validate_allocated_unrun(previous: Path, freeze: object, close_path: Path, k
         _recovery_input_validation(previous, json_object(freeze), Path(close_path), bundle,
             registry_support=serial or capacity_wait)
     return json_object({'mode':('previous-shared-allocated-unrun-prelaunch-orchestrator-failed' if prelaunch or capacity_wait else
-        'previous-shared-allocated-unrun-launcher-pin-refused' if cooperative else 'previous-shared-allocated-unrun-idle'),'actual_process_inventory':inventory,
+        'previous-shared-allocated-unrun-launcher-pin-refused' if cooperative else
+        'previous-shared-allocated-unrun-root-cooperative-stop' if root_stop else
+        'previous-shared-allocated-unrun-idle'),'actual_process_inventory':inventory,
         'failure_cleanup':{'close':pin(close_path),'original_evidence':{**{k:v for k,v in bundle.items() if k!='counter' and isinstance(v,dict) and 'sha256' in v},**refusal_evidence},
             'absent_launch_native_control_Save':absent,'original_keeper_wait_proven':True,'original_keeper_exit_code':0,
             'host_started':False,'native_session_started':False,'original_host_exit_code':None,
@@ -3227,6 +3283,12 @@ def build_serial_prelaunch_bundle(args: argparse.Namespace) -> UnrunBundleReport
 
 
 def build_bundle(args: argparse.Namespace) -> UnrunBundleReport:
+    root_stop = getattr(args, 'root_cooperative_stop', False)
+    next_state = getattr(args, 'next_state', None)
+    if root_stop and (not isinstance(next_state, Path) or any(getattr(args, name, None) for name in (
+            'capacity_wait_root_wait', 'serial_prelaunch_root_wait', 'aborted_wrapper',
+            'pre_intent_offline_run_result', 'launcher_pin_refusal', 'prelaunch_orchestrator_source'))):
+        raise ValueError('Cooperative early STOP requires its own closure and a separate next state')
     if getattr(args,'capacity_wait_root_wait',None) or getattr(args,'serial_prelaunch_root_wait',None):
         return build_serial_prelaunch_bundle(args)
     if getattr(args,'aborted_wrapper',None):
@@ -3275,6 +3337,9 @@ def build_bundle(args: argparse.Namespace) -> UnrunBundleReport:
         'counter':ids.default_state_root()/machine/text_field(freeze, 'mod_key')/'counter.json'}
     if getattr(args, 'allocator_command', None) is not None:
         paths['allocator_command'] = args.allocator_command
+    if root_stop:
+        row['closure_kind'] = ROOT_COOPERATIVE_STOP_KIND
+        paths.pop('idle_timeout')
     if getattr(args,'launcher_pin_refusal',None):
         row['closure_kind']='launcher-pin-admission-refused-before-launch-intent'
         paths.pop('idle_timeout')
@@ -3336,7 +3401,8 @@ def build_bundle(args: argparse.Namespace) -> UnrunBundleReport:
     reducer: object = validate_allocated_unrun
     if not callable(reducer):
         raise ValueError('Existing allocated-unrun reducer unavailable')
-    verdict=json_object(reducer(live,freeze,Path(bundle['path']),keeper,release,packet))
+    verdict=json_object(reducer(live,freeze,Path(bundle['path']),keeper,release,packet,
+        next_state=next_state if isinstance(next_state, Path) else None))
     return {'bundle':file_pin(bundle),'previous_release':file_pin(proofs['admin_done']),
             'validation':json_object(verdict),'SDK_or_launch':False}
 def build_aborted_bundle_v1(args: argparse.Namespace) -> UnrunBundleReport:
@@ -3406,6 +3472,7 @@ def main() -> None:
     p.add_argument('--prelaunch-orchestrator-started',type=Path)
     p.add_argument('--prelaunch-orchestrator-wait',type=Path)
     roots=p.add_mutually_exclusive_group()
+    roots.add_argument('--root-cooperative-stop',action='store_true')
     roots.add_argument('--serial-prelaunch-root-wait',type=Path,
         help='Known original serial root1/allocator0/guards1/keeper0 before any public run; no idle claim')
     roots.add_argument('--capacity-wait-root-wait',type=Path,

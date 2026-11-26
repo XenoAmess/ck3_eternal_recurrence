@@ -24,6 +24,8 @@ class LockProvider(Protocol):
 
 
 class PrelaunchUnrunWriterAdmissionTests(unittest.TestCase):
+    root_cooperative_stop = False
+    expected_mode = 'previous-shared-allocated-unrun-prelaunch-orchestrator-failed'
     observed_root = False
     phase_guards = False
     intent_root = False
@@ -37,6 +39,14 @@ class PrelaunchUnrunWriterAdmissionTests(unittest.TestCase):
         bundle, self.live, self.keeper, _ = fixture.prelaunch_fixture(observed_root=self.observed_root,
             phase_guards=self.phase_guards, intent_root=self.intent_root, phase_count=self.phase_count,
             before_armed=self.before_armed)
+        if self.root_cooperative_stop:
+            ready = json_object(json.loads((self.keeper / 'ready.json').read_text(encoding='utf-8')))
+            stop = self.keeper / 'STOP'
+            stop.write_text(json.dumps({'machine_id': fixture.machine,
+                'reason': 'Root stopped the allocated fixture before public run',
+                'observed_at_utc': text_field(ready, 'at_utc')}), encoding='utf-8')
+            bundle['closure_kind'] = unrun.ROOT_COOPERATIVE_STOP_KIND
+            bundle['keeper_STOP'] = fixture.reference(stop)
         self.bundle = json_object(bundle)
         self.close = fixture.root / 'closure.json'
         self.close.write_text(json.dumps(bundle), encoding='utf-8')
@@ -126,7 +136,7 @@ class PrelaunchUnrunWriterAdmissionTests(unittest.TestCase):
         self.assertEqual(self.reducer_under_lock, [True])
         intent = json_object(json.loads((record / 'intent.json').read_text(encoding='utf-8')))
         self.assertEqual(object_field(intent, 'closure')['mode'],
-            'previous-shared-allocated-unrun-prelaunch-orchestrator-failed')
+            self.expected_mode)
         self.assertFalse(intent['business_pass'])
 
     def test_host_evidence_appearing_inside_lock_rejects_before_consuming_intent(self) -> None:
@@ -169,6 +179,52 @@ class PrelaunchUnrunWriterAdmissionTests(unittest.TestCase):
 
 class ObservedRootPrelaunchUnrunWriterAdmissionTests(PrelaunchUnrunWriterAdmissionTests):
     observed_root = True
+
+
+class RootCooperativeStopWriterAdmissionTests(PrelaunchUnrunWriterAdmissionTests):
+    root_cooperative_stop = True
+    expected_mode = 'previous-shared-allocated-unrun-root-cooperative-stop'
+
+    def test_pinned_stop_change_inside_lock_cannot_consume_admission(self) -> None:
+        def mutate() -> None:
+            stop = self.keeper / 'STOP'
+            stop.write_bytes(stop.read_bytes() + b'\n')
+
+        with self.assertRaises(ValueError):
+            self.claim(mutate)
+        self.assertEqual(self.reducer_under_lock, [True])
+        self.assert_unconsumed()
+
+    def test_original_java_wait_and_matching_stdout_are_consumed(self) -> None:
+        bundle = dict(self.bundle)
+        intent = unrun._read(file_pin(bundle.pop('allocator_intent'))['path'])
+        waited = unrun._read(file_pin(bundle.pop('allocator_exit'))['path'])
+        process = unrun._read(file_pin(bundle.pop('allocator_process'))['path'])
+        request = self.fixture.root / 'original-java-request.json'
+        request.write_text(json.dumps({'machine_id': self.fixture.machine,
+            'argv': intent['argv'], 'timeout_seconds': None}), encoding='utf-8')
+        stderr = self.fixture.root / 'original-java-stderr.log'
+        stderr.write_bytes(b'')
+        command = {
+            'schema': 'xar.resume-original-command-wait.v1', 'machine_id': self.fixture.machine,
+            'argv': intent['argv'], 'pid': process['pid'],
+            'started_at_utc': intent['started_at_utc'], 'finished_at_utc': waited['finished_at_utc'],
+            'actual_original_popen_wait': True, 'timed_out': False, 'exit_code': 0,
+            'request': self.fixture.reference(request), 'stdout': bundle['allocator_stdout'],
+            'stderr': self.fixture.reference(stderr),
+        }
+        result = self.fixture.root / 'original-java-wait.json'
+        result.write_text(json.dumps(command), encoding='utf-8')
+        bundle['allocator_result'] = json_object(self.fixture.reference(result))
+        self.close.write_text(json.dumps(bundle), encoding='utf-8')
+        self.assertEqual(self.reduce()['mode'], self.expected_mode)
+
+        command['exit_code'] = True
+        result.write_text(json.dumps(command), encoding='utf-8')
+        bundle['allocator_result'] = json_object(self.fixture.reference(result))
+        self.close.write_text(json.dumps(bundle), encoding='utf-8')
+        with self.assertRaisesRegex(ValueError, 'Original allocator exit'):
+            self.reduce()
 
 
 class ThreePhaseRootPrelaunchUnrunWriterAdmissionTests(ObservedRootPrelaunchUnrunWriterAdmissionTests):
