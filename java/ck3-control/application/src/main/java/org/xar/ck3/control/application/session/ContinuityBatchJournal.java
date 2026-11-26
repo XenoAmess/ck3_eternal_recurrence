@@ -9,6 +9,8 @@ import org.xar.ck3.control.application.action.ActionReceipt;
 import org.xar.ck3.control.application.action.ActionCommand;
 import org.xar.ck3.control.application.action.ActionCodec;
 import org.xar.ck3.control.application.action.ActionState;
+import org.xar.ck3.control.application.action.ActionTransitions;
+import org.xar.ck3.control.application.action.GuardEvidence;
 import org.xar.ck3.control.application.action.ActionIds;
 import org.xar.ck3.control.application.action.ActionEffects;
 import org.xar.ck3.control.application.action.ObservationProvenance;
@@ -25,6 +27,7 @@ import org.xar.ck3.control.application.driver.DriverJson;
 import org.xar.ck3.control.application.driver.DriverObservationAssembler;
 import org.xar.ck3.control.application.driver.DriverObservationEvidenceReader;
 import org.xar.ck3.control.application.driver.DriverSnapshotFacts;
+import org.xar.ck3.control.application.effects.RootGuardEvidence;
 import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService;
 import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.RestoreBinding;
 import org.xar.ck3.control.application.lifecycle.LifecycleEpisodeInputs;
@@ -33,6 +36,7 @@ import org.xar.ck3.control.application.checkpoint.CheckpointPair;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
 import org.xar.ck3.control.continuity.ContinuityJson;
 import org.xar.ck3.control.continuity.ContinuityState;
+import org.xar.ck3.control.continuity.SavedContinuityBootstrap;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 import org.xar.ck3.control.continuity.writer.WriterContracts;
@@ -738,7 +742,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     "captured READ crossed its original paused gameplay guards");
             StrictJson.require(read.before().originalBindingSha256().equals(read.after().originalBindingSha256()),
                     "captured READ changed its original complete semantic binding");
-            known=retainReadCapabilities(same,owner,read,known,beforeRef,originals,originalsPins,retainPins);
+            known=retainGuardCapabilities(same,owner,read.before().binding(),known,beforeRef,originals,originalsPins,retainPins);
             // Definition/decoder references remain metadata; only original DATA is pinned.
             if(retainPins){originalsPins.add(same.capturePin(rowRef,WriterContracts.MAX_PIN_BYTES));originalsPins.add(same.capturePin(readRef,WriterContracts.MAX_PIN_BYTES));}
             if(retainPins)for(var ref:source.supportingEvidence())if(!ref.equals(source.definitionSource())&&!ref.equals(source.decoderSource()))
@@ -765,16 +769,15 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 known.actionRows(),new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(auxiliary),known.loop(),Optional.empty());
         return new RetainedReadDriver(facts,afterRef);
     }
-    /** Rebuild persisted historical cache DATA from the exact original READ guard, never a current mint. */
-    private static DriverSnapshotFacts.Known retainReadCapabilities(ContinuityStorePort.Session same,SessionIdentity owner,
-            org.xar.ck3.control.application.action.PlanningReadReceipt read,DriverSnapshotFacts.Known known,ExactRef beforeRef,
+    /** Rebuild persisted historical cache DATA from its exact original guard. */
+    private static DriverSnapshotFacts.Known retainGuardCapabilities(ContinuityStorePort.Session same,SessionIdentity owner,
+            GuardEvidence guard,DriverSnapshotFacts.Known known,ExactRef beforeRef,
             org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals,
             java.util.List<WriterContracts.Pin> pins,boolean retainPins)throws IOException {
         var loader=new org.xar.ck3.control.application.effects.DriverFrameEvidenceLoader(new DriverObservationAssembler());
-        var guard=read.before().binding();
-        org.xar.ck3.control.application.effects.RootGuardEvidence.requireHistory(guard,originals,same);
-        var observed=org.xar.ck3.control.application.effects.RootGuardEvidence.loadFrame(guard,originals,loader);
-        var guardFull=loader.loadFull(org.xar.ck3.control.application.effects.RootGuardEvidence.frameBasis(guard,originals),originals);
+        RootGuardEvidence.requireHistory(guard,originals,same);
+        var observed=RootGuardEvidence.loadFrame(guard,originals,loader);
+        var guardFull=loader.loadFull(RootGuardEvidence.frameBasis(guard,originals),originals);
         var semantic=guardFull.facts().originalSemanticFields();
         var sourceValue=semantic.get(DriverCapabilityStateProducer.STATE_SOURCE);
         if(sourceValue==null)return known;
@@ -799,7 +802,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
         var facts=oldFull.facts();var assembled=new DriverObservationAssembler().assemble(oldFull.actual(),facts,oldFull.originalEvidence());
         StrictJson.require(assembled instanceof DriverObservationAssembler.Complete,"READ capability original frame is incomplete");
         var frame=(DriverObservationAssembler.Complete)assembled;
-        var driverSource=org.xar.ck3.control.application.effects.RootGuardEvidence.originalDriverSource(guard,originals);
+        var driverSource=RootGuardEvidence.originalDriverSource(guard,originals);
         byte[] knownDriverBytes=null;
         StrictJson.require(driverSource.driverRef().equals(beforeRef)
                 &&java.util.Arrays.equals(facts.driver().encode(),knownDriverBytes=known.driver().encode())
@@ -809,7 +812,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 &&guardFull.facts().driverVersion()==known.stamp().driverVersion()
                 &&guardFull.facts().episodeEpoch()==known.stamp().episodeEpoch()
                 &&frame.identity().game().equals(owner.game())&&frame.identity().machineId().equals(owner.machineId())
-                &&frame.source().equals(read.request().source())&&frame.sessionId().equals(owner.sessionId())
+                &&frame.source().equals(guard.source())&&frame.sessionId().equals(owner.sessionId())
                 &&frame.identity().frame().episodeRunId().equals(known.stamp().episodeRunId())
                 &&frame.identity().frame().identity().player().equals(known.driver().session().actorId())
                 &&frame.identity().observationVersion()==observed.identity().observationVersion()
@@ -3030,6 +3033,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     && (retained.hasCurrentMapEntry()
                         && retained.cycleSemantic().isEmpty() && retained.controller().savedPair().isEmpty()
                         || importedSavedLifeData(retained,unresolvedActions)
+                        || importedSavedPendingLifeData(retained,unresolvedActions)
                         || savedPendingLifeData(retained,unresolvedActions)
                         || savedIsolatedLifeData(retained,unresolvedActions)
                         || savedCurrentCanonicalLifeData(retained,unresolvedActions)
@@ -3064,7 +3068,11 @@ public final class ContinuityBatchJournal implements BatchJournal {
     private static boolean savedPendingLifeData(SettledSameGameData history,java.util.List<ActionReceipt> pending) {
         if(!history.hasCurrentMapEntry()
                 ||history.cycleSemantic().isEmpty()||history.controller().savedPair().isEmpty()||pending.size()!=1)return false;
-        var actual=pending.getFirst();var command=actual.command();var owner=history.controller().owner();
+        return pendingAppliedLifeData(history,pending.getFirst());
+    }
+
+    private static boolean pendingAppliedLifeData(SettledSameGameData history,ActionReceipt actual) {
+        var command=actual.command();var owner=history.controller().owner();
         return history.settledActions().contains(actual)&&actual.sequence()<history.canonicalSequence()
                 &&actual.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED&&actual.visibleGameplay()&&actual.eligibleAdvance()
                 &&actual.state() instanceof ActionState.CompositeSettled settled
@@ -3082,13 +3090,25 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 ||history.cycleSemantic().isPresent()||isolated.size()!=1
                 ||history.controller().savedPair().filter(imported.savedPair()::equals).isEmpty())return false;
         var parent=isolated.getFirst();var command=parent.command();var owner=history.controller().owner();
-        var before=command.before().frame();var opening=imported.opening().frame();
         return parent.sequence()<history.canonicalSequence()
                 &&readOnlyLifeRecoveryRoot(history.settledActions()).filter(parent::equals).isPresent()
                 &&command.source().equals(history.source())&&command.before().game().equals(owner.game())
                 &&command.sessionId().equals(owner.sessionId())&&command.before().machineId().equals(owner.machineId())
-                &&before.identity().dateRaw().equals(opening.identity().dateRaw())
-                &&before.identity().player().equals(opening.identity().player())&&before.episodeRunId().equals(opening.episodeRunId());
+                &&matchesImportedOpening(command,imported.opening());
+    }
+
+    private static boolean importedSavedPendingLifeData(SettledSameGameData history,java.util.List<ActionReceipt> pending) {
+        if(!(history.startingPoint() instanceof SameGameEntry.ImportedSaved imported)
+                ||history.cycleSemantic().isPresent()||pending.size()!=1
+                ||history.controller().savedPair().filter(imported.savedPair()::equals).isEmpty())return false;
+        var parent=pending.getFirst();
+        return pendingAppliedLifeData(history,parent)&&matchesImportedOpening(parent.command(),imported.opening());
+    }
+
+    private static boolean matchesImportedOpening(ActionCommand command,ObservationIdentity opening) {
+        var before=command.before().frame();var entry=opening.frame();
+        return before.identity().dateRaw().equals(entry.identity().dateRaw())
+                &&before.identity().player().equals(entry.identity().player())&&before.episodeRunId().equals(entry.episodeRunId());
     }
 
     /** Shape of isolated saved-history DATA only; original UNKNOWN/ACKs and whole history remain unchanged. */
@@ -3362,6 +3382,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     &&retained.hasCurrentMapEntry()
                     &&retained.cycleSemantic().isEmpty()&&retained.controller().savedPair().isEmpty();
             StrictJson.require(captured.get()!=null||initialPending
+                    ||importedSavedPendingLifeData(retained,java.util.List.of(pendingControl.orElseThrow()))
                     ||savedPendingLifeData(retained,java.util.List.of(pendingControl.orElseThrow()))
                      ||savedPreparedPartialTerminalData(retained,java.util.List.of(pendingControl.orElseThrow())),
                     "pending Life cycle retains its actual restart capture or complete initial/saved CurrentMap DATA");
@@ -4010,23 +4031,42 @@ public final class ContinuityBatchJournal implements BatchJournal {
     /** Initial pending DATA has no completed cycle SEM or capture; all action/history proof remains mandatory below. */
     private static boolean initialCurrentMapPendingFrontier(ContinuityState current,SessionIdentity owner) {
         try {
-            var whole=current.toJson();var cycle=whole.get(WriterContracts.ORDINARY_CYCLE_FIELD);
-            if(current.status()!=ContinuityState.Status.REPAIR_REQUIRED||current.settledCycles()!=0
-                    ||whole.hasNonNull(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD)||cycle==null||!cycle.isObject()
-                    ||!OrdinaryCycleTransitions.sessionFromJson(cycle.get("session")).equals(owner)
-                    ||StrictJson.integer(cycle.get("basis_cycles"),0,StrictJson.MAX_SAFE_INTEGER)!=0
-                    ||StrictJson.integer(cycle.get("completed_cycles"),0,StrictJson.MAX_SAFE_INTEGER)!=0
-                    ||cycle.get("head")==null||!cycle.get("head").isNull()
-                    ||cycle.get("pending_receipt")==null||cycle.get("pending_receipt").isNull()
-                    ||cycle.get("retained_legacy_pending_digest")==null||!cycle.get("retained_legacy_pending_digest").isNull()
-                    ||cycle.get("origin_frame")==null||!cycle.get("origin_frame").isNull()
-                    ||cycle.get("episode_origin")==null||!cycle.get("episode_origin").isNull())return false;
+            var whole=current.toJson();
+            if(current.settledCycles()!=0||!initialPendingFrontierMatches(current,whole,owner))return false;
             var entry=org.xar.ck3.control.continuity.ObservedGameplayEntry.decode(whole.get(WriterContracts.GAMEPLAY_ENTRY_FIELD));
             return entry.origin() instanceof org.xar.ck3.control.continuity.ObservedGameplayEntry.Origin.CurrentMap
                     &&entry.machineId().equals(owner.machineId())&&entry.game().equals(owner.game())
                     &&entry.sessionId().equals(owner.sessionId());
         } catch(RuntimeException invalid){return false;}
     }
+
+    private static boolean initialImportedSavedPendingFrontier(ContinuityState current,SessionIdentity owner) {
+        try {
+            var whole=current.toJson();
+            if(whole.hasNonNull(WriterContracts.GAMEPLAY_ENTRY_FIELD)||!initialPendingFrontierMatches(current,whole,owner))return false;
+            var marker=SavedContinuityBootstrap.request(ContinuityJson.object(whole.get(SavedContinuityBootstrap.FIELD))).detailsObject();
+            return OrdinaryCycleTransitions.sessionFromJson(marker.get("session")).equals(owner)
+                    &&ContinuityJson.same(whole.get("game_binding"),owner.game().toJson())
+                    &&ContinuityJson.same(whole.get(WriterContracts.DRIVER_HISTORY_BASELINE_FIELD),marker.get("full_driver"))
+                    &&StrictJson.integer(marker.get("saved_completed_cycles"),0,StrictJson.MAX_SAFE_INTEGER)==current.settledCycles()
+                    &&StrictJson.integer(marker.get("saved_date_raw"),0,StrictJson.MAX_SAFE_INTEGER)==current.settledDateRaw();
+        } catch(RuntimeException invalid){return false;}
+    }
+
+    private static boolean initialPendingFrontierMatches(ContinuityState current,com.fasterxml.jackson.databind.node.ObjectNode whole,
+            SessionIdentity owner) {
+        var cycle=whole.path(WriterContracts.ORDINARY_CYCLE_FIELD);
+        long savedCycles=current.settledCycles();
+        return current.status()==ContinuityState.Status.REPAIR_REQUIRED&&current.machineId().equals(owner.machineId())
+                &&!whole.hasNonNull(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD)&&cycle.isObject()
+                &&OrdinaryCycleTransitions.sessionFromJson(cycle.get("session")).equals(owner)
+                &&StrictJson.integer(cycle.get("basis_cycles"),0,StrictJson.MAX_SAFE_INTEGER)==savedCycles
+                &&StrictJson.integer(cycle.get("completed_cycles"),0,StrictJson.MAX_SAFE_INTEGER)==savedCycles
+                &&cycle.path("head").isNull()&&cycle.hasNonNull("pending_receipt")
+                &&cycle.path("retained_legacy_pending_digest").isNull()
+                &&cycle.path("origin_frame").isNull()&&cycle.path("episode_origin").isNull();
+    }
+
     public static Optional<ActionReceipt> readOnlyPendingCompletedLifeCycle(ContinuityState current, SessionIdentity owner,
             java.util.List<ActionReceipt> actions, org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) {
         if(current==null||owner==null||actions==null||originals==null||!current.machineId().equals(owner.machineId()))return Optional.empty();
@@ -4043,7 +4083,8 @@ public final class ContinuityBatchJournal implements BatchJournal {
             if(cycle==null||!cycle.isObject()||!OrdinaryCycleTransitions.sessionFromJson(cycle.get("session")).equals(owner)
                     ||cycle.get("head")==null
                     ||cycle.get("pending_receipt")==null||cycle.get("pending_receipt").isNull())return Optional.empty();
-            boolean initialPending=initialCurrentMapPendingFrontier(current,owner);
+            boolean importedPending=cycle.get("head").isNull()&&initialImportedSavedPendingFrontier(current,owner);
+            boolean initialPending=importedPending||initialCurrentMapPendingFrontier(current,owner);
             if(cycle.get("head").isNull()&&!initialPending)return Optional.empty();
             long count=StrictJson.integer(cycle.get("completed_cycles"),0,StrictJson.MAX_SAFE_INTEGER);
             if(count<current.settledCycles()||!initialPending&&ExactRef.fromJson(cycle.get("head")).bytes()==0)return Optional.empty();
@@ -4070,6 +4111,12 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     ||!command.origin().machineId().equals(owner.machineId())||!command.origin().game().equals(owner.game())
                     ||!command.sessionId().equals(owner.sessionId())||!command.source().machineId().equals(owner.machineId())
                     ||!actual.bodySha256().equals(ActionCodec.bodySha256(command)))return Optional.empty();
+            if(importedPending) {
+                var marker=whole.get(SavedContinuityBootstrap.FIELD);
+                var opening=org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.decodeObservation(marker.get("opening"));
+                if(!matchesImportedOpening(command,opening)||!ContinuityJson.same(marker.get("source"),
+                        org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.source(command.source())))return Optional.empty();
+            }
             var plan=org.xar.ck3.control.application.advance.AdvancePlan.decode(command);
             if(!command.expected().observerSchema().equals(org.xar.ck3.control.application.advance.AdvancePlan.OBSERVER)
                     ||!command.expected().values().equals(plan.expected())
@@ -4409,8 +4456,8 @@ public final class ContinuityBatchJournal implements BatchJournal {
         org.xar.ck3.control.application.action.ActionEffects.validateComposite(command, settled.execution(), settled.settlement());
         org.xar.ck3.control.application.action.ActionEffects.validateCompositeChildren(command, settled.execution(), settled.settlement(), children);
         if(!previous.has(WriterContracts.ORDINARY_CYCLE_FIELD)) {
-            return "RETAIN".equals(operation)&&before.settledCycles()==0
-                    &&initialCurrentMapPendingFrontier(after,owner)
+            return "RETAIN".equals(operation)
+                    &&(initialCurrentMapPendingFrontier(after,owner)||initialImportedSavedPendingFrontier(after,owner))
                     &&readOnlyPendingCompletedLifeCycle(after,owner,
                         org.xar.ck3.control.application.action.ContinuityActionJournal.receipts(after,originals),originals)
                         .filter(actual::equals).isPresent()
@@ -4632,17 +4679,18 @@ public final class ContinuityBatchJournal implements BatchJournal {
         store.requireSession(same);Objects.requireNonNull(owner);Objects.requireNonNull(pendingControl);Objects.requireNonNull(operatorRequest);
         return transitions.withLocked(same,()->{
             var head=same.head();var state=head.state();var whole=state.toJson();
-            var savedMarker=whole.get(org.xar.ck3.control.continuity.SavedContinuityBootstrap.FIELD);
-            boolean imported=isolatedLife&&savedMarker!=null&&savedMarker.isObject()
+            var savedMarker=whole.get(SavedContinuityBootstrap.FIELD);
+            boolean importedPending=pendingControl.isPresent()&&initialImportedSavedPendingFrontier(state,owner);
+            boolean imported=(isolatedLife&&!whole.hasNonNull(WriterContracts.ORDINARY_CYCLE_FIELD)||importedPending)
+                    &&savedMarker!=null&&savedMarker.isObject()
                     &&state.status()==ContinuityState.Status.REPAIR_REQUIRED
                     &&!whole.hasNonNull(WriterContracts.GAMEPLAY_ENTRY_FIELD)
-                    &&!whole.hasNonNull(WriterContracts.ORDINARY_CYCLE_FIELD)
                     &&!whole.hasNonNull(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD);
             StrictJson.require((state.status()==ContinuityState.Status.REPAIR_REQUIRED||state.status()==ContinuityState.Status.RUNNING)
                     &&(imported||state.settledCycles()==0||whole.hasNonNull(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD)),
                     "settled recovery requires its unsaved or fully replayable actual saved frontier");
             var entry=imported?null:org.xar.ck3.control.continuity.ObservedGameplayEntry.decode(whole.get(WriterContracts.GAMEPLAY_ENTRY_FIELD));
-            var importedRequest=imported?org.xar.ck3.control.continuity.SavedContinuityBootstrap.request(ContinuityJson.object(savedMarker)):null;
+            var importedRequest=imported?SavedContinuityBootstrap.request(ContinuityJson.object(savedMarker)):null;
             var importedOpening=imported?org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.decodeObservation(savedMarker.get("opening")):null;
             var initialDriver=imported?ExactRef.fromJson(savedMarker.get("full_driver")):entry.fullDriver();
             var initialFacts=imported?ExactRef.fromJson(savedMarker.get("driver_facts")):entry.driverFacts();
@@ -4685,6 +4733,10 @@ public final class ContinuityBatchJournal implements BatchJournal {
                          .or(()->readOnlyPendingPreparedPartialCycle(state,owner,actions,originals)).equals(pendingControl),
                         "pending Life control cycle changed its exact canonical receipt or complete source proof");
             }
+            var importedGuard=imported?pendingControl.or(()->readOnlyObservedLifeRecoveryRoot(actions))
+                    .flatMap(parent->ActionTransitions.composite(parent.state()))
+                    .orElseThrow().guard():null;
+            long importedGuardSequence=imported?RootGuardEvidence.writerPoint(importedGuard,originals).sequence():-1;
             for(var action:actions)StrictJson.require(action.command().origin() instanceof org.xar.ck3.control.application.action.CommandOrigin.Gameplay
                     &&action.command().origin().machineId().equals(owner.machineId())
                     &&action.command().origin().game().equals(owner.game())
@@ -4784,9 +4836,16 @@ public final class ContinuityBatchJournal implements BatchJournal {
             boolean pendingOriginalProven=false;
             boolean retainedEventOriginalProven=false;
             boolean existingOpeningRead=false;
+            boolean restoredImportedCapabilities=false;
             for(int i=0;i<edges.size();i++) {
                 var edge=edges.get(i);history.add(requested.get(i).reference());
                 var details=ContinuityJson.parseObject(edge.details(),ContinuityJson.LEDGER_MAX_BYTES);
+                if(edge.before().sequence()==importedGuardSequence) {
+                    var facts=retainGuardCapabilities(same,owner,importedGuard,retained.facts(),retained.fullDriver(),
+                            originals,java.util.List.of(),false);
+                    retained=new RetainedReadDriver(facts,retained.fullDriver());
+                    restoredImportedCapabilities=facts.auxiliary().members().containsKey("capability_configuration");
+                }
                 if(imported&&i==0) {
                     requireImportedSavedEntry(same,edge,importedRequest,savedMarker,state,savedPair.orElseThrow(),importedOpening);
                 } else if(edge.kind().equals(org.xar.ck3.control.continuity.ObservedGameplayEntry.KIND)) {
@@ -5291,21 +5350,27 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 requireSettledObservedContinuation(opening.existingObserved().orElseThrow(),latestObserved);
             }
             var cycle=whole.get(WriterContracts.ORDINARY_CYCLE_FIELD);
+            boolean retainedControl = pendingControl.isPresent() && pendingOriginalProven && pending != null
+                    && pending.equals(originals.receiptReferenceOf(pendingControl.orElseThrow()))
+                    && pending.equals(ExactRef.fromJson(cycle.get("pending_receipt")));
             boolean initialCurrentMap = (isolatedLife || isolatedOperator) && existingOpening && pendingControl.isEmpty()
                     && state.status()==ContinuityState.Status.REPAIR_REQUIRED
                     && !whole.has(WriterContracts.ORDINARY_CYCLE_FIELD) && !whole.has(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD)
                     && savedPair.isEmpty() && completedCycles==0 && pending==null && lastCycleRef==null && latest==null
                     && openBatch==null && used.size()==1 && retainedRecovery==null
                     && ordinaryCycleRoots(actions,isolatedLife).stream().noneMatch(action->action.visibleGameplay()||action.eligibleAdvance());
-            boolean initialImported=imported&&pendingImportedOpening&&existingOpeningRead&&pendingControl.isEmpty()
+            boolean importedBase=imported&&pendingImportedOpening&&existingOpeningRead&&restoredImportedCapabilities
                     &&state.status()==ContinuityState.Status.REPAIR_REQUIRED&&savedPair.isPresent()&&savedBranch==null
                     &&confirmedSaves.isEmpty()&&completedCycles==state.settledCycles()
-                    &&pending==null&&lastCycleRef==null&&latest==null&&openBatch==null&&used.size()==1&&retainedRecovery==null
+                    &&lastCycleRef==null&&latest==null&&openBatch==null&&used.size()==1&&retainedRecovery==null;
+            boolean initialImported=importedBase&&pendingControl.isEmpty()&&pending==null
                     &&ordinaryCycleRoots(actions,true).stream().noneMatch(action->action.visibleGameplay()||action.eligibleAdvance());
-            if(imported)StrictJson.require(initialImported,"imported Saved recovery requires its closed original interrupted Life batch");
+            boolean firstImportedPending=importedBase&&retainedControl;
+            if(imported)StrictJson.require(initialImported||firstImportedPending,
+                    "imported Saved recovery requires its original guard capability DATA and closed interrupted Life batch");
             StrictJson.require(state.status()!=ContinuityState.Status.RUNNING||retainedRecovery!=null||savedPair.isPresent()||pendingControl.isPresent(),
                     "running history requires its actual prior recovery or complete saved DATA");
-            if(initialImported) {
+            if(initialImported||firstImportedPending) {
                 StrictJson.require(!whole.hasNonNull(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD)
                         &&state.settledDateRaw()==savedPair.orElseThrow().frame().frame().identity().dateRaw().longValueExact(),
                         "imported Saved frontier differs from the confirmed physical pair");
@@ -5318,9 +5383,6 @@ public final class ContinuityBatchJournal implements BatchJournal {
             } else StrictJson.require(state.settledCycles()==0&&!whole.hasNonNull(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD),
                     "saved frontier has no original confirmed SAVE history");
             boolean unfinishedReadOnlyBatch=openBatch!=null;
-            boolean retainedControl = pendingControl.isPresent() && pendingOriginalProven && pending != null
-                    && pending.equals(originals.receiptReferenceOf(pendingControl.orElseThrow()))
-                    && pending.equals(ExactRef.fromJson(cycle.get("pending_receipt")));
             boolean retainedEvent=retainedEventCompletion.isPresent()&&retainedEventOriginalProven&&pending!=null
                     &&pending.equals(originals.receiptReferenceOf(retainedEventCompletion.orElseThrow()))
                     &&pending.equals(ExactRef.fromJson(cycle.get("pending_receipt")));
@@ -5329,7 +5391,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
             boolean firstPending=retainedControl&&initialCurrentMapPendingFrontier(state,owner)&&existingOpening
                     &&savedPair.isEmpty()&&completedCycles==0&&lastCycleRef==null&&latest==null
                     &&openBatch==null&&used.size()==1&&retainedRecovery==null;
-            StrictJson.require(initialCurrentMap || initialImported || firstPending || ((!unfinishedReadOnlyBatch||(retainedRecovery!=null||savedPair.isPresent()||retainedControl)&&state.status()==ContinuityState.Status.RUNNING)
+            StrictJson.require(initialCurrentMap || initialImported || firstPending || firstImportedPending || ((!unfinishedReadOnlyBatch||(retainedRecovery!=null||savedPair.isPresent()||retainedControl)&&state.status()==ContinuityState.Status.RUNNING)
                     &&!used.isEmpty()&&(pending==null || retainedControl || retainedEvent)&&latest!=null
                     &&(cycle.get("pending_receipt").isNull() || retainedControl || retainedEvent)
                     &&StrictJson.integer(cycle.get("completed_cycles"),0,StrictJson.MAX_SAFE_INTEGER)==completedCycles
@@ -5359,7 +5421,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
             org.xar.ck3.control.application.driver.DriverActionHistoryState.requireOriginals(same,actionPublications,actionOriginals,originals);
             StrictJson.require(same.head().state().sequence()==state.sequence()&&same.head().digest().equals(head.digest()),
                     "settled canonical recovery head changed during read");
-            SameGameEntry startingPoint=initialImported
+            SameGameEntry startingPoint=imported
                     ?new SameGameEntry.ImportedSaved(requested.getFirst().reference(),savedPair.orElseThrow(),importedOpening,state.settledCycles())
                     :new SameGameEntry.Observed(entry);
             var data=new SettledSameGameData(startingPoint,controller,retained.facts(),retained.fullDriver(),previousTransport,

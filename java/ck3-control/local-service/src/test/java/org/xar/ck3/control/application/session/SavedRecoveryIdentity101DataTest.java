@@ -7,12 +7,16 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.lang.reflect.Proxy;
 import java.util.Base64;
+import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 import org.junit.jupiter.api.Test;
 import org.xar.ck3.control.application.action.ActionCodec;
 import org.xar.ck3.control.application.action.ActionCommand;
 import org.xar.ck3.control.application.action.ActionPorts;
+import org.xar.ck3.control.application.action.ActionReceipt;
+import org.xar.ck3.control.application.action.ActionState;
+import org.xar.ck3.control.application.action.ContinuityActionJournal;
 import org.xar.ck3.control.application.action.RawJson;
 import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
 import org.xar.ck3.control.continuity.ContinuityJson;
@@ -25,6 +29,53 @@ import org.xar.ck3.control.contracts.GameGeneration;
 
 /** Original head47 and immutable saved Driver; fake archive permits DATA only, never a no-write or Entry authority. */
 final class SavedRecoveryIdentity101DataTest {
+    @Test void firstImportedPendingFrontierUsesOriginalSavedBasisBeforeReadingCanonicalAction() throws Exception {
+        var data=node(FullJsonTree.parse(resource("metadata.json.gz",1<<20),1<<20));
+        var head=ContinuityJson.parseObject(Base64.getDecoder().decode(data.get("head").textValue()),1<<20);
+        var marker=SavedContinuityBootstrap.request(node(head.get(SavedContinuityBootstrap.FIELD))).detailsObject();
+        var owner=OrdinaryCycleTransitions.sessionFromJson(marker.get("session"));
+        var rawReceipt=ContinuityJson.parseObject(Base64.getDecoder().decode(data.get("receipt").textValue()),1<<20);
+        var command=ActionCodec.decodeCommand(ContinuityJson.canonical(rawReceipt.get("command")));
+        long basis=marker.get("saved_completed_cycles").longValue();
+        var locator=new ExactRef("unused-test-canonical-action",32,"a".repeat(64));
+        // This software probe stops at the archive boundary and never substitutes for the canonical Life receipt.
+        var checkedAction=new ActionReceipt(1,46,command,ActionCodec.bodySha256(command),
+                new ActionState.IntentAbandoned(locator,locator));
+        int[] canonicalReads={0};
+        var archive=(ActionPorts.OutcomeArchive)Proxy.newProxyInstance(getClass().getClassLoader(),
+                new Class<?>[]{ActionPorts.OutcomeArchive.class},(proxy,method,args)->{
+            assertEquals("loadRecord",method.getName());
+            assertEquals(locator,args[0]);
+            canonicalReads[0]++;
+            throw new IllegalArgumentException("deliberately absent test action original");
+        });
+        head.put("status","repair_required");
+        head.put("last_settled_cycles",basis);
+        head.put("last_settled_date_raw",marker.get("saved_date_raw").longValue());
+        head.remove(List.of(WriterContracts.GAMEPLAY_ENTRY_FIELD,WriterContracts.ORDINARY_SAVED_CYCLE_FIELD));
+        head.set("game_binding",owner.game().toJson());
+        head.set(WriterContracts.DRIVER_HISTORY_BASELINE_FIELD,marker.get("full_driver"));
+        head.set(ContinuityActionJournal.STATE_FIELD,locator.toJson());
+        var boundary=head.putObject(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD);
+        boundary.put("batch_id","interrupted-imported-life").put("boundary","BATCH_INTERRUPTED");
+        boundary.set("session",marker.get("session"));
+        var cycle=head.putObject(WriterContracts.ORDINARY_CYCLE_FIELD);
+        cycle.put("schema","xar.java-ordinary-cycle-state/v2").put("basis_cycles",basis).put("completed_cycles",basis)
+                .putNull("head").putNull("retained_legacy_pending_digest").putNull("origin_frame").putNull("episode_origin");
+        cycle.set("session",marker.get("session"));
+        cycle.set("pending_receipt",locator.toJson());
+
+        assertTrue(ContinuityBatchJournal.readOnlyPendingCompletedLifeCycle(state(head),owner,List.of(checkedAction),archive).isEmpty());
+        assertEquals(1,canonicalReads[0]);
+        cycle.put("completed_cycles",basis+1);
+        assertTrue(ContinuityBatchJournal.readOnlyPendingCompletedLifeCycle(state(head),owner,List.of(checkedAction),archive).isEmpty());
+        assertEquals(1,canonicalReads[0],"a first pending cycle cannot count as already completed");
+        cycle.put("completed_cycles",basis);
+        cycle.put("basis_cycles",basis-1);
+        assertTrue(ContinuityBatchJournal.readOnlyPendingCompletedLifeCycle(state(head),owner,List.of(checkedAction),archive).isEmpty());
+        assertEquals(1,canonicalReads[0],"the retained import cannot choose a different physical save basis");
+    }
+
     @Test void originalEpisodeAndNewTransportSessionRemainDistinctAndBoundToSavedData()throws Exception {
         var data=node(FullJsonTree.parse(resource("metadata.json.gz",1<<20),1<<20));
         byte[] head=Base64.getDecoder().decode(data.get("head").textValue());
