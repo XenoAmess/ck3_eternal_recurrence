@@ -68,6 +68,9 @@ import org.xar.ck3.control.application.action.PlanningReadFailure;
 import org.xar.ck3.control.application.action.PlanningReadFailureCodec;
 import org.xar.ck3.control.application.action.CommandOrigin;
 import org.xar.ck3.control.application.action.ActionCodec;
+import org.xar.ck3.control.application.action.ActionCommand;
+import org.xar.ck3.control.application.action.ActionState;
+import org.xar.ck3.control.application.action.RequestIds;
 import org.xar.ck3.control.application.action.council.CouncilContinuationCoordinator;
 import org.xar.ck3.control.application.action.council.CouncilContinuationPermit;
 import org.xar.ck3.control.application.action.council.CouncilContinuationModel.Stage;
@@ -2991,6 +2994,152 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                 ||!hello.capabilities().contains(capability))
             throw new IOException("held query requires its actual Full111 Core and advertised read capability");
     }
+
+    public record Full111EventOptionPreparation(NativeRequest request, AckReceived original) { }
+    public record Full111EventQueueProof(ObservedFrame after, CurrentFull111EventOption.Request request,
+            AckReceived original) { }
+    private record Full111EventOptionLease(String actionId, String bodySha256, String requestId,
+            ObservedFrame before, Instant deadline, NativeRequest request) { }
+    private Full111EventOptionLease full111EventOptionLease;
+
+    /** Acquires the private read lease while the exact foreground, rendered target and Full still agree. */
+    public synchronized Optional<Full111EventOptionPreparation> prepareFull111EventOption(ActionCommand command,
+            AckReceived renderer, CurrentFull111EventOption.Target target) throws IOException, InterruptedException {
+        Objects.requireNonNull(command);
+        Objects.requireNonNull(renderer);
+        Objects.requireNonNull(target);
+        var select = CurrentFull111EventOption.Action.SELECT;
+        var prepare = CurrentFull111EventOption.Action.PREPARE;
+        Instant deadline = command.deadline();
+        if (!command.operation().value().equals(select.step()) || !(command.origin() instanceof CommandOrigin.Gameplay)
+                || !command.sessionId().equals(config.sessionId()) || !command.before().game().equals(config.game())
+                || !command.before().machineId().equals(config.machineId())
+                || !command.before().frame().identity().player().equals(BigInteger.valueOf(target.recipientCharacterId()))
+                || !deadline.equals(CurrentFull111EventOption.rendererDeadline(renderer))) return Optional.empty();
+
+        var model = CurrentFull111EventRenderer.decodeOutcome(renderer);
+        if (!target.matchesSelectable(model.source().orElseThrow())) return Optional.empty();
+        var before = currentSnapshot(deadline);
+        if (full111EventOptionLease != null && (full111EventOptionLease.before() != before
+                || !chronologyClock.instant().isBefore(full111EventOptionLease.deadline()))) full111EventOptionLease = null;
+        var occurrence = acceptedSnapshotRevision(before);
+        var raw = NativeWire.object(NativeWire.parse(before.state().bytes()));
+        var foreground = NativeFull111OrdinaryEvent.read(raw);
+        var rendererCustody = renderer.custody().orElseThrow(() -> new IOException("Original Full111 renderer custody unavailable"));
+        rendererCustody.verify(renderer);
+        if (!occurrence.session().equals(rendererCustody.session()) || !rendererCustody.custodyEpoch().equals(custodyEpoch)
+                || !originalRequestChronology(renderer.requestId()).filter(rendererCustody::equals).isPresent()
+                || rendererCustody.writeEntered().order().compareTo(occurrence.received().order()) <= 0
+                || !model.owner().orElseThrow().connectionGeneration().equals(before.session().connectionGeneration())
+                || !before.snapshotId().equals(command.before().frame().snapshotId())
+                || !before.nativeRevision().equals(command.before().frame().identity().nativeRevision())
+                || foreground.filter(event -> event.instanceId() == target.instanceId()
+                    && event.authoredOptionCount() == model.source().orElseThrow().authoredOptionCount()).isEmpty())
+            return Optional.empty();
+        requireOriginalFull111OptionFrame(occurrence, deadline);
+        requireFlorinFullClockSource();
+        if (!hello.capabilities().containsAll(List.of(prepare.capability(), select.capability(),
+                CurrentFull111EventOption.Action.QUERY_QUEUE.capability()))) return Optional.empty();
+
+        // A genuine fresh Core read must still match the earlier original renderer before acquiring any lease.
+        var fresh = readCoreFrameReceived(deadline);
+        if (!(fresh instanceof CoreReceived core) || !(core.frame() instanceof CoreFrame.Partial prefix)
+                || model.factsBefore().filter(prefix.prefix()::equals).isEmpty()) return Optional.empty();
+        requireOriginalFull111OptionFrame(occurrence, deadline);
+        var rendering = new CurrentFull111EventOption.Lineage(before.nativeRevision(), renderer.requestId(),
+                model.providerGeneration(), model.querySequence(), Optional.empty(), BigInteger.ZERO, Optional.empty(), BigInteger.ZERO);
+        var quote = new CurrentFull111EventOption.Request(prepare, prefix, target, rendering, deadline);
+        var reply = readFull111OptionPhase(core, occurrence, quote);
+        if (reply.isEmpty()) return Optional.empty();
+        var acknowledged = reply.orElseThrow();
+        var result = CurrentFull111EventOption.decodeOutcome(acknowledged);
+        if (!result.matchesSuccessfulRequest(quote)) return Optional.empty();
+
+        var selected = new CurrentFull111EventOption.Request(select, prefix, target, result.lineage().orElseThrow(), deadline);
+        var nativeRequest = selected.selectionRequest();
+        full111EventOptionLease = new Full111EventOptionLease(command.actionId(), ActionCodec.bodySha256(command), RequestIds.forCommand(command),
+                before, deadline, nativeRequest);
+        return Optional.of(new Full111EventOptionPreparation(nativeRequest, acknowledged));
+    }
+
+    /** The queue evidence is a read in a new time window following the known original selection ACK. */
+    public synchronized Optional<Full111EventQueueProof> readFull111EventQueue(ActionState.Attempt attempt,
+            AckReceived originalSelect, Instant independentDeadline) throws IOException, InterruptedException {
+        var original = CurrentFull111EventOption.Request.decodeSelectionRequest(attempt.preparedRequest());
+        var select = CurrentFull111EventOption.decodeOutcome(originalSelect);
+        if (!attempt.requestId().equals(originalSelect.requestId()) || !select.matchesSuccessfulRequest(original))
+            return Optional.empty();
+        var custody = originalSelect.custody().orElseThrow(() -> new IOException("Original Full111 SELECT custody unavailable"));
+        custody.verify(originalSelect, attempt.guard());
+
+        var after = currentSnapshot(independentDeadline);
+        var occurrence = acceptedSnapshotRevision(after);
+        if (!after.session().equals(custody.session()) || !custody.custodyEpoch().equals(custodyEpoch)
+                || !originalRequestChronology(originalSelect.requestId()).filter(custody::equals).isPresent()
+                || after.nativeRevision().compareTo(original.lineage().sourceRevision()) <= 0
+                || occurrence.received().order().compareTo(custody.responseReceived().order()) <= 0
+                || occurrence.received().observedAt().isBefore(custody.responseReceived().observedAt())) return Optional.empty();
+        requireOriginalFull111OptionFrame(occurrence, independentDeadline);
+        requireFlorinFullClockSource();
+        var action = CurrentFull111EventOption.Action.QUERY_QUEUE;
+        if (!hello.capabilities().contains(action.capability())) return Optional.empty();
+
+        var fresh = readCoreFrameReceived(independentDeadline);
+        if (!(fresh instanceof CoreReceived core) || !(core.frame() instanceof CoreFrame.Partial prefix)
+                || !prefix.prefix().equals(original.core().prefix())) return Optional.empty();
+        requireOriginalFull111OptionFrame(occurrence, independentDeadline);
+        var query = new CurrentFull111EventOption.Request(action, prefix, original.target(), select.lineage().orElseThrow(),
+                Instant.ofEpochMilli(core.validUntil().toEpochMilli()));
+        var reply = readFull111OptionPhase(core, occurrence, query);
+        if (reply.isEmpty()) return Optional.empty();
+        var observed = reply.orElseThrow();
+        return CurrentFull111EventOption.confirmsAbsence(attempt, originalSelect, query, observed)
+                ? Optional.of(new Full111EventQueueProof(after, query, observed)) : Optional.empty();
+    }
+
+    private Optional<AckReceived> readFull111OptionPhase(CoreReceived core, AcceptedSnapshotRevision occurrence,
+            CurrentFull111EventOption.Request read) throws IOException, InterruptedException {
+        Instant deadline = read.deadline();
+        requireHeldFull111ReadBasis(core, deadline, read.action().capability());
+        if (sentRequestIds.size() >= maximumSubmissions)
+            throw new IOException("Native request identity retention limit reached");
+        String id = "event-option-read-" + UUID.randomUUID().toString().replace("-", "");
+        var result = retainReadOutcome(dispatchRead(id, read.readPacket(id), deadline, () -> {
+            try {
+                core.requireOriginal(this, deadline);
+                requireOriginalFull111OptionFrame(occurrence, deadline);
+            } catch (IOException invalid) { throw new UncheckedIOException(invalid); }
+        }));
+        requireOriginalFull111OptionFrame(occurrence, deadline);
+        if (!(result instanceof AckReceived ack) || !ack.nativeOk()) return Optional.empty();
+        var custody = ack.custody().orElseThrow(() -> new IOException("Actual Full111 option read custody unavailable"));
+        custody.verify(ack);
+        var source = CurrentFull111EventOption.decodeOutcome(ack);
+        if (!custody.session().equals(occurrence.session()) || !custody.custodyEpoch().equals(custodyEpoch)
+                || custody.writeEntered().order().compareTo(core.custody.responseReceived().order()) <= 0
+                || !source.owner().orElseThrow().connectionGeneration().equals(occurrence.session().connectionGeneration()))
+            throw new IOException("Full111 option read escaped its actual same-owner Core scope");
+        return Optional.of(ack);
+    }
+
+    private void requireOriginalFull111OptionFrame(AcceptedSnapshotRevision frame, Instant deadline) throws IOException {
+        if (heldSnapshotInvalidated || !chronologyClock.instant().isBefore(deadline))
+            throw new IOException("Original Full111 event frame or deadline is no longer current");
+        frame.requireOriginal(currentSnapshot(deadline));
+    }
+
+    private void requireFull111EventOptionSubmission(SubmissionPermit permit, NativeRequest request, Instant deadline)
+            throws IOException {
+        var lease = full111EventOptionLease;
+        if (lease == null || !lease.actionId().equals(permit.actionId()) || !lease.bodySha256().equals(permit.bodySha256())
+                || !lease.requestId().equals(permit.requestId()) || !lease.request().step().equals(request.step())
+                || !lease.request().requiredCapability().equals(request.requiredCapability())
+                || !lease.request().additionalFields().equals(request.additionalFields()) || !lease.deadline().equals(deadline)
+                || !lease.before().nativeRevision().equals(permit.expectedRevision()))
+            throw new IOException("An exact unused Full111 event option lease for the canonical command is required");
+        requireOriginalFull111OptionFrame(acceptedSnapshotRevision(lease.before()), deadline);
+    }
+
     /** Pure cleanup only after the same actual generation reports paused; CANCEL never requests a pause. */
     public synchronized DispatchOutcome cancelDateSentinel(DateArmReceived before,Instant deadline)throws InterruptedException{
         return cancelDateSentinelChecked(before,null,deadline);
@@ -8923,6 +9072,8 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             open(deadline); verifyEndpoint();
             if (hello == null) throw new IOException("actual Native hello is required before dispatch");
             if (!request.equals(permit.preparedRequest())) throw new IOException("primitive differs from the coordinator's durable prepared request");
+            boolean eventOptionSelect = CurrentFull111EventOption.Action.SELECT.step().equals(request.step());
+            if (eventOptionSelect) requireFull111EventOptionSubmission(permit, request, deadline);
             boolean fullClock=fullClockPrepared(request);
             if(hotfixSave(request))requireMappedSave61();
             boolean mappedSave112=current112Save(request);
@@ -8983,6 +9134,11 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                     if(requiresClockSource)requireEventFreeFull111ClockBasis(acceptedSnapshotFrame);
                     requireCurrent112SpeedForPermit(permit,request,deadline);
                 }catch(IOException invalid){throw new java.io.UncheckedIOException(invalid);}
+                if (eventOptionSelect) {
+                    try { requireFull111EventOptionSubmission(permit, request, deadline); }
+                    catch (IOException invalid) { throw new UncheckedIOException(invalid); }
+                    full111EventOptionLease = null;
+                }
                 permit.consumeOnce();
                 heldSnapshotInvalidated = true;
             });
@@ -8998,6 +9154,8 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     @Override public synchronized DispatchOutcome read(ReadPermit permit, NativeRequest request, Instant deadline) throws InterruptedException {
         Objects.requireNonNull(permit); Objects.requireNonNull(request); String id = permit.requestId();
         try {
+            if (CurrentFull111EventOption.Action.SELECT.step().equals(request.step()))
+                throw new IOException("A Full111 event selection requires the ordinary canonical ACTION writer");
             if (activeRecoveredSeatMailbox != null) activeRecoveredSeatMailbox.current();
             if (permit.consumed() || sentRequestIds.contains(id))
                 return retainReadOutcome(recordMailboxOutcome(new Unknown(id, "original read request already attempted; allocate a new guarded read instead of replaying it", retainedOutbound(id), Optional.empty())));
