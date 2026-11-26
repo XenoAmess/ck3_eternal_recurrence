@@ -33,6 +33,7 @@ import org.xar.ck3.control.contracts.*;
 import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector;
 import org.xar.ck3.control.g2.common.G2Source;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle;
+import org.xar.ck3.control.planning.campaigncadence.CampaignCalendar;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 import org.xar.ck3.control.service.root.*;
 
@@ -41,23 +42,33 @@ final class RootLifecycleAuthorityTest {
     @TempDir Path temporary;
     private static final String MACHINE="terminal-authority-fixture",PIPE="\\\\.\\pipe\\terminal-authority-fixture",SESSION="terminal-session";
     private static final String SHA="0".repeat(64);
+    private static final int CAMPAIGN_DATE_RAW=CampaignCalendar.dateToRaw("1066.9.15");
+    private static final int TARGET_DAYS=10958;
     private static final GameGeneration GAME=new GameGeneration(42,new PythonOnlyUInt64(new BigInteger("9007199254740993")));
     private static final OperationKey READ=new OperationKey("query-current-timeline-blocker-context-v1");
     private enum Player { MISSING,NULL,DEAD,CHANGED,LIVING }
     private static byte[] bytes(String text){return text.getBytes(StandardCharsets.UTF_8);}
     private static byte[] packet(String text){try{return NativeWire.packet(bytes(text));}catch(IOException failure){throw new UncheckedIOException(failure);}}
+    private static byte[] snapshotPacket(String id,int revision,String state){
+        return packet("{\"type\":\"state_snapshot\",\"protocol_version\":1,\"snapshot_id\":\""+id
+                +"\",\"revision\":"+revision+",\"state\":"+state+"}");
+    }
     private static final class Replay implements NativePacketPort {
         final ArrayDeque<byte[]> incoming=new ArrayDeque<>();final Player player;final OperationKey readOperation;int reads,writes;boolean processChanged;String injectedState;
         Replay(Player player,OperationKey readOperation){this.player=player;this.readOperation=readOperation;incoming.add(packet("{\"type\":\"hello\",\"protocol_version\":1,\"pid\":42,\"connection_generation\":5,\"bridge_version\":\"terminal-fixture\",\"expected_ck3_sha256\":\""+SHA+"\",\"game_adapter_id\":\"fixture-adapter\",\"game_adapter_status\":\"ready\",\"ck3_build_match\":true,\"capabilities\":[\"game.state.snapshot\"]}"));incoming.add(packet("{\"type\":\"heartbeat\",\"protocol_version\":1,\"sequence\":1}"));}
         @Override public void awaitConnection(Instant deadline) { }
         @Override public void verify()throws IOException{if(processChanged)throw new IOException("actual held process was replaced");}
-        @Override public byte[] readPacket(Instant deadline){reads++;return incoming.isEmpty()?packet("{\"type\":\"state_snapshot\",\"protocol_version\":1,\"snapshot_id\":\"terminal-snapshot-1\",\"revision\":7,\"state\":"+(injectedState==null?state(player):injectedState)+"}"):incoming.removeFirst();}
+        @Override public byte[] readPacket(Instant deadline){
+            reads++;
+            return incoming.isEmpty()?snapshotPacket("terminal-snapshot-1",7,injectedState==null?state(player):injectedState):incoming.removeFirst();
+        }
         @Override public void writePacket(byte[] framed,Instant deadline)throws IOException{writes++;var request=NativeWire.parse(Arrays.copyOfRange(framed,4,framed.length));assertEquals(readOperation.value(),NativeWire.text(request.get("step")));incoming.addFirst(packet("{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\""+NativeWire.text(request.get("request_id"))+"\",\"ok\":true,\"result\":{\"actual_terminal_query\":true}}"));}
         @Override public void close() { }
     }
-    private static String state(Player player){
+    private static String state(Player player){return state(player,CAMPAIGN_DATE_RAW);}
+    private static String state(Player player,int dateRaw){
         String current=switch(player){case MISSING->"";case NULL->"\"played_character\":null,";case DEAD->"\"played_character\":{\"character_id\":73,\"alive\":false},";case CHANGED->"\"played_character\":{\"character_id\":74,\"alive\":true},";case LIVING->"\"played_character\":{\"character_id\":73,\"alive\":true},";};
-        return "{"+current+"\"paused\":true,\"map_ready\":true,\"speed\":1,\"date_raw\":1000,\"active_event\":null,\"pending_character_interaction\":null,\"one_life_terminal_reason\":null,\"one_life_terminal\":false,\"succession_reconciliation\":null,\"one_life_settlement\":null,\"active_wars\":[],\"player_armies\":[],\"diagnostics\":{\"bridge_pid\":42,\"connection_generation\":5}}";
+        return "{"+current+"\"paused\":true,\"map_ready\":true,\"speed\":1,\"date_raw\":"+dateRaw+",\"active_event\":null,\"pending_character_interaction\":null,\"one_life_terminal_reason\":null,\"one_life_terminal\":false,\"succession_reconciliation\":null,\"one_life_settlement\":null,\"active_wars\":[],\"player_armies\":[],\"diagnostics\":{\"bridge_pid\":42,\"connection_generation\":5}}";
     }
     private final class Fixture implements AutoCloseable {
         final Path root,sourceFile;final ExactRef reviewed;final G2Source source;final Replay packets;final NativeGameTransport transport;
@@ -72,7 +83,7 @@ final class RootLifecycleAuthorityTest {
             var driverFile=root.resolve("driver.json");var driver=StrictJson.object();driver.put("format_version",2);driver.put("pipe_name",PIPE);driver.put("bridge_pid",42);driver.put("episode_character_id",73);driver.put("episode_run_id","old-episode");driver.putNull("last_checkpoint");var history=driver.putArray("command_history");for(String key:List.of("rollback_war_failure","managed_restore_transaction","succession_expectation","campaign_goal"))driver.putNull(key);
             if(fullDriver){var entry=history.addObject();entry.put("index",1);entry.put("command","retained-full-driver");entry.put("ok",false);entry.put("full_counter",new java.math.BigInteger("9".repeat(7000)));}
             Files.write(driverFile,DriverJson.encode(DriverJson.fromNode(driver)),StandardOpenOption.CREATE_NEW);ExactRef originalDriver=ref(driverFile);
-            var seed=StrictJson.object();seed.put("schema","root.ck3.continuity-window/v1");seed.put("machine_id",MACHINE);seed.put("sequence",0);seed.put("window_id",1);seed.put("status","running");seed.put("target_days",10958);seed.put("target_years",30);seed.put("calendar_year_days",365.25);seed.put("start_date_raw",1000);seed.put("target_date_raw",263992);seed.put("last_settled_date_raw",1000);seed.put("last_settled_cycles",0);seed.put("manual_repair_count",0);seed.put("automatic_recovery_count",0);seed.put("binding_lineage_count",0);var game=seed.putObject("game_binding");game.put("pid",42);game.put("creation_date","2026-10-24T00:00:00Z");seed.putNull("latest_binding");seed.putNull("pending_cycle");seed.put("NEXT",1);seed.set("java_driver_history_baseline",originalDriver.toJson());
+            var seed=StrictJson.object();seed.put("schema","root.ck3.continuity-window/v1");seed.put("machine_id",MACHINE);seed.put("sequence",0);seed.put("window_id",1);seed.put("status","running");seed.put("target_days",TARGET_DAYS);seed.put("target_years",30);seed.put("calendar_year_days",365.25);seed.put("start_date_raw",CAMPAIGN_DATE_RAW);seed.put("target_date_raw",CAMPAIGN_DATE_RAW+TARGET_DAYS*CampaignCalendar.TICKS_PER_DAY);seed.put("last_settled_date_raw",CAMPAIGN_DATE_RAW);seed.put("last_settled_cycles",0);seed.put("manual_repair_count",0);seed.put("automatic_recovery_count",0);seed.put("binding_lineage_count",0);var game=seed.putObject("game_binding");game.put("pid",42);game.put("creation_date","2026-10-24T00:00:00Z");seed.putNull("latest_binding");seed.putNull("pending_cycle");seed.put("NEXT",1);seed.set("java_driver_history_baseline",originalDriver.toJson());
             byte[] initial=ContinuityJson.canonical(seed);Path snapshot=root.resolve("ROOT-CONTINUITY-WINDOW.json"),anchor=root.resolve("anchor.json");Files.write(snapshot,initial,StandardOpenOption.CREATE_NEW);Files.write(anchor,initial,StandardOpenOption.CREATE_NEW);Files.write(root.resolve("ROOT-CONTINUITY-WINDOW.lock"),new byte[0],StandardOpenOption.CREATE_NEW);Files.createDirectory(root.resolve("ROOT-CONTINUITY-WINDOW-EVENTS"));Files.createDirectory(root.resolve("artifacts"));
             var layout=new Layout(snapshot,ref(anchor),MACHINE);storage=StorageWriteGuardTestSupport.create(layout);
             var artifacts=new ImmutableArtifactStore(new ImmutableArtifactStore.Config(root.resolve("artifacts"),layout.lock(),8<<20),storage);
@@ -145,7 +156,8 @@ final class RootLifecycleAuthorityTest {
             });
             assertEquals(readsBefore, f.packets.reads, "cold replay must not read native");
             assertEquals(writesBefore, f.packets.writes, "cold replay must not write native");
-            assertTrue(f.sourceChecks.get()>2);assertEquals(0,f.packets.writes);
+            assertEquals(1,f.sourceChecks.get(),"the shared physical capture qualifies its source once");
+            assertEquals(0,f.packets.writes);
         }
     }
 
@@ -246,7 +258,24 @@ final class RootLifecycleAuthorityTest {
         try(Fixture f=new Fixture(temporary.resolve("living"),Player.LIVING)){f.writer.locked(same->{assertThrows(IllegalArgumentException.class,()->f.authority.withObserved(same,Instant.now().plusSeconds(10),lease->null));return null;});}
         try(Fixture f=new Fixture(temporary.resolve("expiry"),Player.DEAD)){f.writer.locked(same->{int before=f.packets.reads;assertThrows(IllegalArgumentException.class,()->f.authority.withObserved(same,Instant.now(),lease->null));assertEquals(before,f.packets.reads);return null;});}
         try(Fixture f=new Fixture(temporary.resolve("process"),Player.DEAD)){f.packets.processChanged=true;f.writer.locked(same->{assertThrows(IOException.class,()->f.authority.withObserved(same,Instant.now().plusSeconds(20),lease->null));assertEquals(0,f.packets.writes);return null;});}
-        try(Fixture f=new Fixture(temporary.resolve("source"),Player.CHANGED)){f.writer.locked(same->{assertThrows(IOException.class,()->f.authority.withObserved(same,Instant.now().plusSeconds(20),lease->{Files.writeString(f.sourceFile,"changed original source");return null;}));return null;});}
+        try(Fixture f=new Fixture(temporary.resolve("source"),Player.CHANGED)){
+            f.writer.locked(same->f.authority.withObserved(same,Instant.now().plusSeconds(20),lease->{
+                assertEquals(BigInteger.valueOf(7),lease.identity().frame().nativeRevision());return null;
+            }));
+            Files.writeString(f.sourceFile,"changed original source");
+            f.packets.incoming.add(snapshotPacket("terminal-snapshot-2",8,state(Player.CHANGED,CAMPAIGN_DATE_RAW+CampaignCalendar.TICKS_PER_DAY)));
+            var next=f.transport.observe(Instant.now().plusSeconds(20));
+            assertEquals("terminal-snapshot-2",next.snapshotId());
+            assertEquals(BigInteger.valueOf(8),next.nativeRevision());
+            f.writer.locked(same->{
+                var rejected=assertThrows(IOException.class,()->f.authority.withObserved(same,Instant.now().plusSeconds(20),
+                        lease->fail("changed original source cannot enter a new terminal scope")));
+                assertTrue(rejected.getMessage().startsWith("named source bytes/SHA/path changed"));
+                assertEquals(1,f.sourceChecks.get());
+                assertEquals(0,f.packets.writes);
+                return null;
+            });
+        }
         try(Fixture f=new Fixture(temporary.resolve("wrong"),Player.DEAD)){f.writer.locked(same->f.authority.withObserved(same,Instant.now().plusSeconds(20),lease->{
             var original=lease.identity();var wrong=new LifecycleIdentity(original.machineId(),original.game(),original.sessionId(),original.connectionGeneration(),original.subject(),new LifecycleIdentity.Frame("another-snapshot",original.frame().revision(),original.frame().nativeRevision(),original.frame().dateRaw(),true,true),original.currentPlayer(),original.terminalReason(),original.evidence(),original.observedAt());
             int before=f.packets.reads;assertThrows(IllegalArgumentException.class,()->f.authority.current(same,wrong,Instant.now().plusSeconds(10),ignored->null));assertEquals(before,f.packets.reads);return null;
@@ -286,7 +315,20 @@ final class RootLifecycleAuthorityTest {
         }
     }
     @Test void wrongNativeBooleanFabricatedOldSubjectAndNativeDigestCannotOpenTheRealTerminalReadScope()throws Exception{
-        try(Fixture f=new Fixture(temporary.resolve("boolean"),Player.CHANGED)){f.packets.injectedState=state(Player.CHANGED).replace("\"alive\":true","\"alive\":1");f.writer.locked(same->{assertThrows(IllegalArgumentException.class,()->f.authority.withObserved(same,Instant.now().plusSeconds(20),lease->null));assertEquals(0,f.packets.writes);return null;});}
+        try(Fixture f=new Fixture(temporary.resolve("boolean"),Player.CHANGED)){
+            f.packets.injectedState=state(Player.CHANGED).replace("\"alive\":true","\"alive\":1");
+            f.writer.locked(same->{
+                var rejected=assertThrows(IOException.class,()->f.authority.withObserved(same,Instant.now().plusSeconds(20),
+                        lease->fail("malformed Native player must never enter a terminal scope")));
+                assertEquals("Native state snapshot frame budget exhausted",rejected.getMessage());
+                var rejection=f.transport.diagnostics().production().orElseThrow().lastRejectedSnapshot().orElseThrow();
+                assertArrayEquals(snapshotPacket("terminal-snapshot-1",7,f.packets.injectedState),rejection.original().originalPacket().value());
+                assertTrue(rejection.error().contains("alive"),rejection::error);
+                assertEquals(0,f.sourceChecks.get());
+                assertEquals(0,f.packets.writes);
+                return null;
+            });
+        }
         try(Fixture f=new Fixture(temporary.resolve("subject"),Player.DEAD)){f.writer.locked(same->f.authority.withObserved(same,Instant.now().plusSeconds(20),lease->{
             var original=lease.identity();var old=original.subject();var forgedSubject=new LifecycleIdentity.Subject(old.characterId(),"invented-episode",old.episodeEpoch(),old.driverVersion());
             var wrong=new LifecycleIdentity(original.machineId(),original.game(),original.sessionId(),original.connectionGeneration(),forgedSubject,original.frame(),original.currentPlayer(),original.terminalReason(),original.evidence(),original.observedAt());
