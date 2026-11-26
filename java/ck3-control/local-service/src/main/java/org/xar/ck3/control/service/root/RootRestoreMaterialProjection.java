@@ -123,18 +123,18 @@ public final class RootRestoreMaterialProjection {
         Obj control=input.actualLifecycleControl();
         if (input.importedSaveTransfer().isPresent()) {
             var transfer = input.importedSaveTransfer().orElseThrow();
-            StrictJson.require(control.members().keySet().equals(java.util.Set.of("schema", "parentLifecycleIntentId", "phase",
-                            "oldPid", "oldBirthDecimal", "save", "stopEvidence", "launchEvidence", "importedSaveTransfer"))
+            StrictJson.require(control.members().keySet().equals(java.util.Set.of("schema", "parent_lifecycle_intent_id", "phase",
+                            "old_pid", "old_birth_decimal", "save", "stop_evidence", "launch_evidence", "imported_save_transfer"))
                             && text(control.get("schema"), RestoreCheckpointService.IMPORTED_REPLACEMENT_SCHEMA)
-                            && text(control.get("parentLifecycleIntentId"), input.requestId())
+                            && text(control.get("parent_lifecycle_intent_id"), input.requestId())
                             && text(control.get("phase"), "EXITED_SOURCE_NEW_HELLO_ACCEPTED_MAP_NOT_YET_VERIFIED")
-                            && OpportunityJson.integer(control.get("oldPid"), "original lifecycle PID").equals(BigInteger.valueOf(input.previous().pid()))
-                            && text(control.get("oldBirthDecimal"), input.previous().creationFiletime().value().toString())
+                            && OpportunityJson.integer(control.get("old_pid"), "original lifecycle PID").equals(BigInteger.valueOf(input.previous().pid()))
+                            && text(control.get("old_birth_decimal"), input.previous().creationFiletime().value().toString())
                             && control.get("save").equals(reference(transfer.staged().reference()))
-                            && control.get("importedSaveTransfer").equals(reference(transfer.proof())),
+                            && control.get("imported_save_transfer").equals(reference(transfer.proof())),
                     "imported lifecycle control differs from the actual exited owner, staged SAVE or transfer proof");
-            lifecycleReference(control.get("stopEvidence"));
-            lifecycleReference(control.get("launchEvidence"));
+            lifecycleReference(control.get("stop_evidence"));
+            lifecycleReference(control.get("launch_evidence"));
             return;
         }
         if(control.members().containsKey("parent_lifecycle_intent_id")||control.members().containsKey("old_pid")

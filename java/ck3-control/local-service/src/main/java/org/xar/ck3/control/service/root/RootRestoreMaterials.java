@@ -441,14 +441,14 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
         ExactRef lifecycleOriginal=loaded.isPresent()?loaded.orElseThrow().parentControl():replaced.lifecycleEvidence();
         Obj control=readObject(borrowed,lifecycleOriginal,LIFECYCLE_LIMIT,pins);
         boolean actualLoaded=loaded.isPresent();
-        boolean snake = actualLoaded && transfer.isEmpty();
+        boolean snake = actualLoaded || transfer.isPresent();
         if (transfer.isPresent()) {
             var staged = transfer.orElseThrow();
             var reads = readWindows.get(request.requestId());
             StrictJson.require(reads.originalReplacement().lifecycleEvidence().equals(lifecycleOriginal)
                             && text(control.get("schema"), RestoreCheckpointService.IMPORTED_REPLACEMENT_SCHEMA)
                             && reference(control.get("save")).equals(staged.staged().reference())
-                            && reference(control.get("importedSaveTransfer")).equals(staged.proof()),
+                            && reference(control.get("imported_save_transfer")).equals(staged.proof()),
                     "imported lifecycle lost its actual staged SAVE and separate transfer proof");
             var originalTransfer = readPinned(borrowed,files,staged.proof(),LIFECYCLE_LIMIT);
             pins.add(originalTransfer.pin());
@@ -471,7 +471,7 @@ public final class RootRestoreMaterials implements RootRestoreAdapters.MaterialP
         else {
             coldPrevious.requireReplacement(borrowed,request,replacement,operationDeadline(request));
             StrictJson.require(stopped.equals(coldPrevious.exitedEvidence()),"cold lifecycle source changed its private actual exited observation");
-            if(actualLoaded)requireLoadedLaunch(launch,lifecycleJoin);
+            if(snake)requireLoadedLaunch(launch,lifecycleJoin);
             else {
                 requireEvent(launch,"HELLO",lifecycleJoin.machineId(),lifecycleJoin.replacementSessionId(),lifecycleJoin.replacement());
                 StrictJson.require(text(launch.get("requestId"),lifecycleJoin.launchRequestId()),"cold replacement HELLO child request differs");

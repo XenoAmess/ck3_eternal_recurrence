@@ -109,10 +109,9 @@ class RootRestoreMaterialsTest {
                 .replace("a".repeat(64),sourceDigest).getBytes(StandardCharsets.UTF_8));
         var actualAbandoned=DriverStateSnapshot.decodeComplete(new String(abandoned().encode(),StandardCharsets.UTF_8)
                 .replace("a".repeat(64),sourceDigest).getBytes(StandardCharsets.UTF_8));
-        var imported=control().with("schema",new Text(RestoreCheckpointService.IMPORTED_REPLACEMENT_SCHEMA))
-                .with("phase",new Text("EXITED_SOURCE_NEW_HELLO_ACCEPTED_MAP_NOT_YET_VERIFIED"))
-                .with("save",DriverObservationRef(staged.reference())).with("importedSaveTransfer",DriverObservationRef(proof))
-                .with("stopEvidence",DriverObservationRef(lifecycleRef())).with("launchEvidence",DriverObservationRef(nativeRef()));
+        var imported=snakeControl("EXITED_SOURCE_NEW_HELLO_ACCEPTED_MAP_NOT_YET_VERIFIED")
+                .with("schema",new Text(RestoreCheckpointService.IMPORTED_REPLACEMENT_SCHEMA))
+                .with("save",DriverObservationRef(staged.reference())).with("imported_save_transfer",DriverObservationRef(proof));
         java.util.function.Function<Obj,RootRestoreMaterialProjection.Input> withControl=controlValue -> new RootRestoreMaterialProjection.Input(
                 REQUEST,oldGame(),transport(),"actual-replacement-pipe","actual-native-frame",BigInteger.TWO,
                 actualSaved,actualAbandoned,nativeState(),controlValue,lifecycleRef(),nativeRef(),Optional.empty(),Optional.of(transfer));
@@ -121,7 +120,9 @@ class RootRestoreMaterialsTest {
         assertThrows(IllegalArgumentException.class,()->RootRestoreMaterialProjection.reduce(withControl.apply(
                 imported.with("save",DriverObservationRef(original.reference())))));
         assertThrows(IllegalArgumentException.class,()->RootRestoreMaterialProjection.reduce(withControl.apply(
-                imported.with("importedSaveTransfer",DriverObservationRef(nativeRef())))));
+                imported.with("imported_save_transfer",DriverObservationRef(nativeRef())))));
+        assertThrows(IllegalArgumentException.class,()->RootRestoreMaterialProjection.reduce(withControl.apply(
+                imported.with("importedSaveTransfer",DriverObservationRef(proof)))));
         assertThrows(IllegalArgumentException.class,()->RootRestoreMaterialProjection.reduce(
                 input(nativeState(),imported,actualSaved,actualAbandoned)));
         files.verify(original);files.verify(staged);
