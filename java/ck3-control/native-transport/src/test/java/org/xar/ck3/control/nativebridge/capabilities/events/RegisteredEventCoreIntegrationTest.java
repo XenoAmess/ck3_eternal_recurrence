@@ -224,6 +224,56 @@ final class RegisteredEventCoreIntegrationTest {
         }
     }
 
+    @Test void full111ReadOnlyDetailsReachTheActualIncidentWithoutAnOptionOrLowerPolicy() throws Exception {
+        var input = full111ActiveEvent(Set.of(new OperationKey(RegisteredEventCore.EVENT_QUERY),
+                new OperationKey("select-event-option-1")));
+        var incidents = new ArrayList<OpportunityJson.Obj>();
+        var policies = registryEventPolicies((actual, plan) -> {
+            assertSame(input, actual);
+            incidents.add(plan);
+        });
+        var originalFull = new ExactRef("software-full", 6, "1".repeat(64));
+        var originalSemantic = new ExactRef("software-semantic", 10, "2".repeat(64));
+        var originalCore = new ExactRef("software-core-read", 11, "3".repeat(64));
+        var originalLyd = new ExactRef("software-lyd-read", 12, "4".repeat(64));
+        for (int observed : List.of(17, 18)) {
+            var registry = new RegisteredEventCore(RegisteredEventKnowledge.load(), NO_READS, operation -> Optional.empty(),
+                    EventWindowService.validator(ignored -> Build.CROZIER4), RegisteredEventMaterial::plan,
+                    RegisteredEventCore.exactSourcePhases(), (actual, operation, args, detail, purpose, domain) -> {
+                        throw new AssertionError("Full111 LYD diagnostics must not prepare " + operation.value());
+                    }, org.xar.ck3.control.application.planning.events.EventIncidentCapturePort.unavailable(), (actual, summary) -> {
+                        assertSame(input, actual);
+                        assertEquals(new NativeFull111OrdinaryEvent(17, 3), summary);
+                        return Optional.of(new RegisteredEventCore.Full111EventObservation(observed, "lyd.1002",
+                                originalFull, originalSemantic, originalCore, originalLyd));
+                    });
+            incidents.clear();
+            var lower = new AtomicInteger();
+            var stopped = assertInstanceOf(PlanningResult.ReadOnlyWait.class,
+                    registryPlanner(registry, policies.get(1), policies.get(2), lower).plan(input));
+            assertEquals(0, lower.get());
+            var draft = stopped.trace().finalPlan().orElseThrow();
+            assertTrue(draft.command().isEmpty());
+            assertEquals(OrdinaryPolicy.Purpose.READ_ONLY, draft.purpose());
+            assertEquals(1, incidents.size());
+            var diagnostic = OpportunityJson.toNode(incidents.getFirst()).path("unhandled_native_window_diagnostic");
+            assertTrue(diagnostic.path("selection").isNull());
+            assertTrue(diagnostic.path("context").isNull());
+            if (observed == 17) {
+                var read = diagnostic.path("original_plan").path("full111_ordinary_event_read");
+                assertEquals("lyd.1002", read.path("event_definition_key").textValue());
+                assertEquals(originalFull, ExactRef.fromJson(read.path("original_full")));
+                assertEquals(originalSemantic, ExactRef.fromJson(read.path("original_semantic")));
+                assertEquals(originalCore, ExactRef.fromJson(read.path("original_core_read")));
+                assertEquals(originalLyd, ExactRef.fromJson(read.path("original_event_read")));
+                assertFalse(read.has("options"));
+            } else {
+                assertTrue(diagnostic.path("original_plan").isNull());
+                assertFalse(draft.detail().members().containsKey("full111_ordinary_event_read"));
+            }
+        }
+    }
+
     private static PlanningRequest full111ActiveEvent(Set<OperationKey> steps) throws Exception {
         byte[] original;
         try (var input = RegisteredEventCoreIntegrationTest.class.getResourceAsStream("/current267-lyd-cpp-a749/full111-ordinary-snapshot-event.json")) {

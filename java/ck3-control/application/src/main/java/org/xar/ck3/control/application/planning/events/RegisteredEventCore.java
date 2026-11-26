@@ -15,6 +15,7 @@ import org.xar.ck3.control.application.action.PlanningReadPort;
 import org.xar.ck3.control.application.action.PlanningReadRequest;
 import org.xar.ck3.control.application.action.PlanningReadResult;
 import org.xar.ck3.control.application.action.ReadContract;
+import org.xar.ck3.control.application.driver.DriverJson;
 import org.xar.ck3.control.application.planning.OrdinaryCorePolicy;
 import org.xar.ck3.control.application.planning.OrdinaryHistory;
 import org.xar.ck3.control.application.planning.OrdinaryPolicy;
@@ -23,6 +24,7 @@ import org.xar.ck3.control.application.planning.PlanningRequest;
 import org.xar.ck3.control.application.planning.PlanningResult;
 import org.xar.ck3.control.application.planning.warentry.WarEntryCollector;
 import org.xar.ck3.control.contracts.ExactCk3Build;
+import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.contracts.semantic.NativeFull111OrdinaryEvent;
 import org.xar.ck3.control.contracts.FullJsonTree;
@@ -43,6 +45,7 @@ import org.xar.ck3.control.wave2.events.unhandledevent.RetainedJson.*;
 public final class RegisteredEventCore implements OrdinaryCorePolicy.CoreProducer {
     public static final String EVENT_QUERY = "query-current-event-window-context-v1";
     static final String FULL111_OPTIONS_UNAVAILABLE = "Full111 reports the active event while its displayed options are unavailable";
+    static final String FULL111_EVENT_READ = "full111_ordinary_event_read";
     private static final String EVENT_SCOPE_CAPABILITY = "game.command.query-war-entry-assessments-raiktor-bookmark-saved-scope-v1";
     @FunctionalInterface public interface ReadContracts {
         Optional<EventReadBinding<?>> contract(OperationKey operation);
@@ -59,6 +62,31 @@ public final class RegisteredEventCore implements OrdinaryCorePolicy.CoreProduce
     @FunctionalInterface public interface PhaseProjector {
         Optional<ObjectValue> project(ObjectValue registryDecision, ObjectValue knowledge);
     }
+
+    @FunctionalInterface public interface Full111EventRead {
+        Optional<Full111EventObservation> observe(PlanningRequest actual, NativeFull111OrdinaryEvent foreground);
+    }
+
+    /** Read-only additional identity and the exact four original objects behind it. */
+    public record Full111EventObservation(int instanceId, String definitionKey, ExactRef full, ExactRef semantic,
+            ExactRef coreRead, ExactRef eventRead) {
+        public Full111EventObservation {
+            StrictJson.require(instanceId > 0, "positive Full111 event instance required");
+            StrictJson.text(definitionKey);
+            for (var ref : List.of(full, semantic, coreRead, eventRead))
+                StrictJson.require(ref.bytes() > 0, "nonempty original Full111 event evidence required");
+        }
+        OpportunityJson.Obj diagnostic() {
+            return new OpportunityJson.Obj(Map.of(
+                    "instance_id", new OpportunityJson.IntegerValue(BigInteger.valueOf(instanceId)),
+                    "event_definition_key", new OpportunityJson.Text(definitionKey),
+                    "original_full", DriverJson.fromNode(full.toJson()),
+                    "original_semantic", DriverJson.fromNode(semantic.toJson()),
+                    "original_core_read", DriverJson.fromNode(coreRead.toJson()),
+                    "original_event_read", DriverJson.fromNode(eventRead.toJson())));
+        }
+    }
+
     private final RegisteredEventKnowledge knowledge;
     private final RegisteredVanillaEventPolicy policy;
     private final PlanningReadPort reads;
@@ -68,6 +96,7 @@ public final class RegisteredEventCore implements OrdinaryCorePolicy.CoreProduce
     private final PhaseProjector phases;
     private final OrdinaryCorePolicy.CommandBinding binding;
     private final EventIncidentCapturePort incidentCapture;
+    private final Full111EventRead full111Read;
 
     public RegisteredEventCore(RegisteredEventKnowledge knowledge, PlanningReadPort reads, ReadContracts contracts,
             ContextValidator contextValidator, MaterialPlanner materials, PhaseProjector phases, OrdinaryCorePolicy.CommandBinding binding) {
@@ -76,7 +105,14 @@ public final class RegisteredEventCore implements OrdinaryCorePolicy.CoreProduce
     public RegisteredEventCore(RegisteredEventKnowledge knowledge, PlanningReadPort reads, ReadContracts contracts,
             ContextValidator contextValidator, MaterialPlanner materials, PhaseProjector phases, OrdinaryCorePolicy.CommandBinding binding,
             EventIncidentCapturePort incidentCapture) {
+        this(knowledge, reads, contracts, contextValidator, materials, phases, binding, incidentCapture,
+                (actual, foreground) -> Optional.empty());
+    }
+    public RegisteredEventCore(RegisteredEventKnowledge knowledge, PlanningReadPort reads, ReadContracts contracts,
+            ContextValidator contextValidator, MaterialPlanner materials, PhaseProjector phases, OrdinaryCorePolicy.CommandBinding binding,
+            EventIncidentCapturePort incidentCapture, Full111EventRead full111Read) {
         this.incidentCapture = Objects.requireNonNull(incidentCapture);
+        this.full111Read = Objects.requireNonNull(full111Read);
         this.knowledge = Objects.requireNonNull(knowledge); this.policy = new RegisteredVanillaEventPolicy(knowledge);
         this.reads = Objects.requireNonNull(reads); this.contracts = Objects.requireNonNull(contracts);
         this.contextValidator = Objects.requireNonNull(contextValidator);
@@ -138,9 +174,12 @@ public final class RegisteredEventCore implements OrdinaryCorePolicy.CoreProduce
                     "authored_option_count", number(event.authoredOptionCount()), "option_count", RetainedJson.NULL,
                     "selected_option_number", RetainedJson.NULL, "selected_option_index", RetainedJson.NULL));
             var observed = plan("active_event_window_query_unavailable", FULL111_OPTIONS_UNAVAILABLE, summary);
+            var baseline = opportunity(observed);
+            var diagnosis = full111Read.observe(request, event).filter(read -> read.instanceId() == event.instanceId())
+                    .map(read -> baseline.with(FULL111_EVENT_READ, read.diagnostic())).orElse(baseline);
             return new OrdinaryPolicy.Replace(new OrdinaryPolicy.Draft("one-life-turn-v1", text(observed.get("phase")),
                     FULL111_OPTIONS_UNAVAILABLE, OrdinaryPolicy.Kind.FOREGROUND, Optional.empty(), OrdinaryPolicy.Purpose.READ_ONLY,
-                    Optional.empty(), opportunity(observed)), "retain the actual Full111 event for the continuation diagnosis");
+                    Optional.empty(), diagnosis), "retain the actual Full111 event for the continuation diagnosis");
         }
         ObjectValue snapshot = retained(request.observations().snapshot());
         Value rawEvent = snapshot.contains("active_event") ? snapshot.get("active_event") : snapshot.get("current_event");

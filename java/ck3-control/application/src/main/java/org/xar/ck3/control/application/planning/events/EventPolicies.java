@@ -314,8 +314,11 @@ public final class EventPolicies {
         if (previous.command().isPresent()) return new OrdinaryPolicy.Keep("the existing dedicated selected action has priority");
         ObjectNode snapshot = snapshot(request); JsonNode event = snapshot.get("active_event"), pending = snapshot.get("pending_character_interaction");
         if (event != null && event.isObject()) {
-            if (RegisteredEventCore.full111OrdinaryEvent(request).isPresent())
-                return diagnosticWait(request, null, RegisteredEventCore.FULL111_OPTIONS_UNAVAILABLE, incidentCapture);
+            if (RegisteredEventCore.full111OrdinaryEvent(request).isPresent()) {
+                var originalPlan = Optional.of(previous.detail()).filter(detail ->
+                        detail.get(RegisteredEventCore.FULL111_EVENT_READ) instanceof OpportunityJson.Obj);
+                return diagnosticWait(request, null, originalPlan, RegisteredEventCore.FULL111_OPTIONS_UNAVAILABLE, incidentCapture);
+            }
             if (previous.detail().get("dedicated_policy_blocked") instanceof OpportunityJson.Bool blocked && blocked.value())
                 return new OrdinaryPolicy.Wait("the actual dedicated event policy is blocked; retain its full native evidence");
             Optional<ObjectNode> context = RegisteredEventCore.currentContext(request, previous, contextValidator)
@@ -358,10 +361,15 @@ public final class EventPolicies {
     }
 
     private static OrdinaryPolicy.Decision diagnosticWait(PlanningRequest request, JsonNode actualContext, String reason, EventIncidentCapturePort incidentCapture) {
+        return diagnosticWait(request, actualContext, Optional.empty(), reason, incidentCapture);
+    }
+
+    private static OrdinaryPolicy.Decision diagnosticWait(PlanningRequest request, JsonNode actualContext,
+            Optional<OpportunityJson.Obj> originalPlan, String reason, EventIncidentCapturePort incidentCapture) {
         var source = new NativeWindowDiagnostic.Source(request.before(),
                 OpportunityJson.object(request.observations().snapshot(), "actual diagnostic snapshot"),
                 new ArrayList<>(request.observations().history()),
-                Optional.ofNullable(actualContext).map(node -> OpportunityJson.parse(bytes(node))), Optional.empty(), reason);
+                Optional.ofNullable(actualContext).map(node -> OpportunityJson.parse(bytes(node))), originalPlan, reason);
         var plan = NativeWindowDiagnostic.plan(source);
         if (plan.isEmpty()) return new OrdinaryPolicy.Wait(reason);
         try { incidentCapture.captureBlocked(request, plan.orElseThrow()); }

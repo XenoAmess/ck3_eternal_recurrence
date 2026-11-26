@@ -198,7 +198,7 @@ public final class EventRuntimeInstaller {
                     String id=ActionIds.forDecision(request.sessionId(),request.before(),operation.value()+":"+ActionCodec.sha256(DriverJson.encode(args)));
                     return new OrdinaryCorePolicy.Prepared(new ActionCommand(id,request.before(),request.source(),request.sessionId(),operation,args,
                             expected.orElseThrow(),foregroundClaims(request),request.deadline()));
-                },incidents.capturePort());
+                },incidents.capturePort(),new RootFull111EventRead(context, sameTransport));
         List<RootExecutableBindings.ActionBinding> actions=new ArrayList<>();
         actions.add(mandatoryChoice.action());
         for(var binding:pending.bindings())actions.add(new RootExecutableBindings.ActionBinding(binding,ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP,
