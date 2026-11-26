@@ -43,7 +43,13 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
     public record SoftwareReadScenario(String profileSha256, String adapterId,
             java.util.function.Function<ExactRef, List<ReadContract<?>>> contracts,
             java.util.function.Function<NativeRequest, RawJson> result, Optional<String> expectedCk3Version, Set<String> extraHelloCapabilities,
-            java.util.function.Function<ExactRef,List<RootReadContractCatalog.Family<?,?>>> dynamicFamilies, Optional<String> controlledReviewedSource) {
+            java.util.function.Function<ExactRef,List<RootReadContractCatalog.Family<?,?>>> dynamicFamilies,
+            Optional<String> controlledReviewedSource, Optional<ExactCk3Build> g2Build) {
+        public SoftwareReadScenario(String profileSha256,String adapterId,java.util.function.Function<ExactRef,List<ReadContract<?>>> contracts,
+                java.util.function.Function<NativeRequest,RawJson> result,Optional<String> expectedCk3Version,Set<String> extraHelloCapabilities,
+                java.util.function.Function<ExactRef,List<RootReadContractCatalog.Family<?,?>>> dynamicFamilies,Optional<String> controlledReviewedSource) {
+            this(profileSha256,adapterId,contracts,result,expectedCk3Version,extraHelloCapabilities,dynamicFamilies,controlledReviewedSource,Optional.empty());
+        }
         public SoftwareReadScenario(String profileSha256,String adapterId,java.util.function.Function<ExactRef,List<ReadContract<?>>> contracts,
                 java.util.function.Function<NativeRequest,RawJson> result,Optional<String> expectedCk3Version,Set<String> extraHelloCapabilities,
                 java.util.function.Function<ExactRef,List<RootReadContractCatalog.Family<?,?>>> dynamicFamilies) {
@@ -66,8 +72,19 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
             controlledReviewedSource.ifPresent(value->StrictJson.require(!value.isBlank(),"controlled source text required"));
             expectedCk3Version = java.util.Objects.requireNonNull(expectedCk3Version);
             expectedCk3Version.ifPresent(StrictJson::text);
+            java.util.Objects.requireNonNull(g2Build);
+            if(g2Build.isPresent())
+                StrictJson.require(g2Build.orElseThrow().matches(expectedCk3Version.orElse(""),profileSha256),
+                        "exact G2 build must match the software HELLO version and executable SHA-256");
             extraHelloCapabilities = Set.copyOf(extraHelloCapabilities); extraHelloCapabilities.forEach(StrictJson::text);
             StrictJson.require(extraHelloCapabilities.size() <= 32, "bounded explicit software HELLO capabilities required");
+        }
+        SoftwareReadScenario withG2Build(ExactCk3Build build) {
+            return new SoftwareReadScenario(profileSha256,adapterId,contracts,result,expectedCk3Version,extraHelloCapabilities,
+                    dynamicFamilies,controlledReviewedSource,Optional.of(build));
+        }
+        private Optional<String> g2SourceLabel() {
+            return g2Build.map(build->build.version()+"@sha256:"+build.executableSha256()).or(()->expectedCk3Version);
         }
     }
     @FunctionalInterface public interface SoftwareDispatch { void run() throws IOException; }
@@ -407,7 +424,7 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
             StrictJson.require(original.length==actualSource.bytes()&&ActionCodec.sha256(original).equals(actualSource.sha256()),
                     "domain producer source bytes changed before original writer installation");
         }
-        source = new G2Source(MACHINE, Instant.now().toString(), scenario.flatMap(SoftwareReadScenario::expectedCk3Version).orElse("software-fixture"), reviewed);
+        source = new G2Source(MACHINE, Instant.now().toString(), scenario.flatMap(SoftwareReadScenario::g2SourceLabel).orElse("software-fixture"), reviewed);
         extraReadContracts = scenario.map(value -> List.copyOf(value.contracts().apply(reviewed))).orElseGet(List::of);
         List<RootReadContractCatalog.Family<?,?>> dynamicFamilies=scenario.map(value->List.copyOf(value.dynamicFamilies().apply(reviewed))).orElseGet(List::of);
         StrictJson.require(dynamicFamilies.size()<=16&&dynamicFamilies.stream().map(RootReadContractCatalog.Family::id).distinct().count()==dynamicFamilies.size()

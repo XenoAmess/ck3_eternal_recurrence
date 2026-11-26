@@ -165,6 +165,8 @@ final class RootReconciliationAuthorityIntegrationTest {
                 return actualKind==RootReconciliationAuthority.QueryKind.UNKNOWN_SENTINEL_STATUS
                         ?RootUnknownSentinelReadProfileTest.statusResult():raw("{\"software_read_only_observed\":true}");
             },full111Selection?Optional.empty():Optional.of(ExactCk3Build.CK3_12004.version()),Set.copyOf(fixtureCapabilities));
+            if(actualKind==RootReconciliationAuthority.QueryKind.CHILD_EDUCATION_FOCUS_RECEIPT)
+                reads=reads.withG2Build(ExactCk3Build.CK3_12004);
             var action=new ActionWriterIntegrationFixture.SoftwareActionScenario(actualAction,
                     full111Selection?CurrentFull111EventOption.Action.SELECT.capability():"game.command.pause-map",(original,attempt,dispatch)->{
                 if(!ActionReconciliationScope.activeFor(original))
