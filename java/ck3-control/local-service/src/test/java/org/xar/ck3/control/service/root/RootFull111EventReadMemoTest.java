@@ -7,10 +7,13 @@ import java.math.BigInteger;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayDeque;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Test;
 import org.xar.ck3.control.application.planning.events.RegisteredEventCore.Full111EventObservation;
+import org.xar.ck3.control.application.planning.events.RegisteredEventCore.Full111RenderedOption;
+import org.xar.ck3.control.application.planning.events.RegisteredEventCore.Full111RendererObservation;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.GameGeneration;
 import org.xar.ck3.control.contracts.PythonOnlyUInt64;
@@ -67,6 +70,32 @@ final class RootFull111EventReadMemoTest {
             assertEquals(frame.nativeRevision(), repeated.nativeRevision());
             assertEquals(Optional.of(evidence), memo.observe(subject(transport.acceptedSnapshotRevision(repeated)), expires, query));
             assertEquals(2, reads.get());
+        }
+    }
+
+    @Test void attemptingPreparationReleasesOnlyItsOriginalRendererMemo() throws Exception {
+        String slash = Character.toString(92);
+        var config = new NativePipeEndpoint.Config(slash + slash + "." + slash + "pipe" + slash + SESSION,
+                MACHINE, GAME, SESSION, "software", SHA, "software-legacy-adapter");
+        try (var transport = NativeGoalObservationFixture.receive(new SoftwarePackets(), config)) {
+            Instant now = Instant.now();
+            var frame = transport.observe(now.plusSeconds(10), Duration.ofSeconds(30));
+            var subject = subject(transport.acceptedSnapshotRevision(frame));
+            var original = example("original-renderer", "6");
+            var later = example("later-renderer", "7");
+            var flags = List.of(new Full111RenderedOption(0, true, true, true));
+            var evidence = new Full111EventObservation(7, "lyd.1002", subject.full(), subject.semantic(),
+                    example("core-read", "1"), example("lyd-read", "2"));
+            var memo = new RootFull111EventRead.HeldReadMemo();
+            var initial = evidence.withRenderer(new Full111RendererObservation(original, flags));
+            var replacement = evidence.withRenderer(new Full111RendererObservation(later, flags));
+            assertEquals(Optional.of(initial), memo.observe(subject, now,
+                    () -> Optional.of(new RootFull111EventRead.VerifiedRead(now.plusSeconds(5), initial))));
+            memo.release(later);
+            assertEquals(Optional.of(initial), memo.observe(subject, now, () -> { throw new AssertionError("unrelated quote"); }));
+            memo.release(original);
+            assertEquals(Optional.of(replacement), memo.observe(subject, now,
+                    () -> Optional.of(new RootFull111EventRead.VerifiedRead(now.plusSeconds(5), replacement))));
         }
     }
 

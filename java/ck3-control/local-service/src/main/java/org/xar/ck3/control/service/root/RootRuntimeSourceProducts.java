@@ -476,7 +476,10 @@ public final class RootRuntimeSourceProducts {
                 selected.javaSource(APPLICATION,EventPolicies.class),selected.javaSource(APPLICATION,RegisteredEventCore.class),
                 selected.javaSource(APPLICATION,NativeEventEffects.class),selected.javaSource(APPLICATION,NativeEventPostconditionPort.class),
                 selected.javaSource(LOCAL_SERVICE,EventActionPreparation.class),selected.javaSource(LOCAL_SERVICE,RootPendingInteractionEffects.class),
-                selected.javaSource(NATIVE_TRANSPORT,ArmyStrengthsMaterialQuery.class),selected.javaSource(LOCAL_SERVICE,RootMandatoryChoiceRuntime.class)),inputs.eventSources());
+                selected.javaSource(NATIVE_TRANSPORT,ArmyStrengthsMaterialQuery.class),selected.javaSource(LOCAL_SERVICE,RootMandatoryChoiceRuntime.class),
+                selected.javaSource(LOCAL_SERVICE,RootFull111EventOptionPreparation.class),
+                selected.javaSource(NATIVE_TRANSPORT,org.xar.ck3.control.nativebridge.CurrentFull111EventOption.class),
+                selected.javaSource(LOCAL_SERVICE,RootFull111EventOptionEffects.class)),inputs.eventSources());
     }
     private static RootCampaignPoliciesFactory.Prepared campaign(RootRuntimeDefinitions.Inputs inputs,
             RootRuntimeSelectedSources selected)throws IOException {

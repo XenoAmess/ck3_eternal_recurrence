@@ -44,6 +44,8 @@ final class RootFull111EventRead implements Full111EventRead {
         this.transport = Objects.requireNonNull(transport);
     }
 
+    void release(ExactRef originalRenderer) { reads.release(originalRenderer); }
+
     @Override public Optional<Full111EventObservation> observe(PlanningRequest actual, NativeFull111OrdinaryEvent foreground) {
         var caps = actual.observations().bridgeCapabilities();
         if (!caps.contains(CoreFrame.CAPABILITY) || !(caps.contains(CurrentFull111EventRenderer.CAPABILITY)
@@ -200,6 +202,11 @@ final class RootFull111EventRead implements Full111EventRead {
         private record Entry(ReadSubject subject, VerifiedRead observed) { }
         private Entry retained;
 
+        void release(ExactRef originalRenderer) {
+            if (retained != null && retained.observed().evidence().renderer().map(Full111RendererObservation::originalRead)
+                    .filter(originalRenderer::equals).isPresent()) retained = null;
+        }
+
         Optional<Full111EventObservation> observe(ReadSubject actual, Instant now, EventReadAttempt attempt)
                 throws IOException {
             return observe(actual, now, attempt, unused -> Optional.empty());
@@ -245,7 +252,7 @@ final class RootFull111EventRead implements Full111EventRead {
                 && receipt.writeEntered().order().compareTo(basis.responseReceived().order()) > 0;
     }
 
-    private static CoreFrame.Prefix prefix(JsonNode raw) throws IOException {
+    static CoreFrame.Prefix prefix(JsonNode raw) throws IOException {
         var player = raw.path("played_character");
         return new CoreFrame.Prefix(readInt(raw, "date_raw"), readInt(raw, "speed"), readBool(raw, "paused"),
                 readInt(raw, "local_player_id"), readBool(raw, "map_ready"), true,

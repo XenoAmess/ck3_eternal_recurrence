@@ -438,7 +438,10 @@ public final class RootOrdinaryPlainProducts {
                 m(EventActionPreparation.class),
                 m(RootPendingInteractionEffects.class),
                 m(ArmyStrengthsMaterialQuery.class),
-                m(RootMandatoryChoiceRuntime.class)
+                m(RootMandatoryChoiceRuntime.class),
+                m(RootFull111EventOptionPreparation.class),
+                m(org.xar.ck3.control.nativebridge.CurrentFull111EventOption.class),
+                m(RootFull111EventOptionEffects.class)
             );
         
             // 5. Lifecycle

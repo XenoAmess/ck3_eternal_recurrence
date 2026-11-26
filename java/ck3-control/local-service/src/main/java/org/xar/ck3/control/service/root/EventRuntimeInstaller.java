@@ -42,11 +42,13 @@ public final class EventRuntimeInstaller {
     public record Sources(ExactRef installer,ExactRef windowRead,ExactRef windowDecoder,ExactRef windowService,
             ExactRef religionReadDecoder,PlayerReligionContextRead.Sources religionSources,ExactRef policies,
             ExactRef registeredCore,ExactRef nativeEffects,ExactRef nativeEffectsDecoder,
-            ExactRef actionPreparation,ExactRef pendingMux,ExactRef armyMaterial,ExactRef mandatoryChoice) {
+            ExactRef actionPreparation,ExactRef pendingMux,ExactRef armyMaterial,ExactRef mandatoryChoice,
+            ExactRef full111OptionPreparation,ExactRef full111OptionDecoder,ExactRef full111OptionEffects) {
         public Sources {
             Objects.requireNonNull(religionSources);
             for(ExactRef ref:List.of(installer,windowRead,windowDecoder,windowService,religionReadDecoder,policies,
-                    registeredCore,nativeEffects,nativeEffectsDecoder,actionPreparation,pendingMux,armyMaterial,mandatoryChoice))
+                    registeredCore,nativeEffects,nativeEffectsDecoder,actionPreparation,pendingMux,armyMaterial,mandatoryChoice,
+                    full111OptionPreparation,full111OptionDecoder,full111OptionEffects))
                 StrictJson.require(ref.bytes()>0,"actual selected event producer/consumer source required");
         }
     }
@@ -189,6 +191,9 @@ public final class EventRuntimeInstaller {
                 operation->Set.of("query-war-results-window-v1","query-war-declared-overview-v1").contains(operation.value()),this::fixedWindowRead);
         eventReads=List.of(windowBinding,pendingBinding,armyBinding,religionBinding,savedWarEntry.binding(),mandatoryBinding,fixedWindows);
         validator=EventWindowService.validator(this::build);
+        var full111Read = new RootFull111EventRead(context, sameTransport);
+        var full111Prepare = new RootFull111EventOptionPreparation(context, sameTransport, full111Read);
+        var full111Effects = new RootFull111EventOptionEffects(context, sameTransport);
         registered=new RegisteredEventCore(knowledge,context.reads(),operation->eventReads.stream().filter(row->row.supports(operation)).findFirst(),
                 validator,RegisteredEventMaterial::plan,RegisteredEventCore.exactSourcePhases(),
                 (request,operation,args,plan,purpose,domain)-> {
@@ -198,9 +203,14 @@ public final class EventRuntimeInstaller {
                     String id=ActionIds.forDecision(request.sessionId(),request.before(),operation.value()+":"+ActionCodec.sha256(DriverJson.encode(args)));
                     return new OrdinaryCorePolicy.Prepared(new ActionCommand(id,request.before(),request.source(),request.sessionId(),operation,args,
                             expected.orElseThrow(),foregroundClaims(request),request.deadline()));
-                },incidents.capturePort(),new RootFull111EventRead(context, sameTransport));
+                },incidents.capturePort(),full111Read,full111Prepare);
         List<RootExecutableBindings.ActionBinding> actions=new ArrayList<>();
         actions.add(mandatoryChoice.action());
+        var full111Select = RootFull111EventOptionPreparation.SELECT;
+        actions.add(new RootExecutableBindings.ActionBinding(
+                new NativeEffectRegistry.Binding(full111Select, sources.full111OptionPreparation(), full111Prepare, full111Effects),
+                ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP, Optional.of(RootFull111EventOptionPreparation.CAPABILITY),
+                sources.full111OptionDecoder()));
         for(var binding:pending.bindings())actions.add(new RootExecutableBindings.ActionBinding(binding,ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP,
                 Optional.of("game.command."+binding.operation().value()),sources.pendingMux()));
         OperationKey block=new OperationKey("block-pending-character-interaction");
@@ -208,6 +218,7 @@ public final class EventRuntimeInstaller {
                 ReadContract.GuardMode.GAMEPLAY_PAUSED_MAP,Optional.of("game.command."+block.value()),sources.nativeEffectsDecoder()));
         List<NativeRecordedEvidenceVerifier.Binding> archived=new ArrayList<>(pending.archivedVerifiers());
         archived.add(mandatoryChoice.archived());
+        archived.add(RootFull111EventOptionEffects.archivedVerifier(full111Select, sources.full111OptionEffects(), context.frameLoader()));
         archived.add(NativeEventEffects.archivedVerifier(block,sources.nativeEffects(),context.frameLoader(),material));
         installation=new RootDomainInstallation("complete-native-events-and-shared-pending-mux",List.of(),
                 List.of(new RootReadContractCatalog.InstalledRead(window,sources.windowDecoder()),new RootReadContractCatalog.InstalledRead(religion.contract(),sources.religionReadDecoder()),
@@ -686,7 +697,7 @@ public final class EventRuntimeInstaller {
             return Optional.of(EventSelectionPublicResult.encode(original,NativeEffectEvidence.load(original,archive,RootAdvanceInfrastructureFactory.freshFrameLoader(context.frameLoader()))));
         });
     }
-    private static Claims foregroundClaims(PlanningRequest request) {
+    static Claims foregroundClaims(PlanningRequest request) {
         return new Claims(Set.of(),Set.of(),Set.of(request.before().frame().identity().player()),Set.of("foreground-window"));
     }
     private boolean captureOriginalBlocked(PlanningRequest actual,OpportunityJson.Obj plan)throws IOException {
