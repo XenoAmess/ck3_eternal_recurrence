@@ -1350,7 +1350,8 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         archive.inHistoricalReadScope(session, new org.xar.ck3.control.application.action.ActionPorts.HistoricalReadLimits(
                 4096, 256L * 1024 * 1024, 8192), ignored -> { validateChain(state); return true; });
         StrictJson.require(state.pending().isEmpty(), "ordinary submission cannot discard an unfinished cycle");
-        StrictJson.require(ContinuityActionJournal.receipts(head.state(), archive).stream().allMatch(ActionReceipt::settled),
+        var canonical = ContinuityActionJournal.receipts(head.state(), archive);
+        StrictJson.require(ContinuityActionJournal.blockingUnresolved(session, head, archive, owner, canonical).isEmpty(),
                 "ordinary submission cannot discard an unresolved original action");
         var verified = verify(session, owner, semantic); var frame = verified.frame();
         requireObservedBindingNotRegressed(head.state(), frame);
