@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -30,7 +31,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.io.CleanupMode;
 import org.junit.jupiter.api.io.TempDir;
+import org.xar.ck3.control.application.action.ActionCodec;
 import org.xar.ck3.control.application.driver.InitialEpisodePolicy;
+import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
 
 /** Actual adapter lifecycle, with the real worker failing before any Game or Native setup. */
@@ -83,6 +86,27 @@ public class RootOrdinaryWorkerDevMainLifecycleTest {
         assertThrows(IllegalArgumentException.class, () -> RootOrdinaryWorkerDevMain.prepareInvocation(
                 absentOwner, configuration, "restore-exited", "incomplete-request.json", "123"));
         assertFalse(Files.exists(temp.resolve("state")));
+    }
+
+    @Test void importedLoadedDevModeRejectsAnUnmatchedSuccessorBeforeOpeningWorkerConfiguration()throws Exception {
+        var now=Instant.now();
+        var descriptor=writeSource("actual-successor.json",new byte[]{1});
+        var exact3=writeSource("historical-request.json",new byte[]{2});
+        var parent=writeSource("parent-control.json",new byte[]{3});
+        var claim=writeSource("generation-claim.json",new byte[]{4});
+        var input=new RootLoadedReplacementRecoveryInputs.ImportedRequest("machine",now,now.plusSeconds(90),
+                exact3,descriptor,parent,claim,temp.resolve("recovery-evidence"),58,"a".repeat(64));
+        var wire=writeSource("loaded-request.json",RootLoadedReplacementRecoveryInputs.encodeImported(input));
+        var fault=assertThrows(java.io.IOException.class,()->RootOrdinaryWorkerDevMain.prepareInvocation(
+                temp.resolve("wrong-owner.json").toString(),temp.resolve("absent-config.json").toString(),
+                "resume-imported-loaded-replacement",wire.path(),Long.toString(wire.bytes()),wire.sha256()));
+        assertTrue(fault.getMessage().contains("actual successor owner descriptor"));
+        assertFalse(Files.exists(temp.resolve("recovery-evidence")));
+    }
+
+    private ExactRef writeSource(String name,byte[] bytes)throws Exception {
+        Path file=Files.write(temp.resolve(name),bytes);
+        return new ExactRef(file.toString(),bytes.length,ActionCodec.sha256(bytes));
     }
 
     private void exercise(Stop scenario) throws Exception {

@@ -86,7 +86,8 @@ public class RootOrdinaryWorkerDevMain implements QuarkusApplication {
     }
 
     record Invocation(RootOrdinaryRuntimeConfiguration configuration,
-            Optional<GameSupervisorControl.Descriptor> retainedOwner, String[] arguments) {}
+            Optional<GameSupervisorControl.Descriptor> retainedOwner,
+            Optional<RootOrdinaryWorkerMain.ImportedLoadedInput> importedLoaded, String[] arguments) {}
 
     private static final class OwnerPlanReader {
         private GameSupervisorControl.Descriptor descriptor;
@@ -100,18 +101,24 @@ public class RootOrdinaryWorkerDevMain implements QuarkusApplication {
     static Invocation prepareInvocation(String... arguments) throws IOException {
         String mode = arguments.length >= 3 ? arguments[2] : "resume";
         boolean loaded = "resume-loaded-replacement".equals(mode);
+        boolean importedLoaded = "resume-imported-loaded-replacement".equals(mode);
         boolean importedRestore = "restore-exited".equals(mode) && arguments.length == 6;
-        boolean exactRecovery = loaded || importedRestore;
+        boolean exactRecovery = loaded || importedRestore || importedLoaded;
         if (exactRecovery ? arguments.length != 6 : arguments.length != 2 && arguments.length != 3)
             throw new IllegalArgumentException("ordinary-worker-dev requires owner/config/mode and the exact original recovery tuple for a loaded or imported restore");
         if (!"resume".equals(mode) && !"current-map".equals(mode) && !"operator-quarantine".equals(mode)
-                && !"retire-exited".equals(mode) && !"restore-exited".equals(mode) && !loaded)
+                && !"retire-exited".equals(mode) && !"restore-exited".equals(mode) && !loaded && !importedLoaded)
             throw new IllegalArgumentException("unknown ordinary-worker-dev mode");
 
         Path configurationFile = Path.of(arguments[1]);
         OwnerPlanReader owner = new OwnerPlanReader();
+        var loadedInput=Optional.<RootOrdinaryWorkerMain.ImportedLoadedInput>empty();
         RootOrdinaryRuntimeConfiguration configuration;
-        if (importedRestore) {
+        if (importedLoaded) {
+            var input=RootOrdinaryWorkerMain.readImportedLoadedWorkerInput(arguments,java.time.Clock.systemUTC());
+            loadedInput=Optional.of(input);
+            configuration=RootOrdinaryWorkerMain.readImportedLoadedWorkerConfiguration(configurationFile,input.request());
+        } else if (importedRestore) {
             configuration = RootOrdinaryRuntimeConfiguration.readSaved(configurationFile, owner.read(Path.of(arguments[0])));
         } else if ("resume".equals(mode)) {
             configuration = RootOrdinaryRuntimeConfiguration.readResume(configurationFile,
@@ -120,7 +127,7 @@ public class RootOrdinaryWorkerDevMain implements QuarkusApplication {
             configuration = RootOrdinaryRuntimeConfiguration.read(configurationFile);
         }
         String[] actual = exactRecovery ? arguments.clone() : new String[]{arguments[0], arguments[1], mode};
-        return new Invocation(configuration, Optional.ofNullable(owner.descriptor), actual);
+        return new Invocation(configuration, Optional.ofNullable(owner.descriptor), loadedInput, actual);
     }
 
     private void execute(Invocation invocation) {
@@ -131,7 +138,7 @@ public class RootOrdinaryWorkerDevMain implements QuarkusApplication {
             emitObservation(Phase.DELEGATE_STARTED, null, null);
             // This returns only after the existing Main's actual business-resource finally.
             exit = new RootOrdinaryWorkerMain().runPrepared(new OrdinarySessionHost(), invocation.configuration(),
-                    invocation.retainedOwner(), invocation.arguments());
+                    invocation.retainedOwner(), invocation.importedLoaded(), invocation.arguments());
             delegateReturned=true;
         } catch(Throwable failed) {
             failure=failed;

@@ -41,11 +41,11 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
     }
 
     public int runWithHost(org.xar.ck3.control.service.OrdinarySessionHost ordinaryHost, String... args) throws Exception {
-        return runPrepared(ordinaryHost,null,Optional.empty(),args);
+        return runPrepared(ordinaryHost,null,Optional.empty(),Optional.empty(),args);
     }
 
     int runPrepared(org.xar.ck3.control.service.OrdinarySessionHost ordinaryHost,RootOrdinaryRuntimeConfiguration retainedConfiguration,
-            Optional<GameSupervisorControl.Descriptor> retainedOwner,String... args)throws Exception {
+            Optional<GameSupervisorControl.Descriptor> retainedOwner,Optional<ImportedLoadedInput> retainedImported,String... args)throws Exception {
         java.util.Objects.requireNonNull(ordinaryHost);
         if(args.length<3)throw new IllegalArgumentException("ordinary-worker requires owner.json, configuration and mode");
         String mode = args[2];
@@ -63,10 +63,11 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
         NativeLaunchPlan plan = descriptor.configuration().accept();
         RootLoadedReplacementRecoveryInputs.ImportedRequest importedLoadedInput=null;
         if(importedLoaded) {
-            if(!args[4].matches("[1-9][0-9]{0,5}"))throw new IOException("bounded exact imported loaded recovery request required");
-            importedLoadedInput=RootLoadedReplacementRecoveryInputs.readImportedExact(new ExactRef(args[3],Long.parseLong(args[4]),args[5]),clock);
-            if(!Path.of(importedLoadedInput.ownerDescriptor().path()).equals(Path.of(args[0]).toAbsolutePath().normalize()))
-                throw new IOException("imported loaded entry requires its actual successor owner descriptor");
+            var input=retainedImported.isPresent()?retainedImported.orElseThrow():readImportedLoadedWorkerInput(args,clock);
+            if(!input.reference().equals(importedLoadedWorkerReference(args)))
+                throw new IOException("retained imported loaded request crossed its exact original locator");
+            importedLoadedInput=input.request();
+            requireImportedLoadedWorkerOwner(args,importedLoadedInput);
         }
         RootOrdinaryRuntimeConfiguration config=retainedConfiguration!=null?retainedConfiguration:
                 importedLoaded?readImportedLoadedWorkerConfiguration(configPath,importedLoadedInput):
@@ -355,6 +356,25 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
 
     @FunctionalInterface interface CleanupPhase {void run()throws Exception;}
     /** Real owner wait runs first. Its diagnostic failure cannot skip independent remaining releases. */
+    record ImportedLoadedInput(ExactRef reference,RootLoadedReplacementRecoveryInputs.ImportedRequest request) { }
+
+    static ImportedLoadedInput readImportedLoadedWorkerInput(String[] args,Clock clock)throws IOException {
+        var ref=importedLoadedWorkerReference(args);
+        var request=RootLoadedReplacementRecoveryInputs.readImportedExact(ref,clock);
+        requireImportedLoadedWorkerOwner(args,request);
+        return new ImportedLoadedInput(ref,request);
+    }
+
+    private static ExactRef importedLoadedWorkerReference(String[] args)throws IOException {
+        if(args.length!=6||!args[4].matches("[1-9][0-9]{0,5}"))throw new IOException("bounded exact imported loaded recovery request required");
+        return new ExactRef(args[3],Long.parseLong(args[4]),args[5]);
+    }
+
+    private static void requireImportedLoadedWorkerOwner(String[] args,RootLoadedReplacementRecoveryInputs.ImportedRequest input)throws IOException {
+        if(!Path.of(input.ownerDescriptor().path()).equals(Path.of(args[0]).toAbsolutePath().normalize()))
+            throw new IOException("imported loaded entry requires its actual successor owner descriptor");
+    }
+
     static RootOrdinaryRuntimeConfiguration readImportedLoadedWorkerConfiguration(Path configuration,
             RootLoadedReplacementRecoveryInputs.ImportedRequest input)throws IOException {
         var original=RootSavedRuntimeConfigurationInputs.readSource(input.original().runtimeConfiguration());
