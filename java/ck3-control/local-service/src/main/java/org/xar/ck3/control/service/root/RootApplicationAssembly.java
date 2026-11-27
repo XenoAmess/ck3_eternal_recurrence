@@ -2135,7 +2135,9 @@ public final class RootApplicationAssembly {
                     }
                 });
                 return DriverBootstrap.adoptExternalSavedObservation(seed, same, actions, game.nativeTransport(),
-                        original.history().source(), archive, (ref, maximum) -> originals.read(same, ref, maximum),
+                        original.history().source(), archive,
+                        (ref, maximum) -> RootOriginalArtifacts.read(writer, archive, same, ref, maximum,
+                                original.history().source().sourceRef()),
                         retainedFrames, deadline, opening, retirement);
             } catch (UncheckedIOException failure) {
                 throw failure.getCause();
