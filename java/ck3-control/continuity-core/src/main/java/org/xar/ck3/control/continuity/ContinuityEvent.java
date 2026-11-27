@@ -1,6 +1,9 @@
 package org.xar.ck3.control.continuity;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.HexFormat;
 import java.util.Set;
 import org.xar.ck3.control.contracts.StrictJson;
 
@@ -32,7 +35,7 @@ public record ContinuityEvent(long sequence, String atUtc, String kind, byte[] d
         String predecessor = StrictJson.text(row.get("previous_sha256"));
         ObjectNode previousRow = previous.toJson();
         StrictJson.require(sequence == previous.sequence() + 1 && after.sequence() == sequence
-                && predecessor.equals(ContinuityJson.digest(previousRow)), "continuity event gap or predecessor digest");
+                && predecessor.equals(digest(previous)), "continuity event gap or predecessor digest");
         ObjectNode afterRow = after.toJson();
         StrictJson.require(identity.equals(ContinuityJson.digest(identityValue))
                 && identity.equals(StrictJson.text(afterRow.get("last_event_identity"))), "event changed identity/sequence");
@@ -68,6 +71,14 @@ public record ContinuityEvent(long sequence, String atUtc, String kind, byte[] d
         }
         return new ContinuityEvent(sequence, StrictJson.text(row.get("at_utc")), kind,
                 ContinuityJson.canonical(details), identity, predecessor, after);
+    }
+    private static String digest(ContinuityState previous) {
+        // ContinuityState already owns the normalized bytes used for predecessor binding.
+        try {
+            return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(previous.canonicalBytes()));
+        } catch (NoSuchAlgorithmException error) {
+            throw new IllegalStateException(error);
+        }
     }
     public String sourceKey() {
         ObjectNode value = StrictJson.object(); value.put("kind", kind);
