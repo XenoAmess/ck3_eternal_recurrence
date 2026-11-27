@@ -131,6 +131,7 @@ class _Arguments:
     expected_current_desktop_id: str | None = USER_DESKTOP
     deadline_utc: str = "2099-01-01T00:00:00+00:00"
     wait_seconds: float = 30
+    observation_policy: placement.ObservationPolicy = "legacyDesktop1"
 
 
 class PlacementTests(unittest.TestCase):
@@ -141,6 +142,18 @@ class PlacementTests(unittest.TestCase):
         samples = 0
         desktop = USER_DESKTOP
         stream = _ReceiptStream()
+        arguments = _Arguments()
+        launch_document = json.dumps({
+            "command": ["ck3.exe"], "pid": GAME_PID, "creation_date": "20261021130837.000000+000",
+        }).encode("utf-8")
+
+        def open_fixture(path: Path, mode: str, *, encoding: str | None = None) -> io.BytesIO | _ReceiptStream:
+            if path == arguments.launch_receipt and mode == "rb" and encoding is None:
+                return io.BytesIO(launch_document)
+            if path == arguments.receipt and mode == "x" and encoding == "utf-8":
+                return stream
+            raise AssertionError(f"unexpected fixture file open: {path}, {mode}, {encoding}")
+
         gui = ModuleType("win32gui")
         constants = ModuleType("win32con")
         api = ModuleType("win32api")
@@ -201,7 +214,8 @@ class PlacementTests(unittest.TestCase):
                 "producer": source, "machine_identity_provider": source, "foreground_contract": source,
                 "machine_identity_api": "ck3_live_run_id.current_machine_id"},
             "launch_receipt": "RAM-launch.json", "gameplay_input_sent": False, "desktop_switches": 0,
-            "process_launch_or_stop_calls": 0, "runtime_rendering_qualified": False}
+            "process_launch_or_stop_calls": 0, "runtime_rendering_qualified": False,
+            "observation_policy": "legacyDesktop1"}
         with ExitStack() as stack:
             stack.enter_context(patch.dict("sys.modules", {"win32api": api, "win32con": constants,
                 "win32gui": gui, "xar_autoplayer.bridge.windows_virtual_desktop": bridge}))
@@ -217,11 +231,9 @@ class PlacementTests(unittest.TestCase):
             }.items():
                 stack.enter_context(patch.object(placement, patch_name, replacement))
             stack.enter_context(patch.object(ctypes, "WinDLL", lambda *args, **kwargs: _Ole()))
-            stack.enter_context(patch.object(Path, "read_text", lambda *args, **kwargs: json.dumps({
-                "command": ["ck3.exe"], "pid": GAME_PID, "creation_date": "20261021130837.000000+000"})))
-            stack.enter_context(patch.object(Path, "open", lambda *args, **kwargs: stream))
+            stack.enter_context(patch.object(Path, "open", open_fixture))
             try:
-                placement.place(_Arguments())
+                placement.place(arguments)
             except RuntimeError:
                 pass
         decoded: object = json.loads(stream.getvalue())
