@@ -2144,6 +2144,13 @@ public final class RootApplicationAssembly {
             });
         }
 
+        static void admitUnrecordedNamedHistory(List<DriverBootstrap.ExternalSavedActionHistory> history,
+                Optional<ActionReceipt> event, Optional<ActionReceipt> life) {
+            java.util.stream.Stream.of(event, life).flatMap(Optional::stream)
+                    .filter(receipt -> history.stream().noneMatch(item -> item.receipt().equals(receipt)))
+                    .forEach(receipt -> history.add(new DriverBootstrap.ExternalSavedActionHistory(receipt, true, Optional.empty())));
+        }
+
         private DriverBootstrap.Adopted projectExternalSave(ContinuityStorePort.Session same, ManagedGameSession game,
                 RootExternalSavedOpening opening, ContinuityBatchJournal.PreparedExternalSave original,
                 int retainedFrames, Instant deadline) throws IOException {
@@ -2191,9 +2198,8 @@ public final class RootApplicationAssembly {
                         nextReceipt.filter(action -> action.command().equals(receipt.command())).isPresent(),
                         Optional.of(namedHistoryCoverage(receipt, publication, complete, bound))));
             }
-            var unrecorded = original.settledFull111Event().or(original::pendingFull111Event).or(original::interruptedLife)
-                    .filter(receipt -> namedHistory.stream().noneMatch(item -> item.receipt().equals(receipt)));
-            unrecorded.ifPresent(receipt -> namedHistory.add(new DriverBootstrap.ExternalSavedActionHistory(receipt, true, Optional.empty())));
+            admitUnrecordedNamedHistory(namedHistory, original.settledFull111Event().or(original::pendingFull111Event),
+                    original.interruptedLife());
             try {
                 var retirement = actions.withFrozen(same, lease -> {
                     lease.assertCurrent();
