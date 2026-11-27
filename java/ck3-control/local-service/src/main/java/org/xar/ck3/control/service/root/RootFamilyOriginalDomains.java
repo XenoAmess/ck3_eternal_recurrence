@@ -150,6 +150,10 @@ public final class RootFamilyOriginalDomains {
             RootRestorationOriginalProof proof)throws IOException {
         return ordinaryRestores.initialize(actual,same,Objects.requireNonNull(proof));
     }
+    List<DomainBodies.BodyRef> initializeCommittedOrdinary(RootRuntimeContext actual, ContinuityStorePort.Session same,
+            RootCommittedOrdinaryRestoration original) throws IOException {
+        return ordinaryRestores.initializeCommitted(actual, same, original);
+    }
     /** One actual transform for NEXT and FIRST restore; original BASELINE and current physical facts stay distinct. */
     public List<DomainBodies.BodyRef> initializeNext(RootRuntimeContext actual,ContinuityStorePort.Session same,
             RootApplicationAssembly.EpisodeDomainInitializationProof proof)throws IOException {

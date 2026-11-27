@@ -117,6 +117,11 @@ public final class FamilyRuntimeInstaller {
         StrictJson.require(installed!=null,"ordinary restoration requires the actual installed Family producer graph");
         actual.requireCurrent(same);var result=prepared.originals.initializeOrdinaryRestored(context,same,actual);actual.requireCurrent(same);return result;
     }
+    public synchronized List<DomainBodies.BodyRef> initializeCommittedOrdinary(ContinuityStorePort.Session same,
+            RootCommittedOrdinaryRestoration original) throws IOException {
+        StrictJson.require(installed != null, "committed ordinary restoration requires the actual installed Family producer graph");
+        return prepared.originals.initializeCommittedOrdinary(context, same, original);
+    }
     public RootFamilyReadProducts readProducts() {return reads;}
     public synchronized FamilyOrdinaryPolicy ordinary() {StrictJson.require(installed!=null,"actual family products not installed");return complete.ordinary();}
     public FamilyPorts.LedgerRead documents(org.xar.ck3.control.application.planning.PlanningRequest actual) {
