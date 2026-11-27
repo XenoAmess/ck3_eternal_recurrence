@@ -66,7 +66,9 @@ final class OpeningReadBindingQualificationTest {
                 "db2a814aaa702b322a53e76512b8c80d71fc3249c71c9d31a674a436effaee86");
         var diagnostic = new ExactRef(Path.of("software-full111-event-diagnostic.dll").toAbsolutePath().toString(), 21_625_856L,
                 "dcc27c14b96491519eb7269f994d5f5534d00741637632879ccc8d317d31343d");
-        for (var retained : java.util.List.of(foreground, diagnostic)) {
+        var directContext = new ExactRef(Path.of("software-full111-direct-context.dll").toAbsolutePath().toString(), 21_633_024L,
+                "e2b0a10873102ae51faf2863a2dfe6a739860cfa5ee86fcfd21d847a37996693");
+        for (var retained : java.util.List.of(foreground, diagnostic, directContext)) {
             assertAll(
                     () -> assertTrue(OpeningReadProfile.selectQualified(full.version(), full.executableSha256(), retained).isPresent()),
                     () -> assertTrue(FullSnapshotClockControl.isMappedSave112Bridge(retained)));

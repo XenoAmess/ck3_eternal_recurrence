@@ -49,7 +49,10 @@ public final class FullSnapshotClockControl {
                 &&"9f7d32508da373bb6f2783a583641e6d2393a5c8950ce05ee3fefd3877a339c4".equalsIgnoreCase(bridge.sha256()))
                 // Full111 event-read diagnostics retain the mapped SAVE producer and empty-event admission.
                 ||(bridge.bytes()==21_625_856L
-                &&"dcc27c14b96491519eb7269f994d5f5534d00741637632879ccc8d317d31343d".equalsIgnoreCase(bridge.sha256())));
+                &&"dcc27c14b96491519eb7269f994d5f5534d00741637632879ccc8d317d31343d".equalsIgnoreCase(bridge.sha256()))
+                // Full111 direct event-option context reads retain the mapped SAVE producer.
+                ||(bridge.bytes()==21_633_024L
+                &&"e2b0a10873102ae51faf2863a2dfe6a739860cfa5ee86fcfd21d847a37996693".equalsIgnoreCase(bridge.sha256())));
     }
 
     public static NativeRequest requestMappedSave112(org.xar.ck3.control.contracts.ExactRef bridge,
