@@ -188,7 +188,8 @@ public final class FreshGameplayEntryAuthorityIntegrationTest {
         }
     }
     @Test void publicRootReopensActualWriterAndAdoptsSamePhysicalSoftwareOwnerInOneArchive()throws Exception {
-        var peer=new Peer("\\\\.\\pipe\\root-physical-software-recovery-"+UUID.randomUUID(),2,1,3);
+        var peer=new Peer("\\\\.\\pipe\\root-physical-software-recovery-"+UUID.randomUUID(),2,new long[]{1,3},
+                new long[]{53144328,53144328},3);
         var process=WindowsJobProcess.exactProcess(ProcessHandle.current().pid());
         var generation=ManagedGameSession.generation(process);
         var launch=plan(peer.pipe);
@@ -244,10 +245,53 @@ public final class FreshGameplayEntryAuthorityIntegrationTest {
                     assertArrayEquals(observed.originalPacket(),core.archive().readArtifact(same,freshPacket,DriverJson.MAX_NATIVE_BYTES));
                     return null;
                 });
+                assertEquals(3,peer.writes.get(),"public initial recovery dispatches exactly one new Full");
+                var custody=new GameRestoreNativeAdapter.FreshReadCustody();
+                GameRestoreNativeAdapter.UnavailableRetention unexpected=unavailable->{
+                    throw new IOException("software restore READ unavailable: "+unavailable.reason());
+                };
+                var firstRead=custody.read(second.nativeTransport(),deadline(),unexpected);
+                assertSame(firstRead,custody.read(second.nativeTransport(),deadline(),unexpected));
+                assertEquals(4,peer.writes.get(),"unarchived original must be retained without another dispatch");
+                archiveRestoreRead(core,archive,firstRead);
+                custody.archived(firstRead);
+                var secondRead=custody.read(second.nativeTransport(),deadline(),unexpected);
+                archiveRestoreRead(core,archive,secondRead);
+                custody.archived(secondRead);
+                assertNotEquals(firstRead.acknowledgement().requestId(),secondRead.acknowledgement().requestId());
+                assertEquals(firstRead.originalFrame().session(),secondRead.originalFrame().session());
+                assertEquals(second.nativeTransport().diagnostics().session().orElseThrow(),secondRead.originalFrame().session());
+                assertEquals(BigInteger.valueOf(4),firstRead.originalFrame().nativeRevision());
+                assertEquals(BigInteger.valueOf(5),secondRead.originalFrame().nativeRevision());
+                RestoreCheckpointService.requireStableReadProgression(firstRead.originalFrame(),secondRead.originalFrame());
+                var firstAck=firstRead.acknowledgement().custody().orElseThrow();
+                var secondAck=secondRead.acknowledgement().custody().orElseThrow();
+                assertEquals(firstAck.custodyEpoch(),secondAck.custodyEpoch());
+                assertTrue(firstAck.responseReceived().order().compareTo(secondAck.writeEntered().order())<0);
+                core.writer().locked(same->{
+                    assertEquals(committed.digest(),same.head().digest());
+                    return null;
+                });
             }
-            assertEquals(3,peer.writes.get());
+            assertEquals(5,peer.writes.get());
             assertArrayEquals(predecessor,Files.readAllBytes(snapshot));
         }
+    }
+
+    private static void archiveRestoreRead(RootApplicationAssembly.Core core,Path archive,
+            NativeFreshSnapshotPort.Received received)throws IOException {
+        core.writer().locked(same->{
+            var scoped=core.archive().withSession(same);
+            var ack=scoped.preserve(received.acknowledgement());
+            var raw=scoped.preserveNativeFrame(received.originalFrame());
+            assertEquals(archive,Path.of(ack.path()).getParent());
+            assertEquals(archive,Path.of(raw.path()).getParent());
+            var restored=assertInstanceOf(NativeActionPort.AckReceived.class,scoped.load(ack));
+            assertArrayEquals(received.acknowledgement().originalPacket(),restored.originalPacket());
+            assertArrayEquals(received.originalFrame().originalPacket(),scoped.loadNativeFrame(raw));
+            NativeFreshSnapshotPort.verifyOriginal(restored,received.originalFrame(),received.snapshotReceived());
+            return null;
+        });
     }
 
     private static ExactRef exactRootTestFile(Path path)throws IOException {
@@ -695,14 +739,17 @@ public final class FreshGameplayEntryAuthorityIntegrationTest {
     }
 
     private static final class Peer implements AutoCloseable {
-        final String pipe;final int connections;final long[] revisions,dates;final AtomicInteger writes=new AtomicInteger();final AtomicReference<Throwable> failure=new AtomicReference<>();Thread thread;
+        final String pipe;final int connections,finalConnectionReads;final long[] revisions,dates;final AtomicInteger writes=new AtomicInteger();final AtomicReference<Throwable> failure=new AtomicReference<>();Thread thread;
         Peer(String pipe){this(pipe,1);}
         Peer(String pipe,int connections){this(pipe,connections,1,1);}
         Peer(String pipe,int connections,long firstRevision,long secondRevision){this(pipe,connections,firstRevision,secondRevision,secondRevision);}
         Peer(String pipe,int connections,long firstRevision,long secondRevision,long thirdRevision){this(pipe,connections,new long[]{firstRevision,secondRevision,thirdRevision},new long[]{53144328,53144328,53144328});}
-        Peer(String pipe,int connections,long[] revisions,long[] dates){
-            if(connections<1||revisions.length<connections||dates.length<connections)throw new IllegalArgumentException("finite per-connection software observations required");
+        Peer(String pipe,int connections,long[] revisions,long[] dates){this(pipe,connections,revisions,dates,1);}
+        Peer(String pipe,int connections,long[] revisions,long[] dates,int finalConnectionReads){
+            if(connections<1||revisions.length<connections||dates.length<connections||finalConnectionReads<1)
+                throw new IllegalArgumentException("finite per-connection software observations required");
             this.pipe=pipe;this.connections=connections;this.revisions=revisions.clone();this.dates=dates.clone();
+            this.finalConnectionReads=finalConnectionReads;
         }
         void start(){thread=new Thread(()->{try{run();}catch(Throwable thrown){failure.set(thrown);}},"first-map-software-peer");thread.setDaemon(true);thread.start();}
         void finish()throws Exception{thread.join(2000);assertFalse(thread.isAlive(),"software peer must finish");if(failure.get()!=null)throw new AssertionError(failure.get());}
@@ -717,13 +764,14 @@ public final class FreshGameplayEntryAuthorityIntegrationTest {
                         .put("bridge_version","entry-test").put("expected_ck3_sha256",SHA).put("expected_ck3_version","1.20.0.4").put("game_adapter_id",ADAPTER)
                         .put("game_adapter_status","ready").put("ck3_build_match",true);
                 hello.putArray("capabilities").add("game.state.snapshot").add(NativeFreshSnapshotPort.CAPABILITY).add(Primitive.START_BOOKMARK.capability());write(client,hello);
-                for(int i=connection==1?0:1;i<2;i++){
+                int readCount=connection==connections?finalConnectionReads:1;
+                for(int i=connection==1?0:1;i<=readCount;i++){
                     var request=(ObjectNode)StrictJson.parse(read(client),StrictJson.EXPLICIT_MAX_BYTES);writes.incrementAndGet();String id=StrictJson.text(request.get("request_id"));String step=StrictJson.text(request.get("step"));
                     var ack=StrictJson.object().put("type","command_result").put("protocol_version",1).put("request_id",id).put("ok",true);
                     if(i==0){if(!Primitive.START_BOOKMARK.operation().value().equals(step))throw new IOException("wrong real START");ack.putObject("result").put("step",step).put("accepted",true).put("status","acknowledged_verification_pending").put("backend_id","native-headless");}
                     else{
                         if(!NativeFreshSnapshotPort.STEP.equals(step))throw new IOException("wrong real full read");
-                        long nativeRevision=revisions[connection-1];
+                        long nativeRevision=revisions[connection-1]+i-1;
                         var state=StrictJson.object().put("paused",true).put("map_ready",true).put("speed",3).put("date_raw",dates[connection-1]).put("one_life_terminal",false).put("episode_identity_pending",false);
                         state.putObject("played_character").put("character_id",73).put("alive",true);state.putNull("active_event").putNull("pending_character_interaction").putNull("one_life_terminal_reason");
                         state.putArray("active_wars");state.putArray("player_armies");state.putObject("diagnostics").put("bridge_pid",ProcessHandle.current().pid()).put("connection_generation",6+connection);
