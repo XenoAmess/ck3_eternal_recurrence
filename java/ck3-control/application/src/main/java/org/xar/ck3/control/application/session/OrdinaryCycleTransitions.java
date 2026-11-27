@@ -19,6 +19,7 @@ import org.xar.ck3.control.application.action.ActionCommand;
 import org.xar.ck3.control.application.action.ActionCodec;
 import org.xar.ck3.control.application.action.ActionTransitions;
 import org.xar.ck3.control.application.action.CommandOrigin;
+import org.xar.ck3.control.application.action.NativeObservationPort.ObservedFrame;
 import org.xar.ck3.control.application.action.CompositeOperatorQuarantineObservation;
 import org.xar.ck3.control.application.action.CompositeOperatorQuarantineRequest;
 import org.xar.ck3.control.application.action.ActionState;
@@ -112,6 +113,18 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
     private final ThreadLocal<RestoreBinding> restoring = new ThreadLocal<>();
     private final ThreadLocal<CommittedImportedRebind> committedImportedRebinding = new ThreadLocal<>();
     private volatile CommittedImportedRebindAuthority committedImportedRebindAuthority;
+    private volatile CommittedImportedSettledReadAuthority committedImportedSettledReadAuthority;
+
+    /** Installed Root supplies the exact independently read Native Full, verified under its current receiver custody. */
+    @FunctionalInterface public interface CommittedImportedSettledReadAuthority {
+        ObservedFrame requireCurrent(ContinuityStorePort.Session same, ContinuityBatchJournal.SettledSameGameData data,
+                SemanticEvidence fresh) throws IOException;
+    }
+    public synchronized void bindCommittedImportedSettledReadAuthority(CommittedImportedSettledReadAuthority actual) {
+        StrictJson.require(committedImportedSettledReadAuthority == null, "settled imported current READ authority installs once");
+        committedImportedSettledReadAuthority = Objects.requireNonNull(actual);
+    }
+
 
     /** Root's actual newly adopted Driver and independent current paused, living, map-ready SEM. */
     @FunctionalInterface public interface CommittedImportedRebindAuthority {
@@ -555,6 +568,52 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                 &&head.digest().equals(same.head().digest()),
                 "imported Saved restart requires a fresh same-date SEM with the original Driver and head");
         settledObservation=new SettledObservation(owner,ContinuityJson.digest(branch.toJson()),fresh.frame());
+    }
+
+    /** Installs only the observation of the new receiver on the already completed successor branch. */
+    void requireCommittedImportedSettledReady(ContinuityStorePort.Session same, ContinuityBatchJournal.SettledSameGameData data,
+            CommittedImportedSettledFrontier.Data frontier, SemanticEvidence fresh) throws IOException {
+        StrictJson.require(active.get() == same, "settled imported successor requires the original held writer");
+        var head = same.head();
+        var owner = frontier.owner();
+        var branch = state(head.state(), owner);
+        var saved = frontier.history().original().pair();
+        StrictJson.require(head.state().status() == ContinuityState.Status.RUNNING && data.controller().owner().equals(owner)
+                && head.digest().equals(data.canonicalHeadDigest()) && head.state().sequence() == data.canonicalSequence()
+                && branch.pending().isEmpty() && branch.head().isPresent() && data.controller().savedPair().filter(saved::equals).isPresent()
+                && head.state().settledDateRaw() == saved.frame().frame().identity().dateRaw().longValueExact(),
+                "settled imported successor changed its original cycle, SAVE or held head");
+        requireFrontier(head.state(), branch);
+        requireLegacyPendingClear(head.state(), branch);
+        validateChain(branch);
+        var record = load(branch.head().orElseThrow());
+        var bound = archive.withSession(same);
+        var settled = bound.loadReceipt(record.receipt());
+        StrictJson.require(frontier.successorActions().contains(settled) && data.source().equals(settled.command().source())
+                && record.semantic().equals(data.latestCycleSemantic()) && record.semantic().equals(frontier.latestCycle()),
+                "settled imported successor changed its canonical completed action or SEM");
+        var authority = committedImportedSettledReadAuthority;
+        if (authority == null) throw new IOException("settled imported successor requires its installed independent Native READ");
+        var read = authority.requireCurrent(same, data, fresh);
+        var transport = ContinuityBatchJournal.retainedSemanticObservation(fresh, owner, bound).transport();
+        var nativePacket = fresh.originalNativePacket();
+        byte[] originalPacket = read.originalPacket();
+        StrictJson.require(transport.equals(read.session())
+                && transport.connectionGeneration().compareTo(data.previousTransport().connectionGeneration()) > 0
+                && read.snapshotId().equals(fresh.frame().frame().snapshotId())
+                && read.nativeRevision().equals(fresh.frame().frame().identity().nativeRevision())
+                && read.observedAt().equals(fresh.observedAt())
+                && originalPacket.length == nativePacket.bytes() && ActionCodec.sha256(originalPacket).equals(nativePacket.sha256()),
+                "settled imported successor requires the exact independent Full from its newer connection");
+        requireImportedCycleSemantic(same, owner, settled, fresh);
+        ContinuityBatchJournal.requireSettledObservedContinuation(data.latestObservedFrame(), fresh.frame());
+        requireObservedBindingNotRegressed(head.state(), fresh.frame());
+        StrictJson.require(fresh.observedAt().isAfter(record.semantic().observedAt())
+                && fresh.frame().frame().identity().dateRaw().equals(data.latestObservedFrame().frame().identity().dateRaw())
+                && fresh.originalDriver().sha256().equals(data.retainedFullDriver().sha256())
+                && fresh.originalDriver().bytes() == data.retainedFullDriver().bytes() && head.digest().equals(same.head().digest()),
+                "settled imported successor requires its new same-date SEM and exact retained Driver");
+        settledObservation = new SettledObservation(owner, ContinuityJson.digest(branch.toJson()), fresh.frame());
     }
 
     void requireImportedCycleSemantic(ContinuityStorePort.Session same,SessionIdentity owner,ActionReceipt original,

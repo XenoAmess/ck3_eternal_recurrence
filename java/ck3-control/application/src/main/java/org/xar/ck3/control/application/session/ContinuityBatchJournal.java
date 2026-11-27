@@ -3788,6 +3788,12 @@ public final class ContinuityBatchJournal implements BatchJournal {
         record Observed(org.xar.ck3.control.continuity.ObservedGameplayEntry.Details details) implements SameGameEntry {
             public Observed { Objects.requireNonNull(details); }
         }
+        record CommittedImportedRebind(ExactRef attachment, ExactRef rebind) implements SameGameEntry {
+            public CommittedImportedRebind {
+                Objects.requireNonNull(attachment);
+                Objects.requireNonNull(rebind);
+            }
+        }
         record ImportedSaved(ExactRef canonicalEntry, CheckpointPair savedPair, ObservationIdentity opening,
                 long completedCycles) implements SameGameEntry {
             public ImportedSaved {
@@ -3854,6 +3860,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
     private WriterContracts.HistoricalTransition issuedSettledSameGameRecovery;
     private boolean issuedSettledSameGameOpenBatch;
     private ImportedCycleSettlement issuedImportedCycleSettlement;
+    private SettledImportedRecoveryData issuedSettledImportedRecovery;
     private long acceptedSettledSameGameSequence;
     private String acceptedSettledSameGameDigest;
     private SavedSettledHistory issuedSavedSettledHistory;
@@ -4043,6 +4050,16 @@ public final class ContinuityBatchJournal implements BatchJournal {
             SettledSameGameData data, SemanticEvidence fresh) throws IOException {
         store.requireSession(same);Objects.requireNonNull(data);Objects.requireNonNull(fresh);
         return transitions.withLocked(same,()->{
+            if (data == issuedSettledSameGameData && issuedSettledImportedRecovery != null) {
+                StrictJson.require(committedSettledSameGameData == null,
+                        "settled imported successor DATA can be adopted only once");
+                requireSettledImportedOriginal(same, data);
+                transitions.requireCommittedImportedSettledReady(same, data, issuedSettledImportedRecovery.history().frontier(), fresh);
+                committedSettledSameGameData = data;
+                acceptedSettledSameGameSequence = data.canonicalSequence();
+                acceptedSettledSameGameDigest = data.canonicalHeadDigest();
+                return Optional.empty();
+            }
             if(data==issuedSettledSameGameData&&issuedImportedCycleSettlement!=null) {
                 StrictJson.require(committedSettledSameGameData==null,"imported Saved settlement DATA can be adopted only once");
                 var retained=issuedImportedCycleSettlement;
@@ -6561,6 +6578,57 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 controller.usedBatches(),unsaved,Optional.of(history.attachment().savedPair()),Optional.of(same.persistedHead()),
                 eligible,dirty,false,false,controller.committedSavedDays(),java.util.Set.of(),false);
         return new SettledImportedRecoveryData(history,driver,restart);
+    }
+
+    /** Issues the exact closed imported successor history to this journal's same-Game recovery path. */
+    public SettledSameGameData readSettledImportedSameGame(ContinuityStorePort.Session same,
+            WriterContracts.Pin actualAttachment, SessionIdentity owner) throws IOException {
+        store.requireSession(same);
+        StrictJson.require(issuedSettledSameGameData == null && committedSettledSameGameData == null,
+                "settled imported successor history may be issued once by its actual journal");
+        var recovered = readSettledImportedRecoveryData(same, actualAttachment);
+        var frontier = recovered.history().frontier();
+        var original = frontier.history().original();
+        var driver = recovered.driver();
+        var head = same.head();
+        StrictJson.require(owner.equals(frontier.owner()) && ContinuityJson.same(head.state().toJson(), frontier.history().current().toJson()),
+                "settled imported history crossed its actual successor or held head");
+        var start = new SameGameEntry.CommittedImportedRebind(original.attachment().eventPin().reference(), original.rebind().eventPin().reference());
+        var history = new java.util.ArrayList<ExactRef>();
+        history.add(start.attachment());
+        history.add(start.rebind());
+        frontier.history().suffix().forEach(edge -> history.add(edge.eventPin().reference()));
+        var data = new SettledSameGameData(start, recovered.restart(), driver.facts(), driver.fullDriver(),
+                driver.observed().transport(), frontier.source(), Optional.of(driver.latestCycle()), driver.observed().frame(),
+                frontier.canonicalActions(), head.state().sequence(), head.digest(), history);
+        issuedSettledImportedRecovery = recovered;
+        issuedSettledSameGameData = data;
+        return data;
+    }
+
+    /** Validates the original action cut before the new worker performs any Native READ. */
+    public void requireSettledImportedSameGameOriginal(ContinuityStorePort.Session same, SettledSameGameData data) throws IOException {
+        store.requireSession(same);
+        transitions.withLocked(same, () -> { requireSettledImportedOriginal(same, data); return null; });
+    }
+
+    private void requireSettledImportedOriginal(ContinuityStorePort.Session same, SettledSameGameData data) throws IOException {
+        StrictJson.require(data == issuedSettledSameGameData && issuedSettledImportedRecovery != null,
+                "settled imported successor requires this journal's actual replay");
+        var head = same.head();
+        var frontier = issuedSettledImportedRecovery.history().frontier();
+        StrictJson.require(!head.snapshotNeedsRecovery() && head.indexRepairs().isEmpty()
+                && head.digest().equals(data.canonicalHeadDigest()) && head.state().sequence() == data.canonicalSequence(),
+                "settled imported successor changed the exact held head");
+        var original = frontier.history().original();
+        same.verifyPin(original.attachment().eventPin());
+        same.verifyPin(original.rebind().eventPin());
+        var archive = transitions.restartArchive(same);
+        var canonical = ContinuityActionJournal.receipts(head.state(), archive);
+        StrictJson.require(canonical.equals(data.settledActions())
+                && canonical.stream().filter(action -> !action.settled()).toList().equals(List.of(frontier.retiredResume()))
+                && ContinuityActionJournal.blockingUnresolved(same, head, archive, frontier.owner(), canonical).isEmpty(),
+                "settled imported successor lost its canonical actions or exact tombstoned UNKNOWN");
     }
 
     private CommittedImportedControllerHistory readCommittedImportedControllerHistory(ContinuityStorePort.Session same,
