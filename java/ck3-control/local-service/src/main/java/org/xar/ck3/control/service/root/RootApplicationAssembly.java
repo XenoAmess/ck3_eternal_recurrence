@@ -2171,7 +2171,8 @@ public final class RootApplicationAssembly {
                         original.history().source(), archive,
                         (ref, maximum) -> RootOriginalArtifacts.read(writer, archive, same, ref, maximum,
                                 original.history().source().sourceRef()),
-                        retainedFrames, deadline, opening, retirement, original.pendingFull111Event());
+                        retainedFrames, deadline, opening, retirement,
+                        original.settledFull111Event().or(original::pendingFull111Event));
             } catch (UncheckedIOException failure) {
                 throw failure.getCause();
             } catch (InterruptedException interrupted) {
@@ -3076,9 +3077,11 @@ public final class RootApplicationAssembly {
                 throws IOException, InterruptedException {
             if (externalFull111EventData == null) return;
             var stage = Objects.requireNonNull(externalSavedStage);
-            var proof = RootArchivedFull111EventRecovery.Originals.read(proofFile);
             session.restoreUnresolvedSameGame(externalFull111EventData);
-            RootArchivedFull111EventRecovery.publish(this, stage.original(), externalFull111EventData, proof);
+            if (stage.original().settledFull111Event().isEmpty()) {
+                var proof = RootArchivedFull111EventRecovery.Originals.read(proofFile);
+                RootArchivedFull111EventRecovery.publish(this, stage.original(), externalFull111EventData, proof);
+            }
             var actual = session.reconcileUnresolvedOriginal(externalFull111EventData, deadline);
             if (!actual.settled() || session.controllerForPublication().isQuarantined())
                 throw new IOException("External Full111 event is recorded but its original ordinary cycle remains quarantined");

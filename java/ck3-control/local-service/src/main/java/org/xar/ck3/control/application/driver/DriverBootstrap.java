@@ -1056,8 +1056,12 @@ public final class DriverBootstrap {
                     StrictJson.require(admittedNamedPending.isEmpty() || lease.snapshot().actions().contains(admittedNamedPending.orElseThrow()),
                             "named-save Driver lost its exact pending successor action");
                     for(var actual:lease.snapshot().actions()) {
-                        if (coldOpening.isPresent() && actual.command().origin().game().equals(stamp.game())
-                                && admittedNamedPending.filter(actual::equals).isEmpty())
+                        if (admittedNamedPending.filter(actual::equals).isPresent()) {
+                            unresolved = true;
+                            gaps.add("unfinished_cycle_action:" + actual.command().actionId());
+                            continue;
+                        }
+                        if (coldOpening.isPresent() && actual.command().origin().game().equals(stamp.game()))
                             throw new IOException("Cold opening already contains another successor action");
                         if (!actual.settled()) {
                             if (importedRestart.filter(retirement -> retirement.matches(actual)).isEmpty()) {
