@@ -466,9 +466,32 @@ class RecordingOnlyTests(unittest.TestCase):
         profile: c.Obj = {"schema": "xar.ck3.obs-window-capture.v3",
             "continuous": True, "strict_isolation": True, "recording_root": str(a.recording_root),
             "deadline_utc": None, "max_output_bytes": None, "storage": {}}
-        with patch.object(native_capture, "require_no_retired_decision_window"),              patch.object(native_capture, "_read", side_effect=[profile, {"pid": a.game.pid}]),              patch.object(native_capture, "validate_profile"), patch.object(native_capture, "validate_job"),              patch.object(native_capture, "_disk_observation", return_value={"reserve_reached": False}),              patch.object(native_capture, "_sha", return_value="0" * 64),              patch.object(native_capture, "_write_new"),              patch.object(native_capture, "_generation_helpers", return_value=(Generation, None, None, None)),              patch.object(Path, "resolve", resolve), patch.object(Path, "mkdir"),              patch.object(Path, "open", return_value=io.StringIO()),              patch.object(subprocess, "Popen", return_value=Worker()):
+        launch_receipt = BASE / "launch.json"
+        launch_document = json.dumps({"pid": a.game.pid}).encode("utf-8")
+
+        def open_fixture(path: Path, mode: str, *, encoding: str | None = None) -> io.BytesIO | io.StringIO:
+            if path == launch_receipt and mode == "rb" and encoding is None:
+                return io.BytesIO(launch_document)
+            if path.name in {"worker.stdout.txt", "worker.stderr.txt"} and mode == "x" and encoding == "utf-8":
+                return io.StringIO()
+            raise AssertionError(f"unexpected fixture file open: {path}, {mode}, {encoding}")
+
+        with (
+            patch.object(native_capture, "require_no_retired_decision_window"),
+            patch.object(native_capture, "_read", return_value=profile),
+            patch.object(native_capture, "validate_profile"),
+            patch.object(native_capture, "validate_job"),
+            patch.object(native_capture, "_disk_observation", return_value={"reserve_reached": False}),
+            patch.object(native_capture, "_sha", return_value="0" * 64),
+            patch.object(native_capture, "_write_new"),
+            patch.object(native_capture, "_generation_helpers", return_value=(Generation, None, None, None)),
+            patch.object(Path, "resolve", resolve),
+            patch.object(Path, "mkdir"),
+            patch.object(Path, "open", open_fixture),
+            patch.object(subprocess, "Popen", return_value=Worker()),
+        ):
             request = native_capture.launch_recording(BASE / "profile.json", a.recording_root,
-                a.game.pid, 1, None, launch_receipt=BASE / "launch.json", ffprobe=BASE / "ffprobe.exe",
+                a.game.pid, 1, None, launch_receipt=launch_receipt, ffprobe=BASE / "ffprobe.exe",
                 continuous=True, worker_handoff=handoff.accept, custody_machine_id=a.machine_id)
         self.assertEqual(generations, [600001])
         self.assertEqual(request["worker_pid"], 600001)
