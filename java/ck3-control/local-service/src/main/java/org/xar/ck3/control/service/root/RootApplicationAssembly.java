@@ -4054,7 +4054,7 @@ public final class RootApplicationAssembly {
                         core.writer.originalLockPath(),core.writer::requireSession,saveReceiptVerifier);
                 savedVerifier=new RootCheckpointVerifier(core.writer,pairVerifier);
                 ordinarySourceStore=new SavedAttachmentSourceStore(files,drivers,pairVerifier,core.writer::borrowedSession,attachmentEvidence,
-                        cycles::verifyCompletedCycleProof,cycles::verifyHistoricalCompletedCycleProof);
+                        cycles::verifyCurrentCompletedCycleProof,cycles::verifyHistoricalCompletedCycleProof);
                 savedVerifier.bind(ordinarySourceStore);
                 savedVerifier.bindCapture(Objects.requireNonNull(actualFactory.create(pairVerifier,drivers,ordinarySourceStore)));
                 savedMaterials=new SavedCheckpointMaterialStore(ordinarySourceStore,firstStore);

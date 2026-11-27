@@ -262,7 +262,7 @@ public final class QualifiedSavedMaterialCanonicalColdFinanceTest {
 
             // 8. Construct SavedAttachmentSourceStore using the cycles methods
             sources = new SavedAttachmentSourceStore(files, drivers, pairs, actual.writer::borrowedSession, materialRoot,
-                    cycles::verifyCompletedCycleProof, cycles::verifyHistoricalCompletedCycleProof);
+                    cycles::verifyCurrentCompletedCycleProof, cycles::verifyHistoricalCompletedCycleProof);
 
             // 9. Bind the source store to the concrete verifier
             concrete.bind(sources);
@@ -285,7 +285,7 @@ public final class QualifiedSavedMaterialCanonicalColdFinanceTest {
         }
         SavedAttachmentSourceStore freshSources() {
             return new SavedAttachmentSourceStore(files,drivers,pairs,actual.writer::borrowedSession,materialRoot,
-                    cycles::verifyCompletedCycleProof,cycles::verifyHistoricalCompletedCycleProof);
+                    cycles::verifyCurrentCompletedCycleProof,cycles::verifyHistoricalCompletedCycleProof);
         }
         JournalCommit saveBoundary(CheckpointPair pair)throws IOException {
             return batch.commit(new JournalInput(owner,"software-save-composition",JournalKind.SAVE_CONFIRMED,Optional.of(pair.frame()),
@@ -346,7 +346,7 @@ public final class QualifiedSavedMaterialCanonicalColdFinanceTest {
                 assertTrue(support.proof.frame().frame().identity().nativeRevision()
                         .compareTo(pair.frame().frame().identity().nativeRevision())<0);
                 assertThrows(ContractViolationException.class,
-                        ()->support.cycles.verifyCompletedCycleProof(same,support.owner,support.proof),
+                        ()->support.cycles.verifyCurrentCompletedCycleProof(same,support.owner,support.proof),
                         "the retained pre-SAVE proof is historical after its current pair is confirmed");
 
                 var fresh=support.freshSources();

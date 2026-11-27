@@ -127,7 +127,7 @@ public final class RootJavaSavedBootstrap {
                 verifier::verify,cyclePolicy,writer::requireSession);
         cycles.bindTerminalFrameLoader(sourceCore.frameLoader());
         var store=new SavedAttachmentSourceStore(sourceFiles,drivers,verifier,writer::borrowedSession,materialRoot,
-                cycles::verifyCompletedCycleProof,cycles::verifyHistoricalCompletedCycleProof);
+                cycles::verifyCurrentCompletedCycleProof,cycles::verifyHistoricalCompletedCycleProof);
         var firstVerifier=new org.xar.ck3.control.application.checkpoint.FirstCheckpointVerifier(sourceFiles,drivers,
                 (same,owner,semantic)->sourceCore.semanticVerifier().verify(same,owner,semantic).materialDigest(),
                 writer.originalLockPath(),writer::requireSession,saves);

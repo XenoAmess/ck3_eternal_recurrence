@@ -1568,10 +1568,21 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         StrictJson.require(head.digest().equals(session.head().digest()), "ordinary submission changed its actual writer head");
     }
 
-    /** Public SAVE/source-store boundary: constructor values alone cannot prove a cycle frontier. */
+    /** Rechecks the completed proof or its exact surviving saved branch. */
     public String verifyCompletedCycleProof(ContinuityStorePort.Session session, SessionIdentity owner, CompletedCycleProof proof) throws IOException {
+        return verifyCompletedCycleProof(session, owner, proof, false);
+    }
+
+    /** A new SAVE capture requires the current completed cycle and a nonregressed Native proof. */
+    public String verifyCurrentCompletedCycleProof(ContinuityStorePort.Session session, SessionIdentity owner,
+            CompletedCycleProof proof) throws IOException {
+        return verifyCompletedCycleProof(session, owner, proof, true);
+    }
+
+    private String verifyCompletedCycleProof(ContinuityStorePort.Session session, SessionIdentity owner,
+            CompletedCycleProof proof, boolean currentCapture) throws IOException {
         Objects.requireNonNull(session); Objects.requireNonNull(owner); Objects.requireNonNull(proof);
-        if (active.get() == null) return withLocked(session, () -> verifyCompletedCycleProof(session, owner, proof));
+        if (active.get() == null) return withLocked(session, () -> verifyCompletedCycleProof(session, owner, proof, currentCapture));
         StrictJson.require(active.get() == session, "cycle proof verifier cannot borrow a replacement writer session");
         sessionAuthority.require(session);
         var head = session.head(); requireOwner(head.state(), owner); ObjectNode whole = head.state().toJson();
@@ -1583,14 +1594,9 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
             CycleState survived = parseState(saved.get("state"));
             if (survived.session().equals(owner) && ContinuityJson.digest(survived.toJson()).equals(proof.cycleStateDigest())) {
                 CheckpointPair pair = CheckpointPairCodec.decode(ContinuityJson.canonical(saved.get("pair")));
-                boolean currentProof = current.session().equals(owner) && ContinuityJson.digest(current.toJson()).equals(proof.cycleStateDigest());
-                if (currentProof) {
-                    // The same cycle can support a later SAVE. Its current proof follows the previous pair.
-                    if (head.state().status() != ContinuityState.Status.REPAIR_REQUIRED) {
+                if (currentCapture) {
+                    if (head.state().status() != ContinuityState.Status.REPAIR_REQUIRED)
                         requireSavedContinuation(pair.frame(), proof.frame());
-                        StrictJson.require(proof.frame().frame().revision().compareTo(pair.frame().frame().revision()) >= 0,
-                                "current SAVE proof regressed its last confirmed public revision");
-                    }
                 } else {
                     selected = survived; savedBranch = true;
                     requireSavedContinuation(proof.frame(), pair.frame());
