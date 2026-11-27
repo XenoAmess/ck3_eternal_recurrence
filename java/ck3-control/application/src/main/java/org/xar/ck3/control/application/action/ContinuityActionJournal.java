@@ -309,23 +309,52 @@ public final class ContinuityActionJournal implements ActionJournal {
         var encoded = details.path(SavedAttachmentSourceStore.SOURCES_DETAIL);
         if (!SavedAttachmentSourceStore.SOURCES_SCHEMA_IMPORTED_SAVE.equals(encoded.path("schema").asText())) return Optional.empty();
         same.requireCommitted(prepared, committed);
-        archive = archive.withSession(same);
-        var before = prepared.predecessor().state();
         var current = same.head();
         StrictJson.require(SavedAttachmentAuthority.kinds().contains(prepared.request().kind())
                 && committed.disposition() != WriterContracts.Disposition.NO_CHANGE
-                && current.state().sequence() == Math.addExact(before.sequence(), 1)
                 && current.state().sequence() == committed.head().sequence()
+                && current.digest().equals(ContinuityJson.digest(committed.head().toJson())),
+                "imported Driver projection requires the actual immediate replacement attachment");
+        return Optional.of(importedRetirement(same, prepared.predecessor().state(), current, prepared.request(), snapshot, archive, owner));
+    }
+
+    /** Read the same disposition after business restart, using only the current writer's actual attachment Pin. */
+    public static ImportedRestoreRetirement committedImportedRestoreRetirement(ContinuityStorePort.Session same,
+            WriterContracts.Pin attachment,ActionJournal.Snapshot snapshot,ActionPorts.OutcomeArchive archive,
+            SessionIdentity owner)throws IOException {
+        var current=same.head();
+        var edge=same.readHistoricalTransition(attachment);
+        var original=new WriterContracts.Request(edge.kind(),edge.details(),List.of());
+        var basis=SavedAttachmentSourceStore.importedRecoveryBasis(original.detailsObject())
+                .orElseThrow(()->new IOException("Committed imported Driver recovery requires its retained READ basis"));
+        var sources=SavedAttachmentSourceStore.Sources.decode(original.detailsObject().get(SavedAttachmentSourceStore.SOURCES_DETAIL));
+        StrictJson.require(SavedAttachmentAuthority.KIND.equals(edge.kind()) && edge.eventIdentity().equals(original.identity())
+                && edge.eventPin().equals(attachment) && edge.sequence()==current.state().sequence()
+                && ContinuityJson.digest(edge.after().toJson()).equals(current.digest())
+                && !current.snapshotNeedsRecovery() && current.indexRepairs().isEmpty()
+                && basis.requestId().equals(StrictJson.text(original.detailsObject().get("evidence_id")))
+                && basis.predecessorSequence()==edge.before().sequence()
+                && basis.predecessorDigest().equals(ContinuityJson.digest(edge.before().toJson()))
+                && sources.importedOrigin().filter(origin->origin.owner().equals(basis.departed())).isPresent()
+                && basis.successor().equals(owner),
+                "Committed imported Driver recovery crossed its actual immediate attachment or successor");
+        return importedRetirement(same,edge.before(),current,original,snapshot,archive,owner);
+    }
+
+    private static ImportedRestoreRetirement importedRetirement(ContinuityStorePort.Session same,ContinuityState before,
+            WriterContracts.Head current,WriterContracts.Request request,ActionJournal.Snapshot snapshot,
+            ActionPorts.OutcomeArchive archive,SessionIdentity owner)throws IOException {
+        archive=archive.withSession(same);
+        StrictJson.require(current.state().sequence() == Math.addExact(before.sequence(), 1)
                 && current.state().sequence() == snapshot.ledgerSequence()
                 && current.digest().equals(snapshot.headSha256())
-                && current.digest().equals(ContinuityJson.digest(committed.head().toJson()))
                 && owner.machineId().equals(current.state().machineId())
                 && ContinuityJson.same(current.state().toJson().get("game_binding"), owner.game().toJson())
                 && owner.sessionId().equals(StrictJson.text(current.state().toJson().path("latest_binding").get("session_id"))),
                 "imported Driver projection requires the actual immediate replacement attachment");
-        var sources = SavedAttachmentSourceStore.Sources.decode(encoded);
+        var sources = SavedAttachmentSourceStore.Sources.decode(request.detailsObject().get(SavedAttachmentSourceStore.SOURCES_DETAIL));
         var departed = sources.importedOrigin().orElseThrow().owner();
-        var pair = SavedAttachmentAuthority.pairFromDetails(prepared.request());
+        var pair = SavedAttachmentAuthority.pairFromDetails(request);
         var originalActionHead = recordHead(before).orElseThrow();
         var originalTerminal = archive.loadRecord(originalActionHead).receipt();
         StrictJson.require(!owner.game().equals(departed.game()) && !owner.game().equals(pair.frame().game())
@@ -338,8 +367,9 @@ public final class ContinuityActionJournal implements ActionJournal {
                 "imported Driver projection crossed the departed target or independent SAVE");
         var unresolved = snapshot.actions().stream().filter(receipt -> !receipt.settled()).toList();
         var retired = retiredResumeFromImportedPrefix(originalActionHead, archive, departed, pair, snapshot.actions(), unresolved);
-        StrictJson.require(retired.isPresent(), "committed imported restore lost the original retired RESUME fact");
-        return retired.map(receipt -> new ImportedRestoreRetirement(owner, current, receipt, true));
+        StrictJson.require(retired.isPresent(),"committed imported restore lost the original retired RESUME fact");
+        StrictJson.require(current.digest().equals(same.head().digest()),"Committed imported retirement changed its actual writer head");
+        return new ImportedRestoreRetirement(owner,current,retired.orElseThrow(),true);
     }
 
     /** A new worker may reuse the historical disposition only after its private clean ticket is admitted. */

@@ -43,6 +43,7 @@ import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.g2.common.G2Source;
 import org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort;
+import org.xar.ck3.control.nativebridge.NativeGameTransport;
 import org.xar.ck3.control.nativebridge.NativeWire;
 
 /** Actual replacement READ originals. Cache observation and decoded DATA never mint Root authority. */
@@ -212,10 +213,12 @@ public final class GameRestoreNativeAdapter implements RestoreCheckpointService.
 
     /** Reads the immediate committed imported attachment from this writer and the same now reattached successor. */
     public CommittedImportedReads readCommittedImportedOriginals(ContinuityStorePort.Session same,
-            WriterContracts.Pin actualAttachment,Instant readDeadline)throws IOException {
+            WriterContracts.Pin actualAttachment,NativeGameTransport expectedTransport,G2Source expectedSource,Instant readDeadline)throws IOException {
         authority.require(same);store.requireSession(same);
         var loaded=loadedReplacement.orElseThrow(()->new IOException("Committed imported READ recovery requires its actual attached successor owner"));
         loaded.requireMembership(readDeadline);
+        if(loaded.attached().nativeTransport()!=expectedTransport||!source.equals(expectedSource))
+            throw new IOException("Committed imported READ recovery crossed its actual transport or source");
         var committed=readCommittedAttachment(same,actualAttachment);
         var basis=committed.basis();var ack=loaded.cachedAck();
         var transfer=ack.importedSaveTransfer().orElseThrow(()->new IOException("Committed imported recovery requires the original transferred LOAD"));

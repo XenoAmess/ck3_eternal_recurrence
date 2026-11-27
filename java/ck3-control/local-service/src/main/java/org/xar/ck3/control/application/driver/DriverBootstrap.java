@@ -21,16 +21,20 @@ import org.xar.ck3.control.application.action.RawJson;
 import org.xar.ck3.control.application.checkpoint.DriverCheckpointStore;
 import org.xar.ck3.control.application.checkpoint.DriverStateSnapshot;
 import org.xar.ck3.control.application.checkpoint.SavedAttachmentAuthority;
+import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
 import org.xar.ck3.control.application.lifecycle.LifecycleComposites;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 import org.xar.ck3.control.continuity.writer.WriterContracts;
 import org.xar.ck3.control.continuity.ContinuityJson;
 import org.xar.ck3.control.contracts.ExactRef;
+import org.xar.ck3.control.contracts.GameGeneration;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.g2.common.G2Source;
 import org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort;
 import org.xar.ck3.control.nativebridge.NativeGameTransport;
 import org.xar.ck3.control.nativebridge.NativeWire;
+import org.xar.ck3.control.platform.GameRestoreNativeAdapter;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 import org.xar.ck3.control.application.history.LegacyResumeNormalizer;
 import org.xar.ck3.control.application.history.LegacyResumeMigration;
@@ -652,7 +656,13 @@ public final class DriverBootstrap {
         private NextTransfer nextTransfer;
         private org.xar.ck3.control.application.session.ContinuityBatchJournal.CleanRestartAdmission cleanRestart;
         private FreshGameplayEntryAuthority.RecoveryAdmission initialRecovery;
+        private WriterContracts.Pin committedImportedAttachment;
         private org.xar.ck3.control.application.session.ContinuityBatchJournal.SettledSameGameData settledSameGame;
+        public void requireCommittedImported(WriterContracts.Pin actual) {
+            StrictJson.require(status==AdoptionStatus.QUALIFICATION_REQUIRED
+                    &&Objects.requireNonNull(actual).equals(committedImportedAttachment),
+                    "Driver was not qualified from this committed imported attachment and independent Native read");
+        }
         public void requireSettledSameGame(org.xar.ck3.control.application.session.ContinuityBatchJournal.SettledSameGameData actual) {
             StrictJson.require(settledSameGame==Objects.requireNonNull(actual),
                     "Driver was not reconstructed from this actual settled same-Game history");
@@ -754,7 +764,7 @@ public final class DriverBootstrap {
         };
         transport.startHandshake(deadline);
         var result=adoptInternal(seed,same,actions,transport,source,archive,originals,coverage,retainedFrames,deadline,AdoptionKind.JAVA_HOT,
-                Optional.empty(),Optional.empty(),Optional.empty(),Optional.of(actual),postPreparationIoDeadline,currentSession,retirementVerifier);
+                Optional.empty(),Optional.empty(),Optional.empty(),Optional.of(actual),postPreparationIoDeadline,currentSession,retirementVerifier,Optional.empty());
         StrictJson.require(result.status()==AdoptionStatus.QUALIFICATION_REQUIRED
                 &&result.first().identity().frame().identity().dateRaw().longValueExact()==actual.manifest().dateRaw(),
                 "clean restart cannot discard unresolved history or a changed game date");
@@ -774,6 +784,78 @@ public final class DriverBootstrap {
         if(canonical.normalizedPayload().get("managed_restore_transaction")!=OpportunityJson.Nil.INSTANCE)
             needs.add(OriginalResumeNeed.MANAGED_RESTORE_RESOLUTION);
         return java.util.Set.copyOf(needs);
+    }
+
+    /** Re-issues only the Driver projection from the actual committed imported attachment and a new held READ. */
+    public static Adopted adoptCommittedImported(WriterContracts.Pin attachment,GameRestoreNativeAdapter nativeEvidence,
+            ContinuityStorePort.Session same,ActionSnapshotReader actions,NativeGameTransport transport,G2Source source,
+            ActionPorts.OutcomeArchive archive,ExactArtifactReader originals,int retainedFrames,Instant deadline)
+            throws IOException,InterruptedException {
+        var reads=nativeEvidence.readCommittedImportedOriginals(same,attachment,transport,source,deadline);
+        var historical=reads.secondOriginal();
+        var supplement=readCommittedImportedSeed(same,reads.attachment(),reads.basis().successor());
+        var hello=transport.awaitHello(deadline);
+        StrictJson.require(supplement.successor().equals(new SessionIdentity(hello.machineId(),hello.game(),hello.sessionId()))
+                &&hello.connectionGeneration().compareTo(historical.session().connectionGeneration())>0,
+                "committed imported Driver requires a newer HELLO for its same successor");
+        var seed=new Seed(supplement.fullDriver(),supplement.originalHistoryBasis(),supplement.driverVersion(),
+                supplement.episodeEpoch(),hello,supplement.auxiliary(),supplement.loop());
+        var committed=new CommittedDriverRead(attachment,historical);
+        return adoptInternal(seed,same,actions,transport,source,archive,originals,receipt->Optional.empty(),retainedFrames,
+                deadline,AdoptionKind.JAVA_COLD,Optional.empty(),Optional.empty(),Optional.empty(),Optional.empty(),()->deadline,
+                Optional.empty(),Optional.empty(),Optional.of(committed));
+    }
+
+    private record CommittedDriverRead(WriterContracts.Pin attachment,NativeObservationPort.ObservedFrame originalOpening) { }
+
+    static DriverSnapshotFacts.RestoreSeedSupplement readCommittedImportedSeed(ContinuityStorePort.Session same,
+            WriterContracts.HistoricalTransition edge,SessionIdentity successor)throws IOException {
+        var details=ContinuityJson.parseObject(edge.details(),ContinuityJson.DOCUMENT_MAX_BYTES);
+        var rawPin=details.get(DriverSnapshotFacts.RestoreSeedSupplement.DETAIL_FIELD);
+        if(rawPin==null)throw new IOException("Committed imported attachment has no original final Driver seed supplement");
+        var pin=WriterContracts.Pin.fromJson(rawPin);
+        byte[] original=same.readPinned(pin,DriverSnapshotFacts.RestoreSeedSupplement.MAXIMUM_BYTES);
+        var supplement=DriverSnapshotFacts.RestoreSeedSupplement.decode(original);
+        var delta=StrictJson.object(details.get("driver_snapshot"),java.util.Set.of(
+                "expected_version","expected_epoch","next_epoch","before_sha256","after_sha256"));
+        var before=edge.before().toJson();
+        var after=edge.after().toJson();
+        long previousVersion=StrictJson.integer(delta.get("expected_version"),0,StrictJson.MAX_SAFE_INTEGER);
+        long previousEpoch=StrictJson.integer(delta.get("expected_epoch"),0,StrictJson.MAX_SAFE_INTEGER);
+        long nextEpoch=StrictJson.integer(delta.get("next_epoch"),0,StrictJson.MAX_SAFE_INTEGER);
+        var history=ExactRef.fromJson(before.get(WriterContracts.DRIVER_HISTORY_BASELINE_FIELD));
+        StrictJson.require(SavedAttachmentAuthority.KIND.equals(edge.kind())
+                &&same.head().digest().equals(ContinuityJson.digest(after))
+                &&Arrays.equals(original,supplement.encode())
+                &&supplement.requestId().equals(StrictJson.text(details.get("evidence_id")))
+                &&supplement.successor().equals(successor)
+                &&successor.game().equals(GameGeneration.fromJson(details.get("driver_after_game")))
+                &&successor.game().equals(GameGeneration.fromJson(after.get("game_binding")))
+                &&supplement.fullDriver().equals(ExactRef.fromJson(details.get("restored_full_driver")))
+                &&supplement.fullDriver().sha256().equals(StrictJson.text(delta.get("after_sha256")))
+                &&supplement.driverVersion()==Math.addExact(previousVersion,1)
+                &&supplement.episodeEpoch()==nextEpoch&&(nextEpoch==previousEpoch||nextEpoch==Math.addExact(previousEpoch,1))
+                &&supplement.originalHistoryBasis().equals(history)
+                &&history.equals(ExactRef.fromJson(after.get(WriterContracts.DRIVER_HISTORY_BASELINE_FIELD))),
+                "committed imported Driver seed crossed its exact attachment, successor, delta or original history");
+        return supplement;
+    }
+
+    private static void requireCommittedOpening(NativeObservationPort.ObservedFrame historical,NativeObservationPort.ObservedFrame current) {
+        var old=org.xar.ck3.control.contracts.FullJsonTree.parse(historical.state().bytes(),DriverJson.MAX_NATIVE_BYTES);
+        var fresh=org.xar.ck3.control.contracts.FullJsonTree.parse(current.state().bytes(),DriverJson.MAX_NATIVE_BYTES);
+        var oldActor=old.path("played_character");
+        var actor=fresh.path("played_character");
+        StrictJson.require(current.session().game().equals(historical.session().game())
+                &&current.session().machineId().equals(historical.session().machineId())
+                &&current.session().sessionId().equals(historical.session().sessionId())
+                &&current.session().connectionGeneration().compareTo(historical.session().connectionGeneration())>0
+                &&fresh.path("paused").isBoolean()&&fresh.path("paused").booleanValue()
+                &&fresh.path("map_ready").isBoolean()&&fresh.path("map_ready").booleanValue()
+                &&actor.path("alive").isBoolean()&&actor.path("alive").booleanValue()
+                &&NativeCharacterId.fromJson(oldActor.get("character_id")).equals(NativeCharacterId.fromJson(actor.get("character_id")))
+                &&StrictJson.integer(old.get("date_raw"),0,StrictJson.MAX_SAFE_INTEGER)==StrictJson.integer(fresh.get("date_raw"),0,StrictJson.MAX_SAFE_INTEGER),
+                "committed imported Driver requires the same paused living actor and opening date on a new Native connection");
     }
 
     private static boolean isSignedInt32Actor(java.math.BigInteger value) {
@@ -868,7 +950,7 @@ public final class DriverBootstrap {
             Optional<RootRestoreMaterials.ColdAdoption> restoredNative,
             Optional<org.xar.ck3.control.application.session.ContinuityBatchJournal.CleanRestartAdmission> cleanRestart,java.util.function.Supplier<Instant> postPreparationIoDeadline)throws IOException,InterruptedException {
         return adoptInternal(seed,borrowed,actions,transport,source,archive,originals,coverage,retainedFrames,deadline,kind,
-                resolvedRaw,savedNative,restoredNative,cleanRestart,postPreparationIoDeadline,Optional.empty(),Optional.empty());
+                resolvedRaw,savedNative,restoredNative,cleanRestart,postPreparationIoDeadline,Optional.empty(),Optional.empty(),Optional.empty());
     }
     private static Adopted adoptInternal(Seed seed,ContinuityStorePort.Session borrowed,ActionSnapshotReader actions,
             NativeGameTransport transport,G2Source source,ActionPorts.OutcomeArchive archive,ExactArtifactReader originals,
@@ -876,7 +958,8 @@ public final class DriverBootstrap {
             Optional<NativeObservationPort.ObservedFrame> resolvedRaw,Optional<SavedNativeBootstrap> savedNative,
             Optional<RootRestoreMaterials.ColdAdoption> restoredNative,
             Optional<org.xar.ck3.control.application.session.ContinuityBatchJournal.CleanRestartAdmission> cleanRestart,java.util.function.Supplier<Instant> postPreparationIoDeadline,
-            Optional<BorrowedSessionReader> currentSession,Optional<DriverStateAssembler.ReservedLifeRetirementVerifier> retirementVerifier)throws IOException,InterruptedException {
+            Optional<BorrowedSessionReader> currentSession,Optional<DriverStateAssembler.ReservedLifeRetirementVerifier> retirementVerifier,
+            Optional<CommittedDriverRead> committedDriver)throws IOException,InterruptedException {
         Objects.requireNonNull(seed);Objects.requireNonNull(borrowed);Objects.requireNonNull(actions);Objects.requireNonNull(transport);
         Objects.requireNonNull(source);Objects.requireNonNull(archive);Objects.requireNonNull(originals);Objects.requireNonNull(coverage);Objects.requireNonNull(deadline);
         Objects.requireNonNull(resolvedRaw);Objects.requireNonNull(savedNative);Objects.requireNonNull(restoredNative);
@@ -913,10 +996,16 @@ public final class DriverBootstrap {
                     List<ActionReceipt> cleanActuals=new ArrayList<>();
                     List<DriverActionHistoryCodec.Source> cleanSources=new ArrayList<>();
                     String coverageHead=cleanRestart.isPresent()?borrowed.head().digest():null;
-                    var importedRestart = cleanRestart.isPresent()
-                            ? ContinuityActionJournal.admittedImportedRestartRetirement(borrowed, cleanRestart.orElseThrow(), lease.snapshot(), archive)
-                            : Optional.<ContinuityActionJournal.ImportedRestoreRetirement>empty();
+                    var importedRestart = committedDriver.isPresent()
+                            ? Optional.of(ContinuityActionJournal.committedImportedRestoreRetirement(borrowed,
+                                    committedDriver.orElseThrow().attachment(),lease.snapshot(),archive,new SessionIdentity(
+                                            seed.expectedSession().machineId(),seed.expectedSession().game(),seed.expectedSession().sessionId())))
+                            : cleanRestart.isPresent()
+                                    ? ContinuityActionJournal.admittedImportedRestartRetirement(borrowed,cleanRestart.orElseThrow(),lease.snapshot(),archive)
+                                    : Optional.<ContinuityActionJournal.ImportedRestoreRetirement>empty();
                     for(var actual:lease.snapshot().actions()) {
+                        if(committedDriver.isPresent()&&actual.command().origin().game().equals(stamp.game()))
+                            throw new IOException("Committed imported opening already contains a successor action");
                         if (!actual.settled()) {
                             if (importedRestart.filter(retirement -> retirement.matches(actual)).isEmpty()) {
                                 unresolved = true; gaps.add("unreconciled_action:" + actual.command().actionId());
@@ -992,6 +1081,12 @@ public final class DriverBootstrap {
                                 "clean restart independent native full-state read is unavailable");
                         firstRaw=Optional.of(received.originalFrame());
                     }
+                    if(committedDriver.isPresent()) {
+                        var received=requireIndependentFullRead(transport.readFreshFullState(ioDeadline),
+                                "committed imported Driver independent native full-state read is unavailable");
+                        requireCommittedOpening(committedDriver.orElseThrow().originalOpening(),received.originalFrame());
+                        firstRaw=Optional.of(received.originalFrame());
+                    }
                     DriverObservationAssembler.Complete first;
                     if(firstRaw.isPresent()) {
                         var raw=firstRaw.orElseThrow();
@@ -1013,7 +1108,9 @@ public final class DriverBootstrap {
                     AdoptionStatus status=kind==AdoptionKind.UNCLASSIFIED ? AdoptionStatus.READ_ONLY_UNCLASSIFIED : unresolved ? AdoptionStatus.READ_ONLY_UNRESOLVED
                             : gaps.isEmpty() ? AdoptionStatus.QUALIFICATION_REQUIRED : AdoptionStatus.READ_ONLY_INCOMPLETE_HISTORY;
                     if(kind!=AdoptionKind.UNCLASSIFIED)producer.recordAdoptionObserved(seed.expectedSession(),source);
-                    return new Adopted(seed,source,current,repository,authority,producer,held,first,status,gaps);
+                    var adopted=new Adopted(seed,source,current,repository,authority,producer,held,first,status,gaps);
+                    committedDriver.ifPresent(committed->adopted.committedImportedAttachment=committed.attachment());
+                    return adopted;
                 } catch(IOException failure) { throw new UncheckedIOException(failure); }
                 catch(InterruptedException interrupted) { throw new InterruptedBootstrap(interrupted); }
             });

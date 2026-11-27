@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Proxy;
+import java.nio.file.Path;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -27,6 +28,7 @@ import org.xar.ck3.control.application.action.CompositeOperatorQuarantineSource;
 import org.xar.ck3.control.application.action.RawJson;
 import org.xar.ck3.control.application.checkpoint.CheckpointPairCodec;
 import org.xar.ck3.control.application.checkpoint.SavedAttachmentAuthority;
+import org.xar.ck3.control.application.checkpoint.SavedAttachmentSourceStore;
 import org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive;
 import org.xar.ck3.control.application.action.ActionReceipt;
 import org.xar.ck3.control.application.action.ActionState;
@@ -187,9 +189,54 @@ final class ImportedSavedInterruptedLifeRecoveryDataTest {
             var foreign = new SessionIdentity(fixture.owner.machineId(), game, "different-software-game-session");
             assertThrows(ContractViolationException.class, () -> ContinuityActionJournal.committedImportedRestoreRetirement(
                     same, prepared, committed, snapshot, archive, foreign));
+            assertHistoricalImportedRetirement(fixture,same,predecessor,archive,request,sources,replacement,raw,resume);
             assertImportedKeeperRestartClean(fixture, same, archive, request, sources, replacement, raw);
             return null;
         });
+    }
+
+    private static void assertHistoricalImportedRetirement(Fixture fixture,ContinuityStorePort.Session same,WriterContracts.Head predecessor,
+            OutcomeArchive archive,WriterContracts.Request original,JsonNode inputs,SessionIdentity successor,
+            List<ActionReceipt> raw,ActionReceipt resume)throws IOException {
+        var attached=fixture.state;
+        var details=original.detailsObject().deepCopy();
+        var anchors=SavedAttachmentSourceStore.Sources.decode(details.get(SavedAttachmentSourceStore.SOURCES_DETAIL));
+        var at=Instant.parse("2026-11-26T22:10:00Z");
+        var basis=new SavedAttachmentSourceStore.ImportedRecoveryBasis(StrictJson.text(details.get("evidence_id")),at,
+                predecessor.state().sequence(),predecessor.digest(),fixture.owner,successor,softwarePin(1).reference(),
+                softwarePin(2),softwarePin(3),softwarePin(4),softwarePin(5),softwarePin(6),softwarePin(7),
+                new WriterContracts.Pin(anchors.restoredNative(),softwareIdentity(8,anchors.restoredNative().bytes())));
+        details.set(SavedAttachmentSourceStore.RECOVERY_BASIS_DETAIL,basis.toJson());
+        var historical=new WriterContracts.Request(original.kind(),ContinuityJson.canonical(details),List.of());
+        var after=SavedContinuityAttachment.reduce(new SavedContinuityAttachment.Input(predecessor.state(),historical.details(),
+                binary(inputs.get("basis")),binary(inputs.get("game")),binary(inputs.get("opening")),binary(inputs.get("progress"))));
+        after=ContinuityState.fromJson(after.toJson().put("sequence",attached.sequence()).put("last_event_identity",historical.identity()),fixture.owner.machineId());
+        fixture.state=after;
+        var pin=softwarePin(9);
+        fixture.historicalAttachment=new WriterContracts.HistoricalTransition(after.sequence(),historical.kind(),historical.details(),
+                historical.identity(),predecessor.state(),after,pin);
+        try {
+            var snapshot=new ActionJournal.Snapshot(after.sequence(),same.head().digest(),raw,
+                    new ActionJournal.BoundHistoryBasis(ExactRef.fromJson(after.toJson().get(WriterContracts.DRIVER_HISTORY_BASELINE_FIELD))));
+            assertEquals(resume,ContinuityActionJournal.committedImportedRestoreRetirement(same,pin,snapshot,archive,successor)
+                    .retainedResume(same,snapshot,archive).orElseThrow());
+            assertThrows(IOException.class,()->ContinuityActionJournal.committedImportedRestoreRetirement(
+                    same,softwarePin(10),snapshot,archive,successor));
+            assertThrows(ContractViolationException.class,()->ContinuityActionJournal.committedImportedRestoreRetirement(same,pin,
+                    snapshot,archive,new SessionIdentity(successor.machineId(),successor.game(),"crossed-session")));
+            assertEquals(raw,ContinuityActionJournal.receipts(after,archive));
+        }finally{
+            fixture.historicalAttachment=null;
+            fixture.state=attached;
+        }
+    }
+
+    private static WriterContracts.Pin softwarePin(int number) {
+        var reference=new ExactRef(Path.of("software-only","original-"+number+".json").toAbsolutePath().toString(),1,"a".repeat(64));
+        return new WriterContracts.Pin(reference,softwareIdentity(number,1));
+    }
+    private static WriterContracts.FileIdentity softwareIdentity(int number,long bytes) {
+        return new WriterContracts.FileIdentity("1",Integer.toString(number),"1","2026-11-26T22:00:00Z",bytes);
     }
 
     private static void assertImportedKeeperRestartClean(Fixture fixture, ContinuityStorePort.Session same,
@@ -403,6 +450,7 @@ final class ImportedSavedInterruptedLifeRecoveryDataTest {
         private ContinuityState state;
         private WriterContracts.Prepared committedPreparation;
         private WriterContracts.Receipt committedAttachment;
+        private WriterContracts.HistoricalTransition historicalAttachment;
 
         private final Session same = (Session) Proxy.newProxyInstance(getClass().getClassLoader(), new Class<?>[]{Session.class},
                 (proxy, method, args) -> {
@@ -412,6 +460,10 @@ final class ImportedSavedInterruptedLifeRecoveryDataTest {
                     if (method.getName().equals("requireCommitted")) {
                         if (args[0] == committedPreparation && args[1] == committedAttachment) return null;
                         throw new IOException("software fixture has no matching committed attachment");
+                    }
+                    if (method.getName().equals("readHistoricalTransition")) {
+                        if(historicalAttachment!=null&&historicalAttachment.eventPin().equals(args[0]))return historicalAttachment;
+                        throw new IOException("software fixture has no matching original attachment Pin");
                     }
                     throw new AssertionError("test archive prefix cannot perform " + method.getName());
                 });
