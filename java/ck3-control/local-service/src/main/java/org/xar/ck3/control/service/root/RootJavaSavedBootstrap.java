@@ -105,20 +105,26 @@ public final class RootJavaSavedBootstrap {
     /** Uses the given real writer/files but the original physical Driver path and pipe. */
     static CheckpointStores checkpointStores(RootApplicationAssembly.Core sourceCore,CheckpointFiles sourceFiles,
             Path materialRoot,String originalPipeName,CheckpointPair pair)throws IOException {
+        long target=sourceCore.writer().locked(same->same.head().state().origin().targetDays());
+        return checkpointStores(sourceCore,sourceFiles,materialRoot,originalPipeName,Path.of(pair.driver().reference().path()),
+                new OriginalWindowReducer.Policy(target));
+    }
+
+    static CheckpointStores checkpointStores(RootApplicationAssembly.Core sourceCore,CheckpointFiles sourceFiles,
+            Path materialRoot,String originalPipeName,Path driverPath,OriginalWindowReducer.Policy cyclePolicy) {
         var writer=sourceCore.writer();
         var snapshots=new DriverCheckpointStore.SnapshotSupplier() {
             @Override public <T>T withFrozen(DriverCheckpointStore.SnapshotWork<T> unused)throws IOException {
                 throw new IOException("confirmed historical source factory cannot publish a Driver or submit SAVE");
             }
         };
-        var drivers=new DriverCheckpointStore(sourceFiles,Path.of(pair.driver().reference().path()),originalPipeName,snapshots);
+        var drivers=new DriverCheckpointStore(sourceFiles,driverPath,originalPipeName,snapshots);
         var saves=new CanonicalSaveReceiptVerifier(writer,sourceCore.actions(),sourceCore.archive(),sourceFiles,drivers);
         var verifier=new CheckpointCommitVerifier(sourceFiles,drivers,
                 (same,owner,semantic)->sourceCore.semanticVerifier().verify(same,owner,semantic).materialDigest(),
                 writer.originalLockPath(),writer::requireSession,saves);
-        long target=writer.locked(same->same.head().state().origin().targetDays());
         var cycles=new OrdinaryCycleTransitions(sourceCore.archive(),sourceCore.semanticVerifier()::verify,
-                verifier::verify,new OriginalWindowReducer.Policy(target),writer::requireSession);
+                verifier::verify,cyclePolicy,writer::requireSession);
         cycles.bindTerminalFrameLoader(sourceCore.frameLoader());
         var store=new SavedAttachmentSourceStore(sourceFiles,drivers,verifier,writer::borrowedSession,materialRoot,
                 cycles::verifyCompletedCycleProof,cycles::verifyHistoricalCompletedCycleProof);

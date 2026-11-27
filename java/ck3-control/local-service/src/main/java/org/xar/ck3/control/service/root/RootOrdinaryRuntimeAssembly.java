@@ -1561,7 +1561,7 @@ private Running openSameGameBootstrapOpened(Opened opened, ManagedGameSession ac
                         ()->clock.instant().plus(java.time.Duration.ofMinutes(10))));
         return new Opened(this, driver.source()).finish(driver, Optional.of(opened.core().cleanRestartAdmission(driver)), deadline);
     }
-    var settled = opened.core().readSettledSameGame(actual,cyclePolicy);
+    var settled = opened.core().readSettledSameGame(actual,cyclePolicy,files,checkpointPaths());
     if(settled.isPresent()) {
         var data=settled.orElseThrow();
         var driver=runOperationPhase(clock,config.operationTimeout(),phaseDeadline->
@@ -1690,11 +1690,15 @@ private Running openSameGameBootstrapOpened(Opened opened, ManagedGameSession ac
             return opened.finish(driver,Optional.of(admission),deadline);
         }
 
-        private RootApplicationAssembly.FreshSessionConfiguration sessionConfiguration(Instant deadline)throws IOException {
+        private RootStartupConfiguration.CheckpointPaths checkpointPaths() {
             Path state=config.stateDirectory();
-            var checkpoints=new RootStartupConfiguration.CheckpointPaths(state.resolve("driver/checkpoint.json"),
+            return new RootStartupConfiguration.CheckpointPaths(state.resolve("driver/checkpoint.json"),
                     state.resolve("checkpoints/evidence"),state.resolve("checkpoints/attachments"),config.authorityId()+"-lineage",
                     plan.profileDirectory().resolve("save games/xar_checkpoint.ck3"));
+        }
+
+        private RootApplicationAssembly.FreshSessionConfiguration sessionConfiguration(Instant deadline)throws IOException {
+            var checkpoints=checkpointPaths();
             for(Path directory:List.of(checkpoints.driverCheckpoint().getParent(),checkpoints.checkpointEvidence(),
                     checkpoints.attachmentEvidence(),checkpoints.save().getParent()))storage.createManagedDirectories(directory);
             return new RootApplicationAssembly.FreshSessionConfiguration(config.authorityId(),policy,config.freshness(),checkpoints,cyclePolicy,deadline);

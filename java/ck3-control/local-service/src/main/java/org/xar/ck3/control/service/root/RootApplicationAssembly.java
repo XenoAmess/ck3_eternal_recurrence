@@ -1900,12 +1900,27 @@ public final class RootApplicationAssembly {
         /** Reads a closed dirty batch directly from its real Driver/WAL without a clean capture. */
         public synchronized Optional<ContinuityBatchJournal.SettledSameGameData> readSettledSameGame(
                 ManagedGameSession game,OriginalWindowReducer.Policy cyclePolicy)throws IOException {
+            return readSettledSameGame(game,cyclePolicy,Optional.empty());
+        }
+
+        synchronized Optional<ContinuityBatchJournal.SettledSameGameData> readSettledSameGame(
+                ManagedGameSession game, OriginalWindowReducer.Policy cyclePolicy, CheckpointFiles files,
+                RootStartupConfiguration.CheckpointPaths paths) throws IOException {
+            return readSettledSameGame(game,cyclePolicy,Optional.of(new SavedRestartFiles(files,paths)));
+        }
+
+        private record SavedRestartFiles(CheckpointFiles files, RootStartupConfiguration.CheckpointPaths paths) { }
+
+        private Optional<ContinuityBatchJournal.SettledSameGameData> readSettledSameGame(
+                ManagedGameSession game, OriginalWindowReducer.Policy cyclePolicy, Optional<SavedRestartFiles> checkpointFiles)
+                throws IOException {
             StrictJson.require(menu==null&&!staged&&!finished&&adopted.isEmpty(),
                     "settled continuation reads the unused actual Core");
             Objects.requireNonNull(game);Objects.requireNonNull(cyclePolicy);
             return writer.locked(same->{
                 var finalizationHead = same.head().state();
-                var cycle=finalizationHead.toJson().get(OrdinaryCycleTransitions.STATE_FIELD);
+                var body=finalizationHead.toJson();
+                var cycle=body.get(OrdinaryCycleTransitions.STATE_FIELD);
                 var status=finalizationHead.status();
                 if((status!=org.xar.ck3.control.continuity.ContinuityState.Status.REPAIR_REQUIRED
                         &&status!=org.xar.ck3.control.continuity.ContinuityState.Status.RUNNING)
@@ -1915,6 +1930,15 @@ public final class RootApplicationAssembly {
                 var owner = new SessionIdentity(game.machineId(),game.generation(),game.sessionId());
                 var cycles = new OrdinaryCycleTransitions(archive,semanticVerifier,checkpointVerifiers,cyclePolicy,writer::requireSession);
                 cycles.bindTerminalFrameLoader(frames);
+                if (checkpointFiles.isPresent() && body.hasNonNull(WriterContracts.ORDINARY_IMPORTED_CYCLE_ORIGIN_FIELD)
+                        && body.hasNonNull(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD)) {
+                    var inputs = checkpointFiles.orElseThrow();
+                    var stores = RootJavaSavedBootstrap.checkpointStores(this,inputs.files(),inputs.paths().attachmentEvidence(),
+                            game.nativeTransport().pipeName(),inputs.paths().driverCheckpoint(),cyclePolicy);
+                    var materials = stores.materials().ordinaryStore();
+                    cycles.bindCommittedImportedSavedMaterialReader((held,evidence) ->
+                            materials.loadRetainedOriginal(held,evidence.material(),evidence.pair()));
+                }
                 var batches = new ContinuityBatchJournal(writer,cycles);
                 var imported = batches.readSettledImportedSameGame(same,owner);
                 if (imported.isPresent()) {
