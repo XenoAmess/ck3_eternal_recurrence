@@ -16,30 +16,40 @@ struct RendererOwnerV1 {
 };
 
 bool ReadRendererSubtreeV1(std::uintptr_t image, const LydScene267V1 &scene,
- std::uintptr_t foreground, const RendererOwnerV1 &owner, std::vector<GuiWindowNodeV1> &nodes) {
+ std::uintptr_t foreground, const RendererOwnerV1 &owner, std::vector<GuiWindowNodeV1> &nodes,
+ std::string &failure) {
  GuiWindowNodeV1 root;
- if (!GuiWindowNodeReadV1(image, foreground, scene.context, scene.events_layer, root)) return false;
+ GuiWindowDiagnostic267V1 diagnostic;
+ if (!GuiWindowNodeReadV1(image, foreground, scene.context, scene.events_layer, root, &diagnostic)) {
+  failure = "subtree_root_"; failure += diagnostic.stage;
+  return false;
+ }
  nodes.push_back(std::move(root));
  std::unordered_set<std::uintptr_t> seen{foreground};
  std::size_t name_bytes = nodes.front().name.size();
  for (std::size_t cursor = 0; cursor < nodes.size(); ++cursor) {
   const auto parent = nodes[cursor];
-  if (parent.depth >= kGuiWindowMaxDepthV1) return false;
+  if (parent.depth >= kGuiWindowMaxDepthV1) { failure = "subtree_depth"; return false; }
   for (std::int32_t i = 0; i < parent.child_count; ++i) {
    std::uintptr_t child = 0;
    GuiWindowNodeV1 node;
-   if (nodes.size() >= kGuiWindowMaxNodesV1 || GetTickCount64() >= owner.mono ||
-       !At(parent.children, static_cast<std::size_t>(i) * sizeof(child), child) ||
-       !seen.insert(child).second ||
-       !GuiWindowNodeReadV1(image, child, scene.context, parent.widget, node)) return false;
+   if (nodes.size() >= kGuiWindowMaxNodesV1) { failure = "subtree_node_budget"; return false; }
+   if (GetTickCount64() >= owner.mono) { failure = "subtree_deadline"; return false; }
+   if (!At(parent.children, static_cast<std::size_t>(i) * sizeof(child), child) ||
+       !seen.insert(child).second) { failure = "subtree_child_identity"; return false; }
+   if (!GuiWindowNodeReadV1(image, child, scene.context, parent.widget, node, &diagnostic)) {
+    failure = "subtree_child_"; failure += diagnostic.stage;
+    return false;
+   }
    name_bytes += node.name.size();
-   if (name_bytes > 131072) return false;
+   if (name_bytes > 131072) { failure = "subtree_name_budget"; return false; }
    node.depth = parent.depth + 1;
    node.sibling_index = static_cast<std::uint32_t>(i);
    nodes.push_back(std::move(node));
   }
  }
- return RendererOwnerV1::Current(&owner);
+ if (!RendererOwnerV1::Current(&owner)) { failure = "subtree_owner"; return false; }
+ return true;
 }
 }
 
@@ -82,22 +92,33 @@ bool ReadFull111EventRendererOnOwner267V1(const ReadonlyBindings &bindings,
       [](void*, std::uintptr_t address, void *destination, std::size_t size) noexcept {
        return Copy(reinterpret_cast<const void *>(address), destination, size);
       }};
+  std::string failure;
   const auto sample = [&]() -> std::optional<full111_event_renderer::Snapshot> {
    std::vector<GuiWindowNodeV1> nodes;
-   if (!RendererOwnerV1::Current(&owner) ||
-       !ReadRendererSubtreeV1(image, witness.scene, foreground, owner, nodes)) return {};
-   return full111_event_renderer::Capture(reader, image, foreground, frame.core.played_character_id,
-       *selected, event, nodes);
+   if (!RendererOwnerV1::Current(&owner)) { failure = "sample_owner"; return {}; }
+   if (!ReadRendererSubtreeV1(image, witness.scene, foreground, owner, nodes, failure)) return {};
+   std::string_view stage;
+   auto captured = full111_event_renderer::Capture(reader, image, foreground, frame.core.played_character_id,
+       *selected, event, nodes, &stage);
+   if (!captured) failure = stage;
+   return captured;
+  };
+  const auto unavailable = [&](std::string_view stage) {
+   reason = "current111_renderer_"; reason += stage;
+   if (!failure.empty()) { reason += '_'; reason += failure; }
+   return false;
   };
   const auto first = sample();
-  const auto stable = first ? full111_event_renderer::AcceptStable(first, sample()) : std::nullopt;
+  if (!first) return unavailable("first_sample");
+  const auto second = sample();
+  if (!second) return unavailable("second_sample");
+  const auto stable = full111_event_renderer::AcceptStable(first, second);
+  if (!stable) return unavailable("samples_changed");
+  if (!SameFull111ForegroundSourcesV1(image, witness)) return unavailable("foreground_sources_changed");
   full111_event_queue::Sample queue;
-  if (!stable || !SameFull111ForegroundSourcesV1(image, witness) ||
-      !full111_event_queue::Capture(bindings, stamp.game_state, queue) || queue != witness.queue ||
-      !RendererOwnerV1::Current(&owner)) {
-   reason = "current111_renderer_complete_widget_context_unavailable";
-   return false;
-  }
+  if (!full111_event_queue::Capture(bindings, stamp.game_state, queue)) return unavailable("queue_read_failed");
+  if (queue != witness.queue) return unavailable("queue_changed");
+  if (!RendererOwnerV1::Current(&owner)) return unavailable("final_owner");
   Full111EventRendererSource267V1 source;
   source.instance_id = event.instance_id;
   source.recipient_character_id = event.recipient_character_id;
@@ -117,7 +138,8 @@ bool ReadFull111EventRendererOnOwner267V1(const ReadonlyBindings &bindings,
    bound.runtime=selected->runtime; bound.definition=selected->definition; bound.grid=stable->grid;
    bound.queue_rows.assign(queue.rows.begin(),queue.rows.begin()+queue.count);
    for (const auto &row : stable->renderer_order)
-    bound.options.push_back({row.placement.widget,row.option,row.context_thunk,row.authored_index});
+    bound.options.push_back({row.placement.widget,row.option,row.cell_context_identity,row.authored_index,
+        row.cell_context_storage});
    *material=std::move(bound);
   }
   result = std::move(source);

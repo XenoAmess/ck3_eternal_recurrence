@@ -112,8 +112,8 @@ struct Fixture {
         Put(one + 0x1B0, std::int32_t{1});
     }
 
-    std::optional<Snapshot> Read() {
-        return Capture(reader, image, root, player, material, event, nodes);
+    std::optional<Snapshot> Read(std::string_view *stage = nullptr) {
+        return Capture(reader, image, root, player, material, event, nodes, stage);
     }
 };
 }
@@ -125,6 +125,31 @@ int main() {
             first_read->renderer_order[0].authored_index == 4 && !first_read->renderer_order[0].native_valid &&
             first_read->renderer_order[1].authored_index == 1 && first_read->renderer_order[1].native_valid &&
             AcceptStable(first_read, exact.Read()).has_value(), "stock pointer join preserves non-authored layout order");
+    Fixture direct_contexts;
+    direct_contexts.Put(first_variant + 0x40, std::uint8_t{1});
+    direct_contexts.Put(first_variant, four);
+    direct_contexts.Put(second_variant + 0x40, std::uint8_t{1});
+    direct_contexts.Put(second_variant, one);
+    direct_contexts.Put(cells + 0x50, std::uint8_t{1});
+    direct_contexts.Put(cells + 0x10, four);
+    direct_contexts.Put(cells + 0xB8, std::uint8_t{1});
+    direct_contexts.Put(cells + 0x78, one);
+    const auto direct = direct_contexts.Read();
+    Require(direct && direct->renderer_order.size() == 2
+            && direct->renderer_order[0].authored_index == 4
+            && direct->renderer_order[1].authored_index == 1
+            && direct->renderer_order[0].cell_context_identity == cells + 0x10
+            && direct->renderer_order[0].cell_context_storage == Full111OptionContextStorage267V2::direct
+            && AcceptStable(direct, direct_contexts.Read()).has_value(),
+        "tag one button and active cell use the original placement order and retain their direct context");
+    Require(!AcceptStable(first_read, direct), "storage alternative change invalidates retained observations");
+    direct_contexts.Put(first_variant, one);
+    Require(!direct_contexts.Read(), "tag one button borrowed from another active cell is rejected");
+    direct_contexts.Put(first_variant, Address{0});
+    Require(!direct_contexts.Read(), "tag one widget with no actual option pointer is rejected");
+    direct_contexts.Put(first_variant, four);
+    direct_contexts.Put(cells + 0x58, type_id + 1);
+    Require(!direct_contexts.Read(), "the active cell still needs the exact EventOption type");
     Fixture wrong_event;
     wrong_event.Put(four + 0x160, sibling_data);
     Require(!wrong_event.Read(), "same index borrowed from wrong event rejected");
@@ -159,7 +184,17 @@ int main() {
     Require(!stale_context.Read(), "same-type widget context drifting from its grid cell rejected");
     Fixture missing;
     missing.Put(cells + 0x60, std::uint8_t{0});
-    Require(!missing.Read(), "incomplete materialization rejected");
+    std::string_view stage;
+    Require(!missing.Read(&stage) && stage == "attached_cells", "missing attached cell retains the actual failure stage");
+    Fixture missing_placement;
+    missing_placement.Put(grid + 0x3F8, NativeArray{placements, 2, 1});
+    Require(!missing_placement.Read(&stage) && stage == "grid_placement_count",
+        "missing placement is distinct from missing attached cell");
+    Require(!wrong_type.Read(&stage) && stage == "button_typed_option",
+        "wrong widget option type is distinct from a wrong cell count");
+    Require(!stale_context.Read(&stage) && stage == "cell_typed_option",
+        "cell and button pointing at different options retains its own failure stage");
+    Require(exact.Read(&stage).has_value() && stage.empty(), "a successful read clears all diagnostic stages");
     Fixture untracked_cell;
     untracked_cell.Put(creation + 0x90, NativeArray{cells, 3, 3});
     untracked_cell.Put(cells + 2 * 0x68, Address{0xDEADBEEF});

@@ -8,10 +8,12 @@ struct LydFrame267V1{
  bool facts_verified=false;ck3_1210::CoreSnapshotPrefix core{};LydScene267V1 scene{};
  std::vector<GuiWindowNodeV1>witness;std::vector<std::byte>name_witness;
 };
+enum class Full111OptionContextStorage267V2 : std::uint8_t { unavailable, direct = 1, typed_thunk = 3 };
 struct Full111EventRendererMaterial267V2 {
  struct Option {
-  std::uintptr_t widget=0, model=0, context_thunk=0;
+  std::uintptr_t widget=0, model=0, cell_context_identity=0;
   std::int32_t authored_index=-1;
+  Full111OptionContextStorage267V2 cell_context_storage=Full111OptionContextStorage267V2::unavailable;
   friend bool operator==(const Option &, const Option &) = default;
  };
  std::uintptr_t game_data=0, queue_items=0, controller=0, root=0, data=0, runtime=0, definition=0, grid=0;

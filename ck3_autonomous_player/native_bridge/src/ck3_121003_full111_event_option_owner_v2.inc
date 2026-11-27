@@ -32,7 +32,11 @@ const Full111EventRendererMaterial267V2::Option *QualifiedOption267V2(const Full
  const auto option=std::find_if(material.options.begin(),material.options.end(),[&](const auto &row) {
      return row.authored_index==target.authored_option_index;
  });
- return option!=material.options.end()&&option->model&&option->widget&&option->context_thunk ? &*option : nullptr;
+ if (option==material.options.end()||!option->model||!option->widget||!option->cell_context_identity)
+  return nullptr;
+ using Storage=Full111OptionContextStorage267V2;
+ return option->cell_context_storage==Storage::direct||option->cell_context_storage==Storage::typed_thunk
+     ? &*option : nullptr;
 }
 
 bool ExecuteFull111EventOption267V2(LydContext267V1 &context,

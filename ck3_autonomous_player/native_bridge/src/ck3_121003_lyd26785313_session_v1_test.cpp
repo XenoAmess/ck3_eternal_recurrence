@@ -55,7 +55,8 @@ bool ReadFull111EventRendererOnOwner267V1(const ReadonlyBindings&,ck3_11906::Mai
  if(material&&request.instance_id==fixture::foreground){
   out={fixture::foreground,fixture::core().played_character_id,6,"bookmark.1070",{{4,fixture::option_native,fixture::option_visible,fixture::option_enabled,"Bound",""}}};
   material->root=0x44;material->runtime=0x45;material->definition=0x46;
-  material->options={{0x50,fixture::option_changed?std::uintptr_t{0x60}:std::uintptr_t{0x51},0x52,4}};
+  material->options={{0x50,fixture::option_changed?std::uintptr_t{0x60}:std::uintptr_t{0x51},0x52,4,
+      Full111OptionContextStorage267V2::direct}};
   return true;
  }
 #endif
