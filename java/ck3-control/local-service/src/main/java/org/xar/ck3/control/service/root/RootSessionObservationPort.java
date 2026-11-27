@@ -114,10 +114,16 @@ final class RootSessionObservationPort implements SessionPorts.ObservationPort {
                     &&!barrier.observedAt().isAfter(Instant.now()),"after-SEM terminal changed its original actor/episode or actual time");
             var pin=same.capturePin(receiptRef,org.xar.ck3.control.continuity.writer.WriterContracts.MAX_PIN_BYTES);
             ordinary.discardPlanningCaptureAtOrBefore(same,barrier.observedAt());
+            boolean closesRetainedLife=actualTerminal.state() instanceof ActionState.CompositeSettled settled
+                    &&settled.execution().handlerId().equals(LifeAdvanceComposite.HANDLER)
+                    &&LifeAdvanceComposite.accepts(command.operation().value())&&actualTerminal.eligibleAdvance()
+                    &&(ContinuityBatchJournal.initialImportedSavedPendingFrontier(head.state(),expected)
+                        ||head.state().toJson().hasNonNull(org.xar.ck3.control.continuity.writer.WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD));
             var retained=transport.latestObservedSnapshot();
             NativeObservationPort.ObservedFrame packet;
             if(retained.isEmpty()||!retained.orElseThrow().observedAt().isAfter(barrier.observedAt())
-                    ||retained.orElseThrow().nativeRevision().compareTo(after.frame().identity().nativeRevision())<0) {
+                    ||retained.orElseThrow().nativeRevision().compareTo(after.frame().identity().nativeRevision())<0
+                    ||closesRetainedLife&&!terminal.canReuseReceivedSnapshot(retained.orElseThrow())) {
                 var queried=transport.readFreshFullState(readinessDeadline);
                 if(!(queried instanceof org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort.Received received)) {
                     var unavailable=(org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort.Unavailable)queried;
@@ -136,11 +142,7 @@ final class RootSessionObservationPort implements SessionPorts.ObservationPort {
                 transport.acceptedSnapshotRevision(packet).requireOriginal(transport.currentSnapshot(readinessDeadline));
             }else packet=retained.orElseThrow();
             same.verifyPin(pin);StrictJson.require(head.digest().equals(same.head().digest()),"after-SEM original changed during its independent READ");
-            if(actualTerminal.state() instanceof ActionState.CompositeSettled settled
-                    &&settled.execution().handlerId().equals(LifeAdvanceComposite.HANDLER)
-                    &&LifeAdvanceComposite.accepts(command.operation().value())&&actualTerminal.eligibleAdvance()
-                    &&(ContinuityBatchJournal.initialImportedSavedPendingFrontier(head.state(),expected)
-                        ||head.state().toJson().hasNonNull(org.xar.ck3.control.continuity.writer.WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD))) {
+            if(closesRetainedLife) {
                 // The retained Life closes through the current physical SEM before further planning.
                 var semantic=terminal.withReceivedSnapshot(same,planningDeadline,packet,physical->terminal.semantic(same,expected,physical));
                 requireAfterTerminal(semantic,barrier);same.verifyPin(pin);

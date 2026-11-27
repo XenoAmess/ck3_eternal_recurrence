@@ -382,6 +382,14 @@ public final class RootLifecycleAuthority {
             return result;
         },freshness);
     }
+    boolean canReuseReceivedSnapshot(NativeObservationPort.ObservedFrame frame) {
+        return freshAt(frame.observedAt(),clock.instant(),freshness);
+    }
+
+    static boolean freshAt(Instant observedAt,Instant now,Duration freshness) {
+        return !observedAt.isAfter(now)&&observedAt.plus(freshness).isAfter(now);
+    }
+
     private <T>T withSnapshot(ContinuityStorePort.Session borrowed,Instant callerDeadline,
             Optional<NativeObservationPort.ObservedFrame> received,SnapshotWork<T> work,Duration effectiveFreshness)throws IOException {
         return withSnapshot(borrowed,callerDeadline,received,work,effectiveFreshness,false,Optional.empty());
@@ -476,9 +484,9 @@ public final class RootLifecycleAuthority {
                 var hello=diagnostics.originalHello().orElseThrow(()->new IOException("actual original hello absent"));
                 var heartbeat=diagnostics.latestHeartbeat().orElseThrow(()->new IOException("actual original heartbeat absent"));
                 Instant now=clock.instant();
-                require(!actual.observedAt().isAfter(now)&&actual.observedAt().plus(effectiveFreshness).isAfter(now)
+                require(freshAt(actual.observedAt(),now,effectiveFreshness)
                         &&!hello.observedAt().isAfter(actual.observedAt())&&!heartbeat.observedAt().isBefore(hello.observedAt())
-                        &&!heartbeat.observedAt().isAfter(now)&&heartbeat.observedAt().plus(effectiveFreshness).isAfter(now),"physical snapshot or original heartbeat is stale/future/pre-hello");
+                        &&freshAt(heartbeat.observedAt(),now,effectiveFreshness),"physical snapshot or original heartbeat is stale/future/pre-hello");
                 require(heartbeat.original().kind()==NativeWire.NoticeKind.HEARTBEAT&&hello.original().pid()==actual.session().game().pid()
                         &&hello.original().connectionGeneration().equals(actual.session().connectionGeneration())
                         &&hello.original().capabilities().contains("game.state.snapshot"),"physical hello does not bind actual Game/generation/snapshot support");
