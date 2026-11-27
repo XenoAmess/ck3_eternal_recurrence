@@ -116,10 +116,13 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
                         prepared.privatePermissions(), config.maximumFramesPerOperation(), config.maximumSubmissions()),
                         clock.instant().plus(config.operationTimeout()), config.operationTimeout());
                 var openingDeadline = clock.instant().plus(config.loop().readinessTimeout());
-                running = prepared.openExternalSavedRecovery(attached, input, openingDeadline);
+                Optional<CleanRestartTicket> pointer = Files.exists(ticketPath) ? Optional.of(readTicket(ticketPath)) : Optional.empty();
+                running = prepared.openExternalSavedRecovery(attached, input, pointer, openingDeadline);
                 var adopted = event(clock, "EXTERNAL_SAVED_OBSERVATION_ADOPTED");
                 adopted.set("game", attached.generation().toJson());
-                adopted.put("date_raw", input.dateRaw()).put("new_game_days", 0).put("new_saved_day_credit", 0)
+                long observedDate = running.session().driver().first().identity().frame().identity().dateRaw().longValueExact();
+                adopted.put("date_raw", observedDate).put("named_save_date_raw", input.dateRaw())
+                        .put("new_game_days", 0).put("new_saved_day_credit", 0)
                         .put("ordinary_batch_started", false);
                 emit(adopted);
             } else if(importedLoaded) {

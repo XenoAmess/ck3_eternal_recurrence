@@ -1057,7 +1057,7 @@ public final class RootOrdinaryRuntimeAssembly {
 
         /** The newly held process has already loaded the separately preserved save. */
         synchronized Running openExternalSavedRecovery(ManagedGameSession attached, RootExternalSavedRecoveryInput input,
-                Instant deadline) throws IOException, InterruptedException {
+                Optional<ContinuityBatchJournal.CleanRestartTicket> pointer, Instant deadline) throws IOException, InterruptedException {
             if (sourceOnly || closed || entered || core != null || game != null || attached.launchPlan() != plan)
                 throw new IOException("external saved recovery requires the unused original business preparation and actual successor");
             var decision = config.decisionProvider().orElseThrow(() -> new IOException("external saved recovery requires its explicit decision provider"));
@@ -1075,6 +1075,13 @@ public final class RootOrdinaryRuntimeAssembly {
             game = attached;
             lifecycle.adoptAttached(attached);
             products.domains().lifecycle().bindManagedLifecycle(lifecycle, plan);
+            if (pointer.isPresent() && actual.matchesCleanRestartHead(pointer.orElseThrow())) {
+                var driver = runOperationPhase(clock, java.time.Duration.ofMinutes(10), phaseDeadline ->
+                        actual.adoptCleanRestart(attached, pointer.orElseThrow(), config.retainedFrames(), cyclePolicy, phaseDeadline,
+                                () -> clock.instant().plus(java.time.Duration.ofMinutes(10))));
+                var admission = actual.cleanRestartAdmission(driver);
+                return new Opened(this, driver.source()).finish(driver, Optional.of(admission), deadline, true);
+            }
             var driver = actual.adoptExternalSavedObservation(lifecycle, predecessor, remountFrom, input.namedSave(), input.dateRaw(), input.player(),
                     cyclePolicy, config.retainedFrames(), deadline);
             var installed = catalogs.install(actual, attached, driver.source(), actual.planningReads(), clock, deadline);
@@ -1786,6 +1793,11 @@ public Running finishObservedMap(NativeFreshSnapshotPort.Received received, Init
         }
         private Running finish(DriverBootstrap.Adopted driver,Optional<ContinuityBatchJournal.CleanRestartAdmission> restart,
                 Instant deadline)throws IOException,InterruptedException {
+            return finish(driver, restart, deadline, false);
+        }
+
+        private Running finish(DriverBootstrap.Adopted driver, Optional<ContinuityBatchJournal.CleanRestartAdmission> restart,
+                Instant deadline, boolean namedGame) throws IOException, InterruptedException {
             var noDispatch=owner.core.initialNoDispatchRecovery(driver);
             if(noDispatch.isPresent()&&!noDispatch.orElseThrow().batchPrefix().equals(owner.config.loop().batchIdPrefix()))
                 throw new IOException("initial no-dispatch recovery changed the original batch prefix");
@@ -1802,6 +1814,10 @@ public Running finishObservedMap(NativeFreshSnapshotPort.Received received, Init
             installed=runOperationPhase(owner.clock,owner.config.operationTimeout(),phaseDeadline->
                     owner.catalogs.install(owner.core,owner.game,source,owner.core.planningReads(),owner.clock,phaseDeadline));
             var configuration=runOperationPhase(owner.clock,owner.config.operationTimeout(),owner::sessionConfiguration);
+            if (namedGame) {
+                var saved = restart.orElseThrow().controller().savedPair().orElseThrow();
+                configuration = retainImportedCheckpointPaths(configuration, owner.game.launchPlan(), saved, saved, owner.files);
+            }
             var services=owner.services(source);
             RootApplicationSession session;
             if (restart.isPresent()) {
