@@ -342,9 +342,15 @@ public final class ContinuityActionJournal implements ActionJournal {
     public static ImportedRestoreRetirement externalSaveRetirement(ContinuityStorePort.Session same,
             ExternalSaveOrigin origin, ActionJournal.Snapshot snapshot, ActionPorts.OutcomeArchive archive) throws IOException {
         var head = same.head();
+        var body = head.state().toJson();
+        boolean predecessor = head.state().sequence() == origin.predecessorSequence() && head.digest().equals(origin.predecessorDigest());
+        boolean recorded = body.hasNonNull(WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD)
+                && ContinuityJson.same(body.get("game_binding"), origin.successor().game().toJson())
+                && origin.equals(ExternalSaveOrigin.fromJson(ContinuityJson.parseObject(archive.loadMaterial(
+                        ExactRef.fromJson(body.get(WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD))).bytes(),
+                        ContinuityJson.DOCUMENT_MAX_BYTES)));
         StrictJson.require(head.state().sequence() == snapshot.ledgerSequence() && head.digest().equals(snapshot.headSha256())
-                && head.state().sequence() == origin.predecessorSequence() && head.digest().equals(origin.predecessorDigest()),
-                "external save Driver requires the exact retired predecessor under the original writer");
+                && (predecessor || recorded), "external save Driver requires the exact retired original or its committed successor");
         var retired = externalSaveRetiredResume(same, origin, archive, snapshot.actions()).orElseThrow();
         return new ImportedRestoreRetirement(origin.successor(), origin.predecessorSequence(), origin.predecessorDigest(),
                 retired, true, Optional.of(origin));

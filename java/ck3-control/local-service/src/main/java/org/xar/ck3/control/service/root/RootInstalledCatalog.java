@@ -652,6 +652,11 @@ public final class RootInstalledCatalog {
         current.initializePlanning(same, actual);
     }
 
+    void rebindExternalSavedOpening(ContinuityStorePort.Session same,
+            org.xar.ck3.control.application.session.SessionPorts.SemanticEvidence actual) throws IOException {
+        factory.sources().governance().openingTransitions().rebindExternalUnissued(same, actual);
+    }
+
     private void initializeCapabilityState(ContinuityStorePort.Session same, DriverObservationAssembler.Complete actual) throws IOException {
         var authority = context.adopted().authority();
         ActionPorts.OutcomeArchive archive = context.archive().withSession(same);

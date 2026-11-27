@@ -52,6 +52,9 @@ import org.xar.ck3.control.continuity.ContinuityState;
 import org.xar.ck3.control.continuity.SavedContinuityBootstrap;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
+import org.xar.ck3.control.continuity.writer.DomainBodies;
+import org.xar.ck3.control.application.planning.governance.GovernanceOpeningDocument;
+import org.xar.ck3.control.application.planning.governance.GovernanceObservationSupplier.OpeningStage;
 import org.xar.ck3.control.continuity.writer.WriterContracts;
 import org.xar.ck3.control.contracts.StrictJson;
 import static org.xar.ck3.control.application.session.SessionPorts.*;
@@ -4288,14 +4291,129 @@ public final class ContinuityBatchJournal implements BatchJournal {
     public static final class PreparedExternalSave {
         private final ExternalSaveOrigin origin;
         private final SettledSameGameData history;
+        private final Optional<ExternalSaveReadback> readback;
 
-        private PreparedExternalSave(ExternalSaveOrigin origin, SettledSameGameData history) {
+        private PreparedExternalSave(ExternalSaveOrigin origin, SettledSameGameData history, Optional<ExternalSaveReadback> readback) {
             this.origin = origin;
             this.history = history;
+            this.readback = readback;
         }
 
         public ExternalSaveOrigin origin() { return origin; }
         public SettledSameGameData history() { return history; }
+
+        public ControllerRestartState restart(ExactRef head) {
+            var old = history.controller();
+            var used = new java.util.LinkedHashSet<>(old.usedBatches());
+            readback.ifPresent(actual -> used.addAll(actual.consumedBatches()));
+            return new ControllerRestartState(origin.successor(), old.batchPrefix(), used.size(), used,
+                    old.unsavedGameplayActions(), old.savedPair(), Optional.of(head), old.eligibleSinceSave(),
+                    true, false, false, old.totalCommittedDays(), old.completedAnalysisIds(), old.stopRequested());
+        }
+    }
+
+    private record ExternalSaveReadback(long sequence, String digest, List<String> consumedBatches, Optional<String> openBatch) { }
+
+    /** Reads the original named REBIND and ordered action-free batch metadata under the current writer. */
+    public PreparedExternalSave readRecordedExternalSave(ContinuityStorePort.Session same, SessionIdentity departed,
+            CompositeOperatorQuarantineSource source, SessionIdentity successor, CheckpointPair.FileWitness loadedFile,
+            ExternalSaveOrigin.NativeOpening opening) throws IOException {
+        store.requireSession(same);
+        var head = same.head();
+        var state = head.state();
+        var body = state.toJson();
+        var originRef = ExactRef.fromJson(body.get(WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD));
+        var origin = transitions.withLocked(same, () -> ExternalSaveOrigin.fromJson(ContinuityJson.parseObject(
+                transitions.restartArchive(same).loadMaterial(originRef).bytes(), ContinuityJson.DOCUMENT_MAX_BYTES)));
+        StrictJson.require(!head.snapshotNeedsRecovery() && head.indexRepairs().isEmpty()
+                && state.status() == ContinuityState.Status.RUNNING
+                && origin.departed().equals(departed) && origin.successor().equals(successor)
+                && origin.loadedFile().equals(loadedFile) && origin.opening().actor().equals(opening.actor())
+                && origin.opening().dateRaw() == opening.dateRaw()
+                && ContinuityActionJournal.recordHead(state).filter(origin.retiredActionHead()::equals).isPresent(),
+                "named-save re-entry requires its actual successor and unchanged action frontier");
+        var historical = same.requireHistoricalHead(origin.predecessorSequence(), origin.predecessorDigest());
+        var old = readSameGameHistory(same, departed, false, ignored -> { }, Optional.empty(), Optional.empty(),
+                Optional.of(source), historical);
+        var pins = canonicalEventPins(same, head).tailMap(origin.predecessorSequence(), false);
+        StrictJson.require(!pins.isEmpty() && pins.size() == state.sequence() - origin.predecessorSequence(),
+                "named-save re-entry requires the exact canonical suffix");
+        var metadata = same.withHistoricalTransitions(List.copyOf(pins.values()), edges -> {
+            var rebind = edges.getFirst();
+            var details = ContinuityJson.parseObject(rebind.details(), ContinuityJson.DOCUMENT_MAX_BYTES);
+            StrictJson.require(OrdinaryCycleTransitions.CYCLE_KIND.equals(rebind.kind())
+                    && "REBIND_EXTERNAL_SAVE".equals(details.path("operation").asText())
+                    && ExactRef.fromJson(details.get("origin_ref")).equals(originRef)
+                    && ExternalSaveOrigin.fromJson(details.get("origin")).equals(origin)
+                    && ContinuityJson.digest(rebind.before().toJson()).equals(historical.digest()),
+                    "named-save re-entry requires its exact recorded origin reducer");
+            requireCommittedImportedBatchReduction(rebind, new WriterContracts.Request(rebind.kind(), rebind.details(), List.of()));
+            String open = null;
+            boolean reboundOpening = false;
+            var consumed = new java.util.ArrayList<String>();
+            for (int index = 1; index < edges.size(); index++) {
+                var edge = edges.get(index);
+                if (DomainBodies.IMPORT_KIND.equals(edge.kind())) {
+                    StrictJson.require(open == null && !reboundOpening, "named-save re-entry crossed its one opening import");
+                    requireRecordedExternalOpening(same, edge, origin, originRef, old.source());
+                    reboundOpening = true;
+                    continue;
+                }
+                var payload = ContinuityJson.parseObject(edge.details(), ContinuityJson.DOCUMENT_MAX_BYTES);
+                StrictJson.require(OrdinaryCycleTransitions.BATCH_KIND.equals(edge.kind()),
+                        "named-save re-entry cannot discard a successor action or cycle");
+                String batch = StrictJson.text(payload.get("batch_id"));
+                var boundary = JournalKind.valueOf(StrictJson.text(payload.get("boundary")));
+                var reduced = OrdinaryCycleTransitions.replayCommittedBatchMetadata(edge.before(), successor, batch, boundary, edge)
+                        .toJson().put("sequence", edge.sequence()).put("last_event_identity", edge.eventIdentity());
+                StrictJson.require(ContinuityJson.same(reduced, edge.after().toJson()),
+                        "named-save re-entry metadata differs from its canonical reducer");
+                if (boundary == JournalKind.BATCH_STARTED) {
+                    StrictJson.require(open == null && batch.equals(old.controller().batchPrefix() + "-"
+                            + (old.controller().nextBatchSequence() + consumed.size())),
+                            "named-save re-entry must retain the original batch order");
+                    consumed.add(batch);
+                    open = batch;
+                } else {
+                    StrictJson.require(batch.equals(open), "named-save re-entry cannot close a different batch");
+                    open = null;
+                }
+            }
+            var last = edges.getLast();
+            StrictJson.require(last.sequence() == state.sequence()
+                    && ContinuityJson.digest(last.after().toJson()).equals(head.digest()),
+                    "named-save re-entry history does not end at the held head");
+            return new ExternalSaveReadback(state.sequence(), head.digest(), List.copyOf(consumed), Optional.ofNullable(open));
+        });
+        StrictJson.require(head.digest().equals(same.head().digest()), "named-save re-entry changed its held writer");
+        return new PreparedExternalSave(origin, old, Optional.of(metadata));
+    }
+
+    private void requireRecordedExternalOpening(ContinuityStorePort.Session same, WriterContracts.HistoricalTransition edge,
+            ExternalSaveOrigin origin, ExactRef originRef, G2Source source) throws IOException {
+        var recorded = same.requireHistoricalImport(DomainBodies.Slot.OPENING_GATE, edge.sequence(),
+                ContinuityJson.digest(edge.after().toJson()));
+        var producer = StrictJson.object(StrictJson.parse(recorded.request().producerInput()), java.util.Set.of("schema", "kind", "previous", "original"));
+        var previous = DomainBodies.reference(recorded.predecessor().state(), DomainBodies.Slot.OPENING_GATE).orElseThrow();
+        StrictJson.require("xar.java-opening-transitions/v5".equals(StrictJson.text(producer.get("schema")))
+                && "EXTERNAL_UNISSUED_REBIND".equals(StrictJson.text(producer.get("kind")))
+                && previous.payload().equals(ExactRef.fromJson(producer.get("previous")))
+                && recorded.request().evidence().contains(originRef),
+                "named-save re-entry requires the exact unissued opening producer");
+        var original = origin.requireOriginal(same);
+        StrictJson.require(DomainBodies.reference(original, DomainBodies.Slot.OPENING_GATE).filter(previous::equals).isPresent(),
+                "named-save re-entry cannot replace an already modified opening body");
+        transitions.withLocked(same, () -> {
+            var archive = transitions.restartArchive(same);
+            var document = GovernanceOpeningDocument.decode(archive.loadMaterial(recorded.body().payload()).bytes());
+            StrictJson.require(document.stage() == OpeningStage.AWAIT_SUBMIT && document.preparedCommand().isEmpty()
+                    && document.actionReceipt().isEmpty() && document.checkpoint().isEmpty() && document.existingObserved().isEmpty()
+                    && document.sessionId().equals(origin.successor().sessionId()) && document.source().equals(source)
+                    && document.originals().containsAll(List.of(previous.payload(), originRef)),
+                    "named-save re-entry crossed the recorded unissued opening role");
+            origin.requireSemantic(document.observed());
+            return null;
+        });
     }
 
     /** Source-side opening reuses the exact existing imported-exited history and its previously committed retirement. */
@@ -4321,7 +4439,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     "external save observation requires the actual committed administrative terminal");
             return null;
         });
-        return new PreparedExternalSave(origin, history);
+        return new PreparedExternalSave(origin, history, Optional.empty());
     }
 
     public static final class ExternalSaveRebind {
@@ -4351,15 +4469,26 @@ public final class ContinuityBatchJournal implements BatchJournal {
             SemanticEvidence opening) throws IOException {
         store.requireSession(same);
         var origin = prepared.origin();
-        var edge = transitions.withLocked(same, () -> transitions.rebindExternalSave(same, origin, opening));
+        if (prepared.readback.isPresent()) {
+            var readback = prepared.readback.orElseThrow();
+            var head = same.head();
+            StrictJson.require(head.state().sequence() == readback.sequence() && head.digest().equals(readback.digest()),
+                    "named-save re-entry lost its exact zero-action head");
+            origin.requireSemantic(opening.frame());
+            transitions.validateOrdinarySubmission(same, origin.successor(), opening);
+            if (readback.openBatch().isPresent()) {
+                commit(same, new JournalInput(origin.successor(), readback.openBatch().orElseThrow(), JournalKind.BATCH_DEFERRED,
+                        Optional.empty(), Optional.empty(), Optional.empty(), List.of()));
+            }
+        } else {
+            var edge = transitions.withLocked(same, () -> transitions.rebindExternalSave(same, origin, opening));
+            StrictJson.require(ContinuityJson.digest(edge.head().toJson()).equals(same.head().digest()),
+                    "external save observation did not commit its actual rebound head");
+        }
         var head = same.head();
-        StrictJson.require(ContinuityJson.digest(edge.head().toJson()).equals(head.digest()) && head.state().settledDateRaw() == origin.savedPair()
-                .frame().frame().identity().dateRaw().longValueExact(), "external save observation changed the settled frontier");
-        var old = prepared.history().controller();
-        var controller = new ControllerRestartState(origin.successor(), old.batchPrefix(), old.nextBatchSequence(), old.usedBatches(),
-                old.unsavedGameplayActions(), old.savedPair(), Optional.of(same.persistedHead()), old.eligibleSinceSave(),
-                true, false, false, old.totalCommittedDays(), old.completedAnalysisIds(), old.stopRequested());
-        return new ExternalSaveRebind(this, head, controller);
+        StrictJson.require(head.state().settledDateRaw() == origin.savedPair().frame().frame().identity().dateRaw().longValueExact(),
+                "external save observation changed the settled frontier");
+        return new ExternalSaveRebind(this, head, prepared.restart(same.persistedHead()));
     }
 
     private record ExitedImportedHistory(ActionReceipt original, Optional<ActionReceipt> terminal) { }
@@ -5529,9 +5658,18 @@ public final class ContinuityBatchJournal implements BatchJournal {
             java.util.function.Consumer<CleanBatchRestart> captures,Optional<ActionReceipt> pendingControl,
             Optional<org.xar.ck3.control.application.action.CompositeOperatorQuarantineRequest> operatorRequest,
             Optional<CompositeOperatorQuarantineSource> exitedSource)throws IOException {
+        store.requireSession(same);
+        return readSameGameHistory(same, owner, isolatedLife, captures, pendingControl, operatorRequest, exitedSource, same.head());
+    }
+
+    private SettledSameGameData readSameGameHistory(ContinuityStorePort.Session same, SessionIdentity owner,
+            boolean isolatedLife, java.util.function.Consumer<CleanBatchRestart> captures, Optional<ActionReceipt> pendingControl,
+            Optional<CompositeOperatorQuarantineRequest> operatorRequest, Optional<CompositeOperatorQuarantineSource> exitedSource,
+            WriterContracts.Head head) throws IOException {
         store.requireSession(same);Objects.requireNonNull(owner);Objects.requireNonNull(pendingControl);Objects.requireNonNull(operatorRequest);
         return transitions.withLocked(same,()->{
-            var head=same.head();var state=head.state();var whole=state.toJson();
+            var liveHead = same.head();
+            var state=head.state();var whole=state.toJson();
             var exited=exitedSource.isPresent()?Optional.of(requireExitedImportedHistory(same,head,owner,
                     exitedSource.orElseThrow(),transitions.restartArchive(same))):Optional.<ExitedImportedHistory>empty();
             var savedMarker=whole.get(SavedContinuityBootstrap.FIELD);
@@ -6393,7 +6531,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
             // All reconstructed Drivers above are local DATA. Complete originals and a fresh canonical chain
             // must pass before any result, captured manifest callback or saved-history role can escape.
             org.xar.ck3.control.application.driver.DriverActionHistoryState.requireOriginals(same,actionPublications,actionOriginals,originals);
-            StrictJson.require(same.head().state().sequence()==state.sequence()&&same.head().digest().equals(head.digest()),
+            StrictJson.require(same.head().state().sequence()==liveHead.state().sequence()&&same.head().digest().equals(liveHead.digest()),
                     "settled canonical recovery head changed during read");
             SameGameEntry startingPoint=imported
                     ?new SameGameEntry.ImportedSaved(requested.getFirst().reference(),initialPair.orElseThrow(),importedOpening,initialCycles)
@@ -6416,7 +6554,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
             });
             });
             var data = checkedHistory.data();
-            StrictJson.require(same.head().state().sequence() == state.sequence() && same.head().digest().equals(head.digest()),
+            StrictJson.require(same.head().state().sequence() == liveHead.state().sequence() && same.head().digest().equals(liveHead.digest()),
                     "settled canonical recovery head changed while closing historical reads");
             for (var captured : checkedHistory.capturedManifests()) captures.accept(captured);
             if (checkedHistory.isolated()) return data; // Isolated/unresolved DATA grants no settled recovery authority.

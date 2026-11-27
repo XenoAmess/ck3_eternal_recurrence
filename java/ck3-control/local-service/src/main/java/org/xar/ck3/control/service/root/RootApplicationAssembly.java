@@ -2081,21 +2081,26 @@ public final class RootApplicationAssembly {
             predecessor.requireCurrent(deadline);
             var opening = RootExternalSavedOpening.capture(game, previous.game(), namedSave, rawDate, actor, deadline);
             return writer.locked(same -> {
-                var scope = new ReservedRetirementScope(same, lifecycle, predecessor, source, deadline);
-                reservedRetirement.set(scope);
-                try (scope) {
-                    scope.initialize();
-                    retireExitedLife(scope, archive.withSession(same));
-                } finally {
-                    reservedRetirement.remove();
+                boolean recorded = same.head().state().toJson().hasNonNull(WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD);
+                if (!recorded) {
+                    var scope = new ReservedRetirementScope(same, lifecycle, predecessor, source, deadline);
+                    reservedRetirement.set(scope);
+                    try (scope) {
+                        scope.initialize();
+                        retireExitedLife(scope, archive.withSession(same));
+                    } finally {
+                        reservedRetirement.remove();
+                    }
                 }
                 var openingOriginals = opening.preserve(same, archive);
                 var raw = opening.frame();
                 var cycles = new OrdinaryCycleTransitions(archive, semanticVerifier, checkpointVerifiers, policy, writer::requireSession);
                 cycles.bindTerminalFrameLoader(frames);
                 var batches = new ContinuityBatchJournal(writer, cycles);
-                var original = batches.prepareExternalSave(same, previous, source, successor, openingOriginals.loadedCopy(),
-                        new ExternalSaveOrigin.NativeOpening(raw.session(), actor, rawDate, raw.snapshotId(), raw.nativeRevision()));
+                var nativeOpening = new ExternalSaveOrigin.NativeOpening(raw.session(), actor, rawDate, raw.snapshotId(), raw.nativeRevision());
+                var original = recorded
+                        ? batches.readRecordedExternalSave(same, previous, source, successor, openingOriginals.loadedCopy(), nativeOpening)
+                        : batches.prepareExternalSave(same, previous, source, successor, openingOriginals.loadedCopy(), nativeOpening);
                 var driver = projectExternalSave(same, game, opening, original, retainedFrames, deadline);
                 predecessor.requireCurrent(deadline);
                 externalSavedStage = new ExternalSavedStage(predecessor, opening, cycles, batches, original, driver, policy);
@@ -2149,10 +2154,10 @@ public final class RootApplicationAssembly {
             }
         }
 
-        ControllerRestartState externalSavedControllerHistory(DriverBootstrap.Adopted driver) {
+        ControllerRestartState externalSavedControllerHistory(DriverBootstrap.Adopted driver) throws IOException {
             var candidate = Objects.requireNonNull(externalSavedStage, "actual external save Driver adoption required");
             StrictJson.require(candidate.driver() == driver, "external saved history belongs to the actual adopted Driver");
-            return candidate.original().history().controller();
+            return writer.locked(same -> candidate.original().restart(same.persistedHead()));
         }
 
         private ContinuityBatchJournal.RetiredLifeInterruptionOriginal reservedLifeRecovery;
@@ -3172,6 +3177,7 @@ public final class RootApplicationAssembly {
                     installed.initializeExternalSavedPlanning(same, driver.first());
                     var rebound = candidate.batches().rebindExternalSave(same, candidate.original(), semantic);
                     root.controllerForPublication().restoreExternalSaveObservation(same, rebound);
+                    installed.rebindExternalSavedOpening(same, semantic);
                 } else if(admissionOpt.isPresent()){
                     try { root.restoreCleanRestart(same,admissionOpt.orElseThrow()); }
                     catch(InterruptedException interrupted) {
