@@ -50,6 +50,26 @@ class DriverBootstrapIndependentFullReadTest {
     }
 
     @Test
+    void completedSoftwareCallbackExplainsTheOriginalRawReadFailure() throws Exception {
+        var body = StrictJson.object().put("type", "command_result").put("protocol_version", 1)
+                .put("request_id", "fresh-software-event").put("ok", false).put("error", "fresh_full_state_read_failed");
+        var diagnostic = body.putObject("fresh_full_state_diagnostic")
+                .put("schema", "xar.native.fresh-full-state-diagnostic/v1").put("stage", "raw_read_unavailable")
+                .put("fresh_available", false).put("query_sequence", "701");
+        var callback = assertInstanceOf(com.fasterxml.jackson.databind.node.ObjectNode.class, StrictJson.parse(
+                fixture("software-event-callback-cause.json",
+                        "22c6f5da0fd8e6c598086914e368983b223e8a723da443fe284b298944f4f420"), 4096));
+        diagnostic.set("callback_cause81", callback);
+        var prefix = RECOVERY + "; kind=ACK/native_ok=false; request_id=fresh-software-event; reason=" + ACK_REASON
+                + "; native_error=fresh_full_state_read_failed; native_stage=raw_read_unavailable";
+
+        assertEquals(prefix + "; native_full_stage=event; native_full_reason=current111_ordinary_event_gui_scene_unavailable",
+                fail(new NativeFreshSnapshotPort.Unavailable(negativeAck(ContinuityJson.canonical(body)), ACK_REASON)));
+        callback.put("ticket_sequence", "702");
+        assertEquals(prefix, fail(new NativeFreshSnapshotPort.Unavailable(negativeAck(ContinuityJson.canonical(body)), ACK_REASON)));
+    }
+
+    @Test
     void transportAndBeforeDispatchFailuresNeverAcquireASyntheticNativeStage() {
         var beforeWrite = new NativeActionPort.RejectedBeforeDispatch("fresh-before-write",
                 new NativeActionPort.ZeroDispatchProof(NativeActionPort.ZeroDispatchStage.BEFORE_WRITE,
@@ -129,6 +149,10 @@ class DriverBootstrapIndependentFullReadTest {
 
     /** Source56 Recovery04 archived ACK payloads. Framing is mechanical and supplies no live custody. */
     private static NativeActionPort.AckReceived originalAck(String filename, String sha256) throws Exception {
+        return negativeAck(fixture(filename, sha256));
+    }
+
+    private static byte[] fixture(String filename, String sha256) throws Exception {
         byte[] payload;
         try (var input = DriverBootstrapIndependentFullReadTest.class.getResourceAsStream(
                 "/source56-independent-recovery/" + filename)) {
@@ -136,6 +160,10 @@ class DriverBootstrapIndependentFullReadTest {
             payload = input.readAllBytes();
         }
         assertEquals(sha256, HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(payload)));
+        return payload;
+    }
+
+    private static NativeActionPort.AckReceived negativeAck(byte[] payload) throws IOException {
         byte[] packet = ByteBuffer.allocate(payload.length + 4).order(ByteOrder.LITTLE_ENDIAN)
                 .putInt(payload.length).put(payload).array();
         var original = assertInstanceOf(NativeWire.CommandResult.class, NativeWire.decode(packet));
