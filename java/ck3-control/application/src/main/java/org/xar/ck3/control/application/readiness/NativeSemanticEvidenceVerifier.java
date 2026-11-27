@@ -15,7 +15,6 @@ import org.xar.ck3.control.application.checkpoint.DriverStateSnapshot;
 import org.xar.ck3.control.application.driver.DriverJson;
 import org.xar.ck3.control.application.driver.DriverObservationAssembler;
 import org.xar.ck3.control.application.driver.DriverObservationEvidenceReader;
-import org.xar.ck3.control.application.driver.NativeCampaignProjection;
 import org.xar.ck3.control.application.action.RawJson;
 import org.xar.ck3.control.application.session.OrdinaryCycleTransitions.SemanticVerifier;
 import org.xar.ck3.control.application.session.OrdinaryCycleTransitions.VerifiedSemantic;
@@ -160,14 +159,20 @@ public final class NativeSemanticEvidenceVerifier implements SemanticVerifier {
         if(facts==null)facts=DriverObservationEvidenceReader.decode(manifestRef,manifest,RawJson.fullMaterial(manifestDriver),actual);
         require(facts.observationVersion()==evidence.frame().observationVersion(),
                 "canonical SEM must retain its exact original facts observation version");
-        var assembler=new DriverObservationAssembler();
-        var rebuilt=assembler.assemble(actual,facts,evidence.originalNativePacket());
+        var assembler = new DriverObservationAssembler();
+        DriverObservationAssembler.Result rebuilt;
+        if (facts.observationVersion() == DriverObservationAssembler.NATIVE_CAMPAIGN_OBSERVATION_VERSION) {
+            var projectionFacts = facts;
+            var nativeRef = evidence.originalNativePacket();
+            rebuilt = assembler.withCapturedProjection(actual, projectionFacts, nativeRef,
+                    projection -> () -> assembler.assembleCapturedProjection(projection, actual, projectionFacts, nativeRef));
+        } else {
+            rebuilt = assembler.assemble(actual, facts, evidence.originalNativePacket());
+        }
         require(rebuilt instanceof DriverObservationAssembler.Complete,"canonical original join has no actual living current actor");
         var complete=(DriverObservationAssembler.Complete)rebuilt;
         require(complete.identity().equals(evidence.frame())&&complete.observedAt().equals(evidence.observedAt())
                 &&complete.semantic().equals(semantic),"canonical archived SEM crossed its actual actor/frame/public revision/Driver originals");
-        if(facts.observationVersion()==DriverObservationAssembler.NATIVE_CAMPAIGN_OBSERVATION_VERSION)
-            NativeCampaignProjection.requireJoinedSnapshot(complete.originalProjection().orElseThrow(),RawJson.fullMaterial(DriverJson.encode(semantic)));
         if(facts.driver()==driver) {
             var history = complete.semantic().get("native_command_history");
             if (history instanceof OpportunityJson.Arr arr) {
