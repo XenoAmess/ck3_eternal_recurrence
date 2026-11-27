@@ -5497,7 +5497,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
             StrictJson.require(ContinuityJson.same(cycle,after.get(WriterContracts.ORDINARY_CYCLE_FIELD))
                     &&importedSavedEntryMatches(edge.after(),after,owner),
                     "imported Saved interrupted Life changed the original cycle or physical save basis");
-            if(edge==first||edge==last) {
+            if (edge.sequence() == first.sequence() || edge.sequence() == last.sequence()) {
                 var replay=transitions.reduce(edge.before(),new WriterContracts.Request(edge.kind(),edge.details(),java.util.List.of())).toJson();
                 replay.put("sequence",edge.sequence());replay.put("last_event_identity",edge.eventIdentity());
                 StrictJson.require(ContinuityJson.same(replay,edge.after().toJson()),"imported Saved interrupted batch differs from its original boundary reducer");

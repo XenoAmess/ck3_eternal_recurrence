@@ -591,6 +591,52 @@ final class ImportedSavedInterruptedLifeRecoveryDataTest {
         assertEquals(0, fixture.driverReads);
     }
 
+    @Test void interruptedImportedLifeRecognizesRematerializedWriterBoundaries() throws Exception {
+        var fixture = new Fixture();
+        var events = fixtureData("source56-interrupted-ordinary-history.json.gz").get("events");
+        var history = new java.util.AbstractList<WriterContracts.HistoricalTransition>() {
+            @Override public int size() { return 16; }
+            @Override public WriterContracts.HistoricalTransition get(int index) {
+                java.util.Objects.checkIndex(index, size());
+                return interruptedHistoryEdge(events, index + 2, fixture.owner.machineId());
+            }
+        };
+        assertNotSame(history.getFirst(), history.getFirst());
+        assertNotSame(history.getLast(), history.getLast());
+        assertEquals(42, history.getFirst().sequence());
+        assertEquals(57, history.getLast().sequence());
+        var settlement = interruptedHistoryEdge(events, 1, fixture.owner.machineId());
+        var parent = fixture.readOnlyParent();
+        var reader = ContinuityBatchJournal.class.getDeclaredMethod("requireImportedInterruptedLifeTail",
+                SessionIdentity.class, ActionReceipt.class, WriterContracts.HistoricalTransition.class,
+                long.class, List.class, OutcomeArchive.class);
+        reader.setAccessible(true);
+        fixture.locked(same -> {
+            try {
+                reader.invoke(fixture.journal, fixture.owner, parent, settlement, settlement.sequence(), history,
+                        fixture.archive.withSession(same));
+            } catch (InvocationTargetException failed) {
+                assertInstanceOf(RuntimeException.class, failed.getCause());
+                throw (RuntimeException) failed.getCause();
+            } catch (IllegalAccessException failed) {
+                throw new AssertionError(failed);
+            }
+            return null;
+        });
+        assertEquals(57, fixture.state.sequence());
+        assertEquals(ActionReceipt.Outcome.UNRESOLVED, fixture.readOnlyParent().outcome());
+    }
+
+    private static WriterContracts.HistoricalTransition interruptedHistoryEdge(JsonNode events, int position, String machine) {
+        var after = events.get(position);
+        var before = events.get(position - 1);
+        long sequence = after.get("sequence").longValue();
+        return new WriterContracts.HistoricalTransition(sequence, after.get("kind").textValue(),
+                ContinuityJson.canonical(after.get("details")), after.get("identity").textValue(),
+                ContinuityState.fromJson((ObjectNode) before.get("after"), machine),
+                ContinuityState.fromJson((ObjectNode) after.get("after"), machine), softwarePin(Math.toIntExact(sequence)));
+    }
+
     @Test void partialExpiryUsesTheLastObservedCycleInsteadOfThePhysicalSaveDate() throws IOException {
         var fixture = new Fixture();
         var original = fixture.readOnlyParent();
