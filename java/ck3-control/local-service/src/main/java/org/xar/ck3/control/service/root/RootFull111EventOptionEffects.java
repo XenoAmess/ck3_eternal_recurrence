@@ -54,6 +54,7 @@ import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 /** Settles only the disappearance of the exact selected Full111 runtime event instance. */
 final class RootFull111EventOptionEffects implements NativeEffectRegistry.Observer {
     static final String SCHEMA = "xar.ck3.full111-event-queue-postcondition/v2";
+    private static final String ARCHIVED_ZERO_QUEUE_SCHEMA = "xar.java-full111-event-archived-zero-queue-proof/v1";
     private static final String ORIGINAL_SCHEMA = "xar.java-full111-event-queue-proof/v2";
     static final String RESULT_SCHEMA = "xar.java-full111-event-option-result/v2";
 
@@ -175,18 +176,37 @@ final class RootFull111EventOptionEffects implements NativeEffectRegistry.Observ
     static NativeRecordedEvidenceVerifier.Binding archivedVerifier(OperationKey operation, ExactRef definitionSource,
             NativeEffectEvidence.FrameLoader frames) {
         return new NativeRecordedEvidenceVerifier.Binding(operation, definitionSource, (head, receipt, archive) -> {
-            try { replay(receipt, archive, frames); }
+            try { replay(head, receipt, archive, frames); }
             catch (IOException unavailable) { throw new UncheckedIOException("Full111 option queue replay could not verify originals", unavailable); }
         });
     }
 
-    static NativeEffectEvidence.Original replay(ActionReceipt receipt, OutcomeArchive archive,
-            NativeEffectEvidence.FrameLoader frames) throws IOException {
+    private static NativeEffectEvidence.Original replay(org.xar.ck3.control.continuity.writer.WriterContracts.Head head,
+            ActionReceipt receipt, OutcomeArchive archive, NativeEffectEvidence.FrameLoader frames) throws IOException {
         var original = NativeEffectEvidence.load(receipt, archive, frames);
         StrictJson.require(original.independentReads().isEmpty() && original.supportingMaterials().size() == 1,
                 "Full111 option requires its one same-connection queue proof");
         var settled = (ActionState.Settled) receipt.state();
-        var proof = Originals.decode(archive.loadMaterial(original.supportingMaterials().getFirst()));
+        var supporting = ((ActionState.Applied) settled.settlement()).observation().supportingEvidence();
+        var material = archive.loadMaterial(original.supportingMaterials().getFirst());
+        var fields = StrictJson.parse(material.bytes());
+        if (ARCHIVED_ZERO_QUEUE_SCHEMA.equals(fields.path("schema").textValue())) {
+            var proof = StrictJson.object(fields, Set.of("schema", "capture_receipt", "fresh_full_ack"));
+            var captureRef = ExactRef.fromJson(proof.get("capture_receipt"));
+            var freshRef = ExactRef.fromJson(proof.get("fresh_full_ack"));
+            var captured = archive.loadReceipt(captureRef);
+            requirePendingOriginal(captured, receipt.command(), settled.attempt(), (AckReceived) settled.dispatch());
+            StrictJson.require(captureRef.equals(archive.receiptReferenceOf(captured))
+                    && captured.sequence() < receipt.sequence() && original.reconciliationGuard().isEmpty()
+                    && new RawJson(StrictJson.canonical(proof)).equals(material),
+                    "archived Full111 zero queue changed its actual prior capture or archive proof");
+            org.xar.ck3.control.application.action.ContinuityActionJournal.requireHistoricalReceipt(head.state(), captured, archive);
+            var projected = projectArchivedZeroQueue(captured, settled.attempt(), (AckReceived) settled.dispatch(),
+                    original.frames(), freshRef, archive, supporting);
+            NativeEffectEvidence.requireSame(settled.settlement(), projected, original.compatibleResult());
+            return original;
+        }
+        var proof = Originals.decode(material);
         var selected = originalAck(archive, proof.selected());
         StrictJson.require(selected.equals(settled.dispatch()), "Full111 option proof changed its canonical original SELECT");
         Instant deadline = observationEnd(selected);
@@ -205,6 +225,95 @@ final class RootFull111EventOptionEffects implements NativeEffectRegistry.Observ
                 archive, deadline, applied.observation().supportingEvidence());
         NativeEffectEvidence.requireSame(settled.settlement(), projected, original.compatibleResult());
         return original;
+    }
+
+    /** Uses the already retained post-SELECT Full111 zero queue; never opens or writes a new Native request. */
+    static NativeEffectRegistry.Projected settleArchivedZeroQueue(ActionReceipt captured, ExactRef freshRead,
+            Complete before, Complete after, OutcomeArchive archive) throws IOException {
+        var attempt = ActionTransitions.attempt(captured.state()).orElseThrow();
+        var selected = captured.ack().orElseThrow();
+        var frames = new NativeEffectSnapshots.Pair(before, after);
+        var projected = projectArchivedZeroQueue(captured, attempt, selected, frames, freshRead, archive, List.of());
+        var captureRef = archive.receiptReferenceOf(captured);
+        StrictJson.require(archive.loadReceipt(captureRef).equals(captured), "archived zero queue capture changed");
+        var row = StrictJson.object().put("schema", ARCHIVED_ZERO_QUEUE_SCHEMA);
+        row.set("capture_receipt", captureRef.toJson());
+        row.set("fresh_full_ack", freshRead.toJson());
+        var proof = archive.preserveMaterial(new RawJson(StrictJson.canonical(row)));
+        var basis = NativeEffectEvidence.preserve(captured.command(), attempt, frames, List.of(),
+                projected.compatibleResult().orElseThrow(), List.of(proof), archive);
+        return NativeEffectSnapshots.withEvidence(projected, List.of(basis, proof));
+    }
+
+    static NativeEffectRegistry.Projected projectArchivedZeroQueue(ActionReceipt captured, ActionState.Attempt attempt,
+            AckReceived selected, NativeEffectSnapshots.Pair frames, ExactRef freshRef,
+            OutcomeArchive archive, List<ExactRef> supporting) throws IOException {
+        var command = captured.command();
+        requirePendingOriginal(captured, command, attempt, selected);
+        StrictJson.require(captured.state() instanceof ActionState.Unknown unknown
+                && unknown.evidence().containsAll(List.of(frames.before().originalEvidence(), frames.after().originalEvidence(), freshRef))
+                && frames.reconciliation().isEmpty(), "archived zero queue needs the original pending Full and separate READ acknowledgement");
+        var target = RootFull111EventOptionPreparation.target(command);
+        var selection = Request.decodeSelectionRequest(attempt.preparedRequest());
+        var guard = attempt.guard();
+        StrictJson.require(command.operation().value().equals(Action.SELECT.step()) && command.expected().observerSchema().equals(SCHEMA)
+                && selection.target().equals(target) && !selection.deadline().isAfter(command.deadline())
+                && frameMatchesGuard(frames.before(), guard) && frames.before().identity().equals(command.before())
+                && selection.lineage().sourceRevision().equals(command.before().frame().identity().nativeRevision()),
+                "archived Full111 zero queue crossed its original command, target, guard or lease");
+
+        var originalSelected = custody(selected);
+        originalSelected.verify(selected, guard);
+        var selectResult = CurrentFull111EventOption.decodeOutcome(selected);
+        var sent = NativeWire.decodeExecuteRequest(selected.outbound().orElseThrow().originalPacket());
+        var sentRequest = new org.xar.ck3.control.application.action.NativeRequest(sent.step(), attempt.preparedRequest().requiredCapability(),
+                new RawJson(sent.normalizedAdditionalFields().value()));
+        StrictJson.require(attempt.requestId().equals(selected.requestId()) && selected.requestId().equals(sent.requestId())
+                && sent.expectedRevision().filter(selection.lineage().sourceRevision()::equals).isPresent()
+                && selection.equals(Request.decodeSelectionRequest(sentRequest))
+                && selectResult.matchesSuccessfulRequest(selection)
+                && selectResult.owner().orElseThrow().connectionGeneration().equals(originalSelected.session().connectionGeneration())
+                && !originalSelected.writeEntered().observedAt().isBefore(attempt.submittedAt())
+                && originalSelected.writeEntered().observedAt().isBefore(selection.deadline()),
+                "archived Full111 zero queue requires the exact original in-window SELECT and successful response");
+
+        var before = full(frames.before(), archive);
+        var after = full(frames.after(), archive);
+        var fresh = originalAck(archive, freshRef);
+        NativeFreshSnapshotPort.verifyArchivedAfterOriginal(selected, fresh, after);
+        var readOrder = custody(fresh);
+        StrictJson.require(!readOrder.responseReceived().observedAt().isAfter(observationEnd(selected))
+                && !readOrder.responseReceived().observedAt().isAfter(command.deadline()),
+                "archived Full111 zero queue escaped the original after-read window");
+
+        var beforeRaw = NativeWire.object(NativeWire.parse(before.state().bytes()));
+        var afterRaw = NativeWire.object(NativeWire.parse(after.state().bytes()));
+        var foreground = NativeFull111OrdinaryEvent.read(beforeRaw).orElseThrow(() -> new IOException("Original Full111 foreground absent"));
+        var prefix = selection.core().prefix();
+        StrictJson.require(originalFull111(beforeRaw) && originalFull111(afterRaw)
+                && prefix.paused() && prefix.mapReady() && prefix.playedCharacterAlive()
+                && prefix.playedCharacterId() == target.recipientCharacterId()
+                && foreground.instanceId() == target.instanceId() && target.authoredOptionIndex() < foreground.authoredOptionCount()
+                && RootFull111EventRead.prefix(beforeRaw).equals(prefix) && RootFull111EventRead.prefix(afterRaw).equals(prefix)
+                && NativeFull111OrdinaryEvent.read(afterRaw).isEmpty(),
+                "archived Full111 zero queue requires explicit null at the same paused, living actor and date");
+        requirePreparation(command, attempt, selected, selection, foreground, before.observedAt(), archive);
+        return NativeEffectSnapshots.observed(command, attempt, frames.after(), SCHEMA,
+                values(target, after.session().connectionGeneration()), new ObservationProvenance.Query(fresh.requestId()),
+                compatible(command, frames.after(), target), supporting);
+    }
+
+    private static boolean frameMatchesGuard(Complete before, GuardEvidence guard) {
+        return before.identity().equals(guard.observed()) && before.originalEvidence().equals(guard.nativeEvidence())
+                && before.source().equals(guard.source()) && before.sessionId().equals(guard.sessionId())
+                && before.connectionGeneration().equals(guard.connectionGeneration()) && before.observedAt().equals(guard.observedAt());
+    }
+
+    private static boolean originalFull111(com.fasterxml.jackson.databind.JsonNode raw) {
+        var build = org.xar.ck3.control.contracts.ExactCk3Build.CK3_121003_STEAM_26785313_FULL111;
+        return build.matches(raw.path("game_version").textValue(), raw.path("executable_sha256").textValue())
+                && build.coreFullAdapterId().equals(raw.path("adapter_id").textValue())
+                && build.coreFullBackend().equals(raw.path("backend").textValue());
     }
 
     private static NativeEffectRegistry.Projected project(ActionCommand command, ActionState.Attempt attempt,

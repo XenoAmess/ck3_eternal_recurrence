@@ -46,6 +46,9 @@ import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector.Frame;
 import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector.ProposalFrame;
 import org.xar.ck3.control.g2.common.G2Source;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedBoolean;
+import org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedInteger;
+import org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedText;
+import org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedValue;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.ExpectedPostcondition;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.FieldKey;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
@@ -167,22 +170,7 @@ final class RootFull111EventOptionEffectsTest {
         var nativeFrame = proof.before();
         byte[] packet = nativeFrame.originalPacket();
         var packetRef = new ExactRef("fixture:profile3-original", packet.length, ActionCodec.sha256(packet));
-        var manifest = StrictJson.object().put("schema", DriverObservationEvidenceReader.SCHEMA)
-                .put("driver_version", 0).put("episode_epoch", 0)
-                .put("snapshot_id", nativeFrame.snapshotId()).put("native_revision", nativeFrame.nativeRevision())
-                .put("native_state_sha256", ActionCodec.sha256(nativeFrame.state().bytes()))
-                .put("native_packet_sha256", packetRef.sha256()).put("native_packet_bytes", packetRef.bytes())
-                .put("observed_at", nativeFrame.observedAt().toString())
-                .put("public_revision", identity.frame().revision()).put("observation_version", 3);
-        manifest.set("driver_ref", ref(3).toJson());
-        manifest.set("source", org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.source(proof.attempt().guard().source()));
-        manifest.putObject("original_semantic_fields");
-        manifest.putObject("transport").put("machine_id", nativeFrame.session().machineId())
-                .put("pid", nativeFrame.session().game().pid())
-                .put("creation_filetime", nativeFrame.session().game().creationFiletime().value().toString())
-                .put("connection_generation", nativeFrame.session().connectionGeneration().toString())
-                .put("session_id", nativeFrame.session().sessionId());
-        var originalManifest = RawJson.fullMaterial(StrictJson.canonical(manifest));
+        var originalManifest = originalManifest(nativeFrame, identity.frame().revision(), packetRef, proof.attempt().guard().source());
         var manifestRef = new ExactRef("fixture:profile3-manifest", originalManifest.bytes().length,
                 ActionCodec.sha256(originalManifest.bytes()));
         var semantic = new OpportunityJson.Obj(java.util.Map.of(
@@ -203,6 +191,25 @@ final class RootFull111EventOptionEffectsTest {
         changed[changed.length - 1] ^= 1;
         assertThrows(IOException.class, () -> RootFull111EventOptionEffects.full(original,
                 nativeOriginals(packetRef, changed, manifestRef, originalManifest)));
+    }
+
+    private static RawJson originalManifest(ObservedFrame nativeFrame, BigInteger publicRevision, ExactRef packetRef, G2Source source) {
+        var manifest = StrictJson.object().put("schema", DriverObservationEvidenceReader.SCHEMA)
+                .put("driver_version", 0).put("episode_epoch", 0)
+                .put("snapshot_id", nativeFrame.snapshotId()).put("native_revision", nativeFrame.nativeRevision())
+                .put("native_state_sha256", ActionCodec.sha256(nativeFrame.state().bytes()))
+                .put("native_packet_sha256", packetRef.sha256()).put("native_packet_bytes", packetRef.bytes())
+                .put("observed_at", nativeFrame.observedAt().toString())
+                .put("public_revision", publicRevision).put("observation_version", 3);
+        manifest.set("driver_ref", ref(3).toJson());
+        manifest.set("source", org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.source(source));
+        manifest.putObject("original_semantic_fields");
+        manifest.putObject("transport").put("machine_id", nativeFrame.session().machineId())
+                .put("pid", nativeFrame.session().game().pid())
+                .put("creation_filetime", nativeFrame.session().game().creationFiletime().value().toString())
+                .put("connection_generation", nativeFrame.session().connectionGeneration().toString())
+                .put("session_id", nativeFrame.session().sessionId());
+        return RawJson.fullMaterial(StrictJson.canonical(manifest));
     }
 
     private static ActionPorts.OutcomeArchive nativeOriginals(ExactRef packetRef, byte[] packet,
@@ -281,6 +288,83 @@ final class RootFull111EventOptionEffectsTest {
         var extended = preparedSelection(extendedCutoff);
         var rendererWithExtendedLease = renderer(RENDERER, extendedCutoff, "first stock choice", false, 10, 2, 39_000, EPOCH);
         assertThrows(ContractViolationException.class, () -> extended.verify(BASE.plusSeconds(60), planned, rendererWithExtendedLease, extended.selected()));
+    }
+
+    @Test void archivedAfterRequiresAnExactFreshFullThatProvesAnEmptyQueue() throws Exception {
+        var originals = new java.util.HashMap<ExactRef, RawJson>();
+        var packets = new java.util.HashMap<ExactRef, byte[]>();
+        var receipts = new java.util.HashMap<ExactRef, AckReceived>();
+        var stored = (ActionPorts.OutcomeArchive) Proxy.newProxyInstance(ActionPorts.OutcomeArchive.class.getClassLoader(),
+                new Class<?>[]{ActionPorts.OutcomeArchive.class}, (proxy, method, args) -> switch (method.getName()) {
+                    case "load" -> receipts.get(args[0]);
+                    case "referenceOf" -> receipts.entrySet().stream().filter(entry -> entry.getValue() == args[0])
+                            .map(java.util.Map.Entry::getKey).findFirst().orElseThrow();
+                    case "loadNativeFrame" -> packets.get(args[0]);
+                    case "loadFullMaterial" -> originals.get(args[0]);
+                    default -> throw new AssertionError(method);
+                });
+        var source = new G2Source(SESSION.machineId(), BASE.toString(), BUILD.executableSha256(), ref(1));
+        var before = archiveFrame(snapshot("", 12, event(8), INSTANCE), BigInteger.ONE, source, packets, originals);
+        var after = archiveFrame(snapshot(FRESH, 13, event(42_002), 0), BigInteger.TWO, source, packets, originals);
+        var differentEvent = archiveFrame(snapshot(FRESH, 13, event(42_002), 9), BigInteger.TWO, source, packets, originals);
+        var planned = ref(6);
+        var refreshed = ref(7);
+        var prepared = ref(8);
+        var fresh = ref(9);
+        var placement = preparedSelection();
+        receipts.put(planned, plannedRenderer(false));
+        receipts.put(refreshed, refreshedRenderer("first stock choice", false, 10, EPOCH));
+        receipts.put(prepared, placement.prepared());
+        receipts.put(fresh, fixture(13, 42_000).fresh());
+        var operation = new OperationKey(Action.SELECT.step());
+        var original = placement.selection().selectionRequest();
+        var request = new org.xar.ck3.control.application.action.NativeRequest(original.step(), original.requiredCapability(),
+                original.additionalFields(), List.of(planned, refreshed, prepared));
+        var guard = new GuardEvidence(before.identity(), source, SESSION.sessionId(), SESSION.connectionGeneration(),
+                operation, before.originalEvidence(), ref(2), "fixture", before.observedAt(), BASE.plusSeconds(60));
+        var attempt = new Attempt(SELECT, BASE.plusSeconds(41), guard, request);
+        var values = List.<ExpectedValue>of(new ExpectedInteger(new FieldKey("event_instance_id"), BigInteger.valueOf(INSTANCE)),
+                new ExpectedInteger(new FieldKey("recipient_character_id"), BigInteger.valueOf(ACTOR)),
+                new ExpectedText(new FieldKey("event_definition_key"), TARGET.definitionKey()),
+                new ExpectedInteger(new FieldKey("authored_option_index"), BigInteger.valueOf(TARGET.authoredOptionIndex())),
+                new ExpectedBoolean(new FieldKey("event_queue_absent"), true),
+                new ExpectedText(new FieldKey("connection_generation_decimal"), SESSION.connectionGeneration().toString()));
+        var expected = new ExpectedPostcondition(1, before.identity(), source, RootFull111EventOptionEffects.SCHEMA, values);
+        var arguments = StrictJson.object().put("instance_id", INSTANCE).put("recipient_character_id", ACTOR)
+                .put("definition_key", TARGET.definitionKey()).put("authored_option_index", TARGET.authoredOptionIndex());
+        arguments.set("renderer_original", planned.toJson());
+        var command = new ActionCommand("fixture-archived-event", before.identity(), source, SESSION.sessionId(), operation,
+                OpportunityJson.object(OpportunityJson.parse(StrictJson.canonical(arguments)), "fixture action arguments"), expected,
+                new Claims(Set.of(), Set.of(), Set.of(), Set.of()), BASE.plusSeconds(60));
+        var captured = new ActionReceipt(1, 7, command, ActionCodec.bodySha256(command),
+                new ActionState.Unknown(Optional.of(attempt), Optional.of(placement.selected()), "observer unavailable",
+                        List.of(before.originalEvidence(), after.originalEvidence(), differentEvent.originalEvidence(), fresh)));
+        var projected = RootFull111EventOptionEffects.projectArchivedZeroQueue(captured, attempt, placement.selected(),
+                new org.xar.ck3.control.application.effects.NativeEffectSnapshots.Pair(before, after), fresh, stored, List.of());
+        var applied = assertInstanceOf(ActionPorts.EffectObserved.class, projected.result()).observation();
+        assertEquals(new org.xar.ck3.control.application.action.ObservationProvenance.Query(FRESH), applied.provenance());
+        assertEquals(after.originalEvidence(), applied.originalEvidence());
+        assertThrows(ContractViolationException.class, () -> RootFull111EventOptionEffects.projectArchivedZeroQueue(captured,
+                attempt, placement.selected(), new org.xar.ck3.control.application.effects.NativeEffectSnapshots.Pair(before, differentEvent),
+                fresh, stored, List.of()));
+    }
+
+    private static Complete archiveFrame(ObservedFrame frame, BigInteger revision, G2Source source,
+            java.util.Map<ExactRef, byte[]> packets, java.util.Map<ExactRef, RawJson> manifestBytes) {
+        byte[] originalPacket = frame.originalPacket();
+        var originalRef = new ExactRef("fixture:" + frame.snapshotId(), originalPacket.length, ActionCodec.sha256(originalPacket));
+        var manifest = originalManifest(frame, revision, originalRef, source);
+        byte[] body = manifest.bytes();
+        var manifestRef = new ExactRef("fixture:manifest:" + frame.snapshotId(), body.length, ActionCodec.sha256(body));
+        packets.put(originalRef, originalPacket);
+        manifestBytes.put(manifestRef, manifest);
+        var identity = new ObservationIdentity(SESSION.machineId(), SESSION.game(), new ProposalFrame(
+                new Frame(BigInteger.valueOf(ACTOR), frame.nativeRevision(), BigInteger.valueOf(DATE)),
+                frame.snapshotId(), revision, "event-software"), 3);
+        var semantic = new OpportunityJson.Obj(java.util.Map.of("active_event", OpportunityJson.Nil.INSTANCE,
+                "java_driver_facts_evidence", DriverObservationEvidenceReader.reference(manifestRef)));
+        return new Complete(identity, source, SESSION.sessionId(), SESSION.connectionGeneration(),
+                semantic, originalRef, frame.observedAt(), "0".repeat(64));
     }
 
     private static Fixture fixture(int afterRevision) throws IOException {
@@ -406,10 +490,20 @@ final class RootFull111EventOptionEffectsTest {
     }
 
     private static ObservedFrame snapshot(String request, int revision, Event received) throws IOException {
+        return snapshot(request, revision, received, 0);
+    }
+
+    private static ObservedFrame snapshot(String request, int revision, Event received, int instance) throws IOException {
         var row = StrictJson.object().put("type", "state_snapshot").put("protocol_version", 1)
                 .put("snapshot_id", "native:" + revision).put("revision", revision);
         if (!request.isEmpty()) row.put("read_request_id", request);
-        row.putObject("state").putNull("active_event");
+        var state = row.putObject("state").put("game_version", BUILD.version()).put("executable_sha256", BUILD.executableSha256())
+                .put("adapter_id", BUILD.coreFullAdapterId()).put("backend", BUILD.coreFullBackend())
+                .put("date_raw", DATE).put("speed", 1).put("paused", true).put("map_ready", true).put("local_player_id", 0);
+        state.putObject("played_character").put("character_id", ACTOR).put("alive", true);
+        if (instance == 0) state.putNull("active_event");
+        else state.putObject("active_event").put("schema", NativeFull111OrdinaryEvent.SCHEMA)
+                .put("instance_id", instance).put("authored_option_count", 5);
         byte[] packet = NativeWire.packet(StrictJson.canonical(row));
         var snapshot = (NativeWire.Snapshot) NativeWire.decode(packet);
         return new ObservedFrame(SESSION, snapshot.snapshotId(), snapshot.revision(), new RawJson(snapshot.state().value()), packet, received.observedAt());
