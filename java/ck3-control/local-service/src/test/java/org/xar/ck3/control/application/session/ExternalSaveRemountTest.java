@@ -3,10 +3,19 @@ package org.xar.ck3.control.application.session;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.lang.reflect.Proxy;
 import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.Clock;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.List;
 import java.util.Optional;
 import java.util.zip.GZIPInputStream;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import org.xar.ck3.control.application.action.ActionCodec;
+import org.xar.ck3.control.continuity.writer.ContinuityWriter;
+import org.xar.ck3.control.continuity.writer.StorageWriteGuardTestSupport;
+import org.xar.ck3.control.contracts.ContractViolationException;
 import org.xar.ck3.control.application.action.ActionPorts;
 import org.xar.ck3.control.application.action.ContinuityActionJournal;
 import org.xar.ck3.control.application.action.NativeObservationPort.TransportSession;
@@ -22,6 +31,7 @@ import org.xar.ck3.control.contracts.StrictJson;
 import static org.junit.jupiter.api.Assertions.*;
 
 final class ExternalSaveRemountTest {
+    @TempDir Path root;
     @Test void observedRemountDefersOnlyTheActualEmptyBatchAndPreservesOriginalSavedFrontier() throws Exception {
         try (var raw = getClass().getResourceAsStream("source56-named-remount.json.gz");
              var fixture = new GZIPInputStream(raw)) {
@@ -63,8 +73,9 @@ final class ExternalSaveRemountTest {
             var identity = (ObjectNode) semantic.get("frame");
             identity.set("game", game.toJson());
             ((ObjectNode) identity.get("frame")).put("native_revision", "1").put("revision", "1").put("snapshot_id", "native:1");
-            var after = cycles.reduce(before, new WriterContracts.Request(OrdinaryCycleTransitions.CYCLE_KIND,
-                    ContinuityJson.canonical(details), List.of()));
+            var request = new WriterContracts.Request(OrdinaryCycleTransitions.CYCLE_KIND,
+                    ContinuityJson.canonical(details), List.of());
+            var after = actualWriterCommit(before, cycles, request);
 
             assertEquals(game, GameGeneration.fromJson(after.toJson().get("game_binding")));
             assertEquals(53179944, after.toJson().path("latest_binding").path("date_raw").longValue());
@@ -85,5 +96,60 @@ final class ExternalSaveRemountTest {
                     remount.opening(), remount.previousOrigin(), remount.deferredBatch());
             assertThrows(IllegalArgumentException.class, () -> wrong.requirePreviousOrigin(previous));
         }
+    }
+
+    private ContinuityState actualWriterCommit(ContinuityState before, OrdinaryCycleTransitions cycles,
+            WriterContracts.Request request) throws Exception {
+        byte[] initial = before.canonicalBytes();
+        var anchor = Files.write(root.resolve("anchor.json"), initial);
+        var source = new ExactRef(anchor.toString(), initial.length, ActionCodec.sha256(initial));
+        var layout = new WriterContracts.Layout(Files.write(root.resolve("continuity.json"), initial), source, before.machineId());
+        Files.createFile(layout.lock());
+        Files.createDirectory(layout.events());
+        var corruptBoundary = new AtomicBoolean();
+        var authority = new WriterContracts.TransitionAuthority() {
+            @Override public String revalidate(ContinuityState predecessor, WriterContracts.Request supplied) {
+                return supplied.identity();
+            }
+
+            @Override public ContinuityState reduce(ContinuityState predecessor, WriterContracts.Request supplied) {
+                var reduced = cycles.reduce(predecessor, supplied);
+                if (!corruptBoundary.get()) return reduced;
+                var body = reduced.toJson();
+                ((ObjectNode) body.get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD)).put("boundary", "BATCH_FINISHED");
+                return ContinuityState.fromJson(body, predecessor.machineId());
+            }
+        };
+        var guard = StorageWriteGuardTestSupport.create(layout);
+        var writer = new ContinuityWriter(layout, List.of(source), authority, Clock.systemUTC(), guard);
+
+        writer.locked(same -> {
+            var prepared = same.preview(request);
+            corruptBoundary.set(true);
+            try {
+                assertThrows(ContractViolationException.class, () -> same.commit(prepared));
+                assertArrayEquals(initial, Files.readAllBytes(layout.snapshot()));
+                assertFalse(Files.exists(layout.event(before.sequence() + 1)));
+            } finally {
+                corruptBoundary.set(false);
+            }
+            return null;
+        });
+
+        var committed = writer.locked(same -> {
+            var prepared = same.preview(request);
+            var accepted = same.commit(prepared);
+            same.requireCommitted(prepared, accepted);
+            return accepted;
+        });
+        assertEquals(WriterContracts.Disposition.COMMITTED, committed.disposition());
+        assertEquals(before.sequence() + 1, committed.head().sequence());
+        assertTrue(Files.isRegularFile(layout.event(committed.head().sequence())));
+        var reopened = new ContinuityWriter(layout, List.of(source), authority, Clock.systemUTC(), guard);
+        reopened.locked(same -> {
+            assertArrayEquals(committed.head().canonicalBytes(), same.head().state().canonicalBytes());
+            return null;
+        });
+        return committed.head();
     }
 }

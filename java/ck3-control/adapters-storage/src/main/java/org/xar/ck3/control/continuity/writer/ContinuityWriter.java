@@ -1621,10 +1621,38 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         if (!ORDINARY_BATCH_KIND.equals(request.kind())&&!ORDINARY_NEXT_BASELINE_KIND.equals(request.kind())) {
             preserveField(old, next, ORDINARY_SAVED_CYCLE_FIELD);
         }
-        if (!ORDINARY_BATCH_KIND.equals(request.kind())) {
+        boolean namedRemount = details != null && "java-external-save-observation/v2".equals(details.path("source").asText())
+                && "REBIND_EXTERNAL_SAVE".equals(details.path("operation").asText())
+                && "xar.java-ordinary-external-save-origin/v2".equals(details.path("origin").path("schema").asText());
+        if (namedRemount && details.path("origin").hasNonNull("deferred_batch")) {
+            requireNamedRemountDeferral(before, old, next, details);
+        } else if (!ORDINARY_BATCH_KIND.equals(request.kind())) {
             preserveField(old, next, ORDINARY_BATCH_BOUNDARY_FIELD);
         }
     }
+
+    /** The v2 physical remount may atomically close only its actual departed open batch. */
+    private static void requireNamedRemountDeferral(ContinuityState before, ObjectNode old, ObjectNode next, ObjectNode details) {
+        var origin = details.get("origin");
+        String batch = StrictJson.text(origin.get("deferred_batch"));
+        var boundary = StrictJson.object(old.get(ORDINARY_BATCH_BOUNDARY_FIELD), java.util.Set.of("evidence_id", "session", "batch_id", "boundary"));
+        var previous = ExactRef.fromJson(old.get(ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD));
+        var replacement = ExactRef.fromJson(details.get("origin_ref"));
+        StrictJson.require("BATCH_STARTED".equals(StrictJson.text(boundary.get("boundary")))
+                && batch.equals(StrictJson.text(boundary.get("batch_id")))
+                && (batch + ":BATCH_STARTED").equals(StrictJson.text(boundary.get("evidence_id")))
+                && ContinuityJson.same(boundary.get("session"), origin.get("departed"))
+                && before.sequence() == StrictJson.integer(origin.get("predecessor_sequence"), 1, StrictJson.MAX_SAFE_INTEGER)
+                && ContinuityJson.digest(old).equals(StrictJson.text(origin.get("predecessor_digest")))
+                && previous.equals(ExactRef.fromJson(origin.get("previous_origin")))
+                && !previous.equals(replacement)
+                && ContinuityJson.same(replacement.toJson(), next.get(ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD)),
+                "named save remount can defer only its actual former owner's open batch");
+        var deferred = boundary.deepCopy().put("boundary", "BATCH_DEFERRED").put("evidence_id", batch + ":BATCH_DEFERRED");
+        StrictJson.require(ContinuityJson.same(deferred, next.get(ORDINARY_BATCH_BOUNDARY_FIELD)),
+                "named save remount must preserve its former batch identity while deferring it");
+    }
+
     private static void preserveField(ObjectNode before, ObjectNode after, String field) {
         StrictJson.require(before.has(field) == after.has(field) && (!before.has(field) || ContinuityJson.same(before.get(field), after.get(field))),
                 "unrelated reducer cannot clear another canonical writer contract: " + field);
