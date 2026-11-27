@@ -13,14 +13,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.io.TempDir;
 import org.xar.ck3.control.application.action.ActionCodec;
 import org.xar.ck3.control.application.checkpoint.CheckpointPair;
+import org.xar.ck3.control.application.checkpoint.NativeCheckpointFiles;
 import org.xar.ck3.control.application.readiness.NativeReadiness;
 import org.xar.ck3.control.build.ControlBuild;
 import org.xar.ck3.control.continuity.OriginalWindowReducer;
 import org.xar.ck3.control.contracts.ExactRef;
-import org.xar.ck3.control.contracts.FileStatIdentity;
 import org.xar.ck3.control.contracts.GameGeneration;
 import org.xar.ck3.control.contracts.PythonOnlyUInt64;
 import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector;
@@ -31,8 +33,10 @@ import org.xar.ck3.control.platform.NativeLaunchPlan;
 import org.xar.ck3.control.platform.NativeLaunchPlanCodec;
 import org.xar.ck3.control.platform.SteamOfflineProbe;
 
+@EnabledOnOs(OS.WINDOWS)
 final class RootImportedCheckpointPathsTest {
     @TempDir Path root;
+    private final NativeCheckpointFiles files = new NativeCheckpointFiles();
     private static final Instant NOW = Instant.parse("2026-11-27T01:30:00Z");
 
     @Test void successorCanReuseItsOwnConfirmedOutputWhileKeepingTheImportedLineage() throws Exception {
@@ -41,7 +45,7 @@ final class RootImportedCheckpointPathsTest {
         var imported = pair(root.resolve("imported.ck3"),"lineage",100);
         var latest = pair(output,"lineage",200);
         var base = configuration();
-        var actual = RootOrdinaryRuntimeAssembly.retainImportedCheckpointPaths(base,launch(profile),imported,latest);
+        var actual = RootOrdinaryRuntimeAssembly.retainImportedCheckpointPaths(base,launch(profile),imported,latest,files);
 
         assertEquals(output,actual.checkpoints().save());
         assertEquals(imported.lineageId(),actual.checkpoints().lineageId());
@@ -60,10 +64,29 @@ final class RootImportedCheckpointPathsTest {
         var base = configuration();
 
         assertThrows(IOException.class,() ->
-                RootOrdinaryRuntimeAssembly.retainImportedCheckpointPaths(base,game,imported,foreign));
+                RootOrdinaryRuntimeAssembly.retainImportedCheckpointPaths(base,game,imported,foreign,files));
         Files.createLink(output,Path.of(imported.save().reference().path()));
         assertThrows(IOException.class,() ->
-                RootOrdinaryRuntimeAssembly.retainImportedCheckpointPaths(base,game,imported,imported));
+                RootOrdinaryRuntimeAssembly.retainImportedCheckpointPaths(base,game,imported,imported,files));
+    }
+
+    @Test void onlyTheLatestConfirmedPairMustMatchTheCurrentOnDiskFiles() throws Exception {
+        var profile = Files.createDirectory(root.resolve("profile"));
+        var output = Files.createDirectories(profile.resolve("save games")).resolve("xar_checkpoint.ck3");
+        var imported = pair(root.resolve("imported.ck3"),"lineage",100);
+        var first = pair(output,"lineage",200);
+        var game = launch(profile);
+        var base = configuration();
+        RootOrdinaryRuntimeAssembly.retainImportedCheckpointPaths(base,game,imported,first,files);
+
+        var latest = pair(output,"lineage",300);
+        assertThrows(IOException.class,() ->
+                RootOrdinaryRuntimeAssembly.retainImportedCheckpointPaths(base,game,imported,first,files));
+        assertEquals(output,RootOrdinaryRuntimeAssembly
+                .retainImportedCheckpointPaths(base,game,imported,latest,files).checkpoints().save());
+        Files.delete(output);
+        assertThrows(IOException.class,() ->
+                RootOrdinaryRuntimeAssembly.retainImportedCheckpointPaths(base,game,imported,latest,files));
     }
 
     private RootApplicationAssembly.FreshSessionConfiguration configuration() {
@@ -102,8 +125,10 @@ final class RootImportedCheckpointPathsTest {
                 "save-" + pid,ack,NOW);
     }
 
-    private static CheckpointPair.FileWitness witness(ExactRef ref) {
-        return new CheckpointPair.FileWitness(ref,new FileStatIdentity(BigInteger.valueOf(ref.bytes()),"1","1"));
+    private CheckpointPair.FileWitness witness(ExactRef ref) throws IOException {
+        var actual = files.observe(Path.of(ref.path())).orElseThrow();
+        assertEquals(ref,actual.reference());
+        return actual;
     }
 
     private static ExactRef write(Path path, String content) throws IOException {

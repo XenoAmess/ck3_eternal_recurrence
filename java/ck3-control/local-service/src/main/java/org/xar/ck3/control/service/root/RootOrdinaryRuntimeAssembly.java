@@ -130,12 +130,15 @@ public final class RootOrdinaryRuntimeAssembly {
     }
     static RootApplicationAssembly.FreshSessionConfiguration retainImportedCheckpointPaths(
             RootApplicationAssembly.FreshSessionConfiguration base, NativeLaunchPlan game,
-            CheckpointPair imported, CheckpointPair latestConfirmed) throws IOException {
+            CheckpointPair imported, CheckpointPair latestConfirmed, CheckpointFiles files) throws IOException {
         if (!latestConfirmed.lineageId().equals(imported.lineageId()))
             throw new IOException("successor SAVE crossed the original imported lineage");
         var paths = base.checkpoints();
         var checkpoints = new RootStartupConfiguration.CheckpointPaths(paths.driverCheckpoint(),paths.checkpointEvidence(),
                 paths.attachmentEvidence(),latestConfirmed.lineageId(),importedCheckpointOutput(game,imported));
+        if (!latestConfirmed.equals(imported)) {
+            files.verify(latestConfirmed);
+        }
         return new RootApplicationAssembly.FreshSessionConfiguration(base.authorityId(),base.policy(),base.freshness(),
                 checkpoints,base.cyclePolicy(),base.deadline());
     }
@@ -1226,7 +1229,7 @@ public final class RootOrdinaryRuntimeAssembly {
             var history=core.writer().locked(same->core.readCommittedImportedControllerHistory(same,stage.original().attachment(),cyclePolicy));
             var imported = stage.original().pair();
             var configuration=retainImportedCheckpointPaths(sessionConfiguration(input.deadline()),
-                    attached.launchPlan(),imported,imported);
+                    attached.launchPlan(),imported,imported,files);
             var selector=new RootOnlineDecisionSelector(configuredDecision,clock,raw->{
                 var writer=core.writer();var active=writer.activeSession();
                 if(active.isPresent())return core.archive().withSession(active.orElseThrow()).preserveMaterial(raw);
@@ -1857,7 +1860,7 @@ public Running finishObservedMap(NativeFreshSnapshotPort.Received received, Init
             var configuration=runOperationPhase(owner.clock,owner.config.operationTimeout(),owner::sessionConfiguration);
             if (data.startingPoint() instanceof ContinuityBatchJournal.SameGameEntry.CommittedImportedRebind imported) {
                 configuration = retainImportedCheckpointPaths(configuration,owner.game.launchPlan(),
-                        imported.importedPair(),data.controller().savedPair().orElseThrow());
+                        imported.importedPair(),data.controller().savedPair().orElseThrow(),owner.files);
             }
             var session=owner.core.finishSettledSameGame(installed,driver,configuration,owner.services(source));
             owner.core.completeSettledEventOutcomeOnly(session,data,deadline);
