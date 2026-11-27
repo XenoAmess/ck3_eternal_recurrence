@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.Objects;
 import org.xar.ck3.control.application.checkpoint.CheckpointPair;
+import org.xar.ck3.control.application.action.ActionPorts;
 import org.xar.ck3.control.application.checkpoint.CheckpointPairCodec;
 import org.xar.ck3.control.application.checkpoint.SavedAttachmentSourceStore;
 import org.xar.ck3.control.application.checkpoint.SavedAttachmentSourceStore.SavedMaterial;
@@ -107,15 +108,22 @@ public final class RootCommittedOrdinaryRestoration {
     interface SavedWriterRead<T> {
         T read(ContinuityStorePort.Session oldWriter, ContinuityState savedHead) throws IOException;
     }
+    @FunctionalInterface
+    interface SavedArchiveRead<T> {
+        T read(ContinuityStorePort.Session oldWriter, ContinuityState savedHead, ActionPorts.OutcomeArchive archive) throws IOException;
+    }
 
     /** Use the source writer that actually owns the pre-SAVE canonical state and original domain bodies. */
     <T> T withOriginalSavedWriter(ContinuityStorePort.Session same, SavedWriterRead<T> work) throws IOException {
+        return withOriginalSavedArchive(same,(old,retained,archive)->work.read(old,retained));
+    }
+    <T> T withOriginalSavedArchive(ContinuityStorePort.Session same, SavedArchiveRead<T> work) throws IOException {
         requireCurrent(same, context);
-        var result = oldSource.read(same, old -> {
+        var result = oldSource.readArchive(same, (old,archive) -> {
             var retained = old.requireHistoricalState(material.originalHeadSequence(), material.originalHeadDigest());
             if (!Arrays.equals(material.originalHead().canonicalBytes(), retained.canonicalBytes()))
                 throw new IOException("original imported Saved head was not retained by the independent source writer");
-            return Objects.requireNonNull(work).read(old, retained);
+            return Objects.requireNonNull(work).read(old, retained, archive);
         });
         requireCurrent(same, context);
         return result;

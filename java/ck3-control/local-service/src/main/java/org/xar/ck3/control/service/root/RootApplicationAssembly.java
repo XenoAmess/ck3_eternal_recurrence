@@ -1824,6 +1824,38 @@ public final class RootApplicationAssembly {
             return finishObserved(installed, driver, configuration, services, Optional.empty());
         }
 
+        ContinuityBatchJournal.ImportedRestoreRebindReadback readCommittedImportedStart(ContinuityStorePort.Session same,
+                WriterContracts.Pin attachment,OriginalWindowReducer.Policy policy)throws IOException {
+            var cycles=new OrdinaryCycleTransitions(archive,semanticVerifier,checkpointVerifiers,policy,writer::requireSession);
+            return new ContinuityBatchJournal(writer,cycles).readImportedRestoreRebindAcrossDomainImports(same,attachment);
+        }
+
+        synchronized DriverBootstrap.Adopted adoptCommittedImported(ManagedGameSession game,
+                org.xar.ck3.control.platform.JavaGameLifecycle lifecycle,
+                org.xar.ck3.control.platform.RootProcessAttach.LoadedReplacement loaded,
+                WriterContracts.Pin attachment,G2Source source,int retainedFrames,Instant deadline)throws IOException,InterruptedException {
+            StrictJson.require(menu==null&&!staged&&!finished&&activeSession==null&&adopted.isEmpty(),
+                    "committed imported Driver requires the unused actual Core");
+            StrictJson.require(loaded.attached()==game&&game.mode()==ManagedGameSession.Mode.ATTACHED,
+                    "committed imported Driver requires its actual attached successor Game");
+            game.verify();
+            var nativeEvidence=new org.xar.ck3.control.platform.GameRestoreNativeAdapter(lifecycle,source,
+                    loaded.pair().lineageId(),archive,writer,writer::activeSession,writer::requireSession,loaded);
+            try {
+                return writer.locked(same->{
+                    try {
+                        var result=DriverBootstrap.adoptCommittedImported(attachment,nativeEvidence,same,actions,
+                                game.nativeTransport(),source,archive,(ref,max)->archive.readArtifact(same,ref,
+                                        Math.min(max,ImmutableArtifactStore.MAXIMUM_ARTIFACT_BYTES)),retainedFrames,deadline);
+                        result.requireCommittedImported(attachment);
+                        game.verify();
+                        adopted.add(result);
+                        return result;
+                    }catch(InterruptedException interruption){throw new InterruptedAssembly(interruption);}
+                });
+            }catch(InterruptedAssembly interruption){Thread.currentThread().interrupt();throw interruption.interruption;}
+        }
+
         public synchronized DriverBootstrap.Adopted adoptCleanRestart(ManagedGameSession game, ContinuityBatchJournal.CleanRestartTicket ticket, int retainedFrames, OriginalWindowReducer.Policy cyclePolicy, Instant deadline) throws IOException, InterruptedException {
             return adoptCleanRestart(game,ticket,retainedFrames,cyclePolicy,deadline,()->deadline);
         }

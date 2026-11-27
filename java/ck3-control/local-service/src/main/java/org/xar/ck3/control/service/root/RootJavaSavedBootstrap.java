@@ -157,8 +157,14 @@ public final class RootJavaSavedBootstrap {
         DriverStateSnapshot.Complete physicalSavedDriver(){return material.savedDriver();}
         SavedAttachmentSourceStore.SavedMaterial originalMaterial(){return material;}
         <T> T withOriginalWriter(ContinuityStorePort.Session target,SavedAttachmentSourceStore.ImportedSourceWork<T> work)throws IOException {
+            return withOriginalArchive(target,(old,archive)->work.read(old));
+        }
+        @FunctionalInterface interface ArchivedRead<T> {
+            T read(ContinuityStorePort.Session old,ActionPorts.OutcomeArchive archive)throws IOException;
+        }
+        <T> T withOriginalArchive(ContinuityStorePort.Session target,ArchivedRead<T> work)throws IOException {
             return writer.readOnlyFrom(target,old->sourceArchive.inHistoricalReadScope(old,
-                    new ActionPorts.HistoricalReadLimits(1024,64L*1024*1024,2052),ignored->work.read(old)));
+                    new ActionPorts.HistoricalReadLimits(1024,64L*1024*1024,2052),archive->work.read(old,archive)));
         }
         RootRestoreMaterials.PhysicalSavedOriginal readOriginalPhysicalSave()throws IOException {
             return writer.locked(same->sourceArchive.inHistoricalReadScope(same,

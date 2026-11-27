@@ -552,6 +552,14 @@ public final class RootOrdinaryRuntimeAssembly {
         private RootExitedSavedMaterialSource.PreparedImportedRestore importedRestore;
         private RootLoadedReplacementRecoveryInputs.ImportedRequest importedLoadedRequest;
         private RootProcessAttach.ImportedLoadedOriginals importedLoadedOriginals;
+        private CommittedImportedStart committedImportedStart;
+
+        private record CommittedImportedStart(RootLoadedReplacementRecoveryInputs.ImportedRequest input,
+                WriterContracts.Pin attachment,RootProcessAttach.ImportedLoadedOriginals originals,
+                ContinuityBatchJournal.ImportedRestoreRebindReadback readback) { }
+
+        record CommittedImportedStage(DriverBootstrap.Adopted driver,RootInstalledCatalog catalog,
+                RootSavedOrdinaryReopen.Committed original,RootCommittedOrdinaryRestoration domainOriginal) { }
         private org.xar.ck3.control.platform.SavedGameOwnerLifetime249.Retained exitedOwnerLifetime;
         private JavaGameLifecycle.Started exitedOwnerStart;
         private Path exitedOwnerDirectory;
@@ -1152,6 +1160,66 @@ public final class RootOrdinaryRuntimeAssembly {
             var running=finishLoadedCheckpointRecovery(attached,loaded,result.source(),result.profile(),configuredDecision,input.deadline());
             input.requireCurrent(clock);
             return running;
+        }
+
+        /** Verifies the already committed attachment before opening a new READ connection to its successor. */
+        synchronized RootProcessAttach.ImportedLoadedOriginals prepareCommittedImportedRecovery(
+                RootLoadedReplacementRecoveryInputs.ImportedRequest input,WriterContracts.Pin attachment)throws IOException {
+            input.requireCurrent(clock);
+            if(sourceOnly||closed||entered||core!=null||game!=null||!config.machineId().equals(input.machineId()))
+                throw new IOException("committed imported recovery requires the unused writer on its original machine");
+            var actualCore=openSavedSourceCore();
+            var start=actualCore.writer().locked(same->{
+                storage.requireReadScope(same,files);
+                var original=actualCore.readCommittedImportedStart(same,attachment,cyclePolicy);
+                var basis=original.recoveryBasis();
+                if(!basis.departed().machineId().equals(input.machineId())
+                        ||basis.predecessorSequence()!=input.expectedPredecessorSequence()
+                        ||!basis.predecessorDigest().equals(input.expectedHeadDigest())
+                        ||!basis.lifecycleControl().reference().equals(input.parentControl())
+                        ||!original.importedOrigin().recoveryRequest().equals(input.originalRecoveryRequest())
+                        ||!original.savedPair().equals(input.original().pair()))
+                    throw new IOException("committed imported recovery requires the same departed frontier, request and physical SAVE");
+                var originals=RootProcessAttach.readImportedLoadedOriginals(input.ownerDescriptor(),input.parentControl(),
+                        input.generationClaim(),original.savedPair(),basis.departed(),basis.requestId());
+                if(!originals.owner().generation().equals(basis.successor().game())
+                        ||!originals.owner().sessionId().equals(basis.successor().sessionId())
+                        ||!originals.transfer().proof().equals(basis.transferProof().reference())
+                        ||!originals.transfer().staged().reference().equals(basis.stagedLoad()))
+                    throw new IOException("committed imported recovery crossed its successor owner or original LOAD transfer");
+                same.verifyPin(basis.lifecycleControl());same.verifyPin(basis.transferProof());
+                input.requireCurrent(clock);
+                return new CommittedImportedStart(input,attachment,originals,original);
+            });
+            importedRestore=RootExitedSavedMaterialSource.reopenCommittedImportedRestore(start.readback(),actualCore,config,files,clock);
+            input.requireCurrent(clock);
+            committedImportedStart=start;
+            return start.originals();
+        }
+
+        synchronized CommittedImportedStage readCommittedImportedRecovery(ManagedGameSession attached,
+                RootProcessAttach.LoadedReplacement loaded,RootLoadedReplacementRecoveryInputs.ImportedRequest input)
+                throws IOException,InterruptedException {
+            var start=committedImportedStart;
+            if(start==null||start.input()!=input||closed||game!=null||loaded.attached()!=attached
+                    ||attached.mode()!=ManagedGameSession.Mode.ATTACHED||attached.launchPlan()!=plan
+                    ||!loaded.ownerDescriptor().equals(input.ownerDescriptor())||!loaded.parentControl().equals(input.parentControl())
+                    ||!loaded.generationClaim().equals(input.generationClaim())
+                    ||!loaded.previousOwner().equals(start.originals().departed())
+                    ||loaded.cachedAck().importedSaveTransfer().filter(start.originals().transfer()::equals).isEmpty())
+                throw new IOException("committed imported recovery crossed its prepared owner, Game or original transfer");
+            input.requireCurrent(clock);loaded.requireCurrent(input.deadline());
+            game=attached;lifecycle.adoptAttached(attached);
+            products.domains().lifecycle().bindManagedLifecycle(lifecycle,plan);
+            var source=new G2Source(config.machineId(),clock.instant().toString(),attached.nativeTransport().originalHello().gameSha256(),
+                    metadata.implementation(RootOrdinaryRuntimeAssembly.class));
+            var driver=core.adoptCommittedImported(attached,lifecycle,loaded,start.attachment(),source,config.retainedFrames(),input.deadline());
+            var catalog=catalogs.install(core,attached,source,core.planningReads(),clock,input.deadline());
+            return core.writer().locked(same->{
+                var original=catalog.prepareCommittedImported(same,driver,start.attachment(),input.deadline());
+                var domainOriginal=catalog.captureCommittedImportedDomainOriginal(same,original,importedRestore,input.deadline());
+                return new CommittedImportedStage(driver,catalog,original,domainOriginal);
+            });
         }
 
         private Running finishLoadedCheckpointRecovery(ManagedGameSession attached,RootProcessAttach.LoadedReplacement loaded,

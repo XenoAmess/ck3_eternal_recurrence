@@ -21,6 +21,7 @@ import org.xar.ck3.control.application.action.ActionCodec;
 import org.xar.ck3.control.application.checkpoint.NativeCheckpointFiles;
 import org.xar.ck3.control.application.checkpoint.SavedAttachmentSourceStore;
 import org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialStore;
+import org.xar.ck3.control.application.session.ContinuityBatchJournal.ImportedRestoreRebindReadback;
 import org.xar.ck3.control.application.session.OrdinaryCycleTransitions;
 import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
 import org.xar.ck3.control.continuity.ContinuityJson;
@@ -112,13 +113,26 @@ final class RootExitedSavedMaterialSource {
 
     static PreparedImportedRestore prepareImportedRestore(ExactRef originalRecoveryRequest,RootApplicationAssembly.Core currentCore,
             RootOrdinaryRuntimeConfiguration targetConfiguration,CheckpointFiles targetFiles,SessionIdentity owner,Clock clock)throws IOException {
+        return prepareImportedRestore(originalRecoveryRequest,currentCore,targetConfiguration,targetFiles,owner,clock,Optional.empty());
+    }
+
+    static PreparedImportedRestore reopenCommittedImportedRestore(ImportedRestoreRebindReadback committed,
+            RootApplicationAssembly.Core currentCore,RootOrdinaryRuntimeConfiguration targetConfiguration,
+            CheckpointFiles targetFiles,Clock clock)throws IOException {
+        return prepareImportedRestore(committed.importedOrigin().recoveryRequest(),currentCore,targetConfiguration,targetFiles,
+                committed.recoveryBasis().departed(),clock,Optional.of(committed));
+    }
+
+    private static PreparedImportedRestore prepareImportedRestore(ExactRef originalRecoveryRequest,RootApplicationAssembly.Core currentCore,
+            RootOrdinaryRuntimeConfiguration targetConfiguration,CheckpointFiles targetFiles,SessionIdentity owner,Clock clock,
+            Optional<ImportedRestoreRebindReadback> committed)throws IOException {
         var inputs=locateImported(originalRecoveryRequest,currentCore,owner);
         StrictJson.require(currentCore.configuration().ledger().snapshot().equals(targetConfiguration.stateDirectory().getParent()
                         .resolve("continuity/continuity.json")),"prepared imported SAVE crossed the actual target configuration");
         var prepared=RootOrdinaryRuntimeAssembly.prepareReadOnlySavedSource(inputs.configuration(),clock);
         try {
             var source=qualifyImported(inputs,prepared);
-            var data=readImportedEntry(currentCore,owner,source);
+            var data=readImportedEntry(currentCore,owner,source,committed);
             var stores=RootJavaSavedBootstrap.checkpointStores(currentCore,targetFiles,
                     targetConfiguration.stateDirectory().resolve("checkpoints/attachments"),prepared.plan().pipeName(),source.pair());
             return new PreparedImportedRestore(prepared,currentCore,source,data,stores,originalRecoveryRequest,targetConfiguration.stateDirectory());
@@ -158,6 +172,9 @@ final class RootExitedSavedMaterialSource {
         @Override public <T> T read(ContinuityStorePort.Session same,SavedAttachmentSourceStore.ImportedSourceWork<T> work)throws IOException {
             requireOpen(same);return source.withOriginalWriter(same,work);
         }
+        <T> T readArchive(ContinuityStorePort.Session same,RootJavaSavedBootstrap.ConfirmedSource.ArchivedRead<T> work)throws IOException {
+            requireOpen(same);return source.withOriginalArchive(same,work);
+        }
         private void requireOpen(ContinuityStorePort.Session same)throws IOException {
             if(closed)throw new IOException("imported physical SAVE source lease is closed");
             target.writer().requireSession(same);
@@ -169,10 +186,16 @@ final class RootExitedSavedMaterialSource {
 
     private static ImportedData readImportedEntry(RootApplicationAssembly.Core currentCore,SessionIdentity owner,
             RootJavaSavedBootstrap.ConfirmedSource source)throws IOException {
+        return readImportedEntry(currentCore,owner,source,Optional.empty());
+    }
+
+    private static ImportedData readImportedEntry(RootApplicationAssembly.Core currentCore,SessionIdentity owner,
+            RootJavaSavedBootstrap.ConfirmedSource source,Optional<ImportedRestoreRebindReadback> committed)throws IOException {
         var archive=currentCore.archive();
         return currentCore.writer().locked(same->archive.inHistoricalReadScope(same,
                 new ActionPorts.HistoricalReadLimits(16,32L*1024*1024,32),data->{
-            var original=RootJavaSavedBootstrap.existingSavedSource(source,same,archive);
+            var original=committed.isPresent()?committedSavedEntry(same,source,committed.orElseThrow())
+                    :RootJavaSavedBootstrap.existingSavedSource(source,same,archive);
             var entry=original.getValue();
             var marker=ContinuityJson.parseObject(entry.details(),MAX_METADATA);
             StrictJson.require(OrdinaryCycleTransitions.sessionFromJson(marker.get("session")).equals(owner)
@@ -203,6 +226,23 @@ final class RootExitedSavedMaterialSource {
             return new ImportedData(owner,source.physicalSaveOwner(),source.pair(),entry.eventPin(),source.confirmation().eventPin(),
                     source.physicalSavedDriver(),before,known,original.getKey().digest());
         }));
+    }
+
+    private static java.util.Map.Entry<WriterContracts.Head,WriterContracts.HistoricalTransition> committedSavedEntry(
+            ContinuityStorePort.Session same,RootJavaSavedBootstrap.ConfirmedSource source,ImportedRestoreRebindReadback original)
+            throws IOException {
+        var head=same.head();
+        var actual=same.readHistoricalTransition(original.attachment().eventPin());
+        var anchor=ContinuityJson.digest(original.attachment().after().toJson());
+        if(head.snapshotNeedsRecovery()||!head.indexRepairs().isEmpty()
+                ||!actual.eventIdentity().equals(original.attachment().eventIdentity())
+                ||!ContinuityJson.digest(actual.after().toJson()).equals(anchor)
+                ||!original.savedPair().equals(source.pair())
+                ||!original.importedOrigin().physicalConfirmation().equals(source.confirmation().eventPin()))
+            throw new IOException("committed imported source changed its original Saved entry, confirmation or pair");
+        if(!head.digest().equals(anchor))same.requireDomainImportContinuation(actual.sequence(),anchor);
+        var entry=same.readHistoricalTransition(original.importedOrigin().targetEntry());
+        return java.util.Map.entry(head,entry);
     }
 
     /** The actual saved Driver selects the existing explicit projection reader before replacement CREATE. */
