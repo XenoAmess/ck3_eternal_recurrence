@@ -66,13 +66,22 @@ public final class CanonicalFinanceStateSource implements FinanceStatePort.Sourc
         catch(IOException failure) { return new FinanceStatePort.Unavailable("original finance writer read unavailable: "+failure.getMessage()); }
     }
     @Override public FinanceStatePort.Read readUnderOriginalLock(Session session,PlanningRequest request) {
+        return read(session,request,catalog);
+    }
+    @Override public FinanceStatePort.Read readUnderOriginalLock(Session session,PlanningRequest request,
+            FinanceStatePort.Domain domain) {
+        Objects.requireNonNull(domain);
+        var selected = catalog.stream().filter(binding -> binding.decoder().domain() == domain).toList();
+        return read(session,request,selected);
+    }
+    private FinanceStatePort.Read read(Session session,PlanningRequest request,List<Binding> selected) {
         Objects.requireNonNull(session);Objects.requireNonNull(request);
         try {
             session.requireWriter(writerLock);var actual=session.head();ExactRef persisted=session.persistedHead();
             if(!actual.state().machineId().equals(request.before().machineId())||!frame.current(session,request).equals(request.before()))
                 return new FinanceStatePort.Unavailable("original finance writer/current Driver belongs to another Game/frame/machine");
             var bodyDocuments=new ArrayList<FinanceStatePort.Document>();
-            for(var binding:catalog) {
+            for(var binding:selected) {
                 var imported=DomainBodies.reference(actual.state(),binding.slot());var read=session.readDomain(binding.slot());
                 if(read instanceof DomainBodies.Unavailable)continue; // Missing is represented by absence, never CLEAR.
                 var available=(DomainBodies.Available)read;var reference=available.reference();

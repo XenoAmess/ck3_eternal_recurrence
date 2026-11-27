@@ -79,14 +79,12 @@ public final class MilitaryPeacetimeRuntime implements M5PeacetimePolicy.SourceC
         });}catch(IOException unavailable){throw new UncheckedIOException("actual M5 proposal sources unavailable: " + unavailable.getMessage(),unavailable);}
     }
     private PeacetimeAssembly.Ledgers ledgers(Session same,PlanningRequest request,Obj actualConstruction) {
-        var state=context.finance().collector().state(same,request);
-        if(!(state instanceof FinanceStatePort.Known known))throw new IllegalStateException("actual M5 finance bodies unavailable: "+state);
-        var gift=known.snapshot().ledger(FinanceStatePort.Domain.FACTION_GIFT).orElseThrow(()->new IllegalStateException("actual M5 faction body missing"));
+        var gift=context.finance().state().readLedger(same,request,FinanceStatePort.Domain.FACTION_GIFT);
         var documents=family.documents(request);
         if(!(documents instanceof FamilyPorts.KnownDocuments present))throw new IllegalStateException("actual M5 family bodies unavailable: "+documents);
         var familyBodies=present.documents();
-        StrictJson.require(known.snapshot().head().canonicalHead().equals(familyBodies.canonicalHead()),"M5 family and finance original bodies crossed their actual writer head");
-        return new PeacetimeAssembly.Ledgers(actualConstruction,gift.original(),familyBodies.family(),familyBodies.childDefault());
+        StrictJson.require(gift.canonicalHead().equals(familyBodies.canonicalHead()),"M5 family and finance original bodies crossed their actual writer head");
+        return new PeacetimeAssembly.Ledgers(actualConstruction,gift.ledger().original(),familyBodies.family(),familyBodies.childDefault());
     }
     private PeacetimeAssembly.Faction faction(Session same,PlanningRequest request) {
         return captureFaction(request,options.giftEnabled(),query->packet(same,query,request).result());

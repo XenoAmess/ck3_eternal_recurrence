@@ -62,6 +62,10 @@ public final class FinanceStatePort {
         default Read readUnderOriginalLock(Session borrowed, PlanningRequest request) {
             throw new IllegalStateException("finance original-writer borrowed Session reader is not installed");
         }
+        /** The original producer selects one owning body while holding the caller's same Session. */
+        default Read readUnderOriginalLock(Session borrowed, PlanningRequest request, Domain domain) {
+            throw new IllegalStateException("finance original-writer single-domain reader is not installed");
+        }
     }
     public record Ledger(Document document, Obj original, Pending pending) {
         public Ledger { Objects.requireNonNull(document); Objects.requireNonNull(original); Objects.requireNonNull(pending); }
@@ -69,6 +73,9 @@ public final class FinanceStatePort {
             Value pendingValue = original.get("pending");
             return pendingValue instanceof Obj value ? Optional.of(value) : Optional.empty();
         }
+    }
+    public record CurrentLedger(ExactRef canonicalHead, Ledger ledger) {
+        public CurrentLedger { Objects.requireNonNull(canonicalHead); Objects.requireNonNull(ledger); }
     }
     public static final class Snapshot {
         private final Head head;
@@ -103,6 +110,19 @@ public final class FinanceStatePort {
     }
     public Result read(Session borrowed, PlanningRequest request) {
         return decode(request, Objects.requireNonNull(original.readUnderOriginalLock(Objects.requireNonNull(borrowed), request)));
+    }
+    /** Returns one validated original ledger and its held Writer head for planning. */
+    public CurrentLedger readLedger(Session borrowed, PlanningRequest request, Domain domain) {
+        Objects.requireNonNull(domain);
+        var scoped = decode(request, Objects.requireNonNull(original.readUnderOriginalLock(
+                Objects.requireNonNull(borrowed), request, domain)));
+        if (scoped instanceof Missing missing) {
+            throw new IllegalStateException("actual finance ledger unavailable: " + missing.reason());
+        }
+        var snapshot = ((Known) scoped).snapshot();
+        var ledger = snapshot.ledger(domain).orElseThrow(() -> new IllegalStateException(
+                "actual " + domain + " ledger unavailable: " + snapshot.unavailableReason(domain).orElse("missing original body")));
+        return new CurrentLedger(snapshot.head().canonicalHead(), ledger);
     }
     private Result decode(PlanningRequest request, Read read) {
         if (read instanceof Unavailable unavailable) return new Missing(unavailable.reason());

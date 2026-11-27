@@ -101,13 +101,29 @@ final class FinanceStateBoundaryTest {
                 (proxy,method,args)->{throw new AssertionError("this boundary must not dereference or replace the writer");});
         var original=new FinanceStatePort(ignored->{throw new AssertionError("borrowed call reopened original transaction");},List.of());
         assertThrows(IllegalStateException.class,()->original.read(held,request));
+        assertThrows(IllegalStateException.class,()->original.readLedger(held,request,FinanceStatePort.Domain.FACTION_GIFT));
+        var gift=document(FinanceStatePort.Domain.FACTION_GIFT,
+                "{\"schema\":\"xar.ck3.faction_gift_pending_v1\",\"format_version\":1,\"pending\":null,\"resolved_request_outcomes\":{}}");
         FinanceStatePort.SourcePort actual=new FinanceStatePort.SourcePort() {
             @Override public FinanceStatePort.Read readUnderOriginalLock(PlanningRequest ignored) { throw new AssertionError("unexpected second writer transaction"); }
             @Override public FinanceStatePort.Read readUnderOriginalLock(Session borrowed,PlanningRequest current) {
                 assertSame(held,borrowed);assertEquals(request,current);return new FinanceStatePort.Head(current.before(),SOURCE_REF,List.of(),List.of(),Optional.empty());
             }
+            @Override public FinanceStatePort.Read readUnderOriginalLock(Session borrowed,PlanningRequest current,
+                    FinanceStatePort.Domain domain) {
+                assertSame(held,borrowed);assertEquals(request,current);
+                return domain==FinanceStatePort.Domain.FACTION_GIFT
+                        ?new FinanceStatePort.Head(current.before(),SOURCE_REF,List.of(gift),List.of(),Optional.empty())
+                        :new FinanceStatePort.Unavailable("controlled owning ledger absence");
+            }
         };
-        assertInstanceOf(FinanceStatePort.Known.class,new FinanceStatePort(actual,List.of()).read(held,request));
+        var state=new FinanceStatePort(actual,List.of(FinanceStatePort.giftReader(SOURCE_REF)));
+        assertInstanceOf(FinanceStatePort.Known.class,state.read(held,request));
+        var current=state.readLedger(held,request,FinanceStatePort.Domain.FACTION_GIFT);
+        assertEquals(SOURCE_REF,current.canonicalHead());
+        assertSame(gift,current.ledger().document());
+        var missing=assertThrows(IllegalStateException.class,()->state.readLedger(held,request,FinanceStatePort.Domain.FEAST));
+        assertTrue(missing.getMessage().contains("controlled owning ledger absence"));
     }
     @Test void strictActivityOwnsOneInputContractAndBorrowedBudgetCannotMintAnotherRoute() {
         var request=request();var called=new java.util.ArrayList<String>();
@@ -155,6 +171,9 @@ final class FinanceStateBoundaryTest {
                 session->{throw new AssertionError("wrong writer reached SAVE");},List.of());
         var result=assertInstanceOf(FinanceStatePort.Unavailable.class,source.readUnderOriginalLock(wrong,request));
         assertTrue(result.reason().contains("not the original writer"));
+        var scoped=assertInstanceOf(FinanceStatePort.Unavailable.class,
+                source.readUnderOriginalLock(wrong,request,FinanceStatePort.Domain.FACTION_GIFT));
+        assertEquals(result,scoped);
     }
     @Test void nativeCashRequestAddsOnlyItsActualNonreservedNativeRevisionField() {
         var request=request();var definitions=new FinanceReadContracts(query->new FinanceReadContracts.Registration(SOURCE_REF,new FinanceReadContracts.Permission(
