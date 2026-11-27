@@ -127,6 +127,11 @@ public final class ConstructionRuntimeInstaller {
         StrictJson.require(installed != null && originals != null, "actual construction installer is not installed");
         return originals.restore(context, same, actual);
     }
+    Optional<ConstructionDomainLifecycle.Publication> restoreCommitted(ContinuityStorePort.Session same,
+            RootCommittedOrdinaryRestoration original)throws IOException {
+        StrictJson.require(installed!=null&&originals!=null,"actual construction installer is not installed");
+        return originals.restoreCommitted(context,same,original);
+    }
     public ConstructionNextEpisodeReducer.Initialization initializeNext(ContinuityStorePort.Session same,
             RootApplicationAssembly.EpisodeDomainInitializationProof proof) throws IOException {
         StrictJson.require(installed != null && originals != null, "actual construction installer is not installed");

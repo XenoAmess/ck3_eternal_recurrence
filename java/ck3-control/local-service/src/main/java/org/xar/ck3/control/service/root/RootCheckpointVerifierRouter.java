@@ -32,6 +32,18 @@ public final class RootCheckpointVerifierRouter implements OrdinaryCycleTransiti
         entries.put(actualOwner,new Entry(actualVerifier,Optional.empty()));
     }
 
+    synchronized void registerCommittedImported(ContinuityStorePort.Session same,RootRuntimeContext context,
+            RootCommittedOrdinaryRestoration original,RootCheckpointVerifier actualVerifier)throws IOException {
+        writer.requireSession(same);requireVerifier(actualVerifier);original.requireCurrent(same,context);
+        var pair=original.pair();var owner=original.successor();
+        requirePairOwner(original.material().session(),pair);
+        if(!entries.isEmpty()||owner.equals(original.material().session())||!owner.machineId().equals(pair.frame().machineId())
+                ||!context.adopted().session().game().equals(owner.game())
+                ||!context.adopted().session().sessionId().equals(owner.sessionId()))
+            throw new IOException("committed imported checkpoint route requires its exact original pair and newly adopted successor");
+        entries.put(owner,new Entry(actualVerifier,Optional.of(pair)));
+    }
+
     /** Root registers a new verifier only after the private NEXT input producer proves its actual first SAVE and BASELINE. */
     public synchronized void registerNext(ContinuityStorePort.Session same,LifecycleEpisodeInputs.NextBaselineBinding actual,
             RootCheckpointVerifier actualVerifier)throws IOException {

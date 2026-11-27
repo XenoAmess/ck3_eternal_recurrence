@@ -760,6 +760,21 @@ public final class RootInstalledCatalog {
         synchronized(this) {restoredFeastOriginal=feastOriginal;}
         requireBaseDomainBodies(same);
     }
+
+    void adoptCommittedImported(ContinuityStorePort.Session same,RootCommittedOrdinaryRestoration original,
+            Instant deadline)throws IOException {
+        original.requireCurrent(same,context);
+        remaining.adoptCommittedImported(same,original,deadline);
+        requireBaseDomainBodies(same);
+        construction.restoreCommitted(same,original);
+        factory.sources().governance().openingTransitions().rebindCommittedImportedUnissued(same,original);
+        factory.sources().crossRun().attachContext(context);
+        factory.sources().crossRun().requireCommittedOrdinary(context,same,original);
+        var feastOriginal=factory.sources().governance().captureRestoredFeastOriginal(same,original);
+        synchronized(this) {restoredFeastOriginal=feastOriginal;}
+        requireBaseDomainBodies(same);
+        original.requireCurrent(same,context);
+    }
     private void requireFirstRestoredInitialization(ContinuityStorePort.Session same,
             org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterial actualMaterial)throws IOException {
         FirstRestoredInitialization initialized;

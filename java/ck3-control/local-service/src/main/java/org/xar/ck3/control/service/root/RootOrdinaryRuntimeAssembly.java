@@ -1112,12 +1112,20 @@ public final class RootOrdinaryRuntimeAssembly {
             var exit=decision.exitedLife().orElseThrow(()->new IOException("imported recovery requires its original exited Life decision"));
             var departed=new SessionIdentity(decision.machineId(),decision.game(),exit.ownerSessionId());
             var actualCore=openSavedSourceCore();
-            actualCore.writer().locked(same->{
+            var retainedAttachment=actualCore.writer().locked(same->{
                 storage.requireReadScope(same,files);
-                requireImportedLoadedPredecessor(same.head(),input,decision,departed);
+                var head=same.head();
+                if(head.state().sequence()>input.expectedPredecessorSequence()) {
+                    long sequence=Math.addExact(input.expectedPredecessorSequence(),1);
+                    var path=Path.of(same.persistedHead().path()).resolveSibling("ROOT-CONTINUITY-WINDOW-EVENTS")
+                            .resolve(String.format(java.util.Locale.ROOT,"%08d.json",sequence));
+                    return Optional.of(head.documents().stream().filter(pin->Path.of(pin.reference().path()).equals(path))
+                            .findFirst().orElseThrow(()->new IOException("original committed imported attachment is not in the canonical writer")));
+                }
+                requireImportedLoadedPredecessor(head,input,decision,departed);
                 same.requireHistoricalHead(decision.expectedHeadSequence(),decision.expectedHeadDigest());
                 var archive=actualCore.archive().withSession(same);
-                var terminal=ContinuityActionJournal.lookup(same.head().state(),decision.parentActionId(),archive)
+                var terminal=ContinuityActionJournal.lookup(head.state(),decision.parentActionId(),archive)
                         .orElseThrow(()->new IOException("missing canonical imported retirement"));
                 if(terminal.sequence()!=input.expectedPredecessorSequence()
                         ||!(terminal.state() instanceof ActionState.CompositeOperatorQuarantined)
@@ -1126,8 +1134,9 @@ public final class RootOrdinaryRuntimeAssembly {
                         ||!terminal.bodySha256().equals(decision.parentBodySha256())
                         ||!CompositeOperatorQuarantineObservation.load(terminal,archive).requestSource().equals(configured))
                     throw new IOException("imported loaded recovery requires its already-committed exact operator decision");
-                return null;
+                return Optional.<WriterContracts.Pin>empty();
             });
+            if(retainedAttachment.isPresent())return prepareCommittedImportedRecovery(input,retainedAttachment.orElseThrow(),actualCore);
             importedRestore=RootExitedSavedMaterialSource.prepareImportedRestore(input.originalRecoveryRequest(),
                     actualCore,config,files,departed,clock);
             var archived=importedRestore.imported();
@@ -1145,6 +1154,7 @@ public final class RootOrdinaryRuntimeAssembly {
         public synchronized Running openImportedLoadedCheckpointRecovery(ManagedGameSession attached,
                 RootProcessAttach.LoadedReplacement loaded,RootLoadedReplacementRecoveryInputs.ImportedRequest input)
                 throws IOException,InterruptedException {
+            if(committedImportedStart!=null)return finishCommittedImportedRecovery(attached,loaded,input);
             input.requireCurrent(clock);
             if(input!=importedLoadedRequest||closed||game!=null||loaded.attached()!=attached
                     ||!loaded.ownerDescriptor().equals(input.ownerDescriptor())||!loaded.parentControl().equals(input.parentControl())
@@ -1163,12 +1173,10 @@ public final class RootOrdinaryRuntimeAssembly {
         }
 
         /** Verifies the already committed attachment before opening a new READ connection to its successor. */
-        synchronized RootProcessAttach.ImportedLoadedOriginals prepareCommittedImportedRecovery(
-                RootLoadedReplacementRecoveryInputs.ImportedRequest input,WriterContracts.Pin attachment)throws IOException {
+        private RootProcessAttach.ImportedLoadedOriginals prepareCommittedImportedRecovery(
+                RootLoadedReplacementRecoveryInputs.ImportedRequest input,WriterContracts.Pin attachment,
+                RootApplicationAssembly.Core actualCore)throws IOException {
             input.requireCurrent(clock);
-            if(sourceOnly||closed||entered||core!=null||game!=null||!config.machineId().equals(input.machineId()))
-                throw new IOException("committed imported recovery requires the unused writer on its original machine");
-            var actualCore=openSavedSourceCore();
             var start=actualCore.writer().locked(same->{
                 storage.requireReadScope(same,files);
                 var original=actualCore.readCommittedImportedStart(same,attachment,cyclePolicy);
@@ -1197,6 +1205,28 @@ public final class RootOrdinaryRuntimeAssembly {
             return start.originals();
         }
 
+        private Running finishCommittedImportedRecovery(ManagedGameSession attached,RootProcessAttach.LoadedReplacement loaded,
+                RootLoadedReplacementRecoveryInputs.ImportedRequest input)throws IOException,InterruptedException {
+            var configuredDecision=config.decisionProvider().orElseThrow(()->new IOException("committed imported recovery requires its explicit decision provider"));
+            if(!configuredDecision.codexFile())throw new IOException("committed imported recovery requires the configured direct Codex file provider");
+            var stage=readCommittedImportedRecovery(attached,loaded,input);
+            var history=core.writer().locked(same->core.readCommittedImportedControllerHistory(same,stage.original().attachment(),cyclePolicy));
+            var base=sessionConfiguration(input.deadline());var paths=base.checkpoints();var pair=stage.original().pair();
+            var checkpoints=new RootStartupConfiguration.CheckpointPaths(paths.driverCheckpoint(),paths.checkpointEvidence(),paths.attachmentEvidence(),
+                    pair.lineageId(),importedCheckpointOutput(attached.launchPlan(),pair));
+            var configuration=new RootApplicationAssembly.FreshSessionConfiguration(base.authorityId(),base.policy(),base.freshness(),
+                    checkpoints,base.cyclePolicy(),input.deadline());
+            var selector=new RootOnlineDecisionSelector(configuredDecision,clock,raw->{
+                var writer=core.writer();var active=writer.activeSession();
+                if(active.isPresent())return core.archive().withSession(active.orElseThrow()).preserveMaterial(raw);
+                return writer.locked(same->core.archive().withSession(same).preserveMaterial(raw));
+            });
+            core.bindDecisionSelector(selector);
+            var session=core.finishCommittedImported(stage,configuration,services(stage.driver().source()),history);
+            session.install(ordinaryHost,input.deadline());
+            return new Running(this,session,history.batchPrefix(),history.nextBatchSequence());
+        }
+
         synchronized CommittedImportedStage readCommittedImportedRecovery(ManagedGameSession attached,
                 RootProcessAttach.LoadedReplacement loaded,RootLoadedReplacementRecoveryInputs.ImportedRequest input)
                 throws IOException,InterruptedException {
@@ -1209,6 +1239,8 @@ public final class RootOrdinaryRuntimeAssembly {
                     ||loaded.cachedAck().importedSaveTransfer().filter(start.originals().transfer()::equals).isEmpty())
                 throw new IOException("committed imported recovery crossed its prepared owner, Game or original transfer");
             input.requireCurrent(clock);loaded.requireCurrent(input.deadline());
+            var operator=config.operatorQuarantine().orElseThrow(()->new IOException("committed imported recovery requires its original operator source"));
+            RootOperatorQuarantineRuntime.installLoaded(core,loaded,operator,clock,input.deadline());
             game=attached;lifecycle.adoptAttached(attached);
             products.domains().lifecycle().bindManagedLifecycle(lifecycle,plan);
             var source=new G2Source(config.machineId(),clock.instant().toString(),attached.nativeTransport().originalHello().gameSha256(),

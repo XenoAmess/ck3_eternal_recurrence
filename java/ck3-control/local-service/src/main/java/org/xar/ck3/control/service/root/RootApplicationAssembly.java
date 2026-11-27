@@ -1826,8 +1826,16 @@ public final class RootApplicationAssembly {
 
         ContinuityBatchJournal.ImportedRestoreRebindReadback readCommittedImportedStart(ContinuityStorePort.Session same,
                 WriterContracts.Pin attachment,OriginalWindowReducer.Policy policy)throws IOException {
-            var cycles=new OrdinaryCycleTransitions(archive,semanticVerifier,checkpointVerifiers,policy,writer::requireSession);
-            return new ContinuityBatchJournal(writer,cycles).readImportedRestoreRebindAcrossDomainImports(same,attachment);
+            return committedImportedJournal(policy).readImportedRestoreRebindAcrossDomainImports(same,attachment);
+        }
+
+        ContinuityBatchJournal.CommittedImportedControllerHistory readCommittedImportedControllerHistory(ContinuityStorePort.Session same,
+                WriterContracts.Pin attachment,OriginalWindowReducer.Policy policy)throws IOException {
+            return committedImportedJournal(policy).readCommittedImportedControllerHistory(same,attachment);
+        }
+
+        private ContinuityBatchJournal committedImportedJournal(OriginalWindowReducer.Policy policy) {
+            return new ContinuityBatchJournal(writer,new OrdinaryCycleTransitions(archive,semanticVerifier,checkpointVerifiers,policy,writer::requireSession));
         }
 
         synchronized DriverBootstrap.Adopted adoptCommittedImported(ManagedGameSession game,
@@ -2842,7 +2850,32 @@ public final class RootApplicationAssembly {
             }
         }
 
-        private RootApplicationSession finishObserved(RootInstalledCatalog installed,DriverBootstrap.Adopted driver,FreshSessionConfiguration configuration,FreshSessionServices services,Optional<org.xar.ck3.control.application.session.ContinuityBatchJournal.CleanRestartAdmission> admissionOpt)throws IOException,InterruptedException{
+        private RootApplicationSession finishObserved(RootInstalledCatalog installed,DriverBootstrap.Adopted driver,FreshSessionConfiguration configuration,FreshSessionServices services,Optional<ContinuityBatchJournal.CleanRestartAdmission> admissionOpt)throws IOException,InterruptedException{
+            return finishObserved(installed,driver,configuration,services,admissionOpt,Optional.empty());
+        }
+
+        private record CommittedImportedFinish(RootSavedOrdinaryReopen.Committed opening,
+                RootCommittedOrdinaryRestoration original,ContinuityBatchJournal.CommittedImportedControllerHistory history) { }
+
+        RootApplicationSession finishCommittedImported(RootOrdinaryRuntimeAssembly.Prepared.CommittedImportedStage actual,
+                FreshSessionConfiguration configuration,FreshSessionServices services,ContinuityBatchJournal.CommittedImportedControllerHistory history)
+                throws IOException,InterruptedException {
+            var driver=actual.driver();var catalog=actual.catalog();var original=actual.domainOriginal();
+            driver.requireCommittedImported(original.attachment());
+            StrictJson.require(catalog.context().core()==this&&catalog.context().adopted()==driver
+                    &&actual.original().attachment().equals(original.attachment())&&actual.original().pair().equals(original.pair())
+                    &&configuration.checkpoints().lineageId().equals(original.pair().lineageId())
+                    &&configuration.checkpoints().save().equals(RootOrdinaryRuntimeAssembly.importedCheckpointOutput(
+                            catalog.context().game().launchPlan(),original.pair())),
+                    "committed imported finish requires its actual catalog, attachment lineage and SAVE output");
+            return finishObserved(catalog,driver,configuration,services,Optional.empty(),Optional.of(
+                    new CommittedImportedFinish(actual.original(),original,Objects.requireNonNull(history))));
+        }
+
+        private RootApplicationSession finishObserved(RootInstalledCatalog installed,DriverBootstrap.Adopted driver,
+                FreshSessionConfiguration configuration,FreshSessionServices services,
+                Optional<ContinuityBatchJournal.CleanRestartAdmission> admissionOpt,Optional<CommittedImportedFinish> committed)
+                throws IOException,InterruptedException {
             var context=installed.context();
             var game=context.game();
             var source=context.source();
@@ -2850,7 +2883,10 @@ public final class RootApplicationAssembly {
             var originals=context.originals();
             var frameLoader=context.frameLoader();
             var remaining=installed.remainingDomains();
-            var policy=configuration.policy();
+            var configuredPolicy=configuration.policy();
+            var policy=committed.map(recovery->new NativeReadiness.Policy(configuredPolicy.coldCheckpoint(),configuredPolicy.allowTerminal(),
+                    Optional.of(recovery.original().pair().frame().frame().identity().player()),configuredPolicy.stableFor(),
+                    configuredPolicy.requirePostReadyPump())).orElse(configuredPolicy);
             var freshness=configuration.freshness();
             var files=services.files();
             var checkpoints=configuration.checkpoints();
@@ -2868,6 +2904,7 @@ public final class RootApplicationAssembly {
             var staged=unresolvedSameGameData==null&&reservedLifeRecovery==null
                     ?stage(driver,game,sources,policy,freshness,files,checkpoints.driverCheckpoint(),checkpoints.checkpointEvidence(),checkpoints.attachmentEvidence(),remaining.lifecycle().seedAdoption(),checkpoints.lineageId(),checkpoints.save())
                     :stageReadonly(driver,game,sources,policy,freshness,files,checkpoints.driverCheckpoint(),checkpoints.checkpointEvidence(),checkpoints.attachmentEvidence(),remaining.lifecycle().seedAdoption(),checkpoints.lineageId(),checkpoints.save());
+            committed.ifPresent(recovery->staged.committedImported=recovery.original());
             installed.bindSave(staged);
 
             var readiness=new RootRuntimeReadiness(this,policy,freshness,clock);
@@ -2889,8 +2926,28 @@ public final class RootApplicationAssembly {
                 derived.requireOwner(context,installed.bindings());
                 staged.prepareDispatcher(authorityId,installed.bindings(),installed.frontend().authority(),physical,reconciliation,remaining.lifecycle().closeAdmission(),derived.admission(),derived.replay(),runtime.capabilities(),installed.readHistory(),installed.pendingBindings(),installed.requiredPending(),remaining.lifeReplay());
                 var actualOffline=offline.install(installed,remaining.events().eventSources());actualOffline.requireContext(installed);
-                var root=staged.finish(authorityId,installed.bindings(),installed.frontend().authority(),physical,reconciliation,remaining.lifecycle().closeAdmission(),remaining.lifecycle().terminalDecisions(),remaining.lifecycle(),derived.admission(),derived.replay(),runtime.capabilities(),installed.readHistory(),remaining.lifeReplay(),runtime.planningInputs(),installed.pipeline(),installed.pendingBindings(),installed.requiredPending(),cyclePolicy,actualOffline.port(),sessionClock,confirmedSavedPair(),confirmedSavedEntry==null&&retainedSavedEntry==null?0:confirmedSavedDays(),installed.completion(),episodes,savedCapture,restoreMaterials,restorePublication);
-                if(admissionOpt.isPresent()){
+                var savedPair=committed.map(recovery->recovery.original().pair()).or(this::confirmedSavedPair);
+                long savedDays=committed.map(recovery->recovery.history().committedSavedDays())
+                        .orElseGet(()->confirmedSavedEntry==null&&retainedSavedEntry==null?0:confirmedSavedDays());
+                var root=staged.finish(authorityId,installed.bindings(),installed.frontend().authority(),physical,reconciliation,remaining.lifecycle().closeAdmission(),remaining.lifecycle().terminalDecisions(),remaining.lifecycle(),derived.admission(),derived.replay(),runtime.capabilities(),installed.readHistory(),remaining.lifeReplay(),runtime.planningInputs(),installed.pipeline(),installed.pendingBindings(),installed.requiredPending(),cyclePolicy,actualOffline.port(),sessionClock,savedPair,savedDays,installed.completion(),episodes,savedCapture,restoreMaterials,restorePublication);
+                if(committed.isPresent()) {
+                    var recovery=committed.orElseThrow();var original=recovery.original();
+                    installed.adoptCommittedImported(same,original,deadline);
+                    var current=physical.withSnapshot(same,deadline,lease->{
+                        lease.assertCurrent(same);
+                        return lease.ordinary().orElseThrow(()->new IOException("committed imported planning requires its current paused living frame"));
+                    });
+                    installed.initializePersistentPlanning(same,current);
+                    var semantic=recovery.opening().captureSemantic(same,deadline);
+                    root.cycles().bindCommittedImportedRebindAuthority((held,attachment,fresh)->{
+                        original.requireCurrent(held,context);
+                        StrictJson.require(held==same&&fresh==semantic&&attachment.attachment().eventPin().equals(original.attachment())
+                                &&original.successor().equals(root.identity())&&context.adopted()==driver,
+                                "committed imported cycle requires its current installed Driver and actual successor SEM");
+                    });
+                    root.controllerForPublication().retainConsumedSavedBatches(root.identity(),List.copyOf(recovery.history().usedBatches()));
+                    root.batchJournal().rebindCommittedImported(same,original.attachment(),semantic);
+                } else if(admissionOpt.isPresent()){
                     try { root.restoreCleanRestart(same,admissionOpt.orElseThrow()); }
                     catch(InterruptedException interrupted) {
                         Thread.currentThread().interrupt();
@@ -3861,6 +3918,7 @@ public final class RootApplicationAssembly {
         private final Path attachmentEvidence;
         private final Restoration restoration;
         private ColdRestoration coldRestoration;
+        private RootCommittedOrdinaryRestoration committedImported;
         private final RootPlanningReads reads;
         private final RootKnownReadObserver knownReads;
         private org.xar.ck3.control.application.lifecycle.LifecycleComposites lifecycleDomain;
@@ -4116,7 +4174,11 @@ public final class RootApplicationAssembly {
                     cycles.bindTerminalFrameLoader(core.frames);
                 }
                 prepareCheckpointStores(cycles,savedCaptureFactory);sourceStore=ordinarySourceStore;
-                if(!restoring&&!next&&!cold) {
+                if(committedImported!=null) {
+                    StrictJson.require(!restoring&&!next&&!cold&&baseline.filter(committedImported.pair()::equals).isPresent()
+                            &&committedImported.successor().equals(identity),"committed imported checkpoint route changed its actual successor or physical pair");
+                    core.checkpointVerifiers.registerCommittedImported(core.writer.borrowedSession(),historyCatalog.context(),committedImported,savedVerifier);
+                } else if(!restoring&&!next&&!cold) {
                     var active=core.writer.activeSession();
                     if(active.isPresent())core.checkpointVerifiers.registerInitial(active.orElseThrow(),identity,savedVerifier);
                     else core.writer.locked(same->{core.checkpointVerifiers.registerInitial(same,identity,savedVerifier);return null;});
