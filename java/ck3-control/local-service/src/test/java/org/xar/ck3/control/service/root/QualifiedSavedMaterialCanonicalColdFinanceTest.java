@@ -5,10 +5,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Clock;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -38,6 +41,8 @@ import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 public final class QualifiedSavedMaterialCanonicalColdFinanceTest {
     @TempDir Path temporary;
     private static final String LINEAGE="software-save-lineage";
+    private static final Duration V2_READINESS_VALIDITY = Duration.ofMinutes(1);
+    private static final Duration V2_FIXTURE_BUDGET = Duration.ofMinutes(2);
     private record CaptureSample(String headDigest,SavedCheckpointMaterialEvidence evidence) { }
     /** Construction-order edge only; every successful operation still delegates to the actual SeedStore. */
     private static final class DeferredSeeds implements CheckpointService.SeedAdoptionPort,LifecycleComposites.ActualSeeds {
@@ -87,7 +92,8 @@ public final class QualifiedSavedMaterialCanonicalColdFinanceTest {
         final AtomicReference<IOException> retainedReconciliationFailure=new AtomicReference<>();
         Support(Path root,boolean loseAck)throws Exception {this(root,loseAck,false);}
         Support(Path root,boolean loseAck,boolean legacy)throws Exception {
-            this(root,loseAck,Clock.systemUTC(),Optional.empty(),Optional.empty(),List.of(),java.time.Duration.ofSeconds(8),legacy);
+            this(root,loseAck,Clock.systemUTC(),Optional.empty(),Optional.empty(),List.of(),
+                    legacy ? Duration.ofSeconds(8) : V2_FIXTURE_BUDGET,legacy);
         }
         Support(Path root,boolean loseAck,Clock serviceClock)throws Exception {
             this(root,loseAck,serviceClock,Optional.empty(),Optional.empty());
@@ -133,7 +139,9 @@ public final class QualifiedSavedMaterialCanonicalColdFinanceTest {
                     request->{throw new AssertionError("no extra software READ was installed");},
                     java.util.Optional.of("1.20.0.4"),
                     java.util.Set.of("game.query.fresh-full-state.v1"));
-            actual=new ActionWriterIntegrationFixture(root,loseAck,readScenario,List.copyOf(actions));
+            actual=legacy
+                    ?new ActionWriterIntegrationFixture(root,loseAck,readScenario,List.copyOf(actions))
+                    :ActionWriterIntegrationFixture.withCanonicalOrdinarySeed(root,loseAck,readScenario,actions,V2_READINESS_VALIDITY);
             actualRef.set(actual);owner=actual.observationIdentity();
             System.out.println("M5_FINANCE_PHASE " + Instant.now() + " PHASE: AfterActionWriterFixtureConstruction");System.out.flush();
             actual.configureSoftwareFreshRead179("success");
@@ -201,7 +209,7 @@ public final class QualifiedSavedMaterialCanonicalColdFinanceTest {
             for(String kind:SavedAttachmentAuthority.kinds())actual.bindAdditionalTransitionAuthority(kind,attachments);
             batch=new ContinuityBatchJournal(actual.writer,cycles);
             System.out.println("M5_FINANCE_PHASE " + Instant.now() + " PHASE: BeforeReadyAndGraphSetup");System.out.flush();
-            Ready before=actual.ready();proof=batch.cycleProof(owner,before.semanticEvidence().orElseThrow()).orElseThrow();
+            Ready before=legacy ? actual.ready() : actual.ready(V2_READINESS_VALIDITY);proof=batch.cycleProof(owner,before.semanticEvidence().orElseThrow()).orElseThrow();
             byte[] original=Files.readAllBytes(Path.of(proof.semantic().originalNativePacket().path()));
             var initial=(NativeWire.Snapshot)NativeWire.decode(original);var post=StrictJson.object();post.put("type","state_snapshot");post.put("protocol_version",1);
             post.put("snapshot_id","fixture-save-snapshot-2");post.put("revision",initial.revision().add(java.math.BigInteger.ONE));
@@ -368,9 +376,32 @@ public final class QualifiedSavedMaterialCanonicalColdFinanceTest {
                 Path manifest=Path.of(witness.reference().path());
                 assertEquals(witness,support.files.observe(manifest).orElseThrow());
                 byte[] originalBytes=support.files.read(witness,1024*1024);
-                var replacement=support.files.replace(manifest,originalBytes);
-                assertEquals(witness.reference(),replacement.reference());
-                assertNotEquals(witness.identity(),replacement.identity());
+                var archive=support.actual.archive.withSession(same);
+                var missingReader=assertThrows(IOException.class,()->CommittedImportedSavedMaterialAssertions.verify(
+                        support.cycles,same,edge,support.owner,pair,archive));
+                assertEquals("settled imported SAVE requires its installed retained material reader",missingReader.getMessage());
+
+                var retained=support.freshSources();
+                var replaceWitness=new AtomicBoolean();
+                var retainedReads=new AtomicInteger();
+                support.cycles.bindCommittedImportedSavedMaterialReader((held,evidence)->{
+                    assertSame(same,held);
+                    assertEquals(canonical,evidence);
+                    retainedReads.incrementAndGet();
+                    if(replaceWitness.get()) {
+                        var replacement=support.files.replace(manifest,originalBytes);
+                        assertEquals(witness.reference(),replacement.reference());
+                        assertNotEquals(witness.identity(),replacement.identity());
+                    }
+                    return retained.loadRetainedOriginal(held,evidence.material(),evidence.pair());
+                });
+                CommittedImportedSavedMaterialAssertions.verify(support.cycles,same,edge,support.owner,pair,archive);
+                assertEquals(1,retainedReads.get());
+                assertEquals(headDigest,same.head().digest());
+                replaceWitness.set(true);
+                assertThrows(IOException.class,()->CommittedImportedSavedMaterialAssertions.verify(
+                        support.cycles,same,edge,support.owner,pair,archive));
+                assertEquals(2,retainedReads.get());
                 // A DATA decoder still accepts the original DATA; the actual consumer checks custody.
                 assertEquals(canonical,SavedCheckpointMaterialEvidence.decode(state.get(SavedCheckpointMaterialEvidence.FIELD)));
                 var replacedCold=support.freshSources();

@@ -26,6 +26,7 @@ import static org.xar.ck3.control.application.action.council.CouncilContinuation
 import org.xar.ck3.control.application.driver.*;
 import org.xar.ck3.control.application.effects.*;
 import org.xar.ck3.control.application.readiness.*;
+import org.xar.ck3.control.application.session.OrdinaryCycleTransitions;
 import org.xar.ck3.control.application.session.SessionPorts;
 import org.xar.ck3.control.continuity.ContinuityJson;
 import org.xar.ck3.control.continuity.ContinuityState;
@@ -374,6 +375,12 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
         this(root,loseAck,council,compositeMode,scenario,actionScenarios,compositeScenarios,actualDomains,receivedClock,
                 decoration,readinessValidity,maximumArchiveBytes,Optional.empty());
     }
+    public static ActionWriterIntegrationFixture withCanonicalOrdinarySeed(Path root, boolean loseAck,
+            SoftwareReadScenario reads, List<SoftwareActionScenario> actions, Duration readinessValidity) throws IOException {
+        return new ActionWriterIntegrationFixture(root, loseAck, false, false, Optional.of(reads), List.copyOf(actions),
+                List.of(), ignored -> List.of(), Clock.systemUTC(), SoftwareReadGuardContext::guard, readinessValidity,
+                16L * 1024 * 1024, Optional.empty(), true);
+    }
     /** Explicit original software Driver producer; never changes an emitted packet, receipt or persisted Driver. */
     public static ActionWriterIntegrationFixture withInitialOrdinaryLifecycle(Path root,boolean loseAck,SoftwareReadScenario reads,
             List<SoftwareActionScenario> actions,org.xar.ck3.control.application.action.RawJson lifecycle)throws IOException {
@@ -385,6 +392,15 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
             java.util.function.Function<ExactRef,List<DomainBodies.Registration>> actualDomains,Clock receivedClock,
             SoftwareReadGuardDecoration decoration,Duration readinessValidity,long maximumArchiveBytes,
             Optional<org.xar.ck3.control.application.action.RawJson> initialLifecycle) throws IOException {
+        this(root, loseAck, council, compositeMode, scenario, actionScenarios, compositeScenarios, actualDomains,
+                receivedClock, decoration, readinessValidity, maximumArchiveBytes, initialLifecycle, false);
+    }
+    private ActionWriterIntegrationFixture(Path root, boolean loseAck, boolean council, boolean compositeMode,
+            Optional<SoftwareReadScenario> scenario, List<SoftwareActionScenario> actionScenarios,
+            List<SoftwareCompositeScenario> compositeScenarios,
+            java.util.function.Function<ExactRef,List<DomainBodies.Registration>> actualDomains, Clock receivedClock,
+            SoftwareReadGuardDecoration decoration, Duration readinessValidity, long maximumArchiveBytes,
+            Optional<org.xar.ck3.control.application.action.RawJson> initialLifecycle, boolean canonicalOrdinarySeed) throws IOException {
         java.util.Objects.requireNonNull(initialLifecycle);
         StrictJson.require(maximumArchiveBytes>0&&maximumArchiveBytes<=64L*1024*1024,"finite explicit software archive budget required");
         this.maximumArchiveBytes=maximumArchiveBytes;
@@ -458,6 +474,14 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
         Set<String> bridgeCapabilities = Set.copyOf(bridgeCapabilityBuilder);
         byte[] initialPacket = initialSnapshotPacket();
         var initial = seed(originalDriver);
+        if (canonicalOrdinarySeed) {
+            initial.set("game_binding", GAME.toJson());
+            var cycle = initial.putObject(WriterContracts.ORDINARY_CYCLE_FIELD)
+                    .put("schema", "xar.java-ordinary-cycle-state/v2").put("basis_cycles", 0).put("completed_cycles", 0)
+                    .putNull("head").putNull("pending_receipt").putNull("retained_legacy_pending_digest")
+                    .putNull("origin_frame").putNull("episode_origin");
+            cycle.set("session", OrdinaryCycleTransitions.sessionToJson(identity));
+        }
         if (scenario.filter(SoftwareReadScenario::initializeBaseline).isPresent()
                 || actionScenarios.stream().anyMatch(SoftwareActionScenario::initializeBaseline)) {
             Path baseline = root.resolve("original-initial-native-packet.bin");
@@ -852,7 +876,10 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
         });
     }
     public SessionPorts.Ready ready() throws IOException, InterruptedException {
-        SessionPorts.Observation actual = collector.observe(identity, Instant.now().plusSeconds(20));
+        return ready(Duration.ofSeconds(20));
+    }
+    public SessionPorts.Ready ready(Duration budget) throws IOException, InterruptedException {
+        SessionPorts.Observation actual = collector.observe(identity, Instant.now().plus(budget));
         return assertInstanceOf(SessionPorts.Ready.class, actual, () -> "actual readiness: " + actual + "; native receive: " + transport.diagnostics().production());
     }
     public SessionPorts.SessionIdentity observationIdentity() { return identity; }
