@@ -1582,10 +1582,20 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
             ObjectNode saved = StrictJson.object(whole.get(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD), Set.of("pair", "state"));
             CycleState survived = parseState(saved.get("state"));
             if (survived.session().equals(owner) && ContinuityJson.digest(survived.toJson()).equals(proof.cycleStateDigest())) {
-                selected = survived; savedBranch = true;
                 CheckpointPair pair = CheckpointPairCodec.decode(ContinuityJson.canonical(saved.get("pair")));
-                requireSavedContinuation(proof.frame(), pair.frame());
-                StrictJson.require(selected.completedCycles() == head.state().settledCycles(), "saved cycle proof is not the current surviving saved frontier");
+                boolean currentProof = current.session().equals(owner) && ContinuityJson.digest(current.toJson()).equals(proof.cycleStateDigest());
+                if (currentProof) {
+                    // The same cycle can support a later SAVE. Its current proof follows the previous pair.
+                    if (head.state().status() != ContinuityState.Status.REPAIR_REQUIRED) {
+                        requireSavedContinuation(pair.frame(), proof.frame());
+                        StrictJson.require(proof.frame().frame().revision().compareTo(pair.frame().frame().revision()) >= 0,
+                                "current SAVE proof regressed its last confirmed public revision");
+                    }
+                } else {
+                    selected = survived; savedBranch = true;
+                    requireSavedContinuation(proof.frame(), pair.frame());
+                    StrictJson.require(selected.completedCycles() == head.state().settledCycles(), "saved cycle proof is not the current surviving saved frontier");
+                }
             }
         }
         if (!savedBranch) requireRetainedProofRole(session, head.state(), owner);
