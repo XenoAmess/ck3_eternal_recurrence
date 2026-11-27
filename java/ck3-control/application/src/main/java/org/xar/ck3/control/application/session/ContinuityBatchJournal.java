@@ -4291,12 +4291,17 @@ public final class ContinuityBatchJournal implements BatchJournal {
     public static final class PreparedExternalSave {
         private final ExternalSaveOrigin origin;
         private final SettledSameGameData history;
-        private final Optional<ExternalSaveReadback> readback;
+        private final Optional<String> recordedDigest;
+        private final List<String> consumedBatches;
+        private final Optional<String> openBatch;
 
-        private PreparedExternalSave(ExternalSaveOrigin origin, SettledSameGameData history, Optional<ExternalSaveReadback> readback) {
+        private PreparedExternalSave(ExternalSaveOrigin origin, SettledSameGameData history, Optional<String> recordedDigest,
+                List<String> consumedBatches, Optional<String> openBatch) {
             this.origin = origin;
             this.history = history;
-            this.readback = readback;
+            this.recordedDigest = recordedDigest;
+            this.consumedBatches = List.copyOf(consumedBatches);
+            this.openBatch = openBatch;
         }
 
         public ExternalSaveOrigin origin() { return origin; }
@@ -4305,14 +4310,12 @@ public final class ContinuityBatchJournal implements BatchJournal {
         public ControllerRestartState restart(ExactRef head) {
             var old = history.controller();
             var used = new java.util.LinkedHashSet<>(old.usedBatches());
-            readback.ifPresent(actual -> used.addAll(actual.consumedBatches()));
+            used.addAll(consumedBatches);
             return new ControllerRestartState(origin.successor(), old.batchPrefix(), used.size(), used,
                     old.unsavedGameplayActions(), old.savedPair(), Optional.of(head), old.eligibleSinceSave(),
                     true, false, false, old.totalCommittedDays(), old.completedAnalysisIds(), old.stopRequested());
         }
     }
-
-    private record ExternalSaveReadback(long sequence, String digest, List<String> consumedBatches, Optional<String> openBatch) { }
 
     /** Reads the original named REBIND and ordered action-free batch metadata under the current writer. */
     public PreparedExternalSave readRecordedExternalSave(ContinuityStorePort.Session same, SessionIdentity departed,
@@ -4338,7 +4341,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
         var pins = canonicalEventPins(same, head).tailMap(origin.predecessorSequence(), false);
         StrictJson.require(!pins.isEmpty() && pins.size() == state.sequence() - origin.predecessorSequence(),
                 "named-save re-entry requires the exact canonical suffix");
-        var metadata = same.withHistoricalTransitions(List.copyOf(pins.values()), edges -> {
+        var prepared = same.withHistoricalTransitions(List.copyOf(pins.values()), edges -> {
             var rebind = edges.getFirst();
             var details = ContinuityJson.parseObject(rebind.details(), ContinuityJson.DOCUMENT_MAX_BYTES);
             StrictJson.require(OrdinaryCycleTransitions.CYCLE_KIND.equals(rebind.kind())
@@ -4383,10 +4386,10 @@ public final class ContinuityBatchJournal implements BatchJournal {
             StrictJson.require(last.sequence() == state.sequence()
                     && ContinuityJson.digest(last.after().toJson()).equals(head.digest()),
                     "named-save re-entry history does not end at the held head");
-            return new ExternalSaveReadback(state.sequence(), head.digest(), List.copyOf(consumed), Optional.ofNullable(open));
+            return new PreparedExternalSave(origin, old, Optional.of(head.digest()), consumed, Optional.ofNullable(open));
         });
         StrictJson.require(head.digest().equals(same.head().digest()), "named-save re-entry changed its held writer");
-        return new PreparedExternalSave(origin, old, Optional.of(metadata));
+        return prepared;
     }
 
     private void requireRecordedExternalOpening(ContinuityStorePort.Session same, WriterContracts.HistoricalTransition edge,
@@ -4439,7 +4442,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     "external save observation requires the actual committed administrative terminal");
             return null;
         });
-        return new PreparedExternalSave(origin, history, Optional.empty());
+        return new PreparedExternalSave(origin, history, Optional.empty(), List.of(), Optional.empty());
     }
 
     public static final class ExternalSaveRebind {
@@ -4469,15 +4472,13 @@ public final class ContinuityBatchJournal implements BatchJournal {
             SemanticEvidence opening) throws IOException {
         store.requireSession(same);
         var origin = prepared.origin();
-        if (prepared.readback.isPresent()) {
-            var readback = prepared.readback.orElseThrow();
-            var head = same.head();
-            StrictJson.require(head.state().sequence() == readback.sequence() && head.digest().equals(readback.digest()),
+        if (prepared.recordedDigest.isPresent()) {
+            StrictJson.require(same.head().digest().equals(prepared.recordedDigest.orElseThrow()),
                     "named-save re-entry lost its exact zero-action head");
             origin.requireSemantic(opening.frame());
             transitions.validateOrdinarySubmission(same, origin.successor(), opening);
-            if (readback.openBatch().isPresent()) {
-                commit(same, new JournalInput(origin.successor(), readback.openBatch().orElseThrow(), JournalKind.BATCH_DEFERRED,
+            if (prepared.openBatch.isPresent()) {
+                commit(same, new JournalInput(origin.successor(), prepared.openBatch.orElseThrow(), JournalKind.BATCH_DEFERRED,
                         Optional.empty(), Optional.empty(), Optional.empty(), List.of()));
             }
         } else {
