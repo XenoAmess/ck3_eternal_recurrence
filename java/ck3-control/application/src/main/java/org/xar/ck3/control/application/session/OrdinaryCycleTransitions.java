@@ -1111,6 +1111,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                 StrictJson.require(find(state, receiptRef).isEmpty(), "a canonical AUTO already completed in this cycle branch cannot be counted again");
                 if (!matchesSettledActionContinuation(state, receipt)
                         && !matchesRecordedArchivedFull111Completion(session, actualHead.state(), owner, receipt, archive.withSession(session))
+                        && !matchesRecordedNamedLifeCompletion(session, actualHead, state, receipt)
                         && !matchesRecordedKnownCompletion(session, actualHead, state, receipt)
                         && !matchesRecordedSwayReadContinuation(session, actualHead, state, receipt))
                     requireCurrentFrame(actualHead.state(), state, receipt.command().before());
@@ -3289,6 +3290,32 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
             record = prior;
         }
         StrictJson.require(record.receipt().equals(capture), "archived Full111 capture is absent from its actual current action chain");
+        return true;
+    }
+
+    /** Bind the finished named Game's actual Life guard to the previous completed same-date cycle. */
+    private boolean matchesRecordedNamedLifeCompletion(ContinuityStorePort.Session same, WriterContracts.Head head,
+            CycleState branch, ActionReceipt receipt) throws IOException {
+        if (branch.head().isEmpty() || !(receipt.state() instanceof ActionState.CompositeSettled life)
+                || !LifeAdvanceComposite.HANDLER.equals(life.execution().handlerId())) return false;
+        var originals = archive.withSession(same);
+        if (ContinuityBatchJournal.canonicalNamedAppliedLife(same, branch.session(), originals).filter(receipt::equals).isEmpty())
+            return false;
+        var retained = load(branch.head().orElseThrow()).semantic();
+        var before = receipt.command().before();
+        var guard = life.execution().guard();
+        var loader = Objects.requireNonNull(terminalFrames, "actual Root Life guard frame loader is required");
+        var verified = org.xar.ck3.control.application.effects.RootGuardEvidence.loadFrame(guard, originals, loader);
+        org.xar.ck3.control.application.effects.RootGuardEvidence.requireHistory(guard, originals, same);
+        requireObservedBindingNotRegressed(head.state(), before);
+        requireObservedContinuation(retained.frame(), before);
+        StrictJson.require(verified.identity().equals(before) && guard.observed().equals(before)
+                && guard.observedAt().equals(verified.observedAt())
+                && before.frame().identity().dateRaw().equals(retained.frame().frame().identity().dateRaw())
+                && before.frame().revision().compareTo(retained.frame().frame().revision()) >= 0
+                && !guard.observedAt().isBefore(retained.observedAt())
+                && head.digest().equals(same.head().digest()),
+                "named Life RETAIN lost its actual prepared guard or previous completed cycle");
         return true;
     }
 
