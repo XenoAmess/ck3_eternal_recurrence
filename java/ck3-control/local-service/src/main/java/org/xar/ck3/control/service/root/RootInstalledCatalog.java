@@ -69,6 +69,7 @@ public final class RootInstalledCatalog {
     private RootPublicStepExecution.Catalog publicSteps;
     private RestoredFeastOriginal restoredFeastOriginal;
     private FirstRestoredInitialization firstRestoredInitialization;
+    private RootSavedOrdinaryReopen.Committed committedImported;
     private record FirstRestoredInitialization(RootApplicationAssembly.EpisodeDomainInitializationProof proof,
             List<DomainBodies.BodyRef> bodies) {
         private FirstRestoredInitialization {Objects.requireNonNull(proof);bodies=List.copyOf(bodies);}
@@ -702,6 +703,22 @@ public final class RootInstalledCatalog {
             return null;
         });
     }
+    /** Installs the original physical seed lane before the canonical imported ordinary REBIND. */
+    public synchronized RootSavedOrdinaryReopen.Committed prepareCommittedImported(ContinuityStorePort.Session same,
+            DriverBootstrap.Adopted driver, WriterContracts.Pin attachment, Instant deadline) throws IOException {
+        context.writer().requireSession(same);
+        if (committedImported != null) {
+            StrictJson.require(committedImported.attachment().equals(attachment) && context.adopted() == driver,
+                    "committed imported catalog cannot replace its original attachment or Driver");
+            committedImported.requireCurrent(same);
+            return committedImported;
+        }
+        driver.requireCommittedImported(attachment);
+        bindPhysicalDriver(driver);
+        committedImported = RootSavedOrdinaryReopen.reopenCommitted(context, same, driver, attachment, deadline);
+        return committedImported;
+    }
+
     /** Actual private attachment, then domain originals; no capability observation or cycle rebind runs in this scope. */
     public void adoptRestored(ContinuityStorePort.Session same,
             org.xar.ck3.control.application.checkpoint.RestoreCheckpointService actualIssuer,
