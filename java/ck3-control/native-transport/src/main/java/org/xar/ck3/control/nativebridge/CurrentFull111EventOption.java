@@ -26,6 +26,9 @@ public final class CurrentFull111EventOption {
     public static final String REQUEST_SCHEMA = "ck3.full111.ordinary_event_option_request.v2";
     public static final String RESULT_SCHEMA = "ck3.full111.ordinary_event_option_result.v2";
     public static final Duration RENDERER_RENEWAL_WINDOW = Duration.ofSeconds(8);
+    public static final Duration PREPARED_LIFETIME_WINDOW = Duration.ofSeconds(60);
+    public static final String PREPARED_LIFETIME_CAPABILITY =
+            "game.query.current-ordinary-event-option-prepared-lifetime.26785313.v2";
     private static final ExactCk3Build BUILD = ExactCk3Build.CK3_121003_STEAM_26785313_FULL111;
     private static final Set<String> TARGET_FIELDS = Set.of("instance_id", "recipient_character_id",
             "definition_key", "authored_option_index");

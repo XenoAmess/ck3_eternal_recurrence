@@ -3036,8 +3036,9 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         var prepared = readFull111EventOptionPreparation(before, renderer, target, commandDeadline);
         if (prepared.isPresent()) {
             var actual = prepared.orElseThrow();
+            Instant preparedUntil = CurrentFull111EventOption.Request.decodeSelectionRequest(actual.request()).deadline();
             full111EventOptionLease = new Full111EventOptionLease(command.actionId(), ActionCodec.bodySha256(command), RequestIds.forCommand(command),
-                    before, commandDeadline, CurrentFull111EventOption.rendererDeadline(actual.renderer()), actual.request());
+                    before, commandDeadline, preparedUntil, actual.request());
         }
         return prepared;
     }
@@ -3077,8 +3078,13 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
 
         var lineage = new CurrentFull111EventOption.Lineage(before.nativeRevision(), renderer.requestId(),
                 rendered.providerGeneration(), rendered.querySequence(), Optional.empty(), BigInteger.ZERO, Optional.empty(), BigInteger.ZERO);
-        var quote = new CurrentFull111EventOption.Request(CurrentFull111EventOption.Action.PREPARE, prefix, target, lineage, cutoff);
-        var reply = readFull111OptionPhase(core, occurrence, quote);
+        Instant preparedUntil = cutoff;
+        if (hello.capabilities().contains(CurrentFull111EventOption.PREPARED_LIFETIME_CAPABILITY)) {
+            Instant leaseLimit = chronologyClock.instant().plus(CurrentFull111EventOption.PREPARED_LIFETIME_WINDOW);
+            preparedUntil = Instant.ofEpochMilli((commandDeadline.isBefore(leaseLimit) ? commandDeadline : leaseLimit).toEpochMilli());
+        }
+        var quote = new CurrentFull111EventOption.Request(CurrentFull111EventOption.Action.PREPARE, prefix, target, lineage, preparedUntil);
+        var reply = readFull111OptionPhase(core, occurrence, quote, cutoff);
         if (reply.isEmpty()) return Optional.empty();
         var acknowledged = reply.orElseThrow();
         var result = CurrentFull111EventOption.decodeOutcome(acknowledged);
@@ -3086,7 +3092,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
                 .compareTo(rendererCustody.responseReceived().order()) <= 0) return Optional.empty();
 
         var selected = new CurrentFull111EventOption.Request(CurrentFull111EventOption.Action.SELECT, prefix, target,
-                result.lineage().orElseThrow(), cutoff);
+                result.lineage().orElseThrow(), preparedUntil);
         return Optional.of(new Full111EventOptionPreparation(selected.selectionRequest(), renderer, acknowledged));
     }
 
@@ -3193,7 +3199,7 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         requireOriginalFull111OptionFrame(occurrence, independentDeadline);
         var query = new CurrentFull111EventOption.Request(action, prefix, original.target(), selection.result().lineage().orElseThrow(),
                 Instant.ofEpochMilli(core.validUntil().toEpochMilli()));
-        var reply = readFull111OptionPhase(core, occurrence, query);
+        var reply = readFull111OptionPhase(core, occurrence, query, query.deadline());
         if (reply.isEmpty()) return Optional.empty();
         var observed = reply.orElseThrow();
         return CurrentFull111EventOption.confirmsAbsence(attempt, originalSelect, query, observed)
@@ -3201,8 +3207,8 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
     }
 
     private Optional<AckReceived> readFull111OptionPhase(CoreReceived core, AcceptedSnapshotRevision occurrence,
-            CurrentFull111EventOption.Request read) throws IOException, InterruptedException {
-        Instant deadline = read.deadline();
+            CurrentFull111EventOption.Request read, Instant deadline) throws IOException, InterruptedException {
+        if (deadline.isAfter(read.deadline())) throw new IOException("Full111 read transport exceeds its original request deadline");
         requireHeldFull111ReadBasis(core, deadline, read.action().capability());
         if (sentRequestIds.size() >= maximumSubmissions)
             throw new IOException("Native request identity retention limit reached");
@@ -9279,6 +9285,10 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
             // Every check above is before the irreversible boundary. No application request is sent by observe/hello.
             latestReadEvidence = null;
             Instant actualDeadline = AdvancePrimitives.supports(permit.guard().operation()) ? readDeadline(nativeDeadline) : nativeDeadline;
+            if (eventOptionSelect) {
+                Instant transportLimit = chronologyClock.instant().plus(CurrentFull111EventOption.RENDERER_RENEWAL_WINDOW);
+                if (transportLimit.isBefore(actualDeadline)) actualDeadline = transportLimit;
+            }
             var activeCommand=org.xar.ck3.control.application.action.ActionCommandScope.current();
             if(activeCommand.isPresent()&&activeCommand.orElseThrow().actionId().equals(permit.actionId())
                     &&org.xar.ck3.control.application.action.ActionCodec.bodySha256(activeCommand.orElseThrow()).equals(permit.bodySha256())

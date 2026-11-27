@@ -172,6 +172,21 @@ final class RootFull111EventOptionEffectsTest {
         fixture.verify(BASE.plusSeconds(60), planned, renewed, fixture.selected());
     }
 
+    @Test void independentPreparedLifetimeCoversDurablePublicationAfterRendererExpires() throws Exception {
+        var planned = plannedRenderer(false);
+        var rendered = refreshedRenderer("first stock choice", false, 10, EPOCH);
+        var leased = preparedSelection(BASE.plusSeconds(90));
+        var originalSelect = selectAck(leased.selection(), 4, 70_000);
+        leased.verify(BASE.plusSeconds(90), planned, rendered, originalSelect);
+        assertThrows(ContractViolationException.class, () ->
+                leased.verify(BASE.plusSeconds(90), planned, rendered, selectAck(leased.selection(), 4, 90_000)));
+        assertThrows(ContractViolationException.class, () ->
+                leased.verify(BASE.plusSeconds(80), planned, rendered, originalSelect));
+        var outOfBound = preparedSelection(BASE.plusMillis(100_001));
+        assertThrows(ContractViolationException.class, () -> outOfBound.verify(BASE.plusSeconds(120), planned,
+                rendered, selectAck(outOfBound.selection(), 4, 70_000)));
+    }
+
     @Test void rejectsDriftEarlierVisibleOptionAndForeignOrReusedRendererLineage() throws Exception {
         var fixture = preparedSelection();
         var planned = plannedRenderer(false);
