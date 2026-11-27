@@ -91,7 +91,7 @@ final class RootOperatorQuarantineRuntime {
             terminal = java.util.Optional.of(new org.xar.ck3.control.application.action.RawJson(readExact(terminalRef.orElseThrow(), 262144)));
         }
         return new CompositeOperatorQuarantineSource(configuredRequest, bytes, readExact(request.authorizedBy()), departed.game(),
-                departed.sessionId(), new org.xar.ck3.control.application.action.OperationKey("life-advance"),
+                request.episodeRunId(), new org.xar.ck3.control.application.action.OperationKey("life-advance"),
                 org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER, clock, terminal);
     }
 
