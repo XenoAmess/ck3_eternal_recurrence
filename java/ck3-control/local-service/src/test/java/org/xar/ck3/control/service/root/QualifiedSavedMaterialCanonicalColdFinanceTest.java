@@ -25,6 +25,7 @@ import org.xar.ck3.control.application.session.*;
 import org.xar.ck3.control.application.session.SessionPorts.*;
 import org.xar.ck3.control.continuity.OriginalWindowReducer;
 import org.xar.ck3.control.continuity.writer.WriterContracts;
+import org.xar.ck3.control.contracts.ContractViolationException;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.service.root.CanonicalSaveReceiptVerifier;
 
@@ -341,6 +342,12 @@ public final class QualifiedSavedMaterialCanonicalColdFinanceTest {
                     assertEquals(canonical,capture.evidence());
                     assertEquals(ContinuityJson.digest(edge.before().toJson()),capture.headDigest());
                 }
+
+                assertTrue(support.proof.frame().frame().identity().nativeRevision()
+                        .compareTo(pair.frame().frame().identity().nativeRevision())<0);
+                assertThrows(ContractViolationException.class,
+                        ()->support.cycles.verifyCompletedCycleProof(same,support.owner,support.proof),
+                        "the retained pre-SAVE proof is historical after its current pair is confirmed");
 
                 var fresh=support.freshSources();
                 assertThrows(IOException.class,()->fresh.load(pair));
