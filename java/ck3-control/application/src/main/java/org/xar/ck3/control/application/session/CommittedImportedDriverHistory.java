@@ -15,6 +15,7 @@ import org.xar.ck3.control.application.checkpoint.DriverStateSnapshot;
 import org.xar.ck3.control.application.driver.DriverActionHistoryState;
 import org.xar.ck3.control.application.driver.DriverSnapshotFacts;
 import org.xar.ck3.control.application.readiness.NativeSemanticEvidenceVerifier;
+import org.xar.ck3.control.application.session.ContinuityBatchJournal.RetainedObservation;
 import org.xar.ck3.control.application.session.ContinuityBatchJournal.RetainedReadDriver;
 import org.xar.ck3.control.application.session.SessionPorts.SemanticEvidence;
 import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
@@ -28,7 +29,8 @@ import org.xar.ck3.control.contracts.StrictJson;
 final class CommittedImportedDriverHistory {
     private CommittedImportedDriverHistory() { }
 
-    record Data(DriverSnapshotFacts.Known facts, ExactRef fullDriver, SemanticEvidence latestCycle) { }
+    record Data(DriverSnapshotFacts.Known facts, ExactRef fullDriver, SemanticEvidence latestCycle,
+            RetainedObservation observed) { }
 
     static Data read(Session same, CommittedImportedSettledFrontier.Data settled, OutcomeArchive archive) throws IOException {
         var historical = settled.history();
@@ -49,6 +51,7 @@ final class CommittedImportedDriverHistory {
                 var publications = new ArrayList<DriverActionHistoryState.Publication>();
                 var actuals = new ArrayList<ActionReceipt>();
                 SemanticEvidence latest = historical.original().archivedSemantic();
+                var observed = ContinuityBatchJournal.retainedSemanticObservation(latest,settled.owner(),originals);
                 for (var edge : historical.suffix()) {
                     switch (edge.kind()) {
                         case WriterContracts.DRIVER_ACTION_HISTORY_KIND -> {
@@ -60,14 +63,19 @@ final class CommittedImportedDriverHistory {
                                     settled.canonicalActions(), originals, publications, actuals);
                             missing.remove(actual.sequence());
                         }
-                        case WriterContracts.DRIVER_READ_HISTORY_KIND -> retained = ContinuityBatchJournal.retainCapturedRead(
-                                same, settled.owner(), edge, retained, originals, List.of(), false);
+                        case WriterContracts.DRIVER_READ_HISTORY_KIND -> {
+                            retained = ContinuityBatchJournal.retainCapturedRead(same,settled.owner(),edge,retained,originals,List.of(),false);
+                            var details = ContinuityJson.parseObject(edge.details(),ContinuityJson.LEDGER_MAX_BYTES);
+                            observed = ContinuityBatchJournal.replayRetainedReadObservations(details,settled.owner(),settled.source(),observed,originals);
+                        }
                         case OrdinaryCycleTransitions.CYCLE_KIND -> {
                             var details = ContinuityJson.parseObject(edge.details(), ContinuityJson.LEDGER_MAX_BYTES);
                             if (!"SETTLE".equals(StrictJson.text(details.get("operation")))) continue;
                             requireCoverage(missing, edge.before().sequence());
                             latest = OrdinaryCycleTransitions.semanticFromJson(details.get("semantic"));
                             retained = retainSemantic(latest, retained, originals);
+                            ContinuityBatchJournal.requireSettledObservedContinuation(observed.frame(),latest.frame());
+                            observed = ContinuityBatchJournal.retainedSemanticObservation(latest,settled.owner(),originals);
                         }
                         default -> {
                             // The settled frontier reader already authenticated the remaining Writer events.
@@ -78,7 +86,7 @@ final class CommittedImportedDriverHistory {
                 DriverActionHistoryState.requireOriginals(same, publications, actuals, originals);
                 StrictJson.require(latest.equals(settled.latestCycle()) && head.digest().equals(same.head().digest()),
                         "committed imported Driver lost the latest settled cycle or its held Writer head");
-                return new Data(retained.facts(), retained.fullDriver(), latest);
+                return new Data(retained.facts(), retained.fullDriver(), latest, observed);
             });
         } catch (UncheckedIOException failure) {
             throw failure.getCause();

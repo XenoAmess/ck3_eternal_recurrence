@@ -1,5 +1,6 @@
 package org.xar.ck3.control.application.session;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import org.xar.ck3.control.application.checkpoint.PublicCheckpointMaterialCapture.Captured;
 import java.util.List;
@@ -20,6 +21,7 @@ import org.xar.ck3.control.application.action.CommandOrigin;
 import org.xar.ck3.control.application.action.NativeActionPort;
 import org.xar.ck3.control.application.action.RawJson;
 import org.xar.ck3.control.application.action.ActionPorts;
+import org.xar.ck3.control.application.action.NativeObservationPort.TransportSession;
 import org.xar.ck3.control.application.action.ContinuityActionJournal;
 import org.xar.ck3.control.application.action.CompositeOperatorQuarantineObservation;
 import org.xar.ck3.control.application.action.CompositeOperatorQuarantineRequest;
@@ -4104,8 +4106,39 @@ public final class ContinuityBatchJournal implements BatchJournal {
         same.requireDomainImportContinuation(acceptedSettledSameGameSequence,acceptedSettledSameGameDigest);
     }
 
+    record RetainedObservation(ObservationIdentity frame, TransportSession transport) { }
+
+    /** Call after replaying the exact typed READ and its Driver changes. */
+    static RetainedObservation replayRetainedReadObservations(ObjectNode details, SessionIdentity owner, G2Source source,
+            RetainedObservation previous, ActionPorts.OutcomeArchive originals) {
+        var latest = previous;
+        for (var row : details.get("read_rows")) {
+            var read = originals.loadRead(ExactRef.fromJson(row.get("read")));
+            for (var guard : List.of(read.before().binding(),read.after().binding())) {
+                var transport = new TransportSession(guard.source().machineId(),guard.observed().game(),
+                        guard.connectionGeneration(),guard.sessionId());
+                var prior = latest.transport();
+                StrictJson.require(prior.machineId().equals(owner.machineId()) && prior.game().equals(owner.game())
+                        && prior.sessionId().equals(owner.sessionId()) && transport.machineId().equals(owner.machineId())
+                        && transport.game().equals(owner.game()) && transport.sessionId().equals(owner.sessionId())
+                        && guard.source().equals(source),"historical READ crossed its actual source/Game/session");
+                var order = transport.connectionGeneration().compareTo(prior.connectionGeneration());
+                StrictJson.require(order>=0,"read guard connection generation regressed");
+                boolean publicReset = order>0 && guard.observed().frame().revision().compareTo(latest.frame().frame().revision())<0;
+                if (publicReset) {
+                    var custody = read.original().custody().orElseThrow(()->new IllegalArgumentException("new connection read lacks actual custody"));
+                    custody.verify(read);
+                    StrictJson.require(custody.session().equals(transport),"new connection read custody session mismatch");
+                }
+                requireSettledObservedContinuation(latest.frame(),guard.observed(),publicReset);
+                latest = new RetainedObservation(guard.observed(),transport);
+            }
+        }
+        return latest;
+    }
+
     /** Historical observation DATA stays separate from the immutable completed-cycle SEM. */
-    private static void requireSettledObservedContinuation(ObservationIdentity retained,ObservationIdentity next) {
+    static void requireSettledObservedContinuation(ObservationIdentity retained,ObservationIdentity next) {
         requireSettledObservedContinuation(retained,next,false);
     }
     private static void requireSettledObservedContinuation(ObservationIdentity retained,ObservationIdentity next,boolean publicResetPermitted) {
@@ -4137,6 +4170,11 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 "settled semantic DATA changed between its original readers");
         return retained.body();
     }
+    static RetainedObservation retainedSemanticObservation(SemanticEvidence semantic,SessionIdentity owner,
+            ActionPorts.OutcomeArchive originals) {
+        return new RetainedObservation(semantic.frame(),settledSemanticTransport(semantic,owner,originals));
+    }
+
     private static org.xar.ck3.control.application.action.NativeObservationPort.TransportSession settledSemanticTransport(
             SemanticEvidence semantic,SessionIdentity owner,
             org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) {
@@ -5535,31 +5573,10 @@ public final class ContinuityBatchJournal implements BatchJournal {
                         retained=retainConfirmedSaveDriver(owner,savedEdge,edges.subList(savedDriverIndex+1,i),edge,retained,pair,saves.getFirst(),originals);
                     }
                     retained=retainCapturedRead(same,owner,edge,retained,originals,java.util.List.of(),false);
-                    for(var row:details.get("read_rows")) {
-                        var readReference=ExactRef.fromJson(row.get("read"));
-                        var read=originals.loadRead(readReference);
-                        for(var guard:java.util.List.of(read.before().binding(),read.after().binding())) {
-                            var currentTransport=new org.xar.ck3.control.application.action.NativeObservationPort.TransportSession(
-                                    guard.source().machineId(),guard.observed().game(),guard.connectionGeneration(),guard.sessionId());
-                            StrictJson.require(previousTransport.machineId().equals(owner.machineId())&&previousTransport.game().equals(owner.game())
-                                    &&previousTransport.sessionId().equals(owner.sessionId())&&currentTransport.machineId().equals(owner.machineId())
-                                    &&currentTransport.game().equals(owner.game())&&currentTransport.sessionId().equals(owner.sessionId())
-                                    &&guard.source().equals(source),"historical READ crossed its actual source/Game/session");
-                            var connectionOrder=currentTransport.connectionGeneration().compareTo(previousTransport.connectionGeneration());
-                            StrictJson.require(connectionOrder>=0,"read guard connection generation regressed");
-                            boolean publicResetPermitted=false;
-                            if(connectionOrder>0&&guard.observed().frame().revision().compareTo(latestObserved.frame().revision())<0) {
-                                var ack=read.original();
-                                var custody=ack.custody().orElseThrow(()->new IllegalArgumentException("new connection read lacks actual custody"));
-                                custody.verify(read);
-                                StrictJson.require(custody.session().equals(currentTransport),"new connection read custody session mismatch");
-                                publicResetPermitted=true;
-                            }
-                            requireSettledObservedContinuation(latestObserved,guard.observed(),publicResetPermitted);
-                            latestObserved=guard.observed();
-                            previousTransport=currentTransport;
-                        }
-                    }
+                    var observed = replayRetainedReadObservations(details,owner,source,
+                            new RetainedObservation(latestObserved,previousTransport),originals);
+                    latestObserved = observed.frame();
+                    previousTransport = observed.transport();
                 } else if(edge.kind().equals(WriterContracts.DRIVER_ACTION_HISTORY_KIND)) {
                     retained=retainCapturedAction(same,edge,retained,actions,originals,actionPublications,actionOriginals);
                 } else if(edge.kind().equals(org.xar.ck3.control.continuity.writer.DomainBodies.IMPORT_KIND)) {
