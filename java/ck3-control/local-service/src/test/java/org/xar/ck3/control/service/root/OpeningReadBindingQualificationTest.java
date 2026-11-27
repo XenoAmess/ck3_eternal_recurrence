@@ -60,17 +60,21 @@ final class OpeningReadBindingQualificationTest {
         assertFalse(operations.contains("query-campaign-root-context-v1"));assertFalse(operations.contains(GovernancePlanningReads.FORMAL));
     }
 
-    @Test void full111ForegroundBridgeRetainsExactOpeningAndMappedSaveSelection() {
+    @Test void full111EventBridgesRetainExactOpeningAndMappedSaveSelection() {
         var full = ExactCk3Build.CK3_121003_STEAM_26785313_FULL111;
         var foreground = new ExactRef(Path.of("software-full111-foreground.dll").toAbsolutePath().toString(), 21_523_968L,
                 "db2a814aaa702b322a53e76512b8c80d71fc3249c71c9d31a674a436effaee86");
-        assertAll(
-                () -> assertTrue(OpeningReadProfile.selectQualified(full.version(), full.executableSha256(), foreground).isPresent()),
-                () -> assertTrue(FullSnapshotClockControl.isMappedSave112Bridge(foreground)));
-        for (var wrong : java.util.List.of(new ExactRef(foreground.path(), foreground.bytes() + 1, foreground.sha256()),
-                new ExactRef(foreground.path(), foreground.bytes(), "f33eb6d59068ebd21ba78ef43d933222e15427352d2bb206bb60990152963c52"))) {
-            assertTrue(OpeningReadProfile.selectQualified(full.version(), full.executableSha256(), wrong).isEmpty());
-            assertFalse(FullSnapshotClockControl.isMappedSave112Bridge(wrong));
+        var diagnostic = new ExactRef(Path.of("software-full111-event-diagnostic.dll").toAbsolutePath().toString(), 21_625_856L,
+                "dcc27c14b96491519eb7269f994d5f5534d00741637632879ccc8d317d31343d");
+        for (var retained : java.util.List.of(foreground, diagnostic)) {
+            assertAll(
+                    () -> assertTrue(OpeningReadProfile.selectQualified(full.version(), full.executableSha256(), retained).isPresent()),
+                    () -> assertTrue(FullSnapshotClockControl.isMappedSave112Bridge(retained)));
+            for (var wrong : java.util.List.of(new ExactRef(retained.path(), retained.bytes() + 1, retained.sha256()),
+                    new ExactRef(retained.path(), retained.bytes(), "f33eb6d59068ebd21ba78ef43d933222e15427352d2bb206bb60990152963c52"))) {
+                assertTrue(OpeningReadProfile.selectQualified(full.version(), full.executableSha256(), wrong).isEmpty());
+                assertFalse(FullSnapshotClockControl.isMappedSave112Bridge(wrong));
+            }
         }
     }
 
