@@ -834,12 +834,12 @@ public final class DriverBootstrap {
             ActionPorts.OutcomeArchive archive, ExactArtifactReader originals, int retainedFrames, Instant deadline,
             RootExternalSavedOpening opening, ContinuityActionJournal.ImportedRestoreRetirement retirement) throws IOException, InterruptedException {
         return adoptExternalSavedObservation(seed, same, actions, transport, source, archive, originals, retainedFrames,
-                deadline, opening, retirement, Optional.empty());
+                deadline, opening, retirement, List.of());
     }
 
     /** Exact successor history permitted by the named-save Journal. */
-    public record ExternalSavedEventHistory(ActionReceipt receipt, boolean cyclePending, Optional<ArchivedActionCoverage> coverage) {
-        public ExternalSavedEventHistory {
+    public record ExternalSavedActionHistory(ActionReceipt receipt, boolean cyclePending, Optional<ArchivedActionCoverage> coverage) {
+        public ExternalSavedActionHistory {
             Objects.requireNonNull(receipt);
             Objects.requireNonNull(coverage);
             StrictJson.require(cyclePending || receipt.settled() && coverage.isPresent(),
@@ -851,20 +851,21 @@ public final class DriverBootstrap {
             ActionSnapshotReader actions, NativeGameTransport transport, G2Source source,
             ActionPorts.OutcomeArchive archive, ExactArtifactReader originals, int retainedFrames, Instant deadline,
             RootExternalSavedOpening opening, ContinuityActionJournal.ImportedRestoreRetirement retirement,
-            Optional<ExternalSavedEventHistory> eventHistory) throws IOException, InterruptedException {
+            List<ExternalSavedActionHistory> actionHistory) throws IOException, InterruptedException {
         Objects.requireNonNull(opening);
-        Objects.requireNonNull(eventHistory);
+        var namedHistory = List.copyOf(actionHistory);
         Objects.requireNonNull(retirement);
         opening.requireCurrent(transport);
         var raw = opening.frame();
         StrictJson.require(raw.session().equals(seed.expectedSession()), "named-save Driver seed crossed its actual opening");
         var restored = adoptInternal(seed, same, actions, transport, source, archive, originals,
-                receipt -> eventHistory.filter(history -> history.receipt().equals(receipt)).flatMap(ExternalSavedEventHistory::coverage),
+                receipt -> namedHistory.stream().filter(history -> history.receipt().equals(receipt)).findFirst()
+                        .flatMap(ExternalSavedActionHistory::coverage),
                 retainedFrames, deadline, AdoptionKind.JAVA_COLD, Optional.of(raw), Optional.empty(), Optional.empty(),
                 Optional.empty(), () -> deadline, Optional.empty(), Optional.empty(),
-                Optional.of(new NamedSaveDriverRead(retirement, eventHistory)));
+                Optional.of(new NamedSaveDriverRead(retirement, namedHistory)));
         opening.requireCurrent(transport);
-        var expectedStatus = eventHistory.filter(ExternalSavedEventHistory::cyclePending).isPresent()
+        var expectedStatus = namedHistory.stream().anyMatch(ExternalSavedActionHistory::cyclePending)
                 ? AdoptionStatus.READ_ONLY_UNRESOLVED : AdoptionStatus.QUALIFICATION_REQUIRED;
         StrictJson.require(restored.status() == expectedStatus,
                 "named-save Driver projection did not retain its original qualified history");
@@ -875,7 +876,7 @@ public final class DriverBootstrap {
     private record CommittedDriverRead(WriterContracts.Pin attachment, NativeObservationPort.ObservedFrame originalOpening)
             implements ColdOpening { }
     private record NamedSaveDriverRead(ContinuityActionJournal.ImportedRestoreRetirement retirement,
-            Optional<ExternalSavedEventHistory> eventHistory)
+            List<ExternalSavedActionHistory> actionHistory)
             implements ColdOpening { }
 
     static DriverSnapshotFacts.RestoreSeedSupplement readCommittedImportedSeed(ContinuityStorePort.Session same,
@@ -1064,12 +1065,12 @@ public final class DriverBootstrap {
                                         ? ContinuityActionJournal.admittedImportedRestartRetirement(borrowed,cleanRestart.orElseThrow(),lease.snapshot(),archive)
                                         : Optional.empty();
                     }
-                    var namedHistory = namedDriver.flatMap(NamedSaveDriverRead::eventHistory);
-                    StrictJson.require(namedHistory.isEmpty() || lease.snapshot().actions().contains(namedHistory.orElseThrow().receipt()),
+                    var namedHistory = namedDriver.map(NamedSaveDriverRead::actionHistory).orElse(List.of());
+                    StrictJson.require(namedHistory.stream().map(ExternalSavedActionHistory::receipt).allMatch(lease.snapshot().actions()::contains),
                             "named-save Driver lost its exact successor event");
                     for(var actual:lease.snapshot().actions()) {
-                        var admitted = namedHistory.filter(history -> history.receipt().equals(actual));
-                        if (admitted.filter(ExternalSavedEventHistory::cyclePending).isPresent()) {
+                        var admitted = namedHistory.stream().filter(history -> history.receipt().equals(actual)).findFirst();
+                        if (admitted.filter(ExternalSavedActionHistory::cyclePending).isPresent()) {
                             unresolved = true;
                             gaps.add("unfinished_cycle_action:" + actual.command().actionId());
                             if (admitted.orElseThrow().coverage().isEmpty()) continue;

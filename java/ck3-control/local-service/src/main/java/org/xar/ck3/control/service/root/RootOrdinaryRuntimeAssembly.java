@@ -1090,7 +1090,7 @@ public final class RootOrdinaryRuntimeAssembly {
             var session = actual.finishExternalSavedObservation(installed, driver, configuration, services(driver.source()));
             session.install(ordinaryHost, deadline);
             runOperationPhase(clock, java.time.Duration.ofMinutes(10), phaseDeadline -> {
-                actual.reconcileExternalFull111Event(session, config.stateDirectory().resolve("archived-full111-event-recovery.json"), phaseDeadline);
+                actual.reconcileExternalSavedCycle(session, config.stateDirectory().resolve("archived-full111-event-recovery.json"), phaseDeadline);
                 return null;
             });
             return new Running(this, session, history.batchPrefix(), history.nextBatchSequence());

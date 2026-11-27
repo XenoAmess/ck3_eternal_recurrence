@@ -2065,7 +2065,7 @@ public final class RootApplicationAssembly {
                 OriginalWindowReducer.Policy policy) { }
 
         private ExternalSavedStage externalSavedStage;
-        private ContinuityBatchJournal.UnresolvedSameGameData externalFull111EventData;
+        private ContinuityBatchJournal.UnresolvedSameGameData externalPendingCycleData;
 
         synchronized DriverBootstrap.Adopted adoptExternalSavedObservation(
                 org.xar.ck3.control.platform.JavaGameLifecycle lifecycle,
@@ -2088,7 +2088,12 @@ public final class RootApplicationAssembly {
             predecessor.requireCurrent(deadline);
             var departed = remountFrom.orElse(predecessor);
             departed.requireCurrent(deadline);
-            var opening = RootExternalSavedOpening.capture(game, departed.previousOwner().game(), namedSave, rawDate, actor, deadline);
+            long expectedNativeDate = writer.locked(same ->
+                    ContinuityBatchJournal.canonicalNamedAppliedLife(same, successor, archive.withSession(same))
+                            .map(receipt -> receipt.applied().orElseThrow().observation().after().frame().identity().dateRaw().longValueExact())
+                            .orElse(rawDate));
+            var opening = RootExternalSavedOpening.capture(game, departed.previousOwner().game(), namedSave,
+                    expectedNativeDate, actor, deadline);
             return writer.locked(same -> {
                 var body = same.head().state().toJson();
                 boolean recorded = body.hasNonNull(WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD);
@@ -2109,7 +2114,8 @@ public final class RootApplicationAssembly {
                 var cycles = new OrdinaryCycleTransitions(archive, semanticVerifier, checkpointVerifiers, policy, writer::requireSession);
                 cycles.bindTerminalFrameLoader(frames);
                 var batches = new ContinuityBatchJournal(writer, cycles);
-                var nativeOpening = new ExternalSaveOrigin.NativeOpening(raw.session(), actor, rawDate, raw.snapshotId(), raw.nativeRevision());
+                var nativeOpening = new ExternalSaveOrigin.NativeOpening(raw.session(), actor, expectedNativeDate,
+                        raw.snapshotId(), raw.nativeRevision());
                 final ContinuityBatchJournal.PreparedExternalSave original;
                 if (!recorded) {
                     original = batches.prepareExternalSave(same, previous, source, successor, openingOriginals.loadedCopy(), nativeOpening);
@@ -2125,9 +2131,12 @@ public final class RootApplicationAssembly {
                 var driver = projectExternalSave(same, game, opening, original, retainedFrames, deadline);
                 departed.requireCurrent(deadline);
                 externalSavedStage = new ExternalSavedStage(departed, opening, cycles, batches, original, driver, policy);
-                if (original.pendingFull111Event().isPresent()) {
-                    externalFull111EventData = batches.externalFull111EventRecovery(same, original);
-                    unresolvedSameGameData = externalFull111EventData;
+                if (original.pendingAppliedLife().isPresent())
+                    externalPendingCycleData = batches.externalAppliedLifeRecovery(same, original);
+                else if (original.pendingFull111Event().isPresent())
+                    externalPendingCycleData = batches.externalFull111EventRecovery(same, original);
+                if (externalPendingCycleData != null) {
+                    unresolvedSameGameData = externalPendingCycleData;
                     unresolvedSameGameBatches = batches;
                     unresolvedSameGameCycles = cycles;
                     unresolvedSameGamePolicy = policy;
@@ -2142,13 +2151,17 @@ public final class RootApplicationAssembly {
                 int retainedFrames, Instant deadline) throws IOException {
             var facts = original.history().retainedFacts();
             var bound = archive.withSession(same);
-            var actualPublication = original.full111EventPublication();
-            var retained = actualPublication.isPresent()
-                    ? DriverStateSnapshot.decodeComplete(bound.loadFullMaterial(actualPublication.orElseThrow().afterDriver()).bytes())
+            var publications = new java.util.ArrayList<org.xar.ck3.control.application.driver.DriverActionHistoryState.Publication>();
+            original.full111EventPublication().ifPresent(publications::add);
+            publications.addAll(original.lifePublications());
+            var latest = publications.isEmpty() ? Optional.<org.xar.ck3.control.application.driver.DriverActionHistoryState.Publication>empty()
+                    : Optional.of(publications.getLast());
+            var retained = latest.isPresent()
+                    ? DriverStateSnapshot.decodeComplete(bound.loadFullMaterial(latest.orElseThrow().afterDriver()).bytes())
                     : facts.driver();
             if (original.full111SettledSemantic().isPresent()) {
                 var semantic = original.full111SettledSemantic().orElseThrow();
-                StrictJson.require(actualPublication.filter(value -> value.afterDriver().equals(semantic.originalDriver())).isPresent(),
+                StrictJson.require(original.full111EventPublication().filter(value -> value.afterDriver().equals(semantic.originalDriver())).isPresent(),
                         "named event cycle lost its exact published Driver");
             }
             var raw = opening.frame();
@@ -2165,19 +2178,24 @@ public final class RootApplicationAssembly {
                     org.xar.ck3.control.planning.opportunity.OpportunityJson.parse(raw.state().bytes()), "external save Full");
             var auxiliary = RootRestoreMaterialProjection.reduceAuxiliary(facts.auxiliary(), nativeState,
                     org.xar.ck3.control.application.capabilities.CapabilitySessionPresentation.RestoreKind.EXTERNAL_NAMED_OBSERVATION);
-            long version = actualPublication.map(org.xar.ck3.control.application.driver.DriverActionHistoryState.Publication::afterVersion)
+            long version = latest.map(org.xar.ck3.control.application.driver.DriverActionHistoryState.Publication::afterVersion)
                     .orElse(facts.stamp().driverVersion());
             var seed = new DriverBootstrap.Seed(reference, facts.originalHistoryBasis(), version,
                     facts.stamp().episodeEpoch(), raw.session(), auxiliary, facts.loop());
-            var namedEvent = original.settledFull111Event().or(original::pendingFull111Event)
-                    .map(receipt -> new DriverBootstrap.ExternalSavedEventHistory(receipt, original.pendingFull111Event().isPresent(),
-                            actualPublication.<DriverBootstrap.ArchivedActionCoverage>map(publication -> {
-                                var receiptRef = bound.receiptReferenceOf(receipt);
-                                if (publication.legacyRow().isPresent())
-                                    return new DriverBootstrap.ArchivedHistoryRow(receiptRef, complete.commandHistory().size(),
-                                            publication.legacyRow().orElseThrow());
-                                return new DriverBootstrap.ArchivedCanonicalOnly(receiptRef, publication.originalSource());
-                            })));
+            var nextReceipt = original.pendingAppliedLife().or(original::pendingFull111Event);
+            var namedHistory = new java.util.ArrayList<DriverBootstrap.ExternalSavedActionHistory>();
+            for (var publication : publications) {
+                var receipt = ContinuityActionJournal.lookup(same.head().state(), publication.command().actionId(), bound).orElseThrow();
+                StrictJson.require(receipt.sequence() == publication.actionSequence()
+                        && receipt.bodySha256().equals(publication.bodySha256()),
+                        "named continuation lost its actual published action");
+                namedHistory.add(new DriverBootstrap.ExternalSavedActionHistory(receipt,
+                        nextReceipt.filter(action -> action.command().equals(receipt.command())).isPresent(),
+                        Optional.of(namedHistoryCoverage(receipt, publication, complete, bound))));
+            }
+            var unrecorded = original.settledFull111Event().or(original::pendingFull111Event)
+                    .filter(receipt -> namedHistory.stream().noneMatch(item -> item.receipt().equals(receipt)));
+            unrecorded.ifPresent(receipt -> namedHistory.add(new DriverBootstrap.ExternalSavedActionHistory(receipt, true, Optional.empty())));
             try {
                 var retirement = actions.withFrozen(same, lease -> {
                     lease.assertCurrent();
@@ -2191,7 +2209,7 @@ public final class RootApplicationAssembly {
                         original.history().source(), archive,
                         (ref, maximum) -> RootOriginalArtifacts.read(writer, archive, same, ref, maximum,
                                 original.history().source().sourceRef()),
-                        retainedFrames, deadline, opening, retirement, namedEvent);
+                        retainedFrames, deadline, opening, retirement, namedHistory);
             } catch (UncheckedIOException failure) {
                 throw failure.getCause();
             } catch (InterruptedException interrupted) {
@@ -2200,6 +2218,22 @@ public final class RootApplicationAssembly {
                 failure.initCause(interrupted);
                 throw failure;
             }
+        }
+
+        private static DriverBootstrap.ArchivedActionCoverage namedHistoryCoverage(ActionReceipt receipt,
+                org.xar.ck3.control.application.driver.DriverActionHistoryState.Publication publication,
+                DriverStateSnapshot.Complete driver, ActionPorts.OutcomeArchive archive) throws IOException {
+            var receiptRef = archive.receiptReferenceOf(receipt);
+            if (publication.legacyRow().isEmpty())
+                return new DriverBootstrap.ArchivedCanonicalOnly(receiptRef, publication.originalSource());
+            var row = publication.legacyRow().orElseThrow();
+            var actual = DriverJson.object(archive.loadFullMaterial(row).bytes(), DriverJson.MAX_NATIVE_BYTES);
+            var history = driver.commandHistory();
+            for (int index = history.size() - 1; index >= 0; --index) {
+                if (DriverJson.object(history.get(index).originalRow().json(), DriverJson.MAX_NATIVE_BYTES).equals(actual))
+                    return new DriverBootstrap.ArchivedHistoryRow(receiptRef, index + 1L, row);
+            }
+            throw new IOException("named continuation history is missing its original published row");
         }
 
         ControllerRestartState externalSavedControllerHistory(DriverBootstrap.Adopted driver) throws IOException {
@@ -3092,18 +3126,24 @@ public final class RootApplicationAssembly {
             }
         }
 
-        void reconcileExternalFull111Event(RootApplicationSession session, java.nio.file.Path proofFile, Instant deadline)
+        void reconcileExternalSavedCycle(RootApplicationSession session, java.nio.file.Path proofFile, Instant deadline)
                 throws IOException, InterruptedException {
-            if (externalFull111EventData == null) return;
+            if (externalPendingCycleData == null) return;
             var stage = Objects.requireNonNull(externalSavedStage);
-            session.restoreUnresolvedSameGame(externalFull111EventData);
-            if (stage.original().settledFull111Event().isEmpty()) {
+            session.restoreUnresolvedSameGame(externalPendingCycleData);
+            if (stage.original().pendingFull111Event().isPresent() && stage.original().settledFull111Event().isEmpty()) {
                 var proof = RootArchivedFull111EventRecovery.Originals.read(proofFile);
-                RootArchivedFull111EventRecovery.publish(this, stage.original(), externalFull111EventData, proof);
+                RootArchivedFull111EventRecovery.publish(this, stage.original(), externalPendingCycleData, proof);
             }
-            var actual = session.reconcileUnresolvedOriginal(externalFull111EventData, deadline);
+            var actual = session.reconcileUnresolvedOriginal(externalPendingCycleData, deadline);
             if (!actual.settled() || session.controllerForPublication().isQuarantined())
-                throw new IOException("External Full111 event is recorded but its original ordinary cycle remains quarantined");
+                throw new IOException("The named campaign's original ordinary cycle remains quarantined");
+            if (stage.original().pendingAppliedLife().isPresent()) {
+                writer.locked(same -> {
+                    stage.batches().finishExternalAppliedLife(same, stage.original());
+                    return null;
+                });
+            }
         }
 
         RootApplicationSession finishExternalSavedObservation(RootInstalledCatalog installed, DriverBootstrap.Adopted driver,
@@ -3237,7 +3277,7 @@ public final class RootApplicationAssembly {
                         candidate.opening().requireCurrent(game.nativeTransport());
                     });
                     installed.initializeExternalSavedPlanning(same, driver.first());
-                    if (externalFull111EventData == null) {
+                    if (externalPendingCycleData == null) {
                         var rebound = candidate.batches().rebindExternalSave(same, candidate.original(), semantic);
                         root.controllerForPublication().restoreExternalSaveObservation(same, rebound);
                     }
