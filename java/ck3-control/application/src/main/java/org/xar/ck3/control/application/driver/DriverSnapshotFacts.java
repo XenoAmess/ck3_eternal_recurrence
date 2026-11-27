@@ -1,11 +1,19 @@
 package org.xar.ck3.control.application.driver;
 
 import java.math.BigInteger;
+import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import org.xar.ck3.control.application.checkpoint.DriverCheckpointStore;
 import org.xar.ck3.control.application.checkpoint.DriverStateSnapshot;
+import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
+import org.xar.ck3.control.continuity.writer.WriterContracts;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.GameGeneration;
 import org.xar.ck3.control.contracts.StrictJson;
@@ -53,6 +61,71 @@ public final class DriverSnapshotFacts {
             boolean quarantined, ExactRef originalFacts) {
         public LoopWitness { StrictJson.text(batchId); StrictJson.safe(turn,0); StrictJson.safe(epoch,0); StrictJson.safe(eligibleSinceSave,0); Objects.requireNonNull(originalFacts); }
     }
+    /** Committed restore seed DATA retains the exact final auxiliary and loop without duplicating the full Driver. */
+    public record RestoreSeedSupplement(String requestId, ExactRef fullDriver, long driverVersion, long episodeEpoch,
+            SessionIdentity successor, ExactRef originalHistoryBasis, OpportunityJson.Obj auxiliary, Optional<LoopWitness> loop) {
+        public static final String DETAIL_FIELD = "restored_driver_seed_supplement";
+        public static final int MAXIMUM_BYTES = Math.min(DriverCheckpointStore.MAX_DRIVER_BYTES, WriterContracts.MAX_PIN_BYTES);
+        private static final String SCHEMA = "xar.java-restored-driver-seed-supplement/v1";
+        private static final Set<String> FIELDS = Set.of("schema", "request_id", "full_driver", "driver_version",
+                "episode_epoch", "successor", "original_history_basis", "auxiliary", "loop");
+        private static final Set<String> SUCCESSOR_FIELDS = Set.of("machine_id", "game", "session_id");
+
+        public RestoreSeedSupplement {
+            StrictJson.text(requestId);
+            StrictJson.safe(driverVersion, 0);
+            StrictJson.safe(episodeEpoch, 0);
+            Objects.requireNonNull(successor);
+            Objects.requireNonNull(auxiliary);
+            Objects.requireNonNull(loop);
+            requireBounded(fullDriver);
+            requireBounded(originalHistoryBasis);
+            loop.ifPresent(value -> requireBounded(value.originalFacts()));
+        }
+
+        private static void requireBounded(ExactRef original) {
+            Objects.requireNonNull(original);
+            StrictJson.require(original.bytes() > 0 && original.bytes() <= MAXIMUM_BYTES && Path.of(original.path()).isAbsolute(),
+                    "bounded exact restored seed artifact required");
+        }
+
+        public byte[] encode() {
+            var owner = new LinkedHashMap<String, OpportunityJson.Value>();
+            owner.put("machine_id", text(successor.machineId()));
+            owner.put("game", DriverJson.fromNode(successor.game().toJson()));
+            owner.put("session_id", text(successor.sessionId()));
+            var row = new LinkedHashMap<String, OpportunityJson.Value>();
+            row.put("schema", text(SCHEMA));
+            row.put("request_id", text(requestId));
+            row.put("full_driver", reference(fullDriver));
+            row.put("driver_version", integer(driverVersion));
+            row.put("episode_epoch", integer(episodeEpoch));
+            row.put("successor", obj(owner));
+            row.put("original_history_basis", reference(originalHistoryBasis));
+            row.put("auxiliary", auxiliary);
+            var loopValue = encodeLoop(loop);
+            if (loopValue instanceof OpportunityJson.Obj witness) loopValue = obj(new TreeMap<>(witness.members()));
+            row.put("loop", loopValue);
+            byte[] bytes = DriverJson.encode(obj(row));
+            StrictJson.require(bytes.length <= MAXIMUM_BYTES, "bounded restored seed supplement required");
+            return bytes;
+        }
+
+        public static RestoreSeedSupplement decode(byte[] bytes) {
+            var row = DriverJson.object(bytes, MAXIMUM_BYTES);
+            StrictJson.require(row.members().keySet().equals(FIELDS) && SCHEMA.equals(string(row, "schema")),
+                    "exact restored seed supplement schema and fields required");
+            var owner = OpportunityJson.object(row.get("successor"), "restored seed successor");
+            StrictJson.require(owner.members().keySet().equals(SUCCESSOR_FIELDS), "exact restored seed successor fields required");
+            var successor = new SessionIdentity(string(owner, "machine_id"),
+                    GameGeneration.fromJson(DriverJson.toNode(owner.get("game"))), string(owner, "session_id"));
+            return new RestoreSeedSupplement(string(row, "request_id"), reference(row.get("full_driver")),
+                    number(row, "driver_version", 0), number(row, "episode_epoch", 0), successor,
+                    reference(row.get("original_history_basis")), OpportunityJson.object(row.get("auxiliary"), "auxiliary"),
+                    decodeLoop(row.get("loop")));
+        }
+    }
+
     public sealed interface State permits Known, Unavailable { }
     public record Known(DriverStateSnapshot.Complete driver, Stamp stamp, ExactRef originalHistoryBasis,
             List<ActionRow> actionRows, OpportunityJson.Obj auxiliary, Optional<LoopWitness> loop,
@@ -105,9 +178,7 @@ public final class DriverSnapshotFacts {
             actions.add(obj(java.util.Map.of("action_id",text(action.actionId()),"body_sha256",text(action.bodySha256()),"durable_sequence",integer(action.durableSequence()),"coverage_source",source)));
         }
         row.put("action_rows",new OpportunityJson.Arr(actions));row.put("auxiliary",value.auxiliary());
-        row.put("loop",value.loop().<OpportunityJson.Value>map(loop->obj(java.util.Map.of("batch_id",text(loop.batchId()),"turn",integer(loop.turn()),
-                "epoch",integer(loop.epoch()),"dirty",new OpportunityJson.Bool(loop.dirty()),"eligible_since_save",integer(loop.eligibleSinceSave()),
-                "quarantined",new OpportunityJson.Bool(loop.quarantined()),"original_facts",reference(loop.originalFacts())))).orElse(OpportunityJson.Nil.INSTANCE));
+        row.put("loop", encodeLoop(value.loop()));
         row.put("observation",value.observation().<OpportunityJson.Value>map(observation->reference(observation.semanticFactsEvidence())).orElse(OpportunityJson.Nil.INSTANCE));
         return originalKnownJson(DriverJson.encode(new OpportunityJson.Obj(row)));
     }
@@ -146,12 +217,7 @@ public final class DriverSnapshotFacts {
             }
             actions.add(new ActionRow(string(action,"action_id"),string(action,"body_sha256"),number(action,"durable_sequence",1),coverage));
         }
-        Optional<LoopWitness> loop=Optional.empty();
-        if(row.get("loop")!=OpportunityJson.Nil.INSTANCE) {
-            var fields=checked(row.get("loop"),java.util.Set.of("batch_id","turn","epoch","dirty","eligible_since_save","quarantined","original_facts"));
-            loop=Optional.of(new LoopWitness(string(fields,"batch_id"),number(fields,"turn",0),number(fields,"epoch",0),
-                    bool(fields,"dirty"),number(fields,"eligible_since_save",0),bool(fields,"quarantined"),reference(fields.get("original_facts"))));
-        }
+        Optional<LoopWitness> loop = decodeLoop(row.get("loop"));
         if(row.get("observation")==OpportunityJson.Nil.INSTANCE)
             StrictJson.require(actualReplayedObservation.isEmpty(),"observation absent in original Known; an unrelated replay cannot be injected");
         else {
@@ -168,6 +234,20 @@ public final class DriverSnapshotFacts {
         StrictJson.require(ORIGINAL_SCHEMA.equals(string(row,"schema")),"exact complete Known original version required");
         return row.get("observation")==OpportunityJson.Nil.INSTANCE?Optional.empty():Optional.of(reference(row.get("observation")));
     }
+    private static OpportunityJson.Value encodeLoop(Optional<LoopWitness> value) {
+        return value.<OpportunityJson.Value>map(loop -> obj(Map.of("batch_id", text(loop.batchId()), "turn", integer(loop.turn()),
+                "epoch", integer(loop.epoch()), "dirty", new OpportunityJson.Bool(loop.dirty()),
+                "eligible_since_save", integer(loop.eligibleSinceSave()), "quarantined", new OpportunityJson.Bool(loop.quarantined()),
+                "original_facts", reference(loop.originalFacts())))).orElse(OpportunityJson.Nil.INSTANCE);
+    }
+
+    private static Optional<LoopWitness> decodeLoop(OpportunityJson.Value value) {
+        if (value == OpportunityJson.Nil.INSTANCE) return Optional.empty();
+        var fields = checked(value, Set.of("batch_id", "turn", "epoch", "dirty", "eligible_since_save", "quarantined", "original_facts"));
+        return Optional.of(new LoopWitness(string(fields, "batch_id"), number(fields, "turn", 0), number(fields, "epoch", 0),
+                bool(fields, "dirty"), number(fields, "eligible_since_save", 0), bool(fields, "quarantined"), reference(fields.get("original_facts"))));
+    }
+
     private static OpportunityJson.Obj checked(OpportunityJson.Value value,java.util.Set<String> fields){
         var row=OpportunityJson.object(value,"Known original object");StrictJson.require(row.members().keySet().equals(fields),"exact Known original fields required");return row;
     }

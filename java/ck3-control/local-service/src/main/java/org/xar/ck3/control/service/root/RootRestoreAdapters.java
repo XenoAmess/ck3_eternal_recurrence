@@ -1,17 +1,21 @@
 package org.xar.ck3.control.service.root;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import org.xar.ck3.control.application.action.ActionSnapshotReader;
 import org.xar.ck3.control.application.action.RawJson;
 import org.xar.ck3.control.application.checkpoint.*;
 import org.xar.ck3.control.application.driver.*;
+import org.xar.ck3.control.application.driver.DriverSnapshotFacts.RestoreSeedSupplement;
 import org.xar.ck3.control.application.history.DriverRestoreHistoryProducer;
 import org.xar.ck3.control.application.readiness.NativeReadinessCollector;
 import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
@@ -73,13 +77,15 @@ public final class RootRestoreAdapters implements AttachmentPort, PublicationPor
         final Request request; final NativeCandidate nativeCandidate; final DriverStateSnapshot.Complete saved;
         final DriverSnapshotFacts.Known abandoned; final Materials material; final DriverBootstrap.Staged staged;
         final DriverBootstrap.Seed finalSeed; final Attachment attachment;
+        final Optional<WriterContracts.Pin> seedSupplement;
         DriverBootstrap.Adopted adopted; RootLifecycleAuthority physical; RestoredRuntime runtime; PublishedDriver published;
         ReadWindow reads;
         boolean physicalEntered; boolean runtimeEntered;
         Stage(Request request, NativeCandidate nativeCandidate, DriverStateSnapshot.Complete saved, DriverSnapshotFacts.Known abandoned,
-                Materials material, DriverBootstrap.Staged staged, DriverBootstrap.Seed finalSeed, Attachment attachment,ReadWindow reads) {
+                Materials material, DriverBootstrap.Staged staged, DriverBootstrap.Seed finalSeed, Attachment attachment,
+                Optional<WriterContracts.Pin> seedSupplement, ReadWindow reads) {
             this.request = request; this.nativeCandidate = nativeCandidate; this.saved = saved; this.abandoned = abandoned;
-            this.material = material; this.staged = staged; this.finalSeed = finalSeed; this.attachment = attachment;this.reads=Objects.requireNonNull(reads);
+            this.material = material; this.staged = staged; this.finalSeed = finalSeed; this.attachment = attachment; this.seedSupplement = seedSupplement; this.reads=Objects.requireNonNull(reads);
         }
     }
     private final ContinuityWriter writer;
@@ -160,11 +166,49 @@ public final class RootRestoreAdapters implements AttachmentPort, PublicationPor
         details.set("restored_completed_row", material.completedRow().toJson());
         LinkedHashSet<ExactRef> evidence = new LinkedHashSet<>(physical.request().evidence());
         evidence.addAll(java.util.List.of(finalDriver, material.provisional().fullDriver(), material.completedRow(), material.producerSource()));
-        WriterContracts.Request event = new WriterContracts.Request(physical.request().kind(), ContinuityJson.canonical(details), java.util.List.copyOf(evidence));
         SavedContinuityAttachment.Input original = physical.input();
+        var seedSupplement = archiveFinalSeedSupplement(borrowed, archive, original.predecessor(), details, evidence, seed);
+        WriterContracts.Request event = new WriterContracts.Request(physical.request().kind(), ContinuityJson.canonical(details), java.util.List.copyOf(evidence));
         Attachment attachment = new Attachment(event, new SavedContinuityAttachment.Input(original.predecessor(), event.details(), original.basis(), original.game(), original.opening(), original.progress()),physical.material());
-        Stage created = new Stage(request, actual, saved, abandoned, material, staged, seed, attachment,reads); stages.put(request.requestId(), created);
+        Stage created = new Stage(request, actual, saved, abandoned, material, staged, seed, attachment, seedSupplement, reads); stages.put(request.requestId(), created);
         verifyAttachmentSource(borrowed, borrowed.head().state(), event); return attachment;
+    }
+    static Optional<WriterContracts.Pin> archiveFinalSeedSupplement(ContinuityStorePort.Session borrowed, NativeOutcomeArchive archive,
+            ContinuityState predecessor, ObjectNode details, Set<ExactRef> evidence, DriverBootstrap.Seed seed) throws IOException {
+        if (!importedSavedAttachment(details)) return Optional.empty();
+        StrictJson.require(!details.has(RestoreSeedSupplement.DETAIL_FIELD), "restore seed supplement already supplied before publication");
+        var supplement = finalSeedSupplement(predecessor, details, seed);
+        ExactRef source = archive.preserveArtifact(borrowed, supplement.encode(), RestoreSeedSupplement.MAXIMUM_BYTES);
+        WriterContracts.Pin pin = borrowed.capturePin(source, RestoreSeedSupplement.MAXIMUM_BYTES);
+        details.set(RestoreSeedSupplement.DETAIL_FIELD, pin.toJson());
+        evidence.add(pin.reference());
+        evidence.add(supplement.originalHistoryBasis());
+        supplement.loop().ifPresent(loop -> evidence.add(loop.originalFacts()));
+        return Optional.of(pin);
+    }
+    static void requireFinalSeedSupplement(ContinuityStorePort.Session borrowed, ContinuityState predecessor, ObjectNode details,
+            Collection<ExactRef> evidence, DriverBootstrap.Seed seed, Optional<WriterContracts.Pin> original) throws IOException {
+        if (!importedSavedAttachment(details)) return;
+        WriterContracts.Pin pin = WriterContracts.Pin.fromJson(details.get(RestoreSeedSupplement.DETAIL_FIELD));
+        var supplement = finalSeedSupplement(predecessor, details, seed);
+        StrictJson.require(original.filter(pin::equals).isPresent() && evidence.contains(pin.reference())
+                && evidence.contains(supplement.originalHistoryBasis())
+                && supplement.loop().stream().allMatch(loop -> evidence.contains(loop.originalFacts())),
+                "restore seed supplement must retain the original Writer evidence");
+        byte[] retained = borrowed.readPinned(pin, RestoreSeedSupplement.MAXIMUM_BYTES);
+        StrictJson.require(supplement.equals(RestoreSeedSupplement.decode(retained)), "retained restore seed supplement differs from the actual final Seed");
+    }
+    private static boolean importedSavedAttachment(ObjectNode details) {
+        return SavedAttachmentSourceStore.SOURCES_SCHEMA_IMPORTED_SAVE.equals(
+                details.path(SavedAttachmentSourceStore.SOURCES_DETAIL).path("schema").textValue());
+    }
+    private static RestoreSeedSupplement finalSeedSupplement(ContinuityState predecessor, ObjectNode details, DriverBootstrap.Seed seed) {
+        ExactRef history = ExactRef.fromJson(predecessor.toJson().get(WriterContracts.DRIVER_HISTORY_BASELINE_FIELD));
+        StrictJson.require(history.equals(seed.originalHistoryBasis()), "final restore seed requires the canonical predecessor history basis");
+        var owner = seed.expectedSession();
+        return new RestoreSeedSupplement(StrictJson.text(details.get("evidence_id")), seed.fullDriver(), seed.driverVersion(),
+                seed.episodeEpoch(), new SessionIdentity(owner.machineId(), owner.game(), owner.sessionId()), history,
+                seed.auxiliary(), seed.loop());
     }
     private DriverSnapshotFacts.Known coldAbandoned(ContinuityStorePort.Session same,Request request)throws IOException {
         coldPrevious.requireArchivedBefore(same,request);return coldPrevious.abandonedFacts();
@@ -185,6 +229,7 @@ public final class RootRestoreAdapters implements AttachmentPort, PublicationPor
                 && stage.finalSeed.fullDriver().equals(ExactRef.fromJson(details.get("restored_full_driver")))
                 && stage.material.provisional().fullDriver().equals(ExactRef.fromJson(details.get("restored_staged_driver")))
                 && stage.material.completedRow().equals(ExactRef.fromJson(details.get("restored_completed_row"))), "exact staged/final Driver source or delta changed");
+        requireFinalSeedSupplement(borrowed, predecessor, details, event.evidence(), stage.finalSeed, stage.seedSupplement);
         for (ExactRef reference : java.util.List.of(stage.finalSeed.fullDriver(), stage.material.provisional().fullDriver(), stage.material.completedRow()))
             readOriginal(borrowed, reference, ARCHIVED_DRIVER_BYTES);
     }
