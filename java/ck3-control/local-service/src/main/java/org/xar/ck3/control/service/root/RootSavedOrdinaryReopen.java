@@ -100,14 +100,19 @@ public final class RootSavedOrdinaryReopen {
             CheckpointPair pair, CheckpointPair.FileWitness materialWitness, SessionIdentity successor) { }
 
     static CommittedData readImmediateCommitted(ContinuityStorePort.Session same, WriterContracts.Pin attachment) throws IOException {
+        return readCommitted(same, attachment, true);
+    }
+
+    private static CommittedData readCommitted(ContinuityStorePort.Session same, WriterContracts.Pin attachment,
+            boolean immediate) throws IOException {
         var head = same.head();
         var edge = same.readHistoricalTransition(attachment);
         var attached = edge.after().toJson();
         String digest = ContinuityJson.digest(attached);
         if (!SavedAttachmentAuthority.KIND.equals(edge.kind()) || !edge.eventPin().equals(attachment)
-                || head.snapshotNeedsRecovery() || !head.indexRepairs().isEmpty() || edge.sequence() != head.state().sequence()
-                || !digest.equals(head.digest()))
-            throw new IOException("an immediate clean committed imported ordinary attachment is required");
+                || head.snapshotNeedsRecovery() || !head.indexRepairs().isEmpty()
+                || immediate && (edge.sequence() != head.state().sequence() || !digest.equals(head.digest())))
+            throw new IOException("a clean committed imported ordinary attachment is required in this canonical history");
         try {
             var details = ContinuityJson.parseObject(edge.details(), ContinuityJson.DOCUMENT_MAX_BYTES);
             var sources = SavedAttachmentSourceStore.Sources.decode(details.get(SavedAttachmentSourceStore.SOURCES_DETAIL));
@@ -145,7 +150,7 @@ public final class RootSavedOrdinaryReopen {
         Objects.requireNonNull(context).writer().requireSession(same);
         context.requireCurrent(deadline);
         driver.requireCommittedImported(attachment);
-        var original = readImmediateCommitted(same, attachment);
+        var original = readCommitted(same, attachment, false);
         var result = new Committed(context, driver, original);
         result.requireCurrent(same);
         return result;
