@@ -7,7 +7,7 @@ serializer and Python decoder. This makes the callback's entry inputs observable
 independently of data produced or changed during the getter.
 
 The frozen source contracts are [six-stage native capture](battle-person-six-stage-native-capture-12004.md),
-[entry context handoff](battle-person-entry-context-handoff-12004.md) and
+[entry context handoff](battle-person-entry-context-12004.md) and
 [installed transfer](native71-person-installed-transfer-12004.md). The new source
 binds the existing exact1.20.0.4 EXE and nine existing Ci getter return sites.
 It reuses the same begin event; the input leaf creates no clock or native query.

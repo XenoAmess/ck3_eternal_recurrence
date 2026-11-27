@@ -1,6 +1,6 @@
 # 第二期六章临时 EDL：四 raw a03 搜片窗
 
-2026-09-29，依据 #451 `933cc3bef` 的[四 raw a03 机器 PTS 清单](four-raw-pts-candidates-20260929-a03.json)（SHA-256 `A1AC7B7B749BFC43ABA612586462872CB76887A4B9F978AA5D99115E89B76C4F`）、[六章生产清单](production-six-chapter-handoff-20260928.md)及当前五组 TTS。此 EDL **只分配搜片窗和剪辑预算**；没有读取或重哈希 GB 级原片，没有转码、抽帧、观片或决定最终 cut 的入出 PTS。十一窗全部仍是 `PTS_CANDIDATE_UNREVIEWED`，可用 clean span = **0 秒**，成片 = **0**，人工 signoff = **无**。表中精确 PTS 是机器识别的**搜片窗首末原始帧**，不是人工核准的剪辑端点；最终使用区间只可在实看后缩小，并另存新 attempt。
+2026-09-29，依据 #451 `933cc3bef` 的[四 raw a03 机器 PTS 清单](four-raw-pts-candidates-20260929-a03.json)（SHA-256 `A1AC7B7B749BFC43ABA612586462872CB76887A4B9F978AA5D99115E89B76C4F`）、[六章生产清单](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/promo/ck3_native_war_ai/episode-02-battle-second-half/production-six-chapter-handoff-20260928.md)及当前五组 TTS。此 EDL **只分配搜片窗和剪辑预算**；没有读取或重哈希 GB 级原片，没有转码、抽帧、观片或决定最终 cut 的入出 PTS。十一窗全部仍是 `PTS_CANDIDATE_UNREVIEWED`，可用 clean span = **0 秒**，成片 = **0**，人工 signoff = **无**。表中精确 PTS 是机器识别的**搜片窗首末原始帧**，不是人工核准的剪辑端点；最终使用区间只可在实看后缩小，并另存新 attempt。
 
 ## 源轨与不可混同的身份
 

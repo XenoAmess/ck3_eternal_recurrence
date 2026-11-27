@@ -1,4 +1,4 @@
-# CK3 1.20.0.3：Robert 解除绝罚的原生树与只读施工交接
+# CK3 1.20.0.3 的罗贝尔解除绝罚原生树与只读查询
 
 当前资格更新（v35，2026-10-03 14:17 实读）：独立绝罚、五个当前角色源、两实际候选和两一般请愿决议的最终条款已为 **production-live primitive**；解除决策仍 **NOT_READY**。29097 / 56513 均 Shown=false / CanSend=false；一般请愿的 unselected 报价不能当作悔罪选项。完整 actual frame、结果与边界见[当前候选专题的 v35 实读](religion-repentance-recipient-candidates-12003.md)。以下 research / static-ready 与尚未实现的措辞保留其各段原始时点，不能覆盖本次明确的生产观测增量。
 
@@ -139,7 +139,7 @@ Gold MCP 的参数只有 `expected_revision`，native key 固定为 `hof_ask_for
 
 本次新资格仅 **research**：没有独立绝罚 trait sample、current route/recipient/repentance/petition native terms、发送或解除结果；不存在 production-live repentance primitive/loop 或 complete。新增 SDK/pipe/game/window/source modifications/build/tests/paid/material/days/G2/Git 全为0，既有 holy-order final terms primitive 的真实资格保持。ROOT收到完整 day/week 字段、newdoc doc-only patch 和 pins 后统一发布，worker 不写中央报告或 canonical source。
 
-收尾采用说明：本页新增代码如有，仅封存为外置补丁，尚未应用到生产 v32；实际读取以本文标注的 artifact/date 为准。接续入口：[度假交接](../handover/2026-10-03-g2-religion-v32-maintainer-vacation-handoff.md)。
+收尾采用说明：本页新增代码如有，仅封存为外置补丁，尚未应用到生产 v32；实际读取以本文标注的 artifact/date 为准。接续入口：[度假交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-03-g2-religion-v32-maintainer-vacation-handoff.md)。
 
 ## 2026-10-03T12:22 新 PID paused 实读
 

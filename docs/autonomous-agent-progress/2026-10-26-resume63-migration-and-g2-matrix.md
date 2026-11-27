@@ -2,7 +2,7 @@
 
 `machine_id: xenoamess-full-tower-eb9d2c1186`；本岗于 2026-10-26 UTC 实际运行 `py tools/ck3_live_run_id.py machine`，exit 0。源码与候选检查观察于 `2026-10-26T14:41:28.529438Z`。本页是只读交接清点，不授构建、动作、当前 Steam/CK3 或存储执行资格；未运行 Maven、SDK、REA 后端或游戏，未改共享生产源、BUILD、冻结 runtime 或初始账本。
 
-依据依次为 [resume62 最新交接](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff.md)、[精确来源索引](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff-source-index.json)、[原八 M 验收表](2026-10-26-g2-resume61-acceptance-resumed.md)、[有限首场范围](2026-10-26-g2-resume61-first-live-acceptance-scope.md)、[一期迁移计划](../python-java-incremental-migration-plan-2026-10-22.md)及[Java 架构](../java-next-generation-architecture-2026-10-22.md)。首场表的旧候选及计数与 resume62 冲突时，以后者和原实际回执为准。
+依据依次为 [resume62 最新交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-26-java-g2-resume62-rea-runtime-handoff.md)、[精确来源索引](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff-source-index.json)、[原八 M 验收表](2026-10-26-g2-resume61-acceptance-resumed.md)、[有限首场范围](2026-10-26-g2-resume61-first-live-acceptance-scope.md)、[一期迁移计划](../python-java-incremental-migration-plan-2026-10-22.md)及[Java 架构](../java-next-generation-architecture-2026-10-22.md)。首场表的旧候选及计数与 resume62 冲突时，以后者和原实际回执为准。
 
 本文 `P` 指 `ck3_autonomous_player/src/xar_autoplayer/`；`S` 指 `D:/codex-ck3-demos/2026-10-25-java-g2-complete31-h5r5/java/ck3-control/`。源码存在与可读不表示该叶已编进最终发行图。仓库 `java/ck3-control/`、可复用 S 和 i61 不是同一份完整最新源码；i61 只有交接所述的部分投影。
 

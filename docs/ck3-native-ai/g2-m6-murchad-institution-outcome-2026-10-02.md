@@ -4,7 +4,7 @@
 
 ## 原合同与结论
 
-[原 G2 requirements](../autonomous-agent-progress/g2-requirements-v1.json) 的 `G2-M6.visible_outcome` 要求 `complete one scheme, one prisoner or institutional action, one non-religious decision or law project, and one activity lifecycle`；[度假交接](../handover/2026-10-02-g2-r11-maintainer-vacation-handoff.md) 第 123 行同样明确“一囚犯或制度动作”。合同没有要求必须处理囚犯，也没有排除内阁制度动作。
+[原 G2 requirements](../autonomous-agent-progress/g2-requirements-v1.json) 的 `G2-M6.visible_outcome` 要求 `complete one scheme, one prisoner or institutional action, one non-religious decision or law project, and one activity lifecycle`；[度假交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-02-g2-r11-maintainer-vacation-handoff.md) 第 123 行同样明确“一囚犯或制度动作”。合同没有要求必须处理囚犯，也没有排除内阁制度动作。
 
 据此，Murchad 已完成的一次**合法填补管家空缺**可以满足这一制度子项：它实际恢复了原来空缺的行政席位，选择当帧原生合法候选中已观测 stewardship 最高者，并独立确认其在征税任务上任职、被下一正式回合消费及冷恢复后保持。当前真实囚犯集合为 `total_count=returned_count=0`，没有赎金机会；不需为了计数补消费者或创造另一动作。
 

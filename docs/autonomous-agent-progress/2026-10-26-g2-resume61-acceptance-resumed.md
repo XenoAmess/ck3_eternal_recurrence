@@ -1,6 +1,6 @@
 # Resume61 恢复执行后的 G2 验收矩阵
 
-记录机器：`machine_id: xenoamess-full-tower-eb9d2c1186`。恢复后观测于 2026-10-26 UTC；本岗 `/root/acceptance` 只运行下述受管软件回归，未启动游戏。机器、容量与有限资源窗口消费 Capacity 本轮实际回执，不重放旧卡。本文件接续 [runtime-priority handoff](../handover/2026-10-26-java-g2-resume61-runtime-priority-handoff.md)，不采用早于 result42 的旧排队状态。
+记录机器：`machine_id: xenoamess-full-tower-eb9d2c1186`。恢复后观测于 2026-10-26 UTC；本岗 `/root/acceptance` 只运行下述受管软件回归，未启动游戏。机器、容量与有限资源窗口消费 Capacity 本轮实际回执，不重放旧卡。本文件接续 [runtime-priority handoff](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-26-java-g2-resume61-runtime-priority-handoff.md)，不采用早于 result42 的旧排队状态。
 
 本轮用户的新恢复令重新要求维持60并发，同时推进智能体开发、八M和相关原生研究；它覆盖交接中的旧停止令及旧撤销60调度要求。实际软件运行仍受 Root 的资源、单 writer 与有限窗口协调，不复用旧时钟。
 

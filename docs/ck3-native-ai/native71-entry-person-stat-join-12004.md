@@ -2,7 +2,7 @@
 
 This continuation connects an already composed historical modifier PC to the existing explicit `KnightEffectivenessStage12003` input. It reuses Native64/65 composition and Native66/67 consumed-context/Entry evidence; it does not repeat their arithmetic, producer FIRST or registered MCP qualification.
 
-Exact build is CK3 **1.20.0.4 / Steam25734779**, retained EXE SHA-256 `98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518`. Source anchors are [the prior handoff](battle-person-entry-context-handoff-12004.md) and [actual receiver association](knight-effectiveness-receiver-association-12004.md). The held wrapper prefix is `D:/codex-ck3-background-spill/native65-knight-context-association/actual-prefix01/SOURCE-02C06D10.json`; no bytes are recaptured here.
+Exact build is CK3 **1.20.0.4 / Steam25734779**, retained EXE SHA-256 `98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518`. Source anchors are [the prior handoff](battle-person-entry-context-12004.md) and [actual receiver association](knight-effectiveness-receiver-association-12004.md). The held wrapper prefix is `D:/codex-ck3-background-spill/native65-knight-context-association/actual-prefix01/SOURCE-02C06D10.json`; no bytes are recaptured here.
 
 The actual source path is `2634504 -> 2C06D10`, `2C06D26 -> 28BFC50`, returned selected Character at `2C06D2B` transferred from RAX to RDX, then mode0 `2C06D36 -> 2C06AE0`. The selected Character is distinct from the returned modifier context `C` and historical `Model=C-0x10`. Nine `28C3AC0` returns are preserved separately. Their copied `C+0x68` PCs, original operands and observed wrapper output already feed the production numerical projector.
 

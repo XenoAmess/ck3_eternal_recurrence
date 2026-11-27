@@ -26,9 +26,9 @@ DEV69运行期确已接入本地qwen38-coder，原BATCH53有真实 SELECT_PROPOS
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`。本轮开始于2026-10-29 14:39Z附近；时间采用UTC。用户最初要求60并发智能体和本地模型高采用，续行期间最新明确取消强维60；当前按实际任务安排，最优先同Game实际决策与自动游玩。本地模型继续优先承担真实实现候选，退化输出据实拒收并由owner接管。
 
-下文 `O` 为本机原件根 `D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration`；S、Z、MB与m2沿[运行交接](../handover/2026-10-29-java-g2-resume63-runtime-handoff.md)的精确映射。
+下文 `O` 为本机原件根 `D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume63/host_integration`；S、Z、MB与m2沿[运行交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-29-java-g2-resume63-runtime-handoff.md)的精确映射。
 
-已读取[总交接](../handover/2026-10-29-java-g2-resume63-vacation-handoff.md)、[运行现场](../handover/2026-10-29-java-g2-resume63-runtime-handoff.md)和[source-index](../handover/2026-10-29-java-g2-resume63-vacation-handoff-source-index.json)。seq71/旧票57、worker57真实exit4、已采用源码与Main317产物的差异均保留，不把交接作为目标已完成。
+已读取[总交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-29-java-g2-resume63-vacation-handoff.md)、[运行现场](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-29-java-g2-resume63-runtime-handoff.md)和[source-index](../handover/2026-10-29-java-g2-resume63-vacation-handoff-source-index.json)。seq71/旧票57、worker57真实exit4、已采用源码与Main317产物的差异均保留，不把交接作为目标已完成。
 
 ## 本轮分工与运行边界
 

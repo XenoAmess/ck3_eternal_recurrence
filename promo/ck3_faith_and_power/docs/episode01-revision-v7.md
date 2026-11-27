@@ -53,4 +53,4 @@
 
 ### 2026-10-20用户确认与后续交接
 
-用户已明确确认一期成功，并要求维护者休假、编写交接。当前状态为USER_CONFIRMED_SUCCESS；上文人审/签收未执行仅保留2026-10-19生产时观察。后续同事从[成功交接](../../../docs/handover/2026-10-20-faith-engine-episode01-success-handover.md)开始，沿用最终V7和D封面，不依据旧缺图或旧排期重做一期。
+用户已明确确认一期成功，并要求维护者休假、编写交接。当前状态为USER_CONFIRMED_SUCCESS；上文人审/签收未执行仅保留2026-10-19生产时观察。后续同事从[成功交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-20-faith-engine-episode01-success-handover.md)开始，沿用最终V7和D封面，不依据旧缺图或旧排期重做一期。

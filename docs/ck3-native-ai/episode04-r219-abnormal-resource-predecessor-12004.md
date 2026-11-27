@@ -1,6 +1,6 @@
 # R219 缺失 keeper report 的异常前驱资源准入
 
-`machine_id: desktop-3fevhd2-1c74096080`。2026-10-20T02:31:56–02:31:57Z 按[休假交接](../handover/2026-10-20-war-episode04-vacation-handover.md)及原始小文件读回 R219 / `desktop-3fevhd2-1c74096080--vanilla--R0215`：keeper 最终 `report.json`、原 parent exit 回执确实缺失；host 原始 Popen wait 为 0，原 `normal-close-result.json` 仍为 `normal_close_qualified=false`。本轮没有补造 keeper report、`thread_exited` 或 CK3 OS 退出码；host 0 不授予正常闭场资格。
+`machine_id: desktop-3fevhd2-1c74096080`。2026-10-20T02:31:56–02:31:57Z 按[休假交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-20-war-episode04-vacation-handover.md)及原始小文件读回 R219 / `desktop-3fevhd2-1c74096080--vanilla--R0215`：keeper 最终 `report.json`、原 parent exit 回执确实缺失；host 原始 Popen wait 为 0，原 `normal-close-result.json` 仍为 `normal_close_qualified=false`。本轮没有补造 keeper report、`thread_exited` 或 CK3 OS 退出码；host 0 不授予正常闭场资格。
 
 [公共 allocate](../../tools/ck3_mod_acceptance_allocate.py) 复用既有 `ck3-mod-acceptance-failed-live-resource-closure-v1`，新增明确的 `closure_kind=expired-keeper-missing-final-report` 分支。该分支核原 frozen/READY/prepared、host wait、keeper 和 CK3 原身份、交接来源 SHA；从原 keeper 指向的 canonical bus 精确核事件 **7124→7127**、过期时长、`waiting`/空 resources 和 `retirement.business_status=unresolved_red`，随后检查当前原进程身份、runtime/controllers、屏幕 owner 及 PID/unsafe/watchdog controls 均已缺席。新场仍走原有本机身份、最新前驱、冷输入、存储和屏幕准入。
 

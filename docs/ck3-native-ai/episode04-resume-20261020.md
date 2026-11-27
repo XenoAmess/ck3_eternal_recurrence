@@ -2,7 +2,7 @@
 
 `machine_id: desktop-3fevhd2-1c74096080`；2026-10-20 02:08–02:22 UTC。来源为本轮机器 ID CLI、实际本机 operator MCP、任务总线、卷容量读回及下列精确小型回执。其他机器不能据此取得安装、离线、权限、容量或实机资格。
 
-已接续[休假交接](../handover/2026-10-20-war-episode04-vacation-handover.md)。研究仍为10/14、业务7/11、正式动态0/11、ABC0/3；没有新原始录制或新游戏日。R219实际六天与摘要0的历史缺陷保持原样。
+已接续[休假交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-20-war-episode04-vacation-handover.md)。研究仍为10/14、业务7/11、正式动态0/11、ABC0/3；没有新原始录制或新游戏日。R219实际六天与摘要0的历史缺陷保持原样。
 
 本轮已产出[130秒组合可审章节](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/observations-130s-a01/README.md)，包含分兵／合兵／登船、受控零库存、月界净增兵及县进入四段。使用原生工具链v0.3.0，新MP4为12,222,689 B，SHA-256 `74480cf62a07bcf18fc86c16a0ccc6a7554b4a835c179c4b4d68c405143b0d00`。视频3899帧、129.966667秒；含音频尾部的容器130.052083秒。新文件一次完整AV解码及时间戳检查通过，八张首尾帧已有限审阅；没有重新编码、新TTS、旧素材QA重跑、完整人工1×、signoff或上传。其可审时长不能计为正式动态合格。
 

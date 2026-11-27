@@ -4,7 +4,7 @@
 
 系列名称另存为[品牌记录](series-brand.json)；当前[16:9／4:3封面与设计规则](docs/cover-design.md)保留原封面的暗光、青色数据幽灵和冷静操盘者气质。
 
-**当前审阅版：第4期《大军为什么越走越少？——CK3 行军、补给与损耗》Review01。** 实际28:55.80，六章、69段中文旁白、326组双语字幕；新全片机器核验通过，Root直接审过18张最终编码单帧。A/B/C结果与研究缺口均保持实际边界，人工1×完整观看与签核待完成。精确MP4身份、OneDrive客户端实际状态及他机可复用知识/代码见[第4期实际交接](../../docs/handover/2026-10-06-war-episode04-review01-delivery.md)。
+**当前审阅版：第4期《大军为什么越走越少？——CK3 行军、补给与损耗》Review01。** 实际28:55.80，六章、69段中文旁白、326组双语字幕；新全片机器核验通过，Root直接审过18张最终编码单帧。A/B/C结果与研究缺口均保持实际边界，人工1×完整观看与签核待完成。精确MP4身份、OneDrive客户端实际状态及他机可复用知识/代码见[第4期实际交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-06-war-episode04-review01-delivery.md)。
 
 **2026-09-24交付记录：加入全系列唯一主题音乐的第 0 集完整审阅版。** 片长 37:04.888，八章、45 段 IndexTTS 旁白、五段连续原版实机画面、双语字幕和播放器章节书签。主题音乐是用户提供的 `Quiet Courtly Tension.wav`；一首曲子循环铺底，旁白不降音量，音乐固定 -17 dB，不做随旁白变化的 ducking。新片 `CK3-War-AI-Episode-0-Series-Theme-Review-20260924.mp4` 与原曲 WAV 已由 OneDrive 桌面客户端上传到 `CK3-War-AI-20260923`；[v5 构建记录](build-records/v5-theme-fullfilm-20260924-r1.json)绑定精确字节和证据范围。画面、章节、研究边界及声音均承接 [v4 IndexTTS 母版](build-records/v4-index-fullfilm-20260924-r1.json)；人工 1× 全片审阅和签核待用户完成。旧片的[审片结论、研究清单与重做标准](../../docs/ck3-native-ai/war-video-research-rebuild-2026-09-23.md)仍是本次重制依据。
 

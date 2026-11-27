@@ -1,6 +1,6 @@
 # 《CK3：信仰与权力》第一期 V7 本地审阅交付
 
-> **2026-10-20后继：用户已明确确认一期成功。** 当前接手见[成功交接](../handover/2026-10-20-faith-engine-episode01-success-handover.md)及[确认小索引](evidence/faith-engine-episode01-success-20261020.json)。下文保留2026-10-19生产时的技术检查、待人审状态与实际文件身份；后继用户确认不补造具体观看方式或平台上传事实。
+> **2026-10-20后继：用户已明确确认一期成功。** 当前接手见[成功交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-20-faith-engine-episode01-success-handover.md)及[确认小索引](evidence/faith-engine-episode01-success-20261020.json)。下文保留2026-10-19生产时的技术检查、待人审状态与实际文件身份；后继用户确认不补造具体观看方式或平台上传事实。
 
 `machine_id: 4-8e1c2f1861`；原生产进程于`2026-10-19T13:44:11.792039+00:00`实际wait0，`2026-10-19T13:44:22.262495+00:00`封存本地交付。技术与所列画面抽查通过；完整人工1倍速听看片和签收未完成。当前研究及演示版本为**CK3 1.20.0.4**。
 
@@ -40,4 +40,4 @@
 
 ## 2026-10-20用户确认一期成功
 
-用户原话：“信仰引擎一期成功了。你要去度假了。编写交接文档给后续接手的同事，到docs。” 据此一期以USER_CONFIRMED_SUCCESS交接，后续不再等待旧待签收流程。`machine_id: 4-8e1c2f1861`；`2026-10-19T18:22:33.967614+00:00`只读核对最终媒体、字幕、关键输入与D封面19项通过，视频仅核存在性/大小且沿用生产者SHA；没有重新播放、编码或启动CK3。正式名称为CK3:信仰引擎，D双比例封面和A/B/C/D存根已入库。详情见[新交接](../handover/2026-10-20-faith-engine-episode01-success-handover.md)。
+用户原话：“信仰引擎一期成功了。你要去度假了。编写交接文档给后续接手的同事，到docs。” 据此一期以USER_CONFIRMED_SUCCESS交接，后续不再等待旧待签收流程。`machine_id: 4-8e1c2f1861`；`2026-10-19T18:22:33.967614+00:00`只读核对最终媒体、字幕、关键输入与D封面19项通过，视频仅核存在性/大小且沿用生产者SHA；没有重新播放、编码或启动CK3。正式名称为CK3:信仰引擎，D双比例封面和A/B/C/D存根已入库。详情见[新交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-20-faith-engine-episode01-success-handover.md)。

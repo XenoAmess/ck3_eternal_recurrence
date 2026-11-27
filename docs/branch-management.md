@@ -285,19 +285,19 @@ ref as part of delivery rather than as a later cleanup project.
 
 本地 common-dir 审计起始为 66 条分支，43 条有工作树。另退役未检出的 `holy-order-source-condition30-first-20261006`。8 个提交补丁相同，剩余 mapper 提交除 CMake include 位置外等价于 `700406a4d6`，该 include 在绿色主线中已核对。退役后余 65 条。原 tip 已在 `D:/ck3-state/ck3-master-integration-20261126/local-residue-4bfc/holy-order-source-condition30-first.bundle`，SHA-256 为 `0f77bce1340a13869fcda64e067eb89c8f2d7183960293d2a812bf17a2e9e08f`。Z 盘用户工作树上的两个提交已通过补丁等价核对，工作树有未提交修改。[已覆盖主线 CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39957553119) [DES 专项 CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/45801837726)
 
-最后一条 DES 继承人分支的原始 28 个提交已纳入主线的[可恢复归档](handover/archives/dynastic-heir-stock-input-20261025.md)。
+最后一条 DES 继承人分支的原始 28 个提交已纳入主线的[可恢复归档](maintenance/retired-git-refs/dynastic-heir-stock-input-20261025.md)。
 已验证从 GitHub 取得单个主线前置提交即可在独立仓库恢复原 tip 和源码树。
 主线继续使用已验收的离线合同。公开帝国恢复的 S1 实机证据和旧编排的冻结类型依赖按原状态记录。
 
 15:26 UTC，旧实机冻结候选和后继线性重放是本轮本地分支存量的主要来源。依照已通过的
 `95df3809be`，35 条分支引用已退役。原提交、源码与恢复方法见
-[旧自动游玩分支归档](handover/archives/retired-local-autoplay-20261126.md)。原工作树维持原提交，
+[旧自动游玩分支归档](maintenance/retired-git-refs/retired-local-autoplay-20261126.md)。原工作树维持原提交，
 已检出的干净工作树切到同一提交的 detached HEAD，写入冻结标记。未提交源码和在用工作树按现有所有权处理。
 分支审计和还原回执位于 `D:/ck3-state/ck3-mainline-closeout-20261126`。
 [主线官方 CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39957553119)
 
 旧分支中尚缺的七份静态研究原文和 Construction FIRST02 的离线记录已补回。战斗胜方所属 War 的
-1.20.0.3 专用原始实验完整保存于[独立归档](handover/archives/battle-winner-war-membership-12003.md)，
+1.20.0.3 专用原始实验完整保存于[独立归档](maintenance/retired-git-refs/battle-winner-war-membership-12003.md)，
 原验证状态和当前原生运行资格各依原记录。
 
 第二批以同一绿色主线为依据，又退役主仓库 17 条和独立克隆 6 条引用，本轮合计 58 条。

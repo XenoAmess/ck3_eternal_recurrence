@@ -1,6 +1,6 @@
 # M7 剩余交付：复用已有 Clan 路径
 
-`machine_id: xenoamess-full-tower-eb9d2c1186`；本轮只读核对始于 `2026-10-22T11:13:42Z`。同刻实际执行 `tools/ck3_live_run_id.py machine` 读回该 ID。本文只更新施工认识，不改原路线图、状态 JSON、冻结运行图或历史结果。当前依据 [10 月 22 日交接](../handover/2026-10-22-robert-source32-a41-recovery-vacation-handoff.md)保留 **G2 6/8、M7 in_progress**；本文不增加游戏日、政府或 seed 资格。
+`machine_id: xenoamess-full-tower-eb9d2c1186`；本轮只读核对始于 `2026-10-22T11:13:42Z`。同刻实际执行 `tools/ck3_live_run_id.py machine` 读回该 ID。本文只更新施工认识，不改原路线图、状态 JSON、冻结运行图或历史结果。当前依据 [10 月 22 日交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-22-robert-source32-a41-recovery-vacation-handoff.md)保留 **G2 6/8、M7 in_progress**；本文不增加游戏日、政府或 seed 资格。
 
 ## 原合同与剩余范围
 

@@ -75,9 +75,9 @@ Root报告R06 a44 507 census新owner military `4A9`／raw1、enabled=true但无p
 
 `machine_id: desktop-3fevhd2-1c74096080`；观察至2026-10-16 18:41 UTC。[R186](../../../docs/ck3-native-ai/episode04-r186-window-capture-12004.md)完成14日／36.700秒并按第一显示项处理陌生事件；[R187](../../../docs/ck3-native-ai/episode04-r187-prestart-failures-12004.md)两次启动前RED无游戏与镜头；[R188](../../../docs/ck3-native-ai/episode04-r188-window-capture-12004.md)第一段原生11日到Mar31、片内30.466秒，有限尾抽帧为Mar30；[独立片后记录](../../../docs/ck3-native-ai/episode04-r188-monthroll-close-12004.md)完成g12到Apr1及正常保存/退出0/释放。R188 hook于片内day12 Arm后超时，observer未Start；+2C0/+2C8两条同值物理写经[copy源码连接](../../../docs/ck3-native-ai/episode04-r08-r188-copy-writers-12004.md)可审，但+28/+30源、实际已付、payer和cadence继续unknown。R06 a31仅source/native NOT RUN；WarOverview a29显式OFF/UI fallback、新flag待a30；[R08 classifier](../../../docs/ck3-native-ai/episode04-r08-classifier-tier-threshold-12004.md)与[关联ID callee](../../../docs/ck3-native-ai/episode04-r08-copy-callee28d6170-12004.md)静态可移机，不加业务分。整卡 **6/14＝42.9%**、业务 **4/11＝36.4%**、合格动态 **0/11**、正式ABC **0/3**；69段口播草稿/现有声音与最终成片、完整1×人工审阅和签核分开计。
 
-R186–R188实际运行及a29 native绑定旧冻结源 `d05b0c780b615faa714fdf0535403bb2e6941faf`。当前仓库已在远端master摄入后到HEAD `53c559aa7f0caca8bc1c92b0c6f44b2ef8f72011`，其上新工作树源码尚无新native/live资格，不能把旧场外推。[当前执行图](../../../docs/ck3-native-ai/episode04-current-execution-map-12004.md)、[新交接](../../../docs/handover/2026-10-17-war-episode04-r188-and-source-intake.md)给出统一下一步；[实际精确清理](../../../docs/maintenance/storage-retention-2026-10-17-r188-exact-reclaim.md)本机C allocation回收1,642,663,936 B/D 0，容量需逐场重新准入。下文2026-10-04及后续旧段落保留各自截止状态。
+R186–R188实际运行及a29 native绑定旧冻结源 `d05b0c780b615faa714fdf0535403bb2e6941faf`。当前仓库已在远端master摄入后到HEAD `53c559aa7f0caca8bc1c92b0c6f44b2ef8f72011`，其上新工作树源码尚无新native/live资格，不能把旧场外推。[当前执行图](../../../docs/ck3-native-ai/episode04-current-execution-map-12004.md)、[新交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-17-war-episode04-r188-and-source-intake.md)给出统一下一步；[实际精确清理](../../../docs/maintenance/storage-retention-2026-10-17-r188-exact-reclaim.md)本机C allocation回收1,642,663,936 B/D 0，容量需逐场重新准入。下文2026-10-04及后续旧段落保留各自截止状态。
 
-2026-10-04。用户已授权开始高并发研究与拍摄。本总账汇总首批并行工作包，沿用[导演案](director-plan.md)与[交接](../../../docs/handover/2026-10-04-war-episode04-march-logistics.md)的20–40分钟交付范围，编辑目标30–35分钟。**机制文件研究、最小观测增量及拍摄配方已有新成果；本期主案尚待新实机可行性核对，A/B/C出发档尚未冻结，正式录像尚未取得。**
+2026-10-04。用户已授权开始高并发研究与拍摄。本总账汇总首批并行工作包，沿用[导演案](director-plan.md)与[交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-04-war-episode04-march-logistics.md)的20–40分钟交付范围，编辑目标30–35分钟。**机制文件研究、最小观测增量及拍摄配方已有新成果；本期主案尚待新实机可行性核对，A/B/C出发档尚未冻结，正式录像尚未取得。**
 
 游戏身份重新核对为 CK3 **1.20.0.3 / Steam25652598**；当前安装 EXE SHA-256 `94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6`。本包读取源码最终快照为 `f8530f4aeb64735dbeae4831f3bc6c315276bb88`；后续运行必须绑定真正加载的源码、DLL与输入，不能把该阅读快照自动当作部署事实。
 
@@ -358,12 +358,12 @@ R03 已按原始研究卡逐项复核并闭合研究核心：起点 **21/21 ArRg
 
 ## 2026-10-16 07:43 北京时间：实际最新状态
 
-`machine_id: desktop-3fevhd2-1c74096080`，观察截至 `2026-10-15T23:43:41Z`。R0178的32日处理臂有效；R0179对照30日后在day31接敌，未完成固定32日，**R07 pair未通过，整卡维持6/14＝42.9%、业务4/11＝36.4%**。两场均正常保存/退出0，资源关闭后源码冻结解除。已入库的R04/R05/R06/R09方案/代码、费用向量源码不增加实机卡通过；军事已付归因仍未闭合。69段实际配音已生产，但合格动态仍0/11，完整人工审阅/签核/成片交付均未完成。[实际闭场、知识入库、验证与下一步](../../../docs/handover/2026-10-16-war-episode04-source-integration-and-interrupted-control.md)。
+`machine_id: desktop-3fevhd2-1c74096080`，观察截至 `2026-10-15T23:43:41Z`。R0178的32日处理臂有效；R0179对照30日后在day31接敌，未完成固定32日，**R07 pair未通过，整卡维持6/14＝42.9%、业务4/11＝36.4%**。两场均正常保存/退出0，资源关闭后源码冻结解除。已入库的R04/R05/R06/R09方案/代码、费用向量源码不增加实机卡通过；军事已付归因仍未闭合。69段实际配音已生产，但合格动态仍0/11，完整人工审阅/签核/成片交付均未完成。[实际闭场、知识入库、验证与下一步](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-16-war-episode04-source-integration-and-interrupted-control.md)。
 
 
 ## 2026-10-16 并发新入口与R0180：源码、业务和素材分列
 
-机器`desktop-3fevhd2-1c74096080`；[新交接](../../../docs/handover/2026-10-16-war-episode04-concurrent-research-and-r0180.md)
+机器`desktop-3fevhd2-1c74096080`；[新交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-16-war-episode04-concurrent-research-and-r0180.md)
 集中列出县condition/actor/relation/preview、ready T0、ADD publisher/owner、R10 horizon/evidence预算的当前真实路径。
 这些新增源码不追认为R0180/a09已部署或已取得业务正例。`12FF8D0`只证明owner+desired与submission；执行时机unknown。
 

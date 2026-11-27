@@ -2,7 +2,7 @@
 
 **2026-10-03 16:23 R15 当前能力：** Robert 29829 的一次县任务“观察 → 选择 → typed 提交 → 独立 task/owner/incumbent/target 读回”已实机 GREEN，限定为 **production-live loop（县任务派遣）**。目标 Province2629 / FullTitle2173；FullTaskID7162 保持不变而实际类型已变为 `task_conversion`。县转换完成仍为 false，游戏日和 G2 credit 增量均为 0；下文带时间的 research/static-ready 记录保留为各阶段事实，最新实机证据见页末 R15 节。
 
-**2026-10-03 11:32 接续采用：** component→glue的13代码路径已采用到集成源码，复用现 `ck3_query_player_clergy_appointment_v1` 返回独立 `county_conversion`。原component7case/28断言/7JSON、fullwire7断言与注册MCP21断言GREEN直接复用，无新语义/重复验证；原RED保留。目标Faith/Rite与实际县价值未补造，组合DLL/Robert暂停帧仍待完成，状态static-ready。见[接续账本](../handover/2026-10-03-g2-v33-resume.md)。
+**2026-10-03 11:32 接续采用：** component→glue的13代码路径已采用到集成源码，复用现 `ck3_query_player_clergy_appointment_v1` 返回独立 `county_conversion`。原component7case/28断言/7JSON、fullwire7断言与注册MCP21断言GREEN直接复用，无新语义/重复验证；原RED保留。目标Faith/Rite与实际县价值未补造，组合DLL/Robert暂停帧仍待完成，状态static-ready。见[接续账本](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-03-g2-v33-resume.md)。
 
 2026-10-03 **research / file-only**。宗教领域已全面开放，本页聚焦罗贝尔领地中 `task_conversion` 的真实目标、最终月进度率和宗教民意价值。复用[祭司与任务合法性](religion-clergy-council-native-ai-12003.md)、[ReligiousRelations 价值](religious-relations-task-value-native-ai-12003.md)及[宗教治理／意见](religion-governance-opinion-native-ai-12003.md)，不重做 Task 身份解析、CanFire、既有 RR 实机、旧 ABI verifier 或夹具。
 

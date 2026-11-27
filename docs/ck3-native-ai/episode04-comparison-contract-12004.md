@@ -48,4 +48,4 @@ R02、损耗/补员主体归因与B诊断资格复用已有结果；若保留费
 
 新全文/声音、渲染、机器审计、人工1×完整看听、精确字节signoff与指定交付各自结算。此只读比较工具输出固定`live_execution_performed=false / research_card_closed=false`；任何schema/合成测试PASS均不增加新版实机研究或影片完成百分比。
 
-参见[导演案](../../promo/ck3_native_war_ai/episode-04-march-logistics/director-plan.md)、[既有研究总账](../../promo/ck3_native_war_ai/episode-04-march-logistics/research-status-20261004.md)、[Review01交付](../handover/2026-10-06-war-episode04-review01-delivery.md)、[exact-day来源](exact-day-native-clock-12004.md)、[付款来源](war-payment-passive-12004.md)。
+参见[导演案](../../promo/ck3_native_war_ai/episode-04-march-logistics/director-plan.md)、[既有研究总账](../../promo/ck3_native_war_ai/episode-04-march-logistics/research-status-20261004.md)、[Review01交付](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-06-war-episode04-review01-delivery.md)、[exact-day来源](exact-day-native-clock-12004.md)、[付款来源](war-payment-passive-12004.md)。

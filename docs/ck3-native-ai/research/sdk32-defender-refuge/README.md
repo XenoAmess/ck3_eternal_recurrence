@@ -15,7 +15,7 @@ SDK32窗口27的原AUTO2086没有下单：`native_war_no_alternate_player_held_c
 - [原冻结FINAL](FINAL.json)、[公共源pins](SOURCE-PINS.json)
 - [SDK32 Strategy窄patch](strategy.py.patch)、[Driver窄patch](bridge-native_driver.py.patch)、[公共路径patch](PUBLIC-REFUGE.patch)
 - 测试：`ck3_autonomous_player/tests/unit/test_defender_refuge_candidates.py`
-- [实际失败交接](../../../handover/2026-10-17-p27-native21-continuation.md)
+- [实际失败交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-17-p27-native21-continuation.md)
 - [同期有限性能／CB研究](../sdk32-peace-and-cb-offline/README.md)只作离线报告，不混入本次玩法修复。
 
 30年稳定优先，其后<1秒／日、再0.5秒／日，均未达；本包没有新Native能力、WAL或新游戏／录像限额。

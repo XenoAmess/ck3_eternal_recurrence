@@ -679,4 +679,4 @@ construction and a real vassal/faction intervention. Global G2 stays `1/8`.
 
 ## 2026-09-29 晚间交接更新
 
-09-29 当时用户要求当前执行者收口并停止新工作；这是历史休假交接，后续已由恢复任务及 2026-10-03 完整战争授权接续。该交接时 R0373 为本机最后一场 CK3：已读到角色38293的宴会邀请前候选，未邀请或 Start。后续 #657 LIFE 同日重试、#658/#660 私有规则只读、#663 家庭同帧只读、#662 战时建设只读为源码/测试与配对增量；冻结的宾客规则和建设候选均未运行，#664/#665 为未合入草稿。**G2 仍 3/8，Robert H3911/raw53219928、3,150/36,524 日，长期门 0/1、0/1、0/2。** 当前 master、官方 CI、证据哈希、待清理分支和接手命令见[非战争休假交接](../handover/2026-09-29-nonwar-maintainer-vacation-handoff.md)。当前 PID/owner/RED 仍须从 live source 实时核查。
+09-29 当时用户要求当前执行者收口并停止新工作；这是历史休假交接，后续已由恢复任务及 2026-10-03 完整战争授权接续。该交接时 R0373 为本机最后一场 CK3：已读到角色38293的宴会邀请前候选，未邀请或 Start。后续 #657 LIFE 同日重试、#658/#660 私有规则只读、#663 家庭同帧只读、#662 战时建设只读为源码/测试与配对增量；冻结的宾客规则和建设候选均未运行，#664/#665 为未合入草稿。**G2 仍 3/8，Robert H3911/raw53219928、3,150/36,524 日，长期门 0/1、0/1、0/2。** 当前 master、官方 CI、证据哈希、待清理分支和接手命令见[非战争休假交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-09-29-nonwar-maintainer-vacation-handoff.md)。当前 PID/owner/RED 仍须从 live source 实时核查。

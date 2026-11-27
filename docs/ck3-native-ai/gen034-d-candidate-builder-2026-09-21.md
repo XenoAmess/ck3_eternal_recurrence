@@ -1,4 +1,4 @@
-# GEN-034-D candidate builder handoff (2026-09-21)
+# GEN-034-D candidate builder validation (2026-09-21)
 
 ## Current boundary
 

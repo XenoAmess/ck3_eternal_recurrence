@@ -114,4 +114,4 @@ CCC R0004新run目录、control与零字节probe已实际读回继承压缩属�
 
 新增单叶NVIDIA OTA下载616.92 cache为793,353,272B/0.739GiB，较新未消费，安装驱动仍581.80，不能称安装后残留。固定叶[计划](../handover/2026-10-06-ck3-upgrade-handoff-artifacts/nvidia-cache-exact-plan-NOT-EXECUTED.json)及[入口原件](../handover/2026-10-06-ck3-upgrade-handoff-artifacts/nvidia-cache-delete-NOT-EXECUTED.py.txt)保全，本轮未发执行指令、未删除/执行EXE，不动父目录/DriverStore。WU Download仅17.27MiB、pending UNKNOWN且更新协调进程活跃，全部保留；有限浏览器/Temp检查没有扩扫。
 
-用户要求平稳结束在手任务、不新增任务，故不在本轮开始新的清理或游戏。所有原资产和失败字节保留，具体接手边界见[最新交接](../ck3-upgrade-handoff-2026-10-06.md)。新增清理释放信用0，NoSpace根因和瞬时峰值仍UNKNOWN。
+用户要求平稳结束在手任务、不新增任务，故不在本轮开始新的清理或游戏。所有原资产和失败字节保留，具体接手边界见[最新交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/ck3-upgrade-handoff-2026-10-06.md)。新增清理释放信用0，NoSpace根因和瞬时峰值仍UNKNOWN。

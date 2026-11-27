@@ -262,7 +262,7 @@ gate、未改scope parser或产品业务。现有[离线actual R35验证](C:/wor
 截止14:33:58 UTC，Root已于14:30:15.625440启动R36/PID19552/原session49690，
 使用亲审challenge03/context03；前两次过期nonce保持历史。R36尚在loading并
 等待原qualification logs，没有guards业务或normal0结论，未重播已用R35。
-磁盘处置与精确归因见[交接补记](ck3-upgrade-handoff-2026-10-06.md)；不改变
+磁盘处置与精确归因见[交接补记](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/ck3-upgrade-handoff-2026-10-06.md)；不改变
 公共Source09/FINAL10/bound11合同或增加新平台/验收门禁。TED实际推送后正式7/10，
 QOL完整源码验收与发布仍pending。
 

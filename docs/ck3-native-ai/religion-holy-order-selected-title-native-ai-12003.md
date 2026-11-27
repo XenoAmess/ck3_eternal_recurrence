@@ -87,7 +87,7 @@ GREEN receipt 为外置 `selected-title-parameters/fixture/attempt-02/RESULT.jso
 
 用户要求度假温和收尾后，本包只完成正在运行的联合 case并封存，不新增 glue、normalizer、fixture、ABI方向或 v33部署。ROOT后续采用入口是：把三个 cpp加入现宗教 opt-in CMake source list；在现 application-main reader callback中绑定 `BindHolyOrderSelectedTitleTermsImage12003`，以当前actor/frame调用 `ReadHolyOrderSelectedTitleTerms12003` 并正式序列化；再接同宗教 opt-in的单独 current-player MCP transport，并完成一次真实 Robert paused selected query。当前只记录这些入口，没有开始实现它们。
 
-收尾采用说明：本页新增代码如有，仅封存为外置补丁，尚未应用到生产 v32；实际读取以本文标注的 artifact/date 为准。接续入口：[度假交接](../handover/2026-10-03-g2-religion-v32-maintainer-vacation-handoff.md)。
+收尾采用说明：本页新增代码如有，仅封存为外置补丁，尚未应用到生产 v32；实际读取以本文标注的 artifact/date 为准。接续入口：[度假交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-03-g2-religion-v32-maintainer-vacation-handoff.md)。
 
 ## 2026-10-03T12:31 接续源码采用
 

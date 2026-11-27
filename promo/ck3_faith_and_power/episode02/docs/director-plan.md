@@ -129,7 +129,7 @@ B34/R0021实际12次公共调用，升格／建制／大圣战提交均0，录�
 
 ## 9 依据
 
-- [一期成功交接与已覆盖范围](../../../../docs/handover/2026-10-20-faith-engine-episode01-success-handover.md)。
+- [一期成功交接与已覆盖范围](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-20-faith-engine-episode01-success-handover.md)。
 - [一期V7完整中文稿](../../docs/episode01-narration-v7.zh.md)、[系列方法](../../docs/production-lessons.md)、[制作经验](../../docs/production-experience.md)。
 - [旧二、三期提案](../../director-plan.md)，只作选题与来源入口；本案重新去重和编排。
 - [本期研究、原生缺口、工作量与节点](research-and-production-plan.md)。

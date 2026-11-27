@@ -1,6 +1,6 @@
 # G2 fresh11：开局根查询超时与接续修复
 
-接续[第二次休假交接](../handover/2026-10-13-g2-continuation-vacation-handoff.md)。用户要求继续从头以1066罗贝尔使用完整普通规划器。旧受限场次不计入本轮成绩。
+接续[第二次休假交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-13-g2-continuation-vacation-handoff.md)。用户要求继续从头以1066罗贝尔使用完整普通规划器。旧受限场次不计入本轮成绩。
 
 ## 实际结果
 

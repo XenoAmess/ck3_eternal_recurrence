@@ -326,7 +326,7 @@ Runtime重新核当前进程/归属与机器、使用独立profile和原受保�
 
 用户明确：“做个阶段性收尾，然后提交推送。ck3过会儿要更新了，我要自己玩了。”这是当前停止新增执行的指令，覆盖下方持续研究及模型代管要求。停止新增源码、编测、模型HTTP、业务worker、Game/Native查询和动作、采样、部署、恢复、装载、launch、GET及新source窗口；仅收束指令前已BEGIN的原作业、正常退出/释放与本次文档Git发表。单纯已签P/Ready不等于已BEGIN。
 
-Runtime独占正常关场，不粗杀、不重旧SAVE/UNKNOWN。原Game已正常GUI Exit to Desktop且取消退出自动保存，原creator已NATURAL_EXIT/cleanup_proven/Jobactive0；keeper退出、旧及临时SCREEN claim均已释放。具体时间、原件和最新阶段见[本次交接](../handover/2026-11-18-java-g2-resume91-player-takeover-handoff.md)及[源码证据索引](../handover/2026-11-18-java-g2-resume91-player-takeover-handoff-source-index.json)。软件3distinct分批P不授实机新鲜度、Host/Driver采用或SAVE；P0新Main未启动。业务/CI13未发表WIP保留，不混入本次8文档提交。
+Runtime独占正常关场，不粗杀、不重旧SAVE/UNKNOWN。原Game已正常GUI Exit to Desktop且取消退出自动保存，原creator已NATURAL_EXIT/cleanup_proven/Jobactive0；keeper退出、旧及临时SCREEN claim均已释放。具体时间、原件和最新阶段见[本次交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-11-18-java-g2-resume91-player-takeover-handoff.md)及[源码证据索引](../handover/2026-11-18-java-g2-resume91-player-takeover-handoff-source-index.json)。软件3distinct分批P不授实机新鲜度、Host/Driver采用或SAVE；P0新Main未启动。业务/CI13未发表WIP保留，不混入本次8文档提交。
 
 后续仅在用户明确恢复后继续；先重新核更新后的机器、EXE/build、实际DLL和游戏/profile/lease。不得复用旧PID、source窗口、已消费P、旧Main wrapper或注入地址，不因旧自动游玩授权重占用户会话。原head2003、savedPair、lineage及UNKNOWN事实保持，历史资料按原保护与通用存储策略到期复核。
 
@@ -344,7 +344,7 @@ Runtime独占正常关场，不粗杀、不重旧SAVE/UNKNOWN。原Game已正常
 
 用户最新明确：“你要去度假了。编写交接文档到docs，这个工作后续有你的同事接手。”本次真实新指令覆盖下方11月11日正常持续工作及历史“继续”授权。停止新增实现、编测、本地模型HTTP及请求准备、业务worker、Game/Native live查询与动作、采样、录像、部署、装载、launch、恢复和GET；只收束指令前已经BEGIN的事项及本次交接的正常Git发表。
 
-接手入口：[本次总交接](../handover/2026-11-16-java-g2-resume91-vacation-handoff.md)、[源码与证据索引](../handover/2026-11-16-java-g2-resume91-vacation-handoff-source-index.json)、[Native交接](../native-handoff-2026-11-16-vacation.md)。先读三份入口；只有本次休假之后的明确续行指令才恢复新增执行。此前E19环境消息无新STOP的声明仅说明其较早切点，不覆盖本次真正新休假。旧11月7日入口及历史原件保留，不按旧head47/Sway事实覆盖当前现场。
+接手入口：[本次总交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-11-16-java-g2-resume91-vacation-handoff.md)、[源码与证据索引](../handover/2026-11-16-java-g2-resume91-vacation-handoff-source-index.json)、[Native交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/native-handoff-2026-11-16-vacation.md)。先读三份入口；只有本次休假之后的明确续行指令才恢复新增执行。此前E19环境消息无新STOP的声明仅说明其较早切点，不覆盖本次真正新休假。旧11月7日入口及历史原件保留，不按旧head47/Sway事实覆盖当前现场。
 
 最后实际E18为FAILED_IDLE_NO_RETRY/head2001：原ARM80于1996独立确认；新CANCEL2000为BEFORE_WRITE/0bytes终态拒绝，原父仍UNKNOWN。委托START至END3673.2212536秒，0新增日/SAVE/LOOP；长期宿主、Game与keeper的当前存活/退出/资源释放NOT_HELD。本次不为交接新发STOP、SAVE、现场或OS查询、GET，不将委托END等同所有进程已停。
 
@@ -355,7 +355,7 @@ Runtime仍独占现场、账本、source307/build307、采用和GET；Game、kee
 - 用户明确要求升级本机 Steam 管理的 CK3，并把研究成果、视频分支及其他有价值的关联成果全部整合回 `master`。2026-09-30 的禁止接收后续 master / 禁止向 master 推送约束已在本任务中解除。
 - 旧执行树、原片、失败 attempt、配置及构建输入继续保留；原始来源提交以 `archive/war-handover-20261002/*` 标签保全。历史 1.19.0.6 实机证据不能外推为 1.20 实机验收。
 - 必要的 Steam 在线升级已完成，客户端已恢复离线；后续开发及实机仍执行下文默认离线和账号占用规则。
-- 原隔离指令作为历史记录保留在 `docs/handover/2026-09-30-ie-research-isolation.md`；本次版本、来源、验证和未完成能力边界见 `docs/handover/2026-10-02-war-master-integration-and-steam-upgrade.md`。
+- 原隔离指令作为历史记录保留在 [原隔离指令](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-09-30-ie-research-isolation.md)；本次版本、来源、验证和未完成能力边界见 [当次实机整合记录](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-02-war-master-integration-and-steam-upgrade.md)。
 
 ## 项目结构
 

@@ -1,4 +1,4 @@
-# Retained planning read handoff
+# Retained planning read borrowing
 
 Feast preparation could run after its short active collector scope had closed, while the same actual planning round still retained its qualified Ready capture. The pure consumer then rejected it with `pure Driver/history consumer requires an already active actual collector lease`.
 

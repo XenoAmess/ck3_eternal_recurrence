@@ -32,7 +32,7 @@ Financial179保RAM24GiB/commit32GiB、全局inner16+outer1GiB及无C bulk，REA4
 
 ## 后续实际更新
 
-用户已要求交接并由别人接手；本轮停止新执行，最新入口为[实机优先交接](../handover/2026-10-26-java-g2-resume61-runtime-priority-handoff.md)及其[实际来源索引](../handover/2026-10-26-java-g2-resume61-runtime-priority-source-index.json)。前述14:45检查点/16:30–18:30目标不再是本执行者继续安排，接手须重新估时。
+用户已要求交接并由别人接手；本轮停止新执行，最新入口为[实机优先交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-26-java-g2-resume61-runtime-priority-handoff.md)及其[实际来源索引](../handover/2026-10-26-java-g2-resume61-runtime-priority-source-index.json)。前述14:45检查点/16:30–18:30目标不再是本执行者继续安排，接手须重新估时。
 
 最后事实纠正：CUnit完整handle的0合法，Root已亲读public_unit_id.hpp、BattleControlRequest及两个mailbox；此前“非法0/生产校验bug”归因撤回。Native完整adapter RED源于两条旧测试预期，M6 test24仅封未采/编/跑，生产拒0补丁从未写。Host54仍94error+13warnings，实际文件并集23而非24；17叶有候选map、3叶只有内存精确操作、3叶未实现，见STOP-HANDOFF54-INDEX01.json。M3最后strict2PASS/原5=3PASS2FAIL，test07未跑；M0cold17的17JUnit未启动。11是计划文件、覆盖10必需角色加CoA辅助来源，不是11已发布角色。六QUOTE和12DECLARE/CENSUS实际PASS，v4 Release/Binding/CREATE/新增DATA均0。
 
@@ -181,7 +181,7 @@ Root 00:33:26Z实际task-bus status/poll至cursor8998/remaining0，60子岗位�
 
 00:08Z后续消息：Host26实际在Maven前RED（child1/11.5705秒、controller13.6653807秒、Job0/三MATCH），未执行javac。真实LS src1353文件/18144192B超过既有R7单模块17MiB上限，Root已直接核共享ControlBuild119，授权只将该源预算调到18MiB并明确绑定局部入口实际来源；不改变冻结R6/S23/S24，不新runner或重复完整S验收。下一次仍复用原SRC/BUILD/m2。b64第七批23窗/14岗/6299B也已实际闭场（74.026975秒、三phase0/Job0/身份MATCH），累计272窗/76341B逻辑新数据，缓存复用不计新采。
 
-本机持续CK3使用授权已由Root直接读取核实：[2026-10-22交接](../handover/2026-10-22-robert-source32-a41-recovery-vacation-handoff.md)第9行明确机器ID、第133行明确继续使用授权仍在、无需重复索取；原件26613B/SHA256 `eb1675da6f8ba4af8912245092deac75875013529889786f4027461b5be29e0a`。这不是从另一机器外推永久授权，也不构成当前Game启动资格；仍需新鲜后台离线及实际运行准入。
+本机持续CK3使用授权已由Root直接读取核实：[2026-10-22交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-22-robert-source32-a41-recovery-vacation-handoff.md)第9行明确机器ID、第133行明确继续使用授权仍在、无需重复索取；原件26613B/SHA256 `eb1675da6f8ba4af8912245092deac75875013529889786f4027461b5be29e0a`。这不是从另一机器外推永久授权，也不构成当前Game启动资格；仍需新鲜后台离线及实际运行准入。
 
 以下为23:15Z时的早期过程，保留失败及来源，不代表上述最新状态：
 
@@ -196,7 +196,7 @@ Root实际Z盘task-bus已于00:03:28Z status/poll至cursor8996/remaining0；不�
 
 `machine_id: xenoamess-full-tower-eb9d2c1186`。本轮观察发生在 2026-10-25 UTC（北京时间 2026-10-26）。用户已明确恢复自动游玩开发、G2 M0–M7 制作及相关原生机制研究，并要求维持 60 并发；本轮恢复令覆盖此前度假停工和研究范围限制。旧撤销的租约仍不重放。
 
-恢复依据是 [R5 最终交接](../handover/2026-10-26-java-g2-incremental-r5-vacation-final-handoff.md)及其[来源索引](../handover/2026-10-26-java-g2-incremental-r5-vacation-final-source-index.json)。Root 已直接调用原 machine 命令重验身份；`collaboration.list_agents` 实际读回 60 个同名子岗位全部 running，完成的 bounded 工作会在原岗位继续派发，不能用旧 completed 名单冒充并发。八 M 业务范围见[当前验收范围](2026-10-26-g2-resume61-first-live-acceptance-scope.md)。
+恢复依据是 [R5 最终交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-26-java-g2-incremental-r5-vacation-final-handoff.md)及其[来源索引](../handover/2026-10-26-java-g2-incremental-r5-vacation-final-source-index.json)。Root 已直接调用原 machine 命令重验身份；`collaboration.list_agents` 实际读回 60 个同名子岗位全部 running，完成的 bounded 工作会在原岗位继续派发，不能用旧 completed 名单冒充并发。八 M 业务范围见[当前验收范围](2026-10-26-g2-resume61-first-live-acceptance-scope.md)。
 
 ## 当前实际编译结果
 

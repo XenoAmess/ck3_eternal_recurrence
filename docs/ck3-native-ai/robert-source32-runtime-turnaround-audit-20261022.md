@@ -13,7 +13,7 @@
 | `C/runtime-a41/p37-responses/11474-1-result.json` | 2205 B；SHA-256 `340844de45b2daca127ca6f9ae6b316d738ade05e63e2e2a828dd07bdb27664a`；原 FULL 汇总 |
 | `C/runtime-a41/p37-queue/CONTROL-TIMING-11474.json` | 24111 B；SHA-256 `f5674ac2e85808293032c301debc9b1417c00704484c806a2387c477d2d97d28`；原有可选 probe，machine ID 一致，原观察终点 04:52:45.938349Z |
 | N41 原响应 11475–11534 | 54 份小于 256 KiB 的原响应；6 份约 1.15 MB 的 mercenary 响应分别读 4096 B 头，后各再读 512 B 头计算原 elapsed；没有读取完整业务载荷或复制输出 |
-| [N39/N41 交接](../handover/2026-10-22-robert-source32-n39-quality-handoff.md)、[当日日报](../autonomous-agent-progress/daily/2026-10-22.md) | N41 原生产者 publish→validated receipt 墙钟 35.3458871 秒与未保存事实；未从旧响应重造生产者时钟 |
+| [N39/N41 交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-22-robert-source32-n39-quality-handoff.md)、[当日日报](../autonomous-agent-progress/daily/2026-10-22.md) | N41 原生产者 publish→validated receipt 墙钟 35.3458871 秒与未保存事实；未从旧响应重造生产者时钟 |
 | [N45 实际闭场](evidence/robert-source32-a45-zero-rpc-closeout-20261022.json) | Root 10:40:23.181862Z 复核的 29 个来源 pins、实际 SDK/Game/Task/Screen 终态；审计另读对应小回执时间字段 |
 | N45 实际 ordinary feeder | `C/runtime-a45/root_p37c23_same_game_loop_feeder100.py`，34079 B，SHA-256 `928bb4da7fb9926bdaf6a4b15e9c60dd85c0dfd9cd581897006face4571a4b5f`；只读现有 main/hold/collect_incidents，未加载或执行 |
 

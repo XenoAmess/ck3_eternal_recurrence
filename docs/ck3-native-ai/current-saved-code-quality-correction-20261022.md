@@ -143,4 +143,4 @@ Root按持久CI同一选择器实际执行 **57项关键回归＋34项完整pref
 
 新cold使用Planv4／Quotev5，必填 `renderer_override_ref` 明确区分null与ExactRef。非null会在继承图中核双旧body／旧Outer tuple一致，再同步两份新body及唯一external项，其余25项和最终封包保持。当前材料的真实RAM compose输出165叶／3649995B，双21038B渲染器、external26、canonical8、closure66以及165份最终len／SHA全部逐项通过；null完整compose也通过。便携永久覆盖包括真实intake→继承构造器、来源及缓存拒绝；145份历史材料的完整compose仍是本机集成，不冒成便携CI。旧到期Full未因此获得执行资格，新A40仍未物化或启动。
 
-首批分段计时builder、真实保存显示、推进中文行动及相应强制零跳过回归均接入持久CI；新图Gate还须实际调用计时builder。此前远端exact4900的Official只有部分步骤观察，不能用本机终验补写远端全绿。连续Game正常退出、1秒/日、G2剩余两项和30年长局仍未完成。完整当前恢复与继续步骤见[Source32／N39交接](../handover/2026-10-22-robert-source32-n39-quality-handoff.md)。
+首批分段计时builder、真实保存显示、推进中文行动及相应强制零跳过回归均接入持久CI；新图Gate还须实际调用计时builder。此前远端exact4900的Official只有部分步骤观察，不能用本机终验补写远端全绿。连续Game正常退出、1秒/日、G2剩余两项和30年长局仍未完成。完整当前恢复与继续步骤见[Source32／N39交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-22-robert-source32-n39-quality-handoff.md)。

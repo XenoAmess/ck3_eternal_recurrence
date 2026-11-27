@@ -75,7 +75,7 @@ A已知EXE读8013B/71reads（headers608、pdata660、code6745）；一次早期�
 
 ## 2026-10-15 窗口缓存故障与下一版修复
 
-机器 `desktop-3fevhd2-1c74096080` 的R0172生产DLL确已部署，付款窗口初次独立查询admitted，但第一真实自然日后因 `snapshot_read_failed` 关闭并清空journal。完整工作经过见[本机交接](../handover/2026-10-15-war-episode04-machine-resume.md)。该失败不授零扣费、登船或维护归因资格。
+机器 `desktop-3fevhd2-1c74096080` 的R0172生产DLL确已部署，付款窗口初次独立查询admitted，但第一真实自然日后因 `snapshot_read_failed` 关闭并清空journal。完整工作经过见[本机交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-15-war-episode04-machine-resume.md)。该失败不授零扣费、登船或维护归因资格。
 
 源码修复区分完整worker快照缓存暂不可用与当前身份失效：只有已admitted的窗口，在full读取失败时读取exact `.4` 适配器的新鲜core身份，再复用原owner/map/alive/connection/date/natural守卫。它不复用旧snapshot、不发布partial、不推进公共revision，也不自动打开或恢复窗口；真正core读取失败仍关闭。`RefreshWarPaymentIdentityAfterSnapshotUnavailable12004` 是该窄路径，不改变任何付款或原函数调用。
 

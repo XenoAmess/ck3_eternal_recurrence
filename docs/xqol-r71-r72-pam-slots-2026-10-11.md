@@ -6,7 +6,7 @@
 
 Source18 / Main `577082f3497a5bb1d94b35eff834423c82c5b77a` / 新正式候选27文件运行 R71/a172。原35步全部 PASS、12个24小时、同一实际 actor34422、17个 required各1、forbidden0；自然接受1/拒绝0、pending清除、Catholic/Roman、Acts精确piety、Mendicant不加piety、两项SP前后及实际doctrine absence均成立，fixture/product error条目为空。run0、once verify0、case/contract qualified。normaltrue、retained OS0、strictnativezero、原allocator61779本人poll0、keeper0、CAS8490 done/resources[]、三closure齐全，16:25:31.347304Z真CLOSED。
 
-本场只签原 `pam_negative`，POST的business_pass/product_release_pass=false保留；同步合法度raw delta仍null。原[双入口卡](handover/2026-10-06-ck3-upgrade-handoff-artifacts/qol-pam-two-entry-card.md)明确该差值为GAP，wrapper的legitimacy_level不能证明+50点。R70旧scope错误及RED不追认。[R71薄回执](C:/workspace/ck3-upgrade-20261010/qol-scene-resume-02/pam_negative--a172/ROOT-FIELD-RETURN-R71-01.json)：13824B / `307cfa469600ef3c2086a8445c5dfce62c7d8000a8b8c42b2a2f03769a72352a`；POST4766B / `41887afbf869584f8abf8e3d2f398ceb2e87a0556e37f3637c315dbf2802a1c9`。
+本场只签原 `pam_negative`，POST的business_pass/product_release_pass=false保留；同步合法度raw delta仍null。原[双入口卡](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-06-ck3-upgrade-handoff-artifacts/qol-pam-two-entry-card.md)明确该差值为GAP，wrapper的legitimacy_level不能证明+50点。R70旧scope错误及RED不追认。[R71薄回执](C:/workspace/ck3-upgrade-20261010/qol-scene-resume-02/pam_negative--a172/ROOT-FIELD-RETURN-R71-01.json)：13824B / `307cfa469600ef3c2086a8445c5dfce62c7d8000a8b8c42b2a2f03769a72352a`；POST4766B / `41887afbf869584f8abf8e3d2f398ceb2e87a0556e37f3637c315dbf2802a1c9`。
 
 ## 正例原观察及最小夹具修订
 

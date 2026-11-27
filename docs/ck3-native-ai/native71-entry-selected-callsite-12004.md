@@ -2,7 +2,7 @@
 
 2026-10-10 / ISO2026-W41. The actual4 knight selection handoff is already held: **`2C06D26 CALL 28BFC50`**, return **`2C06D2B`**, followed by **`2C06D36 CALL 2C06AE0`**, return **`2C06D3B`**. This continuation reuses the actual prefix captured for Native65/66; it does not derive these addresses from the old `2C06D46/2C06D56` or recapture their source.
 
-The frozen identity is CK3 **1.20.0.4 / Steam25734779**, EXE SHA-256 `98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518`, reused without rehashing. The original [Person-to-Entry handoff note](battle-person-entry-context-handoff-12004.md) recorded this callsite as `NOT_HELD` in its finite packet. The later [receiver-association packet](knight-effectiveness-receiver-association-12004.md) supplies the missing actual source and an existing consumed-context observer. Its original packet boundary remains historically true.
+The frozen identity is CK3 **1.20.0.4 / Steam25734779**, EXE SHA-256 `98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518`, reused without rehashing. The original [Person-to-Entry handoff note](battle-person-entry-context-12004.md) recorded this callsite as `NOT_HELD` in its finite packet. The later [receiver-association packet](knight-effectiveness-receiver-association-12004.md) supplies the missing actual source and an existing consumed-context observer. Its original packet boundary remains historically true.
 
 ## Literal extents and transfer
 

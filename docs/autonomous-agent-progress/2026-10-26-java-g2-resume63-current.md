@@ -1,6 +1,6 @@
 # resume63：REA、Java 全能力迁移与 G2 接续
 
-`machine_id: xenoamess-full-tower-eb9d2c1186`。最新续记为 2026-10-28T10:52:08Z，见文末；前文 02:58:28Z 的 UAC、构建和准备状态作为历史保留。任务继续。本页接续 [resume62 交接](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff.md)与[来源索引](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff-source-index.json)。[完整对照](2026-10-26-resume63-migration-and-g2-matrix.md)区分八项业务门槛和全迁移范围。
+`machine_id: xenoamess-full-tower-eb9d2c1186`。最新续记为 2026-10-28T10:52:08Z，见文末；前文 02:58:28Z 的 UAC、构建和准备状态作为历史保留。任务继续。本页接续 [resume62 交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-26-java-g2-resume62-rea-runtime-handoff.md)与[来源索引](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff-source-index.json)。[完整对照](2026-10-26-resume63-migration-and-g2-matrix.md)区分八项业务门槛和全迁移范围。
 
 目标：REA M0–M7研究及Java落地，完整迁移后普通自动游玩。Java启动/日/SAVE/RESTORE均0，G2实机0/8。首启与迁移并行；31000秒仅SDK预算。
 

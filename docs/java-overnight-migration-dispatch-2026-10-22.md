@@ -1,6 +1,6 @@
 # 今晚 Java 迁移：有限范围冻结收口（原56线调度）
 
-休假交接入口：[2026-10-22 Java迁移与长局交接](handover/2026-10-22-java-migration-stabilization-vacation-handoff.md)。所有实现、采样和构建已按用户指令停止，本页后文的自主续项/并发安排只作历史，不能据此自动续工或新增范围。
+休假交接入口：[2026-10-22 Java迁移与长局交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-22-java-migration-stabilization-vacation-handoff.md)。所有实现、采样和构建已按用户指令停止，本页后文的自主续项/并发安排只作历史，不能据此自动续工或新增范围。
 
 **当前调度已于 2026-10-22 转为冻结收口。** 用户最新要求：“先别开新的迁移任务了，把这些现在正在跑的给我平稳落地。”立即停止新增迁移项、package 和自然后继领取；下文的自主续项许可暂停，56 数量目标不再驱动扩项。只收尾已经实际开始编写的有限组件，继续其采样、完整 Java 编译/JUnit、真实生产者到全部消费者闭环、实际接管与 RED 修复。仅列入候选但未写代码的项目取消，等待不计活跃实现。域负责人汇总现有 wave2/wave3/staging/D 草稿及未完依赖，Root 分批整合，不等待所有模块同时完成才实测。
 

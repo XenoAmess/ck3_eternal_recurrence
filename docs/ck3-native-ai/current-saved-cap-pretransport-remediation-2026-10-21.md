@@ -95,7 +95,7 @@ A31（R0019）已安全闭场：原Task的child退出1、Job活跃数0；原Sche
 | A29–30 | A29创建Game后因HWND变化关闭；A30在Task注册前拒绝 | 缺少即时归属证据，不能认定游戏抢焦点；20秒窗口静止是执行者额外要求 |
 | A31 | 完整前缀失败；原Task也在pre-ADMITTED同错退出，0Game | placement污染包搜索路径，另有Root忽略前缀非零结果仍提交Task的操作错误 |
 
-历史入口：[A03–04交接](../handover/2026-10-20-robert-source26-a05-vacation-handoff.md)、[A17真实推进失败](../handover/2026-10-21-robert-source29-a17-clock-failure.md)、[A20保存闭场](robert-a20-saved-progress-2026-10-21.md)。A28–30原始证据见本文前述章节；A31原件见下表。
+历史入口：[A03–04交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-20-robert-source26-a05-vacation-handoff.md)、[A17真实推进失败](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-21-robert-source29-a17-clock-failure.md)、[A20保存闭场](robert-a20-saved-progress-2026-10-21.md)。A28–30原始证据见本文前述章节；A31原件见下表。
 
 ### 共性根因与验收为什么漏过
 

@@ -1,6 +1,6 @@
 # 运行验收器写入错误上下文：2026-10-06
 
-接续[10 月 6 日交接](../ck3-upgrade-handoff-2026-10-06.md)的 H81 候选，将最小诊断改动应用到正式[运行验收器](../../ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py)。它为实际 `OSError` 记录写入目标和子操作，并重抛同一异常。此项不解决磁盘压力，也未取得新 CK3 实机或经商贪腐业务通过。
+接续[10 月 6 日交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/ck3-upgrade-handoff-2026-10-06.md)的 H81 候选，将最小诊断改动应用到正式[运行验收器](../../ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py)。它为实际 `OSError` 记录写入目标和子操作，并重抛同一异常。此项不解决磁盘压力，也未取得新 CK3 实机或经商贪腐业务通过。
 
 ## 原故障与改动范围
 

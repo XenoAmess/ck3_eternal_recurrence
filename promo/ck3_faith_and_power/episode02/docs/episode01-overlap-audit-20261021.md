@@ -8,7 +8,7 @@
 
 ## 1. 审计基线与统计方法
 
-- 一期：用户确认成功的V7，136段、17章、43:54.133；[最终讲稿](C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/value-v7-production-a01/full-final-a04/native-run/derived/direct/text/episode01-script.md)及[成功交接](../../../../docs/handover/2026-10-20-faith-engine-episode01-success-handover.md)。
+- 一期：用户确认成功的V7，136段、17章、43:54.133；[最终讲稿](C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/value-v7-production-a01/full-final-a04/native-run/derived/direct/text/episode01-script.md)及[成功交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-20-faith-engine-episode01-success-handover.md)。
 - 二期：实际交付29:02.400版，88段、52,272帧；[最终讲稿](C:/workspace/ck3-faith-and-power-20261017/episode02/final-render-b27-a01/sample/full-88-a01/native-run/derived/direct/text/episode02-script.md)及[交付记录](local-review-delivery-20261021.md)。冻结制作来源仍为C16，不因本次审计或更新后的master改变。
 - 逐段分类、输入大小/SHA、实际段ID和帧区间：[机器可读审计表](episode01-overlap-audit-20261021.json)。时间按实际段展示帧数、30fps累加，正文取整秒；实际视频PTS另有约0.021秒原点，不影响分钟级比较。
 

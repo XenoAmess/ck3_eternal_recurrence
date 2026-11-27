@@ -55,7 +55,7 @@
 | LIVE-01 | 01、02、16 | 新局普通合格角色，无先知技能，打开礼仪创建／改革／编辑；切换两个选项后取消 | 两个选择可见可用；默认无；原 Rite、Dynasty、House、资源保持，未创建绑定。 |
 | LIVE-02 | 02–04 | 在原生草案选择宗族化并实际提交；同 Rite 有玩家、AI、有地、无地和儿童代表 | 新 Rite 与唯一新 Dynasty／House 双向绑定；创建者及全部已转入信徒加入；未改信的创建者后代保持原归属；无额外模组费用。 |
 | LIVE-03 | 03、12 | 对同一 Rite 编辑、重复同步；关闭后重新开启 | 不重复建族；关闭清除本来源规则且保留历史宗族；重新开启复用原绑定。 |
-| LIVE-03H | 03、04 | 复现现任House head的首次启用；分别有其他合法信徒、唯一信徒但有旧House接任者、旧House仅本人、低born及贵族家族头衔代表 | 合法真实信徒优先；必要交接后原人物实际不再担任House head及Dynast，才原生建族。仍无合法founder时按用户选择生成真实同礼仪成年人，再经同一建族路径。读回玩家、人物、旧新House／Dynasty／头衔持有者、实际新人物和双向绑定，重复初始化不再生人；取消无变化。见[交接候选与原生证据](2026-10-25-house-head-handover.md)。 |
+| LIVE-03H | 03、04 | 复现现任House head的首次启用；分别有其他合法信徒、唯一信徒但有旧House接任者、旧House仅本人、低born及贵族家族头衔代表 | 合法真实信徒优先；必要交接后原人物实际不再担任House head及Dynast，才原生建族。仍无合法founder时按用户选择生成真实同礼仪成年人，再经同一建族路径。读回玩家、人物、旧新House／Dynasty／头衔持有者、实际新人物和双向绑定，重复初始化不再生人；取消无变化。见[交接候选与原生证据](2026-10-25-house-head-succession.md)。 |
 | LIVE-04 | 04、05 | 普通转入、转出、生成角色和实际出生；制造受支持的收养／旁支变化 | 最终 Rite 与应属 Dynasty 一致；合法本族 House 保留；出生次日已同步；记录周期校正实际耗时。 |
 | LIVE-05 | 06–09 | 同族目标转为同 Faith 另一个 Rite，再转不同 Faith；绑定 Rite 观察者查看好感和处罚 | 两种背离均有且仅有本来源 -100；实际监禁理由成立；合法囚禁后处决／放逐理由可读，保留原版管辖限制。 |
 | LIVE-06 | 07、08、13 | 第二个宗族化 Rite、非宗族化 Rite 和其他 Dynasty 的观察者查看同一背离者 | 各负例不获得本来源 -100 或犯罪理由；两个宗族化 Rite 交叉转换后没有旧族残留或新族误判。 |
@@ -77,7 +77,7 @@
 
 2026-10-24 R0003 后、R0004 分配前调整：首次 GUI phase 以实际 `DESAF: TEST PASS fixture_ready` 为门槛；原准备事件使用 `days = 1`，到第 1 日不能替代事件、知识及资金后态。开局保留原 Catholic／Roman Rite，最终资格按原生草案 `Can` 验证。R0003 实际单日动作耗时 8.566 秒，至后续 snapshot 完成共约 12.315 秒；400 日的纯日推进规划估计约 82 分钟。故下一场预先固定 hold 9000 秒、整体 timeout 10800 秒，readiness 1800 秒、正常退出预留 180 秒、400 自然日上限不变。R0001–R0003 原输入、3600／5400 秒预算及 RED 结果不修改；运行中仍不得延长 deadline。此安排与语法修正均不授予业务通过。
 
-R0003 引擎实际报告的 fixture 错误对应四份资源修改：族长读取由不存在的 `dynasty_head` 改为原版 `dynast`，仍要求存活且不是已死创建者；曾尝试对 `$PASS$`／`$FAIL$` 去除模板引号；独立 outsider 和既有未改信后代分别补 `location = root.location`，不添加 employer，也不改变后代的 Faith／Rite／House／father 负例。四文件 grammar parse 已实际退出 0、diagnostics 空且 roundTrip true；`ck3-1.20.0.4` semantic profile 未注册，validate 为 4／UNSUPPORTED。**R0004 已证明去掉模板引号没有修复整句参数的引擎展开，不能把该尝试记作成功修复。** 原件与 SHA 见[交接第 4.1 节](../../docs/handover/2026-10-24-dynastic-esotericism-vacation-handover.md)。
+R0003 引擎实际报告的 fixture 错误对应四份资源修改：族长读取由不存在的 `dynasty_head` 改为原版 `dynast`，仍要求存活且不是已死创建者；曾尝试对 `$PASS$`／`$FAIL$` 去除模板引号；独立 outsider 和既有未改信后代分别补 `location = root.location`，不添加 employer，也不改变后代的 Faith／Rite／House／father 负例。四文件 grammar parse 已实际退出 0、diagnostics 空且 roundTrip true；`ck3-1.20.0.4` semantic profile 未注册，validate 为 4／UNSUPPORTED。**R0004 已证明去掉模板引号没有修复整句参数的引擎展开，不能把该尝试记作成功修复。** 原件与 SHA 见[交接第 4.1 节](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-24-dynastic-esotericism-vacation-handover.md)。
 
 Java `FixtureEmitterTest` 验证实际资源生产、打包字节／源一致、manifest 和各 case 文件边界；它没有 CK3 语义解释能力。四项修正的正确性须由重新构建的 JAR／fixture 和下一场真实加载及业务后态确认，不新增源码字符串匹配来冒充语义回归。首个非 confirm 礼仪开窗若返回 pending，保留原 native receipt，用 action context 的 `observation=draft/current_rite` 独立查询；不得对它调用只接受 final-confirm claim 的 collect，也不得重放 open。仅 `confirm_once` pending 可 collect，最终仍须独立 verify-completed。
 

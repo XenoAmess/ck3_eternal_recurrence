@@ -67,7 +67,7 @@ episode 和下一 episode gameplay；部分战争、事件、互动及观测原�
 
 ### 1. 先关闭议会，不扩展新的 native/MCP 库存
 
-[`2026-09-15 G2 议会交接`](../handover/2026-09-15-g2-real-council-loop-handoff.md) 已把 application-main shared glue 和
+[`2026-09-15 G2 议会交接`](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-09-15-g2-real-council-loop-handoff.md) 已把 application-main shared glue 和
 Python 正式动作消费者合入主线。下一步只绑定四类真实 production final gate。它们未闭合前继续保持 query/action 未注册、未广告；
 闭合后立即做一轮正式策略实机候选，不转去新增其它查询模块。
 

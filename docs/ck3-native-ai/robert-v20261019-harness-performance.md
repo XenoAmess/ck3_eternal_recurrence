@@ -39,4 +39,4 @@ machine_id: `xenoamess-full-tower-eb9d2c1186`，身份来源为本轮machine回�
 
 machine_id: `xenoamess-full-tower-eb9d2c1186`；来源为Source24固定输入与[候选资格](../../tools/g2_saved_campaign/candidates/exact_clock_wait_progress_20261020/QUALIFICATION.json)。原wait将remaining交public-revision等待，heartbeat只notify而不改变该revision；故30秒可能仅末尾一次candidate，累计owner+64不能证明全段服务。B仅在原Arm等待期消费已有heartbeat与candidate，保有界变化记录/观察空窗，不增RPC、轮询或Native构建，原时限/暂停清理不变。5项聚焦通过，SOURCE_READY_NOT_ADOPTED；首次子帽RED与丢失结果保在PLAN。
 
-增量目录记账仍缺完整外部变化凭据，当前不启快路。无新FULL，阶段1秒/日未达；仍保原全墙钟。下一轮先组合并验证Source25真实链及v2 DTO消费者，再测完整批次，不以源码资格授吞吐收益。恢复位置见[交接](../handover/2026-10-20-robert-v20261019-vacation-handoff.md)。
+增量目录记账仍缺完整外部变化凭据，当前不启快路。无新FULL，阶段1秒/日未达；仍保原全墙钟。下一轮先组合并验证Source25真实链及v2 DTO消费者，再测完整批次，不以源码资格授吞吐收益。恢复位置见[交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-20-robert-v20261019-vacation-handoff.md)。

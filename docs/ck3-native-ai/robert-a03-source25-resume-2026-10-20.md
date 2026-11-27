@@ -1,6 +1,6 @@
 # 罗贝尔原局：Source25 / A03 续行
 
-`machine_id: xenoamess-full-tower-eb9d2c1186`，观察截至 `2026-10-20T02:31:00Z`。用户要求接续[休假交接](../handover/2026-10-20-robert-v20261019-vacation-handoff.md)。本轮保持 SAVE10480、1081-07-31、5429／10950日、4753周期及原全墙钟起点；以下源码资格不增加游戏成绩。
+`machine_id: xenoamess-full-tower-eb9d2c1186`，观察截至 `2026-10-20T02:31:00Z`。用户要求接续[休假交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-20-robert-v20261019-vacation-handoff.md)。本轮保持 SAVE10480、1081-07-31、5429／10950日、4753周期及原全墙钟起点；以下源码资格不增加游戏成绩。
 
 已实际创建 Source25 提交 `9b791aae9bb1314162aa5cab923e6cca2892e6d8`，父提交为 Source24 `6b55531b1d3a44ee73ab13ea40132556030f682e`。仅组合已资格的 MEM_IMAGE preload 修复、非主导战争领内围城只读优先级及 heartbeat 等待诊断B，共1460叶、59234989 B、9项差量。实际 create-only anchor 位于 `_runtime/source25-integration16/SOURCE25-CANONICAL-ANCHOR.json`，6848 B／SHA256 `a1acba86ae4f31f7716ff6fb0c190102ff97678d19dbe97bb68d3a361ccf48f0`；原 Source24 及失败记录保持。来源为唯一 writer 实际退出0、工具回执 `0683a7`。
 
@@ -53,4 +53,4 @@ DISPLAY01因Root漏建recordings父目录，在任何worker／OBS启动前失败
 
 04:12Z补注（同machine_id）：上段screen释放的CAS期望值是7528，实际完成序列为7529、done／resources=[]，以闭场索引内原actual release为准。原全墙钟已超过24小时，即使余下5521日瞬时完成，整场10950日的均值也已大于7.89秒／日，无法再达到整场1秒／日；后续必须并列报告真实FULL局部吞吐与原整场wall，不能扣除维护、失败或重置起点宣称达标。
 
-04:25Z用户要求休假收尾：实际CK3为空、screen已释放；Source26只封12叶RAM组合和资格，canonicalGit／双导出／runtime均未执行。A05 union仍是有已知wrapper解包阻塞点的草稿。完整后继入口、精确pin、容量期限及恢复顺序见[Source26／A05休假交接](../handover/2026-10-20-robert-source26-a05-vacation-handoff.md)，不要直接Run草稿或沿用过期额度。
+04:25Z用户要求休假收尾：实际CK3为空、screen已释放；Source26只封12叶RAM组合和资格，canonicalGit／双导出／runtime均未执行。A05 union仍是有已知wrapper解包阻塞点的草稿。完整后继入口、精确pin、容量期限及恢复顺序见[Source26／A05休假交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-20-robert-source26-a05-vacation-handoff.md)，不要直接Run草稿或沿用过期额度。

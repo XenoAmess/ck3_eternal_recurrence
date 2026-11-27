@@ -40,7 +40,7 @@ artifacts/project-causality/2026-09-19-r9/
 
 视频 SHA-256：`9CC13837A6D1613190AE72AB70A2C2DF8A5F095510A5678510CE85B568B6D1E5`。机器可读记录见
 [`build-records/2026-09-19-r9.json`](build-records/2026-09-19-r9.json)，人工接力见
-[`owner-review-handoff.md`](owner-review-handoff.md)。
+[`owner-review-handoff.md`](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/promo/project_causality/30m/owner-review-handoff.md)。
 
 r6/r7/r8 保留为源时间坐标和历史基线。r9 把当天同一逻辑战局的分段录制明确标为“当前固定基准”，不冒充任意人物、任意宣战理由或复杂多军团的通用自治；
 最终胜利续跑的玩法里程碑为 GREEN，但关机证明因 watchdog 已提前退出而保持 RED，sidecar 中未掩盖这一边界。r5 已被 owner 以“文案太呆、机械朗读标题”明确否决，不再进入审片。

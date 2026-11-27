@@ -8,11 +8,11 @@
 
 **历史审阅版：[V7《朝圣在奖励什么？》——22分49.6秒，1440p](C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/final-render-a01/sample/build-a03/native-run/derived/direct/episode02-review.mp4)。** 2026-10-24，`machine_id: 4-8e1c2f1861`：已嵌入原版图标、31处界面与规则组合画面，补拍普通虔诚报价及朝觐者／朝圣者共存，并加入学识、文化勇武及诺斯替主义条件收益。全片自动音画／时间戳／配乐检查与10张最终帧抽查通过，完整人工听看待审。[制作记录、补镜位置与能力边界](docs/production-v7-local-review-2026-10-24.md)；[双语字幕](C:/workspace/ck3-faith-and-power-20261017/episode02/v7-filming-20261023-a02/final-render-a01/sample/build-a03/native-run/derived/direct/text/episode02.bilingual.srt)。下列V6及旧交接保留各自历史状态。
 
-[2026-10-23最终休假交接](../../../docs/handover/2026-10-23-faith-engine-episode02-v7-vacation-handover.md)：已完成45张嵌原版素材的替换卡＋3张机制卡、7条新声音及V7作者候选，仍有7条新cue缺实机视觉，尚无V7编码。`machine_id: 4-8e1c2f1861`，R0036自然推进224天到受戒窗口，未选择、未授特质／返乡／共存，0条新raw take；已正常闭场，短暂恢复的只读准备也按用户最终指令收尾，八线程completed、无新场。容量候选尚未执行，当前两公共Python模块改变后尚无新资格。现场／Steam／来源与已验软件边界均见交接。
+[2026-10-23最终休假交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-23-faith-engine-episode02-v7-vacation-handover.md)：已完成45张嵌原版素材的替换卡＋3张机制卡、7条新声音及V7作者候选，仍有7条新cue缺实机视觉，尚无V7编码。`machine_id: 4-8e1c2f1861`，R0036自然推进224天到受戒窗口，未选择、未授特质／返乡／共存，0条新raw take；已正常闭场，短暂恢复的只读准备也按用户最终指令收尾，八线程completed、无新场。容量候选尚未执行，当前两公共Python模块改变后尚无新资格。现场／Steam／来源与已验软件边界均见交接。
 
 [2026-10-22用户反馈与实际素材卡修订](docs/review-v6-feedback-2026-10-22.md)：用户已看过黄色样片，指出缺实机、卡片没有游戏素材，以及朝觐关系和朝圣者条件收益漏讲。当前V6待修订；逐段补镜清单按原片时间码列出。确认漏了学识0／1／3，并新发现诺斯替主义个人信条的特质获得触发链；新卡、新声音尚未替换完整视频，不代表新增双特质实机验收。
 
-[2026-10-22休假交接](../../../docs/handover/2026-10-22-faith-engine-episode02-v6-vacation-handover.md)：当前黄色交付、研究及智能体入口、现场闭场、存储期限和接手顺序。
+[2026-10-22休假交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-22-faith-engine-episode02-v6-vacation-handover.md)：当前黄色交付、研究及智能体入口、现场闭场、存储期限和接手顺序。
 
 **现有视频：[V6黄色完整审阅版《朝圣在奖励什么？》——24分30秒，1440p](C:/workspace/ck3-faith-and-power-20261017/episode02/v6-mechanism-production-20261022-a01/yellow-revision-a01/sample/build-a01/native-run/derived/direct/episode02-review.mp4)。** 55张图表已统一为系列暖棕、金黄色。33段讲解、196组双语字幕、28页主表及四段实机，主线是支出、活动评价、虔诚奖励和人物成长。整片AV、全帧时间戳、配乐检查及五张最终编码帧配色抽查通过；用户已提出页首内容修订，尚未签收。[制作记录](docs/production-v6-local-review-2026-10-22.md)保存实际来源、技术结果和研究边界。原蓝色稿保留历史身份。
 
@@ -60,4 +60,4 @@ V3教学价值未通过（`REJECTED_TEACHING_VALUE`），用户指出其缺少�
 
 截至2026-10-20 13:54Z，`machine_id: 4-8e1c2f1861`：73段均有作者视觉、65段固定内容齐全，已渲染预览仍为70段24:33.600；新实拍尚未全部形成正式结果绑定，不能把1／24字段理解为影片只完成4%。B20已实证出发70金、城市消费50金、罗马抵达压力15→4及徽章另支出31.25金；录像出现朝圣者特质提示，完整结算/归返仍未完成。该场退出过晚，最终受管清理CK3 exit1，原normal/failure-lifecycle=false与nonraw超额均保留；现场CAS12783已释放。Q21骑士读取修复已编译验证，游戏内净收益待下一场；共享知识和公共单日修复已接入，源码/CI、新runtime、后继实拍和案例旁白继续并行。细节及精确原件见[执行进度](docs/production-progress.md)。
 
-一期已由用户确认成功，其交付、17章范围与制作经验以[成功交接](../../../docs/handover/2026-10-20-faith-engine-episode01-success-handover.md)为准。旧[三期导演提案](../director-plan.md)保留历史身份，不再作为当前集数和拍摄清单。
+一期已由用户确认成功，其交付、17章范围与制作经验以[成功交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-20-faith-engine-episode01-success-handover.md)为准。旧[三期导演提案](../director-plan.md)保留历史身份，不再作为当前集数和拍摄清单。

@@ -60,4 +60,4 @@ R0173未锁Halt原生后态已闭，操作晚于360秒原片结束，Halt没有�
 - [story-a05完整草稿](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/story-a05/README.md)为69/69＝100%，8351字；`TTS/provider=0`。这是草稿接受率，不等于最终冻结、声音、新成片或人审完成。
 - 共享源码解释见[拆合军库存权重/取整顺序](episode04-split-merge-stock-weight-order-12004.md)、[统帅容量与零准备量](episode04-commander-capacity-zero-preparation-12004.md)。新增source的最终提交、a08 DLL、构建及新冷验结果由实际回执另记，本段不预填未来SHA、CI通过或实机资格。
 
-当前交接与后续来源以[本机交接入口](../handover/2026-10-15-war-episode04-machine-resume.md)为统一转链。
+当前交接与后续来源以[本机交接入口](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-15-war-episode04-machine-resume.md)为统一转链。

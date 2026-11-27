@@ -49,7 +49,7 @@ Native20 的三份管理原件曾取自研究镜像；它们与当前 Steam 文�
 
 上述未加载描述是源码交付时的状态。Root 后续已将同 SHA Native21 与 SDK27
 加载到 Game6068／FILETIME134366412679616931，进入原 campaign 并完成
-两批普通规划，实际推进5日和17日。[当前交接](../handover/2026-10-17-p27-native21-continuation.md)
+两批普通规划，实际推进5日和17日。[当前交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-17-p27-native21-continuation.md)
 绑定真实启动、地图／决策窗、独立 SEM／METRICS 和恢复回执。
 这增加实际加载与普通流程证据，没有增加六类逐项花点验收；Native20 的两个管理
 具名材料结果继续保留，不能扩称162项或其他五类均已实际验证。

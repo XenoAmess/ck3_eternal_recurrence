@@ -221,7 +221,7 @@ py ck3_autonomous_player/native_bridge/tools/build_fresh.py --build-dir "<本轮
 tools\.venv\Scripts\python.exe -m unittest discover -s ck3_autonomous_player/tests/unit -p test_native_adapter_protocol.py
 ```
 
-现有 `research/run_*_live_acceptance.py` 以及 [canary handoff](autonomous-agent-progress/one-generation-canary-handoff.md) 可复用 runner 结构；先替换其中旧 SHA、checkpoint、固定 ID/预期数据和版本 ABI。原样跑旧 harness 报 RED，不能直接推断新版能力失败。native-headless 继续以最小化、零 OCR/键鼠 fallback 验收；视觉后端只有新版 UI contract 实测后才重新启用。
+现有 `research/run_*_live_acceptance.py` 以及 [canary handoff](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/autonomous-agent-progress/one-generation-canary-handoff.md) 可复用 runner 结构；先替换其中旧 SHA、checkpoint、固定 ID/预期数据和版本 ABI。原样跑旧 harness 报 RED，不能直接推断新版能力失败。native-headless 继续以最小化、零 OCR/键鼠 fallback 验收；视觉后端只有新版 UI contract 实测后才重新启用。
 
 Mod 依赖另做最小修复与静态/本机验收：变动的生成器输入先更新再生成，禁止手改 `GENERATED FILE`；廷臣 trait 快照按实际新版提取、审阅，再生成；原生继承 GUI 重新投影；玩家限定闸门、BOM、production staging 规则继续遵守。日常只改简中与英文，正式发布翻译另走既有 workflow。
 

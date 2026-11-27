@@ -1,4 +1,4 @@
-# Guardian pair Evaluate: actual input handoff (1.20.0.4)
+# Guardian pair Evaluate input contract (1.20.0.4)
 
 2026-10-10. Native71 continuation-26 owns the specified-pair evaluator leaf.
 This is a source dependency record; no Evaluate slot or callable ABI has yet

@@ -1,6 +1,6 @@
 # 第四集：R0241有限结算证据、R0243就绪修复与47段正文来源
 
-machine_id: `desktop-3fevhd2-1c74096080`。本轮来源整理于2026-10-22 UTC晚间（北京时间2026-10-23）；状态观察以各回执内UTC时间为准。其他机器只能复用知识和源码，不能继承本机安装、容量、离线或实机资格。[10月23日交接](../handover/2026-10-23-war-episode04-vacation-handover.md)保留原字节；本页补充之后的准备闭场和最小来源归档。
+machine_id: `desktop-3fevhd2-1c74096080`。本轮来源整理于2026-10-22 UTC晚间（北京时间2026-10-23）；状态观察以各回执内UTC时间为准。其他机器只能复用知识和源码，不能继承本机安装、容量、离线或实机资格。[10月23日交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-23-war-episode04-vacation-handover.md)保留原字节；本页补充之后的准备闭场和最小来源归档。
 
 ## 实际证据与未完成边界
 

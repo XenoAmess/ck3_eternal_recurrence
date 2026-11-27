@@ -2,7 +2,7 @@
 
 用户于2026-10-25提出八项整改：包括More Tenets Slots的3–100项实际信条、宗族化密教的可选宗族化，以及礼仪改革扩展项的自动兼容。联合加载时，扩展模组在上，本模组在下。本文件记录本轮施工与验收安排，未执行项不能计为通过。
 
-用户随后要求休假交接。恢复工作先读[2026-10-25交接文档](../../docs/handover/2026-10-25-religious-ritual-fusion-review-handoff.md)：产品代码已提交，78项软件检查通过；本轮实机未通过，R0013启动前拒绝，未完成恢复工具候选已外置保全并从生产树还原。
+用户随后要求休假交接。恢复工作先读[2026-10-25交接文档](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-25-religious-ritual-fusion-review-handoff.md)：产品代码已提交，78项软件检查通过；本轮实机未通过，R0013启动前拒绝，未完成恢复工具候选已外置保全并从生产树还原。
 
 ## 编码方案
 

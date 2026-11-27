@@ -84,4 +84,4 @@ C65、C66、C67 已实际闭场；最近 C67 两窗100 B（CODE96/META4）2 atte
 
 用户要求收尾并写交接；60个子智能体全部completed、0 running、0 error，三路调度停止补位。此处completed只指岗位收尾。Host H5R4最终编译30成功/1失败/4跳过，6个测试编译错误；JUnit未运行，SERVICE未产出。工具R实际133 suites/960 tests通过；Native两次4 GiB Person失败、8 GiB重试未启动；S为0 JVM/NOT_RUN。首次实机新增天数/SAVE接续/G2完整验收仍0/0/0/8。
 
-本文较早的活动队列、H5R3及S/SDK前置描述被[最终交接](../handover/2026-10-26-java-g2-resume60-r4-vacation-final-handoff.md)和[来源索引](../handover/2026-10-26-java-g2-resume60-r4-vacation-final-source-index.json)取代。全部WIP/原件/holds保留，释放额度0，期限不延长；必须用户明确恢复，不自动继续。machine_id: xenoamess-full-tower-eb9d2c1186；补注为实际停工后的记录，不倒填已举行会议。
+本文较早的活动队列、H5R3及S/SDK前置描述被[最终交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-26-java-g2-resume60-r4-vacation-final-handoff.md)和[来源索引](../handover/2026-10-26-java-g2-resume60-r4-vacation-final-source-index.json)取代。全部WIP/原件/holds保留，释放额度0，期限不延长；必须用户明确恢复，不自动继续。machine_id: xenoamess-full-tower-eb9d2c1186；补注为实际停工后的记录，不倒填已举行会议。

@@ -148,7 +148,7 @@
 
 此前的根本偏差，是过早以操作和制作完成度收口，对玩家理解、收益比较和机制之间的关系检查不足。后续先完成能支撑选择的解释，再冻结文案和媒体；遇到反馈，先归纳是哪一类思考环节出了问题，再修订同类内容与现行入口。
 
-[系列入口](../README.md)、[拍摄交接](../shooting-handover.md)、[导演案](../director-plan.md)、[镜头矩阵](../shot-list.md)、[生产入口](../integration/README.md)共同引用本页。[制作经验](production-experience.md)保存指导的归纳、实际故障与后续应用；[一期当前修订](episode01-revision-v6.md)、[当前讲稿](episode01-narration-v6.zh.md)和[当前镜头单](episode01-current-shot-list-v6.md)保存本轮范围与尚待落实项。具体勘误及版本证据继续保存在[一期机制研究](../../../docs/ck3-native-ai/faith-and-power-episode01-v4-mechanics-corrections-12004.md)和[制作交付](../../../docs/ck3-native-ai/faith-and-power-episode01-value-v4-delivery.md)，历史原件保留当时身份。后续使用本页的方法审视新的主题，具体结论再按实际版本与局面核实。
+[系列入口](../README.md)、[拍摄交接](../shooting-workflow.md)、[导演案](../director-plan.md)、[镜头矩阵](../shot-list.md)、[生产入口](../integration/README.md)共同引用本页。[制作经验](production-experience.md)保存指导的归纳、实际故障与后续应用；[一期当前修订](episode01-revision-v6.md)、[当前讲稿](episode01-narration-v6.zh.md)和[当前镜头单](episode01-current-shot-list-v6.md)保存本轮范围与尚待落实项。具体勘误及版本证据继续保存在[一期机制研究](../../../docs/ck3-native-ai/faith-and-power-episode01-v4-mechanics-corrections-12004.md)和[制作交付](../../../docs/ck3-native-ai/faith-and-power-episode01-value-v4-delivery.md)，历史原件保留当时身份。后续使用本页的方法审视新的主题，具体结论再按实际版本与局面核实。
 
 整理记录：`machine_id: 4-8e1c2f1861`；2026-10-18T05:43:52Z起依据本会话反馈及仓库既有文档整理。本次仅修改文档，没有新增游戏、配音或视频编码。
 

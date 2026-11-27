@@ -4,7 +4,7 @@
 
 独立源码：[mod_li_yu_dao](../../mod_li_yu_dao/README.md)。机制依据：[可重复合流、分立与争统设计](../ck3-confucian-repeatable-reunion-and-schism-design.md)。一期采用自由时代模式；朝代分隔留到二期。
 
-2026-10-06度假交接后，用户已要求继续执行。历史交接与原合法存档见[度假交接](../handover/2026-10-06-li-yu-dao-vacation-handover.md)；当前安排见[2026-10-10进度](2026-10-10-progress.md)。一期暂估75%，整体尚未通过验收。
+2026-10-06度假交接后，用户已要求继续执行。历史交接与原合法存档见[度假交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-06-li-yu-dao-vacation-handover.md)；当前安排见[2026-10-10进度](2026-10-10-progress.md)。一期暂估75%，整体尚未通过验收。
 
 ## 迭代状态
 

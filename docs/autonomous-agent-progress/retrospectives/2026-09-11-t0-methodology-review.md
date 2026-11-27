@@ -10,7 +10,7 @@ R400 实机产品候选仍来自 `e47d818ee91e10ac404816048e68ac85432da391`，�
 
 入口与上下文：
 
-- [原始交接](../../handover/2026-09-11-t0-p1-af5-handoff.md)
+- [原始交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-09-11-t0-p1-af5-handoff.md)
 - [前任延期复盘](2026-09-10-t0-schedule-slip.md)
 - [R390 后的独立 checkpoint 验收计划](../../phase2-promo/r390-stage11-cleanup-and-split-acceptance-2026-09-10.md)
 - [P1 九项现行机器门](../../phase2-promo/phase2-acceptance-case-index.md)

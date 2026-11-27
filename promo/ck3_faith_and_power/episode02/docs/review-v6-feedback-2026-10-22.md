@@ -133,7 +133,7 @@ R0035已通过9条原生映射GUI退出步骤、保留句柄OS退出0与清理�
 
 ## 8. 2026-10-23 04:41闭场截点及用户恢复指令
 
-`machine_id: 4-8e1c2f1861`，闭场观察2026-10-22T20:41:59Z。完整事实、精确原件与后继顺序见[本次交接](../../../../docs/handover/2026-10-23-faith-engine-episode02-v7-vacation-handover.md)及[机读索引](../../../../docs/ck3-native-ai/evidence/faith-engine-episode02-v7-vacation-handover-20261023.json)。本段继任第7节“声音／原生修复仍在准备”的旧状态，不反写旧证据。
+`machine_id: 4-8e1c2f1861`，闭场观察2026-10-22T20:41:59Z。完整事实、精确原件与后继顺序见[本次交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-23-faith-engine-episode02-v7-vacation-handover.md)及[机读索引](../../../../docs/ck3-native-ai/evidence/faith-engine-episode02-v7-vacation-handover-20261023.json)。本段继任第7节“声音／原生修复仍在准备”的旧状态，不反写旧证据。
 
 7条新声音实际242.760秒；原provider调用exit2保留，两条单元离线重划后7／7实际边界通过、未重试provider。33条作者候选复用26条旧声、48张新素材卡；预计22:49.6，content_ready=false、七新cue缺实机，未编码／人工1×审阅。角色条件讲解采用宗教学者、诺斯替主义；学识0／1／3、文化勇武2／5／8、个人诺斯替获得触发链均在新图与新声中，尚未变成整片内容验收。
 
@@ -143,4 +143,4 @@ R0035已通过9条原生映射GUI退出步骤、保留句柄OS退出0与清理�
 
 用户随后明确取消休假并要求继续。Root恢复后继容量与公共新场准备；R0036实际闭场不撤销，也没有可用半程Save。后继先取得新容量资格，再拍核心朝觐→返乡→普通朝圣共存，已有图卡／声音／资格优先复用。
 
-最终用户再次要求休假收尾，并明确忽略中间的扩展并发／Java G2／新AI研究要求。四个恢复线程已停止，八线程全部completed，无新测试／prepare／Game。只读估算三wire无损gzip净候选205,995,334B及cache／母档约217.25MB，均未执行回收；当前61f005a相对036改变两公共Python模块，旧来源等值不能直接沿用。最终后台Steam20:50:21Z仍offline，现场保持关闭；详细源差异、容量候选和仪式授予时序补注见[最终交接第8节](../../../../docs/handover/2026-10-23-faith-engine-episode02-v7-vacation-handover.md#8-最终收尾补注有限恢复只读发现)。
+最终用户再次要求休假收尾，并明确忽略中间的扩展并发／Java G2／新AI研究要求。四个恢复线程已停止，八线程全部completed，无新测试／prepare／Game。只读估算三wire无损gzip净候选205,995,334B及cache／母档约217.25MB，均未执行回收；当前61f005a相对036改变两公共Python模块，旧来源等值不能直接沿用。最终后台Steam20:50:21Z仍offline，现场保持关闭；详细源差异、容量候选和仪式授予时序补注见[最终交接第8节](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-23-faith-engine-episode02-v7-vacation-handover.md#8-最终收尾补注有限恢复只读发现)。

@@ -5,7 +5,7 @@
 - [16:9 JPG，1920×1080](robert-first30-cover-16x9.jpg)
 - [4:3 JPG，1440×1080](robert-first30-cover-4x3.jpg)
 
-内容依据：[2026-10-19 休假交接](../../../docs/handover/2026-10-19-robert-first30-scoring-vacation-handoff.md)。1066—1096，统治县10→2。人物、地图及战争背景是封面概念插画，不是实机截图或精确疆域图；封面没有使用尚未闭合的总分。
+内容依据：[2026-10-19 休假交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-19-robert-first30-scoring-vacation-handoff.md)。1066—1096，统治县10→2。人物、地图及战争背景是封面概念插画，不是实机截图或精确疆域图；封面没有使用尚未闭合的总分。
 
 使用内置 image_gen 生成；4:3 使用16:9原图作为视觉参考重新构图。FFmpeg仅负责最终JPG导出及输出尺寸规范化，完整保留两幅画面的内容。生成原件、导出命令、最终尺寸及SHA见[delivery.json](delivery.json)。本任务不操作游戏或视频，不上传到Bilibili。
 

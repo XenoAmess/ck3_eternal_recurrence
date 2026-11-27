@@ -1,12 +1,14 @@
 # CK3 原生 AI 决策树索引
 
+实机状态与续行事项见[当前项目交接](../handover/README.md)。
+
 2026-10-20 信仰引擎二期：[游玩智能体研究入口](faith-and-power-episode02-agent-reference-12004.md)汇合装备机会成本、受益人与缓存、麦加骑士效果、朝圣、精神领袖与大圣战。既有只读知识 MCP 返回二期结构化摘要和来源路径；普通 auto 尚未自动调用，静态知识不授当前许可，新增事件来源分析与完整 registry 合同分列。
 
 ## 游玩智能体使用战争四期研究
 
 先读[智能体参考与代码消费入口](episode04-gameplay-agent-use-12004.md)，再按[当前执行图](episode04-current-execution-map-12004.md)进入机制、实际证据及未闭问题。该入口明确区分可读研究、已有生产消费者和普通 planner 的策略接线；下方历史日期的摘要不代表最新状态。R0217个别直接扣兵小计与R06源码已进入共享知识，县总额和新R06实机仍未闭。
 
-战役评价：[跨代评分规则 v1](campaign-development-scoring-v1-design-2026-10-19.md)、[只读存档评分器与本场证据](campaign-scoring-offline-implementation-2026-10-19.md)、[评分图片与讲解视频](campaign-score-presentation-v1.md)、[首轮评分成片与交付](first30-film-scored-delivery-2026-10-19.md)、[休假接手入口](../handover/2026-10-19-robert-first30-scoring-vacation-handoff.md)。固定开局家族与三十年窗口，保留缺项区间和历史不足，分别报告局面分与完整战役分。
+战役评价：[跨代评分规则 v1](campaign-development-scoring-v1-design-2026-10-19.md)、[只读存档评分器与本场证据](campaign-scoring-offline-implementation-2026-10-19.md)、[评分图片与讲解视频](campaign-score-presentation-v1.md)、[首轮评分成片与交付](first30-film-scored-delivery-2026-10-19.md)、[休假接手入口](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-19-robert-first30-scoring-vacation-handoff.md)。固定开局家族与三十年窗口，保留缺项区间和历史不足，分别报告局面分与完整战役分。
 
 ## 2026-10-17：信仰与权力／圣地规划知识
 
@@ -30,11 +32,11 @@
 
 ## 2026-10-17：战争四期当前入口（本机）
 
-`machine_id: desktop-3fevhd2-1c74096080`；核对至2026-10-16 18:41 UTC。[当前执行图](episode04-current-execution-map-12004.md)与[新交接](../handover/2026-10-17-war-episode04-r188-and-source-intake.md)连接[R186十四日与陌生事件](episode04-r186-window-capture-12004.md)、[R187两次启动前失败](episode04-r187-prestart-failures-12004.md)、[R188十一日原片](episode04-r188-window-capture-12004.md)及[片后跨月与正常闭场](episode04-r188-monthroll-close-12004.md)。R188 的 Apr1 发生在片外；两次 +2C0/+2C8 同值物理写只能按[精确 copy 来源](episode04-r08-r188-copy-writers-12004.md)解释，不是已付军费。[R06 depth8 前缀](episode04-r186-refill-parent-prefix-12004.md)及[R08 新 classifier、callee](episode04-r08-classifier-tier-threshold-12004.md)与[关联 ID 清理](episode04-r08-copy-callee28d6170-12004.md)供视频和智能体复用。研究 **6/14＝42.9%**、业务 **4/11＝36.4%**、合格动态 **0/11**、正式 ABC **0/3**；69段口播草稿与现有声音不等于成片或签核。R186–R188 实机与 a29 native 的冻结来源为 `d05b0c780b615faa714fdf0535403bb2e6941faf`；当前 rebase 后仓库 HEAD `53c559aa7f0caca8bc1c92b0c6f44b2ef8f72011` 加待整合工作树，不能反写旧场运行来源或把新源码当已部署。
+`machine_id: desktop-3fevhd2-1c74096080`；核对至2026-10-16 18:41 UTC。[当前执行图](episode04-current-execution-map-12004.md)与[新交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-17-war-episode04-r188-and-source-intake.md)连接[R186十四日与陌生事件](episode04-r186-window-capture-12004.md)、[R187两次启动前失败](episode04-r187-prestart-failures-12004.md)、[R188十一日原片](episode04-r188-window-capture-12004.md)及[片后跨月与正常闭场](episode04-r188-monthroll-close-12004.md)。R188 的 Apr1 发生在片外；两次 +2C0/+2C8 同值物理写只能按[精确 copy 来源](episode04-r08-r188-copy-writers-12004.md)解释，不是已付军费。[R06 depth8 前缀](episode04-r186-refill-parent-prefix-12004.md)及[R08 新 classifier、callee](episode04-r08-classifier-tier-threshold-12004.md)与[关联 ID 清理](episode04-r08-copy-callee28d6170-12004.md)供视频和智能体复用。研究 **6/14＝42.9%**、业务 **4/11＝36.4%**、合格动态 **0/11**、正式 ABC **0/3**；69段口播草稿与现有声音不等于成片或签核。R186–R188 实机与 a29 native 的冻结来源为 `d05b0c780b615faa714fdf0535403bb2e6941faf`；当前 rebase 后仓库 HEAD `53c559aa7f0caca8bc1c92b0c6f44b2ef8f72011` 加待整合工作树，不能反写旧场运行来源或把新源码当已部署。
 
 ## 2026-10-16：并发源码入口与R0180普通陆路抵达
 
-最新整合交接见[并发研究与R0180](../handover/2026-10-16-war-episode04-concurrent-research-and-r0180.md)。2026-10-16 后续入口见[当前缺口与执行图](episode04-current-execution-map-12004.md)：整卡6/14、业务4/11、合格动态0/11；R183截断原片、维护费来源库存勘误及各卡下一场条件从该页进入。下文旧时点数字保留其历史范围。
+最新整合交接见[并发研究与R0180](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-16-war-episode04-concurrent-research-and-r0180.md)。2026-10-16 后续入口见[当前缺口与执行图](episode04-current-execution-map-12004.md)：整卡6/14、业务4/11、合格动态0/11；R183截断原片、维护费来源库存勘误及各卡下一场条件从该页进入。下文旧时点数字保留其历史范围。
 `machine_id=desktop-3fevhd2-1c74096080`；R0180实际source `c4992c3`/a09，5个自然日后Army18在2645停稳。
 新源码与该旧运行分别绑定，不因本次知识入库追认部署或业务通过。研究核心仍 **6/14＝42.9%**、
 业务 **4/11＝36.4%**、合格动态 **0/11**；人工1×、完整新版成片和签核未完成。
@@ -53,7 +55,7 @@
 
 ## 2026-10-16：战争四期 Review02 的共享机制、实证与消费入口
 
-本条是机器 `desktop-3fevhd2-1c74096080` 的战争四期最新记录，实际切点为2026-10-16 03:01 CST（2026-10-15 19:01 UTC）；下文旧日期的G2、其他机器和旧版本记录保留各自当时范围。R0175锁定Halt与R0176锁定改道均已正常闭场，独立原生后果及各45秒原片已经取得。研究整卡 **5/14＝35.7%**（R00/R02/R11/R12/R13），业务实验 **3/11＝27.3%**；新版合格动态包仍 **0/11**，连续clean和人工1×不能由全解码或单帧代替。详见[R12实证与便携重算](episode04-r12-locked-halt-r0175-12004.md)、[R13实证与便携重算](episode04-r13-locked-reroute-r0176-12004.md)、[10月16日日报](../autonomous-agent-progress/daily/2026-10-16.md)和[本机交接](../handover/2026-10-15-war-episode04-machine-resume.md)。
+本条是机器 `desktop-3fevhd2-1c74096080` 的战争四期最新记录，实际切点为2026-10-16 03:01 CST（2026-10-15 19:01 UTC）；下文旧日期的G2、其他机器和旧版本记录保留各自当时范围。R0175锁定Halt与R0176锁定改道均已正常闭场，独立原生后果及各45秒原片已经取得。研究整卡 **5/14＝35.7%**（R00/R02/R11/R12/R13），业务实验 **3/11＝27.3%**；新版合格动态包仍 **0/11**，连续clean和人工1×不能由全解码或单帧代替。详见[R12实证与便携重算](episode04-r12-locked-halt-r0175-12004.md)、[R13实证与便携重算](episode04-r13-locked-reroute-r0176-12004.md)、[10月16日日报](../autonomous-agent-progress/daily/2026-10-16.md)和[本机交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-15-war-episode04-machine-resume.md)。
 
 | 主题 | 共享知识与代码入口 | 当前范围 |
 | --- | --- | --- |
@@ -75,11 +77,8 @@
 
 ## 2026-10-11: Background-only G2 continuation
 
-The owner now reserves local CK3 for personal play. Automation stopped with
-SDK/keeper exit0 and CAS1976 released; no further Game/Steam/window/query/input
-operation is authorized until explicit release. See the
-[current handover](../handover/2026-10-11-g2-background-only-user-play.md).
-The64-agent team continues offline native-source research and useful code.
+On 2026-10-11, the owner reserved local CK3 for personal play. Automation stopped with SDK and keeper exit 0 and CAS1976 released. The team continued offline native-source research and implementation.
+[Background-only record](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-11-g2-background-only-user-play.md).
 
 The [beneficial Sway repeat path](sway-beneficial-terminal-followup-12004.md)
 is already implemented and originally qualified offline onOctober8. Current
@@ -268,7 +267,7 @@ Root实际登记：2026-10-06T21:43:54.058456+08:00；日报与W41持续滚动�
 
 用户当前自行使用CK3，本轮游戏/SDK/attach/query/UI/Steam操作0、新自动游戏日0。八包已接入生产路径并完成一次相称验证：完整路线ETA、实际参围成员、补员/损耗数值consumer、pre1640接战输入、当前战场geography、盟友拒绝diagnostics、普通holy hire。生产bridge及五native目标编译、5/5CTest与必要compiled-byte consumer均GREEN，资格为有限static-ready；final setter/post-A/B新增source研究已入canonical，完整loss/Entry/forecast仍partial。两处真实编译RED及最小修复保全。
 
-详细源码/结果/回执与未完成项见 [后台接手施工](../handover/2026-10-05-g2-background-successor.md)。默认离线构建没有采用v73运行flags、没有deploy；下次实机须另冻正确配置并重新读真实状态。日账保持5035/36524、resume1882、Oct5+377、G2 5/8、NW2 2/4、自然0，最新自动存档h9052/raw53265168。3711攻占、War117结算和长期战役未完成；旧恢复游戏授权仅代表历史。
+详细源码/结果/回执与未完成项见 [后台接手施工](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-05-g2-background-successor.md)。默认离线构建没有采用v73运行flags、没有deploy；下次实机须另冻正确配置并重新读真实状态。日账保持5035/36524、resume1882、Oct5+377、G2 5/8、NW2 2/4、自然0，最新自动存档h9052/raw53265168。3711攻占、War117结算和长期战役未完成；旧恢复游戏授权仅代表历史。
 
 - [角色技能 trigger 与属性转移读回（1.20.0.3，2026-10-04）](character-skill-trigger-readback-1.20.0.3-2026-10-04.md)：六项普通 getter 的 RTTI／RVA／总技能缓存偏移与 RHS 解析边界；离线研究，基础值上下限及 effect 后缓存刷新仍待对应实机。
 
@@ -307,7 +306,7 @@ v46/R0023/PID77476 由 source9772958/冻结g49 恢复至 raw53240928；原生 st
 - [实际侧选将](combat-side-commander-selection-12003.md)、[战中换将时序](commander-in-battle-assignment-timing-12003.md)、[counter-campaign原生分支](counter-campaign-native-branches-12003.md)：新的exact-build研究，未增加实战信用。
 - [v2局部上下文优势](contextual-advantage-v2-12003.md)：7文件扩展、sole native5/5与registeredMCP5/5 GREEN；当前static-ready，完整 encounter=false，faith来源正在续建，尚未cold部署或实读。
 
-同批004原Sway completion读取真实RED，另三项及merc/gather/SAVE独立GREEN；原失败保留，具体原生原因恢复中，不归于增援capability。当前进度与后续回链[统一入口](../autonomous-agent-progress/README.md)和[接续报告](../handover/2026-10-03-g2-v33-resume.md)。下文保留各历史截止。
+同批004原Sway completion读取真实RED，另三项及merc/gather/SAVE独立GREEN；原失败保留，具体原生原因恢复中，不归于增援capability。当前进度与后续回链[统一入口](../autonomous-agent-progress/README.md)和[接续报告](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-03-g2-v33-resume.md)。下文保留各历史截止。
 
 ## 2026-10-03：v43 冷恢复与军事输入的当前入口
 
@@ -318,7 +317,7 @@ v43/R0021/PID14124已真实冷恢复，运行proof为minimized=true/foreground=f
 - [投影接战scope](projected-contact-scope-v1-12003.md)及[对应证据](projected-contact-scope-v1-12003-evidence.json)：remote004/006与v2 SDK86145正常close GREEN，投影目标的当前守方为Robert、enemy entry2634；MC readiness仍false，只读primitive，未声称胜率或实际接战。
 - [移动实际入口](war-movement-1.20.0.3-readiness-2026-10-03.md)：typed move SDK54091 GREEN，派遣及独立after有限闭环保存h5384；未抵达或解除围攻。同帧目标2640仍有敌方active siege且我军CanStart=false，War50331736/129指向同一Siege并去重，不能计为两处围城。后续仍沿[Robert防御战争树](robert-defensive-war-loop-12003.md)观察实际结果。
 
-首SDK30708的default-raise012因startup注册缺失真实RED、h5377保存，其余成功查询分别保留；R20 day44 completed-red及preflight01过早读receipt失败→02 GREEN均保留历史。v44/g46正准备modal/raise修复，尚无新版本live信用；原生.3 adapter的162e研究/fixture已发布，未在本包改动。当前能力与保存回链[统一进度](../autonomous-agent-progress/README.md)及[接续报告](../handover/2026-10-03-g2-v33-resume.md)，下方原记录保留其历史截止。
+首SDK30708的default-raise012因startup注册缺失真实RED、h5377保存，其余成功查询分别保留；R20 day44 completed-red及preflight01过早读receipt失败→02 GREEN均保留历史。v44/g46正准备modal/raise修复，尚无新版本live信用；原生.3 adapter的162e研究/fixture已发布，未在本包改动。当前能力与保存回链[统一进度](../autonomous-agent-progress/README.md)及[接续报告](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-03-g2-v33-resume.md)，下方原记录保留其历史截止。
 
 ## 2026-10-03T21:25 最新正常pair与真实收复范围
 
@@ -349,7 +348,7 @@ v40/R0019/PID28788运行时最小化且非前台，现已正常stop，controller
 - [移动与撤退原生输入](war-movement-1.20.0.3-readiness-2026-10-03.md)及[实际编成](battle-composition-actual-v34-12003.md)：retreat004/006与composition008查询GREEN；两支敌军退往2631/8754，ETA51/42日均为estimate。只读primitive，不代表撤退已解除、我方获胜或终结结果已确认。
 - [Robert防御战争决策树](robert-defensive-war-loop-12003.md)：保留当前战争观察与决策入口；[围城与占领](war-occupation-holding-siege-observation-12003.md)沿先前49实际日的冻结证据继续，不由本轮查询增加完成信用。
 
-后继v41/sourcecd5db/冻结g43严格541TU（538unique、1041inputs）、jobs64编译84.544788s GREEN，DLL SHA-256 `779f2a9f7b2ce404a9dc44b480f32697970ed19e19d7a19138e4a52096999c32`。官方prepare/verify/stage与h5034 renderer已GREEN，随后R0020/PID62988 cold、Sway4、occupation/current7strength实际GREEN，SDK21537正常close；SDK20431显式单日最多64轮已启动尚未终态，0预计日，不提前授单日推进loop资格。最新保存、失败与后续施工回链[接续报告](../handover/2026-10-03-g2-v33-resume.md)和[统一进度](../autonomous-agent-progress/README.md)；下方入口保留各自历史截止。
+后继v41/sourcecd5db/冻结g43严格541TU（538unique、1041inputs）、jobs64编译84.544788s GREEN，DLL SHA-256 `779f2a9f7b2ce404a9dc44b480f32697970ed19e19d7a19138e4a52096999c32`。官方prepare/verify/stage与h5034 renderer已GREEN，随后R0020/PID62988 cold、Sway4、occupation/current7strength实际GREEN，SDK21537正常close；SDK20431显式单日最多64轮已启动尚未终态，0预计日，不提前授单日推进loop资格。最新保存、失败与后续施工回链[接续报告](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-03-g2-v33-resume.md)和[统一进度](../autonomous-agent-progress/README.md)；下方入口保留各自历史截止。
 
 ## 2026-10-03：v39 四十九个实际日围城批次的当前入口
 
@@ -360,7 +359,7 @@ v40/R0019/PID28788运行时最小化且非前台，现已正常stop，controller
 - [holding围城观察与实际进度](war-occupation-holding-siege-observation-12003.md)：当前work9781290/32500000、remaining22718710（均Q100000）、ETA109、breach0/CanStartfalse；Robert军队仍在2604 sieging、空route、非战斗非撤退，围城尚未结束。
 - [外国战斗当前状态](battle-current-foreign-casualty-state-1.20.0.3-2026-10-03.md)：第35轮首次观察pursuit day0、winner attacker0但未final；第36轮pursuit day1仍未final；第37轮没有战斗查询；其后独立journal已捕获正常终结，Robert不在双方，无玩家胜利信用。
 
-独立终结实读已GREEN（journal normal_result/date53238096，query date53238336），v39现已正常exit0，末保存与总日数不变：[终结查询真实故障专题](battle-terminal-phase-date-production-fault-1.20.0.3-2026-10-03.md)。新v40/source02e88候选strict541TU、jobs64编译86.484875s及官方CI37119607735 GREEN；**尚未部署，不计live修复完成**。当前批次真实失败、正常保存与后续行动回链[接续报告](../handover/2026-10-03-g2-v33-resume.md)和[统一进度](../autonomous-agent-progress/README.md)；下方旧入口保留各自历史截止。
+独立终结实读已GREEN（journal normal_result/date53238096，query date53238336），v39现已正常exit0，末保存与总日数不变：[终结查询真实故障专题](battle-terminal-phase-date-production-fault-1.20.0.3-2026-10-03.md)。新v40/source02e88候选strict541TU、jobs64编译86.484875s及官方CI37119607735 GREEN；**尚未部署，不计live修复完成**。当前批次真实失败、正常保存与后续行动回链[接续报告](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-03-g2-v33-resume.md)和[统一进度](../autonomous-agent-progress/README.md)；下方旧入口保留各自历史截止。
 
 ## 2026-10-03T19:17 v39围城观察与驻地一日实际入口
 
@@ -370,7 +369,7 @@ v39/R0018/PID112516仍最小化、非前台；当前正常pair **h4831/raw532371
 - [占领目标真实行](war-occupation-targets-12003.md)：2604/holding2400仍由30097占领，occupation后态核实收复。
 - [任意holding围城观察](war-occupation-holding-siege-observation-12003.md)：FullSiege503316492/work351500/32500000、progress1081/100000、ETA183、breach0/CanStartfalse；旧null/static阶段为历史。
 
-完整真实失败、保存与下一步见[接续报告](../handover/2026-10-03-g2-v33-resume.md)；三份[进度索引](../autonomous-agent-progress/README.md)由独立owner更新。
+完整真实失败、保存与下一步见[接续报告](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-03-g2-v33-resume.md)；三份[进度索引](../autonomous-agent-progress/README.md)由独立owner更新。
 
 ## 2026-10-03T18:41：2604到达与围城观察入口
 
@@ -381,7 +380,7 @@ v39/R0018/PID112516仍最小化、非前台；当前正常pair **h4831/raw532371
 - [P0任意holding围城观察](war-occupation-holding-siege-observation-12003.md)：新7路径fca9daf已推送并单次fixture GREEN，仍static-ready；v39构建与原2604paused实读待执行。
 - [外国13日当前战斗](battle-current-foreign-casualty-state-1.20.0.3-2026-10-03.md)：main/day6→18无winner/未finalized，Strength仅02/06/13采样，Robert未参与。
 
-围城状态primitive不等于围城进度或收复结果；当前证据与下一施工回链[接续账本](../handover/2026-10-03-g2-v33-resume.md)，三份[进度索引](../autonomous-agent-progress/README.md)由独立owner同步，无需等待v39未来构建才记录本次结果。
+围城状态primitive不等于围城进度或收复结果；当前证据与下一施工回链[接续账本](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-03-g2-v33-resume.md)，三份[进度索引](../autonomous-agent-progress/README.md)由独立owner同步，无需等待v39未来构建才记录本次结果。
 
 ## 2026-10-03T18:02：v38真实军务输入与2604第一路线日
 
@@ -416,9 +415,9 @@ v39/R0018/PID112516仍最小化、非前台；当前正常pair **h4831/raw532371
 实际接续 `2026-10-03T12:22:23+08:00`：v33新PID96112最小化冷恢复和多个宗教/事件只读叶已实读；派系完整割让与holy selected仍有真实故障，优先修复而非长期unknown。[实际字段与证据](g2-v33-paused-religion-and-event-observations-12003.md)。source/native6934与开发v34分别记账，无新增游戏日或完整宗教loop。
 
 
-**2026-10-03 11:29 用户已恢复工作：** 10个后台工作包并行接续，优先补当前派系scope与实际割让范围；奉献/德性/誓愿封存源码已采用，仍static-ready，v33尚未构建/部署，游戏仍关闭。3845保存天与未选择事件23保持。最新施工状态见[接续账本](../handover/2026-10-03-g2-v33-resume.md)；下方度假封存记录保留其当时事实。
+**2026-10-03 11:29 用户已恢复工作：** 10个后台工作包并行接续，优先补当前派系scope与实际割让范围；奉献/德性/誓愿封存源码已采用，仍static-ready，v33尚未构建/部署，游戏仍关闭。3845保存天与未选择事件23保持。最新施工状态见[接续账本](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-03-g2-v33-resume.md)；下方度假封存记录保留其当时事实。
 
-**2026-10-03 度假收尾：** CK3 已正常保存并关闭，罗贝尔累计3845天、save/full4639；派系事件23未选择。当前生产仍为 v32 / source `8cf176b4`。新代码只封存为外置补丁，没有部署 v33；恢复入口见[维护者交接](../handover/2026-10-03-g2-religion-v32-maintainer-vacation-handoff.md)和[补丁索引](../handover/2026-10-03-g2-religion-v32-packets/index.json)。
+**2026-10-03 度假收尾：** CK3 已正常保存并关闭，罗贝尔累计3845天、save/full4639；派系事件23未选择。当前生产仍为 v32 / source `8cf176b4`。新代码只封存为外置补丁，没有部署 v33；恢复入口见[维护者交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-03-g2-religion-v32-maintainer-vacation-handoff.md)和[补丁索引](../handover/2026-10-03-g2-religion-v32-packets/index.json)。
 
 收尾采用的专题：[民粹独立要求](ck3-1.20.0.3-faction-demand1001-populist.md)、[标题scope](ck3-1.20.0.3-event-scope-landed-title.md)、[派系scope](event-faction-scope25-12003.md)、[奉献与德性](religion-devotion-virtues-observation-12003.md)、[悔罪原生树](religion-excommunication-repentance-native-ai-12003.md)、[圣骑士团所选地产](religion-holy-order-selected-title-native-ai-12003.md)、[朝圣候选与活动报价](religion-pilgrimage-headless-candidate-activity-quote-native-ai-12003.md)。各页区分研究、组件fixture和实际暂停帧，未接入部分继续按交接记录施工。
 
@@ -488,7 +487,7 @@ ROOT 已选择 Chancellor +6 优先进入最小功能扩展；Spymaster +11 因�
 
 项目所有者最新指令已允许本机 CK3 实机，恢复宗教研究，并停止战争相关研究。本节覆盖下方历史截点中的“禁止占用游戏／宗教暂缓／继续战争施工”安排；历史 artifact 与失败保留，不重新解释其资格。
 
-议会候选／四 gates／typed assign、完整派系／gift、Sway、realm law、Feast、政府真实 caller、家族 lineage／解约条款、赎金及普通 campaign 目标续接已按精确清单分包提交和普通 FF 推送。native fixture 与真实 C++ wire→Python／MCP 的通过范围见[施工账本](../autonomous-agent-progress/g2-offline-implementation-2026-10-01.md)；新增源最高为 **static-ready**，尚未新增 paused/live 或 G2 credit。中央候选首轮 DLL/injector 构建已通过，最终小增量／source pins 收口后使用[新独立 runner](../handover/2026-10-01-g2-offline-runner-files.md)进入新 PID cold／paused，再验证自然合法非战争动作及独立 material、next turn 和 cold。
+议会候选／四 gates／typed assign、完整派系／gift、Sway、realm law、Feast、政府真实 caller、家族 lineage／解约条款、赎金及普通 campaign 目标续接已按精确清单分包提交和普通 FF 推送。native fixture 与真实 C++ wire→Python／MCP 的通过范围见[施工账本](../autonomous-agent-progress/g2-offline-implementation-2026-10-01.md)；新增源最高为 **static-ready**，尚未新增 paused/live 或 G2 credit。中央候选首轮 DLL/injector 构建已通过，最终小增量／source pins 收口后使用[新独立 runner](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-01-g2-offline-runner-files.md)进入新 PID cold／paused，再验证自然合法非战争动作及独立 material、next turn 和 cold。
 
 新候选为 **40 ON／4 OFF**，旧 slot33 council probe／war cash／prewar／planner diag OFF，新 council 使用 slot41；MCP 计划只启用八项非战争 readonly permits，typed action 由实机责任人单独明确启用。原 canonical pair actor29829／h74／raw53169072 只是独立 1.20 migration seed，未延续 Robert。G2 **3/8**、Robert **3153/36524**、完整一局／百年／双种子资格不增加。
 
@@ -519,11 +518,11 @@ candidate DLL `def2617b7dd67b01b08a576c99c3bfa8dc90fa908921671b4b79f9bbad47da1e`
 
 该 pair 是独立旧 1.20 migration seed：actor29829 / episode `native-29829-3f80e147d033` / h74/raw53169072，save SHA-256 `15fec60d3ec284161f135b095402181be9f64de966c002e1282e9bd2e5827825`，driver SHA-256 `7eba0a48b78c06d6ee31bef47ecaf7f8408bc24702bf88a5966dd1ab94dbbaa7`。它没有继续 Robert；文件准备不等于真实 cold restore。新版 LIFE、ECON、FAMILY、campaign、JOINT/transport/event 组合最高为 **`static-ready`**，本轮无 paused/live/gameplay；旧研究、fixture-live 与 production primitive 资格保持原 exact-build 范围。
 
-最小实机接手见[后台 runner](../handover/2026-10-01-nonwar-12002-offline-runner.md)：official exact zero-process preflight → new-PID cold/paused 读回 → 真实合法 typed 操作、独立物质后置、next-turn/checkpoint 与规定 cold。自然 CE1 与长期联合价值只按实际出现的材料验收，原缺失战争现金/长期家庭价值不被夹具补成已观测。G2 **3/8**、Robert **3153/36524**、百年/首整局/独立种子 **0/1、0/1、0/2**、h4025 输出未再次 cold-tested 与原宗教/holy order 暂缓边界保持。最终 docs-only 提交的 exact 官方 CI另按真实终态记录。
+最小实机接手见[后台 runner](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-01-nonwar-12002-offline-runner.md)：official exact zero-process preflight → new-PID cold/paused 读回 → 真实合法 typed 操作、独立物质后置、next-turn/checkpoint 与规定 cold。自然 CE1 与长期联合价值只按实际出现的材料验收，原缺失战争现金/长期家庭价值不被夹具补成已观测。G2 **3/8**、Robert **3153/36524**、百年/首整局/独立种子 **0/1、0/1、0/2**、h4025 输出未再次 cold-tested 与原宗教/holy order 暂缓边界保持。最终 docs-only 提交的 exact 官方 CI另按真实终态记录。
 
 ## 2026-10-01 11:56：1.20.0.2 非战争 provider 后台接入
 
-新版 exact build 是 CK3 `1.20.0.2 Crozier / Steam25588574`，EXE SHA-256 `AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D`。本轮从 master 非战争正式消费者接回初次迁移的新版 adapter，按 LIFE → ECON → FAMILY、JOINT 并行施工；[交接入口](../ck3-1.20.0.2-nonwar-handoff-intake.md)与[执行账本](../ck3-1.20.0.2-nonwar-offline-execution.md)记录范围和集成状态。用户当前要求全程后台，不占用本地 CK3。
+新版 exact build 是 CK3 `1.20.0.2 Crozier / Steam25588574`，EXE SHA-256 `AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D`。本轮从 master 非战争正式消费者接回初次迁移的新版 adapter，按 LIFE → ECON → FAMILY、JOINT 并行施工；[交接入口](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/ck3-1.20.0.2-nonwar-handoff-intake.md)与[执行账本](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/ck3-1.20.0.2-nonwar-offline-execution.md)记录范围和集成状态。用户当前要求全程后台，不占用本地 CK3。
 
 | 专题入口 | 已通过的独立离线范围 | 当前资格 |
 | --- | --- | --- |
@@ -532,7 +531,7 @@ candidate DLL `def2617b7dd67b01b08a576c99c3bfa8dc90fa908921671b4b79f9bbad47da1e`
 | [FAMILY](ck3-1.20.0.2-family.md) / [候选主体](ck3-1.20.0.2-family-subject-migration.md) / [联盟投影](ck3-1.20.0.2-family-alliance-projection.md) | 当前婚约 query 68 / fulfillment 69，候选、联盟、child subject、新提案与双向关系 provider 的独立 ABI/fixture | 独立 provider `static-ready`；中央最终接线与联编仍在收口 |
 | [完整 campaign-root](ck3-1.20.0.2-nonwar-campaign-context.md) | 材料/健康/领地/继承/关系/内阁，真实 C++ reader→serializer 的 15 组 fixture 和实际 wire→Python normalization | `static-ready`；字段在新版 paused 帧的互证待验 |
 | [JOINT](ck3-1.20.0.2-joint-offline.md) | 两个真实正式路径缺口：无关 faction unavailable 阻断独立和平建设，以及 submit OFF 遗失已发送 first-heir 角色承诺；111 项普通与 `-O` 回归 | `static-ready`；实际选中动作及物质后置待验 |
-| [Python transport](../ck3-1.20.0.2-nonwar-python-transport.md) / [非战争事件](ck3-1.20.0.2-nonwar-events.md) / [后台 runner](../handover/2026-10-01-nonwar-12002-offline-runner.md) | 新版生产 DTO/consumer 接口与 source-bound replay，沿各专题记录实际通过范围 | 随中央接线、最终 DLL 与候选冻结继续收口，不预填整包完成 |
+| [Python transport](../ck3-1.20.0.2-nonwar-python-transport.md) / [非战争事件](ck3-1.20.0.2-nonwar-events.md) / [后台 runner](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-01-nonwar-12002-offline-runner.md) | 新版生产 DTO/consumer 接口与 source-bound replay，沿各专题记录实际通过范围 | 随中央接线、最终 DLL 与候选冻结继续收口，不预填整包完成 |
 
 此前 `d19e794` 的[基础迁移实机交付](../ck3-1.20.0.2-migration-completion.md)与 1.19 R0407/BA5 实证分别保留；它们不能倒算本轮新增高级非战争 provider 的新版 paused/live 资格。当前 G2 仍为 **3/8**，Robert 主线 **3,153/36,524** 持久日；本轮没有新增游戏日。中央最后所有离线包通过后才把组合标为 `static-ready`，然后集中进行新版 paused 观测及现有 typed 路径的独立后置/下一 turn/规定 cold 恢复。宗教与 holy order 暂缓、圣战/婚配必要判定窄例外和完整 combat-v3 的原边界保持。
 

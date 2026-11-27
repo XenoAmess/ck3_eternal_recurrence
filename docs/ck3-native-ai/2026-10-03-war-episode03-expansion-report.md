@@ -8,7 +8,7 @@ OneDrive依据12:14:12与12:15:05 UTC两次新鲜客户端元数据，状态为`
 
 以下保留初次整理和各阶段带时记录；其中pending/RED为对应截点，当前状态以上方摘要及最新追加为准。原初次标题：2026-10-03 第三期扩充：R0160实拍结论与讲解边界。
 
-本报告初次于2026-10-03 15:31（Asia/Shanghai）整理已完成实拍，并于2026-10-03 16:11:59（Asia/Shanghai）追加真实配音/字幕结果，不改旧研究、旧成片、存档或失败attempt。状态为 **production-live有限观察已取得；扩充影片制作与交付pending**。协调与后续字段见[扩充交接](../handover/2026-10-03-war-episode03-expansion.md)。自动审计、原图抽样和本报告均不提供人工1×成片签核。
+本报告初次于2026-10-03 15:31（Asia/Shanghai）整理已完成实拍，并于2026-10-03 16:11:59（Asia/Shanghai）追加真实配音/字幕结果，不改旧研究、旧成片、存档或失败attempt。状态为 **production-live有限观察已取得；扩充影片制作与交付pending**。协调与后续字段见[扩充交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-03-war-episode03-expansion.md)。自动审计、原图抽样和本报告均不提供人工1×成片签核。
 
 ## 身份、来源和日期
 

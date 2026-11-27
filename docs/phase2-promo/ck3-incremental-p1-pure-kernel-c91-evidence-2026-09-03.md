@@ -61,4 +61,4 @@ conditional，不能把静态 Gate A/B 当成 parser-clean 或正式发布。
 
 该步骤随后已经执行；最新权威顺序以
 [`phase2-incremental-startup-batch-plan-2026-09-03.md`](phase2-incremental-startup-batch-plan-2026-09-03.md)
-与 [`2026-09-03-vacation-handoff.md`](../handover/2026-09-03-vacation-handoff.md) 为准。
+与 [`2026-09-03-vacation-handoff.md`](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-09-03-vacation-handoff.md) 为准。

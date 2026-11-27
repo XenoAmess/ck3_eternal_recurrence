@@ -1,6 +1,6 @@
 # SDK32 的两份有限离线报告
 
-机器 `xenoamess-full-tower-eb9d2c1186`。这里只保存四份原始小报告／清单和精确 [pins](SOURCE-PINS.json)；原始 Driver、完整 history、视频和 CB 逆向窗口仍在外置场次目录，不进入 Git。原报告中“SDK32 正在运行”是各自研究截点的记录；之后窗口27实际在1824日失败，SDK32已正常0/0退出，Game／OBS保留，见[最新交接](../../../handover/2026-10-17-p27-native21-continuation.md)。
+机器 `xenoamess-full-tower-eb9d2c1186`。这里只保存四份原始小报告／清单和精确 [pins](SOURCE-PINS.json)；原始 Driver、完整 history、视频和 CB 逆向窗口仍在外置场次目录，不进入 Git。原报告中“SDK32 正在运行”是各自研究截点的记录；之后窗口27实际在1824日失败，SDK32已正常0/0退出，Game／OBS保留，见[最新交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-17-p27-native21-continuation.md)。
 
 [和平段分析](peace/FINDINGS.md)及[固定范围 JSON](peace/P32-PEACE-5MIN.json)覆盖完成回执738至1017、2026-10-16T21:05:52.516662Z至21:10:52.428643Z：299.911981秒／288游戏日＝1.041361秒／日，含3次真实SAVE。该范围的相邻间隙未见调试长停顿，全部推进为speed5、空战争列表；不代表整场均速、战时速度或已低于1秒。阶段存在嵌套，不能把完整推进、内部等待、规划、持久化直接相加。此包没有部署性能候选。
 

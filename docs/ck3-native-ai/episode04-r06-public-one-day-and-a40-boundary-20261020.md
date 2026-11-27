@@ -42,7 +42,7 @@ R0219实际约09:58:01 MapReady；deadline10:30，需2100秒，最晚入口09:55
 
 本轮新有限窗口止于10:30 UTC，仅native768MiB及shared128MiB先行登记；scene尚未分配。A41的原生登记/冷测与新R06实机结果仍须以后继实际回执为准，下方A40与08:00窗口为原始历史。
 
-`machine_id: desktop-3fevhd2-1c74096080`。记录时间2026-10-20 07:54 UTC；机器事实来源为下列精确原件索引。本轮延续[交接](../handover/2026-10-20-war-episode04-vacation-handover.md)与[R0217实际结果](episode04-r0217-direct-debits-and-normal-close-20261020.md)。
+`machine_id: desktop-3fevhd2-1c74096080`。记录时间2026-10-20 07:54 UTC；机器事实来源为下列精确原件索引。本轮延续[交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-20-war-episode04-vacation-handover.md)与[R0217实际结果](episode04-r0217-direct-debits-and-normal-close-20261020.md)。
 
 研究仍为10/14（71.4%），业务7/11（63.6%），正式动态0/11，ABC0/3，B库存点0/2。本轮新增代码和失败诊断均不增加业务或影片验收信用。
 

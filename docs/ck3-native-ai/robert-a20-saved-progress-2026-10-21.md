@@ -6,7 +6,7 @@ A20 完成13个 FULL、390个已结算普通周期，实际新增并保存193个
 - 本文补录：**2026-10-21T06:18:35.578973+00:00**（Asia/Shanghai：2026-10-21T14:18:35.578973+08:00）。机器身份另由本轮 `tools/ck3_live_run_id.py machine` 实读确认。
 - 闭场索引观察时间：2026-10-21T06:00:25.565204+00:00；最终 review02：05:59:34.677922+00:00。
 - 证据等级：本机 production-live 的保存绑定及闭场记录。本文只复核小型 JSON；没有重新读取、复制或哈希 Driver、SAVE、媒体本体，也不新增业务 RPC。
-- 本文为事后补录，不改写[旧交接](../handover/2026-10-20-robert-source26-a05-vacation-handoff.md)的历史截点。
+- 本文为事后补录，不改写[旧交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-20-robert-source26-a05-vacation-handoff.md)的历史截点。
 
 ## 进度与终点
 

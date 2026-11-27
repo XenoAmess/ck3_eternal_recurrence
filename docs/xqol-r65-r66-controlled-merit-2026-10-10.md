@@ -1,6 +1,6 @@
 # R65/R66 与贤能受控正例（2026-10-10）
 
-当前执行范围仍为天朝二期以外的原十模组迁移，正式7/10；剩余QOL、重整河山、361既有0.3.1维护。Root采用本次两文件测试夹具修订，尚未授业务或发布通过。[范围](handover/2026-10-10-non-phase2-mod-migration-scope.md)。
+当前执行范围仍为天朝二期以外的原十模组迁移，正式7/10；剩余QOL、重整河山、361既有0.3.1维护。Root采用本次两文件测试夹具修订，尚未授业务或发布通过。[范围](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-10-non-phase2-mod-migration-scope.md)。
 
 ## R65：首次真实等级诊断，旧正例仍GAP
 

@@ -1,6 +1,6 @@
 # 罗贝尔原局 Source26／A05 接续（2026-10-20）
 
-`machine_id: xenoamess-full-tower-eb9d2c1186`；04:42Z及06:21Z重新执行`tools/ck3_live_run_id.py machine`确认一致。下文按各段观察时间追加；[交接](../handover/2026-10-20-robert-source26-a05-vacation-handoff.md)保留原失败及路径别名。
+`machine_id: xenoamess-full-tower-eb9d2c1186`；04:42Z及06:21Z重新执行`tools/ck3_live_run_id.py machine`确认一致。下文按各段观察时间追加；[交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-20-robert-source26-a05-vacation-handoff.md)保留原失败及路径别名。
 
 ## 四项目标
 

@@ -267,4 +267,4 @@ R18、R21与R22研究已合入注册的`ck3_query_holy_site_planning_knowledge_v
 
 `machine_id: 4-8e1c2f1861`，07:12 UTC补录：用户要求双侧虔诚图标对称、删“允许”句、解释两个同名选项与意图显示条件，并逐数展开旅行／朝圣费用。四份来源研究已入库，12段中英候选与7张新PNG保全；C01对称经Root查看，费用数学与18枝顺序已审。A02三焦点及N13/N15、费用逐步页仍是分镜，V8没有配音或成片。
 
-用户随后要求温和收尾交由同事接手，各lane已停止新增制作并封存交接。本轮未启动CK3／Native／录制、未切Steam或桌面；无新TTS／编码／实际删除。请从[本轮完整交接](../../../../docs/handover/2026-10-24-faith-engine-episode02-v8-clarity-vacation-handover.md)和配对机器可读索引接手；旧V7仍是现有审阅片，旧G51准备额度不授接手运行资格。
+用户随后要求温和收尾交由同事接手，各lane已停止新增制作并封存交接。本轮未启动CK3／Native／录制、未切Steam或桌面；无新TTS／编码／实际删除。请从[本轮完整交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-24-faith-engine-episode02-v8-clarity-vacation-handover.md)和配对机器可读索引接手；旧V7仍是现有审阅片，旧G51准备额度不授接手运行资格。

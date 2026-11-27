@@ -1,6 +1,6 @@
 # 2026-10-29 续工：创建禁用原因实机补验
 
-`machine_id: 4-8e1c2f1861`；时间均为 UTC。本轮从[休假交接](../../docs/handover/2026-10-29-religious-ritual-fusion-vacation-handoff.md)继续。游戏来源提交为 `441d1b96e66fde076507b5947423114a06e1c3b5`，生产实现仍为 `16e74ec285fd727b886a41f2e38652e41e246494`；本记录不追认为此前构建或游戏输入。
+`machine_id: 4-8e1c2f1861`；时间均为 UTC。本轮从[休假交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-29-religious-ritual-fusion-vacation-handoff.md)继续。游戏来源提交为 `441d1b96e66fde076507b5947423114a06e1c3b5`，生产实现仍为 `16e74ec285fd727b886a41f2e38652e41e246494`；本记录不追认为此前构建或游戏输入。
 
 ## R0054 的实际业务
 

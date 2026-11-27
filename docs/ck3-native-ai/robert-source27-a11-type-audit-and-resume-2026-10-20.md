@@ -1,6 +1,6 @@
 # 罗贝尔原局：Source27、类型审计与A11
 
-`machine_id: xenoamess-full-tower-eb9d2c1186`；观察截至2026-10-20T12:38Z。承接[原交接](../handover/2026-10-20-robert-source26-a05-vacation-handoff.md)及[A05后续](robert-source26-a05-resume-2026-10-20.md)，旧截点事实保留。
+`machine_id: xenoamess-full-tower-eb9d2c1186`；观察截至2026-10-20T12:38Z。承接[原交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-20-robert-source26-a05-vacation-handoff.md)及[A05后续](robert-source26-a05-resume-2026-10-20.md)，旧截点事实保留。
 
 原局仍保存5429/10950日、4753周期，唯一SAVE10480/count74不变。原墙钟起点2026-10-19T03:26:49.420926Z与终点raw53407128不变，全部失败与维护计入。G2仍6/8；M6自然useful terminal及后续普通消费、M7广度均未完成。整场1秒/日已不可达，后续局部吞吐必须另报实际日期增量。
 

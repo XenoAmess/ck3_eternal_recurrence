@@ -15,7 +15,7 @@
 
 **2026-10-20封面字体修订：** [历史v3的16:9／4:3封面与PNG](docs/cover-design.md#当前交付银白经书字v3)采用银白经书字、极细暗金边和少量幽青反光，去除血色斑驳及尖锐破损；沿用幽暗圣堂、人物、典籍与悬浮王冠的肃穆诡谲构图。v2保留为历史构图和本次编辑输入。
 
-**2026-10-20第一期已完成，用户明确确认“一期成功”。** 当前成片为[V7及配套字幕](../../docs/ck3-native-ai/faith-and-power-episode01-value-v7-delivery.md)，43:54.133、136段旁白、467组中英字幕、17章，研究与演示版本CK3 1.20.0.4。后续同事从[一期成功后的维护交接](../../docs/handover/2026-10-20-faith-engine-episode01-success-handover.md)开始；[用户确认与资产小索引](../../docs/ck3-native-ai/evidence/faith-engine-episode01-success-20261020.json)保存最新状态。旧V6缺图、旧排期和生产时待签收状态保留历史身份，不作为重开一期的阻塞项。
+**2026-10-20第一期已完成，用户明确确认“一期成功”。** 当前成片为[V7及配套字幕](../../docs/ck3-native-ai/faith-and-power-episode01-value-v7-delivery.md)，43:54.133、136段旁白、467组中英字幕、17章，研究与演示版本CK3 1.20.0.4。后续同事从[一期成功后的维护交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-20-faith-engine-episode01-success-handover.md)开始；[用户确认与资产小索引](../../docs/ck3-native-ai/evidence/faith-engine-episode01-success-20261020.json)保存最新状态。旧V6缺图、旧排期和生产时待签收状态保留历史身份，不作为重开一期的阻塞项。
 
 **后续各期开工必读：[系列研究与讲解方法](docs/production-lessons.md)。** 从玩家目标出发，追清因果、权责和利益，比较完整方案，让观众能够自行推演，并把研究转成现有游玩智能体的能力。研究、写稿、拍摄和审片共用这套判断方法。
 
@@ -35,7 +35,7 @@
 
 同日接手已开始共享原版研究、现有游玩智能体 MCP 知识接线和两条试拍的作者输入。实际进展、当前机器身份及容量阻点见 [执行记录](../../docs/ck3-native-ai/faith-and-power-execution-20261017.md)，机制知识见 [圣地专题](../../docs/ck3-native-ai/faith-and-power-holy-sites-12004.md)，工具链入口见 [integration](integration/README.md)。P01／P02 尚无合格原片，不把静态接口通过写成完成拍摄。
 
-**同事接手拍摄从[拍摄交接](shooting-handover.md)开始**：其中列明已有成果、待验证问题、目标机器准备、首日两条试拍、工期估算及审阅版交付物，再按导演案和镜头矩阵推进。
+**同事接手拍摄从[拍摄交接](shooting-workflow.md)开始**：其中列明已有成果、待验证问题、目标机器准备、首日两条试拍、工期估算及审阅版交付物，再按导演案和镜头矩阵推进。
 
 系列从玩家会遇见的具体问题出发：为什么土地属于我，圣地却未必属于我的信仰？为什么相同教义在不同局面下产生不同结果？宗教规则又怎样改变统治、外交与战争？每期选择一条能用原代码与真实界面回答的主线，最后给观众一个可以用于下一局的判断方法。
 

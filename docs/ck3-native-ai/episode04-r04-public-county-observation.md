@@ -2,7 +2,7 @@
 
 `tools/ck3_mod_acceptance.py` 仍是唯一启动入口。`war-episode04-r10 / r10-common-preparation` 默认只收集零日 readiness；显式提供 `case_inputs.r04_county_entry` 时，随后在同一个公共 `CaseClient` 上执行一次 Move、至多七个精确日和一个末日观察窗口。它不新建 host、SDK、游戏或录制器。正常退出归公共 `Selection.run()`，失败也进入原有正常闭场流程。
 
-该实现将 [R219 交接](../handover/2026-10-20-war-episode04-vacation-handover.md) 中的现有县观察业务和 direct-v2 消费者收敛进仓库。旧外置 wrapper、旧 READY、旧 PID、旧容量及相机信号不作为新场输入。
+该实现将 [R219 交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-20-war-episode04-vacation-handover.md) 中的现有县观察业务和 direct-v2 消费者收敛进仓库。旧外置 wrapper、旧 READY、旧 PID、旧容量及相机信号不作为新场输入。
 
 ## 输入与公共调用
 

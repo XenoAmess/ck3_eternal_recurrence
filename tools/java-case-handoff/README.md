@@ -1,4 +1,4 @@
-# Original controller / Root handoff
+# Original controller and Root phase protocol
 
 This pure Java build support module reads the existing acceptance controller's files. It submits no game command and grants no capacity or launch admission. Quarkus remains the product host; this module needs no separate service.
 

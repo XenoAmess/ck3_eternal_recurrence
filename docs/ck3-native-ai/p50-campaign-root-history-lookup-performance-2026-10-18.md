@@ -53,4 +53,4 @@ flowchart LR
 
 只在后续正常 SDK 来源准备时评估此公共候选；当期首三十年、MCP永久存档与视频先行。后续若实测整局收益，应使用同策略、同帧候选身份／配置和相同后置语义，报告完整墙钟与暂停／查询次数。较大机会仍是已观察的 plan wall、持久化写入和日期等待，先靠现有分层计时定位，不通过降低战争意愿、增加投降或减少必要应战换吞吐。
 
-外置包为 `N/p50-root-lookup-performance01`（N见[当前交接](../handover/2026-10-18-robert30-clean-vacation-handoff.md)）；使用统一存储策略的小文件1MiB预算，无重型写入、无删除。派生包48小时复核时点和闭场空间读回见回执，不续存所有历史资产。
+外置包为 `N/p50-root-lookup-performance01`（N见[当前交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-18-robert30-clean-vacation-handoff.md)）；使用统一存储策略的小文件1MiB预算，无重型写入、无删除。派生包48小时复核时点和闭场空间读回见回执，不续存所有历史资产。

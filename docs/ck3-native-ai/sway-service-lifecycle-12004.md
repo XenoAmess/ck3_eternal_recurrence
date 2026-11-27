@@ -168,7 +168,7 @@ This lane performed no live/SDK/EXE/test/build execution and no old GREEN replay
 
 ## 2026-10-10 R0087 saved6067 continuation
 
-The [Native71 handover](../handover/2026-10-10-native71-maintainer-resume.md)
+The [Native71 handover](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-10-native71-maintainer-resume.md)
 records the current saved baseline as6067/H10026/raw53289936. R0087 used
 SDK/Native71 source16da78339cdff5c1a462e20bc301684594a3f800 and the existing
 qualified exact4 reader. Its existing completion response

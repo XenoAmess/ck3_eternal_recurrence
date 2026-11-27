@@ -2,7 +2,7 @@
 
 观察机器为 `machine_id: xenoamess-full-tower-eb9d2c1186`，源审时间为 2026-10-25 21:35–21:43 UTC。本文关联恢复工作的 AC13 / OA08 / M2 final10 / Known68；只记录实际源代码分支，没有启动 CK3、SDK、管道、构建或测试。
 
-CK3 目标身份沿用交接中明确的 `1.20.0.4 / build25734779`、EXE SHA-256 `98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`。该身份来自[交接原件](../handover/2026-10-26-java-g2-incremental-r5-vacation-final-handoff.md)，本次没有重新核验安装，也没有把桥接源码当作已经加载的运行时。
+CK3 目标身份沿用交接中明确的 `1.20.0.4 / build25734779`、EXE SHA-256 `98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`。该身份来自[交接原件](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-26-java-g2-incremental-r5-vacation-final-handoff.md)，本次没有重新核验安装，也没有把桥接源码当作已经加载的运行时。
 
 源图及逐边证据由既有研究工具从同一份 plan 生成，见[生命周期源图02](java-failed-read-original-lifecycle-resume61-20261026-graph02.md)。plan 位于 `D:/codex-ck3-background/ck3-java-g2-resume-r4-20261025/resume61/action_coordinator/research-plan-native-lifecycle.json`，SHA-256 为 `5ac143b2d9ff2ec9001038ee347b1590d536d3891bd3926d0a2e6308cab20e8f`。工具实际 `check` 返回 `plan-consistent`，证明范围仅为 `record-structure-and-file-integrity`；语义由下述人工源审说明，实机执行为零。Java 两个 source 引用使用与观察时 R5 完全同 bytes/SHA 的冻结 R4 原件，避免后续增量修复改变证据路径内容；这不为 R4 或新 R5 追认运行资格。[初版图](java-failed-read-original-lifecycle-resume61-20261026-graph.md)保留其旧 path/SHA 历史。
 

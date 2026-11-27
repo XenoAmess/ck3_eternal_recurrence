@@ -1,6 +1,6 @@
 # #451 六章原片余量与补拍优先级（只读审计）
 
-2026-09-29，E2-04 a07 受管录制期间做无屏幕审计。本页只读现有[镜头账](shot-list.md)、[六章 29:50 预算](production-six-chapter-handoff-20260928.md)、[四 raw a03 机器窗](four-raw-pts-candidates-20260929-a03.json)、[临时 EDL](provisional-edl-four-raw-a03-20260929.md)、[E2-05 a02 勘补](provisional-edl-e2-05-a02-duration-addendum-20260929.md)、recorder marks、原生回执与已保存的原尺寸截图。**没有读取、解码或重哈希任何 raw，没有抽帧、占屏或启动 CK3。** 文中的新 PTS 范围是下一位审片者的**搜片导航**；只有 a03 已登记的十一窗有逐帧 ffprobe 对齐的机器首末 PTS。本页不颁发 clean span，不把任何未人工审核素材计为可剪。
+2026-09-29，E2-04 a07 受管录制期间做无屏幕审计。本页只读现有[镜头账](shot-list.md)、[六章 29:50 预算](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/promo/ck3_native_war_ai/episode-02-battle-second-half/production-six-chapter-handoff-20260928.md)、[四 raw a03 机器窗](four-raw-pts-candidates-20260929-a03.json)、[临时 EDL](provisional-edl-four-raw-a03-20260929.md)、[E2-05 a02 勘补](provisional-edl-e2-05-a02-duration-addendum-20260929.md)、recorder marks、原生回执与已保存的原尺寸截图。**没有读取、解码或重哈希任何 raw，没有抽帧、占屏或启动 CK3。** 文中的新 PTS 范围是下一位审片者的**搜片导航**；只有 a03 已登记的十一窗有逐帧 ffprobe 对齐的机器首末 PTS。本页不颁发 clean span，不把任何未人工审核素材计为可剪。
 
 ## 时长账：已认证 0 秒，账面余量不等于实片
 

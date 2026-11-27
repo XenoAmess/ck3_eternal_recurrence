@@ -394,4 +394,4 @@ G2 保持3/8，M2/M4/M5/M6/M7均未新增完整信用；Robert保持3153/36524�
 - 实际回合与保存：formal-run-c3cd08bc-01；第二批formal-run-c3cd08bc-02。
 - 故障与修复：m6-law/signed-debt-fixture、native-build-law-debt、binaries/native-nonwar-12003-law-debt-v3；m6-feast/attempt02/live/typed-phases及feast-observe-c3cd08bc-01。
 
-下一步：第二批真实结果归档，新DLL同保存点冷恢复核验合法债务读取，恢复受支持的Feast资格入口；继续自然stock事件/Sway终态及有价值的实际治理机会。原始RED、原存档和历史provenance保持。[原交接](handover/2026-10-02-g2-r11-maintainer-vacation-handoff.md)，[迁移完成证据](ck3-1.20.0.3-migration.md)。
+下一步：第二批真实结果归档，新DLL同保存点冷恢复核验合法债务读取，恢复受支持的Feast资格入口；继续自然stock事件/Sway终态及有价值的实际治理机会。原始RED、原存档和历史provenance保持。[原交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-02-g2-r11-maintainer-vacation-handoff.md)，[迁移完成证据](ck3-1.20.0.3-migration.md)。

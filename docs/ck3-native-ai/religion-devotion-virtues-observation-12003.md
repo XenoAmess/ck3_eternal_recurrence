@@ -1,6 +1,6 @@
 # 奉献等级、当前 Rite 德性与贫穷誓愿：最小原生观测实现
 
-**2026-10-03 11:29 接续采用：** 用户恢复工作后，原封存12代码路径已采用到 `Z:/g33` 集成源码，CMake、同actor religion mailbox和三个Python sibling接线完整。复用原两case/55checks与两genuine wire GREEN，无新源码语义、无重复验证。组合DLL和Robert4639新暂停帧尚待ROOT完成，状态仍为static-ready。此前“未参与v32”事实保持；新源码采用不等于部署或live。见[接续账本](../handover/2026-10-03-g2-v33-resume.md)。
+**2026-10-03 11:29 接续采用：** 用户恢复工作后，原封存12代码路径已采用到 `Z:/g33` 集成源码，CMake、同actor religion mailbox和三个Python sibling接线完整。复用原两case/55checks与两genuine wire GREEN，无新源码语义、无重复验证。组合DLL和Robert4639新暂停帧尚待ROOT完成，状态仍为static-ready。此前“未参与v32”事实保持；新源码采用不等于部署或live。见[接续账本](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-03-g2-v33-resume.md)。
 
 真实原生输入树已先冻结于 [宗教奉献与德性研究](religion-devotion-virtues-native-ai-12003.md)。本轮将三个实际决策依赖落到只读 reader，通过同一既有 `query_player_religion_context_private_v1(expected_revision=...)` 查询返回；没有宗教自动动作。验证状态是 **static-ready / synthetic fixture**，没有罗贝尔暂停帧证据，不能写成 `production-live primitive`。
 
@@ -50,4 +50,4 @@ ROOT 在后续批次应用投影后，仅对罗贝尔作 paused actual 查询并
 
 原版 `vow_of_poverty_modifier` 的 **月虔诚 +2、收入 −20%** 是 stock authored 定义，既不是罗贝尔当前收益，也不是本轮收益测量。撤销誓愿的 `medium_piety_loss` 属于 script effect，不能拿 CCost 为零声称撤销免费。现有 `0x2696F40` 月虔诚总值口继续由已有 campaign 查询提供，不新增重复 total getter。当前 Rite 的德性判定不能当作教宗对玩家的最终接受度；该需求应使用另一 owner 的原生 interaction final modifier。
 
-收尾采用说明：本页新增代码如有，仅封存为外置补丁，尚未应用到生产 v32；实际读取以本文标注的 artifact/date 为准。接续入口：[度假交接](../handover/2026-10-03-g2-religion-v32-maintainer-vacation-handoff.md)。
+收尾采用说明：本页新增代码如有，仅封存为外置补丁，尚未应用到生产 v32；实际读取以本文标注的 artifact/date 为准。接续入口：[度假交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-03-g2-religion-v32-maintainer-vacation-handoff.md)。

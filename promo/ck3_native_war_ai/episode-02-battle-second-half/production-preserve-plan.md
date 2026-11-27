@@ -1,6 +1,6 @@
 # 第二期六章生产输入预检
 
-`prepare_production_inputs.py` 只读取原件并校验显式 `bytes` / SHA-256；可选地在一个**新建的仓库外目录**写出 `production-inputs.json`、`preserve-plan.json`、`source-audit.json`。它不启动游戏、不探测或编码媒体、不创建 `xar-promo` run，也不制造人工审片结论。`source-audit.json` 的成功状态只代表这次机器来源预检。当前六章逐章缺口与 29:50 暂定排期见[录制后组装清单](production-six-chapter-handoff-20260928.md)。
+`prepare_production_inputs.py` 只读取原件并校验显式 `bytes` / SHA-256；可选地在一个**新建的仓库外目录**写出 `production-inputs.json`、`preserve-plan.json`、`source-audit.json`。它不启动游戏、不探测或编码媒体、不创建 `xar-promo` run，也不制造人工审片结论。`source-audit.json` 的成功状态只代表这次机器来源预检。当前六章逐章缺口与 29:50 暂定排期见[录制后组装清单](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/promo/ck3_native_war_ai/episode-02-battle-second-half/production-six-chapter-handoff-20260928.md)。
 
 先按仓库 `AGENTS.md` 查询最新正式 `xar-promo` Release，验证所用解释器与 wheel。相对 `.venv` 缺失的工作树须显式使用已验证的主工作树解释器。真实素材齐备后，调用：
 

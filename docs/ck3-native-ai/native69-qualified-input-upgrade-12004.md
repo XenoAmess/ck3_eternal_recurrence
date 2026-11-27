@@ -126,7 +126,7 @@ SDK16da has748 mixed owners,29 production/one fixture compile, new weighted5
 wholes/sole5 registered cases. Native69's separately disclosed inferred case1
 and old REDs remain their original facts. No new cold launch or71 live occurred.
 
-The [final maintainer vacation handover](../handover/2026-10-10-g2-native71-maintainer-vacation-handoff.md)
+The [final maintainer vacation handover](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-10-g2-native71-maintainer-vacation-handoff.md)
 records all exact actual receipts, the user vacation stop at13 of21 planned
 saved days, and unchanged MCP100/G2 5/8/NW2 2/4 boundaries. Future continuation
 now uses the current `r0086-next-native71-cold-upgrade-preparation` structure,

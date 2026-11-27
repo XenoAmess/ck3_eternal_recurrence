@@ -4,7 +4,7 @@
 
 2026-10-24按用户提供的一期标题记录；与[系列标题表](../README.md)一致。
 
-**2026-10-20：一期已完成并获用户确认成功。** 最终V7、D双比例封面、四方案存根及后续接手顺序见[成功交接](../../../docs/handover/2026-10-20-faith-engine-episode01-success-handover.md)；下文的初始作者输入和准备场景保留各自建立时状态，不能替代最终交付入口。
+**2026-10-20：一期已完成并获用户确认成功。** 最终V7、D双比例封面、四方案存根及后续接手顺序见[成功交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-20-faith-engine-episode01-success-handover.md)；下文的初始作者输入和准备场景保留各自建立时状态，不能替代最终交付入口。
 
 后续修稿、配音与取材先读[系列研究与讲解方法](../docs/production-lessons.md)，以玩家问题、因果解释和选择比较组织每段，完成连续讲解审读后再冻结媒体。
 

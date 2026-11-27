@@ -26,7 +26,7 @@ cbc789aeae0e23572f7627bd1a7db11b9c497f9d的[官方CI](https://github.com/XenoAme
 
 [QA07→QA08窄来源比较](C:/workspace/ck3-upgrade-20261010/qol-qa07-08-projection-equivalence-01/ROOT-QA07-QA08-NARROW-PROJECTION02.md)实际27文件中25个pin相同，另外2文件只变3个改信准入/派发顶层块。政府及领主赎金依赖文件、7个释放交互和8个结果回调块相同，可支持原合同已通过结果在未变生产块上的有限来源投影；不授整产品/runtime/fixture等价或新增业务PASS，3个改变的改信块不在投影内。QA07已使用send_interaction，不是execute→send差异。
 
-后继只替换共同native，精确复用Source16 Python/host；未消费输入只更新manifest sibling，PAM+新只读fixture必须新public prepare。剩余QOL、重整河山及361既有版本维护按[用户职责纠正](handover/2026-10-10-non-phase2-mod-migration-scope.md)推进，不接手G2或天朝二期。
+后继只替换共同native，精确复用Source16 Python/host；未消费输入只更新manifest sibling，PAM+新只读fixture必须新public prepare。剩余QOL、重整河山及361既有版本维护按[用户职责纠正](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-10-non-phase2-mod-migration-scope.md)推进，不接手G2或天朝二期。
 
 
 ## 最小增量实际验证

@@ -63,7 +63,7 @@ flowchart TD
 
 证据 `focused/RESULT.json`，输出 `focused/producer.jsonl` SHA-256 `78a220515e480feb4707bcc669847c25dbc4882f15d5128e04e7ee41f151ca49`。没有重复旧 ABI、历史 fixture 或整套 native tests。ROOT 合并 type5/type25 后，在当前普通罗贝尔 modal 中实测现有事件查询，收集 saved faction 与 title 的具体身份及割让完整材料，再以已经闭合的原生效果比较接受/拒绝。当前未提交任何选项、未执行战争动作、未增加 G2 credit 或游戏日数。
 
-收尾采用说明：本页新增代码如有，仅封存为外置补丁，尚未应用到生产 v32；实际读取以本文标注的 artifact/date 为准。接续入口：[度假交接](../handover/2026-10-03-g2-religion-v32-maintainer-vacation-handoff.md)。
+收尾采用说明：本页新增代码如有，仅封存为外置补丁，尚未应用到生产 v32；实际读取以本文标注的 artifact/date 为准。接续入口：[度假交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-03-g2-religion-v32-maintainer-vacation-handoff.md)。
 
 ## 2026-10-03T11:38 接续源码采用
 

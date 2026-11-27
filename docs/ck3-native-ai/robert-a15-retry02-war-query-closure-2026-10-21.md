@@ -1,6 +1,6 @@
 # 罗贝尔 A15 retry02：战争只读查询失败与后续修复
 
-`machine_id: xenoamess-full-tower-eb9d2c1186`。记录时间：2026-10-20T22:40Z；北京时间2026-10-21。承接[Source26交接](../handover/2026-10-20-robert-source26-a05-vacation-handoff.md)。本记录不增加游戏验收信用。
+`machine_id: xenoamess-full-tower-eb9d2c1186`。记录时间：2026-10-20T22:40Z；北京时间2026-10-21。承接[Source26交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-20-robert-source26-a05-vacation-handoff.md)。本记录不增加游戏验收信用。
 
 ## 实际进度与闭场
 

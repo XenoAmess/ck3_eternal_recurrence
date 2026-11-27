@@ -1,6 +1,6 @@
 # 信仰与权力一期 V6 接手续作
 
-用户于2026-10-19明确要求阅读[休假交接](../handover/2026-10-19-faith-power-episode01-v6-handover.md)并继续研究与拍摄。交接中的停工是当时事实，本轮恢复沿现有135段、460组双语字幕、76,832帧声钟及生产链继续；初次恢复时V6尚无最终成片。现已于2026-10-19T10:42:39Z完成[本地审阅交付](faith-and-power-episode01-value-v6-delivery.md)，技术检查通过，完整人工听看片仍待完成。
+用户于2026-10-19明确要求阅读[休假交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-19-faith-power-episode01-v6-handover.md)并继续研究与拍摄。交接中的停工是当时事实，本轮恢复沿现有135段、460组双语字幕、76,832帧声钟及生产链继续；初次恢复时V6尚无最终成片。现已于2026-10-19T10:42:39Z完成[本地审阅交付](faith-and-power-episode01-value-v6-delivery.md)，技术检查通过，完整人工听看片仍待完成。
 
 ## 2026-10-19T10:43Z：本地审阅版实际交付
 

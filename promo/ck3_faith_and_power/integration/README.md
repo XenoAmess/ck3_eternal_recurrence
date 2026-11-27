@@ -1,6 +1,6 @@
 # 宗教试拍的规划与证据接线
 
-**2026-10-20当前状态：一期最终V7已获用户确认成功。** 接手从[成功交接](../../../docs/handover/2026-10-20-faith-engine-episode01-success-handover.md)和[V7交付](../../../docs/ck3-native-ai/faith-and-power-episode01-value-v7-delivery.md)开始，生产复用以最终冻结输入为锚点。下文初期ProjectConfig/试拍planned和CAPTURE_PENDING不表示一期现在未完成，不触发重建整套生产链。
+**2026-10-20当前状态：一期最终V7已获用户确认成功。** 接手从[成功交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-20-faith-engine-episode01-success-handover.md)和[V7交付](../../../docs/ck3-native-ai/faith-and-power-episode01-value-v7-delivery.md)开始，生产复用以最终冻结输入为锚点。下文初期ProjectConfig/试拍planned和CAPTURE_PENDING不表示一期现在未完成，不触发重建整套生产链。
 
 **后续生产先读[系列研究与讲解方法](../docs/production-lessons.md)。** 先明确要支持的玩家决策、所需观测和因果验证，再编排声画；研究同时演进现有MCP与智能体。下述初始试拍／authoring状态保留各自历史身份，2026-10-19早期成果见[一期v5交付](../../../docs/ck3-native-ai/faith-and-power-episode01-value-v5-delivery.md)；技术检查与讲解效果、实际听审分别记录。
 

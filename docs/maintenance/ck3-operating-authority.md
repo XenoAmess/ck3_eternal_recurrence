@@ -6,7 +6,7 @@
 
 - **前台操作。** 用户在 2026-11-25 授权 `4-8e1c2f1861` 在后续任务按需使用前台、真实鼠标与截图。该机遵循已确认窗口归属、避免无必要 topmost、正常退出、Steam 离线及独立 profile。其他机器的智能体迁移采用最小化、静默、无 topmost、不激活前台、不调用会自动恢复游戏窗口的通道。授权原话见[日期记录](agents-history-through-2026-11-25.md#2026-11-25-本机后续任务允许使用前台)。
 - **Steam 前台菜单。** 2026-11-26，用户对 `xenoamess-full-tower-eb9d2c1186` 明确授权“**一直允许你使用 Steam 前台菜单**”。可在需要时使用本机持有的 Steam 菜单切换离线等模式操作。模式确认仍使用后台探针，CK3 智能体场次继续最小化、静默、不抢焦点。
-- **本机实机授权。** 2026-10-05 的长期授权按[原交接的机器范围](../handover/2026-10-05-ck3-lyd-local-permanent-runtime-authorization.md)适用。用户正在游玩或明确暂停时，执行任务范围内获准的离线工作。
+- **本机实机授权。** 2026-10-05 的长期授权按[长期授权的机器范围](ck3-lyd-local-permanent-runtime-authorization.md)适用。用户正在游玩或明确暂停时，执行任务范围内获准的离线工作。
 - **智能体迁移。** 11 月 19 日的静默续行与 11 月 21 日该任务的后继 `LIVE_HOLD_USER_PLAYING` 都按[迁移记录](../ck3-1.21.0-migration-2026-11-18.md)的时序解读。使用 Runtime 最新原件核定实际现场，用户占用期间禁止启动、查询或控制现场。后续恢复使用当前只读现场证据、原受保护 savedPair、独立 profile 和既定 owner。此迁移范围是智能体、Java/Native、SDK、MCP 及其生产调用链，模组和工坊由相应任务负责。
 - **按任务发布。** `desktop-3fevhd2-1c74096080` 的 11 月模组升级任务允许必要的短 Steam 上线、逐个适配并沿既有条目发布，完成每段立即恢复离线。宗教礼仪融合窗口修复的开发、验收及更新授权见[模组手册](mod-development-workflow.md)。授权以对应产品与现场 owner 为准。
 - **主机存储。** `xenoamess-full-tower-eb9d2c1186` 的构建和后台工作根用 `D:/codex-ck3-background`，隔离状态根用 `D:/ck3-state`。机器环境、本地依赖及空间检查见[开发手册](repository-development-workflow.md)。
@@ -26,7 +26,7 @@
 
 - **2026-11-27 本机在线游玩授权。** 用户明确允许 `xenoamess-full-tower-eb9d2c1186` 在 Steam 在线时启动和游玩 CK3。用户原话为“我允许你在这台机器上，以非离线方式，启动&游玩十字军之王3. 注意，仅限这台机器。” 本机身份已用 `tools/ck3_live_run_id.py machine` 核对。本机可按任务选择在线或离线，在线启动仍核对账号占用，遵循单实例及现有会话 owner 的规则。
 
-- 用户于2026-10-05明确永久允许当前 `C:/workspace/ck3_eternal_recurrence` 所在机器实机使用CK3，后续直接沿用，无需重复询问。确切原话与机器范围见 [当前机器永久授权](../handover/2026-10-05-ck3-lyd-local-permanent-runtime-authorization.md)；Z机器的历史用户占用限制不由此自动解除，以下离线、账号及现场规则继续适用。
+- 用户于2026-10-05明确永久允许当前 `C:/workspace/ck3_eternal_recurrence` 所在机器实机使用CK3，后续直接沿用，无需重复询问。确切原话与机器范围见 [当前机器永久授权](ck3-lyd-local-permanent-runtime-authorization.md)；Z机器的历史用户占用限制不由此自动解除，以下离线、账号及现场规则继续适用。
 
 - 普通开发、构建、静态检查和 CK3 实机验收默认保持 Steam 离线。按上文对应机器的明确授权，或在上传与更新 Steam Workshop 模组等确需联网的任务中，可切换在线。
 - **2026-10-21 用户追加：Steam 在线/离线状态确认在后台完成，不占用屏幕，不激活或移动窗口、不抢焦点、不截图。** 此指令覆盖旧的启动前离线截图和为此恢复桌面的前置要求。采用离线方式启动受管 CK3 前运行 `tools/steam_offline_state_probe.py --receipt <new-path>`，保存当前机器、观察时间、Steam PID/出生时间、版本及实际来源绑定；只有新鲜回执的 `status=offline` 且 `offline_mode=true` 才能作为离线准入。未知版本、来源或身份漂移、冲突及缺少资格必须返回 `unavailable`，不能用缓存、配置、`BLoggedOn=false` 或调用 ACK 冒充当前离线；当前原生 provider 仅资格化离线正例，零值不等于在线。不能因查询不可用而自动切换到截图或抢焦点；修复后台查询时继续独立工作。按离线方式启动时须先取得实际离线回执。按上文授权使用在线方式时须核对实际状态与账号占用。

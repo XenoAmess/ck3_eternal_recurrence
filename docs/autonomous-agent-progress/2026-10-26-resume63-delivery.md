@@ -2,7 +2,7 @@
 
 `machine_id: xenoamess-full-tower-eb9d2c1186`。2026-10-26T14:46:04Z 的只读观察；来源为本轮实际 `git fetch origin master`、Git refs/status、既有 SourceGraph JSON 和逐文件字节比较。源码仍由各 owner 修改，本记录不是原子 source capture，也不授构建、部署或游戏资格。
 
-本轮接手入口为 [resume62 交接](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff.md)及其[来源索引](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff-source-index.json)。
+本轮接手入口为 [resume62 交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-26-java-g2-resume62-rea-runtime-handoff.md)及其[来源索引](../handover/2026-10-26-java-g2-resume62-rea-runtime-handoff-source-index.json)。
 
 ## 当前主线与工作树
 

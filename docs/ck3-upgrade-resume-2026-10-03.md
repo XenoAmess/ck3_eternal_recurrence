@@ -1,6 +1,6 @@
 # CK3 兼容任务接续：2026-10-03
 
-用户于 2026-10-03 要求接手[前任交接](ck3-upgrade-handoff-2026-10-02.md)并继续兼容任务。本文保存接续增量；原 1.20.0.2 实机、失败 attempt、原片和 profile 保留原样。
+用户于 2026-10-03 要求接手[前任交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/ck3-upgrade-handoff-2026-10-02.md)并继续兼容任务。本文保存接续增量；原 1.20.0.2 实机、失败 attempt、原片和 profile 保留原样。
 
 ## 当前安装与实际阻点
 

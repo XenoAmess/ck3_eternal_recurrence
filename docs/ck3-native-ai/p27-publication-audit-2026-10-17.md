@@ -13,7 +13,7 @@
 | battle typed-failure unavailable、按日观察与冷却 | `896f9c4c`，`bridge/battle_reader_watch_v1.py`及公共结果分类器 |
 | 六类18树162技能、实际类别点数、独立回执和资源目录 | `ec88bd3f`；原生serializer原字节修复`7cae4561`，[专题](all-lifestyle-frontier-v3-2026-10-16.md) |
 | same-day路线否决、非leader首都资格、被动观察、可选时钟诊断 | `b4cdaf52`，[路线专题](route-contact-readonly-unavailable-2026-10-16.md)、[时钟专题](exact-clock-observation-timing-v1.md) |
-| Native21／SDK27加载、D盘录制与实际窗口中断 | `3aef8584`，[交接](../handover/2026-10-17-p27-native21-continuation.md) |
+| Native21／SDK27加载、D盘录制与实际窗口中断 | `3aef8584`，[交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-17-p27-native21-continuation.md) |
 
 `b4cdaf52`的Official38932847485与Linear38932847553均已成功；这不替代新代码的验证。
 

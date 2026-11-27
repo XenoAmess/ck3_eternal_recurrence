@@ -1,6 +1,6 @@
 # 天朝二期双宣传片导演方案
 
-> **2026-09-13 现行覆盖指令：** 项目所有者已取消当前优先级周期的全部宣传视频工作，并禁止发布天朝二期。本文及 P2 stage ledger 仅保留为历史证据，不得据此启动 FFmpeg、补拍、剪辑、审片、导出或发布。P1 `9/9 GREEN` 和已知 UI 修复闭环后，主线转入 G2；完整口径见 [`T0 人工测试冻结与 G2 优先级指令`](../handover/2026-09-13-t0-manual-test-hold-and-g2-priority.md)。
+> **2026-09-13 现行覆盖指令：** 项目所有者已取消当前优先级周期的全部宣传视频工作，并禁止发布天朝二期。本文及 P2 stage ledger 仅保留为历史证据，不得据此启动 FFmpeg、补拍、剪辑、审片、导出或发布。P1 `9/9 GREEN` 和已知 UI 修复闭环后，主线转入 G2；完整口径见 [`T0 人工测试冻结与 G2 优先级指令`](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-09-13-t0-manual-test-hold-and-g2-priority.md)。
 
 ## 唯一现行状态入口
 

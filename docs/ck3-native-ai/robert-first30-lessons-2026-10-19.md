@@ -2,7 +2,7 @@
 
 **首局的运营结果很差，保地优先级和研究到运行的交付都没有做好。** 终点玩家实际统治县从10减到2（−80%），领地品质量Q从15.975减到2.7435925；宗族县从8减到7、宗族土地品质量K从12.675减到7.3875。现金239→251.85072和两级宗族传承不能抵消这些损失。不能用治理分81.8或“成功运行三十年”评价为运营成功。
 
-本次是既有小证据及公共源码复盘：`machine_id: xenoamess-full-tower-eb9d2c1186`，身份由本次 `tools/ck3_live_run_id.py machine` 实际读回（工具chunk `75c953`）；2026-10-19T01:47:25Z已取得当前UTC，以下施工在其后进行。当前游戏、安装、Steam、现场、部署与大SAVE/Driver/视频正文均未读取或操作。首局事实来自[10月19日交接](../handover/2026-10-19-robert-first30-scoring-vacation-handoff.md)、[交付JSON](evidence/first30-scored-film-delivery-2026-10-19.json)、既有 `score-result-03-presentation.json` 与 `final-scoring-validation-07-player-wars.json`；两份评分小投影位于交接所指 `P/scoring-draft01/`，均带上述历史机器身份。本次同机读到历史材料不构成当前实机验收。旧P43原审计机器仍为 `machine_id: unknown`，不追认。
+本次是既有小证据及公共源码复盘：`machine_id: xenoamess-full-tower-eb9d2c1186`，身份由本次 `tools/ck3_live_run_id.py machine` 实际读回（工具chunk `75c953`）；2026-10-19T01:47:25Z已取得当前UTC，以下施工在其后进行。当前游戏、安装、Steam、现场、部署与大SAVE/Driver/视频正文均未读取或操作。首局事实来自[10月19日交接](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-19-robert-first30-scoring-vacation-handoff.md)、[交付JSON](evidence/first30-scored-film-delivery-2026-10-19.json)、既有 `score-result-03-presentation.json` 与 `final-scoring-validation-07-player-wars.json`；两份评分小投影位于交接所指 `P/scoring-draft01/`，均带上述历史机器身份。本次同机读到历史材料不构成当前实机验收。旧P43原审计机器仍为 `machine_id: unknown`，不追认。
 
 ## 确认的错误和因果边界
 

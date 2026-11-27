@@ -1,4 +1,4 @@
-# R12 / R13 execution handoff
+# R12 and R13 execution routes
 
 Historical source machine: `desktop-3fevhd2-1c74096080`. Future manifests explicitly name their own source machine; this tool does not assert a current-machine installation or live acceptance. This tool sends no game commands. It prepares the existing native APIs and a read-only consequence verifier. R12 and R13 are still pending actual gameplay; synthetic qualification is not live completion or film approval.
 
@@ -83,4 +83,4 @@ Source1463/a05 did not include the new supply-parent-join patch applied after cl
 - [story-a05完整草稿](../../../review02/story-a05/README.md)为69/69＝100%，8351字；`TTS/provider=0`。这是草稿接受率，不等于最终冻结、声音、新成片或人审完成。
 - 共享源码解释见[拆合军库存权重/取整顺序](../../../../../../docs/ck3-native-ai/episode04-split-merge-stock-weight-order-12004.md)、[统帅容量与零准备量](../../../../../../docs/ck3-native-ai/episode04-commander-capacity-zero-preparation-12004.md)。新增source的最终提交、a08 DLL、构建及新冷验结果由实际回执另记，本段不预填未来SHA、CI通过或实机资格。
 
-当前交接与后续来源以[本机交接入口](../../../../../../docs/handover/2026-10-15-war-episode04-machine-resume.md)为统一转链。
+当前交接与后续来源以[本机交接入口](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-15-war-episode04-machine-resume.md)为统一转链。

@@ -1,6 +1,6 @@
 # #451 第二期 29:50 原生补拍分镜与最少受管会话
 
-2026-09-29，纯静态排镜。依据 `D:/workspace/ck3_native_war_ai_promo_work/episode02-review-queue-20260929-a01/critical-path.md`（SHA-256 `F8E0338B21DD2C9CE6BDD1651332D1532F90D4F74F7CB8A685D2959A83101148`，#451 HEAD `a6aff1410` 时点）、[六章时间格](production-six-chapter-handoff-20260928.md)、[四 raw EDL](provisional-edl-four-raw-a03-20260929.md)及[逐轨控制修正后的候选账](six-chapter-clean-span-candidates-20260929.md)。未占 CK3/桌面、运行 Ninja、读/解码/重哈希原片或新造实机证据。以下秒数均是**拟拍的互不重复原速游戏画面目标**，不是既有 clean span；现状仍为 **已认证 0 秒、人审 0 秒、正式 reel 0 条**。开始任何新工具链 run 时仍要按 AGENTS 查询当时最新正式 wheel 并冻结所用版本，不能沿用本页静态时点。
+2026-09-29，纯静态排镜。依据 `D:/workspace/ck3_native_war_ai_promo_work/episode02-review-queue-20260929-a01/critical-path.md`（SHA-256 `F8E0338B21DD2C9CE6BDD1651332D1532F90D4F74F7CB8A685D2959A83101148`，#451 HEAD `a6aff1410` 时点）、[六章时间格](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/promo/ck3_native_war_ai/episode-02-battle-second-half/production-six-chapter-handoff-20260928.md)、[四 raw EDL](provisional-edl-four-raw-a03-20260929.md)及[逐轨控制修正后的候选账](six-chapter-clean-span-candidates-20260929.md)。未占 CK3/桌面、运行 Ninja、读/解码/重哈希原片或新造实机证据。以下秒数均是**拟拍的互不重复原速游戏画面目标**，不是既有 clean span；现状仍为 **已认证 0 秒、人审 0 秒、正式 reel 0 条**。开始任何新工具链 run 时仍要按 AGENTS 查询当时最新正式 wheel 并冻结所用版本，不能沿用本页静态时点。
 
 ## 先固定缺口的口径
 

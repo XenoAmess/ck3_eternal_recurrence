@@ -49,7 +49,7 @@
 - 公共入口 [ck3_mod_acceptance.py](../../tools/ck3_mod_acceptance.py) 的预算是命令、等待和会话时间；prepare 要求全新的输出与 state。当前检查没有磁盘可用空间、预计新增字节、历史 TTL 或通用回收步骤。
 - 构建器 [build_release.py](../../tools/build_release.py) 会重建指定 staging，`--check` 使用可自动退出清理的临时目录。这不等于回收历史验收场次。运行时清理本场日志及 PID、watchdog 等控制文件，也不管理旧存档和 trace。
 - CI 的 release candidate 有远端 30 天 artifact 保留设置；它不清理本机运行目录。
-- 历史维护是逐次授权、逐批执行：例如 [10 月 4 日记录](c-disk-cleanup-2026-10-04.md)确实包含旧浏览器缓存和 NVIDIA DXCache 清理；[10 月 5 日记录](../handover/2026-10-05-completed-war-video-storage-cleanup.md)按明确授权删除了已完成第三期视频原片与中间素材，约 48.56 GB；[10 月 8 日记录](../ck3-native-ai/disk-cleanup-2026-10-08.md)包含软件缓存删除和历史日志无损压缩。这些都不是持续运行的自动过期机制。
+- 历史维护是逐次授权、逐批执行：例如 [10 月 4 日记录](c-disk-cleanup-2026-10-04.md)确实包含旧浏览器缓存和 NVIDIA DXCache 清理；[10 月 5 日记录](https://github.com/XenoAmess/ck3_eternal_recurrence/blob/76344db33c2226294f16b78e3f316859e9f7adca/docs/handover/2026-10-05-completed-war-video-storage-cleanup.md)按明确授权删除了已完成第三期视频原片与中间素材，约 48.56 GB；[10 月 8 日记录](../ck3-native-ai/disk-cleanup-2026-10-08.md)包含软件缓存删除和历史日志无损压缩。这些都不是持续运行的自动过期机制。
 
 因此，旧的“默认永久保留”不能继续作为所有原始证据的常态策略。新原则写入 [AGENTS.md](../../AGENTS.md)：资料按用途和期限管理，保护也须到期复核。
 
