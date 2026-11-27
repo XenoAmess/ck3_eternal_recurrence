@@ -814,19 +814,23 @@ public final class DriverBootstrap {
         var rawPin=details.get(DriverSnapshotFacts.RestoreSeedSupplement.DETAIL_FIELD);
         if(rawPin==null)throw new IOException("Committed imported attachment has no original final Driver seed supplement");
         var pin=WriterContracts.Pin.fromJson(rawPin);
-        byte[] original=same.readPinned(pin,DriverSnapshotFacts.RestoreSeedSupplement.MAXIMUM_BYTES);
-        var supplement=DriverSnapshotFacts.RestoreSeedSupplement.decode(original);
+        // The writer validates the original byte identity before decoding the typed JSON fields.
+        var supplement=DriverSnapshotFacts.RestoreSeedSupplement.decode(
+                same.readPinned(pin,DriverSnapshotFacts.RestoreSeedSupplement.MAXIMUM_BYTES));
         var delta=StrictJson.object(details.get("driver_snapshot"),java.util.Set.of(
                 "expected_version","expected_epoch","next_epoch","before_sha256","after_sha256"));
         var before=edge.before().toJson();
         var after=edge.after().toJson();
+        var current=same.head();
+        var anchor=ContinuityJson.digest(after);
+        if(!current.digest().equals(anchor))same.requireDomainImportContinuation(edge.sequence(),anchor);
         long previousVersion=StrictJson.integer(delta.get("expected_version"),0,StrictJson.MAX_SAFE_INTEGER);
         long previousEpoch=StrictJson.integer(delta.get("expected_epoch"),0,StrictJson.MAX_SAFE_INTEGER);
         long nextEpoch=StrictJson.integer(delta.get("next_epoch"),0,StrictJson.MAX_SAFE_INTEGER);
         var history=ExactRef.fromJson(before.get(WriterContracts.DRIVER_HISTORY_BASELINE_FIELD));
         StrictJson.require(SavedAttachmentAuthority.KIND.equals(edge.kind())
-                &&same.head().digest().equals(ContinuityJson.digest(after))
-                &&Arrays.equals(original,supplement.encode())
+                &&!current.snapshotNeedsRecovery()&&current.indexRepairs().isEmpty()
+                &&same.head().digest().equals(current.digest())
                 &&supplement.requestId().equals(StrictJson.text(details.get("evidence_id")))
                 &&supplement.successor().equals(successor)
                 &&successor.game().equals(GameGeneration.fromJson(details.get("driver_after_game")))
@@ -836,7 +840,8 @@ public final class DriverBootstrap {
                 &&supplement.driverVersion()==Math.addExact(previousVersion,1)
                 &&supplement.episodeEpoch()==nextEpoch&&(nextEpoch==previousEpoch||nextEpoch==Math.addExact(previousEpoch,1))
                 &&supplement.originalHistoryBasis().equals(history)
-                &&history.equals(ExactRef.fromJson(after.get(WriterContracts.DRIVER_HISTORY_BASELINE_FIELD))),
+                &&history.equals(ExactRef.fromJson(after.get(WriterContracts.DRIVER_HISTORY_BASELINE_FIELD)))
+                &&history.equals(ExactRef.fromJson(current.state().toJson().get(WriterContracts.DRIVER_HISTORY_BASELINE_FIELD))),
                 "committed imported Driver seed crossed its exact attachment, successor, delta or original history");
         return supplement;
     }

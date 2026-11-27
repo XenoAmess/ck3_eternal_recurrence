@@ -3,14 +3,28 @@ package org.xar.ck3.control.application.driver;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
+import java.lang.reflect.Proxy;
+import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.util.HexFormat;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.xar.ck3.control.application.action.NativeActionPort;
 import org.xar.ck3.control.application.action.RawJson;
+import org.xar.ck3.control.application.checkpoint.SavedAttachmentAuthority;
+import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
+import org.xar.ck3.control.continuity.ContinuityJson;
+import org.xar.ck3.control.continuity.ContinuityState;
+import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
+import org.xar.ck3.control.continuity.writer.WriterContracts;
+import org.xar.ck3.control.contracts.ExactRef;
+import org.xar.ck3.control.contracts.GameGeneration;
+import org.xar.ck3.control.contracts.PythonOnlyUInt64;
+import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort;
 import org.xar.ck3.control.nativebridge.NativeWire;
 
@@ -60,6 +74,50 @@ class DriverBootstrapIndependentFullReadTest {
                 original.originalFrame(), original.originalPacket());
         assertEquals(RECOVERY + "; kind=ACK/native_ok=false; request_id=another-read; reason=" + ACK_REASON,
                 fail(new NativeFreshSnapshotPort.Unavailable(unbound, ACK_REASON)));
+    }
+
+    @Test
+    void committedSeedReadsValidPinnedJsonWithAnotherJvmMemberOrder() throws IOException {
+        var game = new GameGeneration(61127, new PythonOnlyUInt64(BigInteger.valueOf(134401544348311914L)));
+        var owner = new SessionIdentity("software-writer", game, "successor");
+        var full = new ExactRef(Path.of("driver.json").toAbsolutePath().toString(), 2, "a".repeat(64));
+        var history = new ExactRef(Path.of("history.json").toAbsolutePath().toString(), 2, "b".repeat(64));
+        var expected = new DriverSnapshotFacts.RestoreSeedSupplement("committed-restore", full, 3, 1, owner,
+                history, DriverJson.object(new byte[]{'{', '}'}, 2), Optional.empty());
+        var object = assertInstanceOf(com.fasterxml.jackson.databind.node.ObjectNode.class, StrictJson.parse(expected.encode(), 4096));
+        var schema = object.remove("schema");
+        object.set("schema", schema);
+        byte[] pinned = org.xar.ck3.control.contracts.FullJsonTree.encode(object, 4096);
+        assertFalse(java.util.Arrays.equals(pinned, expected.encode()));
+        var pin = new WriterContracts.Pin(new ExactRef(Path.of("seed.json").toAbsolutePath().toString(), pinned.length,
+                DriverJson.sha256(pinned)), new WriterContracts.FileIdentity("1", "2", "1", "2026-11-27T00:00:00Z", pinned.length));
+
+        var state = StrictJson.object().put("schema", "root.ck3.continuity-window/v1").put("machine_id", owner.machineId())
+                .put("sequence", 0).put("window_id", 1).put("status", "running").put("target_days", 365)
+                .put("start_date_raw", 1008).put("target_date_raw", 9768).put("last_settled_date_raw", 1008).put("last_settled_cycles", 0);
+        state.set(WriterContracts.DRIVER_HISTORY_BASELINE_FIELD, history.toJson());
+        var before = ContinuityState.fromJson(state, owner.machineId());
+        var details = StrictJson.object().put("evidence_id", expected.requestId()).put("source", "java_saved_checkpoint_restore_v1");
+        details.set(DriverSnapshotFacts.RestoreSeedSupplement.DETAIL_FIELD, pin.toJson());
+        details.set("driver_after_game", game.toJson());
+        details.set("restored_full_driver", full.toJson());
+        details.putObject("driver_snapshot").put("expected_version", 2).put("expected_epoch", 1).put("next_epoch", 1)
+                .put("before_sha256", "c".repeat(64)).put("after_sha256", full.sha256());
+        var request = new WriterContracts.Request(SavedAttachmentAuthority.KIND, ContinuityJson.canonical(details), List.of());
+        state.put("sequence", 1).put("last_event_identity", request.identity()).set("game_binding", game.toJson());
+        var after = ContinuityState.fromJson(state, owner.machineId());
+        var edge = new WriterContracts.HistoricalTransition(1, request.kind(), request.details(), request.identity(), before, after, pin);
+        var head = new WriterContracts.Head(after, List.of(), List.of(), List.of(), false);
+        var same = (ContinuityStorePort.Session) Proxy.newProxyInstance(getClass().getClassLoader(),
+                new Class<?>[]{ContinuityStorePort.Session.class}, (ignored, method, arguments) -> {
+                    if (method.getName().equals("head")) return head;
+                    if (method.getName().equals("readPinned")) {
+                        assertEquals(pin, arguments[0]);
+                        return pinned.clone();
+                    }
+                    throw new UnsupportedOperationException(method.getName());
+                });
+        assertEquals(expected, DriverBootstrap.readCommittedImportedSeed(same, edge, owner));
     }
 
     private static String fail(NativeFreshSnapshotPort.Unavailable original) {
