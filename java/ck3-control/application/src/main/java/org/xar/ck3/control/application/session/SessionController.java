@@ -1402,10 +1402,20 @@ public final class SessionController {
                     "PRE_INTENT_LIFE_BUDGET_DEFERRED: remaining_nanos=" + remaining + "; reserve_nanos=" + reserve
                     + "; no action INTENT submitted; next batch must freshly observe and plan");
         }
-        void requireTime() { if (clock.now().elapsedNanos() >= untilNanos) throw new End(Terminal.WALL_TIMEOUT, "complete batch monotonic wall bound expired"); }
-        Instant deadline() { requireTime(); return began.utc().plusNanos(untilNanos - began.elapsedNanos()); }
-        void live() throws IOException, InterruptedException {
-            requireTime(); GameLifecycle.Observation state = measured(Phase.LIFECYCLE, () -> lifecycle.inspect(identity, deadline()));
+        void requireTime() { requireTime(untilNanos); }
+        private void requireTime(long boundary) {
+            if (clock.now().elapsedNanos() >= boundary)
+                throw new End(Terminal.WALL_TIMEOUT, "complete batch monotonic wall bound expired");
+        }
+        Instant deadline() { return deadline(untilNanos); }
+        private Instant deadline(long boundary) {
+            requireTime(boundary);
+            return began.utc().plusNanos(boundary - began.elapsedNanos());
+        }
+        void live() throws IOException, InterruptedException { live(untilNanos); }
+        private void live(long boundary) throws IOException, InterruptedException {
+            requireTime(boundary);
+            GameLifecycle.Observation state = measured(Phase.LIFECYCLE, () -> lifecycle.inspect(identity, deadline(boundary)));
             lastLifecycle = Optional.of(state);
             if (state instanceof GameLifecycle.Exited exited) throw new End(Terminal.INNER_EXIT,
                     "inner exit=" + exited.exitCode() + ", timed_out=" + exited.timedOut() + ", terminal=" + exited.terminal());
@@ -1427,8 +1437,13 @@ public final class SessionController {
         }
         Observation readyOrAfterCycle(boolean stoppingForSave,ActionReceipt actualTerminal,Optional<ObservationIdentity> lastSaved)
                 throws IOException, InterruptedException {
-            while(true){
-                var captured=planningScope.inPlanningScope(()->available(stoppingForSave,actualTerminal,lastSaved));
+            return readyOrAfterCycle(stoppingForSave, actualTerminal, lastSaved, untilNanos);
+        }
+        private Observation readyOrAfterCycle(boolean stoppingForSave, ActionReceipt actualTerminal,
+                Optional<ObservationIdentity> lastSaved, long observationBoundary) throws IOException, InterruptedException {
+            while (true) {
+                var captured = planningScope.inPlanningScope(
+                        () -> available(stoppingForSave, actualTerminal, lastSaved, observationBoundary));
                 if(captured.readPublication().isPresent()){replanAfterPublication();continue;}
                 return captured.value();
             }
@@ -1571,21 +1586,21 @@ public final class SessionController {
             completeCycle(actual);
         }
         Observation available(boolean stoppingForSave) throws IOException,InterruptedException {
-            return available(stoppingForSave,null,Optional.empty());
+            return available(stoppingForSave, null, Optional.empty(), untilNanos);
         }
-        Observation available(boolean stoppingForSave,ActionReceipt actualTerminal,Optional<ObservationIdentity> lastSaved)
-                throws IOException,InterruptedException {
-            long readyUntil = Math.min(untilNanos, clock.now().elapsedNanos() + limits.readinessTimeout().toNanos());
+        private Observation available(boolean stoppingForSave, ActionReceipt actualTerminal,
+                Optional<ObservationIdentity> lastSaved, long observationBoundary) throws IOException, InterruptedException {
+            long readyUntil = Math.min(observationBoundary, clock.now().elapsedNanos() + limits.readinessTimeout().toNanos());
             String waitingReason = "readiness deadline expired before observation";
             while (true) {
                 if (!stoppingForSave && stopRequested()) throw new ReadinessStopped(dirty);
-                requireTime(); live();
+                requireTime(observationBoundary); live(observationBoundary);
                 if (clock.now().elapsedNanos() >= readyUntil) {
-                    requireTime();
+                    requireTime(observationBoundary);
                     throw new End(Terminal.READINESS_TIMEOUT, waitingReason);
                 }
                 Instant until = began.utc().plusNanos(readyUntil - began.elapsedNanos());
-                Instant planningUntil = deadline();
+                Instant planningUntil = deadline(observationBoundary);
                 Observation result = measured(Phase.OBSERVATION, () -> {
                     if (actualTerminal != null) return observations.observeAfter(identity,actualTerminal,until,planningUntil);
                     if (lastSaved.isPresent()) return observations.observeCheckpointTail(identity,lastSaved.orElseThrow(),until,planningUntil);
@@ -1598,7 +1613,13 @@ public final class SessionController {
                     ready.offlineAnalysis().ifPresent(this::retainOfflineAnalysis);
                     // The producer may already have persisted incident DATA when observe returns late.
                     // Retaining its validated original does not extend planning, action or SAVE authority.
-                    requireTime();
+                    requireTime(observationBoundary);
+                    if (observationBoundary != untilNanos && actualTerminal != null) {
+                        clearLatest();
+                        lastTerminal = Optional.empty();
+                        return new AfterCycleObserved(ready.semanticEvidence().orElseThrow(() ->
+                                new End(Terminal.INCOMPLETE_MIGRATION, "confirmed Life close requires its actual independent semantic")));
+                    }
                     latest = Optional.of(ready);latestBoundaryFrame=Optional.of(ready.request().before());
                     lastTerminal=Optional.empty();return ready;
                 }
@@ -1610,10 +1631,10 @@ public final class SessionController {
                             "annual SAVE tail requires its original owned Game, physical baseline and actual under-year frame");
                     observed(frame);
                     tail.offlineAnalysis().ifPresent(this::retainOfflineAnalysis);
-                    requireTime();
+                    requireTime(observationBoundary);
                     latest=Optional.empty();latestBoundaryFrame=Optional.of(frame);lastTerminal=Optional.empty();return tail;
                 }
-                requireTime();
+                requireTime(observationBoundary);
                 if(result instanceof AfterCycleObserved afterCycle){
                     var frame=afterCycle.semantic().frame();
                     StrictJson.require(actualTerminal!=null&&frame.machineId().equals(identity.machineId())&&frame.game().equals(identity.game()),
@@ -1632,7 +1653,7 @@ public final class SessionController {
                 if (result instanceof ObservationUnavailable unavailable) throw new End(Terminal.OBSERVATION_UNAVAILABLE, unavailable.reason());
                 waitingReason = ((Waiting) result).reason();
                 if (clock.now().elapsedNanos() >= readyUntil) throw new End(Terminal.READINESS_TIMEOUT, waitingReason);
-                pause();
+                pause(observationBoundary);
             }
         }
         void retainOfflineAnalysis(BatchRequest batch) {
@@ -1662,8 +1683,10 @@ public final class SessionController {
             if (fresh.checkpointEligibility()==CheckpointEligibility.SAFE) save(fresh);
             else {terminal=Terminal.CHECKPOINT_DEFERRED;detail="dirty tail retained: "+fresh.checkpointEligibility();}
         }
-        void pause() throws IOException, InterruptedException {
-            requireTime(); long remaining = untilNanos - clock.now().elapsedNanos();
+        void pause() throws IOException, InterruptedException { pause(untilNanos); }
+        private void pause(long observationBoundary) throws IOException, InterruptedException {
+            requireTime(observationBoundary);
+            long remaining = observationBoundary - clock.now().elapsedNanos();
             if (remaining <= 0) throw new End(Terminal.WALL_TIMEOUT, "complete batch monotonic wall bound expired before poll");
             measured(Phase.IDLE_WAIT, () -> { clock.waitFor(Duration.ofNanos(Math.min(remaining, limits.pollInterval().toNanos()))); return true; });
         }
@@ -1780,7 +1803,15 @@ public final class SessionController {
             try {
                 measured(Phase.JOURNAL, () -> { journal.retainCycle(identity, receipt); return true; });
                 boolean requiresFresh=measured(Phase.JOURNAL,()->journal.requiresFreshAfterCycle(identity,receipt));
-                var fresh = readyOrAfterCycle(true,requiresFresh?receipt:null);
+                long observationBoundary = untilNanos;
+                if (requiresFresh && receipt.eligibleAdvance()
+                        && receipt.state() instanceof ActionState.CompositeSettled applied
+                        && org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER.equals(applied.execution().handlerId())) {
+                    // Finish the durable applied cycle before the ordinary wall decides whether to plan again.
+                    observationBoundary = Math.max(untilNanos,
+                            Math.addExact(clock.now().elapsedNanos(), limits.readinessTimeout().toNanos()));
+                }
+                var fresh = readyOrAfterCycle(true, requiresFresh ? receipt : null, Optional.empty(), observationBoundary);
                 var semantic = switch(fresh) {
                     case AfterCycleObserved afterCycle -> afterCycle.semantic();
                     case Ready ready -> ready.semanticEvidence().orElseThrow(()->new End(Terminal.INCOMPLETE_MIGRATION,

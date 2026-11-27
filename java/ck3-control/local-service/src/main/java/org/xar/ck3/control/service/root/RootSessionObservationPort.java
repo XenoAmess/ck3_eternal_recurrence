@@ -139,8 +139,9 @@ final class RootSessionObservationPort implements SessionPorts.ObservationPort {
             if(actualTerminal.state() instanceof ActionState.CompositeSettled settled
                     &&settled.execution().handlerId().equals(LifeAdvanceComposite.HANDLER)
                     &&LifeAdvanceComposite.accepts(command.operation().value())&&actualTerminal.eligibleAdvance()
-                    &&ContinuityBatchJournal.initialImportedSavedPendingFrontier(head.state(),expected)) {
-                // A historic opening remains on its original date while the imported Life closes with physical SEM.
+                    &&(ContinuityBatchJournal.initialImportedSavedPendingFrontier(head.state(),expected)
+                        ||head.state().toJson().hasNonNull(org.xar.ck3.control.continuity.writer.WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD))) {
+                // The retained Life closes through the current physical SEM before further planning.
                 var semantic=terminal.withReceivedSnapshot(same,planningDeadline,packet,physical->terminal.semantic(same,expected,physical));
                 requireAfterTerminal(semantic,barrier);same.verifyPin(pin);
                 StrictJson.require(head.digest().equals(same.head().digest()),"after-SEM original changed during physical qualification");

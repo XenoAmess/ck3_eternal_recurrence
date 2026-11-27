@@ -178,6 +178,27 @@ final class CompletedLifeReserve74ControllerTest {
         assertSame(f.baseline,report.lastSavedPair().orElseThrow());
     }
 
+    @Test void appliedLifeFinishesItsIndependentAfterObservationBeyondThePlanningWall() {
+        var f = new Fixture();
+        f.lifeLimit = 1;
+        f.afterCycleSemanticOnly = true;
+        f.afterReadSeconds = 50;
+        var limits = new BatchLimits("life-close-after-wall", 2, Duration.ofSeconds(650), Duration.ofSeconds(60),
+                Duration.ofMillis(1), 3);
+
+        var report = f.controller().runBatch(limits);
+
+        assertEquals(1, f.actions.size());
+        var original = f.actions.getFirst();
+        assertEquals(List.of(original), f.retained);
+        assertEquals(List.of(original), f.settled);
+        assertTrue(f.afterReadDeadline.isAfter(original.command().deadline()));
+        assertEquals(BatchReport.Terminal.WALL_TIMEOUT, report.terminal());
+        assertEquals(JournalKind.BATCH_DEFERRED, f.journal.getLast().kind());
+        assertEquals(0, report.committedSavedDays());
+        assertFalse(f.controller.isQuarantined(), report.detail());
+    }
+
     @Test void invalidOrUnmarkedSamplesPreserveValidHintsAndNeverCreateSavedTailOrForeignAdmission() {
         Fixture f=new Fixture();SessionController c=f.controller();
         BatchReport first=c.runBatch(optedLimits("valid-prior",3));assertCleanEarly(first,f,1);
@@ -276,6 +297,7 @@ final class CompletedLifeReserve74ControllerTest {
         long date=INITIAL_DATE,revision=8,savedDate=INITIAL_DATE,completedCycles=1;
         int observations,policyCalls,checkpointReadinessCalls,lifeExecuted; boolean withBaseline=true,nextSmall,stopAfterLife,rejectRequiredSave,smallBeforeLife,afterCycleSemanticOnly;
         int lifeLimit=2; long lifeSeconds=601;
+        long afterReadSeconds=11; Instant afterReadDeadline;
         ActionReceipt pending;SessionController controller;CheckpointPair baseline;byte[] originalLifeBody;
         PlanningRequest latestRequest;
         int savedActor=73;
@@ -329,7 +351,8 @@ final class CompletedLifeReserve74ControllerTest {
                 @Override public Observation observe(SessionIdentity owner,Instant until){return ready(owner,until);}
                 @Override public Observation observe(SessionIdentity owner,Instant readinessUntil,Instant planningUntil){return ready(owner,planningUntil);}
                 @Override public Observation observeAfter(SessionIdentity owner,ActionReceipt actual,Instant readinessUntil,Instant planningUntil){
-                    assertSame(pending,actual,"actual retained receipt must supply after-cycle capture");time.waitFor(Duration.ofSeconds(11));
+                    assertSame(pending,actual,"actual retained receipt must supply after-cycle capture");
+                    afterReadDeadline=readinessUntil;time.waitFor(Duration.ofSeconds(afterReadSeconds));
                     if(!afterCycleSemanticOnly)return ready(owner,planningUntil);
                     assertEquals(OWNER,owner);observations++;revision++;events.add("after-cycle-semantic");
                     return new AfterCycleObserved(semantic(frame(date,revision)));
