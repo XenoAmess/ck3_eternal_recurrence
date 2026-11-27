@@ -92,6 +92,49 @@ final class NativeFreshFullStateReadTest {
             assertEquals(1,replay.softWaits);assertEquals(writes,replay.writes);
         }
     }
+    @Test void archivedConfirmationUsesOriginalFrameTimestampWithoutInventingReceiveOrder() throws Exception {
+        var replay = actionReplay();
+        String slash = Character.toString(92);
+        var config = new NativePipeEndpoint.Config(slash + slash + "." + slash + "pipe" + slash + "fresh-full-state-source-test",
+                "source-test-machine", new GameGeneration(42, new PythonOnlyUInt64(BigInteger.ONE)),
+                "actual-held-session", "source-test", FOUR_SHA, FOUR_ADAPTER);
+        var lastTick = new java.util.concurrent.atomic.AtomicReference<>(Instant.now());
+        var clock = new java.time.Clock() {
+            @Override public java.time.ZoneId getZone() { return java.time.ZoneOffset.UTC; }
+            @Override public java.time.Clock withZone(java.time.ZoneId zone) {
+                if (!zone.equals(getZone())) throw new IllegalArgumentException("UTC chronology fixture");
+                return this;
+            }
+            @Override public Instant instant() {
+                return lastTick.updateAndGet(previous -> {
+                    var current = Instant.now();
+                    return current.isAfter(previous) ? current : previous.plusNanos(1);
+                });
+            }
+        };
+        try (var actual = new NativeGameTransport(replay, config, 16, 64, List.of(), clock)) {
+            var before = actual.observe(deadline());
+            var permit = mutationPermit(actual, before, "archive-observation");
+            var selected = assertInstanceOf(NativeActionPort.AckReceived.class,
+                    actual.submit(permit, permit.preparedRequest(), deadline()));
+            var read = assertInstanceOf(NativeFreshSnapshotPort.Received.class, actual.readFreshFullState(deadline()));
+            var frame = read.originalFrame();
+            var ack = read.acknowledgement();
+            var custody = ack.custody().orElseThrow();
+
+            assertDoesNotThrow(() -> NativeFreshSnapshotPort.verifyAfter(selected, read));
+            assertDoesNotThrow(() -> NativeFreshSnapshotPort.verifyArchivedAfterOriginal(selected, ack, frame));
+            assertThrows(IOException.class, () -> NativeFreshSnapshotPort.verifyArchivedAfterOriginal(selected, ack, before));
+            for (var time : List.of(custody.writeCompleted().observedAt(), custody.responseReceived().observedAt())) {
+                var outside = new org.xar.ck3.control.application.action.NativeObservationPort.ObservedFrame(
+                        frame.session(), frame.snapshotId(), frame.nativeRevision(), frame.state(), frame.originalPacket(), time);
+                assertThrows(IOException.class, () -> NativeFreshSnapshotPort.verifyArchivedAfterOriginal(selected, ack, outside));
+            }
+            assertThrows(IOException.class, () -> NativeFreshSnapshotPort.verifyArchivedAfterOriginal(ack, ack, frame));
+            assertEquals(2, replay.writes);
+            assertEquals(1, replay.actionWrites);
+        }
+    }
     @Test void actualMutationInvalidatesFreshCachedFrameAndOnlyIndependentReadClearsIt()throws Exception {
         var replay=actionReplay();try(var actual=transport(replay,FOUR_SHA,FOUR_ADAPTER)) {
             var before=actual.observe(deadline());var permit=mutationPermit(actual,before,"cache-world-ack");

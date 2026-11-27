@@ -43,13 +43,21 @@ public interface NativeFreshSnapshotPort {
     static void verifyOriginal(NativeActionPort.AckReceived actualAck,ObservedFrame actualFrame,
             NativeRequestChronology.Event snapshotReceived)throws IOException {
         Objects.requireNonNull(actualAck);Objects.requireNonNull(actualFrame);Objects.requireNonNull(snapshotReceived);
-        var custody=actualAck.custody().orElseThrow(()->new IOException("actual fresh-read request chronology unavailable"));custody.verify(actualAck);
-        if(!actualAck.nativeOk()||!custody.session().equals(actualFrame.session())
-                ||snapshotReceived.order().compareTo(custody.writeCompleted().order())<=0
-                ||snapshotReceived.order().compareTo(custody.responseReceived().order())>=0
-                ||snapshotReceived.observedAt().isBefore(custody.writeCompleted().observedAt())
-                ||snapshotReceived.observedAt().isAfter(custody.responseReceived().observedAt())
-                ||!snapshotReceived.observedAt().equals(actualFrame.observedAt()))throw new IOException("fresh state was not actually received between this read write and ACK");
+        var custody = actualAck.custody().orElseThrow(() -> new IOException("actual fresh-read request chronology unavailable"));
+        if (snapshotReceived.order().compareTo(custody.writeCompleted().order()) <= 0
+                || snapshotReceived.order().compareTo(custody.responseReceived().order()) >= 0
+                || !snapshotReceived.observedAt().equals(actualFrame.observedAt()))
+            throw new IOException("fresh state was not actually received between this read write and ACK");
+        verifyRecordedOriginal(actualAck, actualFrame, custody);
+    }
+
+    private static void verifyRecordedOriginal(NativeActionPort.AckReceived actualAck, ObservedFrame actualFrame,
+            NativeRequestChronology custody) throws IOException {
+        custody.verify(actualAck);
+        if (!actualAck.nativeOk() || !custody.session().equals(actualFrame.session())
+                || actualFrame.observedAt().isBefore(custody.writeCompleted().observedAt())
+                || actualFrame.observedAt().isAfter(custody.responseReceived().observedAt()))
+            throw new IOException("fresh state was not actually received between this read write and ACK");
         var outbound=actualAck.outbound().orElseThrow(()->new IOException("fresh-read original outbound unavailable"));
         ObjectNode request=payload(outbound.originalPacket());keys(request,Set.of("type","protocol_version","request_id","step","expected_revision"));
         if(!"execute_step".equals(NativeWire.text(request.get("type")))||!BigInteger.ONE.equals(NativeWire.integer(request.get("protocol_version"),BigInteger.ONE,BigInteger.ONE))
@@ -84,8 +92,26 @@ public interface NativeFreshSnapshotPort {
     static void verifyAfterOriginal(NativeActionPort.AckReceived originalSetterAck,
             NativeActionPort.AckReceived originalReadAck,ObservedFrame originalReadFrame,
             NativeRequestChronology.Event originalReadReceived)throws IOException {
+        verifyOriginal(originalReadAck, originalReadFrame, originalReadReceived);
+        verifySetter(originalSetterAck, originalReadAck);
+    }
+
+    /** Archived packet DATA with its verified frame receipt time. This grants no live read or command authority. */
+    static void verifyArchivedAfterOriginal(NativeActionPort.AckReceived originalSetterAck,
+            NativeActionPort.AckReceived originalReadAck, ObservedFrame originalReadFrame) throws IOException {
+        Objects.requireNonNull(originalReadAck);
+        Objects.requireNonNull(originalReadFrame);
+        var custody = originalReadAck.custody().orElseThrow(() -> new IOException("archived READ has no actual request chronology"));
+        if (!originalReadFrame.observedAt().isAfter(custody.writeCompleted().observedAt())
+                || !originalReadFrame.observedAt().isBefore(custody.responseReceived().observedAt()))
+            throw new IOException("archived state receipt time must be strictly between the matching READ write and ACK");
+        verifyRecordedOriginal(originalReadAck, originalReadFrame, custody);
+        verifySetter(originalSetterAck, originalReadAck);
+    }
+
+    private static void verifySetter(NativeActionPort.AckReceived originalSetterAck,
+            NativeActionPort.AckReceived originalReadAck) throws IOException {
         Objects.requireNonNull(originalSetterAck);
-        verifyOriginal(originalReadAck,originalReadFrame,originalReadReceived);
         if(!originalSetterAck.nativeOk())throw new IOException("fresh after requires the original successful command ACK");
         var setter=originalSetterAck.custody().orElseThrow(()->new IOException("original command has no actual request chronology"));
         setter.verify(originalSetterAck);
