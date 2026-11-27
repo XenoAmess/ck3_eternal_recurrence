@@ -298,19 +298,27 @@ public final class SharedSourceFiles {
     public static void assertUnchanged(Witness expected) throws IOException {
         if (!sameIdentityAndContent(expected, observe(Path.of(expected.source().path())))) throw new IOException("baseline/sibling source content or native identity changed");
     }
+    /** Rechecks the already observed file's identity and write stamp without reading its content. */
+    public static void assertIdentityAndWriteTimeUnchanged(Witness expected) throws IOException {
+        NativeFile current = nativeFile(Path.of(expected.source().path()));
+        if (!sameIdentityAndWriteTime(expected.nativeFile(), current))
+            throw new IOException("baseline/sibling source native identity or write time changed");
+    }
+
     private static boolean sameIdentityAndContent(Witness before, Witness after) {
-        if (before.source().bytes() != after.source().bytes()) return false;
-        if (!before.source().sha256().equals(after.source().sha256())) return false;
-        NativeFile beforeNative = before.nativeFile();
-        String beforeVolume = beforeNative.volumeSerialDecimal(), beforeId = beforeNative.fileIdDecimal(), beforeCreation = beforeNative.creationFiletimeDecimal();
-        NativeFile afterNative = after.nativeFile();
-        String afterVolume = afterNative.volumeSerialDecimal(), afterId = afterNative.fileIdDecimal(), afterCreation = afterNative.creationFiletimeDecimal();
-        return beforeVolume.equals(afterVolume)
-                && beforeId.equals(afterId)
-                && beforeCreation.equals(afterCreation)
-                && beforeNative.legacyVolumeSerialDecimal().equals(afterNative.legacyVolumeSerialDecimal())
-                && beforeNative.legacyFileIdHex().equals(afterNative.legacyFileIdHex())
-                && beforeNative.lastWriteFiletimeDecimal().equals(afterNative.lastWriteFiletimeDecimal());
+        return before.source().bytes() == after.source().bytes()
+                && before.source().sha256().equals(after.source().sha256())
+                && sameIdentityAndWriteTime(before.nativeFile(), after.nativeFile());
+    }
+
+    private static boolean sameIdentityAndWriteTime(NativeFile before, NativeFile after) {
+        return before.logicalBytes() == after.logicalBytes()
+                && before.volumeSerialDecimal().equals(after.volumeSerialDecimal())
+                && before.fileIdDecimal().equals(after.fileIdDecimal())
+                && before.creationFiletimeDecimal().equals(after.creationFiletimeDecimal())
+                && before.legacyVolumeSerialDecimal().equals(after.legacyVolumeSerialDecimal())
+                && before.legacyFileIdHex().equals(after.legacyFileIdHex())
+                && before.lastWriteFiletimeDecimal().equals(after.lastWriteFiletimeDecimal());
     }
 }
 

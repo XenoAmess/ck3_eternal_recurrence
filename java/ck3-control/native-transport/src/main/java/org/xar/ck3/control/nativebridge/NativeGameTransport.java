@@ -1032,7 +1032,9 @@ public final class NativeGameTransport implements NativeActionPort, NativeSnapsh
         if(full112Source!=null) {
             if(full112Source.owner!=owner||full112Source.endpoint!=endpoint||!full112Source.bridge.equals(bridge))
                 throw new IOException("corrected112 source already belongs to another original owner/endpoint");
-            org.xar.ck3.control.build.SharedSourceFiles.assertUnchanged(full112Source.artifact);return Optional.of(bridge);
+            // The same managed endpoint already holds this source. Physical use rechecks its bytes.
+            org.xar.ck3.control.build.SharedSourceFiles.assertIdentityAndWriteTimeUnchanged(full112Source.artifact);
+            return Optional.of(bridge);
         }
         var witness=org.xar.ck3.control.build.SharedSourceFiles.observe(java.nio.file.Path.of(bridge.path()));
         if(witness.source().bytes()!=bridge.bytes()||!witness.source().sha256().equals(bridge.sha256()))
