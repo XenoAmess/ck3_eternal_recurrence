@@ -107,6 +107,11 @@ public interface ContinuityStorePort {
         default void requireDomainImportContinuation(long originalSequence,String originalDigest) throws IOException {
             throw new IOException("actual domain-import-only historical continuation verifier is not installed");
         }
+        /** Verifies the same registered historical domain continuation through an exact canonical ancestor. */
+        default void requireDomainImportContinuation(long originalSequence, String originalDigest, long throughSequence,
+                String throughDigest) throws IOException {
+            throw new IOException("actual bounded domain-import-only historical continuation verifier is not installed");
+        }
         Head head() throws IOException;
         Prepared preview(Request request) throws IOException;
         Receipt commit(Prepared prepared) throws IOException;

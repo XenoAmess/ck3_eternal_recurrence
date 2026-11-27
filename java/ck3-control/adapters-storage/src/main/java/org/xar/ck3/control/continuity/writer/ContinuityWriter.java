@@ -779,13 +779,38 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         /** Read-only exact ancestry consisting solely of the registered canonical domain-import reducer. */
         @Override public void requireDomainImportContinuation(long originalSequence,String originalDigest) throws IOException {
             requireWriter(layout.lock());
+            requireDomainImportAnchor(originalSequence,originalDigest);
+            Head actual=store.head();
+            requireDomainImportContinuation(actual,originalSequence,originalDigest,actual.state());
+        }
+        @Override public void requireDomainImportContinuation(long originalSequence,String originalDigest,
+                long throughSequence,String throughDigest)throws IOException {
+            requireWriter(layout.lock());
+            requireDomainImportAnchor(originalSequence,originalDigest);
+            Head actual=store.head();
+            if(throughSequence<originalSequence||throughSequence<0||throughSequence>actual.state().sequence()
+                    ||throughDigest==null||!throughDigest.matches("[0-9a-f]{64}"))
+                throw new IOException("exact bounded domain-continuation frontier required");
+            try {
+                ContinuityState through=capturedStateAt(actual,throughSequence);
+                StrictJson.require(ContinuityJson.digest(through.toJson()).equals(throughDigest),
+                        "bounded domain-continuation frontier differs from actual canonical history");
+                requireDomainImportContinuation(actual,originalSequence,originalDigest,through);
+            } catch(org.xar.ck3.control.contracts.ContractViolationException invalid){
+                throw new IOException("actual bounded domain-import-only continuation is unavailable",invalid);
+            }
+        }
+        private static void requireDomainImportAnchor(long originalSequence,String originalDigest)throws IOException {
             if(originalSequence<0||originalDigest==null||!originalDigest.matches("[0-9a-f]{64}"))
                 throw new IOException("exact original domain-continuation sequence and digest required");
+        }
+        private void requireDomainImportContinuation(Head actual,long originalSequence,String originalDigest,
+                ContinuityState through)throws IOException {
             try {
-                Head actual=store.head();ContinuityState cursor=capturedStateAt(actual,originalSequence);
+                ContinuityState cursor=capturedStateAt(actual,originalSequence);
                 StrictJson.require(ContinuityJson.digest(cursor.toJson()).equals(originalDigest),"original attachment canonical state digest differs");
                 List<Pin> originals=new ArrayList<>(captureDomain(sources));
-                for(long sequence=Math.addExact(originalSequence,1);sequence<=actual.state().sequence();sequence++){
+                for(long sequence=Math.addExact(originalSequence,1);sequence<=through.sequence();sequence++){
                     ObjectNode event=capturedEventAt(actual,sequence);
                     StrictJson.require(DomainBodies.IMPORT_KIND.equals(StrictJson.text(event.get("kind"))),"only actual domain imports may continue an attachment");
                     ObjectNode details=StrictJson.object(event.get("details"),java.util.Set.of("evidence_id","machine_id","source","domain_body","precondition_digest"));
@@ -826,7 +851,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
                     StrictJson.require(ContinuityJson.same(projected,event.get("after")),"historical import contains a non-domain mutation or field rollback");
                     cursor=ContinuityState.fromJson(event.get("after"),layout.machineId());
                 }
-                StrictJson.require(ContinuityJson.same(cursor.toJson(),actual.state().toJson()),"actual import continuation does not reach the exact captured head");
+                StrictJson.require(ContinuityJson.same(cursor.toJson(),through.toJson()),"actual import continuation does not reach the exact captured frontier");
                 for(Pin pin:originals)LedgerFiles.verify(pin);
                 requireSameHead(actual,store.head());
             } catch(org.xar.ck3.control.contracts.ContractViolationException invalid){

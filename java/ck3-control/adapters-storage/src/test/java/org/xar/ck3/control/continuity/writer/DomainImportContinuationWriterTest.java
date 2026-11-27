@@ -110,6 +110,27 @@ final class DomainImportContinuationWriterTest {
         f.writer().locked(session->{assertThrows(IOException.class,()->session.requireDomainImportContinuation(0,original.digest()));return null;});
         assertArrayEquals(snapshot,Files.readAllBytes(f.files().layout.snapshot()));assertFalse(Files.exists(f.files().layout.event(4)));
     }
+    @Test void aBoundedDomainPrefixStopsAtItsExactCanonicalFrontier()throws Exception{
+        var f=fixture("bounded");
+        Head start=f.writer().locked(ContinuityStorePort.Session::head);
+        var domain=importBody(f,DomainBodies.Slot.LIFE,1).head();
+        var read=f.writer().commit(f.writer().preview(other("fixture.read","later-read"))).head();
+        var tail=importBody(f,DomainBodies.Slot.ACTIVE_RETREAT,2).head();
+        byte[] unchanged=Files.readAllBytes(f.files().layout.snapshot());
+        int calls=f.producerCalls().get();
+        String through=ContinuityJson.digest(domain.toJson());
+        f.writer().locked(same->{
+            same.requireDomainImportContinuation(0,start.digest(),domain.sequence(),through);
+            assertThrows(IOException.class,()->same.requireDomainImportContinuation(0,start.digest(),domain.sequence(),"a".repeat(64)));
+            assertThrows(IOException.class,()->same.requireDomainImportContinuation(0,start.digest(),read.sequence(),ContinuityJson.digest(read.toJson())));
+            assertThrows(IOException.class,()->same.requireDomainImportContinuation(0,start.digest(),tail.sequence()+1,through));
+            assertThrows(IOException.class,()->same.requireDomainImportContinuation(0,start.digest()));
+            return null;
+        });
+        assertEquals(calls,f.producerCalls().get());
+        assertArrayEquals(unchanged,Files.readAllBytes(f.files().layout.snapshot()));
+        assertFalse(Files.exists(f.files().layout.event(tail.sequence()+1)));
+    }
     @Test void aCanonicalLookingDomainEventWithAnUnownedFieldMutationIsRejectedByTheRealPureReducer()throws Exception{
         var f=fixture("wrong-reducer");Head original=f.writer().locked(ContinuityStorePort.Session::head);importBody(f,DomainBodies.Slot.LIFE,1);
         ObjectNode event=ContinuityJson.parseObject(Files.readAllBytes(f.files().layout.event(1)),ContinuityJson.DOCUMENT_MAX_BYTES);

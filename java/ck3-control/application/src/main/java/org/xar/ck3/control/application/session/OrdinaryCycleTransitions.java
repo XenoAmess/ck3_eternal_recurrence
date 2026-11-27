@@ -2432,6 +2432,20 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                 .put("semantic",committing.verified().materialDigest());
         return ContinuityJson.digest(proof);
     }
+    /** Replays already recorded imported REBIND data without the live restore authority. */
+    static ContinuityState replayImportedRebind(ContinuityState predecessor, ObjectNode details, byte[] retainedTombstone) {
+        strictRebind(details);
+        var owner = sessionFromJson(details.get("session"));
+        requireOwner(predecessor, owner);
+        StrictJson.require("REBIND".equals(text(details, "operation")) && IMPORTED_RESTORE_SOURCE.equals(text(details, "source")),
+                "exact imported REBIND source required");
+        var pair = CheckpointPairCodec.decode(ContinuityJson.canonical(details.get("restore_pair")));
+        var tombstone = restoreTombstone(predecessor, text(details, "attachment_identity"), owner, pair, true);
+        StrictJson.require(java.util.Arrays.equals(ContinuityJson.canonical(tombstone), retainedTombstone),
+                "committed imported REBIND tombstone differs from its exact predecessor");
+        return reduceRebind(predecessor, details);
+    }
+
     private static ContinuityState reduceRebind(ContinuityState predecessor, ObjectNode details) {
         strictRebind(details); CycleState restored = parseState(details.get("new_cycle_state"));
         StrictJson.require(restored.session().equals(sessionFromJson(details.get("session"))) && restored.head().isEmpty() && restored.pending().isEmpty()
