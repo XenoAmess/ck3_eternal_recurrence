@@ -33,6 +33,43 @@ public final class ClockStatusRead {
         Observation observe(ActionCommand parent, AdvanceObservationPort.Frame current, Instant deadline);
     }
     private final Optional<ParentStatusRead> parentStatusRead;
+
+    @FunctionalInterface
+    public interface ArchivedStatusWork<T> {
+        T run() throws java.io.IOException, InterruptedException;
+    }
+
+    private record ArchivedTerminal(ActionCommand parent, ExactRef status) { }
+    private static final ThreadLocal<ArchivedTerminal> ARCHIVED_TERMINAL = new ThreadLocal<>();
+
+    /** The held Root operation supplies one existing terminal Status for this exact original. */
+    public static <T> T withArchivedTerminal(ActionCommand parent, ExactRef status, ArchivedStatusWork<T> work)
+            throws java.io.IOException, InterruptedException {
+        require(ARCHIVED_TERMINAL.get() == null, "archived clock Status scope cannot be nested");
+        ARCHIVED_TERMINAL.set(new ArchivedTerminal(Objects.requireNonNull(parent), Objects.requireNonNull(status)));
+        try {
+            return work.run();
+        } finally {
+            ARCHIVED_TERMINAL.remove();
+        }
+    }
+
+    Optional<Observation> archivedTerminal(ActionCommand parent) {
+        var retained = ARCHIVED_TERMINAL.get();
+        if (retained == null) return Optional.empty();
+        require(retained.parent().equals(parent)
+                && org.xar.ck3.control.application.action.ActionScope.currentActionId().filter(parent.actionId()::equals).isPresent(),
+                "archived clock Status escaped its exact retained parent");
+        var original = archive.loadRead(retained.status());
+        var read = new Observation(decode(original.original()), original, archive.referenceOf(original.original()));
+        read.requirePhysicalParent(parent);
+        org.xar.ck3.control.application.effects.NativeRecordedEvidenceVerifier.requireRead(original, archive);
+        var custody = original.original().custody().orElseThrow();
+        require(original.request().deadline().equals(parent.deadline())
+                && custody.responseReceived().observedAt().isBefore(parent.deadline()),
+                "archived clock Status crossed the original parent deadline");
+        return Optional.of(read);
+    }
     // Factory ownership preserves the exact installed object; Root still grants all actual source/session/custody authority.
     private static final Set<ReadContract<Status>> REGISTERED = java.util.Collections.newSetFromMap(new java.util.WeakHashMap<>());
     public static ReadContract<Status> registeredContract(ExactRef actualNativeDefinition) {

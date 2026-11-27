@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.io.UncheckedIOException;
 import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -27,6 +29,8 @@ import org.xar.ck3.control.nativebridge.NativeWire;
 import org.xar.ck3.control.application.effects.NativeRecordedEvidenceVerifier;
 import org.xar.ck3.control.application.effects.RootGuardEvidence;
 import org.xar.ck3.control.application.effects.RootPlanningReadGuard;
+import org.xar.ck3.control.application.session.ContinuityBatchJournal;
+import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 import org.xar.ck3.control.continuity.writer.WriterContracts;
 import org.xar.ck3.control.nativebridge.NativeFreshSnapshotPort;
@@ -44,6 +48,25 @@ public final class RootAdvanceInfrastructureFactory {
     public static final String TIMINGS_SCHEMA="xar.java-root-advance-timings/v1";
     public static final int TIMINGS_MAX_BYTES=4096;
     private RootAdvanceInfrastructureFactory() { }
+
+    static <T> T withArchivedLifeStatus(ActionReceipt parent, Path input, ClockStatusRead.ArchivedStatusWork<T> work)
+            throws IOException, InterruptedException {
+        require(parent.state() instanceof ActionState.CompositeUnknown original
+                && original.execution().handlerId().equals(LifeAdvanceComposite.HANDLER)
+                && original.reason().equals("life advance postcondition unavailable; no replay: ContractViolationException: runtime context deadline expired"),
+                "archived clock Status requires the original undecided Life read expiry");
+        byte[] bytes;
+        try (var file = Files.newInputStream(input)) {
+            bytes = file.readNBytes(4097);
+        }
+        require(bytes.length <= 4096, "archived clock Status input exceeded its bound");
+        var data = StrictJson.object(StrictJson.parse(bytes), Set.of("schema", "action_id", "body_sha256", "original_status"));
+        require(StrictJson.text(data.get("schema")).equals("xar.java-archive-life-terminal-input/v1")
+                && StrictJson.text(data.get("action_id")).equals(parent.command().actionId())
+                && StrictJson.text(data.get("body_sha256")).equals(parent.bodySha256()),
+                "archived clock Status input changed the original Life command");
+        return ClockStatusRead.withArchivedTerminal(parent.command(), ExactRef.fromJson(data.get("original_status")), work);
+    }
 
     /** A bounded new read-only query may follow only an archived, completed exact availability rejection. */
     static NativeFreshSnapshotPort.Result readAvailableFreshSnapshot(NativeFreshSnapshotPort port,
@@ -328,7 +351,9 @@ public final class RootAdvanceInfrastructureFactory {
                     var actions=context.core().journal().locked(same,locked->List.copyOf(locked.snapshot().actions()));
                     boolean warm=current.provenance() instanceof ObservationProvenance.PhysicalAfterAcknowledgement;
                     var original=warm?context.core().journal().locked(same,locked->locked.find(parent.actionId()).orElseThrow()):
-                            org.xar.ck3.control.application.session.ContinuityBatchJournal.readOnlyObservedLifeRecoveryRoot(actions)
+                            ContinuityBatchJournal.readOnlyObservedLifeRecoveryRoot(same,
+                                    new SessionIdentity(context.game().machineId(), context.game().generation(), context.game().sessionId()),
+                                    archive, actions)
                             .orElseThrow(()->new IOException("physical Life Status has no unique canonical read-only parent"));
                     if(warm) require(original.state() instanceof ActionState.CompositeRunning running
                             &&running.execution().handlerId().equals(LifeAdvanceComposite.HANDLER)
@@ -1209,7 +1234,9 @@ public final class RootAdvanceInfrastructureFactory {
                             archive.receiptReferenceOf(resume),archive.receiptReferenceOf(last));
                 } else {
                     requireWatchRole(canonical,last);
-                    require(org.xar.ck3.control.application.session.ContinuityBatchJournal.readOnlyObservedLifeRecoveryRoot(originals)
+                    require(ContinuityBatchJournal.readOnlyObservedLifeRecoveryRoot(same,
+                            new SessionIdentity(context.game().machineId(), context.game().generation(), context.game().sessionId()),
+                            archive, originals)
                             .filter(canonical::equals).isPresent(),"same-Game watch is not the admitted complete canonical Life prefix");
                     basis=new ObservationProvenance.SameGameWatch(archive.receiptReferenceOf(canonical),archive.receiptReferenceOf(last));
                 }

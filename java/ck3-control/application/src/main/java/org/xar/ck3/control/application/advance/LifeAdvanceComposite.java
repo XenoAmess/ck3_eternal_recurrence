@@ -271,6 +271,9 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
         if (archivedStart.isEmpty()) return new ActionPorts.Pending("original life start lacks its complete native/Driver guard basis; no fabricated episode or public revision", List.of(retained.guard().nativeEvidence()));
         AdvanceObservationPort.Frame starting = archivedStart.orElseThrow();
         require(starting.identity().equals(parent.before()) && starting.source().equals(parent.source()) && starting.sessionId().equals(parent.sessionId()), "archived life start crossed original authority");
+        var archivedTerminal = statuses.archivedTerminal(parent);
+        if (archivedTerminal.isPresent())
+            return finishArchivedCampaignStop(parent, plan, starting, children, archivedTerminal.orElseThrow());
         if (retainedExpired.isPresent() && cancellationReads instanceof ExpiredPartialReads source) {
             var settled = source.expiredPartialEvidence().settleRetained(retainedExpired.orElseThrow(), children, starting);
             if (settled.isPresent()) return settled.orElseThrow();
@@ -331,6 +334,46 @@ public final class LifeAdvanceComposite implements CompositeActionPort.ZeroGamep
         ExactRef basis = LifeAdvanceEvidence.preserve(parent, starting, current, progress, terminal, children, Optional.empty(), archive);
         return completed(parent, plan, current, progress, null, terminal, children, List.of(basis));
     }
+    private ActionPorts.PostconditionResult finishArchivedCampaignStop(ActionCommand parent, AdvancePlan plan,
+            AdvanceObservationPort.Frame starting, List<ActionReceipt> children, ClockStatusRead.Observation terminal) {
+        require(parent.operation().value().equals("life-advance")
+                && plan.clockMode() == AdvancePlan.ClockMode.CAMPAIGN_SENTINEL
+                && !plan.exactOneDay() && plan.dailyWatch().isEmpty() && children.size() == 2,
+                "archived clock Status requires the ordinary campaign ARM and RESUME");
+        var arm = children.getFirst();
+        var resume = children.getLast();
+        require(arm.command().operation().value().equals(plan.armStep()) && AdvancePrimitives.confirmedResume(resume),
+                "archived clock Status lost the original ARM or independently confirmed RESUME");
+        var armStatus = AdvancePrimitives.acknowledgedSentinel(arm.ack().orElseThrow(), plan.armStep());
+        AdvanceClock.validateArm(armStatus, plan);
+        AdvanceClock.validateStop(armStatus, terminal.status(), plan, plan.targetDateRaw());
+
+        var resumeEnd = entryFrames.readChild(resume, archive)
+                .orElseThrow(() -> new IllegalStateException("archived clock Status has no original RESUME post-state"));
+        var statusIdentity = terminal.physicalIdentity().orElseThrow();
+        var resumeCustody = resume.ack().orElseThrow().custody().orElseThrow();
+        var statusCustody = terminal.receipt().original().custody().orElseThrow();
+        require(statusCustody.session().equals(resumeCustody.session())
+                && statusCustody.custodyEpoch().equals(resumeCustody.custodyEpoch())
+                && resumeCustody.responseReceived().observedAt().isBefore(resumeEnd.observedAt())
+                && resumeEnd.observedAt().isBefore(parent.deadline())
+                && !statusIdentity.observedAt().isBefore(resumeEnd.observedAt())
+                && statusIdentity.nativeRevision().compareTo(resumeEnd.identity().frame().identity().nativeRevision()) >= 0
+                && resumeEnd.identity().frame().identity().dateRaw().equals(plan.targetDateRaw())
+                && AdvancePolicy.truth(resumeEnd.semantic(), "paused"),
+                "archived clock Status does not follow the same original paused RESUME");
+
+        var ending = observations.current(parent, ActionObservationWindow.deadline(parent));
+        require(ending.provenance() instanceof ObservationProvenance.FreshSnapshotQuery,
+                "archived clock Status requires an independent fresh reconciliation frame");
+        AdvanceClock.requireAfterControl(parent, resumeEnd, terminal, ending);
+        var progress = AdvanceClock.ProgressStatus.POSTCONDITION;
+        var originalStatus = Optional.of(terminal);
+        var basis = LifeAdvanceEvidence.preserve(parent, starting, ending, progress, originalStatus,
+                children, Optional.empty(), archive);
+        return completed(parent, plan, ending, progress, null, originalStatus, children, List.of(basis));
+    }
+
     // Only the actual installed Root's private, exact-subject backend provider may qualify this new role.
     // Existing constructors and ordinary CancellationReads lambdas remain unqualified and issue no token.
     public Optional<LifePostResumePauseCancellation> postResumePauseCancellationToken(ActionReceipt original,Instant requestedDeadline) {

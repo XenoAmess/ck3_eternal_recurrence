@@ -2089,9 +2089,7 @@ public final class RootApplicationAssembly {
             var departed = remountFrom.orElse(predecessor);
             departed.requireCurrent(deadline);
             long expectedNativeDate = writer.locked(same ->
-                    ContinuityBatchJournal.canonicalNamedAppliedLife(same, successor, archive.withSession(same))
-                            .map(receipt -> receipt.applied().orElseThrow().observation().after().frame().identity().dateRaw().longValueExact())
-                            .orElse(rawDate));
+                    ContinuityBatchJournal.canonicalNamedProgressDate(same, successor, archive.withSession(same)).orElse(rawDate));
             var opening = RootExternalSavedOpening.capture(game, departed.previousOwner().game(), namedSave,
                     expectedNativeDate, actor, deadline);
             return writer.locked(same -> {
@@ -2131,7 +2129,7 @@ public final class RootApplicationAssembly {
                 var driver = projectExternalSave(same, game, opening, original, retainedFrames, deadline);
                 departed.requireCurrent(deadline);
                 externalSavedStage = new ExternalSavedStage(departed, opening, cycles, batches, original, driver, policy);
-                if (original.pendingAppliedLife().isPresent())
+                if (original.pendingAppliedLife().isPresent() || original.interruptedLife().isPresent())
                     externalPendingCycleData = batches.externalAppliedLifeRecovery(same, original);
                 else if (original.pendingFull111Event().isPresent())
                     externalPendingCycleData = batches.externalFull111EventRecovery(same, original);
@@ -2182,7 +2180,7 @@ public final class RootApplicationAssembly {
                     .orElse(facts.stamp().driverVersion());
             var seed = new DriverBootstrap.Seed(reference, facts.originalHistoryBasis(), version,
                     facts.stamp().episodeEpoch(), raw.session(), auxiliary, facts.loop());
-            var nextReceipt = original.pendingAppliedLife().or(original::pendingFull111Event);
+            var nextReceipt = original.pendingAppliedLife().or(original::interruptedLife).or(original::pendingFull111Event);
             var namedHistory = new java.util.ArrayList<DriverBootstrap.ExternalSavedActionHistory>();
             for (var publication : publications) {
                 var receipt = ContinuityActionJournal.lookup(same.head().state(), publication.command().actionId(), bound).orElseThrow();
@@ -2193,7 +2191,7 @@ public final class RootApplicationAssembly {
                         nextReceipt.filter(action -> action.command().equals(receipt.command())).isPresent(),
                         Optional.of(namedHistoryCoverage(receipt, publication, complete, bound))));
             }
-            var unrecorded = original.settledFull111Event().or(original::pendingFull111Event)
+            var unrecorded = original.settledFull111Event().or(original::pendingFull111Event).or(original::interruptedLife)
                     .filter(receipt -> namedHistory.stream().noneMatch(item -> item.receipt().equals(receipt)));
             unrecorded.ifPresent(receipt -> namedHistory.add(new DriverBootstrap.ExternalSavedActionHistory(receipt, true, Optional.empty())));
             try {
@@ -3135,7 +3133,12 @@ public final class RootApplicationAssembly {
                 var proof = RootArchivedFull111EventRecovery.Originals.read(proofFile);
                 RootArchivedFull111EventRecovery.publish(this, stage.original(), externalPendingCycleData, proof);
             }
-            var actual = session.reconcileUnresolvedOriginal(externalPendingCycleData, deadline);
+            var interrupted = stage.original().interruptedLife().filter(action -> !action.settled());
+            var actual = interrupted.isPresent()
+                    ? RootAdvanceInfrastructureFactory.withArchivedLifeStatus(interrupted.orElseThrow(),
+                            proofFile.resolveSibling("archived-life-status-recovery.json"),
+                            () -> session.reconcileUnresolvedOriginal(externalPendingCycleData, deadline))
+                    : session.reconcileUnresolvedOriginal(externalPendingCycleData, deadline);
             if (!actual.settled() || session.controllerForPublication().isQuarantined())
                 throw new IOException("The named campaign's original ordinary cycle remains quarantined");
             if (stage.original().pendingAppliedLife().isPresent()) {
