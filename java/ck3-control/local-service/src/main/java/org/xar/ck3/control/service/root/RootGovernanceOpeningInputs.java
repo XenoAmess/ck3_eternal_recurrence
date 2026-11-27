@@ -103,7 +103,13 @@ public final class RootGovernanceOpeningInputs implements RootPlanningInputsFact
     private static List<ExactRef> restoration(RootRuntimeContext context,org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same,
             GovernanceOpeningDocument.Document document,org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity actual,
             org.xar.ck3.control.g2.common.G2Source source,java.time.Instant deadline,DomainBodies.Available current)throws IOException,InterruptedException {
-        context.writer().requireSession(same);var restored=context.requireRestoration(deadline);var originalProof=context.restorationOriginal(same);var material=originalProof.material();
+        context.writer().requireSession(same);
+        var owner = new SessionIdentity(context.game().machineId(), context.game().generation(), context.game().sessionId());
+        var named = externalCompletedOpeningEvidence(same, context.archive().withSession(same), owner, document, actual, current);
+        if (named.isPresent()) return named.orElseThrow();
+        var restored = context.requireRestoration(deadline);
+        var originalProof = context.restorationOriginal(same);
+        var material = originalProof.material();
         StrictJson.require(restored.session().game().equals(actual.game())&&restored.source().equals(source)
                 &&restored.episodeRunId().equals(actual.frame().episodeRunId())&&material.pair().equals(restored.pair())&&originalProof.pair().equals(restored.pair())
                 &&restored.pair().frame().frame().identity().player().equals(document.observed().frame().identity().player())
@@ -117,6 +123,13 @@ public final class RootGovernanceOpeningInputs implements RootPlanningInputsFact
                 "actual saved opening body no longer matches its physical archived original");
         return List.of(originalProof.basis(),material.reference(),restored.originalHistoryBasis(),restored.pair().driver().reference(),restored.pair().save().reference());
     }
+    static Optional<List<ExactRef>> externalCompletedOpeningEvidence(Session same, ActionPorts.OutcomeArchive originals,
+            SessionIdentity owner, GovernanceOpeningDocument.Document document, ObservationIdentity actual,
+            DomainBodies.Available current) throws IOException {
+        if (!OpeningTransitions.retainsExternalReadOnlyCompletion(document)) return Optional.empty();
+        return externalOpeningEvidence(same, originals, owner, document, actual, current);
+    }
+
     static Optional<List<ExactRef>> externalOpeningEvidence(Session same, ActionPorts.OutcomeArchive originals,
             SessionIdentity owner, GovernanceOpeningDocument.Document document, ObservationIdentity actual,
             DomainBodies.Available current) throws IOException {

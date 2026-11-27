@@ -111,9 +111,19 @@ final class RootGovernanceOpeningInputsTest {
         }
     }
     @Test void namedSaveUsesTheOriginalOpeningBodyWithoutAPhysicalRestore() throws Exception {
+        checkNamedOpening(OpeningStage.AWAIT_SUBMIT);
+    }
+
+    @Test void namedSaveCanReadTheRetainedReadOnlyCompletionWithoutPhysicalRestoreOrMutation() throws Exception {
+        checkNamedOpening(OpeningStage.COMPLETE);
+    }
+
+    private void checkNamedOpening(OpeningStage stage) throws Exception {
         var original = pending();
+        boolean complete = stage == OpeningStage.COMPLETE;
         var document = new GovernanceOpeningDocument.Document(original.observed(), original.source(), original.sessionId(),
-                OpeningStage.AWAIT_SUBMIT, Optional.empty(), Optional.empty(), original.originals());
+                stage, Optional.empty(), Optional.empty(), original.originals(), Optional.empty(),
+                complete ? Optional.of(original.observed()) : Optional.empty());
         var store = new Store(GovernanceOpeningDocument.encode(document));
         var departed = new SessionIdentity(MACHINE, document.observed().game(), document.sessionId());
         var replacement = new GameGeneration(124, new PythonOnlyUInt64(new BigInteger("133700000000000002")));
@@ -156,15 +166,22 @@ final class RootGovernanceOpeningInputsTest {
         var body = (DomainBodies.Available) store.body;
         var archived = RootGovernanceOpeningInputs.externalOpeningEvidence(store, archive, owner, document, frame, body).orElseThrow();
         assertEquals(List.of(originRef, body.reference().payload()), archived);
-        var rebound = GovernanceOpeningDocument.decode(
-                OpeningTransitions.externalUnissuedDocument(document, frame, document.source(), owner, archived));
-        assertEquals(frame, rebound.observed());
-        assertEquals(owner.sessionId(), rebound.sessionId());
-        assertEquals(OpeningStage.AWAIT_SUBMIT, rebound.stage());
-        assertTrue(rebound.originals().containsAll(List.of(originRef, body.reference().payload(), COMMAND)));
-        assertTrue(rebound.preparedCommand().isEmpty());
-        assertTrue(rebound.actionReceipt().isEmpty());
-        assertTrue(rebound.checkpoint().isEmpty());
+        var consumed = RootGovernanceOpeningInputs.externalCompletedOpeningEvidence(store, archive, owner, document, frame, body);
+        assertEquals(complete ? Optional.of(archived) : Optional.empty(), consumed);
+        if (complete) {
+            assertTrue(RootGovernanceOpeningInputs.externalCompletedOpeningEvidence(store, archive,
+                    new SessionIdentity(MACHINE, replacement, "other-session"), document, frame, body).isEmpty());
+        } else {
+            var rebound = GovernanceOpeningDocument.decode(
+                    OpeningTransitions.externalUnissuedDocument(document, frame, document.source(), owner, archived));
+            assertEquals(frame, rebound.observed());
+            assertEquals(owner.sessionId(), rebound.sessionId());
+            assertEquals(OpeningStage.AWAIT_SUBMIT, rebound.stage());
+            assertTrue(rebound.originals().containsAll(List.of(originRef, body.reference().payload(), COMMAND)));
+            assertTrue(rebound.preparedCommand().isEmpty());
+            assertTrue(rebound.actionReceipt().isEmpty());
+            assertTrue(rebound.checkpoint().isEmpty());
+        }
         assertThrows(IllegalArgumentException.class, () ->
                 OpeningTransitions.externalUnissuedDocument(original, frame, document.source(), owner, archived));
         assertTrue(RootGovernanceOpeningInputs.externalOpeningEvidence(store, archive,
@@ -172,6 +189,10 @@ final class RootGovernanceOpeningInputsTest {
         var changed = new DomainBodies.Available(body.reference(), body.canonicalBody(), ref("new-head"), List.of());
         assertThrows(IllegalArgumentException.class, () ->
                 RootGovernanceOpeningInputs.externalOpeningEvidence(store, archive, owner, document, frame, changed));
+        if (complete) {
+            assertThrows(IllegalArgumentException.class, () ->
+                    RootGovernanceOpeningInputs.externalCompletedOpeningEvidence(store, archive, owner, document, frame, changed));
+        }
         assertEquals(0, store.mutations);
     }
 

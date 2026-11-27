@@ -84,11 +84,29 @@ public final class OpeningTransitions implements OrdinaryPlanCompletion {
             StrictJson.require(old.sessionId().equals(owner.sessionId()), "external opening changed its current owning session");
             return;
         }
+        if (retainsExternalReadOnlyCompletion(old)) {
+            GovernanceOpeningDocument.requireSameEpisode(old, observed.frame(), context.source());
+            RootGovernanceOpeningInputs.externalOpeningEvidence(same, context.archive().withSession(same),
+                    owner, old, observed.frame(), current)
+                    .orElseThrow(() -> new IOException("actual completed external opening origin is unavailable"));
+            context.semanticVerifier().verify(same, owner, observed);
+            return;
+        }
         var evidence = namedOpeningEvidence(same, old, observed, current, owner);
         var input = StrictJson.object();
         input.set("named_origin", evidence.getFirst().toJson());
         input.set("semantic", semantic(observed));
         publish(same, Kind.EXTERNAL_UNISSUED_REBIND, current.reference().payload(), input);
+    }
+
+    static boolean retainsExternalReadOnlyCompletion(GovernanceOpeningDocument.Document old) {
+        return old.stage() == OpeningStage.COMPLETE && old.preparedCommand().isEmpty()
+                && old.actionReceipt().isEmpty() && old.checkpoint().isEmpty()
+                && old.existingObserved().filter(actual -> actual.machineId().equals(old.observed().machineId())
+                        && actual.game().equals(old.observed().game())
+                        && actual.frame().episodeRunId().equals(old.observed().frame().episodeRunId())
+                        && actual.frame().identity().player().equals(old.observed().frame().identity().player())
+                        && actual.frame().identity().dateRaw().equals(old.observed().frame().identity().dateRaw())).isPresent();
     }
 
     private List<ExactRef> namedOpeningEvidence(ContinuityStorePort.Session same, GovernanceOpeningDocument.Document old,
