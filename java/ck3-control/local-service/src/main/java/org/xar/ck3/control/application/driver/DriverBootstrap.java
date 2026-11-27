@@ -1,7 +1,5 @@
 package org.xar.ck3.control.application.driver;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.BooleanNode;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.time.Instant;
@@ -80,7 +78,7 @@ public final class DriverBootstrap {
     }
 
     private static void appendOriginalFullReadDiagnostics(StringBuilder detail, NativeActionPort.AckReceived ack) {
-        if (ack.originalFrame().byteLength() > 4096) return;
+        if (ack.originalFrame().byteLength() > FreshFullReadDiagnostics.MAXIMUM_PAYLOAD_BYTES) return;
         byte[] packet = ack.originalPacket();
         if (packet.length != ack.originalFrame().byteLength() + 4) return;
         try {
@@ -90,35 +88,13 @@ public final class DriverBootstrap {
             var wire = NativeWire.object(NativeWire.parse(original.payload().value()));
             var error = wire.path("error").asText("");
             if (error.matches("fresh_full_state_[a-z_]{1,64}")) detail.append("; native_error=").append(error);
-            var diagnostic = wire.path("fresh_full_state_diagnostic");
-            var stage = diagnostic.path("stage").asText("");
-            if (diagnostic.path("schema").asText("").equals("xar.native.fresh-full-state-diagnostic/v1")
-                    && BooleanNode.FALSE.equals(diagnostic.path("fresh_available"))
-                    && stage.matches("[a-z][a-z_]{0,63}")) {
-                detail.append("; native_stage=").append(stage);
-                if (stage.equals("raw_read_unavailable")) appendFullCallbackCause(detail, diagnostic);
-            }
+            FreshFullReadDiagnostics.decode(wire).ifPresent(diagnostic -> {
+                detail.append("; native_stage=").append(diagnostic.stage());
+                diagnostic.callback().ifPresent(callback -> detail.append("; native_full_stage=").append(callback.stage())
+                        .append("; native_full_reason=").append(callback.reason()));
+            });
         } catch (IOException | IllegalArgumentException ignored) {
             // The unchanged transport outcome remains the error if diagnostic data cannot be decoded.
-        }
-    }
-
-    /** The callback belongs to this completed read and carries diagnostics only. */
-    private static void appendFullCallbackCause(StringBuilder detail, JsonNode diagnostic) {
-        var callback = diagnostic.path("callback_cause81");
-        var sequence = diagnostic.path("query_sequence").textValue();
-        if (!"xar.native.fresh-full-callback-cause/v1".equals(callback.path("schema").textValue())
-                || sequence == null || !sequence.matches("[1-9][0-9]{0,19}")
-                || !sequence.equals(callback.path("ticket_sequence").textValue())
-                || !BooleanNode.TRUE.equals(callback.path("callback_entered"))
-                || !BooleanNode.TRUE.equals(callback.path("exact_florin_reader"))
-                || !BooleanNode.TRUE.equals(callback.path("raw_read_returned"))
-                || !BooleanNode.FALSE.equals(callback.path("raw_read_available"))
-                || !BooleanNode.FALSE.equals(callback.path("result_available"))) return;
-        var stage = callback.path("full_stage").asText("");
-        var reason = callback.path("full_reason").asText("");
-        if (stage.matches("[a-z][a-z_]{0,63}") && reason.matches("[a-zA-Z][a-zA-Z0-9_]{0,255}")) {
-            detail.append("; native_full_stage=").append(stage).append("; native_full_reason=").append(reason);
         }
     }
 

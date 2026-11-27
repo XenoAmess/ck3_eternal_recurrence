@@ -146,6 +146,54 @@ final class ReadOwnerTriageNoticeTest {
         System.out.println("SOFTWARE_READ_OWNER_NOTICE_DATA archive_dispatch_and_frame_primary=true failed_sink_no_retry=true unknown_positive_no_notice=true long_error_bounded=true");
     }
 
+    @Test void noticeReportsOnlyTheCallbackBoundToItsArchivedNegativeRead() throws Exception {
+        for (Mode mode : List.of(Mode.CALLBACK, Mode.MISMATCHED_CALLBACK)) {
+            var replay = new Replay(mode);
+            try (var transport = replay.open(16)) {
+                var port = new RecordingPort(transport, replay);
+                var archive = new Archive(root.resolve(mode.name()), replay, Fault.NONE);
+                var sink = new NoticeSink(replay, () -> {
+                    assertEquals(1, archive.acks);
+                    assertEquals(1, archive.frames);
+                    archive.assertOriginals(0);
+                }, null);
+                Instant until = deadline();
+                var unavailable = assertInstanceOf(NativeFreshSnapshotPort.Unavailable.class,
+                        capture(sink, () -> read(port, until, archive)));
+                assertSame(archive.originals.getFirst(), unavailable);
+                assertEquals(List.of("write1", "dispatch1", "frame1", "notice"), replay.events);
+                assertEquals(1, sink.lines.size());
+                var notice = NativeWire.object(NativeWire.parse(sink.lines.getFirst().getBytes(StandardCharsets.UTF_8)));
+                assertEquals("fresh_full_state_read_failed", notice.path("native_error").textValue());
+                if (mode == Mode.CALLBACK) {
+                    assertEquals("event", notice.path("native_full_stage").textValue());
+                    assertEquals("current111_ordinary_event_gui_scene_unavailable",
+                            notice.path("native_full_reason").textValue());
+                } else {
+                    assertFalse(notice.has("native_full_stage"));
+                    assertFalse(notice.has("native_full_reason"));
+                }
+                assertFalse(notice.path("ui_block_confirmed").booleanValue());
+                assertFalse(notice.path("native_cause_confirmed").booleanValue());
+                sameDeadline(port, replay, until);
+            }
+        }
+    }
+
+    private static void fullCallback(ObjectNode row, boolean matches) throws IOException {
+        row.put("error", "fresh_full_state_read_failed");
+        var diagnostic = row.putObject("fresh_full_state_diagnostic")
+                .put("schema", "xar.native.fresh-full-state-diagnostic/v1")
+                .put("stage", "raw_read_unavailable").put("fresh_available", false).put("query_sequence", "701");
+        try (var input = ReadOwnerTriageNoticeTest.class.getResourceAsStream(
+                "/source56-independent-recovery/software-event-callback-cause.json")) {
+            assertNotNull(input);
+            var callback = NativeWire.object(NativeWire.parse(input.readAllBytes()));
+            if (!matches) callback.put("ticket_sequence", "702");
+            diagnostic.set("callback_cause81", callback);
+        }
+    }
+
     @FunctionalInterface private interface ReadCall { NativeFreshSnapshotPort.Result read() throws IOException,InterruptedException; }
     private static NativeFreshSnapshotPort.Result capture(NoticeSink sink,ReadCall call) throws IOException,InterruptedException {
         PrintStream original=System.out;
@@ -167,6 +215,7 @@ final class ReadOwnerTriageNoticeTest {
         assertTrue(row.get("archive_callbacks_completed").booleanValue());assertTrue(row.get("original_frame_present").booleanValue());
         assertFalse(row.get("native_ok").booleanValue());assertEquals("VALUE",row.get("native_error_presence").textValue());
         assertFalse(row.get("ui_block_confirmed").booleanValue());assertFalse(row.get("native_cause_confirmed").booleanValue());assertTrue(row.get("diagnostic_only").booleanValue());
+        assertFalse(row.has("native_full_stage"));assertFalse(row.has("native_full_reason"));
         var original=assertInstanceOf(NativeWire.CommandResult.class,NativeWire.decode(ack.originalPacket()));
         byte[] token=original.error().token().orElseThrow().value();assertEquals(token.length,row.get("native_error_token_bytes").intValue());
         ack.custody().orElseThrow().verify(ack);
@@ -212,7 +261,7 @@ final class ReadOwnerTriageNoticeTest {
         if(ok)row.putObject("result").put("schema",NativeFreshSnapshotPort.RESULT_SCHEMA).put("request_id",requestId).put("snapshot_id","native:6").put("revision",6);
         else row.put("error",ERROR);return row;
     }
-    private enum Mode {UNKNOWN_NEGATIVES_THEN_SUCCESS,NEGATIVES_THEN_SUCCESS,NEGATIVE,PERSISTENT_UNKNOWN,POSITIVE_WITHOUT_FRAME,LONG_ERROR}
+    private enum Mode {UNKNOWN_NEGATIVES_THEN_SUCCESS,NEGATIVES_THEN_SUCCESS,NEGATIVE,PERSISTENT_UNKNOWN,POSITIVE_WITHOUT_FRAME,LONG_ERROR,CALLBACK,MISMATCHED_CALLBACK}
     private enum Fault {NONE,DISPATCH,FRAME}
     private static final class RecordingPort implements NativeFreshSnapshotPort {
         final NativeGameTransport transport;final Replay replay;final List<Instant> deadlines=new ArrayList<>();final List<String> collected=new ArrayList<>();int reads;
@@ -244,6 +293,9 @@ final class ReadOwnerTriageNoticeTest {
             else {
                 if(mode==Mode.UNKNOWN_NEGATIVES_THEN_SUCCESS&&ids.size()==1){heartbeat(1);heartbeat(2);}
                 var row=ack(id,false);if(mode==Mode.LONG_ERROR)row.putObject("error").put("message","x".repeat(2048));
+                if (mode == Mode.CALLBACK || mode == Mode.MISMATCHED_CALLBACK) {
+                    fullCallback(row, mode == Mode.CALLBACK);
+                }
                 byte[] frame=packet(snapshot(id)),response=packet(row);negativeFrames.add(frame);negativePackets.add(response);packets.add(frame);packets.add(response);
             }
         }

@@ -18,6 +18,7 @@ import java.util.Optional;
 import java.util.Set;
 import org.xar.ck3.control.application.action.*;
 import org.xar.ck3.control.application.advance.*;
+import org.xar.ck3.control.application.driver.FreshFullReadDiagnostics;
 import org.xar.ck3.control.application.driver.HeldDriverObservationPort;
 import org.xar.ck3.control.application.effects.NativeEffectRegistry;
 import org.xar.ck3.control.application.effects.NativeEffectEvidence;
@@ -108,6 +109,13 @@ public final class RootAdvanceInfrastructureFactory {
                         notice.put("native_error_token_bytes", errorToken.length);
                         if (errorToken.length <= 1024) notice.set("native_error", NativeWire.parse(errorToken));
                         else notice.put("native_error_omitted_over_bound", true);
+                    }
+                    if (ack.originalFrame().byteLength() <= FreshFullReadDiagnostics.MAXIMUM_PAYLOAD_BYTES) {
+                        FreshFullReadDiagnostics.decode(original.payload().value())
+                                .flatMap(FreshFullReadDiagnostics::callback).ifPresent(callback -> {
+                                    notice.put("native_full_stage", callback.stage());
+                                    notice.put("native_full_reason", callback.reason());
+                                });
                     }
                     notice.put("ui_block_confirmed", false);
                     notice.put("native_cause_confirmed", false);
