@@ -31,10 +31,19 @@ class RootOnlineDecisionSelectorPeacefulLifeTest {
     @TempDir Path root;
 
     @Test void acceptsTheExactPreparedFull111ClockProposalAndArchivesTheOriginal() throws Exception {
-        var fixture = fixture();
+        assertPreparedClockProposal(fixture("full111-peaceful-life-proposal.json"), Instant.parse("2026-11-27T12:35:58Z"),
+                "163fba97950fc26deead036e590c6b1f05db5d14d5238580afaefed2a243e91f", 53180088);
+    }
+
+    @Test void acceptsTheExistingApprovedWholeMonthWithoutChangingItsTarget() throws Exception {
+        assertPreparedClockProposal(fixture("full111-monthly-life-proposal.json"), Instant.parse("2026-11-27T13:00:31Z"),
+                "27d60388b0685d8e6fd4969799fb2eb138293819d9721e17ca699e3605f716c2", 53180808);
+    }
+
+    private void assertPreparedClockProposal(Fixture fixture, Instant now, String bodySha256, long target) throws Exception {
         var archives = new LinkedHashMap<ExactRef, byte[]>();
         var queue = Files.createDirectory(root.resolve("queue"));
-        var selector = new RootOnlineDecisionSelector(config(queue), fakeClock(Instant.parse("2026-11-27T12:35:58Z")),
+        var selector = new RootOnlineDecisionSelector(config(queue), fakeClock(now),
                 raw -> {
                     byte[] bytes = raw.bytes();
                     String sha = ActionCodec.sha256(bytes);
@@ -49,16 +58,20 @@ class RootOnlineDecisionSelectorPeacefulLifeTest {
         assertArrayEquals(ActionCodec.encodeCommand(fixture.command()), archives.values().iterator().next());
         var evidence = FullJsonTree.parse(archives.get(picked.evidence().orElseThrow()), 65536);
         assertEquals("xar.ordinary-full111-peaceful-life-selection/v1", evidence.path("schema").textValue());
-        assertEquals("163fba97950fc26deead036e590c6b1f05db5d14d5238580afaefed2a243e91f", evidence.path("body_sha256").textValue());
-        assertEquals(53180088, evidence.path("proposal").path("arguments").path("advance_v1").path("target_date_raw").longValue());
+        assertEquals(bodySha256, evidence.path("body_sha256").textValue());
+        assertEquals(target, evidence.path("proposal").path("arguments").path("advance_v1").path("target_date_raw").longValue());
         try (var files = Files.list(queue)) {
             assertEquals(0, files.count());
         }
     }
 
     @Test void keepsNativeWarsAndForegroundsInTheOriginalReviewerPath() throws Exception {
-        var fixture = fixture();
         var configured = config(Files.createDirectory(root.resolve("queue")));
+        assertReviewStillRequired(configured, fixture("full111-peaceful-life-proposal.json"));
+        assertReviewStillRequired(configured, fixture("full111-monthly-life-proposal.json"));
+    }
+
+    private void assertReviewStillRequired(RootOrdinaryRuntimeConfiguration.DecisionProvider configured, Fixture fixture) {
         var expired = fakeClock(fixture.request().deadline().plusSeconds(1));
         var selector = new RootOnlineDecisionSelector(configured, expired, raw -> { throw new AssertionError("expired selection archived evidence"); });
         assertEquals("peaceful_life_selection_deadline_exhausted", selector.select(fixture.request(), fixture.selected()).reason());
@@ -92,8 +105,8 @@ class RootOnlineDecisionSelectorPeacefulLifeTest {
         return Clock.fixed(time, ZoneOffset.UTC);
     }
 
-    private Fixture fixture() throws Exception {
-        try (var raw = getClass().getResourceAsStream("full111-peaceful-life-proposal.json")) {
+    private Fixture fixture(String name) throws Exception {
+        try (var raw = getClass().getResourceAsStream(name)) {
             var input = FullJsonTree.parse(raw.readAllBytes(), 65536);
             var command = ActionCodec.decodeCommand(FullJsonTree.encode(input.get("command"), 65536));
             var snapshot = OpportunityJson.object(OpportunityJson.parse(FullJsonTree.encode(input.get("snapshot"), 65536)), "Full111 snapshot");

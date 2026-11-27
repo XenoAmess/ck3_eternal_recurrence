@@ -939,7 +939,7 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
     /** A complete Full111 supplies current clock, actor, modal and peace observations for this prepared route. */
     private static boolean isPreparedFull111PeacefulLife(PlanningRequest request, PlanningResult.ActionSelected proposal) {
         try {
-            if (!isPeacefulLifeCandidate(request, proposal) || !proposal.trace().before().equals(request.before())) return false;
+            if (!isPeacefulLifeCandidate(request, proposal, true) || !proposal.trace().before().equals(request.before())) return false;
             var chosen = proposal.trace().finalPlan().orElseThrow();
             var route = OpportunityJson.object(proposal.command().arguments().get("plan"), "original peaceful route");
             if (chosen.domain().isPresent() || !("current_life_loop".equals(chosen.phase())
@@ -988,7 +988,7 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
     /** A task projection for one already prepared peaceful Life intent; never a qualification token. */
     private byte[] tryCompactPayload(PlanningRequest request, PlanningResult.ActionSelected proposal, String sha) {
         try {
-            if (!isPeacefulLifeCandidate(request, proposal)) return null;
+            if (!isPeacefulLifeCandidate(request, proposal, false)) return null;
             var original = request.observations().snapshot();
             OpportunityJson.Obj modelSnapshot = original;
             var duplicate = original.get("native_command_history");
@@ -1083,7 +1083,8 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
                 ClockStatusRead.ARM_CAP, ClockStatusRead.STATUS_CAP, ClockStatusRead.CANCEL_CAP);
     }
 
-    private static boolean isPeacefulLifeCandidate(PlanningRequest request, PlanningResult.ActionSelected proposal) {
+    private static boolean isPeacefulLifeCandidate(PlanningRequest request, PlanningResult.ActionSelected proposal,
+            boolean allowPreparedMonth) {
         try {
             ActionCommand command = proposal.command();
             if (!(command.origin() instanceof org.xar.ck3.control.application.action.CommandOrigin.Gameplay)) return false;
@@ -1119,7 +1120,8 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
             if (plan.clockMode() != AdvancePlan.ClockMode.CAMPAIGN_SENTINEL) return false;
             if (plan.exactOneDay()) return false;
             if (plan.dailyWatch().isPresent()) return false;
-            if (plan.horizonDays() < 2 || plan.horizonDays() > 8) return false;
+            int horizon = plan.horizonDays();
+            if (horizon < 2 || (horizon > 8 && !(allowPreparedMonth && horizon == 30))) return false;
             if (plan.speed() != 5) return false;
             if (plan.campaignDeadline().isEmpty()) return false;
 
