@@ -58,7 +58,7 @@ final class ExternalSaveRemountTest {
                     opening, Optional.of(previousRef), Optional.of(batch));
             remount.requirePreviousOrigin(previous);
             assertEquals(remount, ExternalSaveOrigin.fromJson(remount.toJson()));
-            var archive = (ActionPorts.OutcomeArchive) Proxy.newProxyInstance(getClass().getClassLoader(),
+            var archive = (ActionPorts.OutcomeArchive) Proxy.newProxyInstance(ExternalSaveRemountTest.class.getClassLoader(),
                     new Class<?>[]{ActionPorts.OutcomeArchive.class}, (proxy, method, args) -> {
                         throw new AssertionError("pure replay accessed an original: " + method);
                     });
@@ -114,59 +114,8 @@ final class ExternalSaveRemountTest {
             assertEquals(71, before.sequence());
             assertEquals(ContinuityState.Status.REPAIR_REQUIRED, before.status());
 
-            var originals = fixture.get("materials");
-            java.util.function.Function<ExactRef, byte[]> bytes = ref -> {
-                var data = java.util.Base64.getDecoder().decode(originals.get(ref.sha256()).textValue());
-                assertEquals(ref.bytes(), data.length);
-                assertEquals(ref.sha256(), ActionCodec.sha256(data));
-                return data;
-            };
-            var codec = new org.xar.ck3.control.continuity.writer.NativeArchiveDataCodec((ref, limit) -> bytes.apply(ref));
-            var dispatchRefs = new java.util.HashMap<Object, ExactRef>();
-            var requestRefs = new java.util.HashMap<Object, ExactRef>();
-            var recordRefs = new java.util.HashMap<Object, ExactRef>();
-            var archive = (ActionPorts.OutcomeArchive) Proxy.newProxyInstance(getClass().getClassLoader(),
-                    new Class<?>[]{ActionPorts.OutcomeArchive.class}, (proxy, method, arguments) -> {
-                        var arg = arguments[0];
-                        return switch (method.getName()) {
-                            case "loadRecord" -> {
-                                var ref = (ExactRef) arg;
-                                var record = org.xar.ck3.control.application.action.ActionRecordCodec.decode(bytes.apply(ref),
-                                        (ActionPorts.OutcomeArchive) proxy);
-                                recordRefs.put(record, ref);
-                                yield record;
-                            }
-                            case "loadReceipt" -> org.xar.ck3.control.application.action.ActionReceiptCodec.decodeReceipt(
-                                    bytes.apply((ExactRef) arg), (ActionPorts.OutcomeArchive) proxy);
-                            case "load" -> {
-                                var ref = (ExactRef) arg;
-                                var dispatch = codec.decodeDispatchData(ref);
-                                dispatchRefs.put(dispatch, ref);
-                                yield dispatch;
-                            }
-                            case "loadRequest" -> {
-                                var ref = (ExactRef) arg;
-                                var request = codec.decodePreparedRequestData(ref);
-                                requestRefs.put(request, ref);
-                                yield request;
-                            }
-                            case "recordReferenceOf" -> recordRefs.get(arg);
-                            case "referenceOf" -> dispatchRefs.get(arg);
-                            case "requestReferenceOf" -> requestRefs.get(arg);
-                            default -> throw new AssertionError("unexpected original reader " + method);
-                        };
-                    });
-            var edges = new java.util.ArrayList<WriterContracts.HistoricalTransition>();
-            for (int i = 2; i <= 4; i++) {
-                var event = events.get(i);
-                byte[] eventBytes = ContinuityJson.canonical(event);
-                var pin = new WriterContracts.Pin(new ExactRef("fixture:event-" + i, eventBytes.length, ActionCodec.sha256(eventBytes)),
-                        new WriterContracts.FileIdentity("1", Integer.toString(i), "1", "2026-11-27T10:41:00Z", eventBytes.length));
-                edges.add(new WriterContracts.HistoricalTransition(event.path("sequence").longValue(), event.path("kind").textValue(),
-                        ContinuityJson.canonical(event.get("details")), event.path("identity").textValue(),
-                        ContinuityState.fromJson(events.get(i - 1).get("after"), machine),
-                        ContinuityState.fromJson(event.get("after"), machine), pin));
-            }
+            var archive = archivedActionData(fixture.get("materials"));
+            var edges = historicalEdges(events, machine, 2, 4);
             var source = archive.loadRecord(ExactRef.fromJson(events.get(2).get("details").get("receipt_ref"))).receipt().command().source();
             var zero = ContinuityBatchJournal.verifyExternalZeroDispatch(edges, previous, source, archive);
             assertEquals(ContinuityActionJournal.recordHead(before).orElseThrow(), zero);
@@ -210,6 +159,91 @@ final class ExternalSaveRemountTest {
             assertEquals(before.toJson().get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD),
                     committed.toJson().get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD));
         }
+    }
+
+    @Test void sameNamedGameRetainsItsPositiveUnknownAndEarlierObservations() throws Exception {
+        try (var raw = getClass().getResourceAsStream("source56-named-full111-pending.json.gz");
+             var compressed = new GZIPInputStream(raw)) {
+            var fixture = StrictJson.parse(compressed.readAllBytes(), StrictJson.EXPLICIT_MAX_BYTES);
+            var events = fixture.get("events");
+            var origin = ExternalSaveOrigin.fromJson(events.get(0).get("details").get("origin"));
+            var head = ContinuityState.fromJson(events.get(7).get("after"), origin.successor().machineId());
+            var archive = archivedActionData(fixture.get("materials"));
+            var edges = historicalEdges(events, origin.successor().machineId(), 2, 6);
+            var source = archive.loadRecord(ExactRef.fromJson(events.get(2).get("details").get("receipt_ref")))
+                    .receipt().command().source();
+            var replay = ContinuityBatchJournal.verifyExternalFull111Action(edges, origin, source, archive, true);
+            assertEquals(79, head.sequence());
+            assertEquals(ContinuityState.Status.REPAIR_REQUIRED, head.status());
+            assertEquals(53179344, head.settledDateRaw());
+            assertEquals(ContinuityActionJournal.recordHead(head).orElseThrow(), replay.getKey());
+            assertEquals(List.of(77L, 78L), replay.getValue().stream().map(ActionReceipt::sequence).toList());
+            assertEquals(replay.getValue().getFirst().ack(), replay.getValue().getLast().ack());
+            assertTrue(replay.getValue().getLast().ack().orElseThrow().nativeOk());
+            assertFalse(replay.getValue().getLast().settled());
+            assertThrows(ContractViolationException.class, () ->
+                    ContinuityBatchJournal.verifyExternalZeroDispatch(edges.subList(0, 3), origin, source, archive));
+        }
+    }
+
+    private static ActionPorts.OutcomeArchive archivedActionData(com.fasterxml.jackson.databind.JsonNode originals) {
+        java.util.function.Function<ExactRef, byte[]> bytes = ref -> {
+            var data = java.util.Base64.getDecoder().decode(originals.get(ref.sha256()).textValue());
+            assertEquals(ref.bytes(), data.length);
+            assertEquals(ref.sha256(), ActionCodec.sha256(data));
+            return data;
+        };
+        var codec = new org.xar.ck3.control.continuity.writer.NativeArchiveDataCodec((ref, limit) -> bytes.apply(ref));
+        var dispatchRefs = new java.util.HashMap<Object, ExactRef>();
+        var requestRefs = new java.util.HashMap<Object, ExactRef>();
+        var recordRefs = new java.util.HashMap<Object, ExactRef>();
+        return (ActionPorts.OutcomeArchive) Proxy.newProxyInstance(ExternalSaveRemountTest.class.getClassLoader(),
+                new Class<?>[]{ActionPorts.OutcomeArchive.class}, (proxy, method, arguments) -> {
+                    var arg = arguments[0];
+                    return switch (method.getName()) {
+                        case "loadRecord" -> {
+                            var ref = (ExactRef) arg;
+                            var record = org.xar.ck3.control.application.action.ActionRecordCodec.decode(bytes.apply(ref),
+                                    (ActionPorts.OutcomeArchive) proxy);
+                            recordRefs.put(record, ref);
+                            yield record;
+                        }
+                        case "loadReceipt" -> org.xar.ck3.control.application.action.ActionReceiptCodec.decodeReceipt(
+                                bytes.apply((ExactRef) arg), (ActionPorts.OutcomeArchive) proxy);
+                        case "load" -> {
+                            var ref = (ExactRef) arg;
+                            var dispatch = codec.decodeDispatchData(ref);
+                            dispatchRefs.put(dispatch, ref);
+                            yield dispatch;
+                        }
+                        case "loadRequest" -> {
+                            var ref = (ExactRef) arg;
+                            var request = codec.decodePreparedRequestData(ref);
+                            requestRefs.put(request, ref);
+                            yield request;
+                        }
+                        case "recordReferenceOf" -> recordRefs.get(arg);
+                        case "referenceOf" -> dispatchRefs.get(arg);
+                        case "requestReferenceOf" -> requestRefs.get(arg);
+                        default -> throw new AssertionError("unexpected original reader " + method);
+                    };
+                });
+    }
+
+    private static List<WriterContracts.HistoricalTransition> historicalEdges(com.fasterxml.jackson.databind.JsonNode events,
+            String machine, int first, int last) {
+        var edges = new java.util.ArrayList<WriterContracts.HistoricalTransition>();
+        for (int i = first; i <= last; i++) {
+            var event = events.get(i);
+            byte[] eventBytes = ContinuityJson.canonical(event);
+            var pin = new WriterContracts.Pin(new ExactRef("fixture:event-" + i, eventBytes.length, ActionCodec.sha256(eventBytes)),
+                    new WriterContracts.FileIdentity("1", Integer.toString(i), "1", "2026-11-27T10:41:00Z", eventBytes.length));
+            edges.add(new WriterContracts.HistoricalTransition(event.path("sequence").longValue(), event.path("kind").textValue(),
+                    ContinuityJson.canonical(event.get("details")), event.path("identity").textValue(),
+                    ContinuityState.fromJson(events.get(i - 1).get("after"), machine),
+                    ContinuityState.fromJson(event.get("after"), machine), pin));
+        }
+        return List.copyOf(edges);
     }
 
     private ContinuityState actualWriterCommit(ContinuityState before, OrdinaryCycleTransitions cycles,

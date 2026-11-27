@@ -3193,7 +3193,8 @@ public final class ContinuityBatchJournal implements BatchJournal {
     public record UnresolvedSameGameData(Optional<CleanBatchRestart> restartCapture, ControllerRestartState capturedController,
             org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known retainedFacts, ExactRef retainedFullDriver,
             long canonicalSequence, String canonicalHeadDigest, java.util.List<String> usedBatches, long nextBatchSequence,
-            java.util.List<org.xar.ck3.control.application.action.ActionReceipt> unresolvedActions, Optional<SettledSameGameData> retainedHistory) {
+            java.util.List<org.xar.ck3.control.application.action.ActionReceipt> unresolvedActions, Optional<SettledSameGameData> retainedHistory,
+            Optional<ExternalSaveOrigin> externalObservedOrigin) {
         public UnresolvedSameGameData {
             Objects.requireNonNull(restartCapture); Objects.requireNonNull(capturedController);
             Objects.requireNonNull(retainedFacts); Objects.requireNonNull(retainedFullDriver);
@@ -3202,8 +3203,27 @@ public final class ContinuityBatchJournal implements BatchJournal {
             StrictJson.safe(nextBatchSequence, 0);
             unresolvedActions = java.util.List.copyOf(unresolvedActions);
             retainedHistory = Objects.requireNonNull(retainedHistory);
+            externalObservedOrigin = Objects.requireNonNull(externalObservedOrigin);
             var retained=retainedHistory.orElse(null);
-            StrictJson.require(restartCapture.isPresent() || retained!=null
+            if (externalObservedOrigin.isPresent()) {
+                var origin = externalObservedOrigin.orElseThrow();
+                StrictJson.require(restartCapture.isEmpty() && retained != null && unresolvedActions.size() == 1
+                        && capturedController.owner().equals(origin.successor())
+                        && capturedController.quarantined() && capturedController.localUnresolved() && capturedController.dirty()
+                        && capturedController.savedPair().filter(origin.savedPair()::equals).isPresent()
+                        && capturedController.totalCommittedDays() == retained.controller().totalCommittedDays()
+                        && retained.retainedFacts().equals(retainedFacts) && retained.retainedFullDriver().equals(retainedFullDriver)
+                        && unresolvedActions.getFirst().state() instanceof ActionState.Unknown
+                        && unresolvedActions.getFirst().command().operation().value().equals(
+                                org.xar.ck3.control.application.capabilities.NativeActionSteps.FULL111_EVENT_SELECT_STEP)
+                        && unresolvedActions.getFirst().ack().filter(org.xar.ck3.control.application.action.NativeActionPort.AckReceived::nativeOk).isPresent(),
+                        "named Full111 unresolved DATA requires its original current owner, positive SELECT and preserved saved basis");
+                var command = unresolvedActions.getFirst().command();
+                StrictJson.require(command.sessionId().equals(origin.successor().sessionId())
+                        && command.source().equals(retained.source()) && unresolvedActions.getFirst().sequence() < canonicalSequence,
+                        "named Full111 unresolved DATA crossed the actual current batch or historical source");
+                origin.requireSemantic(command.before());
+            } else StrictJson.require(restartCapture.isPresent() || retained!=null
                     && retained.controller().equals(capturedController)
                     && (retained.hasCurrentMapEntry()
                         && retained.cycleSemantic().isEmpty() && retained.controller().savedPair().isEmpty()
@@ -3222,6 +3242,14 @@ public final class ContinuityBatchJournal implements BatchJournal {
                           || savedPendingEventCompletionData(retained,unresolvedActions) || savedIsolatedSwayData(retained,unresolvedActions)),
                     "an absent restart capture requires its actual isolated CurrentMap or saved pending Life history");
         }
+        public UnresolvedSameGameData(Optional<CleanBatchRestart> restartCapture, ControllerRestartState capturedController,
+                DriverSnapshotFacts.Known retainedFacts, ExactRef retainedFullDriver, long canonicalSequence, String canonicalHeadDigest,
+                List<String> usedBatches, long nextBatchSequence, List<ActionReceipt> unresolvedActions,
+                Optional<SettledSameGameData> retainedHistory) {
+            this(restartCapture, capturedController, retainedFacts, retainedFullDriver, canonicalSequence, canonicalHeadDigest,
+                    usedBatches, nextBatchSequence, unresolvedActions, retainedHistory, Optional.empty());
+        }
+
         public CleanBatchRestart capturedManifest() {
             return restartCapture.orElseThrow(() -> new IllegalStateException("initial CurrentMap history has no captured restart manifest"));
         }
@@ -4288,6 +4316,8 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 Optional.of(Objects.requireNonNull(source)));
     }
 
+    private PreparedExternalSave issuedRecordedExternalSave;
+
     public static final class PreparedExternalSave {
         private final ExternalSaveOrigin origin;
         private final SettledSameGameData history;
@@ -4295,27 +4325,37 @@ public final class ContinuityBatchJournal implements BatchJournal {
         private final List<String> consumedBatches;
         private final Optional<String> openBatch;
         private final Optional<ExactRef> interruptedZeroDispatch;
+        private final List<ActionReceipt> full111EventCaptures;
 
         private PreparedExternalSave(ExternalSaveOrigin origin, SettledSameGameData history, Optional<String> recordedDigest,
-                List<String> consumedBatches, Optional<String> openBatch, Optional<ExactRef> interruptedZeroDispatch) {
+                List<String> consumedBatches, Optional<String> openBatch, Optional<ExactRef> interruptedZeroDispatch, List<ActionReceipt> full111EventCaptures) {
             this.origin = origin;
             this.history = history;
             this.recordedDigest = recordedDigest;
             this.consumedBatches = List.copyOf(consumedBatches);
             this.openBatch = openBatch;
             this.interruptedZeroDispatch = interruptedZeroDispatch;
+            this.full111EventCaptures = List.copyOf(full111EventCaptures);
         }
 
         public ExternalSaveOrigin origin() { return origin; }
         public SettledSameGameData history() { return history; }
+        public List<ActionReceipt> full111EventCaptures() { return full111EventCaptures; }
+        public Optional<ActionReceipt> pendingFull111Event() {
+            return full111EventCaptures.isEmpty() ? Optional.empty() : Optional.of(full111EventCaptures.getLast());
+        }
 
         public ControllerRestartState restart(ExactRef head) {
+            return restart(head, false);
+        }
+
+        private ControllerRestartState restart(ExactRef head, boolean pending) {
             var old = history.controller();
             var used = new java.util.LinkedHashSet<>(old.usedBatches());
             used.addAll(consumedBatches);
             return new ControllerRestartState(origin.successor(), old.batchPrefix(), used.size(), used,
                     old.unsavedGameplayActions(), old.savedPair(), Optional.of(head), old.eligibleSinceSave(),
-                    true, false, false, old.totalCommittedDays(), old.completedAnalysisIds(), old.stopRequested());
+                    true, pending, pending, old.totalCommittedDays(), old.completedAnalysisIds(), old.stopRequested());
         }
     }
 
@@ -4324,13 +4364,29 @@ public final class ContinuityBatchJournal implements BatchJournal {
             CompositeOperatorQuarantineSource source, SessionIdentity successor, CheckpointPair.FileWitness loadedFile,
             ExternalSaveOrigin.NativeOpening opening) throws IOException {
         store.requireSession(same);
+        issuedRecordedExternalSave = null;
         var prepared = replayRecordedExternalSave(same, departed, source, same.head());
         var origin = prepared.origin();
         StrictJson.require(origin.successor().equals(successor) && origin.loadedFile().equals(loadedFile)
                 && origin.opening().actor().equals(opening.actor()) && origin.opening().dateRaw() == opening.dateRaw()
                 && prepared.interruptedZeroDispatch.isEmpty(),
                 "named-save re-entry requires its actual successor and loaded physical file");
+        issuedRecordedExternalSave = prepared;
         return prepared;
+    }
+
+    public UnresolvedSameGameData externalFull111EventRecovery(ContinuityStorePort.Session same, PreparedExternalSave prepared) throws IOException {
+        store.requireSession(same);
+        var head = same.head();
+        StrictJson.require(prepared == issuedRecordedExternalSave && prepared.recordedDigest.filter(head.digest()::equals).isPresent()
+                && prepared.openBatch.isEmpty() && head.state().status() == ContinuityState.Status.REPAIR_REQUIRED,
+                "Full111 recovery requires the exact same-Game interrupted named journal replay");
+        var pending = prepared.pendingFull111Event().orElseThrow();
+        var controller = prepared.restart(same.persistedHead(), true);
+        var old = prepared.history();
+        return new UnresolvedSameGameData(Optional.empty(), controller, old.retainedFacts(), old.retainedFullDriver(),
+                head.state().sequence(), head.digest(), new java.util.ArrayList<>(controller.usedBatches()), controller.nextBatchSequence(),
+                List.of(pending), Optional.of(old), Optional.of(prepared.origin()));
     }
 
     public PreparedExternalSave prepareExternalRemount(ContinuityStorePort.Session same, SessionIdentity originalDeparted,
@@ -4339,6 +4395,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
         store.requireSession(same);
         var head = same.head();
         var previous = replayRecordedExternalSave(same, originalDeparted, source, head);
+        StrictJson.require(previous.pendingFull111Event().isEmpty(), "named remount cannot discard a positively acknowledged original action");
         var original = previous.origin();
         var previousRef = ExactRef.fromJson(head.state().toJson().get(WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD));
         var origin = new ExternalSaveOrigin(head.state().sequence(), head.digest(), departed, successor, original.savedPair(),
@@ -4346,7 +4403,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 previous.interruptedZeroDispatch.or(original::zeroDispatchHead));
         origin.requirePreviousOrigin(original);
         origin.requireOriginal(head.state());
-        return new PreparedExternalSave(origin, previous.history(), Optional.empty(), previous.consumedBatches, Optional.empty(), Optional.empty());
+        return new PreparedExternalSave(origin, previous.history(), Optional.empty(), previous.consumedBatches, Optional.empty(), Optional.empty(), List.of());
     }
 
     private PreparedExternalSave replayRecordedExternalSave(ContinuityStorePort.Session same, SessionIdentity departed,
@@ -4370,7 +4427,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
         if (origin.previousOrigin().isPresent()) {
             var previous = replayRecordedExternalSave(same, departed, source, historical);
             origin.requirePreviousOrigin(previous.origin());
-            StrictJson.require(origin.deferredBatch().equals(previous.openBatch),
+            StrictJson.require(previous.pendingFull111Event().isEmpty() && origin.deferredBatch().equals(previous.openBatch),
                     "named remount changed its verified former open batch");
             old = previous.history();
             previousBatches = previous.consumedBatches;
@@ -4396,7 +4453,8 @@ public final class ContinuityBatchJournal implements BatchJournal {
             requireCommittedImportedBatchReduction(rebind, new WriterContracts.Request(rebind.kind(), rebind.details(), List.of()));
             String open = null;
             boolean reboundOpening = false;
-            Optional<ExactRef> zeroDispatch = Optional.empty();
+            Optional<ExactRef> interruptedAction = Optional.empty();
+            List<ActionReceipt> captures = List.of();
             var consumed = new java.util.ArrayList<>(previousBatches);
             for (int index = 1; index < edges.size(); index++) {
                 var edge = edges.get(index);
@@ -4412,10 +4470,13 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     continue;
                 }
                 if (WriterContracts.ACTION_LIFECYCLE_KIND.equals(edge.kind())) {
-                    StrictJson.require(interrupted && open != null && index + 3 == edges.size() - 1,
-                            "named remount requires a single zero-dispatch action at the end of its open batch");
-                    zeroDispatch = Optional.of(requireExternalZeroDispatch(same, edges.subList(index, index + 3), origin, old.source()));
-                    index += 2;
+                    int boundaryIndex = edges.size() - 1;
+                    StrictJson.require(interrupted && open != null && index + 3 <= boundaryIndex,
+                            "named recovery requires a single original Full111 action at the end of its open batch");
+                    var action = requireExternalFull111Action(same, edges.subList(index, boundaryIndex), origin, old.source());
+                    interruptedAction = Optional.of(action.getKey());
+                    captures = action.getValue();
+                    index = boundaryIndex - 1;
                     continue;
                 }
                 var payload = ContinuityJson.parseObject(edge.details(), ContinuityJson.DOCUMENT_MAX_BYTES);
@@ -4424,11 +4485,11 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 String batch = StrictJson.text(payload.get("batch_id"));
                 var boundary = JournalKind.valueOf(StrictJson.text(payload.get("boundary")));
                 if (boundary == JournalKind.BATCH_INTERRUPTED) {
-                    StrictJson.require(interrupted && index == edges.size() - 1 && zeroDispatch.isPresent()
-                            && ContinuityActionJournal.recordHead(edge.before()).equals(zeroDispatch)
+                    StrictJson.require(interrupted && index == edges.size() - 1 && interruptedAction.isPresent()
+                            && ContinuityActionJournal.recordHead(edge.before()).equals(interruptedAction)
                             && "java-ordinary-batch-interruption/v2".equals(StrictJson.text(payload.get("source")))
                             && OrdinaryCycleTransitions.sessionFromJson(payload.get("session")).equals(successor),
-                            "named remount interrupted boundary requires its proven zero-dispatch terminal");
+                            "named recovery interrupted boundary requires its actual Full111 journal result");
                     requireCommittedImportedBatchReduction(edge, new WriterContracts.Request(edge.kind(), edge.details(), List.of()));
                 } else {
                     var reduced = OrdinaryCycleTransitions.replayCommittedBatchMetadata(edge.before(), successor, batch, boundary, edge)
@@ -4450,18 +4511,26 @@ public final class ContinuityBatchJournal implements BatchJournal {
             var last = edges.getLast();
             StrictJson.require(last.sequence() == state.sequence()
                     && ContinuityJson.digest(last.after().toJson()).equals(head.digest())
-                    && interrupted == zeroDispatch.isPresent()
-                    && ContinuityActionJournal.recordHead(state).filter(zeroDispatch.orElse(origin.actionHead())::equals).isPresent(),
+                    && interrupted == interruptedAction.isPresent()
+                    && ContinuityActionJournal.recordHead(state).filter(interruptedAction.orElse(origin.actionHead())::equals).isPresent(),
                     "named-save re-entry history does not end at the held head");
-            return new PreparedExternalSave(origin, old, Optional.of(head.digest()), consumed, Optional.ofNullable(open), zeroDispatch);
+            return new PreparedExternalSave(origin, old, Optional.of(head.digest()), consumed, Optional.ofNullable(open), captures.isEmpty() ? interruptedAction : Optional.empty(), captures);
         });
         StrictJson.require(live.digest().equals(same.head().digest()), "named-save re-entry changed its held writer");
         return prepared;
     }
 
     static ExactRef verifyExternalZeroDispatch(List<WriterContracts.HistoricalTransition> edges, ExternalSaveOrigin origin,
-            G2Source source, ActionPorts.OutcomeArchive archive) {
-        StrictJson.require(edges.size() == 3, "named remount requires the exact intent, submitting and zero-dispatch records");
+            G2Source source, ActionPorts.OutcomeArchive archive) throws IOException {
+        return verifyExternalFull111Action(edges, origin, source, archive, false).getKey();
+    }
+
+    static java.util.Map.Entry<ExactRef, List<ActionReceipt>> verifyExternalFull111Action(
+            List<WriterContracts.HistoricalTransition> edges, ExternalSaveOrigin origin, G2Source source,
+            ActionPorts.OutcomeArchive archive, boolean positiveAck) throws IOException {
+        StrictJson.require(positiveAck ? edges.size() >= 4 : edges.size() == 3,
+                "named Full111 action requires its exact intent, submitting and terminal records");
+        var captures = new java.util.ArrayList<ActionReceipt>();
         Optional<ExactRef> previous = Optional.of(origin.actionHead());
         Optional<ActionReceipt> previousReceipt = Optional.empty();
         for (var edge : edges) {
@@ -4491,6 +4560,23 @@ public final class ContinuityBatchJournal implements BatchJournal {
                         "named remount requires its original new durable intent");
             } else if (previousReceipt.orElseThrow().state() instanceof ActionState.IntentDurable) {
                 StrictJson.require(actual.state() instanceof ActionState.Submitting, "named remount requires its exact submitting attempt");
+            } else if (positiveAck) {
+                if (previousReceipt.orElseThrow().state() instanceof ActionState.Submitting) {
+                    StrictJson.require(actual.state() instanceof ActionState.AckReceived,
+                            "named Full111 recovery requires its exact original ACK immediately after submitting");
+                    var accepted = (ActionState.AckReceived) actual.state();
+                    StrictJson.require(accepted.dispatch().nativeOk() && accepted.attempt().requestId().equals(accepted.dispatch().requestId())
+                            && accepted.dispatch().equals(archive.load(archive.referenceOf(accepted.dispatch())))
+                            && accepted.attempt().preparedRequest().equals(archive.loadRequest(
+                                    archive.requestReferenceOf(accepted.attempt().preparedRequest()))),
+                            "named Full111 action needs its complete actual positive SELECT and preparation");
+                    accepted.dispatch().custody().orElseThrow().verify(accepted.dispatch(), accepted.attempt().guard());
+                } else {
+                    StrictJson.require(actual.state() instanceof ActionState.Unknown
+                            && actual.ack().filter(org.xar.ck3.control.application.action.NativeActionPort.AckReceived::nativeOk).isPresent(),
+                            "named Full111 recovery requires its unchanged original positive SELECT on every pending receipt");
+                    captures.add(actual);
+                }
             } else {
                 StrictJson.require(actual.state() instanceof ActionState.RejectedBeforeDispatch,
                         "named remount cannot carry an action with a write, ACK or UNKNOWN");
@@ -4508,12 +4594,12 @@ public final class ContinuityBatchJournal implements BatchJournal {
             previous = Optional.of(ref);
             previousReceipt = Optional.of(actual);
         }
-        return previous.orElseThrow();
+        return java.util.Map.entry(previous.orElseThrow(), List.copyOf(captures));
     }
 
-    private ExactRef requireExternalZeroDispatch(ContinuityStorePort.Session same, List<WriterContracts.HistoricalTransition> edges,
-            ExternalSaveOrigin origin, G2Source source) throws IOException {
-        return transitions.withLocked(same, () -> verifyExternalZeroDispatch(edges, origin, source, transitions.restartArchive(same)));
+    private java.util.Map.Entry<ExactRef, List<ActionReceipt>> requireExternalFull111Action(ContinuityStorePort.Session same,
+            List<WriterContracts.HistoricalTransition> edges, ExternalSaveOrigin origin, G2Source source) throws IOException {
+        return transitions.withLocked(same, () -> verifyExternalFull111Action(edges, origin, source, transitions.restartArchive(same), edges.size() > 3));
     }
 
     private void requireRecordedExternalOpening(ContinuityStorePort.Session same, WriterContracts.HistoricalTransition edge,
@@ -4581,7 +4667,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     "external save observation requires the actual committed administrative terminal");
             return null;
         });
-        return new PreparedExternalSave(origin, history, Optional.empty(), List.of(), Optional.empty(), Optional.empty());
+        return new PreparedExternalSave(origin, history, Optional.empty(), List.of(), Optional.empty(), Optional.empty(), List.of());
     }
 
     public static final class ExternalSaveRebind {
@@ -4612,8 +4698,9 @@ public final class ContinuityBatchJournal implements BatchJournal {
         store.requireSession(same);
         var origin = prepared.origin();
         if (prepared.recordedDigest.isPresent()) {
-            StrictJson.require(same.head().digest().equals(prepared.recordedDigest.orElseThrow()),
-                    "named-save re-entry lost its exact zero-action head");
+            StrictJson.require(prepared.pendingFull111Event().isEmpty()
+                            && same.head().digest().equals(prepared.recordedDigest.orElseThrow()),
+                    "named-save ordinary re-entry requires its exact head without a pending effect");
             origin.requireSemantic(opening.frame());
             transitions.validateOrdinarySubmission(same, origin.successor(), opening);
             if (prepared.openBatch.isPresent()) {
