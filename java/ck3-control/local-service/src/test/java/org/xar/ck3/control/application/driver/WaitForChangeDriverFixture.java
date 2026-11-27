@@ -13,6 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.xar.ck3.control.application.action.NativeObservationPort;
 import org.xar.ck3.control.application.action.NativeSnapshotWaitPort;
 import org.xar.ck3.control.application.action.RawJson;
+import org.xar.ck3.control.application.checkpoint.DriverStateSnapshot;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.g2.common.G2Source;
 import org.xar.ck3.control.nativebridge.NativeGameTransport;
@@ -50,7 +51,8 @@ public final class WaitForChangeDriverFixture {
             BigInteger publicRevision=java.util.Objects.requireNonNull(revisions.get(actual.nativeRevision()),"explicit actual fixture public revision mapping required");
             var template=new RawJson(DriverStateAssemblerTest.bytes(DriverStateAssemblerTest.WIRE));
             var driver=PublicDataJson.object(template);driver.put("pipe_name",actualTransport.pipeName());
-            byte[] originalDriver=PublicDataJson.encodePreservingDecimals(driver,template).bytes();
+            byte[] relocated=PublicDataJson.encodePreservingDecimals(driver,template).bytes();
+            byte[] originalDriver=DriverStateSnapshot.decodeComplete(relocated).encode();
             ExactRef driverRef=DriverStateAssemblerTest.ref(originalDriver);
             var known=DriverFactsRepository.imported(driverRef,originalDriver,3,7,actual.session().game(),new OpportunityJson.Obj(Map.of()));
             var source=new G2Source(actual.session().machineId(),"2026-10-24T00:00:00Z","actual-wait-receiver-software-fixture",
