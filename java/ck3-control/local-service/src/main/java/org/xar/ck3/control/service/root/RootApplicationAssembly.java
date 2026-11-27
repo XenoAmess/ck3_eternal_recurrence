@@ -2064,6 +2064,7 @@ public final class RootApplicationAssembly {
         synchronized DriverBootstrap.Adopted adoptExternalSavedObservation(
                 org.xar.ck3.control.platform.JavaGameLifecycle lifecycle,
                 org.xar.ck3.control.platform.RootProcessAttach.ExternalSavedPredecessor predecessor,
+                Optional<org.xar.ck3.control.platform.RootProcessAttach.ExternalSavedPredecessor> remountFrom,
                 CheckpointPair.FileWitness namedSave, long rawDate, org.xar.ck3.control.contracts.NativeCharacterId actor,
                 OriginalWindowReducer.Policy policy, int retainedFrames, Instant deadline)
                 throws IOException, InterruptedException {
@@ -2079,10 +2080,15 @@ public final class RootApplicationAssembly {
                     && !source.request().issuedAt().isBefore(predecessor.oldTerminalObservedAt()),
                     "external save adoption requires the actual exited owner named by the original decision");
             predecessor.requireCurrent(deadline);
-            var opening = RootExternalSavedOpening.capture(game, previous.game(), namedSave, rawDate, actor, deadline);
+            var departed = remountFrom.orElse(predecessor);
+            departed.requireCurrent(deadline);
+            var opening = RootExternalSavedOpening.capture(game, departed.previousOwner().game(), namedSave, rawDate, actor, deadline);
             return writer.locked(same -> {
-                boolean recorded = same.head().state().toJson().hasNonNull(WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD);
+                var body = same.head().state().toJson();
+                boolean recorded = body.hasNonNull(WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD);
+                boolean sameGame = org.xar.ck3.control.continuity.ContinuityJson.same(body.get("game_binding"), game.generation().toJson());
                 if (!recorded) {
+                    StrictJson.require(remountFrom.isEmpty(), "named remount requires its already committed prior named observation");
                     var scope = new ReservedRetirementScope(same, lifecycle, predecessor, source, deadline);
                     reservedRetirement.set(scope);
                     try (scope) {
@@ -2098,12 +2104,21 @@ public final class RootApplicationAssembly {
                 cycles.bindTerminalFrameLoader(frames);
                 var batches = new ContinuityBatchJournal(writer, cycles);
                 var nativeOpening = new ExternalSaveOrigin.NativeOpening(raw.session(), actor, rawDate, raw.snapshotId(), raw.nativeRevision());
-                var original = recorded
-                        ? batches.readRecordedExternalSave(same, previous, source, successor, openingOriginals.loadedCopy(), nativeOpening)
-                        : batches.prepareExternalSave(same, previous, source, successor, openingOriginals.loadedCopy(), nativeOpening);
+                final ContinuityBatchJournal.PreparedExternalSave original;
+                if (!recorded) {
+                    original = batches.prepareExternalSave(same, previous, source, successor, openingOriginals.loadedCopy(), nativeOpening);
+                } else if (sameGame) {
+                    original = batches.readRecordedExternalSave(same, previous, source, successor, openingOriginals.loadedCopy(), nativeOpening);
+                    StrictJson.require(original.origin().departed().equals(departed.previousOwner()),
+                            "named save re-entry crossed its actual original predecessor");
+                } else {
+                    StrictJson.require(remountFrom.isPresent(), "new named save process requires its exact former supervisor terminal");
+                    original = batches.prepareExternalRemount(same, previous, source, departed.previousOwner(), successor,
+                            openingOriginals.loadedCopy(), nativeOpening);
+                }
                 var driver = projectExternalSave(same, game, opening, original, retainedFrames, deadline);
-                predecessor.requireCurrent(deadline);
-                externalSavedStage = new ExternalSavedStage(predecessor, opening, cycles, batches, original, driver, policy);
+                departed.requireCurrent(deadline);
+                externalSavedStage = new ExternalSavedStage(departed, opening, cycles, batches, original, driver, policy);
                 adopted.add(driver);
                 return driver;
             });

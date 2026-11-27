@@ -2116,7 +2116,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         requireLegacyPendingClear(head.state(), previous);
         var original = archive.preserveMaterial(new RawJson(ContinuityJson.canonical(origin.toJson())));
         var details = StrictJson.object().put("evidence_id", "external-save:" + original.sha256())
-                .put("source", ExternalSaveOrigin.SOURCE).put("operation", EXTERNAL_SAVE_REBIND);
+                .put("source", externalSaveSource(origin)).put("operation", EXTERNAL_SAVE_REBIND);
         details.set("session", sessionToJson(origin.successor()));
         details.set("origin", origin.toJson());
         details.set("origin_ref", original.toJson());
@@ -2124,6 +2124,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         var refs = new ArrayList<>(semantic.references());
         refs.add(original);
         refs.add(origin.loadedFile().reference());
+        origin.previousOrigin().ifPresent(refs::add);
         var request = new WriterContracts.Request(CYCLE_KIND, ContinuityJson.canonical(details), refs.stream().distinct().toList());
         externalSaveRebinding.set(new ExternalSaveRebind(origin, semantic, original));
         try {
@@ -2153,6 +2154,11 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                 "external save observation changed its writer, current semantic or archived origin");
         externalSaveAuthority.requireCurrent(same, origin, actual.semantic());
         var originals = archive.withSession(same);
+        if (origin.previousOrigin().isPresent()) {
+            var previous = origin.previousOrigin().orElseThrow();
+            origin.requirePreviousOrigin(ExternalSaveOrigin.fromJson(ContinuityJson.parseObject(
+                    originals.loadMaterial(previous).bytes(), ContinuityJson.DOCUMENT_MAX_BYTES)));
+        }
         var history = ContinuityActionJournal.receipts(head.state(), originals);
         var unresolved = history.stream().filter(action -> !action.settled()).toList();
         var retained = ContinuityActionJournal.externalSaveRetiredResume(same, origin, originals, history);
@@ -2178,10 +2184,16 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         var restored = new CycleState(owner, previous.completedCycles(), previous.completedCycles(), Optional.empty(),
                 Optional.empty(), Optional.of(legacyPendingDigest(predecessor)), Optional.of(frame), Optional.of(reference));
         var transition = StrictJson.object().put("evidence_id", text(details, "evidence_id"))
-                .put("source", ExternalSaveOrigin.SOURCE);
+                .put("source", externalSaveSource(origin));
         transition.set("successor_game", owner.game().toJson());
         transition.set("frame", originalFrame(frame));
-        var next = OriginalWindowReducer.reduce(predecessor.toJson(), ExternalSaveOrigin.TRANSITION, transition, policy);
+        var operation = origin.previousOrigin().isPresent() ? ExternalSaveOrigin.REMOUNT_TRANSITION : ExternalSaveOrigin.TRANSITION;
+        var next = OriginalWindowReducer.reduce(predecessor.toJson(), operation, transition, policy);
+        origin.deferredBatch().ifPresent(batch -> {
+            var input = new JournalInput(origin.departed(), batch, JournalKind.BATCH_DEFERRED,
+                    Optional.empty(), Optional.empty(), Optional.empty(), List.of());
+            recordBatchBoundary(next, batchDetails(input), origin.departed(), JournalKind.BATCH_DEFERRED);
+        });
         next.set(STATE_FIELD, restored.toJson());
         next.set(WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD, reference.toJson());
         return ContinuityState.fromJson(next, predecessor.machineId());
@@ -2189,8 +2201,13 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
 
     private static void requireExternalSaveDetails(ObjectNode details) {
         StrictJson.object(details, Set.of("evidence_id", "source", "operation", "session", "origin", "origin_ref", "semantic"));
-        StrictJson.require(ExternalSaveOrigin.SOURCE.equals(text(details, "source"))
+        var origin = ExternalSaveOrigin.fromJson(details.get("origin"));
+        StrictJson.require(externalSaveSource(origin).equals(text(details, "source"))
                 && EXTERNAL_SAVE_REBIND.equals(text(details, "operation")), "external save rebind contract differs");
+    }
+
+    private static String externalSaveSource(ExternalSaveOrigin origin) {
+        return origin.previousOrigin().isPresent() ? ExternalSaveOrigin.REMOUNT_SOURCE : ExternalSaveOrigin.SOURCE;
     }
 
     /** Historical canonical data only. Live Root authority is never invoked while replaying an old branch. */
@@ -3002,7 +3019,8 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         if(state.episodeOrigin().isPresent()) {
             ExactRef ref=state.episodeOrigin().orElseThrow();StrictJson.require(origins.add(ref)&&origins.size()<=1024,"episode origin chain is cyclic or exceeds its finite bound");
             ObjectNode origin=ContinuityJson.parseObject(archive.loadMaterial(ref).bytes(),ContinuityJson.DOCUMENT_MAX_BYTES);
-            if (ExternalSaveOrigin.SCHEMA.equals(text(origin, "schema"))) {
+            var schema = text(origin, "schema");
+            if (ExternalSaveOrigin.SCHEMA.equals(schema) || ExternalSaveOrigin.REMOUNT_SCHEMA.equals(schema)) {
                 var external = ExternalSaveOrigin.fromJson(origin);
                 var same = active.get();
                 StrictJson.require(same != null && external.successor().equals(state.session()),

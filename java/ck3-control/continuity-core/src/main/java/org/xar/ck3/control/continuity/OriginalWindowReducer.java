@@ -261,16 +261,21 @@ public final class OriginalWindowReducer {
                 state.put("status","running");binding(state,actual);
                 if(state.has("last_error"))state.putNull("last_error");
             }
-            case "external_save_observation_rebind" -> {
+            case "external_save_observation_rebind", "external_save_observation_remount" -> {
+                boolean remount = kind.equals("external_save_observation_remount");
                 StrictJson.object(details, Set.of("evidence_id", "source", "successor_game", "frame"));
                 var retained = frame(object(state.get("latest_binding")));
                 var actual = frame(object(details.get("frame")));
                 var boundary = object(state.get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD));
                 var previousGame = GameGeneration.fromJson(state.get("game_binding"));
                 var successorGame = GameGeneration.fromJson(details.get("successor_game"));
-                StrictJson.require("java-external-save-observation/v1".equals(StrictJson.text(source))
-                        && "repair_required".equals(StrictJson.text(state.get("status")))
-                        && "BATCH_INTERRUPTED".equals(StrictJson.text(boundary.get("boundary")))
+                String expectedSource = remount ? "java-external-save-observation/v2" : "java-external-save-observation/v1";
+                String expectedStatus = remount ? "running" : "repair_required";
+                StrictJson.require(expectedSource.equals(StrictJson.text(source))
+                        && expectedStatus.equals(StrictJson.text(state.get("status")))
+                        && (remount ? state.hasNonNull(WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD)
+                                && number(actual, "date_raw", 0) == number(retained, "date_raw", 0)
+                                : "BATCH_INTERRUPTED".equals(StrictJson.text(boundary.get("boundary"))))
                         && !successorGame.equals(previousGame)
                         && number(actual, "date_raw", 0) >= number(retained, "date_raw", 0)
                         && number(actual, "date_raw", 0) >= number(state, "last_settled_date_raw", 0)

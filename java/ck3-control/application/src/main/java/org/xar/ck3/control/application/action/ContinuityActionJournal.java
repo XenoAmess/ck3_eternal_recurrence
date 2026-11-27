@@ -274,7 +274,15 @@ public final class ContinuityActionJournal implements ActionJournal {
     public static Optional<ActionReceipt> externalSaveRetiredResume(ContinuityStorePort.Session same,
             ExternalSaveOrigin origin, ActionPorts.OutcomeArchive archive, List<ActionReceipt> canonical) throws IOException {
         origin.requireOriginal(same);
-        return retiredResumeFromImportedPrefix(origin.retiredActionHead(), archive, origin.departed(), origin.savedPair(),
+        var retired = origin;
+        while (retired.previousOrigin().isPresent()) {
+            var previous = ExternalSaveOrigin.fromJson(ContinuityJson.parseObject(archive.loadMaterial(
+                    retired.previousOrigin().orElseThrow()).bytes(), ContinuityJson.DOCUMENT_MAX_BYTES));
+            retired.requirePreviousOrigin(previous);
+            previous.requireOriginal(same);
+            retired = previous;
+        }
+        return retiredResumeFromImportedPrefix(retired.retiredActionHead(), archive, retired.departed(), retired.savedPair(),
                 canonical, canonical.stream().filter(receipt -> !receipt.settled()).toList());
     }
 

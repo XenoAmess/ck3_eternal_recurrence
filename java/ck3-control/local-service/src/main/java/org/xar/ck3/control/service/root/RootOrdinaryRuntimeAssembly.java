@@ -1064,12 +1064,18 @@ public final class RootOrdinaryRuntimeAssembly {
             if (!decision.codexFile()) throw new IOException("external saved recovery requires the configured direct Codex file provider");
             var operator = config.operatorQuarantine().orElseThrow(() -> new IOException("external saved recovery requires the original operator decision"));
             var predecessor = RootProcessAttach.retainExternalSavedPredecessor(attached, input.departedOwner(), input.departed(), deadline);
+            var request = input.remountFrom();
+            Optional<RootProcessAttach.ExternalSavedPredecessor> remountFrom = Optional.empty();
+            if (request.isPresent()) {
+                var from = request.orElseThrow();
+                remountFrom = Optional.of(RootProcessAttach.retainExternalSavedPredecessor(attached, from.owner(), from.game(), deadline));
+            }
             var actual = openSavedSourceCore();
             RootOperatorQuarantineRuntime.installExternalSaved(actual, predecessor, operator, clock, deadline);
             game = attached;
             lifecycle.adoptAttached(attached);
             products.domains().lifecycle().bindManagedLifecycle(lifecycle, plan);
-            var driver = actual.adoptExternalSavedObservation(lifecycle, predecessor, input.namedSave(), input.dateRaw(), input.player(),
+            var driver = actual.adoptExternalSavedObservation(lifecycle, predecessor, remountFrom, input.namedSave(), input.dateRaw(), input.player(),
                     cyclePolicy, config.retainedFrames(), deadline);
             var installed = catalogs.install(actual, attached, driver.source(), actual.planningReads(), clock, deadline);
             var history = actual.externalSavedControllerHistory(driver);

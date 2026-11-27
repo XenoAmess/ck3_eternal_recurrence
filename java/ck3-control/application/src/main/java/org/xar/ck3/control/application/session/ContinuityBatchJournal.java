@@ -4322,7 +4322,32 @@ public final class ContinuityBatchJournal implements BatchJournal {
             CompositeOperatorQuarantineSource source, SessionIdentity successor, CheckpointPair.FileWitness loadedFile,
             ExternalSaveOrigin.NativeOpening opening) throws IOException {
         store.requireSession(same);
+        var prepared = replayRecordedExternalSave(same, departed, source, same.head());
+        var origin = prepared.origin();
+        StrictJson.require(origin.successor().equals(successor) && origin.loadedFile().equals(loadedFile)
+                && origin.opening().actor().equals(opening.actor()) && origin.opening().dateRaw() == opening.dateRaw(),
+                "named-save re-entry requires its actual successor and loaded physical file");
+        return prepared;
+    }
+
+    public PreparedExternalSave prepareExternalRemount(ContinuityStorePort.Session same, SessionIdentity originalDeparted,
+            CompositeOperatorQuarantineSource source, SessionIdentity departed, SessionIdentity successor,
+            CheckpointPair.FileWitness loadedFile, ExternalSaveOrigin.NativeOpening opening) throws IOException {
+        store.requireSession(same);
         var head = same.head();
+        var previous = replayRecordedExternalSave(same, originalDeparted, source, head);
+        var original = previous.origin();
+        var previousRef = ExactRef.fromJson(head.state().toJson().get(WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD));
+        var origin = new ExternalSaveOrigin(head.state().sequence(), head.digest(), departed, successor, original.savedPair(),
+                loadedFile, original.retiredActionHead(), opening, Optional.of(previousRef), previous.openBatch);
+        origin.requirePreviousOrigin(original);
+        origin.requireOriginal(head.state());
+        return new PreparedExternalSave(origin, previous.history(), Optional.empty(), previous.consumedBatches, Optional.empty());
+    }
+
+    private PreparedExternalSave replayRecordedExternalSave(ContinuityStorePort.Session same, SessionIdentity departed,
+            CompositeOperatorQuarantineSource source, WriterContracts.Head head) throws IOException {
+        var live = same.head();
         var state = head.state();
         var body = state.toJson();
         var originRef = ExactRef.fromJson(body.get(WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD));
@@ -4330,15 +4355,28 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 transitions.restartArchive(same).loadMaterial(originRef).bytes(), ContinuityJson.DOCUMENT_MAX_BYTES)));
         StrictJson.require(!head.snapshotNeedsRecovery() && head.indexRepairs().isEmpty()
                 && state.status() == ContinuityState.Status.RUNNING
-                && origin.departed().equals(departed) && origin.successor().equals(successor)
-                && origin.loadedFile().equals(loadedFile) && origin.opening().actor().equals(opening.actor())
-                && origin.opening().dateRaw() == opening.dateRaw()
+                && ContinuityJson.same(body.get("game_binding"), origin.successor().game().toJson())
                 && ContinuityActionJournal.recordHead(state).filter(origin.retiredActionHead()::equals).isPresent(),
                 "named-save re-entry requires its actual successor and unchanged action frontier");
         var historical = same.requireHistoricalHead(origin.predecessorSequence(), origin.predecessorDigest());
-        var old = readSameGameHistory(same, departed, false, ignored -> { }, Optional.empty(), Optional.empty(),
-                Optional.of(source), historical);
-        var pins = canonicalEventPins(same, head).tailMap(origin.predecessorSequence(), false);
+        origin.requireOriginal(historical.state());
+        final SettledSameGameData old;
+        final List<String> previousBatches;
+        if (origin.previousOrigin().isPresent()) {
+            var previous = replayRecordedExternalSave(same, departed, source, historical);
+            origin.requirePreviousOrigin(previous.origin());
+            StrictJson.require(origin.deferredBatch().equals(previous.openBatch),
+                    "named remount changed its verified former open batch");
+            old = previous.history();
+            previousBatches = previous.consumedBatches;
+        } else {
+            StrictJson.require(origin.departed().equals(departed), "recorded named origin changed its original retired operator owner");
+            old = readSameGameHistory(same, departed, false, ignored -> { }, Optional.empty(), Optional.empty(),
+                    Optional.of(source), historical);
+            previousBatches = List.of();
+        }
+        var successor = origin.successor();
+        var pins = canonicalEventPins(same, head).subMap(origin.predecessorSequence(), false, state.sequence(), true);
         StrictJson.require(!pins.isEmpty() && pins.size() == state.sequence() - origin.predecessorSequence(),
                 "named-save re-entry requires the exact canonical suffix");
         var prepared = same.withHistoricalTransitions(List.copyOf(pins.values()), edges -> {
@@ -4353,7 +4391,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
             requireCommittedImportedBatchReduction(rebind, new WriterContracts.Request(rebind.kind(), rebind.details(), List.of()));
             String open = null;
             boolean reboundOpening = false;
-            var consumed = new java.util.ArrayList<String>();
+            var consumed = new java.util.ArrayList<>(previousBatches);
             for (int index = 1; index < edges.size(); index++) {
                 var edge = edges.get(index);
                 if (DomainBodies.IMPORT_KIND.equals(edge.kind())) {
@@ -4393,7 +4431,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     "named-save re-entry history does not end at the held head");
             return new PreparedExternalSave(origin, old, Optional.of(head.digest()), consumed, Optional.ofNullable(open));
         });
-        StrictJson.require(head.digest().equals(same.head().digest()), "named-save re-entry changed its held writer");
+        StrictJson.require(live.digest().equals(same.head().digest()), "named-save re-entry changed its held writer");
         return prepared;
     }
 

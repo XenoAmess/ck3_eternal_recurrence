@@ -1101,8 +1101,12 @@ public final class DriverBootstrap {
                     final Instant ioDeadline=cleanRestart.isPresent()?Objects.requireNonNull(postPreparationIoDeadline.get()):deadline;
                     StrictJson.require(transport.awaitHello(ioDeadline).equals(seed.expectedSession()),"actual held Native hello differs from immutable seed session");
                     if(cleanRestart.isPresent())producer.bindCleanRestart(cleanRestart.orElseThrow(),borrowed);
-                    if(namedDriver.isPresent() && borrowed.head().state().toJson().hasNonNull(WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD))
-                        producer.bindRecordedExternalSave(borrowed, seed.expectedSession());
+                    if (namedDriver.isPresent()) {
+                        var body = borrowed.head().state().toJson();
+                        if (body.hasNonNull(WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD)
+                                && org.xar.ck3.control.continuity.ContinuityJson.same(body.get("game_binding"), seed.expectedSession().game().toJson()))
+                            producer.bindRecordedExternalSave(borrowed, seed.expectedSession());
+                    }
                     if(savedNative.isPresent()) {
                         var retained=savedNative.orElseThrow();
                         retained.original().requireOwner(borrowed,transport,source,archive);

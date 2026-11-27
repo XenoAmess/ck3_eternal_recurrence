@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import org.xar.ck3.control.application.action.ContinuityActionJournal;
 import org.xar.ck3.control.application.action.NativeObservationPort.TransportSession;
@@ -26,8 +27,18 @@ import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
 /** The new process's first observation and the unchanged predecessor of a manually preserved campaign. */
 public record ExternalSaveOrigin(long predecessorSequence, String predecessorDigest, SessionIdentity departed,
         SessionIdentity successor, CheckpointPair savedPair, CheckpointPair.FileWitness loadedFile,
-        ExactRef retiredActionHead, NativeOpening opening) {
+        ExactRef retiredActionHead, NativeOpening opening, Optional<ExactRef> previousOrigin, Optional<String> deferredBatch) {
     static final String SCHEMA = "xar.java-ordinary-external-save-origin/v1";
+    static final String REMOUNT_SCHEMA = "xar.java-ordinary-external-save-origin/v2";
+    static final String REMOUNT_SOURCE = "java-external-save-observation/v2";
+    static final String REMOUNT_TRANSITION = "external_save_observation_remount";
+
+    public ExternalSaveOrigin(long predecessorSequence, String predecessorDigest, SessionIdentity departed,
+            SessionIdentity successor, CheckpointPair savedPair, CheckpointPair.FileWitness loadedFile,
+            ExactRef retiredActionHead, NativeOpening opening) {
+        this(predecessorSequence, predecessorDigest, departed, successor, savedPair, loadedFile, retiredActionHead,
+                opening, Optional.empty(), Optional.empty());
+    }
     static final String SOURCE = "java-external-save-observation/v1";
     static final String TRANSITION = "external_save_observation_rebind";
 
@@ -40,6 +51,10 @@ public record ExternalSaveOrigin(long predecessorSequence, String predecessorDig
         Objects.requireNonNull(loadedFile);
         Objects.requireNonNull(retiredActionHead);
         Objects.requireNonNull(opening);
+        Objects.requireNonNull(previousOrigin);
+        Objects.requireNonNull(deferredBatch);
+        deferredBatch.ifPresent(StrictJson::text);
+        StrictJson.require(deferredBatch.isEmpty() || previousOrigin.isPresent(), "only a named remount may defer an open batch");
         StrictJson.require(!successor.game().equals(departed.game())
                 && !successor.game().equals(savedPair.frame().game())
                 && successor.machineId().equals(departed.machineId())
@@ -102,7 +117,7 @@ public record ExternalSaveOrigin(long predecessorSequence, String predecessorDig
     }
 
     ObjectNode toJson() {
-        var row = StrictJson.object().put("schema", SCHEMA).put("predecessor_sequence", predecessorSequence)
+        var row = StrictJson.object().put("schema", previousOrigin.isPresent() ? REMOUNT_SCHEMA : SCHEMA).put("predecessor_sequence", predecessorSequence)
                 .put("predecessor_digest", predecessorDigest);
         row.set("departed", OrdinaryCycleTransitions.sessionToJson(departed));
         row.set("successor", OrdinaryCycleTransitions.sessionToJson(successor));
@@ -110,19 +125,30 @@ public record ExternalSaveOrigin(long predecessorSequence, String predecessorDig
         row.set("loaded_file", CheckpointPairCodec.fileWitnessToJson(loadedFile));
         row.set("retired_action_head", retiredActionHead.toJson());
         row.set("opening", opening.toJson());
+        previousOrigin.ifPresent(ref -> {
+            row.set("previous_origin", ref.toJson());
+            if (deferredBatch.isPresent()) row.put("deferred_batch", deferredBatch.orElseThrow());
+            else row.putNull("deferred_batch");
+        });
         return row;
     }
 
     public static ExternalSaveOrigin fromJson(JsonNode value) {
-        var row = StrictJson.object(value, Set.of("schema", "predecessor_sequence", "predecessor_digest", "departed",
+        var schema = StrictJson.text(value.get("schema"));
+        boolean remount = REMOUNT_SCHEMA.equals(schema);
+        StrictJson.require(remount || SCHEMA.equals(schema), "external save origin schema differs");
+        var fields = new java.util.HashSet<>(Set.of("schema", "predecessor_sequence", "predecessor_digest", "departed",
                 "successor", "saved_pair", "loaded_file", "retired_action_head", "opening"));
-        StrictJson.require(SCHEMA.equals(StrictJson.text(row.get("schema"))), "external save origin schema differs");
+        if (remount) fields.addAll(Set.of("previous_origin", "deferred_batch"));
+        var row = StrictJson.object(value, fields);
         return new ExternalSaveOrigin(StrictJson.integer(row.get("predecessor_sequence"), 1, StrictJson.MAX_SAFE_INTEGER),
                 StrictJson.text(row.get("predecessor_digest")), OrdinaryCycleTransitions.sessionFromJson(row.get("departed")),
                 OrdinaryCycleTransitions.sessionFromJson(row.get("successor")),
                 CheckpointPairCodec.decode(ContinuityJson.canonical(row.get("saved_pair"))),
                 CheckpointPairCodec.fileWitnessFromJson(row.get("loaded_file")), ExactRef.fromJson(row.get("retired_action_head")),
-                NativeOpening.fromJson(row.get("opening")));
+                NativeOpening.fromJson(row.get("opening")),
+                remount ? Optional.of(ExactRef.fromJson(row.get("previous_origin"))) : Optional.empty(),
+                remount && !row.get("deferred_batch").isNull() ? Optional.of(StrictJson.text(row.get("deferred_batch"))) : Optional.empty());
     }
 
     /** The holder verifies the actual former ledger state. The observation grants no SAVE or dispatch authority. */
@@ -138,12 +164,35 @@ public record ExternalSaveOrigin(long predecessorSequence, String predecessorDig
         StrictJson.require(original.sequence() == predecessorSequence
                 && ContinuityJson.digest(before).equals(predecessorDigest)
                 && original.machineId().equals(departed.machineId())
-                && original.status() == ContinuityState.Status.REPAIR_REQUIRED
+                && original.status() == (previousOrigin.isPresent() ? ContinuityState.Status.RUNNING : ContinuityState.Status.REPAIR_REQUIRED)
                 && ContinuityJson.same(before.get("game_binding"), departed.game().toJson())
                 && ContinuityActionJournal.recordHead(original).filter(retiredActionHead::equals).isPresent()
                 && imported.hasNonNull("checkpoint_pair")
                 && ContinuityJson.same(imported.get("checkpoint_pair"), StrictJson.parse(CheckpointPairCodec.encode(savedPair)))
                 && original.settledDateRaw() == savedPair.frame().frame().identity().dateRaw().longValueExact(),
                 "external save origin changed the original retired owner or physical saved frontier");
+        if (previousOrigin.isPresent()) {
+            var binding = before.path("latest_binding");
+            var boundary = before.path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD);
+            boolean open = "BATCH_STARTED".equals(boundary.path("boundary").asText());
+            StrictJson.require(ExactRef.fromJson(before.get(WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD))
+                    .equals(previousOrigin.orElseThrow()) && open == deferredBatch.isPresent()
+                    && deferredBatch.map(batch -> batch.equals(boundary.path("batch_id").asText())
+                            && departed.equals(OrdinaryCycleTransitions.sessionFromJson(boundary.get("session")))).orElse(true)
+                    && binding.path("date_raw").longValue() == opening.dateRaw()
+                    && NativeCharacterId.fromJson(binding.get("actor_character_id")).equals(opening.actor())
+                    && binding.path("episode_run_id").asText().equals(savedPair.frame().frame().episodeRunId()),
+                    "named remount must retain the actual previous named observation, owner and zero-action open batch");
+        }
+    }
+
+    public void requirePreviousOrigin(ExternalSaveOrigin previous) {
+        StrictJson.require(previousOrigin.isPresent() && previous.predecessorSequence() < predecessorSequence
+                && previous.successor().equals(departed) && previous.savedPair().equals(savedPair)
+                && previous.retiredActionHead().equals(retiredActionHead)
+                && previous.loadedFile().reference().sha256().equals(loadedFile.reference().sha256())
+                && previous.loadedFile().reference().bytes() == loadedFile.reference().bytes()
+                && previous.opening().actor().equals(opening.actor()) && previous.opening().dateRaw() == opening.dateRaw(),
+                "named remount must retain the same file bytes, date, actor, SAVE and original action frontier");
     }
 }
