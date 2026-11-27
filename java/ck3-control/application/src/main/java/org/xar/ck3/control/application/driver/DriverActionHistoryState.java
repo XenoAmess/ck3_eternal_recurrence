@@ -107,7 +107,7 @@ public final class DriverActionHistoryState {
         DriverActionHistoryCodec.requireSource(actual,source,originals);
         RawJson beforeOriginal=fullMaterial(data.beforeDriver(),originals);
         DriverStateSnapshot.Complete before=DriverStateSnapshot.decodeComplete(beforeOriginal.bytes());
-        RawJson afterOriginal=fullMaterial(data.afterDriver(),originals);
+        RawJson afterOriginal=data.beforeDriver().equals(data.afterDriver())?beforeOriginal:fullMaterial(data.afterDriver(),originals);
         DriverStateSnapshot.Complete after=beforeOriginal.equals(afterOriginal)?before:DriverStateSnapshot.decodeComplete(afterOriginal.bytes());
         StrictJson.require(actual.command().before().game().pid()==before.session().bridgePid()
                 &&actual.command().before().frame().episodeRunId().equals(before.session().episodeRunId()),"ACTION full Driver crossed original Game/episode");
