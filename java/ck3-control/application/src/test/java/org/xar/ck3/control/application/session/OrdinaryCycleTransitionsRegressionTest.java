@@ -57,6 +57,23 @@ final class OrdinaryCycleTransitionsRegressionTest {
         assertEquals(0,checks.get());assertEquals(commits,fixture.store.commits);assertArrayEquals(original,fixture.store.current.canonicalBytes());
         assertTrue(fixture.archive.materials.isEmpty());
     }
+    @Test void installedCommittedRestoreAuthorityAloneDoesNotQualifyADecodedRebind()throws IOException {
+        var fixture=new Fixture(true);
+        var checks=new java.util.concurrent.atomic.AtomicInteger();
+        fixture.authority.bindCommittedImportedRebindAuthority((same,original,fresh)->checks.incrementAndGet());
+        assertThrows(IllegalArgumentException.class,()->fixture.authority.bindCommittedImportedRebindAuthority((same,original,fresh)->{}));
+        var original=fixture.store.current.canonicalBytes();
+        var raw=StrictJson.object().put("evidence_id","described-imported-rebind").put("source",WriterContracts.ORDINARY_IMPORTED_CYCLE_RESTORE_SOURCE)
+                .put("operation","REBIND").put("attachment_identity","a".repeat(64)).put("attachment_head_digest",fixture.store.head().digest());
+        raw.set("session",OrdinaryCycleTransitions.sessionToJson(OWNER));raw.set("previous_state_ref",REF.toJson());
+        raw.set("semantic",OrdinaryCycleTransitions.semanticToJson(semantic(frame(2,24000,"described"),TIME)));
+        raw.putObject("restore_pair");raw.putObject("new_cycle_state");
+        var request=new WriterContracts.Request(OrdinaryCycleTransitions.CYCLE_KIND,ContinuityJson.canonical(raw),List.of(REF));
+        var refused=assertThrows(IllegalArgumentException.class,()->fixture.store.locked(same->fixture.authority.withLocked(same,()->same.preview(request))));
+        assertTrue(refused.getMessage().contains("private actual restore admission"));
+        assertEquals(0,checks.get());assertEquals(0,fixture.store.commits);
+        assertTrue(fixture.archive.materials.isEmpty());assertArrayEquals(original,fixture.store.current.canonicalBytes());
+    }
     @Test void operatorPureReducerPreservesEveryOriginalFieldAndRejectsNewCycleCreditOrAnotherPredecessor() {
         Fixture fixture=new Fixture(true);var data=OperatorRebindConsumerTest.data();
         SessionIdentity owner=new SessionIdentity(data.actual().command().origin().machineId(),data.actual().command().origin().game(),data.actual().command().sessionId());
