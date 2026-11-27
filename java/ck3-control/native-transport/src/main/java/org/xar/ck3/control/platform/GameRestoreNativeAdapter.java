@@ -34,6 +34,9 @@ import org.xar.ck3.control.application.checkpoint.SavedAttachmentAuthority;
 import org.xar.ck3.control.application.checkpoint.SavedAttachmentSourceStore;
 import org.xar.ck3.control.application.checkpoint.SavedAttachmentSourceStore.ImportedRecoveryBasis;
 import org.xar.ck3.control.application.driver.DriverJson;
+import org.xar.ck3.control.application.driver.DriverObservationEvidenceReader;
+import org.xar.ck3.control.application.session.ContinuityBatchJournal;
+import org.xar.ck3.control.application.session.SessionPorts.SemanticEvidence;
 import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
 import org.xar.ck3.control.build.ControlBuild;
 import org.xar.ck3.control.contracts.ExactRef;
@@ -211,7 +214,7 @@ public final class GameRestoreNativeAdapter implements RestoreCheckpointService.
     public record CommittedImportedReads(WriterContracts.HistoricalTransition attachment,ImportedRecoveryBasis basis,
             NativeObservationPort.ObservedFrame firstOriginal,NativeObservationPort.ObservedFrame secondOriginal) { }
 
-    /** Reads the committed imported attachment and a domain-import-only continuation from the same writer and successor. */
+    /** Reads the committed imported attachment through the exact pre-batch continuation of this writer and successor. */
     public CommittedImportedReads readCommittedImportedOriginals(ContinuityStorePort.Session same,
             WriterContracts.Pin actualAttachment,NativeGameTransport expectedTransport,G2Source expectedSource,Instant readDeadline)throws IOException {
         authority.require(same);store.requireSession(same);
@@ -242,15 +245,13 @@ public final class GameRestoreNativeAdapter implements RestoreCheckpointService.
     }
 
     record CommittedAttachment(WriterContracts.HistoricalTransition edge,ImportedRecoveryBasis basis,CheckpointPair pair,
-            ObjectNode opening,String currentHeadDigest) { }
+            ObjectNode opening,String currentHeadDigest,Optional<SemanticEvidence> rebind) { }
 
     static CommittedAttachment readCommittedAttachment(ContinuityStorePort.Session same,WriterContracts.Pin event)throws IOException {
         var head=same.head();var edge=same.readHistoricalTransition(event);
         if(!SavedAttachmentAuthority.KIND.equals(edge.kind())||head.snapshotNeedsRecovery()||!head.indexRepairs().isEmpty())
             throw new IOException("Clean committed imported attachment required");
-        String attachmentDigest=ContinuityJson.digest(edge.after().toJson());
-        if(edge.sequence()!=head.state().sequence()||!attachmentDigest.equals(head.digest()))
-            same.requireDomainImportContinuation(edge.sequence(),attachmentDigest);
+        var rebind=ContinuityBatchJournal.requireCommittedImportedAttachmentContinuation(same,edge);
         try {
             var details=ContinuityJson.parseObject(edge.details(),ContinuityJson.DOCUMENT_MAX_BYTES);
             var basis=SavedAttachmentSourceStore.importedRecoveryBasis(details)
@@ -271,7 +272,7 @@ public final class GameRestoreNativeAdapter implements RestoreCheckpointService.
                     ||!pair.lineageId().equals(StrictJson.text(opening.get("lineage_id")))
                     ||!pair.frame().frame().episodeRunId().equals(StrictJson.text(opening.get("episode_run_id"))))
                 throw new IOException("Committed imported READ basis differs from its canonical predecessor, successor, physical pair or opening");
-            return new CommittedAttachment(edge,basis,pair,opening,head.digest());
+            return new CommittedAttachment(edge,basis,pair,opening,head.digest(),rebind);
         }catch(IllegalArgumentException|java.time.DateTimeException invalid){throw new IOException("Invalid committed imported attachment DATA",invalid);}
     }
 
@@ -300,12 +301,27 @@ public final class GameRestoreNativeAdapter implements RestoreCheckpointService.
             if(!owner.equals(new SessionIdentity(historical.machineId(),historical.game(),historical.sessionId()))
                     ||attached.connectionGeneration().compareTo(historical.connectionGeneration())<=0)
                 throw new IOException("Historical READs must retain their original connection before this actual successor attachment");
+            if(committed.rebind().isPresent())requireLaterRebindConnection(original,committed.rebind().orElseThrow(),owner,attached);
             requireCommittedOpening(committed,second.frame());
             for(var pin:basis.pins())same.verifyPin(pin);
             if(!same.head().digest().equals(committed.currentHeadDigest()))
                 throw new IOException("Committed original READ verification changed the canonical head");
             return new CommittedImportedReads(committed.edge(),basis,first.frame(),second.frame());
         }catch(IllegalArgumentException|java.time.DateTimeException invalid){throw new IOException("Invalid committed original READ archive DATA",invalid);}
+    }
+
+    private static void requireLaterRebindConnection(ActionPorts.OutcomeArchive archive,SemanticEvidence rebind,
+            SessionIdentity owner,NativeObservationPort.TransportSession attached)throws IOException {
+        var semantic=DriverJson.object(archive.loadFullMaterial(rebind.semantic()).bytes(),DriverJson.MAX_NATIVE_BYTES);
+        var manifest=DriverObservationEvidenceReader.reference(semantic.get("java_driver_facts_evidence"));
+        var original=DriverObservationEvidenceReader.nativeFrame(manifest,archive.loadFullMaterial(manifest),
+                archive.loadNativeFrame(rebind.originalNativePacket()));
+        var session=original.session();
+        var frame=rebind.frame().frame();
+        if(!owner.equals(new SessionIdentity(session.machineId(),session.game(),session.sessionId()))
+                ||!original.snapshotId().equals(frame.snapshotId())||!original.nativeRevision().equals(frame.identity().nativeRevision())
+                ||!original.observedAt().equals(rebind.observedAt())||attached.connectionGeneration().compareTo(session.connectionGeneration())<=0)
+            throw new IOException("Committed imported READ recovery requires a successor connection after the original REBIND observation");
     }
 
     static void requireCommittedPairRoles(PairData pair,ImportedRecoveryBasis basis)throws IOException {
