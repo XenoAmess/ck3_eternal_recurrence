@@ -1,8 +1,10 @@
 package org.xar.ck3.control.wave2.finance.warcash;
 
 import java.math.BigInteger;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -114,11 +116,17 @@ public final class WarcashModel {
             claims.ifPresent(claim -> check(claim.frame().equals(frame) && claim.warId().equals(warId), "claims crossed input frame or war"));
         }
     }
+    private static Map<String, String> orderedMissing(Map<String, String> missing) {
+        var copy = new LinkedHashMap<String, String>();
+        missing.forEach((field, reason) -> copy.put(Objects.requireNonNull(field), Objects.requireNonNull(reason)));
+        return Collections.unmodifiableMap(copy);
+    }
+
     public record SingleReceipt(Frame frame, BigInteger warId, BigInteger treasuryRaw, Input input,
             Map<String, String> missing) {
         public SingleReceipt {
             Objects.requireNonNull(frame); positive(warId); Objects.requireNonNull(treasuryRaw); Objects.requireNonNull(input);
-            missing = Map.copyOf(missing);
+            missing = orderedMissing(missing);
             check(frame.equals(input.frame()) && warId.equals(input.warId()), "single receipt input identity differs");
             if (missing.isEmpty()) {
                 check(input.amounts().values().stream().allMatch(fact -> fact instanceof Measured)
@@ -145,7 +153,7 @@ public final class WarcashModel {
                 numbers.put(amount, value); components.put(amount, List.copyOf(resources.get(amount)));
             }
             values = Map.copyOf(numbers); resources = Map.copyOf(components);
-            Objects.requireNonNull(horizonDays); Objects.requireNonNull(occupied); receipts = List.copyOf(receipts); missing = Map.copyOf(missing);
+            Objects.requireNonNull(horizonDays); Objects.requireNonNull(occupied); receipts = List.copyOf(receipts); missing = orderedMissing(missing);
             horizonDays.ifPresent(WarcashModel::positive);
             for (Amount amount : Amount.values()) {
                 if (values.get(amount).isPresent()) {

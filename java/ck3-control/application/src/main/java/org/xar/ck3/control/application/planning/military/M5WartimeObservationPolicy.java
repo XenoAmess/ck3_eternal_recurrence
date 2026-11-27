@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import org.xar.ck3.control.application.driver.DriverJson;
 import org.xar.ck3.control.application.planning.OrdinaryPolicy;
 import org.xar.ck3.control.application.planning.PlanningRequest;
 import org.xar.ck3.control.application.planning.PlanningStage;
 import org.xar.ck3.control.contracts.ExactRef;
+import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson.*;
 import org.xar.ck3.control.wave2.finance.warcash.WarcashCodec;
@@ -105,6 +107,8 @@ public final class M5WartimeObservationPolicy implements OrdinaryPolicy {
     private static Obj aggregate(Obj snapshot,Value receipts) {
         Obj request=obj(f("schema",text(WarcashCodec.REQUEST_SCHEMA)),f("operation",text("observe_aggregate_active_war_cash_resource_v1")),
                 f("arguments",obj(f("snapshot",snapshot),f("receipts",Objects.requireNonNull(receipts)))));
-        return OpportunityJson.object(OpportunityJson.parse(WarcashCodec.evaluate(OpportunityJson.encode(request))),"sourced aggregate cash");
+        var projection=WarcashCodec.evaluateProjection(OpportunityJson.encode(request));
+        StrictJson.canonical(projection,WarcashCodec.OUTPUT_MAX_BYTES);
+        return OpportunityJson.object(DriverJson.fromNode(projection),"sourced aggregate cash");
     }
 }

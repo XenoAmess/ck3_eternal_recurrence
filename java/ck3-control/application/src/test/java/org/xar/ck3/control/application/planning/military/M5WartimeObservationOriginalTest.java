@@ -42,7 +42,7 @@ final class M5WartimeObservationOriginalTest {
     private static final Map<String,String> PINS=Map.of(
             "ck3_autonomous_player/src/xar_autoplayer/m5_formal_proposal_collector.py","6488c6f3ab6d930e37d8f9730285214ebbc700a8a6ec968124826b81b1c8172e",
             "ck3_autonomous_player/src/xar_autoplayer/m5_war_cash_resource_v1.py","9407f55149271a5bb7503d6bbbb2177b1ee734fc48fa176354a531b8bd9387ab",
-            "ck3_autonomous_player/tests/unit/test_m5_formal_proposal_collector.py","dc31d3a5062a7568add69de9eae619e44302cdd8e463d9131148cc94d0814e2f");
+            "ck3_autonomous_player/tests/unit/test_m5_formal_proposal_collector.py","3aa8746189ad1c3013a0c2d7e2ea090612b5556627a5bdf2e5f15476c57ee07f");
     private static final String PROGRAM="""
             import copy,hashlib,inspect,json,pathlib,runpy,sys,unittest
             repo=pathlib.Path(sys.argv[1]);sys.path.insert(0,str(repo/'ck3_autonomous_player'/'src'));sys.path.insert(0,str(repo/'ck3_autonomous_player'/'tests'/'unit'))

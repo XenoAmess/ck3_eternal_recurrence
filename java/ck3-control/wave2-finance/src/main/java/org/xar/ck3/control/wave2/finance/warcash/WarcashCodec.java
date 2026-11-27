@@ -66,8 +66,12 @@ public final class WarcashCodec {
             };
     }
     public static byte[] evaluate(byte[] input) {
+        return StrictJson.canonical(evaluateProjection(input), OUTPUT_MAX_BYTES);
+    }
+    /** Structured consumers retain the producer order of diagnostics before canonical byte encoding. */
+    public static JsonNode evaluateProjection(byte[] input) {
         try {
-            return StrictJson.canonical(evaluate(parse(input)), OUTPUT_MAX_BYTES);
+            return evaluate(parse(input));
         } catch (ContractViolationException error) { throw error; }
         catch (IllegalArgumentException error) {
             if (error instanceof ProjectionDomainRejection && error.getCause() instanceof ContractViolationException original) { throw original; }

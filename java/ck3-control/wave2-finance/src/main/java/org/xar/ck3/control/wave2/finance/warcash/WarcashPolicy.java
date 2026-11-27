@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.TreeMap;
 
 /** Read-only sourced cash aggregation. A complete result still grants no action qualification. */
 public final class WarcashPolicy {
@@ -66,7 +65,7 @@ public final class WarcashPolicy {
         Map<Amount, Optional<BigInteger>> amounts = new EnumMap<>(Amount.class);
         Map<Amount, List<Component>> resources = new EnumMap<>(Amount.class);
         for (Amount amount : Amount.values()) {
-            Map<ResourceKey, Component> unique = new TreeMap<>(); Map<ResourceKey, Set<BigInteger>> observedIn = new HashMap<>();
+            Map<ResourceKey, Component> unique = new LinkedHashMap<>(); Map<ResourceKey, Set<BigInteger>> observedIn = new HashMap<>();
             boolean complete = byWar.size() == warIds.size();
             for (Map.Entry<BigInteger, SingleReceipt> entry : byWar.entrySet()) {
                 AmountFact fact = entry.getValue().input().amounts().get(amount);
@@ -86,7 +85,9 @@ public final class WarcashPolicy {
                     complete = false;
                 }
             }
-            List<Component> components = List.copyOf(unique.values()); resources.put(amount, components);
+            List<Component> components = unique.entrySet().stream()
+                    .sorted(Map.Entry.comparingByKey()).map(Map.Entry::getValue).toList();
+            resources.put(amount, components);
             amounts.put(amount, complete ? Optional.of(components.stream().map(Component::raw).reduce(BigInteger.ZERO, BigInteger::add)) : Optional.empty());
         }
         Set<Optional<BigInteger>> horizons = new HashSet<>(); byWar.values().forEach(row -> horizons.add(row.input().horizonDays()));
