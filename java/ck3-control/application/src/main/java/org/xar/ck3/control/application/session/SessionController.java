@@ -27,6 +27,7 @@ import org.xar.ck3.control.application.action.NativeActionPort.AckReceived;
 import org.xar.ck3.control.application.action.CompositeContinuationReport;
 import org.xar.ck3.control.application.action.LifecycleExpectedPostcondition;
 import org.xar.ck3.control.application.action.PreSubmissionRevisionMismatchException;
+import org.xar.ck3.control.application.advance.AdvancePlan;
 import org.xar.ck3.control.application.capabilities.NativeActionSteps;
 import org.xar.ck3.control.application.checkpoint.CheckpointPair;
 import org.xar.ck3.control.application.checkpoint.CheckpointRequestFactory;
@@ -1112,10 +1113,28 @@ public final class SessionController {
                 && historical.frame().identity().dateRaw().compareTo(current.frame().identity().dateRaw()) <= 0;
     }
 
-    long retainedLifeBudgetReserveNanos(BatchLimits limits,
-            org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity current) {
+    long retainedLifeBudgetReserveNanos(BatchLimits limits, ObservationIdentity current) {
+        return retainedLifeBudgetReserveNanos(limits, current, true);
+    }
+
+    private long retainedLifeBudgetReserveNanos(BatchLimits limits, ObservationIdentity current, boolean includeSavedTail) {
         if (lifeBudgetSubject.filter(subject -> sameLifeBudgetSubject(subject, current)).isEmpty()) return lifeBudgetReserveNanos(limits, 0);
-        return Math.max(lifeBudgetReserveNanos(limits, savedLifeTailNanos), retainedLifeReserveNanos);
+        return Math.max(lifeBudgetReserveNanos(limits, includeSavedTail ? savedLifeTailNanos : 0), retainedLifeReserveNanos);
+    }
+
+    private static boolean lifePlanEndsBeforeAnnualSave(ActionCommand command, ObservationIdentity saved) {
+        var before = command.before();
+        if (!sameLifeBudgetSubject(saved, before) || !command.expected().observerSchema().equals(AdvancePlan.OBSERVER)) return false;
+        try {
+            var plan = AdvancePlan.decode(command);
+            // The execution clock enforces the target for native sentinels and exact days.
+            return (plan.clockMode() != AdvancePlan.ClockMode.POLLED || plan.exactOneDay())
+                    && plan.startingDateRaw().equals(before.frame().identity().dateRaw())
+                    && plan.expected().equals(command.expected().values())
+                    && plan.targetDateRaw().subtract(saved.frame().identity().dateRaw()).compareTo(ANNUAL_SAVE_RAW_TICKS) < 0;
+        } catch (IllegalArgumentException | ArithmeticException invalid) {
+            return false;
+        }
     }
 
     private Optional<org.xar.ck3.control.application.action.RawJson> currentLifeBudgetHint() {
@@ -1347,7 +1366,9 @@ public final class SessionController {
             var now = clock.now();
             if (!now.utc().isBefore(selected.deadline())) return; // Preserve the original expired-command failure path.
             long remaining = Math.min(untilNanos - now.elapsedNanos(), Duration.between(now.utc(), selected.deadline()).toNanos());
-            long reserve = retainedLifeBudgetReserveNanos(limits, selected.before());
+            boolean useUnsavedSample = savedLifeTailNanos > 0 && retainedLifeReserveNanos > 0
+                    && lifePlanEndsBeforeAnnualSave(selected, savedPair.orElseThrow().frame());
+            long reserve = retainedLifeBudgetReserveNanos(limits, selected.before(), !useUnsavedSample);
             if (remaining < reserve) throw new End(Terminal.WALL_TIMEOUT,
                     "PRE_INTENT_LIFE_BUDGET_DEFERRED: remaining_nanos=" + remaining + "; reserve_nanos=" + reserve
                     + "; no action INTENT submitted; next batch must freshly observe and plan");

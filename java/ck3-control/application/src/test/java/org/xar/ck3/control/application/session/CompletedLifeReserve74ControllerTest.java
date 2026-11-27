@@ -19,8 +19,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
+import org.xar.ck3.control.admission.deadlinecredit.CampaignDeadline;
 import org.xar.ck3.control.application.action.*;
 import org.xar.ck3.control.application.advance.AdvanceClockArchivedReplay;
+import org.xar.ck3.control.application.advance.AdvancePlan;
 import org.xar.ck3.control.application.advance.LifeAdvanceComposite;
 import org.xar.ck3.control.application.checkpoint.*;
 import org.xar.ck3.control.application.planning.*;
@@ -30,6 +32,7 @@ import org.xar.ck3.control.contracts.*;
 import org.xar.ck3.control.finance.jointbudget.JointBudgetSelector;
 import org.xar.ck3.control.g2.common.G2Source;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.*;
+import org.xar.ck3.control.g2.planning.ProposalLifecycleCodec;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 
 /** Real shared-clock Controller reports; advisory public hint DATA only, never Root/Native authority. */
@@ -64,6 +67,77 @@ final class CompletedLifeReserve74ControllerTest {
         BatchReport next=restored.runBatch(optedLimits("restored-next",3));assertCleanEarly(next,replacement,1);
         assertHint(SessionController.retainLifeBudgetHint(next,Optional.of(hint2)).orElseThrow(),769,0);
         assertEquals(Duration.ofSeconds(769).toNanos(),restored.retainedLifeBudgetReserveNanos(optedLimits("still-retained",3),replacement.latestRequest.before()));
+    }
+
+    @Test void archivedUnderYearDatePlansReachTheOriginalActionPortAfterHintRestore() {
+        // Source resume91_latest_map_baseline268 batches 128 and 130. Keep their exact
+        // finite budget, retained hints, physical anchor, horizon and planned dates.
+        assertAll(
+                () -> assertAdmitted(new AdmissionProbe(53157816, 8, 1_182_425_539_600L, true)),
+                () -> assertAdmitted(new AdmissionProbe(53158008, 7, 1_163_332_070_600L, true)));
+    }
+
+    private static void assertAdmitted(AdmissionProbe admission) {
+        var f = admissionFixture(admission, 73);
+        var report = f.controller.runBatch(admissionLimits());
+        assertEquals(BatchReport.Terminal.ACTION_REJECTED, report.terminal(), report.detail());
+        assertEquals(1, f.actions.size());
+        assertArrayEquals(ActionCodec.encodeCommand(f.admissionCommand), ActionCodec.encodeCommand(f.actions.getFirst().command()));
+        assertEquals(admission.remainingNanos(), Duration.between(f.admissionEntered, f.admissionCommand.deadline()).toNanos());
+        assertEquals(0, report.committedSavedDays());
+        assertSame(f.baseline, report.lastSavedPair().orElseThrow());
+    }
+
+    @Test void retainedSavedTailStillDefersAnnualUnboundedOrWrongSubjectPlans() {
+        long annualDate = 53154744 + 8760;
+        for (var admission : List.of(new AdmissionProbe(annualDate - 7 * 24, 7, 1_163_332_070_600L, true),
+                new AdmissionProbe(annualDate - 6 * 24, 7, 1_163_332_070_600L, true),
+                new AdmissionProbe(53158008, 7, 1_163_332_070_600L, false))) {
+            assertStillDeferred(admissionFixture(admission, 73));
+        }
+        assertStillDeferred(admissionFixture(new AdmissionProbe(53158008, 7, 1_163_332_070_600L, true), 74));
+    }
+
+    private static void assertStillDeferred(Fixture f) {
+        var report = f.controller.runBatch(admissionLimits());
+        assertEquals(BatchReport.Terminal.WALL_TIMEOUT, report.terminal(), report.detail());
+        assertTrue(report.detail().startsWith("PRE_INTENT_LIFE_BUDGET_DEFERRED: remaining_nanos=1163332070600; reserve_nanos=1425193732100;"), report.detail());
+        assertTrue(f.actions.isEmpty());
+    }
+
+    private static Fixture admissionFixture(AdmissionProbe admission, int savedActor) {
+        var f = new Fixture();
+        f.admission = admission;
+        f.date = admission.startingDate();
+        f.savedDate = 53154744;
+        f.savedActor = savedActor;
+        var hint = StrictJson.object().put("schema", "xar.life-budget-hint/v1");
+        hint.set("owner", OrdinaryCycleTransitions.sessionToJson(OWNER));
+        hint.set("subject", ProposalLifecycleCodec.observation(frame(f.savedDate, 8)));
+        hint.put("saved_life_tail_nanos", "1365193732100");
+        hint.put("reserve_floor_nanos", "921454957300");
+        assertTrue(f.controller().restoreLifeBudgetHint(new RawJson(StrictJson.canonical(hint))));
+        return f;
+    }
+
+    private static BatchLimits admissionLimits() {
+        return new BatchLimits("archive-life-admission", 1, Duration.ofSeconds(1800), Duration.ofSeconds(60), Duration.ofMillis(1), 3);
+    }
+
+    private record AdmissionProbe(long startingDate, int horizonDays, long remainingNanos, boolean sentinel) {
+        ActionCommand command(PlanningRequest request) {
+            var start = BigInteger.valueOf(startingDate);
+            var target = start.add(AdvancePlan.DAY.multiply(BigInteger.valueOf(horizonDays)));
+            var cap = new CampaignDeadline.Cap("resume85_vanilla_game01_20261030", CampaignDeadline.CALENDAR_PROFILE,
+                    start, target, target.max(BigInteger.valueOf(53158176)), BigInteger.valueOf(53407128), target, CampaignDeadline.Status.ADVANCE);
+            var plan = new AdvancePlan(start, target, horizonDays, 5, "bounded_non_tactical", false,
+                    sentinel ? AdvancePlan.ClockMode.CAMPAIGN_SENTINEL : AdvancePlan.ClockMode.POLLED,
+                    sentinel ? Optional.of(cap) : Optional.empty());
+            return new ActionCommand("archive-bounded-life", request.before(), request.source(), request.sessionId(),
+                    new OperationKey("life-advance"), new OpportunityJson.Obj(Map.of(AdvancePlan.KEY, plan.json())),
+                    new ExpectedPostcondition(1, request.before(), request.source(), AdvancePlan.OBSERVER, plan.expected()),
+                    new JointBudgetSelector.Claims(Set.of(), Set.of(), Set.of(), Set.of()), request.deadline());
+        }
     }
 
     @Test void precedingSmallActionAndRealNestedPhaseWorkDoNotReplaceTheLastLifeEnvelope() {
@@ -169,9 +243,10 @@ final class CompletedLifeReserve74ControllerTest {
     private static BatchLimits legacyLimits(String id,int turns){return new BatchLimits(id,turns,Duration.ofSeconds(1200),Duration.ofSeconds(60),Duration.ofMillis(1),3);}
     private static BatchLimits optedLimits(String id,int turns){return new BatchLimits(id,turns,Duration.ofSeconds(1200),Duration.ofSeconds(60),Duration.ofMillis(1),3,true);}
     private static ExactRef ref(String label,String hash){return new ExactRef("D:/fixture/reserve74-"+label+".json",1,hash.repeat(64));}
-    private static ObservationIdentity frame(long date,long revision){
+    private static ObservationIdentity frame(long date,long revision){return frame(date,revision,73);}
+    private static ObservationIdentity frame(long date,long revision,int actor){
         return new ObservationIdentity(OWNER.machineId(),GAME,new JointBudgetSelector.ProposalFrame(
-                new JointBudgetSelector.Frame(BigInteger.valueOf(73),BigInteger.valueOf(revision),BigInteger.valueOf(date)),
+                new JointBudgetSelector.Frame(BigInteger.valueOf(actor),BigInteger.valueOf(revision),BigInteger.valueOf(date)),
                 "snapshot-"+revision,BigInteger.valueOf(revision),"episode-real-1"),1);
     }
     private static List<ExpectedValue> flags(boolean eligible){return List.of(
@@ -203,6 +278,10 @@ final class CompletedLifeReserve74ControllerTest {
         int lifeLimit=2; long lifeSeconds=601;
         ActionReceipt pending;SessionController controller;CheckpointPair baseline;byte[] originalLifeBody;
         PlanningRequest latestRequest;
+        int savedActor=73;
+        AdmissionProbe admission;
+        ActionCommand admissionCommand;
+        Instant admissionEntered;
         SessionController controller(){
             var realm=new RealmLifecycle(SOURCE);
             List<OrdinaryPolicy> policies=Arrays.stream(PlanningStage.values()).<OrdinaryPolicy>map(stage->{
@@ -213,6 +292,12 @@ final class CompletedLifeReserve74ControllerTest {
                     @Override public Decision evaluate(PlanningRequest request,Draft previous){
                         if(stage!=PlanningStage.ORDINARY_CORE)return new Keep("preserve original stage order");
                         policyCalls++;
+                        if(admission!=null){
+                            time.waitFor(Duration.between(time.instant(),request.deadline().minusNanos(admission.remainingNanos())));
+                            admissionCommand=admission.command(request);
+                            return new Replace(new Draft("archive-life","original","bounded first Life",Kind.ORDINARY,
+                                    Optional.of(admissionCommand),Purpose.DATE_ADVANCE,Optional.empty(),new OpportunityJson.Obj(Map.of())),"original Life");
+                        }
                         if(smallBeforeLife&&actions.isEmpty())return new Replace(new Draft("test-small","first","independent first small DATA",Kind.ORDINARY,
                                 Optional.of(command(request,"first-small","fixture-small-action",flags(false))),Purpose.WORLD_ACTION,Optional.empty(),new OpportunityJson.Obj(Map.of())),"first small action");
                         if(lifeExecuted<lifeLimit)return new Replace(new Draft("test-life","original","complete original Life DATA",Kind.ORDINARY,
@@ -268,6 +353,19 @@ final class CompletedLifeReserve74ControllerTest {
                 @Override public ActionReceipt execute(ActionCommand original){
                     boolean life=original.operation().value().equals("life-advance");events.add("execute:"+(life?"life":"small"));
                     assertEquals(latestRequest.before(),original.before());assertEquals(latestRequest.deadline(),original.deadline());
+                    if(admission!=null){
+                        admissionEntered=time.instant();
+                        var guard=new GuardEvidence(original.origin(),BUILD,OWNER.sessionId(),BigInteger.ONE,original.operation(),
+                                GUARD,SOURCE,"controlled-pre-dispatch-probe",admissionEntered,original.deadline());
+                        String requestId=RequestIds.forCommand(original);
+                        var attempt=new ActionState.Attempt(requestId,admissionEntered,guard,
+                                new NativeRequest("life-advance",Optional.empty(),new RawJson(new byte[]{'{','}'})));
+                        var rejected=new NativeActionPort.RejectedBeforeDispatch(requestId,new NativeActionPort.ZeroDispatchProof(
+                                NativeActionPort.ZeroDispatchStage.BEFORE_WRITE,0,"controlled local admission probe",Optional.empty()));
+                        var receipt=new ActionReceipt(1,10,original,ActionCodec.bodySha256(original),new ActionState.RejectedBeforeDispatch(attempt,rejected));
+                        actions.add(receipt);
+                        return receipt;
+                    }
                     if(life){if(originalLifeBody==null)originalLifeBody=ActionCodec.encodeCommand(original);lifeExecuted++;}
                     Instant started=time.instant();time.waitFor(Duration.ofSeconds(life?lifeSeconds:121));
                     ActionReceipt receipt=applied(original,life,started);actions.add(receipt);return receipt;
@@ -312,7 +410,7 @@ final class CompletedLifeReserve74ControllerTest {
             };
             baseline=new CheckpointPair(new CheckpointPair.FileWitness(ref("save-baseline","a"),new FileStatIdentity(BigInteger.ONE,"9007199254740993","134000000000000001")),
                     new CheckpointPair.FileWitness(ref("driver-baseline","b"),new FileStatIdentity(BigInteger.ONE,"9007199254740995","134000000000000003")),
-                    frame(savedDate,8),"lineage-1",1,"original-save",SOURCE,AT);
+                    frame(savedDate,8,savedActor),"lineage-1",1,"original-save",SOURCE,AT);
             controller=new SessionController(OWNER,(owner,until)->new GameLifecycle.Running(GAME,SOURCE),observe,planner,actionPort,checkpoints,checkpointRequests,
                     writer,work->{throw unused();},time,withBaseline?Optional.of(baseline):Optional.empty(),0,completion,(owner,receipt,until)->{throw unused();});
             controller.bindRetainedIncidents(List::of);return controller;
