@@ -140,6 +140,11 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
     @Override public Selection select(PlanningRequest request, PlanningResult.ActionSelected proposal) {
         Objects.requireNonNull(request); Objects.requireNonNull(proposal);
         if (FULL111_EVENT_SELECT.equals(proposal.command().operation())) return selectFull111StockEvent(request, proposal);
+        if (codexFiles != null && isPreparedFull111PeacefulLife(request, proposal))
+            return selectDeterministic(proposal,
+                    earlier(earlier(request.deadline(), proposal.command().deadline()), clock.instant().plus(config.timeout())),
+                    "prepared_full111_peaceful_life", "peaceful_life_selection",
+                    (sha, original) -> peacefulLifeEvidence(request, proposal, sha, original));
         Instant wallEnd = earlier(earlier(request.deadline(), proposal.command().deadline()), clock.instant().plus(config.timeout()));
         long initialNanos = nanosUntil(wallEnd);
         if (initialNanos <= 0) return new Selection(Choice.WAIT, "model_decision_deadline_exhausted", Optional.empty());
@@ -674,18 +679,23 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
     }
 
     private Selection selectFull111StockEvent(PlanningRequest request, PlanningResult.ActionSelected proposal) {
+        return selectDeterministic(proposal, earlier(request.deadline(), proposal.command().deadline()),
+                "first_visible_stock_event_option", "stock_event_selection",
+                (sha, original) -> full111StockEventEvidence(request, proposal, sha, original));
+    }
+
+    private Selection selectDeterministic(PlanningResult.ActionSelected proposal, Instant deadline,
+            String reason, String evidenceKind, java.util.function.BiFunction<String, byte[], ObjectNode> evidence) {
         var command = proposal.command();
-        Instant deadline = earlier(request.deadline(), command.deadline());
         long initialNanos = nanosUntil(deadline);
-        String expired = "stock_event_selection_deadline_exhausted";
+        String expired = evidenceKind + "_deadline_exhausted";
         if (initialNanos <= 0) return new Selection(Choice.WAIT, expired, Optional.empty());
         long nanoEnd = System.nanoTime() + initialNanos;
         try {
             byte[] original = ActionCodec.encodeCommand(command);
-            var receipt = full111StockEventEvidence(request, proposal, ActionCodec.bodySha256(command), original);
+            var receipt = evidence.apply(ActionCodec.bodySha256(command), original);
             receipt.set("proposal_ref", materials.preserve(RawJson.fullMaterial(original)).toJson());
             if (remaining(deadline, nanoEnd) <= 0) return new Selection(Choice.WAIT, expired, Optional.empty());
-            String reason = "first_visible_stock_event_option";
             receipt.put("machine_id", command.origin().machineId()).put("observed_at_utc", clock.instant().toString())
                     .put("effective_decision", Choice.ACCEPT.name()).put("reason", reason);
             var reference = materials.preserve(RawJson.fullMaterial(FullJsonTree.encode(receipt, MAX_EVENT_ADMISSION_BYTES)));
@@ -697,7 +707,7 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
             }
             return new Selection(Choice.ACCEPT, reason, Optional.of(reference));
         } catch (IOException | RuntimeException failure) {
-            return new Selection(Choice.WAIT, "stock_event_selection_failure:" + failure.getMessage(), Optional.empty());
+            return new Selection(Choice.WAIT, evidenceKind + "_failure:" + failure.getMessage(), Optional.empty());
         }
     }
 
@@ -926,6 +936,55 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
                 &&request.observations().bridgeCapabilities().contains("game.command.select-event-option-N"),"event action/dependency not advertised");
     }
 
+    /** A complete Full111 supplies current clock, actor, modal and peace observations for this prepared route. */
+    private static boolean isPreparedFull111PeacefulLife(PlanningRequest request, PlanningResult.ActionSelected proposal) {
+        try {
+            if (!isPeacefulLifeCandidate(request, proposal) || !proposal.trace().before().equals(request.before())) return false;
+            var chosen = proposal.trace().finalPlan().orElseThrow();
+            var route = OpportunityJson.object(proposal.command().arguments().get("plan"), "original peaceful route");
+            if (chosen.domain().isPresent() || !("current_life_loop".equals(chosen.phase())
+                    || ("capability_progress".equals(chosen.phase())
+                        && new OpportunityJson.Text("current_life_family").equals(route.get("deferred_phase"))
+                        && new OpportunityJson.Text("dynasty-review").equals(route.get("required_step"))
+                        && !request.observations().actionSteps().contains(new OperationKey("dynasty-review"))))) return false;
+
+            var caps = request.observations().bridgeCapabilities();
+            if (!caps.contains(org.xar.ck3.control.contracts.semantic.NativeFull111OrdinaryEvent.CAPABILITY)
+                    || !caps.contains("game.query.fresh-full-state.v1")) return false;
+            var snapshot = OpportunityJson.toNode(request.observations().snapshot());
+            if (!hasCurrentPeacefulSnapshot(snapshot, request)) return false;
+            var build = ExactCk3Build.CK3_121003_STEAM_26785313_FULL111;
+            var diagnostics = snapshot.path("diagnostics");
+            return build.matches(snapshot.path("game_version").asText(), snapshot.path("executable_sha256").asText())
+                    && build.matches(snapshot.path("game_version").asText(), request.source().exactBuild())
+                    && build.coreFullAdapterId().equals(snapshot.path("adapter_id").asText())
+                    && diagnostics.path("bridge_pid").isIntegralNumber()
+                    && diagnostics.path("bridge_pid").longValue() == request.before().game().pid()
+                    && diagnostics.path("connection_generation").isIntegralNumber()
+                    && diagnostics.path("connection_generation").bigIntegerValue().signum() > 0;
+        } catch (RuntimeException unavailable) {
+            return false;
+        }
+    }
+
+    private static ObjectNode peacefulLifeEvidence(PlanningRequest request, PlanningResult.ActionSelected proposal,
+            String sha, byte[] original) {
+        var command = proposal.command();
+        var selected = proposal.trace().finalPlan().orElseThrow();
+        var receipt = object().put("schema", "xar.ordinary-full111-peaceful-life-selection/v1")
+                .put("proposal_id", command.actionId()).put("body_sha256", sha)
+                .put("planning_deadline", request.deadline().toString()).put("command_deadline", command.deadline().toString())
+                .put("policy", selected.policy()).put("phase", selected.phase()).put("plan_reason", selected.reason());
+        receipt.set("proposal", FullJsonTree.parse(original, ActionCodec.MAX_COMMAND_BYTES));
+        receipt.set("before", org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.observation(request.before()));
+        var source = request.observations().snapshot();
+        var snapshot = receipt.putObject("current_full111");
+        for (String field : List.of("game_version", "executable_sha256", "adapter_id", "paused", "map_ready", "played_character",
+                "active_wars", "player_armies", "active_event", "pending_character_interaction"))
+            snapshot.set(field, OpportunityJson.toNode(source.get(field)));
+        return receipt;
+    }
+
     /** A task projection for one already prepared peaceful Life intent; never a qualification token. */
     private byte[] tryCompactPayload(PlanningRequest request, PlanningResult.ActionSelected proposal, String sha) {
         try {
@@ -1107,40 +1166,48 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
         }
     }
 
+    private static boolean hasCurrentPeacefulSnapshot(JsonNode snapshot, PlanningRequest request) {
+        // Require the current typed paused map and empty modal/military fields.
+        if (!snapshot.path("paused").isBoolean() || !snapshot.path("paused").booleanValue()) return false;
+        if (!snapshot.path("map_ready").isBoolean() || !snapshot.path("map_ready").booleanValue()) return false;
+
+        var played = snapshot.path("played_character");
+        if (!played.isObject() || !played.path("alive").isBoolean() || !played.path("alive").booleanValue()) return false;
+
+        if (!snapshot.path("active_wars").isArray() || snapshot.path("active_wars").size() != 0) return false;
+        if (!snapshot.path("player_armies").isArray() || snapshot.path("player_armies").size() != 0) return false;
+
+        for (String nullable : List.of("active_event", "pending_character_interaction", "one_life_terminal_reason",
+                "driver_state_error", "episode_transition_error", "cold_candidate_rejection")) {
+            if (!snapshot.path(nullable).isNull()) return false;
+        }
+        for (String inactive : List.of("one_life_terminal", "episode_identity_pending")) {
+            if (!snapshot.path(inactive).isBoolean() || snapshot.path(inactive).booleanValue()) return false;
+        }
+        JsonNode modal = snapshot.get("top_exclusive_modal_choice_hint");
+        if (modal != null && !modal.isNull()) return false;
+
+        // Verify snapshot identity matches request
+        var frame = request.before().frame();
+        var identity = frame.identity();
+
+        if (!snapshot.path("snapshot_id").isTextual() || !snapshot.path("snapshot_id").textValue().equals(frame.snapshotId())) return false;
+        if (!snapshot.path("revision").isIntegralNumber() || !snapshot.path("revision").bigIntegerValue().equals(frame.revision())) return false;
+        if (!snapshot.path("native_revision").isIntegralNumber() || !snapshot.path("native_revision").bigIntegerValue().equals(identity.nativeRevision())) return false;
+        if (!snapshot.path("date_raw").isIntegralNumber() || !snapshot.path("date_raw").bigIntegerValue().equals(identity.dateRaw())) return false;
+        if (!snapshot.path("episode_run_id").isTextual() || !snapshot.path("episode_run_id").textValue().equals(frame.episodeRunId())) return false;
+
+        var playerChar = snapshot.path("played_character").path("character_id");
+        if (!playerChar.isIntegralNumber() || !playerChar.bigIntegerValue().equals(identity.player())) return false;
+
+        return true;
+    }
+
     private static boolean hasCurrentCompleteRoot(JsonNode snapshot, PlanningRequest request) {
         try {
-            // Basic snapshot safety checks
-            if (!snapshot.path("paused").isBoolean() || !snapshot.path("paused").booleanValue()) return false;
-            if (!snapshot.path("map_ready").isBoolean() || !snapshot.path("map_ready").booleanValue()) return false;
-
-            var played = snapshot.path("played_character");
-            if (!played.isObject() || !played.path("alive").isBoolean() || !played.path("alive").booleanValue()) return false;
-
-            if (!snapshot.path("active_wars").isArray() || snapshot.path("active_wars").size() != 0) return false;
-            if (!snapshot.path("player_armies").isArray() || snapshot.path("player_armies").size() != 0) return false;
-
-            for (String nullable : List.of("active_event", "pending_character_interaction", "one_life_terminal_reason",
-                    "driver_state_error", "episode_transition_error", "cold_candidate_rejection")) {
-                if (!snapshot.path(nullable).isNull()) return false;
-            }
-            for (String inactive : List.of("one_life_terminal", "episode_identity_pending")) {
-                if (!snapshot.path(inactive).isBoolean() || snapshot.path(inactive).booleanValue()) return false;
-            }
-            JsonNode modal = snapshot.get("top_exclusive_modal_choice_hint");
-            if (modal != null && !modal.isNull()) return false;
-
-            // Verify snapshot identity matches request
+            if (!hasCurrentPeacefulSnapshot(snapshot, request)) return false;
             var frame = request.before().frame();
             var identity = frame.identity();
-
-            if (!snapshot.path("snapshot_id").isTextual() || !snapshot.path("snapshot_id").textValue().equals(frame.snapshotId())) return false;
-            if (!snapshot.path("revision").isIntegralNumber() || !snapshot.path("revision").bigIntegerValue().equals(frame.revision())) return false;
-            if (!snapshot.path("native_revision").isIntegralNumber() || !snapshot.path("native_revision").bigIntegerValue().equals(identity.nativeRevision())) return false;
-            if (!snapshot.path("date_raw").isIntegralNumber() || !snapshot.path("date_raw").bigIntegerValue().equals(identity.dateRaw())) return false;
-            if (!snapshot.path("episode_run_id").isTextual() || !snapshot.path("episode_run_id").textValue().equals(frame.episodeRunId())) return false;
-
-            var playerChar = snapshot.path("played_character").path("character_id");
-            if (!playerChar.isIntegralNumber() || !playerChar.bigIntegerValue().equals(identity.player())) return false;
 
             // Verify current root exists in snapshot
             var rootQuery = snapshot.path("campaign_root_context_query");
