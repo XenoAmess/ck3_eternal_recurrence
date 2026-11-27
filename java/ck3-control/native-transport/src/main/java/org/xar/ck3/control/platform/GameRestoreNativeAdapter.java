@@ -211,7 +211,7 @@ public final class GameRestoreNativeAdapter implements RestoreCheckpointService.
     public record CommittedImportedReads(WriterContracts.HistoricalTransition attachment,ImportedRecoveryBasis basis,
             NativeObservationPort.ObservedFrame firstOriginal,NativeObservationPort.ObservedFrame secondOriginal) { }
 
-    /** Reads the immediate committed imported attachment from this writer and the same now reattached successor. */
+    /** Reads the committed imported attachment and a domain-import-only continuation from the same writer and successor. */
     public CommittedImportedReads readCommittedImportedOriginals(ContinuityStorePort.Session same,
             WriterContracts.Pin actualAttachment,NativeGameTransport expectedTransport,G2Source expectedSource,Instant readDeadline)throws IOException {
         authority.require(same);store.requireSession(same);
@@ -241,13 +241,16 @@ public final class GameRestoreNativeAdapter implements RestoreCheckpointService.
         } catch(UncheckedIOException failure){throw failure.getCause();}
     }
 
-    record CommittedAttachment(WriterContracts.HistoricalTransition edge,ImportedRecoveryBasis basis,CheckpointPair pair,ObjectNode opening) { }
+    record CommittedAttachment(WriterContracts.HistoricalTransition edge,ImportedRecoveryBasis basis,CheckpointPair pair,
+            ObjectNode opening,String currentHeadDigest) { }
 
     static CommittedAttachment readCommittedAttachment(ContinuityStorePort.Session same,WriterContracts.Pin event)throws IOException {
         var head=same.head();var edge=same.readHistoricalTransition(event);
-        if(!SavedAttachmentAuthority.KIND.equals(edge.kind())||head.snapshotNeedsRecovery()||!head.indexRepairs().isEmpty()
-                ||edge.sequence()!=head.state().sequence()||!ContinuityJson.digest(edge.after().toJson()).equals(head.digest()))
-            throw new IOException("Immediate clean committed imported attachment required");
+        if(!SavedAttachmentAuthority.KIND.equals(edge.kind())||head.snapshotNeedsRecovery()||!head.indexRepairs().isEmpty())
+            throw new IOException("Clean committed imported attachment required");
+        String attachmentDigest=ContinuityJson.digest(edge.after().toJson());
+        if(edge.sequence()!=head.state().sequence()||!attachmentDigest.equals(head.digest()))
+            same.requireDomainImportContinuation(edge.sequence(),attachmentDigest);
         try {
             var details=ContinuityJson.parseObject(edge.details(),ContinuityJson.DOCUMENT_MAX_BYTES);
             var basis=SavedAttachmentSourceStore.importedRecoveryBasis(details)
@@ -268,7 +271,7 @@ public final class GameRestoreNativeAdapter implements RestoreCheckpointService.
                     ||!pair.lineageId().equals(StrictJson.text(opening.get("lineage_id")))
                     ||!pair.frame().frame().episodeRunId().equals(StrictJson.text(opening.get("episode_run_id"))))
                 throw new IOException("Committed imported READ basis differs from its canonical predecessor, successor, physical pair or opening");
-            return new CommittedAttachment(edge,basis,pair,opening);
+            return new CommittedAttachment(edge,basis,pair,opening,head.digest());
         }catch(IllegalArgumentException|java.time.DateTimeException invalid){throw new IOException("Invalid committed imported attachment DATA",invalid);}
     }
 
@@ -299,7 +302,7 @@ public final class GameRestoreNativeAdapter implements RestoreCheckpointService.
                 throw new IOException("Historical READs must retain their original connection before this actual successor attachment");
             requireCommittedOpening(committed,second.frame());
             for(var pin:basis.pins())same.verifyPin(pin);
-            if(!same.head().digest().equals(ContinuityJson.digest(committed.edge().after().toJson())))
+            if(!same.head().digest().equals(committed.currentHeadDigest()))
                 throw new IOException("Committed original READ verification changed the canonical head");
             return new CommittedImportedReads(committed.edge(),basis,first.frame(),second.frame());
         }catch(IllegalArgumentException|java.time.DateTimeException invalid){throw new IOException("Invalid committed original READ archive DATA",invalid);}
