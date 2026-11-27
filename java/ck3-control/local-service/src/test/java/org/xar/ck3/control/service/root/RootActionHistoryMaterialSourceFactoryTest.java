@@ -135,6 +135,42 @@ class RootActionHistoryMaterialSourceFactoryTest {
                 () -> RootActionHistoryMaterialSourceFactory.recordNativeResult(receipt, result, original, new LinkedHashSet<>(), producers));
     }
 
+    @Test void full111ActualZeroWriteRetainsItsPreparedPacketAndCannotClaimAnEffect() throws Exception {
+        try (var resource = getClass().getResourceAsStream("/org/xar/ck3/control/application/session/source56-named-zero-dispatch.json.gz");
+             var compressed = new java.util.zip.GZIPInputStream(resource)) {
+            var fixture = StrictJson.parse(compressed.readAllBytes(), 1024 * 1024);
+            var originals = fixture.get("materials");
+            java.util.function.Function<ExactRef, byte[]> bytes = ref -> {
+                var raw = java.util.Base64.getDecoder().decode(originals.get(ref.sha256()).textValue());
+                assertEquals(ref.bytes(), raw.length);
+                assertEquals(ref.sha256(), ActionCodec.sha256(raw));
+                return raw;
+            };
+            var codec = new org.xar.ck3.control.continuity.writer.NativeArchiveDataCodec((ref, maximum) -> bytes.apply(ref));
+            var archive = (org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive) java.lang.reflect.Proxy.newProxyInstance(
+                    getClass().getClassLoader(),
+                    new Class<?>[]{org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive.class},
+                    (proxy, method, args) -> switch (method.getName()) {
+                        case "loadReceipt" -> org.xar.ck3.control.application.action.ActionReceiptCodec.decodeReceipt(
+                                bytes.apply((ExactRef) args[0]), (org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive) proxy);
+                        case "loadRequest" -> codec.decodePreparedRequestData((ExactRef) args[0]);
+                        case "load" -> codec.decodeDispatchData((ExactRef) args[0]);
+                        default -> throw new AssertionError("unexpected original reader " + method);
+                    });
+            var reference = ExactRef.fromJson(fixture.get("events").get(4).get("details").get("receipt_ref"));
+            var receipt = org.xar.ck3.control.application.action.ActionRecordCodec.decode(bytes.apply(reference), archive).receipt();
+            var zero = assertInstanceOf(ActionState.RejectedBeforeDispatch.class, receipt.state());
+            var prepared = zero.attempt().preparedRequest();
+            RootActionHistoryMaterialSourceFactory.requireFull111ZeroDispatch(receipt, zero, prepared);
+            assertFalse(receipt.visibleGameplay());
+            assertFalse(receipt.eligibleAdvance());
+            assertTrue(receipt.applied().isEmpty());
+            var detached = new NativeRequest(prepared.step(), prepared.requiredCapability(), prepared.additionalFields());
+            assertThrows(IllegalArgumentException.class,
+                    () -> RootActionHistoryMaterialSourceFactory.requireFull111ZeroDispatch(receipt, zero, detached));
+        }
+    }
+
     private static RawJson full111Result(String operation) {
         return new RawJson(DriverJson.encode(new Obj(Map.of("schema", new Text(RootFull111EventOptionEffects.RESULT_SCHEMA),
                 "step", new Text(operation), "progress_status", new Text("postcondition"), "old_event_instance_id", number(7),

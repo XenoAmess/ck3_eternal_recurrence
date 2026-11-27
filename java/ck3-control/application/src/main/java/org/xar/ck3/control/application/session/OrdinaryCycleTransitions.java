@@ -2125,6 +2125,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         refs.add(original);
         refs.add(origin.loadedFile().reference());
         origin.previousOrigin().ifPresent(refs::add);
+        origin.zeroDispatchHead().ifPresent(refs::add);
         var request = new WriterContracts.Request(CYCLE_KIND, ContinuityJson.canonical(details), refs.stream().distinct().toList());
         externalSaveRebinding.set(new ExternalSaveRebind(origin, semantic, original));
         try {
@@ -2187,7 +2188,8 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                 .put("source", externalSaveSource(origin));
         transition.set("successor_game", owner.game().toJson());
         transition.set("frame", originalFrame(frame));
-        var operation = origin.previousOrigin().isPresent() ? ExternalSaveOrigin.REMOUNT_TRANSITION : ExternalSaveOrigin.TRANSITION;
+        var operation = origin.zeroDispatchHead().isPresent() ? ExternalSaveOrigin.ZERO_DISPATCH_REMOUNT_TRANSITION
+                : origin.previousOrigin().isPresent() ? ExternalSaveOrigin.REMOUNT_TRANSITION : ExternalSaveOrigin.TRANSITION;
         var next = OriginalWindowReducer.reduce(predecessor.toJson(), operation, transition, policy);
         origin.deferredBatch().ifPresent(batch -> {
             var input = new JournalInput(origin.departed(), batch, JournalKind.BATCH_DEFERRED,
@@ -2207,6 +2209,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
     }
 
     private static String externalSaveSource(ExternalSaveOrigin origin) {
+        if (origin.zeroDispatchHead().isPresent()) return ExternalSaveOrigin.ZERO_DISPATCH_REMOUNT_SOURCE;
         return origin.previousOrigin().isPresent() ? ExternalSaveOrigin.REMOUNT_SOURCE : ExternalSaveOrigin.SOURCE;
     }
 
@@ -3020,7 +3023,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
             ExactRef ref=state.episodeOrigin().orElseThrow();StrictJson.require(origins.add(ref)&&origins.size()<=1024,"episode origin chain is cyclic or exceeds its finite bound");
             ObjectNode origin=ContinuityJson.parseObject(archive.loadMaterial(ref).bytes(),ContinuityJson.DOCUMENT_MAX_BYTES);
             var schema = text(origin, "schema");
-            if (ExternalSaveOrigin.SCHEMA.equals(schema) || ExternalSaveOrigin.REMOUNT_SCHEMA.equals(schema)) {
+            if (Set.of(ExternalSaveOrigin.SCHEMA, ExternalSaveOrigin.REMOUNT_SCHEMA, ExternalSaveOrigin.ZERO_DISPATCH_REMOUNT_SCHEMA).contains(schema)) {
                 var external = ExternalSaveOrigin.fromJson(origin);
                 var same = active.get();
                 StrictJson.require(same != null && external.successor().equals(state.session()),

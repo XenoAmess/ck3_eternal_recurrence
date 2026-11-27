@@ -27,8 +27,12 @@ import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
 /** The new process's first observation and the unchanged predecessor of a manually preserved campaign. */
 public record ExternalSaveOrigin(long predecessorSequence, String predecessorDigest, SessionIdentity departed,
         SessionIdentity successor, CheckpointPair savedPair, CheckpointPair.FileWitness loadedFile,
-        ExactRef retiredActionHead, NativeOpening opening, Optional<ExactRef> previousOrigin, Optional<String> deferredBatch) {
+        ExactRef retiredActionHead, NativeOpening opening, Optional<ExactRef> previousOrigin, Optional<String> deferredBatch,
+        Optional<ExactRef> zeroDispatchHead) {
     static final String SCHEMA = "xar.java-ordinary-external-save-origin/v1";
+    static final String ZERO_DISPATCH_REMOUNT_SCHEMA = "xar.java-ordinary-external-save-origin/v3";
+    static final String ZERO_DISPATCH_REMOUNT_SOURCE = "java-external-save-observation/v3";
+    static final String ZERO_DISPATCH_REMOUNT_TRANSITION = "external_save_observation_zero_dispatch_remount";
     static final String REMOUNT_SCHEMA = "xar.java-ordinary-external-save-origin/v2";
     static final String REMOUNT_SOURCE = "java-external-save-observation/v2";
     static final String REMOUNT_TRANSITION = "external_save_observation_remount";
@@ -39,6 +43,17 @@ public record ExternalSaveOrigin(long predecessorSequence, String predecessorDig
         this(predecessorSequence, predecessorDigest, departed, successor, savedPair, loadedFile, retiredActionHead,
                 opening, Optional.empty(), Optional.empty());
     }
+    public ExternalSaveOrigin(long predecessorSequence, String predecessorDigest, SessionIdentity departed,
+            SessionIdentity successor, CheckpointPair savedPair, CheckpointPair.FileWitness loadedFile,
+            ExactRef retiredActionHead, NativeOpening opening, Optional<ExactRef> previousOrigin, Optional<String> deferredBatch) {
+        this(predecessorSequence, predecessorDigest, departed, successor, savedPair, loadedFile, retiredActionHead,
+                opening, previousOrigin, deferredBatch, Optional.empty());
+    }
+
+    ExactRef actionHead() {
+        return zeroDispatchHead.orElse(retiredActionHead);
+    }
+
     static final String SOURCE = "java-external-save-observation/v1";
     static final String TRANSITION = "external_save_observation_rebind";
 
@@ -53,6 +68,10 @@ public record ExternalSaveOrigin(long predecessorSequence, String predecessorDig
         Objects.requireNonNull(opening);
         Objects.requireNonNull(previousOrigin);
         Objects.requireNonNull(deferredBatch);
+        Objects.requireNonNull(zeroDispatchHead);
+        StrictJson.require(zeroDispatchHead.isEmpty() || previousOrigin.isPresent()
+                && !zeroDispatchHead.orElseThrow().equals(retiredActionHead),
+                "zero-dispatch remount requires its prior named origin and separate action frontier");
         deferredBatch.ifPresent(StrictJson::text);
         StrictJson.require(deferredBatch.isEmpty() || previousOrigin.isPresent(), "only a named remount may defer an open batch");
         StrictJson.require(!successor.game().equals(departed.game())
@@ -117,7 +136,8 @@ public record ExternalSaveOrigin(long predecessorSequence, String predecessorDig
     }
 
     ObjectNode toJson() {
-        var row = StrictJson.object().put("schema", previousOrigin.isPresent() ? REMOUNT_SCHEMA : SCHEMA).put("predecessor_sequence", predecessorSequence)
+        String schema = zeroDispatchHead.isPresent() ? ZERO_DISPATCH_REMOUNT_SCHEMA : previousOrigin.isPresent() ? REMOUNT_SCHEMA : SCHEMA;
+        var row = StrictJson.object().put("schema", schema).put("predecessor_sequence", predecessorSequence)
                 .put("predecessor_digest", predecessorDigest);
         row.set("departed", OrdinaryCycleTransitions.sessionToJson(departed));
         row.set("successor", OrdinaryCycleTransitions.sessionToJson(successor));
@@ -130,16 +150,19 @@ public record ExternalSaveOrigin(long predecessorSequence, String predecessorDig
             if (deferredBatch.isPresent()) row.put("deferred_batch", deferredBatch.orElseThrow());
             else row.putNull("deferred_batch");
         });
+        zeroDispatchHead.ifPresent(ref -> row.set("zero_dispatch_head", ref.toJson()));
         return row;
     }
 
     public static ExternalSaveOrigin fromJson(JsonNode value) {
         var schema = StrictJson.text(value.get("schema"));
-        boolean remount = REMOUNT_SCHEMA.equals(schema);
+        boolean zeroDispatchRemount = ZERO_DISPATCH_REMOUNT_SCHEMA.equals(schema);
+        boolean remount = REMOUNT_SCHEMA.equals(schema) || zeroDispatchRemount;
         StrictJson.require(remount || SCHEMA.equals(schema), "external save origin schema differs");
         var fields = new java.util.HashSet<>(Set.of("schema", "predecessor_sequence", "predecessor_digest", "departed",
                 "successor", "saved_pair", "loaded_file", "retired_action_head", "opening"));
         if (remount) fields.addAll(Set.of("previous_origin", "deferred_batch"));
+        if (zeroDispatchRemount) fields.add("zero_dispatch_head");
         var row = StrictJson.object(value, fields);
         return new ExternalSaveOrigin(StrictJson.integer(row.get("predecessor_sequence"), 1, StrictJson.MAX_SAFE_INTEGER),
                 StrictJson.text(row.get("predecessor_digest")), OrdinaryCycleTransitions.sessionFromJson(row.get("departed")),
@@ -148,7 +171,8 @@ public record ExternalSaveOrigin(long predecessorSequence, String predecessorDig
                 CheckpointPairCodec.fileWitnessFromJson(row.get("loaded_file")), ExactRef.fromJson(row.get("retired_action_head")),
                 NativeOpening.fromJson(row.get("opening")),
                 remount ? Optional.of(ExactRef.fromJson(row.get("previous_origin"))) : Optional.empty(),
-                remount && !row.get("deferred_batch").isNull() ? Optional.of(StrictJson.text(row.get("deferred_batch"))) : Optional.empty());
+                remount && !row.get("deferred_batch").isNull() ? Optional.of(StrictJson.text(row.get("deferred_batch"))) : Optional.empty(),
+                zeroDispatchRemount ? Optional.of(ExactRef.fromJson(row.get("zero_dispatch_head"))) : Optional.empty());
     }
 
     /** The holder verifies the actual former ledger state. The observation grants no SAVE or dispatch authority. */
@@ -164,9 +188,12 @@ public record ExternalSaveOrigin(long predecessorSequence, String predecessorDig
         StrictJson.require(original.sequence() == predecessorSequence
                 && ContinuityJson.digest(before).equals(predecessorDigest)
                 && original.machineId().equals(departed.machineId())
-                && original.status() == (previousOrigin.isPresent() ? ContinuityState.Status.RUNNING : ContinuityState.Status.REPAIR_REQUIRED)
+                && (previousOrigin.isPresent()
+                        ? original.status() == ContinuityState.Status.RUNNING
+                            || zeroDispatchHead.isPresent() && original.status() == ContinuityState.Status.REPAIR_REQUIRED
+                        : original.status() == ContinuityState.Status.REPAIR_REQUIRED)
                 && ContinuityJson.same(before.get("game_binding"), departed.game().toJson())
-                && ContinuityActionJournal.recordHead(original).filter(retiredActionHead::equals).isPresent()
+                && ContinuityActionJournal.recordHead(original).filter(actionHead()::equals).isPresent()
                 && imported.hasNonNull("checkpoint_pair")
                 && ContinuityJson.same(imported.get("checkpoint_pair"), StrictJson.parse(CheckpointPairCodec.encode(savedPair)))
                 && original.settledDateRaw() == savedPair.frame().frame().identity().dateRaw().longValueExact(),
@@ -175,6 +202,12 @@ public record ExternalSaveOrigin(long predecessorSequence, String predecessorDig
             var binding = before.path("latest_binding");
             var boundary = before.path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD);
             boolean open = "BATCH_STARTED".equals(boundary.path("boundary").asText());
+            if (zeroDispatchHead.isPresent() && original.status() == ContinuityState.Status.REPAIR_REQUIRED)
+                StrictJson.require("BATCH_INTERRUPTED".equals(boundary.path("boundary").asText())
+                        && departed.equals(OrdinaryCycleTransitions.sessionFromJson(boundary.get("session")))
+                        && "java-ordinary-batch-interruption/v2".equals(before.path("interruption").path("source").asText())
+                        && boundary.path("evidence_id").equals(before.path("interruption").path("evidence_id")),
+                        "zero-dispatch remount requires the departed owner's exact ordinary interruption");
             StrictJson.require(ExactRef.fromJson(before.get(WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD))
                     .equals(previousOrigin.orElseThrow()) && open == deferredBatch.isPresent()
                     && deferredBatch.map(batch -> batch.equals(boundary.path("batch_id").asText())
@@ -190,6 +223,7 @@ public record ExternalSaveOrigin(long predecessorSequence, String predecessorDig
         StrictJson.require(previousOrigin.isPresent() && previous.predecessorSequence() < predecessorSequence
                 && previous.successor().equals(departed) && previous.savedPair().equals(savedPair)
                 && previous.retiredActionHead().equals(retiredActionHead)
+                && (zeroDispatchHead.isPresent() || previous.actionHead().equals(actionHead()))
                 && previous.loadedFile().reference().sha256().equals(loadedFile.reference().sha256())
                 && previous.loadedFile().reference().bytes() == loadedFile.reference().bytes()
                 && previous.opening().actor().equals(opening.actor()) && previous.opening().dateRaw() == opening.dateRaw(),

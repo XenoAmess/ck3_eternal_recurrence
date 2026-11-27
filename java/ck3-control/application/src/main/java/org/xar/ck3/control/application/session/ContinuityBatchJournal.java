@@ -4294,14 +4294,16 @@ public final class ContinuityBatchJournal implements BatchJournal {
         private final Optional<String> recordedDigest;
         private final List<String> consumedBatches;
         private final Optional<String> openBatch;
+        private final Optional<ExactRef> interruptedZeroDispatch;
 
         private PreparedExternalSave(ExternalSaveOrigin origin, SettledSameGameData history, Optional<String> recordedDigest,
-                List<String> consumedBatches, Optional<String> openBatch) {
+                List<String> consumedBatches, Optional<String> openBatch, Optional<ExactRef> interruptedZeroDispatch) {
             this.origin = origin;
             this.history = history;
             this.recordedDigest = recordedDigest;
             this.consumedBatches = List.copyOf(consumedBatches);
             this.openBatch = openBatch;
+            this.interruptedZeroDispatch = interruptedZeroDispatch;
         }
 
         public ExternalSaveOrigin origin() { return origin; }
@@ -4325,7 +4327,8 @@ public final class ContinuityBatchJournal implements BatchJournal {
         var prepared = replayRecordedExternalSave(same, departed, source, same.head());
         var origin = prepared.origin();
         StrictJson.require(origin.successor().equals(successor) && origin.loadedFile().equals(loadedFile)
-                && origin.opening().actor().equals(opening.actor()) && origin.opening().dateRaw() == opening.dateRaw(),
+                && origin.opening().actor().equals(opening.actor()) && origin.opening().dateRaw() == opening.dateRaw()
+                && prepared.interruptedZeroDispatch.isEmpty(),
                 "named-save re-entry requires its actual successor and loaded physical file");
         return prepared;
     }
@@ -4339,10 +4342,11 @@ public final class ContinuityBatchJournal implements BatchJournal {
         var original = previous.origin();
         var previousRef = ExactRef.fromJson(head.state().toJson().get(WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD));
         var origin = new ExternalSaveOrigin(head.state().sequence(), head.digest(), departed, successor, original.savedPair(),
-                loadedFile, original.retiredActionHead(), opening, Optional.of(previousRef), previous.openBatch);
+                loadedFile, original.retiredActionHead(), opening, Optional.of(previousRef), previous.openBatch,
+                previous.interruptedZeroDispatch.or(original::zeroDispatchHead));
         origin.requirePreviousOrigin(original);
         origin.requireOriginal(head.state());
-        return new PreparedExternalSave(origin, previous.history(), Optional.empty(), previous.consumedBatches, Optional.empty());
+        return new PreparedExternalSave(origin, previous.history(), Optional.empty(), previous.consumedBatches, Optional.empty(), Optional.empty());
     }
 
     private PreparedExternalSave replayRecordedExternalSave(ContinuityStorePort.Session same, SessionIdentity departed,
@@ -4353,11 +4357,12 @@ public final class ContinuityBatchJournal implements BatchJournal {
         var originRef = ExactRef.fromJson(body.get(WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD));
         var origin = transitions.withLocked(same, () -> ExternalSaveOrigin.fromJson(ContinuityJson.parseObject(
                 transitions.restartArchive(same).loadMaterial(originRef).bytes(), ContinuityJson.DOCUMENT_MAX_BYTES)));
+        boolean interrupted = state.status() == ContinuityState.Status.REPAIR_REQUIRED;
         StrictJson.require(!head.snapshotNeedsRecovery() && head.indexRepairs().isEmpty()
-                && state.status() == ContinuityState.Status.RUNNING
+                && (interrupted || state.status() == ContinuityState.Status.RUNNING)
                 && ContinuityJson.same(body.get("game_binding"), origin.successor().game().toJson())
-                && ContinuityActionJournal.recordHead(state).filter(origin.retiredActionHead()::equals).isPresent(),
-                "named-save re-entry requires its actual successor and unchanged action frontier");
+                && (interrupted || ContinuityActionJournal.recordHead(state).filter(origin.actionHead()::equals).isPresent()),
+                "named-save re-entry requires its actual successor and verified action frontier");
         var historical = same.requireHistoricalHead(origin.predecessorSequence(), origin.predecessorDigest());
         origin.requireOriginal(historical.state());
         final SettledSameGameData old;
@@ -4391,6 +4396,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
             requireCommittedImportedBatchReduction(rebind, new WriterContracts.Request(rebind.kind(), rebind.details(), List.of()));
             String open = null;
             boolean reboundOpening = false;
+            Optional<ExactRef> zeroDispatch = Optional.empty();
             var consumed = new java.util.ArrayList<>(previousBatches);
             for (int index = 1; index < edges.size(); index++) {
                 var edge = edges.get(index);
@@ -4405,15 +4411,31 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     }
                     continue;
                 }
+                if (WriterContracts.ACTION_LIFECYCLE_KIND.equals(edge.kind())) {
+                    StrictJson.require(interrupted && open != null && index + 3 == edges.size() - 1,
+                            "named remount requires a single zero-dispatch action at the end of its open batch");
+                    zeroDispatch = Optional.of(requireExternalZeroDispatch(same, edges.subList(index, index + 3), origin, old.source()));
+                    index += 2;
+                    continue;
+                }
                 var payload = ContinuityJson.parseObject(edge.details(), ContinuityJson.DOCUMENT_MAX_BYTES);
                 StrictJson.require(OrdinaryCycleTransitions.BATCH_KIND.equals(edge.kind()),
                         "named-save re-entry cannot discard a successor action or cycle");
                 String batch = StrictJson.text(payload.get("batch_id"));
                 var boundary = JournalKind.valueOf(StrictJson.text(payload.get("boundary")));
-                var reduced = OrdinaryCycleTransitions.replayCommittedBatchMetadata(edge.before(), successor, batch, boundary, edge)
-                        .toJson().put("sequence", edge.sequence()).put("last_event_identity", edge.eventIdentity());
-                StrictJson.require(ContinuityJson.same(reduced, edge.after().toJson()),
-                        "named-save re-entry metadata differs from its canonical reducer");
+                if (boundary == JournalKind.BATCH_INTERRUPTED) {
+                    StrictJson.require(interrupted && index == edges.size() - 1 && zeroDispatch.isPresent()
+                            && ContinuityActionJournal.recordHead(edge.before()).equals(zeroDispatch)
+                            && "java-ordinary-batch-interruption/v2".equals(StrictJson.text(payload.get("source")))
+                            && OrdinaryCycleTransitions.sessionFromJson(payload.get("session")).equals(successor),
+                            "named remount interrupted boundary requires its proven zero-dispatch terminal");
+                    requireCommittedImportedBatchReduction(edge, new WriterContracts.Request(edge.kind(), edge.details(), List.of()));
+                } else {
+                    var reduced = OrdinaryCycleTransitions.replayCommittedBatchMetadata(edge.before(), successor, batch, boundary, edge)
+                            .toJson().put("sequence", edge.sequence()).put("last_event_identity", edge.eventIdentity());
+                    StrictJson.require(ContinuityJson.same(reduced, edge.after().toJson()),
+                            "named-save re-entry metadata differs from its canonical reducer");
+                }
                 if (boundary == JournalKind.BATCH_STARTED) {
                     StrictJson.require(open == null && batch.equals(old.controller().batchPrefix() + "-"
                             + (old.controller().nextBatchSequence() + consumed.size())),
@@ -4427,12 +4449,71 @@ public final class ContinuityBatchJournal implements BatchJournal {
             }
             var last = edges.getLast();
             StrictJson.require(last.sequence() == state.sequence()
-                    && ContinuityJson.digest(last.after().toJson()).equals(head.digest()),
+                    && ContinuityJson.digest(last.after().toJson()).equals(head.digest())
+                    && interrupted == zeroDispatch.isPresent()
+                    && ContinuityActionJournal.recordHead(state).filter(zeroDispatch.orElse(origin.actionHead())::equals).isPresent(),
                     "named-save re-entry history does not end at the held head");
-            return new PreparedExternalSave(origin, old, Optional.of(head.digest()), consumed, Optional.ofNullable(open));
+            return new PreparedExternalSave(origin, old, Optional.of(head.digest()), consumed, Optional.ofNullable(open), zeroDispatch);
         });
         StrictJson.require(live.digest().equals(same.head().digest()), "named-save re-entry changed its held writer");
         return prepared;
+    }
+
+    static ExactRef verifyExternalZeroDispatch(List<WriterContracts.HistoricalTransition> edges, ExternalSaveOrigin origin,
+            G2Source source, ActionPorts.OutcomeArchive archive) {
+        StrictJson.require(edges.size() == 3, "named remount requires the exact intent, submitting and zero-dispatch records");
+        Optional<ExactRef> previous = Optional.of(origin.actionHead());
+        Optional<ActionReceipt> previousReceipt = Optional.empty();
+        for (var edge : edges) {
+            var payload = StrictJson.object(ContinuityJson.parseObject(edge.details(), ContinuityJson.DOCUMENT_MAX_BYTES),
+                    java.util.Set.of("evidence_id", "receipt_ref", "source"));
+            var ref = ExactRef.fromJson(payload.get("receipt_ref"));
+            var record = archive.loadRecord(ref);
+            var actual = record.receipt();
+            var command = actual.command();
+            var owner = origin.successor();
+            StrictJson.require(WriterContracts.ACTION_LIFECYCLE_KIND.equals(edge.kind())
+                    && ContinuityActionJournal.recordHead(edge.before()).equals(previous)
+                    && ContinuityActionJournal.recordHead(edge.after()).filter(ref::equals).isPresent()
+                    && record.previous().equals(previous) && ref.equals(archive.recordReferenceOf(record))
+                    && actual.sequence() == edge.sequence() && command.origin() instanceof CommandOrigin.Gameplay
+                    && command.origin().game().equals(owner.game()) && command.sessionId().equals(owner.sessionId())
+                    && command.source().equals(source)
+                    && command.operation().value().equals(org.xar.ck3.control.application.capabilities.NativeActionSteps.FULL111_EVENT_SELECT_STEP)
+                    && StrictJson.text(payload.get("evidence_id")).equals(command.actionId() + ":" + actual.sequence())
+                    && ContinuityJson.same(payload.get("source"), org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.source(source))
+                    && edge.eventIdentity().equals(new WriterContracts.Request(edge.kind(), edge.details(), List.of()).identity()),
+                    "named remount action crossed its exact action records and successor");
+            origin.requireSemantic(command.before());
+            ActionTransitions.validate(previousReceipt, command, actual.bodySha256(), actual.state());
+            if (previousReceipt.isEmpty()) {
+                StrictJson.require(actual.state() instanceof ActionState.IntentDurable,
+                        "named remount requires its original new durable intent");
+            } else if (previousReceipt.orElseThrow().state() instanceof ActionState.IntentDurable) {
+                StrictJson.require(actual.state() instanceof ActionState.Submitting, "named remount requires its exact submitting attempt");
+            } else {
+                StrictJson.require(actual.state() instanceof ActionState.RejectedBeforeDispatch,
+                        "named remount cannot carry an action with a write, ACK or UNKNOWN");
+                var zero = (ActionState.RejectedBeforeDispatch) actual.state();
+                StrictJson.require(zero.dispatch().proof().stage() == NativeActionPort.ZeroDispatchStage.BEFORE_WRITE
+                        && zero.dispatch().proof().requestBytesWritten() == 0
+                        && archive.load(archive.referenceOf(zero.dispatch())).equals(zero.dispatch())
+                        && archive.loadRequest(archive.requestReferenceOf(zero.attempt().preparedRequest())).equals(zero.attempt().preparedRequest()),
+                        "named remount requires its original complete zero-byte proof and prepared request");
+            }
+            var expected = edge.before().toJson().put("sequence", edge.sequence()).put("last_event_identity", edge.eventIdentity());
+            expected.set(WriterContracts.ACTION_LIFECYCLE_FIELD, edge.after().toJson().get(WriterContracts.ACTION_LIFECYCLE_FIELD));
+            StrictJson.require(ContinuityJson.same(expected, edge.after().toJson()),
+                    "named remount zero-dispatch action changed a world, batch or save frontier");
+            previous = Optional.of(ref);
+            previousReceipt = Optional.of(actual);
+        }
+        return previous.orElseThrow();
+    }
+
+    private ExactRef requireExternalZeroDispatch(ContinuityStorePort.Session same, List<WriterContracts.HistoricalTransition> edges,
+            ExternalSaveOrigin origin, G2Source source) throws IOException {
+        return transitions.withLocked(same, () -> verifyExternalZeroDispatch(edges, origin, source, transitions.restartArchive(same)));
     }
 
     private void requireRecordedExternalOpening(ContinuityStorePort.Session same, WriterContracts.HistoricalTransition edge,
@@ -4500,7 +4581,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     "external save observation requires the actual committed administrative terminal");
             return null;
         });
-        return new PreparedExternalSave(origin, history, Optional.empty(), List.of(), Optional.empty());
+        return new PreparedExternalSave(origin, history, Optional.empty(), List.of(), Optional.empty(), Optional.empty());
     }
 
     public static final class ExternalSaveRebind {

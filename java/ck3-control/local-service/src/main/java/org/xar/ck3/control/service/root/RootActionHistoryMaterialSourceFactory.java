@@ -408,35 +408,38 @@ public final class RootActionHistoryMaterialSourceFactory {
                 require(originalHead.equals(same.head().digest()),"SAVE zero-dispatch history changed the writer head");
                 return only(CanonicalReason.DIRECT_API_WITHOUT_LEGACY_RECORDER,evidence,producers);
             }
-            if(op.value().equals(org.xar.ck3.control.governance.council.CouncilActionCodec.PRIVATE_ASSIGN)
-                    &&actual.state() instanceof ActionState.RejectedBeforeDispatch zero) {
-                require(action.isPresent()&&composite.isEmpty()
-                        &&owned(catalog.nativeGovernance().installation(),action.orElseThrow(),replay),
-                        "Council zero-dispatch history requires its identical installed action and replay");
+            boolean full111ZeroDispatch = full111StockSelection(op);
+            boolean councilZeroDispatch = op.value().equals(org.xar.ck3.control.governance.council.CouncilActionCodec.PRIVATE_ASSIGN);
+            if ((councilZeroDispatch || full111ZeroDispatch) && actual.state() instanceof ActionState.RejectedBeforeDispatch zero) {
+                var installation = full111ZeroDispatch ? catalog.remainingDomains().events().installation()
+                        : catalog.nativeGovernance().installation();
+                require(action.isPresent() && composite.isEmpty() && owned(installation, action.orElseThrow(), replay),
+                        "zero-dispatch history requires its identical installed action and replay");
                 String originalHead=same.head().digest();
                 ExactRef originalReceipt=originals.receiptReferenceOf(actual);
-                require(originals.loadReceipt(originalReceipt).equals(actual),"Council zero-dispatch receipt changed");
+                require(originals.loadReceipt(originalReceipt).equals(actual),"ordinary zero-dispatch receipt changed");
                 ExactRef originalRecord=ContinuityActionJournal.requireHistoricalReceipt(same.head().state(),actual,originals);
-                require(originals.loadRecord(originalRecord).receipt().equals(actual),"Council zero-dispatch is not its canonical original record");
+                require(originals.loadRecord(originalRecord).receipt().equals(actual),"ordinary zero-dispatch is not its canonical original record");
                 var attempt=zero.attempt();var dispatch=zero.dispatch();var guard=attempt.guard();
                 require(actual.outcome()==ActionReceipt.Outcome.REJECTED_BEFORE_DISPATCH
                         &&!actual.visibleGameplay()&&!actual.eligibleAdvance()&&actual.applied().isEmpty()
                         &&dispatch.proof().stage()==NativeActionPort.ZeroDispatchStage.BEFORE_WRITE
                         &&dispatch.proof().requestBytesWritten()==0&&attempt.requestId().equals(dispatch.requestId()),
-                        "Council zero-dispatch cannot borrow an ACK, UNKNOWN or applied effect");
+                        "ordinary zero-dispatch cannot borrow an ACK, UNKNOWN or applied effect");
                 ExactRef dispatchRef=originals.referenceOf(dispatch);
-                require(originals.load(dispatchRef).equals(dispatch),"Council zero-dispatch original proof changed");
+                require(originals.load(dispatchRef).equals(dispatch),"ordinary zero-dispatch original proof changed");
                 ExactRef preparedRef=originals.requestReferenceOf(attempt.preparedRequest());
                 var prepared=originals.loadRequest(preparedRef);
-                require(prepared.equals(attempt.preparedRequest()),"Council zero-dispatch original preparation changed");
+                require(prepared.equals(attempt.preparedRequest()),"ordinary zero-dispatch original preparation changed");
                 NativeStepDiscriminator.requireRequest(op,ExecutableStepBindings.Kind.ACTION,prepared);
+                if (full111ZeroDispatch) requireFull111ZeroDispatch(actual, zero, prepared);
                 require(actual.command().origin().acceptsGuard(guard.origin())&&guard.source().equals(actual.command().source())
                         &&guard.sessionId().equals(actual.command().sessionId())&&guard.operation().equals(op),
-                        "Council zero-dispatch original guard crossed command/source/session");
+                        "ordinary zero-dispatch original guard crossed command/source/session");
                 RootGuardEvidence.requireHistory(guard,originals,same);
                 var before=RootGuardEvidence.loadFrame(guard,originals,context.frameLoader());
                 require(before.identity().equals(actual.command().before())&&before.source().equals(actual.command().source())
-                        &&before.sessionId().equals(actual.command().sessionId()),"Council zero-dispatch original frame crossed command");
+                        &&before.sessionId().equals(actual.command().sessionId()),"ordinary zero-dispatch original frame crossed command");
                 var evidence=new LinkedHashSet<Evidence>();
                 evidence.add(new Evidence(EvidenceKind.ACTION_RECEIPT,originalReceipt));
                 evidence.add(new Evidence(EvidenceKind.ACTION_RECORD,originalRecord));
@@ -445,7 +448,7 @@ public final class RootActionHistoryMaterialSourceFactory {
                 evidence.add(new Evidence(EvidenceKind.NATIVE_FRAME,guard.nativeEvidence()));
                 guard.supportingEvidence().forEach(ref->evidence.add(new Evidence(EvidenceKind.MATERIAL,ref)));
                 context.writer().requireSession(same);
-                require(originalHead.equals(same.head().digest()),"Council zero-dispatch history changed the writer head");
+                require(originalHead.equals(same.head().digest()),"ordinary zero-dispatch history changed the writer head");
                 return only(CanonicalReason.DIRECT_API_WITHOUT_LEGACY_RECORDER,evidence,producers);
             }
             Optional<LifeAdvanceEvidence.Recorded> recordedLife;
@@ -670,6 +673,23 @@ public final class RootActionHistoryMaterialSourceFactory {
     }
     private static boolean full111StockSelection(OperationKey operation) {
         return operation.value().equals(CurrentFull111EventOption.Action.SELECT.step());
+    }
+
+    static void requireFull111ZeroDispatch(ActionReceipt actual, ActionState.RejectedBeforeDispatch zero, NativeRequest prepared) throws IOException {
+        var command = actual.command();
+        var selection = CurrentFull111EventOption.Request.decodeSelectionRequest(prepared);
+        var references = prepared.preparationEvidence();
+        require(full111StockSelection(command.operation())
+                        && RootFull111EventOptionEffects.SCHEMA.equals(command.expected().observerSchema())
+                        && actual.state().equals(zero) && zero.attempt().preparedRequest().equals(prepared)
+                        && zero.dispatch().proof().stage() == NativeActionPort.ZeroDispatchStage.BEFORE_WRITE
+                        && zero.dispatch().proof().requestBytesWritten() == 0
+                        && selection.target().equals(RootFull111EventOptionPreparation.target(command))
+                        && selection.lineage().sourceRevision().equals(command.before().frame().identity().nativeRevision())
+                        && !selection.deadline().isAfter(command.deadline())
+                        && references.size() == 3
+                        && references.getFirst().equals(RootFull111EventOptionPreparation.rendererOriginal(command)),
+                "Full111 zero-dispatch history requires the original prepared target, renderer and zero-write proof");
     }
 
     /** Material policy for an already replayed original. It does not qualify an effect or perform a read. */

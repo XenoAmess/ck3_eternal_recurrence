@@ -1621,9 +1621,11 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         if (!ORDINARY_BATCH_KIND.equals(request.kind())&&!ORDINARY_NEXT_BASELINE_KIND.equals(request.kind())) {
             preserveField(old, next, ORDINARY_SAVED_CYCLE_FIELD);
         }
-        boolean namedRemount = details != null && "java-external-save-observation/v2".equals(details.path("source").asText())
-                && "REBIND_EXTERNAL_SAVE".equals(details.path("operation").asText())
-                && "xar.java-ordinary-external-save-origin/v2".equals(details.path("origin").path("schema").asText());
+        boolean namedRemount = details != null && "REBIND_EXTERNAL_SAVE".equals(details.path("operation").asText())
+                && (("java-external-save-observation/v2".equals(details.path("source").asText())
+                        && "xar.java-ordinary-external-save-origin/v2".equals(details.path("origin").path("schema").asText()))
+                    || ("java-external-save-observation/v3".equals(details.path("source").asText())
+                        && "xar.java-ordinary-external-save-origin/v3".equals(details.path("origin").path("schema").asText())));
         if (namedRemount && details.path("origin").hasNonNull("deferred_batch")) {
             requireNamedRemountDeferral(before, old, next, details);
         } else if (!ORDINARY_BATCH_KIND.equals(request.kind())) {
@@ -1631,7 +1633,7 @@ public final class ContinuityWriter implements ContinuityStorePort, DomainBodies
         }
     }
 
-    /** The v2 physical remount may atomically close only its actual departed open batch. */
+    /** A physical remount may atomically close only its actual departed open batch. */
     private static void requireNamedRemountDeferral(ContinuityState before, ObjectNode old, ObjectNode next, ObjectNode details) {
         var origin = details.get("origin");
         String batch = StrictJson.text(origin.get("deferred_batch"));

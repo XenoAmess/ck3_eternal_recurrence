@@ -13,6 +13,8 @@ import java.util.zip.GZIPInputStream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.xar.ck3.control.application.action.ActionCodec;
+import org.xar.ck3.control.application.action.ActionReceipt;
+import org.xar.ck3.control.application.action.ActionState;
 import org.xar.ck3.control.continuity.writer.ContinuityWriter;
 import org.xar.ck3.control.continuity.writer.StorageWriteGuardTestSupport;
 import org.xar.ck3.control.contracts.ContractViolationException;
@@ -95,6 +97,118 @@ final class ExternalSaveRemountTest {
                     remount.departed(), remount.successor(), remount.savedPair(), wrongFile, remount.retiredActionHead(),
                     remount.opening(), remount.previousOrigin(), remount.deferredBatch());
             assertThrows(IllegalArgumentException.class, () -> wrong.requirePreviousOrigin(previous));
+        }
+    }
+
+    @Test void remountKeepsTheOriginalWasNeverSentAndItsInterruptedBatch() throws Exception {
+        try (var raw = getClass().getResourceAsStream("source56-named-zero-dispatch.json.gz");
+             var compressed = new GZIPInputStream(raw)) {
+            var fixture = StrictJson.parse(compressed.readAllBytes(), StrictJson.EXPLICIT_MAX_BYTES);
+            var events = fixture.get("events");
+            var previousEvent = events.get(0);
+            var details = ((ObjectNode) previousEvent.get("details")).deepCopy();
+            var previous = ExternalSaveOrigin.fromJson(details.get("origin"));
+            var previousRef = ExactRef.fromJson(details.get("origin_ref"));
+            var machine = previous.successor().machineId();
+            var before = ContinuityState.fromJson(events.get(5).get("after"), machine);
+            assertEquals(71, before.sequence());
+            assertEquals(ContinuityState.Status.REPAIR_REQUIRED, before.status());
+
+            var originals = fixture.get("materials");
+            java.util.function.Function<ExactRef, byte[]> bytes = ref -> {
+                var data = java.util.Base64.getDecoder().decode(originals.get(ref.sha256()).textValue());
+                assertEquals(ref.bytes(), data.length);
+                assertEquals(ref.sha256(), ActionCodec.sha256(data));
+                return data;
+            };
+            var codec = new org.xar.ck3.control.continuity.writer.NativeArchiveDataCodec((ref, limit) -> bytes.apply(ref));
+            var dispatchRefs = new java.util.HashMap<Object, ExactRef>();
+            var requestRefs = new java.util.HashMap<Object, ExactRef>();
+            var recordRefs = new java.util.HashMap<Object, ExactRef>();
+            var archive = (ActionPorts.OutcomeArchive) Proxy.newProxyInstance(getClass().getClassLoader(),
+                    new Class<?>[]{ActionPorts.OutcomeArchive.class}, (proxy, method, arguments) -> {
+                        var arg = arguments[0];
+                        return switch (method.getName()) {
+                            case "loadRecord" -> {
+                                var ref = (ExactRef) arg;
+                                var record = org.xar.ck3.control.application.action.ActionRecordCodec.decode(bytes.apply(ref),
+                                        (ActionPorts.OutcomeArchive) proxy);
+                                recordRefs.put(record, ref);
+                                yield record;
+                            }
+                            case "loadReceipt" -> org.xar.ck3.control.application.action.ActionReceiptCodec.decodeReceipt(
+                                    bytes.apply((ExactRef) arg), (ActionPorts.OutcomeArchive) proxy);
+                            case "load" -> {
+                                var ref = (ExactRef) arg;
+                                var dispatch = codec.decodeDispatchData(ref);
+                                dispatchRefs.put(dispatch, ref);
+                                yield dispatch;
+                            }
+                            case "loadRequest" -> {
+                                var ref = (ExactRef) arg;
+                                var request = codec.decodePreparedRequestData(ref);
+                                requestRefs.put(request, ref);
+                                yield request;
+                            }
+                            case "recordReferenceOf" -> recordRefs.get(arg);
+                            case "referenceOf" -> dispatchRefs.get(arg);
+                            case "requestReferenceOf" -> requestRefs.get(arg);
+                            default -> throw new AssertionError("unexpected original reader " + method);
+                        };
+                    });
+            var edges = new java.util.ArrayList<WriterContracts.HistoricalTransition>();
+            for (int i = 2; i <= 4; i++) {
+                var event = events.get(i);
+                byte[] eventBytes = ContinuityJson.canonical(event);
+                var pin = new WriterContracts.Pin(new ExactRef("fixture:event-" + i, eventBytes.length, ActionCodec.sha256(eventBytes)),
+                        new WriterContracts.FileIdentity("1", Integer.toString(i), "1", "2026-11-27T10:41:00Z", eventBytes.length));
+                edges.add(new WriterContracts.HistoricalTransition(event.path("sequence").longValue(), event.path("kind").textValue(),
+                        ContinuityJson.canonical(event.get("details")), event.path("identity").textValue(),
+                        ContinuityState.fromJson(events.get(i - 1).get("after"), machine),
+                        ContinuityState.fromJson(event.get("after"), machine), pin));
+            }
+            var source = archive.loadRecord(ExactRef.fromJson(events.get(2).get("details").get("receipt_ref"))).receipt().command().source();
+            var zero = ContinuityBatchJournal.verifyExternalZeroDispatch(edges, previous, source, archive);
+            assertEquals(ContinuityActionJournal.recordHead(before).orElseThrow(), zero);
+            var terminal = archive.loadRecord(zero).receipt();
+            assertEquals(ActionReceipt.Outcome.REJECTED_BEFORE_DISPATCH, terminal.outcome());
+            assertEquals(0, ((ActionState.RejectedBeforeDispatch) terminal.state()).dispatch().proof().requestBytesWritten());
+            assertFalse(terminal.visibleGameplay());
+            assertFalse(terminal.eligibleAdvance());
+            assertThrows(IllegalArgumentException.class,
+                    () -> ContinuityBatchJournal.verifyExternalZeroDispatch(edges.subList(0, 2), previous, source, archive));
+
+            var game = new GameGeneration(previous.successor().game().pid() + 1, previous.successor().game().creationFiletime());
+            var successor = new SessionIdentity(machine, game, "software-after-zero-write");
+            var opening = new ExternalSaveOrigin.NativeOpening(new TransportSession(machine, game, BigInteger.ONE, successor.sessionId()),
+                    previous.opening().actor(), previous.opening().dateRaw(), "native:1", BigInteger.ONE);
+            var candidate = new ExternalSaveOrigin(before.sequence(), ContinuityJson.digest(before.toJson()), previous.successor(), successor,
+                    previous.savedPair(), previous.loadedFile(), previous.retiredActionHead(), opening, Optional.of(previousRef),
+                    Optional.empty(), Optional.of(zero));
+            candidate.requirePreviousOrigin(previous);
+            assertEquals(candidate, ExternalSaveOrigin.fromJson(candidate.toJson()));
+            assertThrows(IllegalArgumentException.class, () -> candidate.requireOriginal(edges.getLast().after()));
+            details.put("source", ExternalSaveOrigin.ZERO_DISPATCH_REMOUNT_SOURCE);
+            details.set("session", OrdinaryCycleTransitions.sessionToJson(successor));
+            details.set("origin", candidate.toJson());
+            details.set("origin_ref", new ExactRef("fixture:zero-dispatch-origin", 1, "f".repeat(64)).toJson());
+            var frame = (ObjectNode) details.get("semantic").get("frame");
+            frame.set("game", game.toJson());
+            ((ObjectNode) frame.get("frame")).put("native_revision", "1").put("revision", "1").put("snapshot_id", "native:1");
+            var request = new WriterContracts.Request(OrdinaryCycleTransitions.CYCLE_KIND, ContinuityJson.canonical(details), List.of());
+            var cycles = new OrdinaryCycleTransitions(archive, (same, owner, original) -> { throw new AssertionError(); },
+                    (same, owner, pair, proof) -> { throw new AssertionError(); },
+                    new OriginalWindowReducer.Policy(before.origin().targetDays()), same -> { throw new AssertionError(); });
+            var committed = actualWriterCommit(before, cycles, request);
+            assertEquals(ContinuityState.Status.RUNNING, committed.status());
+            assertEquals(game, GameGeneration.fromJson(committed.toJson().get("game_binding")));
+            assertEquals(53179344, committed.settledDateRaw());
+            assertEquals(53179944, committed.toJson().path("latest_binding").path("date_raw").longValue());
+            assertEquals(471, (committed.settledDateRaw() - committed.origin().startDateRaw()) / 24);
+            assertEquals(before.settledCycles(), committed.settledCycles());
+            assertEquals(ContinuityActionJournal.recordHead(before), ContinuityActionJournal.recordHead(committed));
+            assertEquals(before.toJson().get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD),
+                    committed.toJson().get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD));
         }
     }
 
