@@ -163,11 +163,14 @@ public final class HeldDriverObservationPort implements AdvanceObservationPort {
         DriverObservationFacts.Result read=facts.read(received);
         if(read instanceof DriverObservationFacts.Unavailable missing)
             throw new IOException("actual waited original has incomplete current Driver facts: "+String.join(",",missing.reasons()));
-        var full=assembler.projectFull(received,((DriverObservationFacts.Known)read).facts(),original);
-        var ordinary=assembler.assemble(received,((DriverObservationFacts.Known)read).facts(),original);
-        if(ordinary instanceof DriverObservationAssembler.Complete complete)retain(complete);
-        if(!Instant.now().isBefore(captureUntil))throw new IOException("actual waited snapshot projection exceeded its original capture deadline");
-        return full;
+        var known=((DriverObservationFacts.Known)read).facts();
+        return assembler.withCapturedProjection(received,known,original,full->()->{
+            var ordinary=assembler.assembleCapturedProjection(full,received,known,original);
+            if(ordinary instanceof DriverObservationAssembler.Complete complete)retain(complete);
+            if(!Instant.now().isBefore(captureUntil))
+                throw new IOException("actual waited snapshot projection exceeded its original capture deadline");
+            return full;
+        });
     }
     private static OrdinarySnapshotExport export(DriverObservationAssembler.Complete actual,boolean includeHistory) {
         return PublicSnapshotCodec.export(actual,includeHistory);
