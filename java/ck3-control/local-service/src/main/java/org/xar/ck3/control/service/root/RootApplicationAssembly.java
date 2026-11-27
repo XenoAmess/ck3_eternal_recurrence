@@ -1904,40 +1904,52 @@ public final class RootApplicationAssembly {
                     "settled continuation reads the unused actual Core");
             Objects.requireNonNull(game);Objects.requireNonNull(cyclePolicy);
             return writer.locked(same->{
-                var cycle=same.head().state().toJson().get(OrdinaryCycleTransitions.STATE_FIELD);
-                var status=same.head().state().status();
+                var finalizationHead = same.head().state();
+                var cycle=finalizationHead.toJson().get(OrdinaryCycleTransitions.STATE_FIELD);
+                var status=finalizationHead.status();
                 if((status!=org.xar.ck3.control.continuity.ContinuityState.Status.REPAIR_REQUIRED
                         &&status!=org.xar.ck3.control.continuity.ContinuityState.Status.RUNNING)
                         ||cycle==null||cycle.get("head")==null||cycle.get("head").isNull()
                         ||cycle.get("pending_receipt")==null||!cycle.get("pending_receipt").isNull())
                     return Optional.empty();
-                var finalizationHead = same.head().state();
+                var owner = new SessionIdentity(game.machineId(),game.generation(),game.sessionId());
+                var cycles = new OrdinaryCycleTransitions(archive,semanticVerifier,checkpointVerifiers,cyclePolicy,writer::requireSession);
+                cycles.bindTerminalFrameLoader(frames);
+                var batches = new ContinuityBatchJournal(writer,cycles);
+                var imported = batches.readSettledImportedSameGame(same,owner);
+                if (imported.isPresent()) {
+                    rememberSettledSameGame(cycles,batches,imported.orElseThrow(),cyclePolicy);
+                    return imported;
+                }
                 boolean settled=actions.withFrozen(same,lease->{
                     boolean result=!lease.snapshot().actions().isEmpty()
                             &&lease.snapshot().actions().stream().allMatch(ActionReceipt::settled);
-                    if (result && ContinuityBatchJournal.readOnlySaveFinalizationRoot(finalizationHead, new SessionIdentity(game.machineId(), game.generation(), game.sessionId()), lease.snapshot().actions(), archive.withSession(same)).isPresent()) {
+                    if (result && ContinuityBatchJournal.readOnlySaveFinalizationRoot(finalizationHead, owner, lease.snapshot().actions(), archive.withSession(same)).isPresent()) {
                         result = false;
                     }
-                    if (result && ContinuityBatchJournal.readOnlyPendingKnownCompletionRoot(finalizationHead, new SessionIdentity(game.machineId(), game.generation(), game.sessionId()), lease.snapshot().actions(), archive.withSession(same)).isPresent()) {
+                    if (result && ContinuityBatchJournal.readOnlyPendingKnownCompletionRoot(finalizationHead, owner, lease.snapshot().actions(), archive.withSession(same)).isPresent()) {
                         result = false;
                     }
-                    if (result && ContinuityBatchJournal.readOnlyPendingEventCompletionRoot(finalizationHead, new SessionIdentity(game.machineId(), game.generation(), game.sessionId()), lease.snapshot().actions(), archive.withSession(same)).isPresent()) {
+                    if (result && ContinuityBatchJournal.readOnlyPendingEventCompletionRoot(finalizationHead, owner, lease.snapshot().actions(), archive.withSession(same)).isPresent()) {
                         result = false;
                     }
                     if(result&&ContinuityBatchJournal.readOnlyAppliedEventCompletionRoot(finalizationHead,new SessionIdentity(game.machineId(),game.generation(),game.sessionId()),lease.snapshot().actions(),archive.withSession(same)).isPresent())result=false;
                     lease.assertCurrent();return result;
                 });
                 if(!settled)return Optional.empty();
-                var cycles=new OrdinaryCycleTransitions(archive,semanticVerifier,checkpointVerifiers,cyclePolicy,writer::requireSession);
-                cycles.bindTerminalFrameLoader(frames);
-                var batches=new ContinuityBatchJournal(writer,cycles);
-                // The Journal decides whether READY is a retained settled recovery. A catalog
-                // failure after repair must return through this path without a clean capture.
-                var data=batches.readSettledSameGame(same,new SessionIdentity(game.machineId(),game.generation(),game.sessionId()));
-                settledSameGameCycles=cycles;settledSameGameBatches=batches;
-                settledSameGameData=data;settledSameGamePolicy=cyclePolicy;
+                // A catalog failure after repair must return through the retained settled recovery.
+                var data=batches.readSettledSameGame(same,owner);
+                rememberSettledSameGame(cycles,batches,data,cyclePolicy);
                 return Optional.of(data);
             });
+        }
+
+        private void rememberSettledSameGame(OrdinaryCycleTransitions cycles,ContinuityBatchJournal batches,
+                ContinuityBatchJournal.SettledSameGameData data,OriginalWindowReducer.Policy policy) {
+            settledSameGameCycles=cycles;
+            settledSameGameBatches=batches;
+            settledSameGameData=data;
+            settledSameGamePolicy=policy;
         }
 
         public synchronized DriverBootstrap.Adopted adoptSettledSameGame(ManagedGameSession game,
@@ -1950,8 +1962,15 @@ public final class RootApplicationAssembly {
                     "settled continuation retains its actual history reader and cycle policy");
             return writer.locked(same->{
                 final DriverBootstrap.Adopted result;
+                boolean imported = data.startingPoint() instanceof ContinuityBatchJournal.SameGameEntry.CommittedImportedRebind;
+                boolean reserved = operatorQuarantineSource().map(value->value.request().reservedTailInterruption()).orElse(false);
                 try {
-                    if(operatorQuarantineSource().map(value->value.request().reservedTailInterruption()).orElse(false))
+                    if (imported) {
+                        Optional<org.xar.ck3.control.application.driver.DriverStateAssembler.ReservedLifeRetirementVerifier> verifier =
+                                reserved ? Optional.of(this::verifyReservedRetirement) : Optional.empty();
+                        result=DriverBootstrap.adoptSettledImportedSameGame(settledSameGameBatches,data,same,actions,
+                                game.nativeTransport(),archive,writer::borrowedSession,retainedFrames,deadline,verifier);
+                    } else if(reserved)
                         result=DriverBootstrap.adoptSettledSameGameWithReservedLifeVerifier(data,same,actions,game.nativeTransport(),archive,
                                 writer::borrowedSession,retainedFrames,deadline,this::verifyReservedRetirement);
                     else result=DriverBootstrap.adoptSettledSameGameWithHistoricalReads(data,same,actions,game.nativeTransport(),archive,
@@ -1962,6 +1981,14 @@ public final class RootApplicationAssembly {
                     failure.initCause(interrupted);throw failure;
                 }
                 settledSameGameSemantic=initialRecoverySemantic(same,result,data.controller().owner());
+                if (imported) {
+                    settledSameGameCycles.bindCommittedImportedSettledReadAuthority((held,original,fresh) -> {
+                        writer.requireSession(held);
+                        StrictJson.require(original == data && fresh == settledSameGameSemantic,
+                                "settled imported recovery requires the Core's retained independent Native projection");
+                        return result.requireSettledImportedRead(original,game.nativeTransport(),fresh);
+                    });
+                }
                 adopted.add(result);return result;
             });
         }

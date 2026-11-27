@@ -21,6 +21,8 @@ import org.xar.ck3.control.application.action.RawJson;
 import org.xar.ck3.control.application.checkpoint.DriverCheckpointStore;
 import org.xar.ck3.control.application.checkpoint.DriverStateSnapshot;
 import org.xar.ck3.control.application.checkpoint.SavedAttachmentAuthority;
+import org.xar.ck3.control.application.session.ContinuityBatchJournal;
+import org.xar.ck3.control.application.session.SessionPorts.SemanticEvidence;
 import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
 import org.xar.ck3.control.application.lifecycle.LifecycleComposites;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
@@ -658,6 +660,25 @@ public final class DriverBootstrap {
         private FreshGameplayEntryAuthority.RecoveryAdmission initialRecovery;
         private WriterContracts.Pin committedImportedAttachment;
         private org.xar.ck3.control.application.session.ContinuityBatchJournal.SettledSameGameData settledSameGame;
+        private NativeFreshSnapshotPort.Received settledImportedRead;
+
+        public NativeObservationPort.ObservedFrame requireSettledImportedRead(ContinuityBatchJournal.SettledSameGameData actual,
+                NativeGameTransport transport, SemanticEvidence semantic)
+                throws IOException {
+            requireSettledSameGame(actual);
+            var received = settledImportedRead;
+            StrictJson.require(received != null && actual.startingPoint() instanceof ContinuityBatchJournal.SameGameEntry.CommittedImportedRebind
+                    && status == AdoptionStatus.QUALIFICATION_REQUIRED && first.identity().equals(semantic.frame())
+                    && first.originalEvidence().equals(semantic.originalNativePacket()) && first.observedAt().equals(semantic.observedAt()),
+                    "settled imported recovery requires its actual Driver projection of the independent Full");
+            producer.requireSameTransport(transport,source);
+            var raw = received.originalFrame();
+            StrictJson.require(transport.diagnostics().session().filter(raw.session()::equals).isPresent() && session.equals(raw.session()),
+                    "settled imported recovery lost the actual current Native connection");
+            NativeFreshSnapshotPort.verifyOriginal(received.acknowledgement(),raw,received.snapshotReceived());
+            return raw;
+        }
+
         public void requireCommittedImported(WriterContracts.Pin actual) {
             StrictJson.require(status==AdoptionStatus.QUALIFICATION_REQUIRED
                     &&Objects.requireNonNull(actual).equals(committedImportedAttachment),
@@ -1249,6 +1270,16 @@ public final class DriverBootstrap {
         return adoptSameGameHistory(data,same,actions,transport,archive,currentSession,retainedFrames,deadline,false,true);
     }
 
+    /** Reopens the exact imported successor and retains the single independent Full for Controller adoption. */
+    public static Adopted adoptSettledImportedSameGame(ContinuityBatchJournal journal,
+            ContinuityBatchJournal.SettledSameGameData data, ContinuityStorePort.Session same,
+            ActionSnapshotReader actions, NativeGameTransport transport, ActionPorts.OutcomeArchive archive,
+            BorrowedSessionReader currentSession, int retainedFrames, Instant deadline,
+            Optional<DriverStateAssembler.ReservedLifeRetirementVerifier> verifier) throws IOException, InterruptedException {
+        return adoptSameGameHistory(data,same,actions,transport,archive,currentSession,retainedFrames,deadline,false,true,
+                Optional.empty(),verifier,Optional.empty(),Optional.empty(),ReadOnlyLifeRecoveryRole.NONE,Optional.of(journal));
+    }
+
     /** Same guarded ordinary adoption with an actually installed source-owned administrative presentation verifier. */
     public static Adopted adoptSettledSameGameWithReservedLifeVerifier(
             org.xar.ck3.control.application.session.ContinuityBatchJournal.SettledSameGameData data,
@@ -1419,12 +1450,26 @@ public final class DriverBootstrap {
             boolean isolatedLife,boolean historicalReads,Optional<org.xar.ck3.control.application.action.CompositeOperatorQuarantineRequest> operatorRequest,
             Optional<DriverStateAssembler.ReservedLifeRetirementVerifier> retirementVerifier,Optional<RecoveryReadWindow> recoveryReadWindow,
             Optional<java.util.function.Supplier<Instant>> lateReadDeadline,ReadOnlyLifeRecoveryRole readOnlyRole)throws IOException,InterruptedException {
+        return adoptSameGameHistory(data,same,actions,transport,archive,currentSession,retainedFrames,deadline,isolatedLife,
+                historicalReads,operatorRequest,retirementVerifier,recoveryReadWindow,lateReadDeadline,readOnlyRole,Optional.empty());
+    }
+
+    private static Adopted adoptSameGameHistory(ContinuityBatchJournal.SettledSameGameData data,
+            ContinuityStorePort.Session same, ActionSnapshotReader actions, NativeGameTransport transport,
+            ActionPorts.OutcomeArchive archive, BorrowedSessionReader currentSession, int retainedFrames, Instant deadline,
+            boolean isolatedLife, boolean historicalReads, Optional<org.xar.ck3.control.application.action.CompositeOperatorQuarantineRequest> operatorRequest,
+            Optional<DriverStateAssembler.ReservedLifeRetirementVerifier> retirementVerifier, Optional<RecoveryReadWindow> recoveryReadWindow,
+            Optional<java.util.function.Supplier<Instant>> lateReadDeadline, ReadOnlyLifeRecoveryRole readOnlyRole,
+            Optional<ContinuityBatchJournal> importedJournal) throws IOException, InterruptedException {
         Objects.requireNonNull(readOnlyRole);
         Objects.requireNonNull(operatorRequest);
         Objects.requireNonNull(data);Objects.requireNonNull(same);Objects.requireNonNull(actions);
         Objects.requireNonNull(transport);Objects.requireNonNull(archive);Objects.requireNonNull(currentSession);
         Objects.requireNonNull(deadline);
         var retained=data.retainedFacts();var old=data.previousTransport();
+        boolean imported = data.startingPoint() instanceof ContinuityBatchJournal.SameGameEntry.CommittedImportedRebind;
+        StrictJson.require(imported == importedJournal.isPresent(),"settled imported Driver requires its actual issuing journal");
+        if (imported) importedJournal.orElseThrow().requireSettledImportedSameGameOriginal(same,data);
         var current=transport.awaitHello(deadline);
         StrictJson.require(current.machineId().equals(old.machineId())&&current.game().equals(old.game())
                 &&current.sessionId().equals(old.sessionId())
@@ -1434,8 +1479,19 @@ public final class DriverBootstrap {
                 &&retained.driver().session().bridgePid()==current.game().pid()
                 &&retained.driver().session().pipeName().equals(transport.pipeName()),
                 "settled retained Driver belongs to another physical Game or pipe");
-        qualifySameGameActionHistory(data,same,actions,archive,isolatedLife,historicalReads,operatorRequest,
-                lateReadDeadline.isPresent()&&readOnlyRole==ReadOnlyLifeRecoveryRole.NONE,readOnlyRole);
+        if (imported) {
+            actions.withFrozen(same,lease -> {
+                StrictJson.require(lease.snapshot().originalHistory() instanceof ActionJournal.BoundHistoryBasis basis
+                        && basis.originalDriverHistory().equals(retained.originalHistoryBasis())
+                        && lease.snapshot().actions().equals(data.settledActions()),
+                        "settled imported Driver changed the canonical action cut or original history");
+                lease.assertCurrent();
+                return null;
+            });
+        } else {
+            qualifySameGameActionHistory(data,same,actions,archive,isolatedLife,historicalReads,operatorRequest,
+                    lateReadDeadline.isPresent()&&readOnlyRole==ReadOnlyLifeRecoveryRole.NONE,readOnlyRole);
+        }
         var repository=new DriverFactsRepository(retained);
         var producer=new NativeDriverObservationProducer(repository,transport,data.source(),
                 wire->borrowedArchive(archive,currentSession).preserveMaterial(RawJson.fullMaterial(wire)));
@@ -1484,6 +1540,7 @@ public final class DriverBootstrap {
                 isolatedLife ? List.of("retained_life_requires_read_only_action_or_cycle_recovery") : List.of());
         if (!isolatedLife) {
             adopted.settledSameGame=data;
+            if (imported) adopted.settledImportedRead=received;
             producer.recordAdoptionObserved(current,data.source());
         }
         return adopted;

@@ -6580,6 +6580,35 @@ public final class ContinuityBatchJournal implements BatchJournal {
         return new SettledImportedRecoveryData(history,driver,restart);
     }
 
+    /** Locates the already committed attachment from the canonical current successor, without a launch request. */
+    public Optional<SettledSameGameData> readSettledImportedSameGame(ContinuityStorePort.Session same,
+            SessionIdentity owner) throws IOException {
+        store.requireSession(same);
+        var head = same.head();
+        var state = head.state().toJson();
+        var cycle = state.path(OrdinaryCycleTransitions.STATE_FIELD);
+        if (head.state().status() != ContinuityState.Status.RUNNING
+                || !state.hasNonNull(WriterContracts.ORDINARY_IMPORTED_CYCLE_ORIGIN_FIELD)
+                || state.hasNonNull(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD)
+                || !cycle.hasNonNull("head") || !cycle.path("pending_receipt").isNull()) {
+            return Optional.empty();
+        }
+        var boundary = state.path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD);
+        var kind = boundary.path("boundary").asText();
+        if (!(JournalKind.BATCH_FINISHED.name().equals(kind) || JournalKind.BATCH_DEFERRED.name().equals(kind))) {
+            return Optional.empty();
+        }
+        if (!(state.get("last_current_saved_cold") instanceof ObjectNode marker))
+            throw new IOException("settled imported successor lacks its committed Saved marker");
+        var basis = SavedAttachmentSourceStore.importedRecoveryBasis(marker)
+                .orElseThrow(() -> new IOException("settled imported successor lacks its canonical attachment basis"));
+        if (!basis.successor().equals(owner)) throw new IOException("settled imported successor changed its physical owner");
+        long sequence = Math.addExact(basis.predecessorSequence(),1);
+        var attachment = canonicalEventPins(same,head).get(sequence);
+        if (attachment == null) throw new IOException("settled imported successor lacks its indexed attachment");
+        return Optional.of(readSettledImportedSameGame(same,attachment,owner));
+    }
+
     /** Issues the exact closed imported successor history to this journal's same-Game recovery path. */
     public SettledSameGameData readSettledImportedSameGame(ContinuityStorePort.Session same,
             WriterContracts.Pin actualAttachment, SessionIdentity owner) throws IOException {
