@@ -34,7 +34,9 @@ public final class HeldDriverObservationPort implements AdvanceObservationPort {
         StrictJson.require(maximumRetainedFrames>=1 && maximumRetainedFrames<=4096,"explicit bounded retained observation count required");
         this.maximumRetainedFrames=maximumRetainedFrames;
     }
-    public DriverObservationAssembler.FullSnapshot observeFull(Instant deadline) throws InterruptedException {
+    private record ObservationInputs(NativeObservationPort.ObservedFrame actual, DriverObservationFacts facts, ExactRef original) { }
+
+    private ObservationInputs receiveObservation(Instant deadline) throws InterruptedException {
         Objects.requireNonNull(deadline);
         StrictJson.require(Instant.now().isBefore(deadline),"actual observation deadline expired");
         NativeObservationPort.ObservedFrame actual=transport.observe(deadline);
@@ -42,11 +44,20 @@ public final class HeldDriverObservationPort implements AdvanceObservationPort {
         ExactRef original=evidence.preserve(actual);
         DriverObservationFacts.Result read=facts.read(actual);
         if(read instanceof DriverObservationFacts.Unavailable missing) throw new IllegalStateException("incomplete actual Driver facts: "+String.join(",",missing.reasons()));
-        return assembler.projectFull(actual,((DriverObservationFacts.Known)read).facts(),original);
+        return new ObservationInputs(actual,((DriverObservationFacts.Known)read).facts(),original);
+    }
+    public DriverObservationAssembler.FullSnapshot observeFull(Instant deadline) throws InterruptedException {
+        var inputs=receiveObservation(deadline);
+        return assembler.projectFull(inputs.actual(),inputs.facts(),inputs.original());
     }
     public DriverObservationAssembler.Complete observe(Instant deadline) throws InterruptedException {
-        var full=observeFull(deadline);
-        return complete(full);
+        var inputs=receiveObservation(deadline);
+        try {
+            return assembler.withCapturedProjection(inputs.actual(),inputs.facts(),inputs.original(),full->()->
+                    retainComplete(assembler.assembleCapturedProjection(full,inputs.actual(),inputs.facts(),inputs.original())));
+        } catch(IOException failure) {
+            throw new UncheckedIOException(failure);
+        }
     }
     /**
      * Projects this exact original received frame using the same Driver/evidence owners, with no
@@ -65,7 +76,9 @@ public final class HeldDriverObservationPort implements AdvanceObservationPort {
         return complete(projectFull(received,captureUntil));
     }
     private DriverObservationAssembler.Complete complete(DriverObservationAssembler.FullSnapshot full) {
-        var result=assembler.assemble(full.actual(),full.facts(),full.originalEvidence());
+        return retainComplete(assembler.assemble(full.actual(),full.facts(),full.originalEvidence()));
+    }
+    private DriverObservationAssembler.Complete retainComplete(DriverObservationAssembler.Result result) {
         if(result instanceof DriverObservationAssembler.Incomplete missing) throw new IllegalStateException("incomplete actual semantic observation: "+String.join(",",missing.reasons()));
         var complete=(DriverObservationAssembler.Complete)result;
         retain(complete);
