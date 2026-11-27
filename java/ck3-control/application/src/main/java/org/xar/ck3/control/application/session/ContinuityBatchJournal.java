@@ -6475,14 +6475,30 @@ public final class ContinuityBatchJournal implements BatchJournal {
         return new SettledImportedControllerData(attachment,controller,frontier);
     }
 
-    record SettledImportedRecoveryData(SettledImportedControllerData history, CommittedImportedDriverHistory.Data driver) { }
+    record SettledImportedRecoveryData(SettledImportedControllerData history,
+            CommittedImportedDriverHistory.Data driver, ControllerRestartState restart) { }
 
     /** Replays the exact saved attachment, settled Controller, and complete Driver publications under one Writer. */
     SettledImportedRecoveryData readSettledImportedRecoveryData(ContinuityStorePort.Session same,
             WriterContracts.Pin actualAttachment)throws IOException {
         var history = readSettledImportedControllerHistory(same,actualAttachment);
-        var driver = transitions.readCommittedImportedDriverHistory(same,history.frontier());
-        return new SettledImportedRecoveryData(history,driver);
+        var frontier = history.frontier();
+        var driver = transitions.readCommittedImportedDriverHistory(same,frontier);
+        var controller = history.controller();
+        var unsaved = new java.util.LinkedHashSet<String>();
+        boolean dirty = false;
+        int eligible = 0;
+        for (var action : ordinaryCycleRoots(frontier.successorActions())) {
+            if (!action.visibleGameplay() && !action.eligibleAdvance()) continue;
+            if (unsaved.add(action.command().actionId())) {
+                dirty |= action.visibleGameplay();
+                if (action.eligibleAdvance()) eligible = Math.addExact(eligible,1);
+            }
+        }
+        var restart = new ControllerRestartState(frontier.owner(),controller.batchPrefix(),controller.nextBatchSequence(),
+                controller.usedBatches(),unsaved,Optional.of(history.attachment().savedPair()),Optional.of(same.persistedHead()),
+                eligible,dirty,false,false,controller.committedSavedDays(),java.util.Set.of(),false);
+        return new SettledImportedRecoveryData(history,driver,restart);
     }
 
     private CommittedImportedControllerHistory readCommittedImportedControllerHistory(ContinuityStorePort.Session same,
