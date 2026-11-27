@@ -13,6 +13,7 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.xar.ck3.control.application.action.*;
 import org.xar.ck3.control.application.checkpoint.CheckpointPair;
+import org.xar.ck3.control.application.checkpoint.CheckpointPairCodec;
 import org.xar.ck3.control.continuity.ContinuityJson;
 import org.xar.ck3.control.continuity.ContinuityState;
 import org.xar.ck3.control.continuity.OriginalWindowReducer;
@@ -121,7 +122,8 @@ final class OrdinaryCycleTransitionsRegressionTest {
         JournalCommit saved = fixture.journal.commit(new JournalInput(OWNER, "batch-1", JournalKind.SAVE_CONFIRMED,
                 Optional.of(pair.frame()), Optional.of(pair), Optional.of(completed), List.of(pair.save().reference(), pair.driver().reference(), pair.nativeAckRef())));
         assertEquals(1, saved.committedSavedDays()); assertEquals(4, fixture.store.current.settledCycles());
-        assertEquals(24024, fixture.store.current.settledDateRaw()); assertEquals(2, fixture.checkpointChecks); // preview and commit both revalidate
+        assertEquals(24024, fixture.store.current.settledDateRaw());
+        assertEquals(3, fixture.checkpointChecks); // physical capture, preview and commit all verify the original pair
         assertEquals(authority, fixture.store.locked(session -> fixture.authority.verifyCompletedCycleProof(session, OWNER, completed)));
     }
     @Test void zeroDayControlAcceptsSameNativeRevisionButGrantsNoCycleDayOrCheckpointCredit() throws IOException {
@@ -142,25 +144,45 @@ final class OrdinaryCycleTransitionsRegressionTest {
         var post=semantic(frame(3,24024,"fresh-after-save"),TIME.plusSeconds(6));
         assertEquals(proof.completedCycles(),fixture.journal.cycleProof(OWNER,post).orElseThrow().completedCycles());
         assertEquals(4,fixture.store.current.settledCycles());assertEquals(24024,fixture.store.current.settledDateRaw());
-        assertThrows(IllegalArgumentException.class,()->fixture.journal.cycleProof(OWNER,
-                semantic(frame(4,24024,"unproved-next-native"),TIME.plusSeconds(7))));
+        byte[] saved = fixture.store.current.canonicalBytes();
+        int commits = fixture.store.commits;
+        var next = semantic(frame(4, 24024, "verified-next-native"), TIME.plusSeconds(7));
+        var read = fixture.journal.cycleProof(OWNER, next).orElseThrow();
+        assertEquals(next, read.semantic());
+        assertEquals(proof.completedCycles(), read.completedCycles());
+        assertEquals(proof.cycleStateDigest(), read.cycleStateDigest());
+        fixture.rejectSemantic = true;
+        assertThrows(IOException.class, () -> fixture.journal.cycleProof(OWNER, next));
+        fixture.rejectSemantic = false;
+        assertEquals(commits, fixture.store.commits);
+        assertArrayEquals(saved, fixture.store.current.canonicalBytes());
         String retained=fixture.store.locked(same->fixture.authority.verifyCompletedCycleProof(same,OWNER,proof));
         assertEquals(retained,fixture.store.locked(same->fixture.authority.verifyCompletedCycleProof(same,OWNER,proof)));
     }
-    @Test void saveContinuationCannotChangeDateOrRegressEitherRevision() throws IOException {
+    @Test void saveContinuationRejectsDateOrNativeRegressionButAllowsTheColdPublicRevisionReset() throws IOException {
         Fixture fixture=new Fixture(false);fixture.journal.retainCycle(OWNER,fixture.receipt);
         var before=semantic(frame(2,24024,"before-save"),TIME.plusSeconds(3));
         CompletedCycleProof proof=fixture.journal.settleCycle(OWNER,fixture.receipt,before);byte[] original=fixture.store.current.canonicalBytes();
-        for(ObservationIdentity changed:List.of(frame(3,24048,"future-date"),frame(1,24024,"old-native"),
-                new ObservationIdentity(OWNER.machineId(),OWNER.game(),new JointBudgetSelector.ProposalFrame(
-                        new JointBudgetSelector.Frame(BigInteger.valueOf(29829),BigInteger.valueOf(3),BigInteger.valueOf(24024)),
-                        "old-public",BigInteger.ONE,"episode-1"),1))) {
+        for (var changed : List.of(frame(3, 24048, "future-date"), frame(1, 24024, "old-native"))) {
             CheckpointPair pair=pair(changed);
             assertThrows(IllegalArgumentException.class,()->fixture.journal.commit(new JournalInput(OWNER,"invalid-save",JournalKind.SAVE_CONFIRMED,
                     Optional.of(pair.frame()),Optional.of(pair),Optional.of(proof),List.of(REF))));
             assertArrayEquals(original,fixture.store.current.canonicalBytes());
         }
-        assertEquals(0,fixture.checkpointChecks);
+        assertEquals(0, fixture.checkpointChecks);
+        // The exact cold original query can restart its public counter on a new connection.
+        var rebound = new ObservationIdentity(OWNER.machineId(), OWNER.game(), new JointBudgetSelector.ProposalFrame(
+                new JointBudgetSelector.Frame(BigInteger.valueOf(29829), BigInteger.valueOf(3), BigInteger.valueOf(24024)),
+                "new-connection-same-date", BigInteger.ONE, "episode-1"), 1);
+        CheckpointPair pair = pair(rebound);
+        var confirmed = fixture.journal.commit(new JournalInput(OWNER, "original-save-recovered", JournalKind.SAVE_CONFIRMED,
+                Optional.of(pair.frame()), Optional.of(pair), Optional.of(proof), List.of(REF)));
+        assertEquals(1, confirmed.committedSavedDays());
+        assertEquals(proof.completedCycles(), fixture.store.current.settledCycles());
+        assertEquals(24024, fixture.store.current.settledDateRaw());
+        assertEquals(pair, CheckpointPairCodec.decode(ContinuityJson.canonical(fixture.store.current.toJson()
+                .get(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD).get("pair"))));
+        assertEquals(3, fixture.checkpointChecks);
     }
     @Test void retainedHistoricalCycleCannotTrustAProvidedHeadWithoutTheActualWriterAncestryVerifier() throws IOException {
         Fixture fixture=new Fixture(false);fixture.journal.retainCycle(OWNER,fixture.receipt);
