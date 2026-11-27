@@ -88,9 +88,9 @@ final class CommittedImportedSettledFrontier {
                 replay.replay(edge);
                 cursor = edge.after();
             }
+            String terminal = current.toJson().path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD).path("boundary").asText();
             StrictJson.require(replay.latestCycle != null && replay.openBatch == null && !replay.used.isEmpty()
-                    && JournalKind.BATCH_FINISHED.name().equals(current.toJson()
-                            .path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD).path("boundary").asText())
+                    && (JournalKind.BATCH_FINISHED.name().equals(terminal) || JournalKind.BATCH_DEFERRED.name().equals(terminal))
                     && cursor.sequence() == current.sequence() && ContinuityJson.same(cursor.toJson(), current.toJson()),
                     "settled imported successor requires an actual completed cycle and closed batch at the held head");
             var canonical = ContinuityActionJournal.receipts(current, originals);
@@ -143,6 +143,7 @@ final class CommittedImportedSettledFrontier {
         private long nextBatchSequence;
         private String openBatch;
         private long openedAtSequence;
+        private long lastActionSequence;
         private ExactRef pendingCycle;
         private SemanticEvidence latestCycle;
         private ObservationIdentity observed;
@@ -192,8 +193,9 @@ final class CommittedImportedSettledFrontier {
                 used.add(id);
                 nextBatchSequence = Math.addExact(nextBatchSequence, 1);
             } else {
-                StrictJson.require(boundary == JournalKind.BATCH_FINISHED && id.equals(openBatch),
-                        "settled imported successor requires its exact genuine finished batch");
+                boolean actionlessDeferred = boundary == JournalKind.BATCH_DEFERRED && lastActionSequence < openedAtSequence;
+                StrictJson.require((boundary == JournalKind.BATCH_FINISHED || actionlessDeferred) && id.equals(openBatch),
+                        "settled imported successor requires its exact finished or actionless deferred batch");
                 openBatch = null;
             }
             requireReduction(edge, OrdinaryCycleTransitions.replayCommittedBatchMetadata(edge.before(), owner, id, boundary, edge).toJson());
@@ -219,6 +221,7 @@ final class CommittedImportedSettledFrontier {
             if (previous.isEmpty()) requireObservedContinuation(command.before());
             ActionTransitions.validate(previous, command, receipt.bodySha256(), receipt.state());
             successor.put(command.actionId(), receipt);
+            lastActionSequence = receipt.sequence();
             if (receipt.settled()) openActions.remove(command.actionId());
             else openActions.add(command.actionId());
             var next = edge.before().toJson();
