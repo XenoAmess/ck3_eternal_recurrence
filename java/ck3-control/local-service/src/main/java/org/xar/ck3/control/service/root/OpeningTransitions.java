@@ -29,9 +29,13 @@ public final class OpeningTransitions implements OrdinaryPlanCompletion {
         public CheckpointRequired {Objects.requireNonNull(originalFocus);StrictJson.require(originalFocus.command().operation().equals(GovernancePolicies.FOCUS)
                 &&originalFocus.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED,"actual applied opening focus required");}
     }
-    private enum Kind { PENDING,RECEIPT,CHECKPOINT,EXISTING,CONSUME,IMPORTED_UNISSUED_REBIND }
+    private enum Kind { PENDING,RECEIPT,CHECKPOINT,EXISTING,CONSUME,IMPORTED_UNISSUED_REBIND,COMMITTED_IMPORTED_UNISSUED_REBIND }
     private record Input(Kind kind,ExactRef previous,ExactRef original) { }
+    private record CommittedImport(ContinuityStorePort.Session session, RootCommittedOrdinaryRestoration proof) { }
+    private record ImportedRebind(SavedAttachmentSourceStore.ImportedOrigin origin, CheckpointPair pair,
+            SemanticEvidence semantic, G2Source source, String sessionId, ExactRef basis) { }
     private final RootRuntimeContext context;private final List<ExactRef> producers;
+    private final ThreadLocal<CommittedImport> committedImport = new ThreadLocal<>();
     private GovernanceRuntimeInstaller.Installed nativeGovernance;
     private OpeningReadProfile.Bindings readOnlyOpening;
     public OpeningTransitions(RootRuntimeContext context,List<ExactRef> producers){this.context=Objects.requireNonNull(context);this.producers=List.copyOf(producers);}
@@ -49,6 +53,49 @@ public final class OpeningTransitions implements OrdinaryPlanCompletion {
         input.set("restoration_basis",restored.basis().toJson());
         publish(same,Kind.IMPORTED_UNISSUED_REBIND,current.reference().payload(),input);
     }
+    /** The registered producer may borrow only the installed committed attachment and this actual writer session. */
+    void rebindCommittedImportedUnissued(ContinuityStorePort.Session same, RootCommittedOrdinaryRestoration restored)
+            throws IOException {
+        Objects.requireNonNull(restored).requireCurrent(same, context);
+        var attached = attachedOpening(restored);
+        var current = body(same);
+        var document = GovernanceOpeningDocument.decode(current.canonicalBody());
+        if (!requiresCommittedUnissuedRebind(attached, current.reference(), document, restored.successor(),
+                restored.source(), restored.basis())) return;
+        StrictJson.require(committedImport.get() == null, "one actual committed Opening import per held writer scope");
+        var original = StrictJson.object();
+        original.set("committed_restoration_basis", restored.basis().toJson());
+        original.set("semantic", semantic(restored.semantic()));
+        committedImport.set(new CommittedImport(same, restored));
+        try {
+            publish(same, Kind.COMMITTED_IMPORTED_UNISSUED_REBIND, attached.payload(), original);
+        } finally {
+            committedImport.remove();
+        }
+    }
+
+    private static DomainBodies.BodyRef attachedOpening(RootCommittedOrdinaryRestoration restored) throws IOException {
+        return DomainBodies.reference(restored.attachmentHead(), DomainBodies.Slot.OPENING_GATE)
+                .orElseThrow(() -> new IOException("committed imported attachment lacks its retained Opening member"));
+    }
+
+    static boolean requiresCommittedUnissuedRebind(DomainBodies.BodyRef attached, DomainBodies.BodyRef current,
+            GovernanceOpeningDocument.Document document, SessionIdentity successor, G2Source source, ExactRef basis) {
+        if (attached.equals(current)) return unissuedAtImportedEntry(document);
+        StrictJson.require(document.observed().machineId().equals(successor.machineId())
+                && document.observed().game().equals(successor.game()) && document.sessionId().equals(successor.sessionId())
+                && document.source().equals(source) && document.originals().containsAll(List.of(attached.payload(), basis)),
+                "committed imported Opening cannot replace another existing slot or proof");
+        return false;
+    }
+
+    private RootCommittedOrdinaryRestoration requireCommittedImport(ContinuityStorePort.Session same) throws IOException {
+        var actual = committedImport.get();
+        if (actual == null || actual.session() != same)
+            throw new IOException("actual private committed Opening import is not active in this writer scope");
+        return actual.proof();
+    }
+
     public RootDomainIntentPreparation.Binding pendingBinding(ExactRef implementation){return new RootDomainIntentPreparation.Binding("opening-focus",implementation,
             command->command.operation().equals(GovernancePolicies.FOCUS),(same,command)->{try{
                 context.writer().requireSession(same);context.requireCurrent(command.deadline());var before=body(same);var document=GovernanceOpeningDocument.decode(before.canonicalBody());
@@ -158,13 +205,25 @@ public final class OpeningTransitions implements OrdinaryPlanCompletion {
     private Optional<WriterContracts.Receipt> publish(ContinuityStorePort.Session same,Kind kind,ExactRef previous,ObjectNode original)throws IOException{
         context.writer().requireSession(same);var head=same.head();var input=new Input(kind,previous,material(same,StrictJson.canonical(original)));var old=DomainBodies.reference(head.state(),DomainBodies.Slot.OPENING_GATE).orElseThrow();
         byte[] expected=reduce(same,head,old,input);if(Arrays.equals(expected,readBody(same,previous)))return Optional.empty();
-        var body=context.archive().preserveArtifact(same,expected,1_048_576);byte[] encoded=encodeInput(input);var request=new DomainBodies.ImportRequest(DomainBodies.Slot.OPENING_GATE,GovernanceOpeningDocument.SCHEMA,body,encoded,List.of(previous,input.original()),"opening-"+ActionCodec.sha256(encoded));
+        var body=context.archive().preserveArtifact(same,expected,1_048_576);byte[] encoded=encodeInput(input);var request=new DomainBodies.ImportRequest(DomainBodies.Slot.OPENING_GATE,GovernanceOpeningDocument.SCHEMA,body,encoded,importEvidence(same,input),"opening-"+ActionCodec.sha256(encoded));
         var prepared=same.previewImport(request);StrictJson.require(prepared.predecessor().digest().equals(head.digest()),"opening preparation crossed its head");var committed=same.commitImport(prepared);var actual=body(same);
         StrictJson.require(committed.disposition()!=WriterContracts.Disposition.NO_CHANGE&&actual.reference().payload().equals(body)&&Arrays.equals(actual.canonicalBody(),expected),"opening actual commit/readback required");return Optional.of(committed);}
     public String verify(WriterContracts.Head head,Optional<DomainBodies.BodyRef> previous,DomainBodies.ImportRequest request,byte[] body)throws IOException{
         var same=session();StrictJson.require(head.digest().equals(same.head().digest())&&request.slot()==DomainBodies.Slot.OPENING_GATE&&request.contractSchema().equals(GovernanceOpeningDocument.SCHEMA),"opening head/slot/schema changed");
-        var input=decodeInput(request.producerInput());StrictJson.require(request.evidence().equals(List.of(input.previous(),input.original())),"opening original evidence differs");byte[] expected=reduce(same,head,previous.orElseThrow(),input);
+        var input=decodeInput(request.producerInput());StrictJson.require(request.evidence().equals(importEvidence(same,input)),"opening original evidence differs");byte[] expected=reduce(same,head,previous.orElseThrow(),input);
         StrictJson.require(Arrays.equals(expected,body),"actual opening reducer differs from proposed body");return ActionCodec.sha256(StrictJson.canonical(StrictJson.object().put("head",head.digest()).put("body",ActionCodec.sha256(body)).put("input",ActionCodec.sha256(request.producerInput()))));}
+    private List<ExactRef> importEvidence(ContinuityStorePort.Session same, Input input) throws IOException {
+        var exact = List.of(input.previous(), input.original());
+        if (input.kind() != Kind.COMMITTED_IMPORTED_UNISSUED_REBIND) return exact;
+        var restored = requireCommittedImport(same);
+        var retained = new LinkedHashSet<>(exact);
+        retained.add(restored.basis());
+        retained.add(restored.attachment().reference());
+        retained.add(restored.importedOrigin().targetEntry().reference());
+        retained.addAll(restored.semantic().references());
+        return List.copyOf(retained);
+    }
+
     private byte[] reduce(ContinuityStorePort.Session same,WriterContracts.Head head,DomainBodies.BodyRef previous,Input input)throws IOException{
         requireRetainedPrevious(head,previous,input.previous());
         var old=GovernanceOpeningDocument.decode(readBody(same,previous.payload()));var payload=StrictJson.parse(load(same,input.original()));var refs=new ArrayList<>(old.originals());old.preparedCommand().ifPresent(refs::add);refs.add(input.original());
@@ -178,19 +237,24 @@ public final class OpeningTransitions implements OrdinaryPlanCompletion {
             if(!(restored.material() instanceof SavedAttachmentSourceStore.SavedMaterial saved))
                 throw new IOException("imported Opening rebind requires ordinary saved material");
             var imported=saved.importedOrigin().orElseThrow(()->new IOException("Opening rebind requires its exact independent imported SAVE"));
-            var entry=same.readHistoricalTransition(imported.targetEntry());
-            var marker=ContinuityJson.parseObject(entry.details(),1_048_576);
-            StrictJson.require(imported.owner().equals(OrdinaryCycleTransitions.sessionFromJson(marker.get("session"))),
-                    "imported Opening lost the original target entry owner");
-            boolean pending=context.core().journal().locked(same,view->view.unresolved().stream().anyMatch(receipt->
-                    receipt.command().operation().equals(GovernancePolicies.FOCUS)
-                            &&receipt.command().origin().game().equals(imported.owner().game())
-                            &&receipt.command().sessionId().equals(imported.owner().sessionId())));
-            StrictJson.require(!pending,"imported Opening cannot replace an unresolved original focus command");
-            refs.add(previous.payload());refs.add(basis);refs.add(imported.targetEntry().reference());
-            refs.add(restored.semantic().semantic());
-            return importedUnissuedDocument(old,imported.owner(),ProposalLifecycleCodec.decodeObservation(marker.get("opening")),
-                    G2Wire.source(marker.get("source")),restored.pair(),restored.semantic().frame(),restored.source(),restored.sessionId(),refs);
+            return importedTargetOpening(same, previous, old, new ImportedRebind(imported, restored.pair(),
+                    restored.semantic(), restored.source(), restored.sessionId(), basis), refs);
+        }
+        if (input.kind() == Kind.COMMITTED_IMPORTED_UNISSUED_REBIND) {
+            var exact = StrictJson.object(payload, Set.of("committed_restoration_basis", "semantic"));
+            var restored = requireCommittedImport(same);
+            restored.requireCurrent(same, context);
+            var source = restored.importedOrigin();
+            var successor = restored.successor();
+            StrictJson.require(restored.basis().equals(ExactRef.fromJson(exact.get("committed_restoration_basis")))
+                    && restored.semantic().equals(semantic(exact.get("semantic"))) && attachedOpening(restored).equals(previous)
+                    && source.owner().equals(restored.departed())
+                    && restored.semantic().frame().game().equals(successor.game())
+                    && restored.semantic().frame().machineId().equals(successor.machineId()),
+                    "committed imported Opening crossed its exact attachment, original target or new successor SEM");
+            refs.add(restored.attachment().reference());
+            return importedTargetOpening(same, previous, old, new ImportedRebind(source, restored.pair(),
+                    restored.semantic(), restored.source(), successor.sessionId(), restored.basis()), refs);
         }
         if(input.kind()==Kind.PENDING){StrictJson.object(payload,Set.of("command"));var original=ExactRef.fromJson(payload.get("command"));var command=command(same,original);
             Optional<ActionReceipt> previousCanonical=Optional.empty();
@@ -261,6 +325,26 @@ public final class OpeningTransitions implements OrdinaryPlanCompletion {
                 &&(document.preparedCommand().isEmpty()||document.stage()==OpeningStage.AWAIT_RECEIPT&&canonical.isEmpty()),
                 "submitted opening action precedes observing existing focus");
     }
+    private byte[] importedTargetOpening(ContinuityStorePort.Session same, DomainBodies.BodyRef previous,
+            GovernanceOpeningDocument.Document old, ImportedRebind actual, List<ExactRef> evidence) throws IOException {
+        var imported = actual.origin();
+        var entry = same.readHistoricalTransition(imported.targetEntry());
+        var marker = ContinuityJson.parseObject(entry.details(), 1_048_576);
+        StrictJson.require(imported.owner().equals(OrdinaryCycleTransitions.sessionFromJson(marker.get("session"))),
+                "imported Opening lost the original target entry owner");
+        boolean pending = context.core().journal().locked(same, view -> view.unresolved().stream().anyMatch(receipt ->
+                receipt.command().operation().equals(GovernancePolicies.FOCUS)
+                        && receipt.command().origin().game().equals(imported.owner().game())
+                        && receipt.command().sessionId().equals(imported.owner().sessionId())));
+        StrictJson.require(!pending, "imported Opening cannot replace an unresolved original focus command");
+        evidence.add(previous.payload());
+        evidence.add(actual.basis());
+        evidence.add(imported.targetEntry().reference());
+        evidence.add(actual.semantic().semantic());
+        return importedUnissuedDocument(old, imported.owner(), ProposalLifecycleCodec.decodeObservation(marker.get("opening")),
+                G2Wire.source(marker.get("source")), actual.pair(), actual.semantic().frame(), actual.source(), actual.sessionId(), evidence);
+    }
+
     private static boolean unissuedAtImportedEntry(GovernanceOpeningDocument.Document original) {
         return original.stage()==OpeningStage.AWAIT_SUBMIT&&original.preparedCommand().isEmpty()
                 &&original.actionReceipt().isEmpty()&&original.checkpoint().isEmpty()&&original.existingObserved().isEmpty();

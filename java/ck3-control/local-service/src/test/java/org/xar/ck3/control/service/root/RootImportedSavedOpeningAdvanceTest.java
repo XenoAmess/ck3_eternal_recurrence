@@ -29,6 +29,7 @@ import org.xar.ck3.control.application.planning.governance.GovernanceObservation
 import org.xar.ck3.control.application.planning.governance.GovernancePolicies;
 import org.xar.ck3.control.application.session.OrdinaryCycleTransitions;
 import org.xar.ck3.control.application.session.SessionPorts.SemanticEvidence;
+import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
 import org.xar.ck3.control.continuity.ContinuityJson;
 import org.xar.ck3.control.continuity.ContinuityState;
 import org.xar.ck3.control.continuity.OriginalWindowReducer;
@@ -123,6 +124,51 @@ final class RootImportedSavedOpeningAdvanceTest {
         var foreignActor=nextFrame(current,entry.frame().identity().player().add(BigInteger.ONE),entry.frame().identity().dateRaw());
         assertThrows(IllegalArgumentException.class,()->OpeningTransitions.importedUnissuedDocument(f.opening,target,entry,source,pair,
                 foreignActor,source,"successor-session",List.of(f.life)));
+    }
+
+    @Test void committedImportedOpeningDistinguishesTheUnissuedMemberFromRetainedOrForeignState() throws Exception {
+        var f = new Fixture();
+        var attachment = DomainBodies.reference(f.head, DomainBodies.Slot.OPENING_GATE).orElseThrow();
+        var marker = f.head.toJson().get(SavedContinuityBootstrap.FIELD);
+        var target = OrdinaryCycleTransitions.sessionFromJson(marker.get("session"));
+        var entry = ProposalLifecycleCodec.decodeObservation(marker.get("opening"));
+        var originalSource = G2Wire.source(marker.get("source"));
+        var pair = CheckpointPairCodec.decode(StrictJson.canonical(marker.get("checkpoint_pair")));
+        var game = new GameGeneration(61127, new PythonOnlyUInt64(new BigInteger("134401647999999999")));
+        var successor = new SessionIdentity(target.machineId(), game, "software-committed-import-opening");
+        var current = new ObservationIdentity(successor.machineId(), game, entry.frame(), entry.observationVersion());
+        var source = new G2Source(successor.machineId(), "2026-11-27T01:00:00Z", originalSource.exactBuild(), f.life);
+        var basis = new ExactRef("software-committed-opening-origin", 1, "e".repeat(64));
+        assertTrue(OpeningTransitions.requiresCommittedUnissuedRebind(attachment, attachment, f.opening, successor, source, basis));
+
+        byte[] bytes = OpeningTransitions.importedUnissuedDocument(f.opening, target, entry, originalSource, pair,
+                current, source, successor.sessionId(), List.of(attachment.payload(), basis));
+        var result = GovernanceOpeningDocument.decode(bytes);
+        var rebound = softwareMember(attachment, bytes);
+        assertFalse(OpeningTransitions.requiresCommittedUnissuedRebind(attachment, rebound, result, successor, source, basis));
+        assertEquals(current, result.observed());
+        assertEquals(pair.frame().frame().identity().dateRaw(), result.observed().frame().identity().dateRaw());
+        assertEquals(241448, pair.frame().game().pid());
+        assertTrue(result.preparedCommand().isEmpty() && result.actionReceipt().isEmpty());
+
+        var pending = new GovernanceOpeningDocument.Document(entry, originalSource, target.sessionId(), OpeningStage.AWAIT_RECEIPT,
+                Optional.empty(), Optional.empty(), f.opening.originals(), Optional.of(f.life), Optional.empty());
+        var pendingMember = softwareMember(attachment, GovernanceOpeningDocument.encode(pending));
+        assertFalse(OpeningTransitions.requiresCommittedUnissuedRebind(pendingMember, pendingMember, pending, successor, source, basis));
+        assertEquals(Optional.of(f.life), pending.preparedCommand());
+        assertThrows(IllegalArgumentException.class, () -> OpeningTransitions.requiresCommittedUnissuedRebind(
+                attachment, pendingMember, pending, successor, source, basis));
+        assertThrows(IllegalArgumentException.class, () -> OpeningTransitions.requiresCommittedUnissuedRebind(
+                attachment, rebound, result, successor, source, f.life));
+        assertThrows(IllegalArgumentException.class, () -> OpeningTransitions.requiresCommittedUnissuedRebind(
+                attachment, rebound, result, new SessionIdentity(successor.machineId(), game, "foreign"), source, basis));
+        assertArrayEquals(f.originalOpening, GovernanceOpeningDocument.encode(f.opening));
+    }
+
+    private static DomainBodies.BodyRef softwareMember(DomainBodies.BodyRef original, byte[] bytes) {
+        return new DomainBodies.BodyRef(original.slot(), original.contractSchema(),
+                new ExactRef("software-derived-opening-member", bytes.length, ActionCodec.sha256(bytes)),
+                new WriterContracts.FileIdentity("1", "2", "3", "2026-11-27T01:00:00Z", bytes.length), original.producerSources());
     }
 
     @Test void actualHead40RetainAndItsLaterOwnedObservationCannotMoveTheOpeningGate() throws Exception {
