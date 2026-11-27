@@ -1,6 +1,7 @@
 package org.xar.ck3.control.application.session;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.math.BigInteger;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -34,17 +35,21 @@ final class CommittedImportedRebindOriginal {
         var head = same.head();
         if (head.snapshotNeedsRecovery() || !head.indexRepairs().isEmpty())
             throw new IOException("Committed imported REBIND readback requires a clean canonical head");
-        var attachment = same.readHistoricalTransition(actualAttachment);
         long sequence = head.state().sequence();
-        if (!attachment.kind().equals(SavedAttachmentAuthority.KIND) || sequence <= attachment.sequence())
-            throw new IOException("Committed imported REBIND readback requires an earlier exact imported attachment");
         try {
             var eventDirectory = Path.of(same.persistedHead().path()).toAbsolutePath().normalize()
                     .resolveSibling("ROOT-CONTINUITY-WINDOW-EVENTS");
             var headEvent = eventDirectory.resolve(String.format(Locale.ROOT, "%08d.json", sequence));
             var eventPin = head.documents().stream().filter(pin -> headEvent.equals(Path.of(pin.reference().path()).toAbsolutePath().normalize()))
                     .findFirst().orElseThrow(() -> new IOException("Committed imported REBIND lacks its captured current event"));
-            var rebind = same.readHistoricalTransition(eventPin);
+            var edges = same.withHistoricalTransitions(List.of(actualAttachment, eventPin), retained -> {
+                try { return List.copyOf(retained); }
+                catch (UncheckedIOException failure) { throw failure.getCause(); }
+            });
+            var attachment = edges.getFirst();
+            if (!attachment.kind().equals(SavedAttachmentAuthority.KIND) || sequence <= attachment.sequence())
+                throw new IOException("Committed imported REBIND readback requires an earlier exact imported attachment");
+            var rebind = edges.getLast();
             var source = ContinuityJson.parseObject(rebind.details(), ContinuityJson.DOCUMENT_MAX_BYTES);
             String attachmentDigest = ContinuityJson.digest(attachment.after().toJson());
             if (!WriterContracts.ORDINARY_CYCLE_KIND.equals(rebind.kind()) || !"REBIND".equals(source.path("operation").asText())
