@@ -195,6 +195,24 @@ final class SessionControllerAnnualSaveTest {
         assertEquals(f.baseline, blocked.lastSavedPair().orElseThrow());
     }
 
+    @Test void operatorStopDuringPostActionReadinessStillSettlesTheIssuedCycle() {
+        Fixture f = new Fixture(true); f.narrowTail = true;
+        SessionController controller = f.controller();
+        f.afterAction = () -> f.beforeNextPlanningScope = controller::requestStop;
+
+        var report = controller.runBatch(new BatchLimits("stopped-after-action", 2,
+                Duration.ofSeconds(30), Duration.ofSeconds(1), Duration.ofMillis(1), 1));
+
+        assertEquals(BatchReport.Terminal.OPERATOR_STOP, report.terminal(), report::detail);
+        assertEquals(1, f.actions);
+        assertEquals(1, f.settledCycles);
+        assertEquals(1, f.tailObservations);
+        assertEquals(0, f.saveAdmissions);
+        assertTrue(report.dirtySinceSave());
+        assertEquals(f.baseline, report.lastSavedPair().orElseThrow());
+        assertEquals(JournalKind.BATCH_FINISHED, f.journal.getLast().kind());
+    }
+
     @Test void yearlySaveStillRequiresSafeReadinessAndRetainsDirtyStateWhileBlocked() {
         Fixture f = new Fixture(true); f.advanceRaw = 365 * 24; f.afterEligibility = CheckpointEligibility.MODAL_PENDING;
         SessionController controller = f.controller();
@@ -245,9 +263,10 @@ final class SessionControllerAnnualSaveTest {
         final boolean withBaseline;
         final CheckpointPair baseline;
         long dateRaw = SAVED_DATE, advanceRaw = 24, revision = 1;
-        int actions, saveAdmissions, fullObservations, tailObservations, tailRawAdjustment;
+        int actions, saveAdmissions, fullObservations, tailObservations, tailRawAdjustment, settledCycles;
         boolean narrowTail, tailRevisionChange, terminalAtTail, foreignTail;
         Runnable beforeNextPlanningScope = () -> { };
+        Runnable afterAction = () -> { };
         Optional<BatchRequest> tailAnalysis = Optional.empty();
         final List<BatchRequest> queuedAnalyses = new ArrayList<>();
         boolean unknown;
@@ -353,6 +372,7 @@ final class SessionControllerAnnualSaveTest {
                 @Override public boolean requiresFreshAfterCycle(SessionIdentity owner, ActionReceipt receipt) { return true; }
                 @Override public CompletedCycleProof settleCycle(SessionIdentity owner, ActionReceipt receipt, SemanticEvidence evidence) {
                     assertEquals(receipt.applied().orElseThrow().observation().after(), evidence.frame());
+                    settledCycles++;
                     return new CompletedCycleProof(actions, evidence, "f".repeat(64));
                 }
             };
@@ -364,7 +384,10 @@ final class SessionControllerAnnualSaveTest {
                     return new ScopeResult<>(work.run(), Optional.empty());
                 }
                 @Override public PlanningDisposition afterPlanning(PlanningRequest request, PlanningResult planned) { return new Unchanged("annual DATA fixture"); }
-                @Override public ExecutionDisposition afterExecution(ActionReceipt receipt) { return new Unchanged("annual DATA fixture"); }
+                @Override public ExecutionDisposition afterExecution(ActionReceipt receipt) {
+                    afterAction.run();
+                    return new Unchanged("annual DATA fixture");
+                }
             };
             ObservationPort observer = new ObservationPort() {
                 @Override public Observation observe(SessionIdentity owner, Instant until) {

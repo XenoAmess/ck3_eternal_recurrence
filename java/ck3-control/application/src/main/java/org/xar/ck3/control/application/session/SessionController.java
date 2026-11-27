@@ -818,11 +818,11 @@ public final class SessionController {
                 OrdinaryPlanCompletion.ScopeResult<PlanningRound> scoped;
                 try {
                     scoped = planningScope.inPlanningScope(() -> run.planRound(checkpointsEnabled));
-                } catch (End end) {
-                    if (end.terminal != Terminal.OPERATOR_STOP || end.getSuppressed().length != 0) throw end;
+                } catch (ReadinessStopped stop) {
+                    if (stop.getSuppressed().length != 0) throw stop;
                     // The planning scope has released its writer. Use the normal stop tail to check the annual SAVE.
                     run.terminal = Terminal.OPERATOR_STOP;
-                    run.detail = end.getMessage();
+                    run.detail = stop.getMessage();
                     break;
                 }
                 if(scoped.readPublication().isPresent()){
@@ -1558,8 +1558,7 @@ public final class SessionController {
             long readyUntil = Math.min(untilNanos, clock.now().elapsedNanos() + limits.readinessTimeout().toNanos());
             String waitingReason = "readiness deadline expired before observation";
             while (true) {
-                if (!stoppingForSave && stopRequested()) throw new End(Terminal.OPERATOR_STOP,
-                        "operator stop observed during readiness; no new gameplay submitted");
+                if (!stoppingForSave && stopRequested()) throw new ReadinessStopped(dirty);
                 requireTime(); live();
                 if (clock.now().elapsedNanos() >= readyUntil) {
                     requireTime();
@@ -1899,8 +1898,15 @@ public final class SessionController {
         for(Throwable actual:values)if(actual==candidate)return true;
         return false;
     }
-    private static final class End extends RuntimeException {
+    private static class End extends RuntimeException {
         private static final long serialVersionUID = 1L; final Terminal terminal;
         End(Terminal terminal, String detail) { super(detail); this.terminal = terminal; }
+    }
+    private static final class ReadinessStopped extends End {
+        private static final long serialVersionUID = 1L;
+        ReadinessStopped(boolean dirty) {
+            super(dirty ? Terminal.CHECKPOINT_DEFERRED : Terminal.OPERATOR_STOP,
+                    "operator stop observed during readiness; no new gameplay submitted");
+        }
     }
 }
