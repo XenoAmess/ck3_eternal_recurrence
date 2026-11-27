@@ -172,6 +172,7 @@ final class CommittedImportedSettledFrontier {
                 case WriterContracts.ACTION_LIFECYCLE_KIND -> action(edge, details);
                 case OrdinaryCycleTransitions.CYCLE_KIND -> cycle(edge, request, details);
                 case WriterContracts.DRIVER_ACTION_HISTORY_KIND -> driverAction(edge, request, details);
+                case WriterContracts.DRIVER_READ_HISTORY_KIND -> driverRead(edge, details);
                 case DomainBodies.IMPORT_KIND -> same.requireDomainImportContinuation(edge.before().sequence(),
                         ContinuityJson.digest(edge.before().toJson()), edge.sequence(), ContinuityJson.digest(edge.after().toJson()));
                 default -> throw new IOException("unsupported canonical event in settled imported successor batch: " + edge.kind());
@@ -274,6 +275,19 @@ final class CommittedImportedSettledFrontier {
                     && before.identity().nativeRevision().compareTo(after.identity().nativeRevision()) <= 0
                     && before.revision().compareTo(after.revision()) <= 0,
                     "settled imported successor observation regressed its original REBIND or completed cycle");
+        }
+
+        private void driverRead(HistoricalTransition edge, ObjectNode details) {
+            StrictJson.require(openBatch != null && openActions.isEmpty() && pendingCycle == null
+                    && "xar.driver-read-publication/v1".equals(StrictJson.text(details.get("schema"))),
+                    "settled imported successor READ requires the ordinary typed publication in an idle open batch");
+            var readSource = org.xar.ck3.control.g2.common.G2Wire.source(details.get("source"));
+            if (source == null) source = readSource;
+            StrictJson.require(source.equals(readSource), "settled imported successor READ crossed the original business source");
+            var next = edge.before().toJson();
+            next.set(WriterContracts.DRIVER_READ_HISTORY_FIELD, details);
+            requireReduction(edge, next);
+            // The combined recovery reader must replay the exact typed receipts and complete before/after Driver.
         }
 
         private void driverAction(HistoricalTransition edge, WriterContracts.Request request, ObjectNode details) throws IOException {
