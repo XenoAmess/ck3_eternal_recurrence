@@ -154,6 +154,47 @@ final class SessionControllerAnnualSaveTest {
         assertEquals(f.baseline, stopped.lastSavedPair().orElseThrow());
     }
 
+    @Test void operatorStopEnteringReadinessUsesTheAnnualTailAt8759And8760Ticks() {
+        Fixture f = new Fixture(true); f.advanceRaw = 8759; f.narrowTail = true;
+        SessionController controller = f.controller();
+        assertEquals(BatchReport.Terminal.TURN_BOUND, controller.runBatch(limits("before-stop-8759", 1)).terminal());
+
+        f.beforeNextPlanningScope = controller::requestStop;
+        var underYear = controller.runBatch(limits("stopped-at-8759", 1));
+        assertEquals(BatchReport.Terminal.OPERATOR_STOP, underYear.terminal(), underYear::detail);
+        assertEquals(2, f.tailObservations);
+        assertEquals(0, f.saveAdmissions);
+        assertTrue(underYear.dirtySinceSave());
+        assertEquals(f.baseline, underYear.lastSavedPair().orElseThrow());
+
+        controller.resume();
+        f.dateRaw++; f.revision++;
+        f.beforeNextPlanningScope = controller::requestStop;
+        var due = controller.runBatch(limits("stopped-at-8760", 1));
+        assertSaveAdmission(due, f, 1);
+        assertEquals(3, f.tailObservations);
+        assertTrue(due.dirtySinceSave());
+        assertEquals(f.baseline, due.lastSavedPair().orElseThrow());
+        assertEquals(0, due.committedSavedDays());
+    }
+
+    @Test void operatorStopEnteringReadinessStillRequiresASafeAnnualTail() {
+        Fixture f = new Fixture(true); f.advanceRaw = 8759;
+        SessionController controller = f.controller();
+        assertEquals(BatchReport.Terminal.TURN_BOUND, controller.runBatch(limits("before-modal-stop", 1)).terminal());
+
+        f.dateRaw++; f.revision++;
+        f.eligibility = CheckpointEligibility.MODAL_PENDING;
+        f.beforeNextPlanningScope = controller::requestStop;
+        var blocked = controller.runBatch(limits("stopped-with-modal", 1));
+        assertEquals(BatchReport.Terminal.CHECKPOINT_DEFERRED, blocked.terminal(), blocked::detail);
+        assertEquals(2, f.tailObservations);
+        assertEquals(0, f.saveAdmissions);
+        assertEquals(1, f.actions);
+        assertTrue(blocked.dirtySinceSave());
+        assertEquals(f.baseline, blocked.lastSavedPair().orElseThrow());
+    }
+
     @Test void yearlySaveStillRequiresSafeReadinessAndRetainsDirtyStateWhileBlocked() {
         Fixture f = new Fixture(true); f.advanceRaw = 365 * 24; f.afterEligibility = CheckpointEligibility.MODAL_PENDING;
         SessionController controller = f.controller();
@@ -206,6 +247,7 @@ final class SessionControllerAnnualSaveTest {
         long dateRaw = SAVED_DATE, advanceRaw = 24, revision = 1;
         int actions, saveAdmissions, fullObservations, tailObservations, tailRawAdjustment;
         boolean narrowTail, tailRevisionChange, terminalAtTail, foreignTail;
+        Runnable beforeNextPlanningScope = () -> { };
         Optional<BatchRequest> tailAnalysis = Optional.empty();
         final List<BatchRequest> queuedAnalyses = new ArrayList<>();
         boolean unknown;
@@ -316,6 +358,9 @@ final class SessionControllerAnnualSaveTest {
             };
             OrdinaryPlanCompletion.PlanningScope scope = new OrdinaryPlanCompletion.PlanningScope() {
                 @Override public <T> ScopeResult<T> inPlanningScope(ScopeWork<T> work) throws IOException, InterruptedException {
+                    var beforeScope = beforeNextPlanningScope;
+                    beforeNextPlanningScope = () -> { };
+                    beforeScope.run();
                     return new ScopeResult<>(work.run(), Optional.empty());
                 }
                 @Override public PlanningDisposition afterPlanning(PlanningRequest request, PlanningResult planned) { return new Unchanged("annual DATA fixture"); }

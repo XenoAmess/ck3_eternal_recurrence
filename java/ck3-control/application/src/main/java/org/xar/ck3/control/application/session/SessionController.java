@@ -815,7 +815,16 @@ public final class SessionController {
                     run.pendingUiTurn(pending);continue;
                 }
                 if(pendingOnly)throw new End(Terminal.ACTION_REJECTED,"pending-only call cannot enter ordinary planning, terminal selection or SAVE");
-                var scoped=planningScope.inPlanningScope(()->run.planRound(checkpointsEnabled));
+                OrdinaryPlanCompletion.ScopeResult<PlanningRound> scoped;
+                try {
+                    scoped = planningScope.inPlanningScope(() -> run.planRound(checkpointsEnabled));
+                } catch (End end) {
+                    if (end.terminal != Terminal.OPERATOR_STOP || end.getSuppressed().length != 0) throw end;
+                    // The planning scope has released its writer. Use the normal stop tail to check the annual SAVE.
+                    run.terminal = Terminal.OPERATOR_STOP;
+                    run.detail = end.getMessage();
+                    break;
+                }
                 if(scoped.readPublication().isPresent()){
                     if(scoped.value() instanceof PlannedRound decided)run.requireNoSourceContractFailure(decided.planned());
                     run.replanAfterPublication();continue;
@@ -1549,7 +1558,7 @@ public final class SessionController {
             long readyUntil = Math.min(untilNanos, clock.now().elapsedNanos() + limits.readinessTimeout().toNanos());
             String waitingReason = "readiness deadline expired before observation";
             while (true) {
-                if (!stoppingForSave && stopRequested()) throw new End(dirty ? Terminal.CHECKPOINT_DEFERRED : Terminal.OPERATOR_STOP,
+                if (!stoppingForSave && stopRequested()) throw new End(Terminal.OPERATOR_STOP,
                         "operator stop observed during readiness; no new gameplay submitted");
                 requireTime(); live();
                 if (clock.now().elapsedNanos() >= readyUntil) {
