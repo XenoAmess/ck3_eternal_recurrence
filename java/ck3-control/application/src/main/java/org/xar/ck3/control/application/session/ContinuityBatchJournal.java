@@ -21,6 +21,7 @@ import org.xar.ck3.control.application.action.RawJson;
 import org.xar.ck3.control.application.action.ActionPorts;
 import org.xar.ck3.control.application.action.ContinuityActionJournal;
 import org.xar.ck3.control.application.action.CompositeOperatorQuarantineObservation;
+import org.xar.ck3.control.application.action.CompositeOperatorQuarantineRequest;
 import org.xar.ck3.control.application.action.CompositeOperatorQuarantineSource;
 import org.xar.ck3.control.application.advance.LifeExpiredPartialAdvanceEvidence;
 import org.xar.ck3.control.application.checkpoint.CheckpointPairCodec;
@@ -6407,6 +6408,121 @@ public final class ContinuityBatchJournal implements BatchJournal {
     public ImportedRestoreRebindReadback readImportedRestoreRebindAcrossDomainImports(ContinuityStorePort.Session same,
             WriterContracts.Pin actualAttachment)throws IOException {
         return readImportedRestoreRebind(same,actualAttachment,true);
+    }
+
+    public record CommittedImportedControllerHistory(String batchPrefix,long nextBatchSequence,
+            java.util.Set<String> usedBatches,long committedSavedDays) {
+        public CommittedImportedControllerHistory { usedBatches=java.util.Set.copyOf(usedBatches); }
+    }
+
+    /** Reads the departed batch identities and absolute SAVE credit. Grants no current Controller or writer authority. */
+    public CommittedImportedControllerHistory readCommittedImportedControllerHistory(ContinuityStorePort.Session same,
+            WriterContracts.Pin actualAttachment)throws IOException {
+        store.requireSession(same);
+        var head=same.head();
+        var original=readImportedRestoreRebindAcrossDomainImports(same,actualAttachment);
+        var before=original.attachment().before();
+        var owner=original.recoveryBasis().departed();
+        var pins=canonicalEventPins(same,head).headMap(before.sequence(),true);
+        StrictJson.require(!pins.isEmpty()&&pins.firstKey()==1&&pins.lastKey()==before.sequence()&&pins.size()==before.sequence(),
+                "committed imported Controller requires the original finite batch prefix through its retired predecessor");
+        var history=transitions.withLocked(same,()->same.withHistoricalTransitions(java.util.List.copyOf(pins.values()),edges->{
+            var archive=transitions.restartArchive(same);
+            requireCommittedImportedControllerRetirement(original,edges.getLast(),archive);
+            String prefix=null,open=null;
+            var used=new java.util.LinkedHashSet<String>();
+            for(int index=1;index<edges.size()-1;index++) {
+                var edge=edges.get(index);
+                if(!OrdinaryCycleTransitions.BATCH_KIND.equals(edge.kind()))continue;
+                var request=new WriterContracts.Request(edge.kind(),edge.details(),java.util.List.of());
+                var details=request.detailsObject();
+                String batch=StrictJson.text(details.get("batch_id"));
+                var boundary=JournalKind.valueOf(StrictJson.text(details.get("boundary")));
+                StrictJson.require(owner.equals(OrdinaryCycleTransitions.sessionFromJson(details.get("session")))
+                        &&details.path("checkpoint_pair").isNull()&&details.path("completed_cycle_proof").isNull(),
+                        "committed imported Controller batch must retain the exact departed owner and inherited SAVE");
+                requireCommittedImportedBatchReduction(edge,request);
+                switch(boundary) {
+                    case BATCH_STARTED -> {
+                        if(open!=null)requireCommittedImportedBatchSettle(edges.get(index-1),owner,open);
+                        if(prefix==null) {
+                            StrictJson.require(batch.endsWith("-0")&&batch.length()>2,"first imported batch must have its actual zero sequence");
+                            prefix=batch.substring(0,batch.length()-2);
+                        }
+                        StrictJson.require(batch.equals(prefix+"-"+used.size())&&used.add(batch),
+                                "committed imported Controller cannot skip or reuse a batch ID");
+                        open=batch;
+                    }
+                    case BATCH_INTERRUPTED,BATCH_FINISHED,BATCH_DEFERRED -> {
+                        StrictJson.require(batch.equals(open),"committed imported Controller boundary closed a different batch");
+                        open=null;
+                    }
+                    case WORKER_RESTART_CAPTURE -> {
+                        if(open!=null)requireCommittedImportedBatchSettle(edges.get(index-1),owner,open);
+                        var manifest=CleanBatchRestart.decode(archive.loadMaterial(ExactRef.fromJson(details.get("restart_manifest"))).bytes());
+                        var controller=ControllerRestartState.decode(archive.loadMaterial(manifest.controller()).bytes());
+                        StrictJson.require(prefix!=null&&controller.owner().equals(owner)&&controller.batchPrefix().equals(prefix)
+                                &&controller.nextBatchSequence()==used.size()&&controller.usedBatches().equals(used)
+                                &&batch.equals(prefix+":restart:"+used.size())&&controller.savedPair().filter(original.savedPair()::equals).isPresent(),
+                                "committed imported Controller capture changed the actual retained batch prefix");
+                        open=null;
+                    }
+                    default -> throw new IOException("unexpected batch boundary before the committed imported replacement");
+                }
+            }
+            var terminal=before.toJson().path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD);
+            StrictJson.require(prefix!=null&&open==null&&!used.isEmpty()&&used.getLast().equals(terminal.path("batch_id").asText()),
+                    "committed imported Controller requires the actual last interrupted batch");
+            long savedRaw=Math.subtractExact(before.settledDateRaw(),before.origin().startDateRaw());
+            StrictJson.require(savedRaw>=0&&savedRaw%24==0,"committed imported Controller requires its original whole saved days");
+            return new CommittedImportedControllerHistory(prefix,used.size(),used,savedRaw/24);
+        }));
+        StrictJson.require(head.digest().equals(same.head().digest()),"committed imported Controller history changed the held writer head");
+        return history;
+    }
+
+    private static void requireCommittedImportedControllerRetirement(ImportedRestoreRebindReadback original,
+            WriterContracts.HistoricalTransition retired,ActionPorts.OutcomeArchive archive) {
+        var owner=original.recoveryBasis().departed();
+        var former=original.attachment().before();
+        var details=ContinuityJson.parseObject(retired.details(),ContinuityJson.DOCUMENT_MAX_BYTES);
+        StrictJson.require(retired.sequence()==former.sequence()&&retired.kind().equals(WriterContracts.ACTION_LIFECYCLE_KIND)
+                &&ContinuityJson.same(retired.after().toJson(),former.toJson())
+                &&original.departedActionHead().equals(ExactRef.fromJson(details.get("receipt_ref"))),
+                "committed imported Controller requires its exact retired action event");
+        var record=archive.loadRecord(original.departedActionHead());
+        var receipt=record.receipt();
+        var observation=CompositeOperatorQuarantineObservation.load(receipt,archive);
+        var request=CompositeOperatorQuarantineRequest.decode(archive.loadMaterial(observation.requestMaterial()).bytes());
+        var exited=request.exitedLife().orElseThrow();
+        StrictJson.require(receipt.sequence()==retired.sequence()&&receipt.command().origin().machineId().equals(owner.machineId())
+                &&receipt.command().origin().game().equals(owner.game())&&receipt.command().sessionId().equals(owner.sessionId())
+                &&exited.ownerSessionId().equals(owner.sessionId())
+                &&exited.savedPairSha256().equals(ActionCodec.sha256(CheckpointPairCodec.encode(original.savedPair())))
+                &&request.originalReceipt().equals(observation.originalReceipt())
+                &&request.expectedHeadSequence()==observation.predecessorSequence()&&observation.predecessorSequence()==retired.before().sequence()
+                &&request.expectedHeadDigest().equals(observation.predecessorDigest())
+                &&observation.predecessorDigest().equals(ContinuityJson.digest(retired.before().toJson()))
+                &&record.previous().equals(Optional.of(observation.originalActionHead()))
+                &&record.previous().equals(ContinuityActionJournal.recordHead(retired.before())),
+                "committed imported Controller retirement changed the departed action or original SAVE");
+    }
+
+    private void requireCommittedImportedBatchSettle(WriterContracts.HistoricalTransition edge,SessionIdentity owner,String batch) {
+        var request=new WriterContracts.Request(edge.kind(),edge.details(),java.util.List.of());
+        var details=request.detailsObject();
+        var boundary=edge.after().toJson().path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD);
+        StrictJson.require(OrdinaryCycleTransitions.CYCLE_KIND.equals(edge.kind())&&"SETTLE".equals(details.path("operation").asText())
+                &&importedSavedSettledFrontier(edge.after(),owner)&&batch.equals(boundary.path("batch_id").asText())
+                &&JournalKind.BATCH_STARTED.name().equals(boundary.path("boundary").asText()),
+                "committed imported Controller requires an actual SETTLE before replacing an open batch");
+        requireCommittedImportedBatchReduction(edge,request);
+    }
+
+    private void requireCommittedImportedBatchReduction(WriterContracts.HistoricalTransition edge,WriterContracts.Request request) {
+        var replay=transitions.reduce(edge.before(),request).toJson().put("sequence",edge.sequence()).put("last_event_identity",edge.eventIdentity());
+        StrictJson.require(request.identity().equals(edge.eventIdentity())&&ContinuityJson.same(replay,edge.after().toJson()),
+                "committed imported Controller edge differs from the original canonical reducer");
     }
 
     private ImportedRestoreRebindReadback readImportedRestoreRebind(ContinuityStorePort.Session same,
