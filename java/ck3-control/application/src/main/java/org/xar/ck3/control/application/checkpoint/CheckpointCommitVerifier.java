@@ -228,9 +228,13 @@ public final class CheckpointCommitVerifier {
                 && savedFrame.frame().revision().compareTo(actualFrame.frame().revision())>=0
                 && savedFrame.frame().identity().nativeRevision().compareTo(actualFrame.frame().identity().nativeRevision())>=0,
                 "actual cycle semantic and physical SAVE must share machine/Game/episode/actor/date and monotonic actual SAVE revisions");
-        for (ExactRef ref:proof.semantic().references()) readExact(ref);
+        ExactRef originalDriver=proof.semantic().originalDriver();
+        for (ExactRef ref:proof.semantic().references()) {
+            // Retained recovery already reads this exact physical original immediately before decoding it.
+            if(!retained||!ref.equals(originalDriver)) readExact(ref);
+        }
         String semanticDigest=semantics.verify(borrowed,session,proof.semantic()); WriterContracts.requireDigest(semanticDigest);
-        DriverStateSnapshot.Complete before=DriverStateSnapshot.decodeComplete(readExact(proof.semantic().originalDriver()));
+        DriverStateSnapshot.Complete before=DriverStateSnapshot.decodeComplete(readExact(originalDriver));
         java.util.Optional<SaveWithDriver> combined=retained
                 ?Objects.requireNonNull(saves.verifyWithDriver(borrowed,session,pair,proof,true)):java.util.Optional.empty();
         DriverStateSnapshot.Complete saved;
@@ -240,8 +244,8 @@ public final class CheckpointCommitVerifier {
         java.util.Map.Entry<DriverStateSnapshot.Complete,byte[]> savedEncoding;
         {
             byte[] encoded=saveProjectionEncoding(before,saved,pair,null);
-            // Only this private nonretained path obtained saved from the fixed strict physical decoder.
-            savedEncoding=retained?null:sameCallSavedEncoding(before,saved,encoded);
+            // Only keep the bounded, plainly owned encoding until its same-call comparison.
+            savedEncoding=!retained||combined.isPresent()?sameCallSavedEncoding(before,saved,encoded):null;
         }
         try {
             if(!retained)physicalRecheck.getValue().close();
