@@ -307,6 +307,11 @@ public final class RootApplicationAssembly {
                 @Override public String revalidate(WriterContracts.Head before,WriterContracts.Request request)throws IOException {
                     return selected(request).revalidate(before,request);
                 }
+                @Override public java.util.Map.Entry<String, org.xar.ck3.control.continuity.ContinuityState> revalidateAndReduce(
+                        WriterContracts.Head before, WriterContracts.Request request,
+                        java.util.function.Consumer<String> digestGate) throws IOException {
+                    return selected(request).revalidateAndReduce(before, request, digestGate);
+                }
                 @Override public org.xar.ck3.control.continuity.ContinuityState reduce(
                         org.xar.ck3.control.continuity.ContinuityState before,WriterContracts.Request request)throws IOException {
                     return selected(request).reduce(before,request);

@@ -171,7 +171,7 @@ final class ActionHistoricalReadResource77Test {
         }
     }
 
-    @Test void ordinaryOuterScopeUsesNewTierOnceWhileOutsideAndNonPredispatchRoutesKeepTheOldProfile() throws Exception {
+    @Test void ordinaryOuterScopeIsReusedWhileOtherPathsOpenTheSeparateCurrentTier() throws Exception {
         try(var fixture=new ActionWriterIntegrationFixture(directory.resolve("action-roles"),true)) {
             ActionReceipt retained=fixture.coordinator.execute(fixture.command("resource-original"));
             ActionState.Unknown unknown=assertInstanceOf(ActionState.Unknown.class,retained.state());
@@ -188,7 +188,7 @@ final class ActionHistoricalReadResource77Test {
                 assertEquals(expected.toJson(),borrowed.withReadValidation(head,intent,session,same->borrowed.reduce(head.state(),intent)).toJson());
                 assertEquals(List.of(ACTION),observed.scopes,"captured canonical replay must reuse the outer scope instead of beginning a nested scope");
                 observed.scopes.clear();assertEquals(expected.toJson(),borrowed.reduce(head.state(),intent).toJson());
-                assertEquals(List.of(OLD),observed.scopes,"outside the captured ordinary path keeps the old canonical-reader profile");
+                assertEquals(List.of(ACTION),observed.scopes,"outside the captured ordinary path opens a separate canonical-reader scope");
                 observed.scopes.clear();
                 assertEquals(expected.toJson(),legacy.withReadValidation(head,intent,session,same->legacy.reduce(head.state(),intent)).toJson());
                 assertTrue(observed.scopes.isEmpty(),"a no-borrow public adapter retains its original full route");
@@ -196,7 +196,7 @@ final class ActionHistoricalReadResource77Test {
                 ContinuityState unknownExpected=legacy.reduce(head.state(),repeatedUnknown);
                 observed.scopes.clear();assertEquals(unknownExpected.toJson(),borrowed.withReadValidation(head,repeatedUnknown,session,
                         same->borrowed.reduce(head.state(),repeatedUnknown)).toJson());
-                assertEquals(List.of(OLD),observed.scopes,"a real non-predispatch UNKNOWN continuation is not widened");
+                assertEquals(List.of(ACTION),observed.scopes,"a real non-predispatch UNKNOWN continuation uses a separate canonical-reader scope");
                 // The actual fixture issued this Attempt through its existing controlled software path.
                 // UNKNOWN->Submitting remains prohibited; testing its outer resource selection grants no replay.
                 var submitting=originalRequest(fixture,head,original,new ActionState.Submitting(unknown.attempt().orElseThrow()));
@@ -208,6 +208,55 @@ final class ActionHistoricalReadResource77Test {
                 assertArrayEquals(ledger,fixture.ledgerBytes());assertEquals(head.digest(),session.head().digest());return null;
             });
             assertEquals(writes,fixture.nativeActionWrites());assertEquals(reads,fixture.nativeReadWrites());
+        }
+    }
+
+    @Test void combinedRootValidationReplaysTheCanonicalActionChainOnceInEachFreshScope() throws Exception {
+        try (var fixture = new ActionWriterIntegrationFixture(directory.resolve("combined-action"), true)) {
+            var previous = fixture.coordinator.execute(fixture.command("combined-original"));
+            assertInstanceOf(ActionState.Unknown.class, previous.state());
+            fixture.writer.locked(session -> {
+                var head = session.head();
+                var original = previous.command();
+                var next = new ActionCommand("combined-next", original.origin(), original.source(), original.sessionId(),
+                        original.operation(), original.arguments(), original.expectation(), original.claims(), original.deadline(),
+                        original.protocolIdentity());
+                var intent = originalRequest(fixture, head, next, new ActionState.IntentDurable());
+                var canonicalHead = ContinuityActionJournal.recordHead(head.state()).orElseThrow();
+                var outerArchive = new ObservedArchive(fixture.archive);
+                var evidenceCalls = new java.util.concurrent.atomic.AtomicInteger();
+                var authority = new ActionContinuityAuthority("owned-software-authority", outerArchive.archive,
+                        (before, command) -> { throw new AssertionError("pure path cannot create a live guard"); },
+                        (before, action) -> {
+                            assertSame(head, before);
+                            assertEquals(next, action.command());
+                            evidenceCalls.incrementAndGet();
+                        }, Clock.systemUTC(),
+                        command -> { throw new AssertionError("validation cannot reprepare a Native request"); }, () -> session);
+                var router = new org.xar.ck3.control.service.root.RootAuthorityRouter();
+                router.seal(List.of(new org.xar.ck3.control.service.root.RootAuthorityRouter.Binding(Set.of(ContinuityActionJournal.KIND),
+                        authority)), Set.of(ContinuityActionJournal.KIND));
+                var expected = router.withReadValidation(head, intent, session, same -> {
+                    String digest = router.revalidate(head, intent);
+                    return java.util.Map.entry(digest, router.reduce(head.state(), intent));
+                });
+                long legacyReads = outerArchive.scopedRecords.stream().filter(canonicalHead::equals).count();
+                assertEquals(2, legacyReads);
+                outerArchive.scopedRecords.clear();
+                for (int phase = 0; phase < 2; phase++) {
+                    var combined = router.withReadValidation(head, intent, session, same ->
+                            router.revalidateAndReduce(head, intent, digest -> assertEquals(expected.getKey(), digest)));
+                    assertEquals(expected.getKey(), combined.getKey());
+                    assertArrayEquals(expected.getValue().canonicalBytes(), combined.getValue().canonicalBytes());
+                }
+                assertEquals(2, outerArchive.scopedRecords.stream().filter(canonicalHead::equals).count(),
+                        "each independently qualified phase reopens the prior canonical action once");
+                assertEquals(List.of(ACTION, ACTION, ACTION), outerArchive.scopes);
+                assertEquals(3, evidenceCalls.get(), "every phase still verifies current action evidence");
+                assertEquals(head.digest(), session.head().digest());
+                assertEquals(1, fixture.nativeActionWrites(), "the offline validation cannot dispatch");
+                return null;
+            });
         }
     }
 
@@ -269,12 +318,29 @@ final class ActionHistoricalReadResource77Test {
     private static final class ObservedArchive {
         final List<ActionPorts.HistoricalReadLimits> scopes=new ArrayList<>();
         final ActionPorts.OutcomeArchive archive;
+        final List<ExactRef> scopedRecords = new ArrayList<>();
         ObservedArchive(ActionPorts.OutcomeArchive actual) {
             archive=(ActionPorts.OutcomeArchive)Proxy.newProxyInstance(ActionPorts.OutcomeArchive.class.getClassLoader(),
                     new Class<?>[]{ActionPorts.OutcomeArchive.class},(proxy,method,arguments)->{
-                        if(method.getName().equals("inHistoricalReadScope"))scopes.add((ActionPorts.HistoricalReadLimits)arguments[1]);
-                        try{return method.invoke(actual,arguments);}catch(InvocationTargetException failure){throw failure.getCause();}
+                        if (!method.getName().equals("inHistoricalReadScope")) return invoke(actual, method, arguments);
+                        scopes.add((ActionPorts.HistoricalReadLimits) arguments[1]);
+                        var read = (ActionPorts.CheckedArchiveRead<?>) arguments[2];
+                        var forwarding = arguments.clone();
+                        forwarding[2] = (ActionPorts.CheckedArchiveRead<Object>) scoped -> read.read(scopedArchive(scoped));
+                        return invoke(actual, method, forwarding);
                     });
+        }
+        private ActionPorts.OutcomeArchive scopedArchive(ActionPorts.OutcomeArchive actual) {
+            return (ActionPorts.OutcomeArchive) Proxy.newProxyInstance(ActionPorts.OutcomeArchive.class.getClassLoader(),
+                    new Class<?>[]{ActionPorts.OutcomeArchive.class}, (proxy, method, arguments) -> {
+                        if (method.getName().equals("loadRecord")) scopedRecords.add((ExactRef) arguments[0]);
+                        return invoke(actual, method, arguments);
+                    });
+        }
+
+        private static Object invoke(ActionPorts.OutcomeArchive actual, java.lang.reflect.Method method, Object[] arguments) throws Throwable {
+            try { return method.invoke(actual, arguments); }
+            catch (InvocationTargetException failure) { throw failure.getCause(); }
         }
     }
 }

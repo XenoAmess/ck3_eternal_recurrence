@@ -58,6 +58,11 @@ public final class RootAuthorityRouter implements WriterContracts.TransitionAuth
         return selected(request).withReadValidation(actualLockedHead, request, same, work);
     }
 
+    @Override public java.util.Map.Entry<String, ContinuityState> revalidateAndReduce(WriterContracts.Head predecessor,
+            WriterContracts.Request request, java.util.function.Consumer<String> digestGate) throws IOException {
+        return selected(request).revalidateAndReduce(predecessor, request, digestGate);
+    }
+
     @Override public ContinuityState reduce(ContinuityState predecessor, WriterContracts.Request request) throws IOException {
         Objects.requireNonNull(predecessor); Objects.requireNonNull(request);
         return selected(request).reduce(predecessor, request);

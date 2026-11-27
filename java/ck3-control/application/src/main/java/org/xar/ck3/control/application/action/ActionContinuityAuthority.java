@@ -50,15 +50,26 @@ public final class ActionContinuityAuthority implements WriterContracts.Transiti
         throw new IllegalStateException("action qualification requires the actual original writer Head under its held lock");
     }
     @Override public String revalidate(WriterContracts.Head actualLockedHead, WriterContracts.Request request) {
+        var predecessor = actualLockedHead.state();
+        var original = record(request);
+        requireTransition(predecessor, original, canonicalReceipts(predecessor));
+        return verifyEvidence(actualLockedHead, original.receipt());
+    }
+
+    @Override public java.util.Map.Entry<String, ContinuityState> revalidateAndReduce(WriterContracts.Head head,
+            WriterContracts.Request request, java.util.function.Consumer<String> digestGate) throws java.io.IOException {
+        if (validationHead.get() != head)
+            return WriterContracts.TransitionAuthority.super.revalidateAndReduce(head, request, digestGate);
+        var predecessor = head.state();
+        var original = record(request);
+        requireTransition(predecessor, original, canonicalReceipts(predecessor));
+        String digest = verifyEvidence(head, original.receipt());
+        java.util.Objects.requireNonNull(digestGate).accept(digest);
+        return java.util.Map.entry(digest, reduceValidated(predecessor, request, original.receipt()));
+    }
+
+    private String verifyEvidence(WriterContracts.Head actualLockedHead, ActionReceipt receipt) {
         ContinuityState predecessor = actualLockedHead.state();
-        ActionReceipt receipt = receipt(request);
-        List<ActionReceipt> canonicalReceipts = canonicalReceipts(predecessor);
-        if (!(receipt.state() instanceof ActionState.CompositeOperatorQuarantined)) CompositeOperatorQuarantinePolicy.requireNewActionAllowed(canonicalReceipts.stream().filter(value -> !value.command().actionId().equals(receipt.command().actionId())).toList(), receipt.command());
-        ProtocolIdentityAdmission.requireUnique(canonicalReceipts, receipt.command());
-        Optional<ActionReceipt> existing = canonicalReceipts.stream().filter(r -> r.command().actionId().equals(receipt.command().actionId())).findFirst();
-        ActionTransitions.validate(existing, receipt.command(), receipt.bodySha256(), receipt.state());
-        ActionRecord record = archive.loadRecord(org.xar.ck3.control.contracts.ExactRef.fromJson(request.detailsObject().get("receipt_ref")));
-        StrictJson.require(record.previous().equals(ContinuityActionJournal.recordHead(predecessor)), "action record predecessor changed under writer lock");
         PhysicalActionRegistry physical = physicalActions;
         if (receipt.state() instanceof PhysicalActionState || physical != null && physical.find(receipt.command().operation()).isPresent()) {
             StrictJson.require(physical != null, "actual physical source replay is unavailable");
@@ -91,19 +102,28 @@ public final class ActionContinuityAuthority implements WriterContracts.Transiti
         return ActionCodec.sha256(ActionReceiptCodec.encodeReceipt(receipt, archive));
     }
     @Override public ContinuityState reduce(ContinuityState predecessor, WriterContracts.Request request) {
-        ActionReceipt receipt = receipt(request);
-        List<ActionReceipt> canonicalReceipts = canonicalReceipts(predecessor);
-        if (!(receipt.state() instanceof ActionState.CompositeOperatorQuarantined)) CompositeOperatorQuarantinePolicy.requireNewActionAllowed(canonicalReceipts.stream().filter(value -> !value.command().actionId().equals(receipt.command().actionId())).toList(), receipt.command());
-        ProtocolIdentityAdmission.requireUnique(canonicalReceipts, receipt.command());
+        var original = record(request);
+        requireTransition(predecessor, original, canonicalReceipts(predecessor));
+        return reduceValidated(predecessor, request, original.receipt());
+    }
+
+    private static void requireTransition(ContinuityState predecessor, ActionRecord original, List<ActionReceipt> canonical) {
+        ActionReceipt receipt = original.receipt();
+        if (!(receipt.state() instanceof ActionState.CompositeOperatorQuarantined))
+            CompositeOperatorQuarantinePolicy.requireNewActionAllowed(canonical.stream()
+                    .filter(value -> !value.command().actionId().equals(receipt.command().actionId())).toList(), receipt.command());
+        ProtocolIdentityAdmission.requireUnique(canonical, receipt.command());
+        Optional<ActionReceipt> existing = canonical.stream().filter(r -> r.command().actionId().equals(receipt.command().actionId())).findFirst();
+        ActionTransitions.validate(existing, receipt.command(), receipt.bodySha256(), receipt.state());
+        StrictJson.require(original.previous().equals(ContinuityActionJournal.recordHead(predecessor)),
+                "action record predecessor changed under writer lock");
+    }
+
+    private static ContinuityState reduceValidated(ContinuityState predecessor, WriterContracts.Request request, ActionReceipt receipt) {
         StrictJson.require(receipt.sequence() == Math.addExact(predecessor.sequence(), 1), "action event must consume actual next writer sequence");
         StrictJson.require(receipt.command().origin().machineId().equals(predecessor.machineId()), "action machine must equal canonical writer machine");
-        Optional<ActionReceipt> existing = canonicalReceipts.stream().filter(r -> r.command().actionId().equals(receipt.command().actionId())).findFirst();
-        ActionTransitions.validate(existing, receipt.command(), receipt.bodySha256(), receipt.state());
         ObjectNode next = predecessor.toJson();
-        ActionRecord record = archive.loadRecord(org.xar.ck3.control.contracts.ExactRef.fromJson(request.detailsObject().get("receipt_ref")));
-        StrictJson.require(record.previous().equals(ContinuityActionJournal.recordHead(predecessor)), "action record predecessor changed");
         next.set(ContinuityActionJournal.STATE_FIELD, request.detailsObject().get("receipt_ref"));
-        // The one writer assigns the sequence after pure reduction and validates it again at commit.
         return ContinuityState.fromJson(next, predecessor.machineId());
     }
     @Override public <T> T withReadValidation(WriterContracts.Head actualLockedHead, WriterContracts.Request request,
@@ -112,7 +132,7 @@ public final class ActionContinuityAuthority implements WriterContracts.Transiti
         java.util.Objects.requireNonNull(actualLockedHead); java.util.Objects.requireNonNull(request);
         java.util.Objects.requireNonNull(same); java.util.Objects.requireNonNull(work);
         if (borrowedSessions == null) return work.run(same);
-        ActionReceipt proposed = receipt(request);
+        ActionReceipt proposed = record(request).receipt();
         PhysicalActionRegistry physical = physicalActions;
         // Only the observed ordinary pre-dispatch path is widened. Terminal/domain/physical callbacks keep their old scopes.
         if (!(proposed.state() instanceof ActionState.IntentDurable || proposed.state() instanceof ActionState.Submitting)
@@ -155,7 +175,7 @@ public final class ActionContinuityAuthority implements WriterContracts.Transiti
             catch (java.io.IOException failure) { throw new java.io.UncheckedIOException(failure); }
             StrictJson.require(java.util.Arrays.equals(predecessor.canonicalBytes(), captured.state().canonicalBytes()),
                     "canonical history changed its validation predecessor");
-            // Re-run the complete original traversal and every mutable read check; only the still-live scope is shared.
+            // Preview and commit each replay the entire history within their own live original-read scope.
             return ContinuityActionJournal.receipts(predecessor, scoped);
         }
         if (borrowedSessions == null) return ContinuityActionJournal.receipts(predecessor, archive);
@@ -165,11 +185,13 @@ public final class ActionContinuityAuthority implements WriterContracts.Transiti
                     scoped -> ContinuityActionJournal.receipts(predecessor, scoped));
         } catch (java.io.IOException failure) { throw new java.io.UncheckedIOException(failure); }
     }
-    private ActionReceipt receipt(WriterContracts.Request request) {
+    private ActionRecord record(WriterContracts.Request request) {
         StrictJson.require(request.kind().equals(ContinuityActionJournal.KIND), "wrong reducer event kind");
         ObjectNode details = StrictJson.object(request.detailsObject(), Set.of("evidence_id", "source", "receipt_ref"));
-        ActionReceipt receipt = archive.loadRecord(org.xar.ck3.control.contracts.ExactRef.fromJson(details.get("receipt_ref"))).receipt();
+        ActionRecord original = archive.loadRecord(org.xar.ck3.control.contracts.ExactRef.fromJson(details.get("receipt_ref")));
+        ActionReceipt receipt = original.receipt();
         StrictJson.require(ActionCodec.text(details, "evidence_id").equals(receipt.command().actionId() + ":" + receipt.sequence())
-                && details.get("source").equals(ProposalLifecycleCodec.source(receipt.command().source())), "action event source/identity drift"); return receipt;
+                && details.get("source").equals(ProposalLifecycleCodec.source(receipt.command().source())), "action event source/identity drift");
+        return original;
     }
 }
