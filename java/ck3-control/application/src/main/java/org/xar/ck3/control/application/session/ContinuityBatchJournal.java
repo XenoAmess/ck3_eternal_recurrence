@@ -457,7 +457,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
         StrictJson.require(cycle==null||cycle.isNull()||cycle.isObject()&&cycle.has("pending_receipt")&&cycle.get("pending_receipt").isNull(),"Saved recovery has an ordinary pending receipt");
     }
 
-    private record RetainedReadDriver(org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known facts,ExactRef fullDriver) { }
+    record RetainedReadDriver(org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known facts,ExactRef fullDriver) { }
     /** Coverage DATA equivalence only; the capture's full Driver/stamp/source/owner guards remain independent. */
     static boolean sameRestartCoverageRepresentations(DriverSnapshotFacts.Known captured,
             DriverSnapshotFacts.Known retained,ContinuityState asOf,
@@ -695,7 +695,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
         return retainConfirmedSaveMaterial(previous,pair,save,driverRef,originals);
     }
     /** Replays committed typed READ DATA only; no query, live decoder or Native action is invoked. */
-    private static RetainedReadDriver retainCapturedRead(ContinuityStorePort.Session same,SessionIdentity owner,
+    static RetainedReadDriver retainCapturedRead(ContinuityStorePort.Session same,SessionIdentity owner,
             WriterContracts.HistoricalTransition edge,RetainedReadDriver previous,
             org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals,
             java.util.List<WriterContracts.Pin> originalsPins,boolean retainPins)throws IOException {
@@ -987,7 +987,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
         return retainCapturedAction(same,edge,previous,receipts,originals,null,null);
     }
     /** Deferred entries stay local to the full-history callback and are verified together before that callback can return. */
-    private RetainedReadDriver retainCapturedAction(ContinuityStorePort.Session same,
+    static RetainedReadDriver retainCapturedAction(ContinuityStorePort.Session same,
             WriterContracts.HistoricalTransition edge,RetainedReadDriver previous,
             java.util.List<ActionReceipt> receipts,org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals,
             java.util.List<org.xar.ck3.control.application.driver.DriverActionHistoryState.Publication> deferredPublications,
@@ -4076,9 +4076,9 @@ public final class ContinuityBatchJournal implements BatchJournal {
     }
 
     /** Pure parsed DATA retained only between the two readers of one completed-cycle SEM. */
-    private record SettledSemanticBody(SemanticEvidence semantic,org.xar.ck3.control.application.action.RawJson original,
+    record SettledSemanticBody(SemanticEvidence semantic,org.xar.ck3.control.application.action.RawJson original,
             org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj body) { }
-    private static SettledSemanticBody captureSettledSemanticBody(SemanticEvidence semantic,
+    static SettledSemanticBody captureSettledSemanticBody(SemanticEvidence semantic,
             org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) {
         var original=originals.loadFullMaterial(semantic.semantic());
         return new SettledSemanticBody(semantic,original,DriverJson.object(original.bytes(),DriverJson.MAX_NATIVE_BYTES));
@@ -4111,7 +4111,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
     }
 
     /** Replays the actual capability/persistent owner captured by a completed cycle, without reinitializing the episode. */
-    private static RetainedReadDriver retainSettledCapabilities(SemanticEvidence semantic,RetainedReadDriver previous,
+    static RetainedReadDriver retainSettledCapabilities(SemanticEvidence semantic,RetainedReadDriver previous,
             org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals,SettledSemanticBody captured,
             boolean importedSettlement) {
         StrictJson.require(captured.semantic().equals(semantic),"settled capability parse crossed its complete original SEM");
