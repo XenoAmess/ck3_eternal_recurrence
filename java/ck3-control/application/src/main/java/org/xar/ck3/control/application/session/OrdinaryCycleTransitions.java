@@ -114,6 +114,24 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
     private final ThreadLocal<CommittedImportedRebind> committedImportedRebinding = new ThreadLocal<>();
     private volatile CommittedImportedRebindAuthority committedImportedRebindAuthority;
     private volatile CommittedImportedSettledReadAuthority committedImportedSettledReadAuthority;
+    private volatile CommittedImportedSavedMaterialReader committedImportedSavedMaterialReader;
+
+    /** Root reopens only the original immutable manifest and retained SAVE originals on the held Writer. */
+    @FunctionalInterface public interface CommittedImportedSavedMaterialReader {
+        org.xar.ck3.control.application.checkpoint.SavedAttachmentSourceStore.SavedMaterial read(ContinuityStorePort.Session same,
+                org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialEvidence evidence) throws IOException;
+    }
+    public synchronized void bindCommittedImportedSavedMaterialReader(CommittedImportedSavedMaterialReader actual) {
+        StrictJson.require(committedImportedSavedMaterialReader == null, "settled imported SAVE material reader installs once");
+        committedImportedSavedMaterialReader = Objects.requireNonNull(actual);
+    }
+    org.xar.ck3.control.application.checkpoint.SavedAttachmentSourceStore.SavedMaterial readCommittedImportedSavedMaterial(
+            ContinuityStorePort.Session same, org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialEvidence evidence) throws IOException {
+        StrictJson.require(active.get() == same, "settled imported SAVE material requires the actual locked Writer");
+        var reader = committedImportedSavedMaterialReader;
+        if (reader == null) throw new IOException("settled imported SAVE requires its installed retained material reader");
+        return Objects.requireNonNull(reader.read(same, evidence));
+    }
 
     /** Installed Root supplies the exact independently read Native Full, verified under its current receiver custody. */
     @FunctionalInterface public interface CommittedImportedSettledReadAuthority {

@@ -268,6 +268,7 @@ final class CommittedImportedSettledFrontier {
                     && edge.after().settledCycles() >= edge.before().settledCycles(),
                     "settled imported successor SAVE crossed its original lineage, batch or physical frontier");
             requireObservedContinuation(pair.frame());
+            ContinuityBatchJournal.requireCommittedImportedMaterial(transitions, same, edge, details, owner, pair, receipt, archive);
             var evidence = ContinuityBatchJournal.readCommittedImportedSave(same, edge, owner, pair, receipt,
                     savePublishers.get(receipt.command().actionId()), archive);
             saves.add(evidence);

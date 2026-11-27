@@ -5127,6 +5127,32 @@ public final class ContinuityBatchJournal implements BatchJournal {
         return receipt;
     }
 
+    /** Binds the retained v2 material to this SAVE, its actual prepared Writer head, and the confirmed cycle. */
+    static void requireCommittedImportedMaterial(OrdinaryCycleTransitions transitions, ContinuityStorePort.Session same,
+            WriterContracts.HistoricalTransition edge, ObjectNode details, SessionIdentity owner, CheckpointPair pair,
+            ActionReceipt save, ActionPorts.OutcomeArchive originals) throws IOException {
+        var evidence = OrdinaryCycleTransitions.savedMaterialEvidence(details, owner, pair);
+        if (evidence.isEmpty()) return;
+        var original = evidence.orElseThrow();
+        var head = same.head();
+        var source = same.requireHistoricalState(original.originalHeadSequence(), original.originalHeadDigest());
+        var sourceState = source.toJson();
+        var cycle = sourceState.get(WriterContracts.ORDINARY_CYCLE_FIELD);
+        var proof = OrdinaryCycleTransitions.proofFromJson(details.get("completed_cycle_proof"));
+        StrictJson.require(source.status() == ContinuityState.Status.RUNNING && source.origin().equals(edge.before().origin())
+                && ContinuityJson.same(owner.game().toJson(), sourceState.get("game_binding"))
+                && cycle != null && owner.equals(OrdinaryCycleTransitions.sessionFromJson(cycle.get("session")))
+                && ContinuityJson.same(cycle,edge.before().toJson().get(WriterContracts.ORDINARY_CYCLE_FIELD))
+                && proof.cycleStateDigest().equals(ContinuityJson.digest(cycle)),
+                "settled imported SAVE material changed its original owner, episode or completed cycle");
+        ContinuityActionJournal.requireHistoricalReceipt(source, save, originals);
+        var material = transitions.readCommittedImportedSavedMaterial(same, original);
+        original.requireMaterial(material);
+        StrictJson.require(material.session().equals(owner) && material.proof().equals(proof)
+                && ContinuityJson.same(material.originalHead().toJson(), sourceState) && head.digest().equals(same.head().digest()),
+                "settled imported SAVE material differs from its original manifest, canonical source or held head");
+    }
+
     /** Replays the archived acknowledgement and the independent Full that originally confirmed a successor SAVE. */
     static CommittedImportedSettledFrontier.ConfirmedSave readCommittedImportedSave(ContinuityStorePort.Session same,
             WriterContracts.HistoricalTransition edge, SessionIdentity owner, CheckpointPair pair, ActionReceipt save,
