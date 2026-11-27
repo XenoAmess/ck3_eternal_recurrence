@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.time.Clock;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Optional;
 import org.xar.ck3.control.application.session.BatchReport;
@@ -115,7 +116,11 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
                 attached = NativeGameAttachment.attach(new NativeGameAttachment.Request(prepared.plan(), descriptor.generation(),
                         prepared.privatePermissions(), config.maximumFramesPerOperation(), config.maximumSubmissions()),
                         clock.instant().plus(config.operationTimeout()), config.operationTimeout());
-                var openingDeadline = clock.instant().plus(config.loop().readinessTimeout());
+                Duration configuredReadiness = config.loop().readinessTimeout();
+                Duration archiveReadiness = Duration.ofMinutes(10);
+                Duration openingReadiness = configuredReadiness.compareTo(archiveReadiness) < 0
+                        ? archiveReadiness : configuredReadiness;
+                Instant openingDeadline = clock.instant().plus(openingReadiness);
                 Optional<CleanRestartTicket> pointer = Files.exists(ticketPath) ? Optional.of(readTicket(ticketPath)) : Optional.empty();
                 running = prepared.openExternalSavedRecovery(attached, input, pointer, openingDeadline);
                 var adopted = event(clock, "EXTERNAL_SAVED_OBSERVATION_ADOPTED");
