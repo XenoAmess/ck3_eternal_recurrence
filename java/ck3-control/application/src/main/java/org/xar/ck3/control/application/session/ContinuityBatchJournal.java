@@ -3227,7 +3227,16 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 StrictJson.require((positiveEvent || appliedLife) && command.sessionId().equals(origin.successor().sessionId())
                         && command.source().equals(retained.source()) && original.sequence() < canonicalSequence,
                         "named recovery DATA crossed its original positive event, applied Life, current batch or historical source");
-                origin.requireSemantic(command.before());
+                if (positiveEvent) origin.requireSemantic(command.before());
+                else {
+                    var before = command.before();
+                    StrictJson.require(before.machineId().equals(origin.successor().machineId())
+                            && before.game().equals(origin.successor().game())
+                            && before.frame().episodeRunId().equals(origin.savedPair().frame().frame().episodeRunId())
+                            && before.frame().identity().player().longValueExact() == origin.opening().actor().value()
+                            && before.frame().identity().dateRaw().longValueExact() >= origin.opening().dateRaw(),
+                            "named Life recovery crossed its actual observed campaign");
+                }
             } else StrictJson.require(restartCapture.isPresent() || retained!=null
                     && retained.controller().equals(capturedController)
                     && (retained.hasCurrentMapEntry()
@@ -4399,13 +4408,14 @@ public final class ContinuityBatchJournal implements BatchJournal {
         private final Optional<DriverActionHistoryState.Publication> full111EventPublication;
         private final Optional<ActionReceipt> pendingAppliedLife;
         private final List<DriverActionHistoryState.Publication> lifePublications;
+        private final List<ActionReceipt> completedNamedLives;
 
         private PreparedExternalSave(ExternalSaveOrigin origin, SettledSameGameData history, Optional<String> recordedDigest,
                 List<String> consumedBatches, Optional<String> openBatch, Optional<ExactRef> interruptedZeroDispatch,
                 List<ActionReceipt> full111EventCaptures, Optional<ActionReceipt> settledFull111Event,
                 Optional<SemanticEvidence> full111SettledSemantic,
                 Optional<DriverActionHistoryState.Publication> full111EventPublication, Optional<ActionReceipt> pendingAppliedLife,
-                List<DriverActionHistoryState.Publication> lifePublications) {
+                List<DriverActionHistoryState.Publication> lifePublications, List<ActionReceipt> completedNamedLives) {
             this.origin = origin;
             this.history = history;
             this.recordedDigest = recordedDigest;
@@ -4418,6 +4428,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
             this.full111EventPublication = full111EventPublication;
             this.pendingAppliedLife = pendingAppliedLife;
             this.lifePublications = List.copyOf(lifePublications);
+            this.completedNamedLives = List.copyOf(completedNamedLives);
         }
 
         public ExternalSaveOrigin origin() { return origin; }
@@ -4443,8 +4454,12 @@ public final class ContinuityBatchJournal implements BatchJournal {
             used.addAll(consumedBatches);
             var unsaved = new java.util.LinkedHashSet<>(old.unsavedGameplayActions());
             if (full111SettledSemantic.isPresent()) unsaved.add(settledFull111Event.orElseThrow().command().actionId());
+            long eligible = old.eligibleSinceSave();
+            for (var life : completedNamedLives) {
+                if (unsaved.add(life.command().actionId()) && life.eligibleAdvance()) eligible++;
+            }
             return new ControllerRestartState(origin.successor(), old.batchPrefix(), used.size(), used,
-                    unsaved, old.savedPair(), Optional.of(head), old.eligibleSinceSave(),
+                    unsaved, old.savedPair(), Optional.of(head), Math.toIntExact(eligible),
                     true, pending, pending, old.totalCommittedDays(), old.completedAnalysisIds(), old.stopRequested());
         }
     }
@@ -4534,7 +4549,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
         origin.requirePreviousOrigin(original);
         origin.requireOriginal(head.state());
         return new PreparedExternalSave(origin, previous.history(), Optional.empty(), previous.consumedBatches,
-                Optional.empty(), Optional.empty(), List.of(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), List.of());
+                Optional.empty(), Optional.empty(), List.of(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), List.of(), List.of());
     }
 
     private PreparedExternalSave replayRecordedExternalSave(ContinuityStorePort.Session same, SessionIdentity departed,
@@ -4593,7 +4608,10 @@ public final class ContinuityBatchJournal implements BatchJournal {
             Optional<SemanticEvidence> closedCycle = Optional.empty();
             boolean readOnlyInterrupted = false;
             Optional<ActionReceipt> appliedLife = Optional.empty();
-            List<DriverActionHistoryState.Publication> lifePublications = List.of();
+            var lifePublications = new java.util.ArrayList<DriverActionHistoryState.Publication>();
+            var completedLives = new java.util.ArrayList<ActionReceipt>();
+            Optional<SemanticEvidence> latestLife = Optional.empty();
+            Optional<ExactRef> latestLifeAction = Optional.empty();
             var consumed = new java.util.ArrayList<>(previousBatches);
             for (int index = 1; index < edges.size(); index++) {
                 var edge = edges.get(index);
@@ -4652,12 +4670,30 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     if (closedCycle.isPresent()) {
                         StrictJson.require(!readOnlyInterrupted && open != null && appliedLife.isEmpty(),
                                 "subsequent named Life requires its actual open batch");
-                        var closure = closedAction.orElseThrow();
-                        var life = transitions.withLocked(same, () -> canonicalNamedAppliedLife(same, successor, transitions.restartArchive(same)))
-                                .orElseThrow(() -> new IOException("named Life requires its exact already applied original"));
-                        lifePublications = requireExternalAppliedLifeTail(same, edges.subList(index, edges.size()), successor, old.source(), closure, life);
-                        appliedLife = Optional.of(life);
-                        break;
+                        int end = externalLifeTailEnd(edges, index);
+                        var prior = completedLives.isEmpty() ? closedAction.orElseThrow() : completedLives.getLast();
+                        var priorSemantic = latestLife.orElse(closedCycle.orElseThrow());
+                        var actualTail = edges.subList(index, end);
+                        var validated = transitions.withLocked(same, () -> readExternalAppliedLifeTail(
+                                same, actualTail, successor, old.source(), prior, priorSemantic));
+                        var life = validated.getKey();
+                        lifePublications.addAll(validated.getValue());
+                        latestLifeAction = ContinuityActionJournal.recordHead(actualTail.getLast().after());
+                        if (end == edges.size()) {
+                            StrictJson.require(transitions.withLocked(same, () ->
+                                            canonicalNamedAppliedLife(same, successor, transitions.restartArchive(same))).filter(life::equals).isPresent(),
+                                    "named Life observer must hold the actual pending original at the current frontier");
+                            appliedLife = Optional.of(life);
+                            break;
+                        }
+                        var settled = edges.get(end);
+                        var settleRequest = new WriterContracts.Request(settled.kind(), settled.details(), List.of());
+                        latestLife = Optional.of(transitions.withLocked(same, () ->
+                                transitions.verifySettledExternalEvent(same, settled, successor, life, settleRequest)));
+                        requireCommittedImportedBatchReduction(settled, settleRequest);
+                        completedLives.add(life);
+                        index = end;
+                        continue;
                     }
                     int boundaryIndex = index;
                     while (boundaryIndex < edges.size() && WriterContracts.ACTION_LIFECYCLE_KIND.equals(edges.get(boundaryIndex).kind()))
@@ -4707,21 +4743,55 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     && ContinuityJson.digest(last.after().toJson()).equals(head.digest())
                     && interrupted == (closedCycle.isPresent() ? readOnlyInterrupted : interruptedBoundarySeen)
                     && interruptedBoundarySeen == interruptedAction.isPresent()
-                    && (appliedLife.isPresent() || ContinuityActionJournal.recordHead(state)
-                            .filter(interruptedAction.orElse(origin.actionHead())::equals).isPresent()),
+                    && ContinuityActionJournal.recordHead(state)
+                            .filter(latestLifeAction.orElse(interruptedAction.orElse(origin.actionHead()))::equals).isPresent(),
                     "named-save re-entry history does not end at the held head");
             return new PreparedExternalSave(origin, old, Optional.of(head.digest()), consumed, Optional.ofNullable(open),
-                    captures.isEmpty() ? interruptedAction : Optional.empty(), captures, closedAction, closedCycle, publishedDriver, appliedLife, lifePublications);
+                    captures.isEmpty() ? interruptedAction : Optional.empty(), captures, closedAction, closedCycle, publishedDriver, appliedLife, lifePublications, completedLives);
         });
         StrictJson.require(live.digest().equals(same.head().digest()), "named-save re-entry changed its held writer");
         return prepared;
     }
 
-    private List<DriverActionHistoryState.Publication> requireExternalAppliedLifeTail(ContinuityStorePort.Session same,
-            List<WriterContracts.HistoricalTransition> edges, SessionIdentity owner, G2Source source,
-            ActionReceipt prior, ActionReceipt life) throws IOException {
-        return transitions.withLocked(same, () -> verifyExternalAppliedLifeTail(same, edges, owner, source, prior, life,
-                transitions.restartArchive(same)));
+    static int externalLifeTailEnd(List<WriterContracts.HistoricalTransition> edges, int index) {
+        int end = index;
+        while (end < edges.size() && java.util.Set.of(WriterContracts.ACTION_LIFECYCLE_KIND, WriterContracts.DRIVER_ACTION_HISTORY_KIND)
+                .contains(edges.get(end).kind())) end++;
+        if (end == edges.size()) return end;
+        var retain = edges.get(end);
+        StrictJson.require(OrdinaryCycleTransitions.CYCLE_KIND.equals(retain.kind()) && "RETAIN".equals(
+                ContinuityJson.parseObject(retain.details(), ContinuityJson.DOCUMENT_MAX_BYTES).path("operation").asText()),
+                "named Life group must end at its actual RETAIN or current held applied frontier");
+        end++;
+        if (end < edges.size()) {
+            var settled = edges.get(end);
+            StrictJson.require(OrdinaryCycleTransitions.CYCLE_KIND.equals(settled.kind()) && "SETTLE".equals(
+                    ContinuityJson.parseObject(settled.details(), ContinuityJson.DOCUMENT_MAX_BYTES).path("operation").asText()),
+                    "closed named Life group requires its actual SETTLE after RETAIN");
+        }
+        return end;
+    }
+
+    java.util.Map.Entry<ActionReceipt, List<DriverActionHistoryState.Publication>> readExternalAppliedLifeTail(
+            ContinuityStorePort.Session same, List<WriterContracts.HistoricalTransition> edges, SessionIdentity owner,
+            G2Source source, ActionReceipt prior, SemanticEvidence priorSemantic) throws IOException {
+        var originals = transitions.restartArchive(same);
+        var life = originals.loadRecord(ContinuityActionJournal.recordHead(edges.getLast().after()).orElseThrow()).receipt();
+        var command = life.command();
+        var before = command.before();
+        var previous = priorSemantic.frame();
+        StrictJson.require(life.state() instanceof ActionState.CompositeSettled settled
+                && settled.settlement() instanceof ActionState.Applied
+                && org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER.equals(settled.execution().handlerId())
+                && org.xar.ck3.control.application.advance.LifeAdvanceComposite.accepts(command.operation().value())
+                && life.eligibleAdvance() && before.machineId().equals(previous.machineId()) && before.game().equals(previous.game())
+                && before.frame().episodeRunId().equals(previous.frame().episodeRunId())
+                && before.frame().identity().player().equals(previous.frame().identity().player())
+                && before.frame().identity().dateRaw().equals(previous.frame().identity().dateRaw())
+                && before.frame().identity().nativeRevision().compareTo(previous.frame().identity().nativeRevision()) >= 0
+                && !settled.execution().guard().observedAt().isBefore(priorSemantic.observedAt()),
+                "named Life group crossed its actual prior completed actor, date, case or observation");
+        return java.util.Map.entry(life, verifyExternalAppliedLifeTail(same, edges, owner, source, prior, life, originals));
     }
 
     List<DriverActionHistoryState.Publication> verifyExternalAppliedLifeTail(ContinuityStorePort.Session same,
@@ -4783,6 +4853,9 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 && execution.children().stream().allMatch(child -> actual.get(child.actionId()).settled()
                         && child.bodySha256().equals(actual.get(child.actionId()).bodySha256())),
                 "named Life historical scope requires the complete already settled original parent and children");
+        var children = execution.children().stream().map(child -> actual.get(child.actionId())).toList();
+        ActionEffects.validateCompositeChildren(life.command(), execution, ((ActionState.CompositeSettled)life.state()).settlement(), children);
+        org.xar.ck3.control.application.advance.AdvanceClockArchivedReplay.verifyChildBindings(life.command(), children);
         DriverActionHistoryState.requireOriginals(same, publications,
                 publications.stream().map(publication -> actual.get(publication.command().actionId())).toList(), originals);
         return List.copyOf(publications);
@@ -4997,7 +5070,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
             return null;
         });
         return new PreparedExternalSave(origin, history, Optional.empty(), List.of(), Optional.empty(),
-                Optional.empty(), List.of(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), List.of());
+                Optional.empty(), List.of(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), List.of(), List.of());
     }
 
     public static final class ExternalSaveRebind {
