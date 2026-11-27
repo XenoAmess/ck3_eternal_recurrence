@@ -3,6 +3,7 @@ package org.xar.ck3.control.service.root;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.Optional;
 import org.xar.ck3.control.application.checkpoint.CheckpointPair;
 import org.xar.ck3.control.application.checkpoint.CheckpointPairCodec;
 import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService;
@@ -76,7 +77,13 @@ public final class RootSavedOrdinaryReopen {
             context.writer().requireSession(same);
             requirePhysicalOwner(context, driver, attachment(), successor());
             if (context.adopted() != driver) throw new IOException("committed imported custody lost its exact installed Driver");
-            requireAttachmentOrDomainImports(same, original);
+            recordedRebind(same);
+        }
+
+        Optional<SemanticEvidence> recordedRebind(ContinuityStorePort.Session same)throws IOException {
+            context.writer().requireSession(same);
+            return org.xar.ck3.control.application.session.ContinuityBatchJournal
+                    .requireCommittedImportedAttachmentContinuation(same,original.edge());
         }
 
         /** Captures the four semantic originals from the actual installed, held successor on its new connection. */
@@ -139,15 +146,6 @@ public final class RootSavedOrdinaryReopen {
         } catch (IllegalArgumentException | java.time.DateTimeException invalid) {
             throw new IOException("invalid committed imported ordinary attachment DATA", invalid);
         }
-    }
-
-    static void requireAttachmentOrDomainImports(ContinuityStorePort.Session same, CommittedData original) throws IOException {
-        var head = same.head();
-        if (head.snapshotNeedsRecovery() || !head.indexRepairs().isEmpty())
-            throw new IOException("committed imported ordinary custody requires a clean canonical head");
-        same.verifyPin(original.edge().eventPin());
-        if (!head.digest().equals(original.attachmentDigest()))
-            same.requireDomainImportContinuation(original.edge().sequence(), original.attachmentDigest());
     }
 
     public static Committed reopenCommitted(RootRuntimeContext context, ContinuityStorePort.Session same,

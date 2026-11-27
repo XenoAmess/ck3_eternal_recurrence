@@ -768,6 +768,16 @@ public final class RootInstalledCatalog {
         requireBaseDomainBodies(same);
         construction.restoreCommitted(same,original);
         factory.sources().governance().openingTransitions().rebindCommittedImportedUnissued(same,original);
+        requireCommittedOriginals(same,original);
+    }
+
+    void reopenCommittedImported(ContinuityStorePort.Session same,RootCommittedOrdinaryRestoration original,
+            Instant deadline)throws IOException {
+        remaining.reopenCommittedImported(same,original,deadline);
+        requireCommittedOriginals(same,original);
+    }
+
+    private void requireCommittedOriginals(ContinuityStorePort.Session same,RootCommittedOrdinaryRestoration original)throws IOException {
         factory.sources().crossRun().attachContext(context);
         factory.sources().crossRun().requireCommittedOrdinary(context,same,original);
         var feastOriginal=factory.sources().governance().captureRestoredFeastOriginal(same,original);

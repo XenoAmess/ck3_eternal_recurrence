@@ -6401,13 +6401,36 @@ public final class ContinuityBatchJournal implements BatchJournal {
     /** Requires the exact immediate clean imported attachment on this journal's already borrowed writer. */
     public ImportedRestoreRebindReadback readImportedRestoreRebind(ContinuityStorePort.Session same,
             WriterContracts.Pin actualAttachment)throws IOException {
-        return readImportedRestoreRebind(same,actualAttachment,false);
+        return readImportedRestoreRebind(same,actualAttachment,ImportedRecoveryEnd.ATTACHMENT);
     }
 
     /** Reads the same original only through the actual registered domain-import suffix in canonical order. */
     public ImportedRestoreRebindReadback readImportedRestoreRebindAcrossDomainImports(ContinuityStorePort.Session same,
             WriterContracts.Pin actualAttachment)throws IOException {
-        return readImportedRestoreRebind(same,actualAttachment,true);
+        return readImportedRestoreRebind(same,actualAttachment,ImportedRecoveryEnd.DOMAIN_IMPORTS);
+    }
+
+    public ImportedRestoreRebindReadback readImportedRestoreRebindForStartup(ContinuityStorePort.Session same,
+            WriterContracts.Pin actualAttachment)throws IOException {
+        return readImportedRestoreRebind(same,actualAttachment,ImportedRecoveryEnd.REBIND);
+    }
+
+    private enum ImportedRecoveryEnd { ATTACHMENT,DOMAIN_IMPORTS,REBIND }
+
+    /** Returns the archived SEM only when the actual head is its exact zero-credit REBIND. */
+    public static Optional<SemanticEvidence> requireCommittedImportedAttachmentContinuation(ContinuityStorePort.Session same,
+            WriterContracts.HistoricalTransition attachment)throws IOException {
+        var head=same.head();
+        if(head.snapshotNeedsRecovery()||!head.indexRepairs().isEmpty()
+                ||!SavedAttachmentAuthority.KIND.equals(attachment.kind())||!head.documents().contains(attachment.eventPin()))
+            throw new IOException("committed imported continuation requires a clean writer and its attachment");
+        same.verifyPin(attachment.eventPin());
+        var anchor=ContinuityJson.digest(attachment.after().toJson());
+        if(head.digest().equals(anchor))return Optional.empty();
+        if(head.state().toJson().has(WriterContracts.ORDINARY_IMPORTED_CYCLE_ORIGIN_FIELD))
+            return Optional.of(CommittedImportedRebindOriginal.read(same,attachment.eventPin()).archivedSemantic());
+        same.requireDomainImportContinuation(attachment.sequence(),anchor);
+        return Optional.empty();
     }
 
     public record CommittedImportedControllerHistory(String batchPrefix,long nextBatchSequence,
@@ -6420,7 +6443,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
             WriterContracts.Pin actualAttachment)throws IOException {
         store.requireSession(same);
         var head=same.head();
-        var original=readImportedRestoreRebindAcrossDomainImports(same,actualAttachment);
+        var original=readImportedRestoreRebindForStartup(same,actualAttachment);
         var before=original.attachment().before();
         var owner=original.recoveryBasis().departed();
         var pins=canonicalEventPins(same,head).headMap(before.sequence(),true);
@@ -6526,7 +6549,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
     }
 
     private ImportedRestoreRebindReadback readImportedRestoreRebind(ContinuityStorePort.Session same,
-            WriterContracts.Pin actualAttachment,boolean allowDomainImports)throws IOException {
+            WriterContracts.Pin actualAttachment,ImportedRecoveryEnd acceptedEnd)throws IOException {
         store.requireSession(same);
         var head=same.head();
         if(head.snapshotNeedsRecovery()||!head.indexRepairs().isEmpty())
@@ -6536,8 +6559,11 @@ public final class ContinuityBatchJournal implements BatchJournal {
             throw new IOException("Imported REBIND readback requires the exact immediate committed attachment");
         String attachmentDigest=ContinuityJson.digest(edge.after().toJson());
         if(!attachmentDigest.equals(head.digest())) {
-            if(!allowDomainImports)throw new IOException("Imported REBIND readback requires the exact immediate committed attachment");
-            same.requireDomainImportContinuation(edge.sequence(),attachmentDigest);
+            switch(acceptedEnd) {
+                case ATTACHMENT -> throw new IOException("Imported REBIND readback requires the exact immediate committed attachment");
+                case DOMAIN_IMPORTS -> same.requireDomainImportContinuation(edge.sequence(),attachmentDigest);
+                case REBIND -> requireCommittedImportedAttachmentContinuation(same,edge);
+            }
         }
         try {
             var details=ContinuityJson.parseObject(edge.details(),ContinuityJson.DOCUMENT_MAX_BYTES);

@@ -240,7 +240,7 @@ final class RootExitedSavedMaterialSource {
                 ||!original.savedPair().equals(source.pair())
                 ||!original.importedOrigin().physicalConfirmation().equals(source.confirmation().eventPin()))
             throw new IOException("committed imported source changed its original Saved entry, confirmation or pair");
-        if(!head.digest().equals(anchor))same.requireDomainImportContinuation(actual.sequence(),anchor);
+        org.xar.ck3.control.application.session.ContinuityBatchJournal.requireCommittedImportedAttachmentContinuation(same,actual);
         var entry=same.readHistoricalTransition(original.importedOrigin().targetEntry());
         return java.util.Map.entry(head,entry);
     }

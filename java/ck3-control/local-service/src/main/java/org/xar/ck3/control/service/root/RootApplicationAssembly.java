@@ -1826,7 +1826,7 @@ public final class RootApplicationAssembly {
 
         ContinuityBatchJournal.ImportedRestoreRebindReadback readCommittedImportedStart(ContinuityStorePort.Session same,
                 WriterContracts.Pin attachment,OriginalWindowReducer.Policy policy)throws IOException {
-            return committedImportedJournal(policy).readImportedRestoreRebindAcrossDomainImports(same,attachment);
+            return committedImportedJournal(policy).readImportedRestoreRebindForStartup(same,attachment);
         }
 
         ContinuityBatchJournal.CommittedImportedControllerHistory readCommittedImportedControllerHistory(ContinuityStorePort.Session same,
@@ -2932,21 +2932,25 @@ public final class RootApplicationAssembly {
                 var root=staged.finish(authorityId,installed.bindings(),installed.frontend().authority(),physical,reconciliation,remaining.lifecycle().closeAdmission(),remaining.lifecycle().terminalDecisions(),remaining.lifecycle(),derived.admission(),derived.replay(),runtime.capabilities(),installed.readHistory(),remaining.lifeReplay(),runtime.planningInputs(),installed.pipeline(),installed.pendingBindings(),installed.requiredPending(),cyclePolicy,actualOffline.port(),sessionClock,savedPair,savedDays,installed.completion(),episodes,savedCapture,restoreMaterials,restorePublication);
                 if(committed.isPresent()) {
                     var recovery=committed.orElseThrow();var original=recovery.original();
-                    installed.adoptCommittedImported(same,original,deadline);
+                    boolean rebound=recovery.opening().recordedRebind(same).isPresent();
+                    if(rebound)installed.reopenCommittedImported(same,original,deadline);
+                    else installed.adoptCommittedImported(same,original,deadline);
                     var current=physical.withSnapshot(same,deadline,lease->{
                         lease.assertCurrent(same);
                         return lease.ordinary().orElseThrow(()->new IOException("committed imported planning requires its current paused living frame"));
                     });
                     installed.initializePersistentPlanning(same,current);
-                    var semantic=recovery.opening().captureSemantic(same,deadline);
-                    root.cycles().bindCommittedImportedRebindAuthority((held,attachment,fresh)->{
-                        original.requireCurrent(held,context);
-                        StrictJson.require(held==same&&fresh==semantic&&attachment.attachment().eventPin().equals(original.attachment())
-                                &&original.successor().equals(root.identity())&&context.adopted()==driver,
-                                "committed imported cycle requires its current installed Driver and actual successor SEM");
-                    });
                     root.controllerForPublication().retainConsumedSavedBatches(root.identity(),List.copyOf(recovery.history().usedBatches()));
-                    root.batchJournal().rebindCommittedImported(same,original.attachment(),semantic);
+                    if(!rebound) {
+                        var semantic=recovery.opening().captureSemantic(same,deadline);
+                        root.cycles().bindCommittedImportedRebindAuthority((held,attachment,fresh)->{
+                            original.requireCurrent(held,context);
+                            StrictJson.require(held==same&&fresh==semantic&&attachment.attachment().eventPin().equals(original.attachment())
+                                    &&original.successor().equals(root.identity())&&context.adopted()==driver,
+                                    "committed imported cycle requires its current installed Driver and actual successor SEM");
+                        });
+                        root.batchJournal().rebindCommittedImported(same,original.attachment(),semantic);
+                    }
                 } else if(admissionOpt.isPresent()){
                     try { root.restoreCleanRestart(same,admissionOpt.orElseThrow()); }
                     catch(InterruptedException interrupted) {

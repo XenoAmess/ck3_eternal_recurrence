@@ -823,7 +823,8 @@ public final class DriverBootstrap {
         var after=edge.after().toJson();
         var current=same.head();
         var anchor=ContinuityJson.digest(after);
-        if(!current.digest().equals(anchor))same.requireDomainImportContinuation(edge.sequence(),anchor);
+        if(!current.digest().equals(anchor))
+            org.xar.ck3.control.application.session.ContinuityBatchJournal.requireCommittedImportedAttachmentContinuation(same,edge);
         long previousVersion=StrictJson.integer(delta.get("expected_version"),0,StrictJson.MAX_SAFE_INTEGER);
         long previousEpoch=StrictJson.integer(delta.get("expected_epoch"),0,StrictJson.MAX_SAFE_INTEGER);
         long nextEpoch=StrictJson.integer(delta.get("next_epoch"),0,StrictJson.MAX_SAFE_INTEGER);

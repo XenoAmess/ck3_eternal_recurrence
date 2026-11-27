@@ -377,6 +377,12 @@ public final class RootRuntimeDomainAssembly {
             family.installer().initializeCommittedOrdinary(same,original);
             requireActualBodies(same);
         }
+        void reopenCommittedImported(ContinuityStorePort.Session same,RootCommittedOrdinaryRestoration original,
+                Instant deadline)throws IOException {
+            original.requireCurrent(same,context);
+            lifecycle.natural().admitCommittedRestoredSource(same,original,deadline);
+            requireActualBodies(same);
+        }
         private Duration physicalFreshness(){return prepared.physicalFreshness;}
         private void requireActualBodies(ContinuityStorePort.Session same)throws IOException {
             for(var registration:prepared.family.domainRegistrations()) {
