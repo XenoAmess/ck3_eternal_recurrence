@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Proxy;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Clock;
 import java.time.Instant;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.zip.GZIPInputStream;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.xar.ck3.control.application.action.ActionCodec;
 import org.xar.ck3.control.application.action.ActionContinuityAuthority;
 import org.xar.ck3.control.application.action.ActionJournal;
@@ -40,8 +42,13 @@ import org.xar.ck3.control.continuity.OriginalWindowReducer;
 import org.xar.ck3.control.continuity.SavedContinuityAttachment;
 import org.xar.ck3.control.continuity.SavedContinuityBootstrap;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
+import org.xar.ck3.control.continuity.writer.ContinuityWriter;
+import org.xar.ck3.control.continuity.writer.DomainBodies;
+import org.xar.ck3.control.continuity.writer.ImmutableArtifactStore;
 import org.xar.ck3.control.continuity.writer.PortableRecoveryDataArchive;
+import org.xar.ck3.control.continuity.writer.StorageWriteGuardTestSupport;
 import org.xar.ck3.control.continuity.writer.WriterContracts;
+import org.xar.ck3.control.continuity.writer.WriterContracts.TransitionAuthority;
 import org.xar.ck3.control.contracts.ContractViolationException;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.FullJsonTree;
@@ -93,7 +100,7 @@ final class ImportedSavedInterruptedLifeRecoveryDataTest {
         assertEquals(HEAD_SHA,ActionCodec.sha256(fixture.originalHead));
     }
 
-    @Test void committedV5DriverRetirementProofKeepsTheOriginalPositiveResumeUnknown() throws IOException {
+    @Test void committedV5DriverRetirementProofKeepsTheOriginalPositiveResumeUnknown(@TempDir Path root) throws IOException {
         var fixture = new Fixture();
         fixture.locked(same -> {
             var source = fixture.softwareExitedSource(same);
@@ -189,7 +196,7 @@ final class ImportedSavedInterruptedLifeRecoveryDataTest {
             var foreign = new SessionIdentity(fixture.owner.machineId(), game, "different-software-game-session");
             assertThrows(ContractViolationException.class, () -> ContinuityActionJournal.committedImportedRestoreRetirement(
                     same, prepared, committed, snapshot, archive, foreign));
-            assertHistoricalImportedRetirement(fixture,same,predecessor,archive,request,sources,replacement,raw,resume);
+            assertHistoricalImportedRetirement(fixture,same,predecessor,archive,request,sources,replacement,raw,resume,root);
             assertImportedKeeperRestartClean(fixture, same, archive, request, sources, replacement, raw);
             return null;
         });
@@ -197,7 +204,7 @@ final class ImportedSavedInterruptedLifeRecoveryDataTest {
 
     private static void assertHistoricalImportedRetirement(Fixture fixture,ContinuityStorePort.Session same,WriterContracts.Head predecessor,
             OutcomeArchive archive,WriterContracts.Request original,JsonNode inputs,SessionIdentity successor,
-            List<ActionReceipt> raw,ActionReceipt resume)throws IOException {
+            List<ActionReceipt> raw,ActionReceipt resume,Path root)throws IOException {
         var attached=fixture.state;
         var details=original.detailsObject().deepCopy();
         var anchors=SavedAttachmentSourceStore.Sources.decode(details.get(SavedAttachmentSourceStore.SOURCES_DETAIL));
@@ -208,9 +215,9 @@ final class ImportedSavedInterruptedLifeRecoveryDataTest {
                 new WriterContracts.Pin(anchors.restoredNative(),softwareIdentity(8,anchors.restoredNative().bytes())));
         details.set(SavedAttachmentSourceStore.RECOVERY_BASIS_DETAIL,basis.toJson());
         var historical=new WriterContracts.Request(original.kind(),ContinuityJson.canonical(details),List.of());
-        var after=SavedContinuityAttachment.reduce(new SavedContinuityAttachment.Input(predecessor.state(),historical.details(),
+        var reduced=SavedContinuityAttachment.reduce(new SavedContinuityAttachment.Input(predecessor.state(),historical.details(),
                 binary(inputs.get("basis")),binary(inputs.get("game")),binary(inputs.get("opening")),binary(inputs.get("progress"))));
-        after=ContinuityState.fromJson(after.toJson().put("sequence",attached.sequence()).put("last_event_identity",historical.identity()),fixture.owner.machineId());
+        var after=ContinuityState.fromJson(reduced.toJson().put("sequence",attached.sequence()).put("last_event_identity",historical.identity()),fixture.owner.machineId());
         fixture.state=after;
         var pin=softwarePin(9);
         fixture.historicalAttachment=new WriterContracts.HistoricalTransition(after.sequence(),historical.kind(),historical.details(),
@@ -225,10 +232,88 @@ final class ImportedSavedInterruptedLifeRecoveryDataTest {
             assertThrows(ContractViolationException.class,()->ContinuityActionJournal.committedImportedRestoreRetirement(same,pin,
                     snapshot,archive,new SessionIdentity(successor.machineId(),successor.game(),"crossed-session")));
             assertEquals(raw,ContinuityActionJournal.receipts(after,archive));
+            assertRealDomainContinuation(root,predecessor.state(),historical,reduced,snapshot,archive,successor,resume);
         }finally{
             fixture.historicalAttachment=null;
             fixture.state=attached;
         }
+    }
+
+    private static void assertRealDomainContinuation(Path root,ContinuityState before,WriterContracts.Request attachment,
+            ContinuityState reduced,ActionJournal.Snapshot original,OutcomeArchive archive,SessionIdentity successor,
+            ActionReceipt resume)throws IOException {
+        byte[] start=before.canonicalBytes();
+        Path anchor=Files.write(root.resolve("anchor.json"),start);
+        var source=new ExactRef(anchor.toString(),start.length,ActionCodec.sha256(start));
+        var layout=new WriterContracts.Layout(Files.write(root.resolve("continuity.json"),start),source,before.machineId());
+        Files.createFile(layout.lock());
+        Files.createDirectory(layout.events());
+        var guard=StorageWriteGuardTestSupport.create(layout);
+        var artifacts=new ImmutableArtifactStore(new ImmutableArtifactStore.Config(Files.createDirectory(root.resolve("artifacts")),layout.lock(),4_194_304),guard);
+        var registration=new DomainBodies.Registration(DomainBodies.Slot.SUCCESSION,"software-domain/v1",65_536,List.of(source),
+                (head,prior,request,bytes)->{
+                    assertTrue(prior.isEmpty());
+                    assertEquals(request.originalBody().sha256(),ActionCodec.sha256(bytes));
+                    return ActionCodec.sha256(bytes);
+                });
+        var extensions=new ContinuityWriter.Extensions(List.of(registration),Optional.of(artifacts),Optional.empty());
+        var authority=new TransitionAuthority(){
+            @Override public String revalidate(ContinuityState head,WriterContracts.Request request){return ContinuityJson.digest(head.toJson());}
+            @Override public ContinuityState reduce(ContinuityState head,WriterContracts.Request request){
+                if(attachment.identity().equals(request.identity()))return reduced;
+                assertEquals("fixture.read",request.kind());
+                return ContinuityState.fromJson(head.toJson().put("software_read_observed",true),head.machineId());
+            }
+        };
+        var writer=new ContinuityWriter(layout,List.of(source),authority,Clock.systemUTC(),extensions,guard);
+        assertEquals(original.ledgerSequence(),writer.commit(writer.preview(attachment)).head().sequence());
+        byte[] domain=ContinuityJson.canonical(StrictJson.object().put("schema",registration.contractSchema()));
+        Path body=Files.write(root.resolve("domain.json"),domain);
+        var imported=new DomainBodies.ImportRequest(registration.slot(),registration.contractSchema(),
+                new ExactRef(body.toString(),domain.length,ActionCodec.sha256(domain)),domain,List.of(),"software-original");
+        assertEquals(original.ledgerSequence()+1,writer.commitImport(writer.previewImport(imported)).head().sequence());
+
+        var reopened=new ContinuityWriter(layout,List.of(source),authority,Clock.systemUTC(),extensions,guard);
+        byte[] persisted=Files.readAllBytes(layout.snapshot());
+        var attachmentPin=reopened.locked(canonical->{
+            var head=canonical.head();
+            var pin=head.documents().stream().filter(entry->Path.of(entry.reference().path()).equals(layout.event(original.ledgerSequence())))
+                    .findFirst().orElseThrow();
+            var current=new ActionJournal.Snapshot(head.state().sequence(),head.digest(),original.actions(),original.originalHistory());
+            var scoped=originalsForWriter(reopened,archive);
+            assertThrows(ContractViolationException.class,()->ContinuityActionJournal.committedImportedRestoreRetirement(canonical,pin,original,scoped,successor));
+            assertEquals(resume,ContinuityActionJournal.committedImportedRestoreRetirement(canonical,pin,current,scoped,successor)
+                    .retainedResume(canonical,current,scoped).orElseThrow());
+            assertEquals(ContinuityActionJournal.recordHead(reduced),ContinuityActionJournal.recordHead(head.state()));
+            assertEquals(before.settledDateRaw(),head.state().settledDateRaw());
+            assertEquals(before.settledCycles(),head.state().settledCycles());
+            assertEquals(head.digest(),canonical.head().digest());
+            return pin;
+        });
+        assertArrayEquals(persisted,Files.readAllBytes(layout.snapshot()));
+        var read=new WriterContracts.Request("fixture.read",ContinuityJson.canonical(
+                StrictJson.object().put("evidence_id","software-mixed-read").put("source","software-reader")),List.of());
+        reopened.commit(reopened.preview(read));
+        reopened.locked(canonical->{
+            var head=canonical.head();
+            var current=new ActionJournal.Snapshot(head.state().sequence(),head.digest(),original.actions(),original.originalHistory());
+            assertThrows(IOException.class,()->ContinuityActionJournal.committedImportedRestoreRetirement(canonical,attachmentPin,
+                    current,originalsForWriter(reopened,archive),successor));
+            assertEquals(head.digest(),canonical.head().digest());
+            return null;
+        });
+    }
+
+    private static OutcomeArchive originalsForWriter(ContinuityWriter writer,OutcomeArchive archive) {
+        return (OutcomeArchive)Proxy.newProxyInstance(ImportedSavedInterruptedLifeRecoveryDataTest.class.getClassLoader(),
+                new Class<?>[]{OutcomeArchive.class},(proxy,method,arguments)->{
+                    if(method.getName().equals("withSession")){
+                        writer.requireSession((ContinuityStorePort.Session)arguments[0]);
+                        return proxy;
+                    }
+                    try{return method.invoke(archive,arguments);}
+                    catch(InvocationTargetException failure){throw failure.getCause();}
+                });
     }
 
     private static WriterContracts.Pin softwarePin(int number) {
