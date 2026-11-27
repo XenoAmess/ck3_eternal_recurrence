@@ -37,3 +37,9 @@ python tools\quarkus\adopt-and-trigger.py --source-root "<SOURCE_ROOT>" --relati
 截至 2026-11-02 09:46:47Z：隔离 reactor 首编译实际 3095 个单元、113.005 秒退出 0；声明的 3099 个源还含本次未选的 4 个 native-diagnostics 文件。Dev 基线已于09:33:46.497030500Z进入同局 LOOP。一个实际方法体源于09:34:56采用并自动触发扫描；旧委托于09:35:07.752403400Z正常完成，同一宿主／出生下的新 loader 与新实例于09:35:10.355517100Z开始。新委托随后在09:46:47.176607700Z因 `settled recovery requires a completed interrupted cycle` 失败，真实栈落于 `OrdinaryCycleTransitions.requireSettledRecoveryFrontier`。新 LOOP／SAVE 均为零，保存仍为交接前的143日；宿主存活不能代替业务恢复成功。功能修复另沿实际原状态进行，本次发布不作完整业务验收。
 
 既有方法体重载、兼容 instrumentation 重定义和新增依赖类是三个分别验收的范围。新增依赖类的软件试验曾在新 runtime loader 下失败、同源码的新私有宿主成功；不要把这次方法体更新外推为新增类也已支持。需要重建宿主时仍沿真实同局交接，不刷新旧命令 deadline 或重派 UNKNOWN。来源与旧边界见[装载事实](2026-11-02-quarkus-worker-loading-boundaries.md)及[本次脱敏来源索引](2026-11-02-quarkus-worker-operations-sources.json)。
+
+## Windows 分模块输出的 Dev UI 目录扫描（2026-11-27）
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`。R0033 的 Dev 237188 首次应用启动用时 795.503 秒。10:05 UTC 的线程栈显示，完成编译目录变更检查后，Dev UI 的 Workspace 页仍在以 `Files.walkFileTree` 扫描输出父目录。该次使用的分模块输出父目录为 `D:/codex-ck3-background/autoplayer-continuation-20261126/java/ck3-control/target/ck3-control`，含 29,443 个类文件路径。实际线程栈和框架字节码读回见 `D:/ck3-state/ck3-runtime-continuation-20261126/source56-autonomous-recovery-20261127/named-ascii-failover-full111/TAG1-DEV-CDI-THREADS-1005.txt` 及同目录的 `QUARKUS-3.40.1.1-WORKSPACEVISITOR.javap.txt`。
+
+当同一 Quarkus 版本及布局下下一次确需启动 Dev 时，可传入 `-Dquarkus.dev-ui.workspace.ignore-folders=ck3-control`。这里的值是实际输出父目录最后一级的名字。Quarkus 的 Workspace 页访问器会在进入该目录时跳过整个子树。用本机实际 Quarkus 3.40.1.1 与 SmallRye 配置映射的隔离回放验证，默认能列出兄弟模块的一个构建文件，该参数使同一临时输出树的 Workspace 列表为空。生产编译和热重载的类／源文件扫描走另一入口。该参数当前尚未实机使用。回放见 `D:/ck3-state/ck3-dev-workspace-index-20261127/result-with-asm.log`。
