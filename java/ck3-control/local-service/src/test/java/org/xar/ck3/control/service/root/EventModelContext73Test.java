@@ -189,18 +189,22 @@ final class EventModelContext73Test {
     }
 
     @Test @Timeout(30)
-    void full111ShortOriginalWindowUsesOnlyTheProjectedWireAndPreservesAdmission(@TempDir Path root) throws Exception {
+    void full111SelectsTheFirstVisibleOptionAndArchivesTheOriginalWithoutAProvider(@TempDir Path root) throws Exception {
         var f=full111Fixture();
         var now=f.command().deadline().minusSeconds(7);
         try (Stub model=new Stub();Client client=new Client(model,root,Clock.fixed(now,ZoneOffset.UTC))) {
-            model.reply.set(reply(f.command()));
             var accepted=client.selector.select(f.request(),f.selected());
             assertEquals(OrdinaryDecisionSelector.Choice.ACCEPT,accepted.choice(),accepted.reason());
-            assertEquals(1,model.calls.get());
-            byte[] wire=model.requests.getFirst();
-            assertTrue(wire.length<16000,"bounded Full111 wire even with more than one megabyte of unrelated original history");
-            var data=userData(tree(wire));
-            assertEquals("xar.model-event-admission/v2",data.path("decision_context_schema").textValue());
+            assertEquals("first_visible_stock_event_option",accepted.reason());
+            assertEquals(0,model.calls.get());
+            byte[] evidence=client.materials.get(accepted.evidence().orElseThrow());
+            assertTrue(evidence.length<16000,"bounded stock-event evidence");
+            var data=tree(evidence);
+            assertEquals("xar.ordinary-stock-event-selection/v1",data.path("schema").textValue());
+            assertEquals("ACCEPT",data.path("effective_decision").textValue());
+            assertArrayEquals(ActionCodec.encodeCommand(f.command()),
+                    client.materials.get(ExactRef.fromJson(data.get("proposal_ref"))));
+            assertEquals(ActionCodec.bodySha256(f.command()),data.path("body_sha256").textValue());
             assertEquals(tree(ActionCodec.encodeCommand(f.command())),data.get("proposal"));
             assertEquals(f.command().deadline().toString(),data.path("command_deadline").textValue());
             assertEquals(f.request().deadline().toString(),data.path("planning_deadline").textValue());
@@ -211,45 +215,37 @@ final class EventModelContext73Test {
             assertTrue(client.materials.values().stream().allMatch(bytes->bytes.length<16000),
                     "no complete legacy context was archived for this narrow task");
 
-            var changedReply=reply(f.command()).put("body_sha256","0".repeat(64));
-            model.reply.set(changedReply);
-            var unbound=client.selector.select(f.request(),f.selected());
-            assertEquals(OrdinaryDecisionSelector.Choice.WAIT,unbound.choice(),unbound.reason());
-            assertTrue(unbound.reason().startsWith("model_invalid_selection:"));
-            model.assertHealthy();
-
             var draft=f.selected().trace().finalPlan().orElseThrow();
             var changed=(ObjectNode)OpportunityJson.toNode(draft.detail());
             ((ObjectNode)changed.path("full111_ordinary_event_read").path("renderer").path("options").get(1)).put("widget_enabled",false);
             var rejected=client.selector.select(f.request(),full111Selected(f.request(),f.command(),object(changed)));
             assertEquals(OrdinaryDecisionSelector.Choice.WAIT,rejected.choice(),rejected.reason());
             assertTrue(rejected.reason().contains("first visible authored option"));
-            assertEquals(2,model.calls.get(),"disabled first visible option must never fall through to a legacy request");
+            assertEquals(0,model.calls.get(),"disabled first visible option must never fall through to a provider");
         }
         Path empty=Files.createDirectory(root.resolve("expired"));
         try (Stub model=new Stub();Client client=new Client(model,empty,Clock.fixed(f.command().deadline(),ZoneOffset.UTC))) {
             var expired=client.selector.select(f.request(),f.selected());
             assertEquals(OrdinaryDecisionSelector.Choice.WAIT,expired.choice());
-            assertEquals("model_decision_deadline_exhausted",expired.reason());
+            assertEquals("stock_event_selection_deadline_exhausted",expired.reason());
             assertEquals(0,model.calls.get());
             assertTrue(client.materials.isEmpty());
         }
     }
 
     @Test @Timeout(30)
-    void full111ModelReceivesTheSelectedStockLabelAsBoundedData(@TempDir Path root) throws Exception {
+    void full111DecisionArchivesTheSelectedStockLabelAsBoundedData(@TempDir Path root) throws Exception {
         var f=full111Fixture();
         var detail=f.selected().trace().finalPlan().orElseThrow().detail();
         String label="Keep the \"old oath\".\n[WAIT is only part of this event label.]";
         try (Stub model=new Stub(); Client client=new Client(model,root,Clock.fixed(f.command().deadline().minusSeconds(7),ZoneOffset.UTC))) {
-            model.reply.set(reply(f.command()));
             for (String supplied : List.of(label, "界".repeat(171), " ")) {
                 var plan=full111Selected(f.request(),f.command(),detail.with("selected_option_label",new OpportunityJson.Text(supplied)));
                 var decision=client.selector.select(f.request(),plan);
                 assertEquals(OrdinaryDecisionSelector.Choice.ACCEPT,decision.choice(),decision.reason());
-                byte[] wire=model.requests.getLast();
-                assertTrue(wire.length<16000);
-                var data=userData(tree(wire));
+                byte[] evidence=client.materials.get(decision.evidence().orElseThrow());
+                assertTrue(evidence.length<16000);
+                var data=tree(evidence);
                 var labelData=data.path("rendered_event").get("selected_option_label");
                 assertNotNull(labelData);
                 if (supplied.equals(label)) assertEquals(label,labelData.textValue());
@@ -259,7 +255,7 @@ final class EventModelContext73Test {
                 assertEquals(f.command().deadline().toString(),data.path("command_deadline").textValue());
             }
             model.assertHealthy();
-            assertEquals(3,model.calls.get());
+            assertEquals(0,model.calls.get());
         }
     }
 
