@@ -44,7 +44,15 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
             java.util.function.Function<ExactRef, List<ReadContract<?>>> contracts,
             java.util.function.Function<NativeRequest, RawJson> result, Optional<String> expectedCk3Version, Set<String> extraHelloCapabilities,
             java.util.function.Function<ExactRef,List<RootReadContractCatalog.Family<?,?>>> dynamicFamilies,
-            Optional<String> controlledReviewedSource, Optional<ExactCk3Build> g2Build) {
+            Optional<String> controlledReviewedSource, Optional<ExactCk3Build> g2Build, boolean initializeBaseline) {
+        public SoftwareReadScenario(String profileSha256, String adapterId,
+                java.util.function.Function<ExactRef, List<ReadContract<?>>> contracts,
+                java.util.function.Function<NativeRequest, RawJson> result, Optional<String> expectedCk3Version, Set<String> extraHelloCapabilities,
+                java.util.function.Function<ExactRef, List<RootReadContractCatalog.Family<?, ?>>> dynamicFamilies,
+                Optional<String> controlledReviewedSource, Optional<ExactCk3Build> g2Build) {
+            this(profileSha256, adapterId, contracts, result, expectedCk3Version, extraHelloCapabilities, dynamicFamilies,
+                    controlledReviewedSource, g2Build, false);
+        }
         public SoftwareReadScenario(String profileSha256,String adapterId,java.util.function.Function<ExactRef,List<ReadContract<?>>> contracts,
                 java.util.function.Function<NativeRequest,RawJson> result,Optional<String> expectedCk3Version,Set<String> extraHelloCapabilities,
                 java.util.function.Function<ExactRef,List<RootReadContractCatalog.Family<?,?>>> dynamicFamilies,Optional<String> controlledReviewedSource) {
@@ -81,7 +89,12 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
         }
         SoftwareReadScenario withG2Build(ExactCk3Build build) {
             return new SoftwareReadScenario(profileSha256,adapterId,contracts,result,expectedCk3Version,extraHelloCapabilities,
-                    dynamicFamilies,controlledReviewedSource,Optional.of(build));
+                    dynamicFamilies,controlledReviewedSource,Optional.of(build),initializeBaseline);
+        }
+        /** Use the controlled original packet and Driver to seed the canonical fixture boundary for a read scenario. */
+        public SoftwareReadScenario withInitialBaseline() {
+            return new SoftwareReadScenario(profileSha256, adapterId, contracts, result, expectedCk3Version, extraHelloCapabilities,
+                    dynamicFamilies, controlledReviewedSource, g2Build, true);
         }
         private Optional<String> g2SourceLabel() {
             return g2Build.map(build->build.version()+"@sha256:"+build.executableSha256()).or(()->expectedCk3Version);
@@ -445,7 +458,8 @@ public final class ActionWriterIntegrationFixture implements AutoCloseable {
         Set<String> bridgeCapabilities = Set.copyOf(bridgeCapabilityBuilder);
         byte[] initialPacket = initialSnapshotPacket();
         var initial = seed(originalDriver);
-        if (actionScenarios.stream().anyMatch(SoftwareActionScenario::initializeBaseline)) {
+        if (scenario.filter(SoftwareReadScenario::initializeBaseline).isPresent()
+                || actionScenarios.stream().anyMatch(SoftwareActionScenario::initializeBaseline)) {
             Path baseline = root.resolve("original-initial-native-packet.bin");
             Files.write(baseline, initialPacket, StandardOpenOption.CREATE_NEW);
             bindInitialSoftwareFrame(initial, baseline, driverFile);

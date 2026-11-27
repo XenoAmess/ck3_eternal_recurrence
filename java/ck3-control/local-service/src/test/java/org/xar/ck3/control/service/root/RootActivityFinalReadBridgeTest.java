@@ -387,7 +387,8 @@ final class RootActivityFinalReadBridgeTest {
     /** Activity completion and replay retain their real meaning without publishing a canonical SAVE. */
     @Test void completedActivityAndItsColdReplayLeaveTheActualSavedFrontierUnsaved() throws Exception {
         var selected = new AtomicReference<ActivityNativeContracts.Installation>();
-        try (var fixture = fixture("activity-completed-unsaved-frontier", selected, ActivityFinalIngressData.result())) {
+        var scenario = scenario(selected, ActivityFinalIngressData.result()).withInitialBaseline();
+        try (var fixture = new ActionWriterIntegrationFixture(temporary.resolve("activity-completed-unsaved-frontier"), false, scenario)) {
             var semantic = new NativeSemanticEvidenceVerifier(
                     (same, reference, maximum) -> fixture.archive.readArtifact(same, reference, maximum));
             var cycles = new OrdinaryCycleTransitions(fixture.archive, semantic,
@@ -571,7 +572,11 @@ final class RootActivityFinalReadBridgeTest {
 
     private ActionWriterIntegrationFixture fixture(String name,
             AtomicReference<ActivityNativeContracts.Installation> selected, RawJson originalResult) throws IOException {
-        var scenario = new ActionWriterIntegrationFixture.SoftwareReadScenario(
+        return new ActionWriterIntegrationFixture(temporary.resolve(name), false, scenario(selected, originalResult));
+    }
+    private static ActionWriterIntegrationFixture.SoftwareReadScenario scenario(
+            AtomicReference<ActivityNativeContracts.Installation> selected, RawJson originalResult) {
+        return new ActionWriterIntegrationFixture.SoftwareReadScenario(
                 ActivityFinalIngressData.SOFTWARE_PROFILE_SHA, ActivityFinalIngressData.SOFTWARE_PROFILE_ADAPTER,
                 source -> {
                     var installed = ActivityFinalIngressData.installation(source); selected.set(installed);
@@ -579,7 +584,6 @@ final class RootActivityFinalReadBridgeTest {
                 }, request -> {
                     assertEquals(ActivityNativeContracts.Query.HOSTED.step(), request.step()); return originalResult;
                 });
-        return new ActionWriterIntegrationFixture(temporary.resolve(name), false, scenario);
     }
     private static ActivityNativeContracts.Packet packet(ActionWriterIntegrationFixture fixture,
             ActivityNativeContracts.Installation selected, Session same, PlanningRequest request) {
