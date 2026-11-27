@@ -810,40 +810,15 @@ public final class DriverBootstrap {
 
     static DriverSnapshotFacts.RestoreSeedSupplement readCommittedImportedSeed(ContinuityStorePort.Session same,
             WriterContracts.HistoricalTransition edge,SessionIdentity successor)throws IOException {
-        var details=ContinuityJson.parseObject(edge.details(),ContinuityJson.DOCUMENT_MAX_BYTES);
-        var rawPin=details.get(DriverSnapshotFacts.RestoreSeedSupplement.DETAIL_FIELD);
-        if(rawPin==null)throw new IOException("Committed imported attachment has no original final Driver seed supplement");
-        var pin=WriterContracts.Pin.fromJson(rawPin);
-        // The writer validates the original byte identity before decoding the typed JSON fields.
-        var supplement=DriverSnapshotFacts.RestoreSeedSupplement.decode(
-                same.readPinned(pin,DriverSnapshotFacts.RestoreSeedSupplement.MAXIMUM_BYTES));
-        var delta=StrictJson.object(details.get("driver_snapshot"),java.util.Set.of(
-                "expected_version","expected_epoch","next_epoch","before_sha256","after_sha256"));
-        var before=edge.before().toJson();
-        var after=edge.after().toJson();
+        var supplement=DriverSnapshotFacts.RestoreSeedSupplement.readAttachment(same,edge,successor);
         var current=same.head();
-        var anchor=ContinuityJson.digest(after);
-        if(!current.digest().equals(anchor))
+        if(!current.digest().equals(ContinuityJson.digest(edge.after().toJson())))
             org.xar.ck3.control.application.session.ContinuityBatchJournal.requireCommittedImportedAttachmentContinuation(same,edge);
-        long previousVersion=StrictJson.integer(delta.get("expected_version"),0,StrictJson.MAX_SAFE_INTEGER);
-        long previousEpoch=StrictJson.integer(delta.get("expected_epoch"),0,StrictJson.MAX_SAFE_INTEGER);
-        long nextEpoch=StrictJson.integer(delta.get("next_epoch"),0,StrictJson.MAX_SAFE_INTEGER);
-        var history=ExactRef.fromJson(before.get(WriterContracts.DRIVER_HISTORY_BASELINE_FIELD));
-        StrictJson.require(SavedAttachmentAuthority.KIND.equals(edge.kind())
-                &&!current.snapshotNeedsRecovery()&&current.indexRepairs().isEmpty()
+        StrictJson.require(!current.snapshotNeedsRecovery()&&current.indexRepairs().isEmpty()
                 &&same.head().digest().equals(current.digest())
-                &&supplement.requestId().equals(StrictJson.text(details.get("evidence_id")))
-                &&supplement.successor().equals(successor)
-                &&successor.game().equals(GameGeneration.fromJson(details.get("driver_after_game")))
-                &&successor.game().equals(GameGeneration.fromJson(after.get("game_binding")))
-                &&supplement.fullDriver().equals(ExactRef.fromJson(details.get("restored_full_driver")))
-                &&supplement.fullDriver().sha256().equals(StrictJson.text(delta.get("after_sha256")))
-                &&supplement.driverVersion()==Math.addExact(previousVersion,1)
-                &&supplement.episodeEpoch()==nextEpoch&&(nextEpoch==previousEpoch||nextEpoch==Math.addExact(previousEpoch,1))
-                &&supplement.originalHistoryBasis().equals(history)
-                &&history.equals(ExactRef.fromJson(after.get(WriterContracts.DRIVER_HISTORY_BASELINE_FIELD)))
-                &&history.equals(ExactRef.fromJson(current.state().toJson().get(WriterContracts.DRIVER_HISTORY_BASELINE_FIELD))),
-                "committed imported Driver seed crossed its exact attachment, successor, delta or original history");
+                &&supplement.originalHistoryBasis().equals(ExactRef.fromJson(
+                        current.state().toJson().get(WriterContracts.DRIVER_HISTORY_BASELINE_FIELD))),
+                "committed imported Driver seed crossed its current head or original history");
         return supplement;
     }
 

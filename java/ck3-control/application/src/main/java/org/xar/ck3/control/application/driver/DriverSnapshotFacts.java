@@ -1,5 +1,6 @@
 package org.xar.ck3.control.application.driver;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -12,7 +13,10 @@ import java.util.Set;
 import java.util.TreeMap;
 import org.xar.ck3.control.application.checkpoint.DriverCheckpointStore;
 import org.xar.ck3.control.application.checkpoint.DriverStateSnapshot;
+import org.xar.ck3.control.application.checkpoint.SavedAttachmentAuthority;
 import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
+import org.xar.ck3.control.continuity.ContinuityJson;
+import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 import org.xar.ck3.control.continuity.writer.WriterContracts;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.GameGeneration;
@@ -109,6 +113,38 @@ public final class DriverSnapshotFacts {
             byte[] bytes = DriverJson.encode(obj(row));
             StrictJson.require(bytes.length <= MAXIMUM_BYTES, "bounded restored seed supplement required");
             return bytes;
+        }
+
+        /** Reads the exact historical seed as data. Current-head admission belongs to the caller. */
+        public static RestoreSeedSupplement readAttachment(ContinuityStorePort.Session same,
+                WriterContracts.HistoricalTransition edge, SessionIdentity successor) throws IOException {
+            var details = ContinuityJson.parseObject(edge.details(), ContinuityJson.DOCUMENT_MAX_BYTES);
+            var rawPin = details.get(DETAIL_FIELD);
+            if (rawPin == null) throw new IOException("Committed imported attachment has no original final Driver seed supplement");
+            var pin = WriterContracts.Pin.fromJson(rawPin);
+            var supplement = decode(same.readPinned(pin, MAXIMUM_BYTES));
+            var delta = StrictJson.object(details.get("driver_snapshot"), Set.of(
+                    "expected_version", "expected_epoch", "next_epoch", "before_sha256", "after_sha256"));
+            var before = edge.before().toJson();
+            var after = edge.after().toJson();
+            long previousVersion = StrictJson.integer(delta.get("expected_version"), 0, StrictJson.MAX_SAFE_INTEGER);
+            long previousEpoch = StrictJson.integer(delta.get("expected_epoch"), 0, StrictJson.MAX_SAFE_INTEGER);
+            long nextEpoch = StrictJson.integer(delta.get("next_epoch"), 0, StrictJson.MAX_SAFE_INTEGER);
+            var history = ExactRef.fromJson(before.get(WriterContracts.DRIVER_HISTORY_BASELINE_FIELD));
+            StrictJson.require(SavedAttachmentAuthority.KIND.equals(edge.kind())
+                    && supplement.requestId().equals(StrictJson.text(details.get("evidence_id")))
+                    && supplement.successor().equals(successor)
+                    && successor.game().equals(GameGeneration.fromJson(details.get("driver_after_game")))
+                    && successor.game().equals(GameGeneration.fromJson(after.get("game_binding")))
+                    && supplement.fullDriver().equals(ExactRef.fromJson(details.get("restored_full_driver")))
+                    && supplement.fullDriver().sha256().equals(StrictJson.text(delta.get("after_sha256")))
+                    && supplement.driverVersion() == Math.addExact(previousVersion, 1)
+                    && supplement.episodeEpoch() == nextEpoch
+                    && (nextEpoch == previousEpoch || nextEpoch == Math.addExact(previousEpoch, 1))
+                    && supplement.originalHistoryBasis().equals(history)
+                    && history.equals(ExactRef.fromJson(after.get(WriterContracts.DRIVER_HISTORY_BASELINE_FIELD))),
+                    "committed imported Driver seed crossed its exact attachment, successor, delta or original history");
+            return supplement;
         }
 
         public static RestoreSeedSupplement decode(byte[] bytes) {
