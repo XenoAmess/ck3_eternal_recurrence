@@ -66,7 +66,11 @@ public final class RootSavedOrdinaryReopen {
         public CheckpointPair.FileWitness materialWitness() { return original.materialWitness(); }
         public WriterContracts.Pin attachment() { return original.edge().eventPin(); }
         public ContinuityState attachmentHead() { return original.edge().after(); }
-        public SessionIdentity successor() { return original.successor(); }
+        public SessionIdentity successor() { return original.recoveryBasis().successor(); }
+        CommittedData data() { return original; }
+        void requireContext(RootRuntimeContext identical) {
+            StrictJson.require(identical == context, "committed imported ordinary custody is from a different installed context");
+        }
 
         public void requireCurrent(ContinuityStorePort.Session same) throws IOException {
             context.writer().requireSession(same);
@@ -97,7 +101,8 @@ public final class RootSavedOrdinaryReopen {
 
     /** Exact v5 attachment DATA; its construction alone grants no current Game or writer authority. */
     record CommittedData(WriterContracts.HistoricalTransition edge, String attachmentDigest,
-            CheckpointPair pair, CheckpointPair.FileWitness materialWitness, SessionIdentity successor) { }
+            CheckpointPair pair, CheckpointPair.FileWitness materialWitness, SavedAttachmentSourceStore.ImportedOrigin importedOrigin,
+            SavedAttachmentSourceStore.ImportedRecoveryBasis recoveryBasis) { }
 
     static CommittedData readImmediateCommitted(ContinuityStorePort.Session same, WriterContracts.Pin attachment) throws IOException {
         return readCommitted(same, attachment, true);
@@ -130,7 +135,7 @@ public final class RootSavedOrdinaryReopen {
                     || !basis.secondNative().reference().equals(sources.restoredNative())
                     || !sources.restoredNative().equals(ExactRef.fromJson(opening.get("original_native_packet"))))
                 throw new IOException("committed imported material, READ or successor differs from the original attachment");
-            return new CommittedData(edge, digest, pair, sources.material(), successor);
+            return new CommittedData(edge, digest, pair, sources.material(), origin, basis);
         } catch (IllegalArgumentException | java.time.DateTimeException invalid) {
             throw new IOException("invalid committed imported ordinary attachment DATA", invalid);
         }

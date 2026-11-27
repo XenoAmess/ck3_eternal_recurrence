@@ -719,6 +719,16 @@ public final class RootInstalledCatalog {
         return committedImported;
     }
 
+    RootCommittedOrdinaryRestoration captureCommittedImportedDomainOriginal(ContinuityStorePort.Session same,
+            RootSavedOrdinaryReopen.Committed ordinary, RootExitedSavedMaterialSource.PreparedImportedRestore savedSource,
+            Instant deadline) throws IOException {
+        synchronized (this) {
+            if (committedImported != Objects.requireNonNull(ordinary))
+                throw new IOException("committed ordinary domain origin belongs to another installed catalog");
+        }
+        return RootCommittedOrdinaryRestoration.capture(context, same, ordinary, savedSource, deadline);
+    }
+
     /** Actual private attachment, then domain originals; no capability observation or cycle rebind runs in this scope. */
     public void adoptRestored(ContinuityStorePort.Session same,
             org.xar.ck3.control.application.checkpoint.RestoreCheckpointService actualIssuer,
