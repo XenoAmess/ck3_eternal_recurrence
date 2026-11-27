@@ -92,7 +92,7 @@ final class CommittedImportedDriverHistory {
         var seed = DriverSnapshotFacts.RestoreSeedSupplement.readAttachment(same, original.attachment(), owner);
         var semantic = original.archivedSemantic();
         var full = semantic.originalDriver();
-        StrictJson.require(seed.fullDriver().bytes() == full.bytes() && seed.fullDriver().sha256().equals(full.sha256()),
+        StrictJson.require(seed.fullDriver().equals(full),
                 "committed imported REBIND SEM changed its attached full Driver");
         new NativeSemanticEvidenceVerifier((borrowed, ref, maximum) -> {
             StrictJson.require(borrowed == same && ref.bytes() <= maximum,
