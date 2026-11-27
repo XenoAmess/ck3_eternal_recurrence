@@ -6452,6 +6452,31 @@ public final class ContinuityBatchJournal implements BatchJournal {
         store.requireSession(same);
         var head=same.head();
         var original=readImportedRestoreRebindForStartup(same,actualAttachment);
+        return readCommittedImportedControllerHistory(same,head,original);
+    }
+
+    record SettledImportedControllerData(ImportedRestoreRebindReadback attachment,
+            CommittedImportedControllerHistory controller, CommittedImportedSettledFrontier.Data frontier) { }
+
+    /** Verifies the original attachment, departed Controller history, and settled successor suffix in one Writer. */
+    SettledImportedControllerData readSettledImportedControllerHistory(ContinuityStorePort.Session same,
+            WriterContracts.Pin actualAttachment)throws IOException {
+        store.requireSession(same);
+        var head = same.head();
+        var history = CommittedImportedRebindOriginal.readHistorical(same,actualAttachment);
+        var frontier = transitions.readCommittedImportedSettledFrontier(same,history);
+        var attachment = readImportedRestoreAttachment(same,head,history.original().attachment(),
+                frontier.consumedSuccessorBatches());
+        var controller = readCommittedImportedControllerHistory(same,head,attachment);
+        StrictJson.require(controller.batchPrefix().equals(frontier.batchPrefix())
+                && controller.nextBatchSequence() == frontier.nextBatchSequence()
+                && controller.committedSavedDays() == frontier.committedSavedDays(),
+                "settled imported successor changed the original Controller sequence or saved days");
+        return new SettledImportedControllerData(attachment,controller,frontier);
+    }
+
+    private CommittedImportedControllerHistory readCommittedImportedControllerHistory(ContinuityStorePort.Session same,
+            WriterContracts.Head head, ImportedRestoreRebindReadback original)throws IOException {
         var before=original.attachment().before();
         var owner=original.recoveryBasis().departed();
         var pins=canonicalEventPins(same,head).headMap(before.sequence(),true);
@@ -6578,6 +6603,12 @@ public final class ContinuityBatchJournal implements BatchJournal {
                         .map(CommittedImportedRebindOriginal.Data::consumedSuccessorBatches).orElseGet(List::of);
             }
         }
+        return readImportedRestoreAttachment(same,head,edge,consumedSuccessorBatches);
+    }
+
+    private ImportedRestoreRebindReadback readImportedRestoreAttachment(ContinuityStorePort.Session same,
+            WriterContracts.Head head, WriterContracts.HistoricalTransition edge,
+            List<String> consumedSuccessorBatches)throws IOException {
         try {
             var details=ContinuityJson.parseObject(edge.details(),ContinuityJson.DOCUMENT_MAX_BYTES);
             var basis=SavedAttachmentSourceStore.importedRecoveryBasis(details)

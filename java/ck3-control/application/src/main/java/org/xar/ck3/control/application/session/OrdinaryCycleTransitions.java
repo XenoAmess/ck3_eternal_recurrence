@@ -909,6 +909,10 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
     org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive restartArchive(ContinuityStorePort.Session same){
         StrictJson.require(active.get()==same,"restart originals require the original authority scope");return archive.withSession(same);
     }
+    CommittedImportedSettledFrontier.Data readCommittedImportedSettledFrontier(ContinuityStorePort.Session same,
+            CommittedImportedRebindOriginal.Historical history)throws IOException {
+        return CommittedImportedSettledFrontier.read(same,history,this,archive);
+    }
     public Set<String> kinds() { return Set.of(CYCLE_KIND, BATCH_KIND, NEXT_BASELINE_KIND); }
     <T> T withLocked(ContinuityStorePort.Session session, LockedWork<T> work) throws IOException {
         Objects.requireNonNull(session); Objects.requireNonNull(work);
