@@ -3788,10 +3788,11 @@ public final class ContinuityBatchJournal implements BatchJournal {
         record Observed(org.xar.ck3.control.continuity.ObservedGameplayEntry.Details details) implements SameGameEntry {
             public Observed { Objects.requireNonNull(details); }
         }
-        record CommittedImportedRebind(ExactRef attachment, ExactRef rebind) implements SameGameEntry {
+        record CommittedImportedRebind(ExactRef attachment, ExactRef rebind, CheckpointPair importedPair) implements SameGameEntry {
             public CommittedImportedRebind {
                 Objects.requireNonNull(attachment);
                 Objects.requireNonNull(rebind);
+                Objects.requireNonNull(importedPair);
             }
         }
         record ImportedSaved(ExactRef canonicalEntry, CheckpointPair savedPair, ObservationIdentity opening,
@@ -6622,7 +6623,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
         var head = same.head();
         StrictJson.require(owner.equals(frontier.owner()) && ContinuityJson.same(head.state().toJson(), frontier.history().current().toJson()),
                 "settled imported history crossed its actual successor or held head");
-        var start = new SameGameEntry.CommittedImportedRebind(original.attachment().eventPin().reference(), original.rebind().eventPin().reference());
+        var start = new SameGameEntry.CommittedImportedRebind(original.attachment().eventPin().reference(), original.rebind().eventPin().reference(), original.pair());
         var history = new java.util.ArrayList<ExactRef>();
         history.add(start.attachment());
         history.add(start.rebind());

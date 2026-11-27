@@ -128,12 +128,14 @@ public final class RootOrdinaryRuntimeAssembly {
         }
         return output;
     }
-    private static RootApplicationAssembly.FreshSessionConfiguration retainImportedCheckpointPaths(
-            RootApplicationAssembly.FreshSessionConfiguration base, NativeLaunchPlan game, CheckpointPair original)
-            throws IOException {
+    static RootApplicationAssembly.FreshSessionConfiguration retainImportedCheckpointPaths(
+            RootApplicationAssembly.FreshSessionConfiguration base, NativeLaunchPlan game,
+            CheckpointPair imported, CheckpointPair latestConfirmed) throws IOException {
+        if (!latestConfirmed.lineageId().equals(imported.lineageId()))
+            throw new IOException("successor SAVE crossed the original imported lineage");
         var paths = base.checkpoints();
         var checkpoints = new RootStartupConfiguration.CheckpointPaths(paths.driverCheckpoint(),paths.checkpointEvidence(),
-                paths.attachmentEvidence(),original.lineageId(),importedCheckpointOutput(game,original));
+                paths.attachmentEvidence(),latestConfirmed.lineageId(),importedCheckpointOutput(game,imported));
         return new RootApplicationAssembly.FreshSessionConfiguration(base.authorityId(),base.policy(),base.freshness(),
                 checkpoints,base.cyclePolicy(),base.deadline());
     }
@@ -1222,8 +1224,9 @@ public final class RootOrdinaryRuntimeAssembly {
             if(!configuredDecision.codexFile())throw new IOException("committed imported recovery requires the configured direct Codex file provider");
             var stage=readCommittedImportedRecovery(attached,loaded,input);
             var history=core.writer().locked(same->core.readCommittedImportedControllerHistory(same,stage.original().attachment(),cyclePolicy));
+            var imported = stage.original().pair();
             var configuration=retainImportedCheckpointPaths(sessionConfiguration(input.deadline()),
-                    attached.launchPlan(),stage.original().pair());
+                    attached.launchPlan(),imported,imported);
             var selector=new RootOnlineDecisionSelector(configuredDecision,clock,raw->{
                 var writer=core.writer();var active=writer.activeSession();
                 if(active.isPresent())return core.archive().withSession(active.orElseThrow()).preserveMaterial(raw);
@@ -1852,9 +1855,9 @@ public Running finishObservedMap(NativeFreshSnapshotPort.Received received, Init
             installed=runOperationPhase(owner.clock,owner.config.operationTimeout(),phaseDeadline->
                     owner.catalogs.install(owner.core,owner.game,source,owner.core.planningReads(),owner.clock,phaseDeadline));
             var configuration=runOperationPhase(owner.clock,owner.config.operationTimeout(),owner::sessionConfiguration);
-            if (data.startingPoint() instanceof ContinuityBatchJournal.SameGameEntry.CommittedImportedRebind) {
+            if (data.startingPoint() instanceof ContinuityBatchJournal.SameGameEntry.CommittedImportedRebind imported) {
                 configuration = retainImportedCheckpointPaths(configuration,owner.game.launchPlan(),
-                        data.controller().savedPair().orElseThrow());
+                        imported.importedPair(),data.controller().savedPair().orElseThrow());
             }
             var session=owner.core.finishSettledSameGame(installed,driver,configuration,owner.services(source));
             owner.core.completeSettledEventOutcomeOnly(session,data,deadline);
