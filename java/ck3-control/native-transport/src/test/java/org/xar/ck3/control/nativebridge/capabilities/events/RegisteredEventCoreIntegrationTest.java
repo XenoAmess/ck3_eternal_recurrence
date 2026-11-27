@@ -262,6 +262,7 @@ final class RegisteredEventCoreIntegrationTest {
             assertTrue(diagnostic.path("selection").isNull());
             assertTrue(diagnostic.path("context").isNull());
             if (observed == 17) {
+                assertEquals("lyd.1002", diagnostic.path("event_definition_key").textValue());
                 var read = diagnostic.path("original_plan").path("full111_ordinary_event_read");
                 assertEquals("lyd.1002", read.path("event_definition_key").textValue());
                 assertEquals(originalFull, ExactRef.fromJson(read.path("original_full")));
@@ -270,6 +271,7 @@ final class RegisteredEventCoreIntegrationTest {
                 assertEquals(originalLyd, ExactRef.fromJson(read.path("original_event_read")));
                 assertFalse(read.has("options"));
             } else {
+                assertTrue(diagnostic.path("event_definition_key").isNull());
                 assertTrue(diagnostic.path("original_plan").isNull());
                 assertFalse(draft.detail().members().containsKey("full111_ordinary_event_read"));
             }

@@ -1,5 +1,6 @@
 package org.xar.ck3.control.application.planning.events;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.NullNode;
 import java.util.List;
 import java.util.Objects;
@@ -49,13 +50,26 @@ public final class NativeWindowDiagnostic {
                 .put("diagnostic_reason", source.reason()).put("offline_followup_required", true).putNull("selection");
         body.set("origin", ProposalLifecycleCodec.observation(source.origin())); body.set("snapshot", snapshot);
         body.set("context", source.context().<com.fasterxml.jackson.databind.JsonNode>map(DriverJson::toNode).orElse(NullNode.instance));
-        body.set("original_plan", source.originalPlan().<com.fasterxml.jackson.databind.JsonNode>map(DriverJson::toNode).orElse(NullNode.instance));
+        JsonNode originalPlan = source.originalPlan().<JsonNode>map(DriverJson::toNode).orElse(NullNode.instance);
+        body.set("original_plan", originalPlan);
         var history = body.putArray("retained_history"); source.retainedHistory().forEach(row -> history.add(DriverJson.toNode(row)));
         var context = source.context().map(DriverJson::toNode).orElse(null);
         if (isEvent) {
             body.set("current_event_instance_id", event.get("instance_id"));
-            body.set("event_definition_key", context == null || !context.has("event_definition_key")
-                    ? NullNode.instance : context.get("event_definition_key"));
+            JsonNode definition = context == null ? null : context.get("event_definition_key");
+            if (definition == null) {
+                // The exact Full111 read can identify the event even if the option renderer failed.
+                var read = originalPlan.path(RegisteredEventCore.FULL111_EVENT_READ);
+                var instance = event.path("instance_id");
+                var observedInstance = read.path("instance_id");
+                var observedDefinition = read.path("event_definition_key");
+                if (instance.isIntegralNumber() && observedInstance.isIntegralNumber()
+                        && instance.bigIntegerValue().equals(observedInstance.bigIntegerValue())
+                        && observedDefinition.isTextual() && !observedDefinition.textValue().isBlank()) {
+                    definition = observedDefinition;
+                }
+            }
+            body.set("event_definition_key", definition == null ? NullNode.instance : definition);
         } else if(isInteraction) {
             body.set("pending_interaction_id", interaction.get("instance_id"));
             body.set("interaction_definition_key", context == null || !context.path("definition").has("canonical_key")
