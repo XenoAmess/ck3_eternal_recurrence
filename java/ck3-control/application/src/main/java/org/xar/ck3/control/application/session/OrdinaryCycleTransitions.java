@@ -2061,11 +2061,10 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         if(seedRow==null)throw new IOException("Committed attachment has no original pinned final Driver seed");
         try {
             var pin=WriterContracts.Pin.fromJson(seedRow);
-            var bytes=same.readPinned(pin,RestoreSeedSupplement.MAXIMUM_BYTES);
-            var seed=RestoreSeedSupplement.decode(bytes);
+            var seed=RestoreSeedSupplement.decode(same.readPinned(pin,RestoreSeedSupplement.MAXIMUM_BYTES));
             var delta=ContinuityJson.object(details.get("driver_snapshot"));
             var stamp=ContinuityJson.parseObject(archive.loadMaterial(fresh.driverStamp()).bytes(),ReadinessArchive.Role.DRIVER_STAMP.maximumBytes());
-            if(!Arrays.equals(bytes,seed.encode())||!seed.requestId().equals(original.recoveryBasis().requestId())
+            if(!seed.requestId().equals(original.recoveryBasis().requestId())
                     ||!seed.successor().equals(original.recoveryBasis().successor())
                     ||!seed.fullDriver().equals(ExactRef.fromJson(details.get("restored_full_driver")))
                     ||!seed.fullDriver().equals(fresh.originalDriver())||!seed.fullDriver().sha256().equals(text(delta,"after_sha256"))
