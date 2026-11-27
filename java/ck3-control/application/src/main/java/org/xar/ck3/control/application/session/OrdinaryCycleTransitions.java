@@ -1046,6 +1046,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                 StrictJson.require(state.pending().isEmpty() || state.pending().orElseThrow().equals(receiptRef), "another AUTO already awaits its fresh SEM");
                 StrictJson.require(find(state, receiptRef).isEmpty(), "a canonical AUTO already completed in this cycle branch cannot be counted again");
                 if (!matchesSettledActionContinuation(state, receipt)
+                        && !matchesRecordedArchivedFull111Completion(session, actualHead.state(), owner, receipt, archive.withSession(session))
                         && !matchesRecordedKnownCompletion(session, actualHead, state, receipt)
                         && !matchesRecordedSwayReadContinuation(session, actualHead, state, receipt))
                     requireCurrentFrame(actualHead.state(), state, receipt.command().before());
@@ -3175,6 +3176,55 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         requireObservedContinuation(adopted.frame(), before);
         StrictJson.require(before.frame().revision().compareTo(adopted.frame().frame().revision()) >= 0,
                 "canonical action regressed its adopted observation's public revision");
+        return true;
+    }
+
+    /** The original proof closes an acknowledged event even when its guard was newer than the named opening. */
+    static boolean matchesRecordedArchivedFull111Completion(ContinuityStorePort.Session same, ContinuityState current,
+            SessionIdentity owner, ActionReceipt receipt, ActionPorts.OutcomeArchive originals) throws IOException {
+        var body = current.toJson();
+        if (current.status() != ContinuityState.Status.REPAIR_REQUIRED
+                || !body.hasNonNull(WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD)
+                || !receipt.command().operation().value().equals(
+                        org.xar.ck3.control.application.capabilities.NativeActionSteps.FULL111_EVENT_SELECT_STEP)
+                || !(receipt.state() instanceof ActionState.Settled settled)
+                || !(settled.settlement() instanceof ActionState.Applied applied)
+                || !(applied.observation().provenance() instanceof org.xar.ck3.control.application.action.ObservationProvenance.Query)
+                || applied.observation().supportingEvidence().size() != 2) return false;
+        var proof = StrictJson.parse(originals.loadMaterial(applied.observation().supportingEvidence().getLast()).bytes());
+        if (!ContinuityBatchJournal.ARCHIVED_FULL111_EVENT_PROOF.equals(proof.path("schema").asText())) return false;
+        StrictJson.object(proof, Set.of("schema", "capture_receipt", "fresh_full_ack"));
+
+        var bound = ExternalSaveOrigin.fromJson(ContinuityJson.parseObject(originals.loadMaterial(
+                ExactRef.fromJson(body.get(WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD))).bytes(),
+                ContinuityJson.DOCUMENT_MAX_BYTES));
+        StrictJson.require(bound.successor().equals(owner), "archived Full111 completion changed its actual named Game owner");
+        bound.requireOriginal(same);
+        var command = receipt.command();
+        bound.requireSemantic(command.before());
+        bound.requireSemantic(applied.observation().after());
+
+        var record = originals.loadRecord(ContinuityActionJournal.recordHead(current).orElseThrow());
+        var source = ExactRef.fromJson(proof.get("capture_receipt"));
+        var capture = originals.loadReceipt(source);
+        StrictJson.require(record.receipt().equals(receipt) && capture.sequence() > bound.predecessorSequence()
+                && capture.sequence() < receipt.sequence()
+                && capture.state() instanceof ActionState.Unknown unknown
+                && unknown.evidence().contains(ExactRef.fromJson(proof.get("fresh_full_ack")))
+                && originals.receiptReferenceOf(capture).equals(source)
+                && capture.command().equals(command) && capture.bodySha256().equals(receipt.bodySha256())
+                && ActionTransitions.attempt(capture.state()).filter(settled.attempt()::equals).isPresent()
+                && ActionTransitions.dispatch(capture.state()).filter(settled.dispatch()::equals).isPresent(),
+                "archived Full111 completion changed its canonical positive original or captured postcondition");
+        while (record.receipt().sequence() > capture.sequence()) {
+            var prior = originals.loadRecord(record.previous().orElseThrow());
+            StrictJson.require(prior.receipt().sequence() < record.receipt().sequence()
+                    && prior.receipt().command().equals(command) && prior.receipt().bodySha256().equals(receipt.bodySha256())
+                    && prior.receipt().state() instanceof ActionState.Unknown,
+                    "archived Full111 completion crossed another original or regressed its action chain");
+            record = prior;
+        }
+        StrictJson.require(record.receipt().equals(capture), "archived Full111 capture is absent from its actual current action chain");
         return true;
     }
 

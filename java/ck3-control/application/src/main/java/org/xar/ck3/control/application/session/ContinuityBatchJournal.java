@@ -4316,6 +4316,8 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 Optional.of(Objects.requireNonNull(source)));
     }
 
+    public static final String ARCHIVED_FULL111_EVENT_PROOF = "xar.java-full111-event-archived-zero-queue-proof/v1";
+
     private PreparedExternalSave issuedRecordedExternalSave;
 
     public static final class PreparedExternalSave {
@@ -4326,9 +4328,11 @@ public final class ContinuityBatchJournal implements BatchJournal {
         private final Optional<String> openBatch;
         private final Optional<ExactRef> interruptedZeroDispatch;
         private final List<ActionReceipt> full111EventCaptures;
+        private final Optional<ActionReceipt> settledFull111Event;
 
         private PreparedExternalSave(ExternalSaveOrigin origin, SettledSameGameData history, Optional<String> recordedDigest,
-                List<String> consumedBatches, Optional<String> openBatch, Optional<ExactRef> interruptedZeroDispatch, List<ActionReceipt> full111EventCaptures) {
+                List<String> consumedBatches, Optional<String> openBatch, Optional<ExactRef> interruptedZeroDispatch,
+                List<ActionReceipt> full111EventCaptures, Optional<ActionReceipt> settledFull111Event) {
             this.origin = origin;
             this.history = history;
             this.recordedDigest = recordedDigest;
@@ -4336,11 +4340,13 @@ public final class ContinuityBatchJournal implements BatchJournal {
             this.openBatch = openBatch;
             this.interruptedZeroDispatch = interruptedZeroDispatch;
             this.full111EventCaptures = List.copyOf(full111EventCaptures);
+            this.settledFull111Event = settledFull111Event;
         }
 
         public ExternalSaveOrigin origin() { return origin; }
         public SettledSameGameData history() { return history; }
         public List<ActionReceipt> full111EventCaptures() { return full111EventCaptures; }
+        public Optional<ActionReceipt> settledFull111Event() { return settledFull111Event; }
         public Optional<ActionReceipt> pendingFull111Event() {
             return full111EventCaptures.isEmpty() ? Optional.empty() : Optional.of(full111EventCaptures.getLast());
         }
@@ -4403,7 +4409,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 previous.interruptedZeroDispatch.or(original::zeroDispatchHead));
         origin.requirePreviousOrigin(original);
         origin.requireOriginal(head.state());
-        return new PreparedExternalSave(origin, previous.history(), Optional.empty(), previous.consumedBatches, Optional.empty(), Optional.empty(), List.of());
+        return new PreparedExternalSave(origin, previous.history(), Optional.empty(), previous.consumedBatches, Optional.empty(), Optional.empty(), List.of(), Optional.empty());
     }
 
     private PreparedExternalSave replayRecordedExternalSave(ContinuityStorePort.Session same, SessionIdentity departed,
@@ -4455,9 +4461,35 @@ public final class ContinuityBatchJournal implements BatchJournal {
             boolean reboundOpening = false;
             Optional<ExactRef> interruptedAction = Optional.empty();
             List<ActionReceipt> captures = List.of();
+            Optional<ActionReceipt> closedAction = Optional.empty();
+            boolean interruptedBoundarySeen = false;
+            boolean retainedCycle = false;
             var consumed = new java.util.ArrayList<>(previousBatches);
             for (int index = 1; index < edges.size(); index++) {
                 var edge = edges.get(index);
+                if (interruptedBoundarySeen) {
+                    StrictJson.require(!captures.isEmpty(), "the original zero-dispatch boundary cannot carry a later effect");
+                    if (closedAction.isEmpty()) {
+                        var completion = requireExternalFull111Closure(same, edge, origin, old.source(), captures.getLast());
+                        closedAction = Optional.of(completion.getValue());
+                        interruptedAction = Optional.of(completion.getKey());
+                    } else {
+                        var payload = ContinuityJson.parseObject(edge.details(), ContinuityJson.DOCUMENT_MAX_BYTES);
+                        StrictJson.require(!retainedCycle && OrdinaryCycleTransitions.CYCLE_KIND.equals(edge.kind())
+                                && "RETAIN".equals(payload.path("operation").asText()),
+                                "named Full111 recovery crossed the exact pending original cycle");
+                        var closure = closedAction.orElseThrow();
+                        var request = transitions.withLocked(same, () -> {
+                            var ref = transitions.restartArchive(same).receiptReferenceOf(closure);
+                            StrictJson.require(ref.equals(ExactRef.fromJson(payload.get("receipt_ref"))),
+                                    "named Full111 RETAIN must carry its exact canonical receipt");
+                            return new WriterContracts.Request(edge.kind(), edge.details(), List.of(ref));
+                        });
+                        requireCommittedImportedBatchReduction(edge, request);
+                        retainedCycle = true;
+                    }
+                    continue;
+                }
                 if (DomainBodies.IMPORT_KIND.equals(edge.kind())) {
                     if (reboundOpening) {
                         StrictJson.require(open != null, "existing-focus read belongs to an actual open successor batch");
@@ -4470,8 +4502,11 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     continue;
                 }
                 if (WriterContracts.ACTION_LIFECYCLE_KIND.equals(edge.kind())) {
-                    int boundaryIndex = edges.size() - 1;
-                    StrictJson.require(interrupted && open != null && index + 3 <= boundaryIndex,
+                    int boundaryIndex = index;
+                    while (boundaryIndex < edges.size() && WriterContracts.ACTION_LIFECYCLE_KIND.equals(edges.get(boundaryIndex).kind()))
+                        boundaryIndex++;
+                    StrictJson.require(interrupted && open != null && index + 3 <= boundaryIndex && boundaryIndex < edges.size()
+                            && OrdinaryCycleTransitions.BATCH_KIND.equals(edges.get(boundaryIndex).kind()),
                             "named recovery requires a single original Full111 action at the end of its open batch");
                     var action = requireExternalFull111Action(same, edges.subList(index, boundaryIndex), origin, old.source());
                     interruptedAction = Optional.of(action.getKey());
@@ -4485,12 +4520,13 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 String batch = StrictJson.text(payload.get("batch_id"));
                 var boundary = JournalKind.valueOf(StrictJson.text(payload.get("boundary")));
                 if (boundary == JournalKind.BATCH_INTERRUPTED) {
-                    StrictJson.require(interrupted && index == edges.size() - 1 && interruptedAction.isPresent()
+                    StrictJson.require(interrupted && interruptedAction.isPresent()
                             && ContinuityActionJournal.recordHead(edge.before()).equals(interruptedAction)
                             && "java-ordinary-batch-interruption/v2".equals(StrictJson.text(payload.get("source")))
                             && OrdinaryCycleTransitions.sessionFromJson(payload.get("session")).equals(successor),
                             "named recovery interrupted boundary requires its actual Full111 journal result");
                     requireCommittedImportedBatchReduction(edge, new WriterContracts.Request(edge.kind(), edge.details(), List.of()));
+                    interruptedBoundarySeen = true;
                 } else {
                     var reduced = OrdinaryCycleTransitions.replayCommittedBatchMetadata(edge.before(), successor, batch, boundary, edge)
                             .toJson().put("sequence", edge.sequence()).put("last_event_identity", edge.eventIdentity());
@@ -4511,13 +4547,54 @@ public final class ContinuityBatchJournal implements BatchJournal {
             var last = edges.getLast();
             StrictJson.require(last.sequence() == state.sequence()
                     && ContinuityJson.digest(last.after().toJson()).equals(head.digest())
+                    && interrupted == interruptedBoundarySeen
                     && interrupted == interruptedAction.isPresent()
                     && ContinuityActionJournal.recordHead(state).filter(interruptedAction.orElse(origin.actionHead())::equals).isPresent(),
                     "named-save re-entry history does not end at the held head");
-            return new PreparedExternalSave(origin, old, Optional.of(head.digest()), consumed, Optional.ofNullable(open), captures.isEmpty() ? interruptedAction : Optional.empty(), captures);
+            return new PreparedExternalSave(origin, old, Optional.of(head.digest()), consumed, Optional.ofNullable(open),
+                    captures.isEmpty() ? interruptedAction : Optional.empty(), captures, closedAction);
         });
         StrictJson.require(live.digest().equals(same.head().digest()), "named-save re-entry changed its held writer");
         return prepared;
+    }
+
+    private java.util.Map.Entry<ExactRef, ActionReceipt> requireExternalFull111Closure(ContinuityStorePort.Session same,
+            WriterContracts.HistoricalTransition edge, ExternalSaveOrigin origin, G2Source source, ActionReceipt pending) throws IOException {
+        return transitions.withLocked(same, () -> {
+            var archive = transitions.restartArchive(same);
+            var recorded = verifyExternalFull111Closure(edge, pending, source, archive);
+            StrictJson.require(OrdinaryCycleTransitions.matchesRecordedArchivedFull111Completion(same, edge.after(), origin.successor(),
+                    recorded.getValue(), archive), "named recovery requires its exact archived Full111 postcondition");
+            return recorded;
+        });
+    }
+
+    static java.util.Map.Entry<ExactRef, ActionReceipt> verifyExternalFull111Closure(WriterContracts.HistoricalTransition edge,
+            ActionReceipt pending, G2Source source, ActionPorts.OutcomeArchive archive) {
+        var payload = StrictJson.object(ContinuityJson.parseObject(edge.details(), ContinuityJson.DOCUMENT_MAX_BYTES),
+                java.util.Set.of("evidence_id", "receipt_ref", "source"));
+        var ref = ExactRef.fromJson(payload.get("receipt_ref"));
+        var record = archive.loadRecord(ref);
+        var receipt = record.receipt();
+        var command = pending.command();
+        StrictJson.require(WriterContracts.ACTION_LIFECYCLE_KIND.equals(edge.kind())
+                && record.previous().equals(ContinuityActionJournal.recordHead(edge.before()))
+                && record.previous().map(archive::loadRecord).map(org.xar.ck3.control.application.action.ActionRecord::receipt)
+                        .filter(pending::equals).isPresent()
+                && ContinuityActionJournal.recordHead(edge.after()).filter(ref::equals).isPresent()
+                && ref.equals(archive.recordReferenceOf(record))
+                && receipt.sequence() == edge.sequence() && command.equals(receipt.command())
+                && pending.bodySha256().equals(receipt.bodySha256()) && receipt.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED
+                && StrictJson.text(payload.get("evidence_id")).equals(command.actionId() + ":" + receipt.sequence())
+                && ContinuityJson.same(payload.get("source"), org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.source(source))
+                && edge.eventIdentity().equals(new WriterContracts.Request(edge.kind(), edge.details(), List.of()).identity()),
+                "named recovery closure changed its exact original attempt, batch or action history");
+        ActionTransitions.validate(Optional.of(pending), command, receipt.bodySha256(), receipt.state());
+        var expected = edge.before().toJson().put("sequence", edge.sequence()).put("last_event_identity", edge.eventIdentity());
+        expected.set(WriterContracts.ACTION_LIFECYCLE_FIELD, edge.after().toJson().get(WriterContracts.ACTION_LIFECYCLE_FIELD));
+        StrictJson.require(ContinuityJson.same(expected, edge.after().toJson()),
+                "named Full111 closure may only append its canonical original effect");
+        return java.util.Map.entry(ref, receipt);
     }
 
     static ExactRef verifyExternalZeroDispatch(List<WriterContracts.HistoricalTransition> edges, ExternalSaveOrigin origin,
@@ -4667,7 +4744,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     "external save observation requires the actual committed administrative terminal");
             return null;
         });
-        return new PreparedExternalSave(origin, history, Optional.empty(), List.of(), Optional.empty(), Optional.empty(), List.of());
+        return new PreparedExternalSave(origin, history, Optional.empty(), List.of(), Optional.empty(), Optional.empty(), List.of(), Optional.empty());
     }
 
     public static final class ExternalSaveRebind {

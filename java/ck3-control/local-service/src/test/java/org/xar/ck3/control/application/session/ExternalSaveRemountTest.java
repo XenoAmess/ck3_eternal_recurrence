@@ -186,6 +186,38 @@ final class ExternalSaveRemountTest {
         }
     }
 
+    @Test void sameNamedGameCanRetainTheOriginalAppliedClosureAfterRestart() throws Exception {
+        try (var raw = getClass().getResourceAsStream("source56-named-full111-pending.json.gz");
+             var compressed = new GZIPInputStream(raw)) {
+            var fixture = StrictJson.parse(compressed.readAllBytes(), StrictJson.EXPLICIT_MAX_BYTES);
+            var events = fixture.get("events");
+            var origin = ExternalSaveOrigin.fromJson(events.get(0).get("details").get("origin"));
+            var owner = origin.successor();
+            var archive = archivedActionData(fixture.get("materials"));
+            var capture = archive.loadRecord(ExactRef.fromJson(events.get(6).get("details").get("receipt_ref"))).receipt();
+            var edge = historicalEdges(events, owner.machineId(), 8, 8).getFirst();
+            var closure = ContinuityBatchJournal.verifyExternalFull111Closure(edge, capture, capture.command().source(), archive);
+            assertEquals(80, closure.getValue().sequence());
+            assertEquals(ActionReceipt.Outcome.APPLIED_CONFIRMED, closure.getValue().outcome());
+            assertEquals(53179344, edge.after().settledDateRaw());
+            assertEquals(5, edge.after().toJson().path("latest_binding").path("native_revision").longValue());
+            assertEquals(BigInteger.valueOf(6), closure.getValue().command().before().frame().identity().nativeRevision());
+            var prior = ContinuityState.fromJson(fixture.get("prior"), owner.machineId());
+            var same = (org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session) Proxy.newProxyInstance(
+                    getClass().getClassLoader(),
+                    new Class<?>[]{org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session.class},
+                    (proxy, method, args) -> {
+                        assertEquals("requireHistoricalState", method.getName());
+                        assertEquals(prior.sequence(), args[0]);
+                        assertEquals(ContinuityJson.digest(prior.toJson()), args[1]);
+                        return prior;
+                    });
+            assertTrue(OrdinaryCycleTransitions.matchesRecordedArchivedFull111Completion(same, edge.after(), owner,
+                    closure.getValue(), archive));
+            assertFalse(OrdinaryCycleTransitions.matchesRecordedArchivedFull111Completion(same, edge.before(), owner, capture, archive));
+        }
+    }
+
     private static ActionPorts.OutcomeArchive archivedActionData(com.fasterxml.jackson.databind.JsonNode originals) {
         java.util.function.Function<ExactRef, byte[]> bytes = ref -> {
             var data = java.util.Base64.getDecoder().decode(originals.get(ref.sha256()).textValue());
@@ -197,6 +229,7 @@ final class ExternalSaveRemountTest {
         var dispatchRefs = new java.util.HashMap<Object, ExactRef>();
         var requestRefs = new java.util.HashMap<Object, ExactRef>();
         var recordRefs = new java.util.HashMap<Object, ExactRef>();
+        var receiptRefs = new java.util.HashMap<Object, ExactRef>();
         return (ActionPorts.OutcomeArchive) Proxy.newProxyInstance(ExternalSaveRemountTest.class.getClassLoader(),
                 new Class<?>[]{ActionPorts.OutcomeArchive.class}, (proxy, method, arguments) -> {
                     var arg = arguments[0];
@@ -208,8 +241,15 @@ final class ExternalSaveRemountTest {
                             recordRefs.put(record, ref);
                             yield record;
                         }
-                        case "loadReceipt" -> org.xar.ck3.control.application.action.ActionReceiptCodec.decodeReceipt(
-                                bytes.apply((ExactRef) arg), (ActionPorts.OutcomeArchive) proxy);
+                        case "loadReceipt" -> {
+                            var ref = (ExactRef) arg;
+                            var receipt = org.xar.ck3.control.application.action.ActionReceiptCodec.decodeReceipt(
+                                    bytes.apply(ref), (ActionPorts.OutcomeArchive) proxy);
+                            receiptRefs.put(receipt, ref);
+                            yield receipt;
+                        }
+                        case "loadMaterial" -> new org.xar.ck3.control.application.action.RawJson(bytes.apply((ExactRef) arg));
+                        case "receiptReferenceOf" -> receiptRefs.get(arg);
                         case "load" -> {
                             var ref = (ExactRef) arg;
                             var dispatch = codec.decodeDispatchData(ref);

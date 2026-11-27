@@ -54,7 +54,8 @@ import org.xar.ck3.control.planning.opportunity.OpportunityJson;
 /** Settles only the disappearance of the exact selected Full111 runtime event instance. */
 final class RootFull111EventOptionEffects implements NativeEffectRegistry.Observer {
     static final String SCHEMA = "xar.ck3.full111-event-queue-postcondition/v2";
-    private static final String ARCHIVED_ZERO_QUEUE_SCHEMA = "xar.java-full111-event-archived-zero-queue-proof/v1";
+    private static final String ARCHIVED_ZERO_QUEUE_SCHEMA =
+            org.xar.ck3.control.application.session.ContinuityBatchJournal.ARCHIVED_FULL111_EVENT_PROOF;
     private static final String ORIGINAL_SCHEMA = "xar.java-full111-event-queue-proof/v2";
     static final String RESULT_SCHEMA = "xar.java-full111-event-option-result/v2";
 
