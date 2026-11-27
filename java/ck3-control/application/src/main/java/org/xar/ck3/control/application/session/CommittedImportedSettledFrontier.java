@@ -36,19 +36,21 @@ import org.xar.ck3.control.g2.common.G2Source;
 import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
 import org.xar.ck3.control.g2.planning.ProposalLifecycleCodec;
 
-/** Original same-Game action and cycle DATA after a completed batch on an imported replacement. */
+/** Original same-Game action and cycle DATA at a settled batch boundary on an imported replacement. */
 final class CommittedImportedSettledFrontier {
     private CommittedImportedSettledFrontier() { }
 
     record Data(CommittedImportedRebindOriginal.Historical history, SessionIdentity owner, G2Source source,
             String batchPrefix, long nextBatchSequence, List<String> consumedSuccessorBatches,
             ActionReceipt retiredResume, List<ActionReceipt> canonicalActions, List<ActionReceipt> successorActions,
-            SemanticEvidence latestCycle, List<ConfirmedSave> confirmedSaves, long committedSavedDays) {
+            SemanticEvidence latestCycle, List<ConfirmedSave> confirmedSaves, Optional<String> openConfirmedSaveBatch,
+            long committedSavedDays) {
         Data {
             consumedSuccessorBatches = List.copyOf(consumedSuccessorBatches);
             canonicalActions = List.copyOf(canonicalActions);
             successorActions = List.copyOf(successorActions);
             confirmedSaves = List.copyOf(confirmedSaves);
+            openConfirmedSaveBatch = Objects.requireNonNull(openConfirmedSaveBatch);
         }
         CheckpointPair savedPair() {
             return confirmedSaves.isEmpty() ? history.original().pair() : confirmedSaves.getLast().pair();
@@ -105,11 +107,14 @@ final class CommittedImportedSettledFrontier {
                 cursor = edge.after();
             }
             String terminal = currentRow.path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD).path("boundary").asText();
+            boolean closedBatch = replay.openBatch == null
+                    && (JournalKind.BATCH_FINISHED.name().equals(terminal) || JournalKind.BATCH_DEFERRED.name().equals(terminal));
+            boolean confirmedSaveTail = replay.openBatch != null && JournalKind.SAVE_CONFIRMED.name().equals(terminal)
+                    && !replay.saves.isEmpty() && replay.saves.getLast().edge().sequence() == current.sequence();
             StrictJson.require(replay.terminalCycle != null && replay.latestCycle == replay.terminalCycle.semantic()
-                    && replay.openBatch == null && !replay.used.isEmpty()
-                    && (JournalKind.BATCH_FINISHED.name().equals(terminal) || JournalKind.BATCH_DEFERRED.name().equals(terminal))
+                    && !replay.used.isEmpty() && (closedBatch || confirmedSaveTail)
                     && cursor.sequence() == current.sequence() && ContinuityJson.same(cursor.toJson(), current.toJson()),
-                    "settled imported successor requires an actual completed cycle and closed batch at the held head");
+                    "settled imported successor requires a completed cycle and its closed batch or final confirmed SAVE");
             var canonical = ContinuityActionJournal.receipts(current, originals);
             var unresolved = canonical.stream().filter(action -> !action.settled()).toList();
             StrictJson.require(unresolved.equals(List.of(replay.retiredResume))
@@ -134,7 +139,8 @@ final class CommittedImportedSettledFrontier {
             StrictJson.require(currentSavedTicks >= savedTicks && currentSavedTicks % 24 == 0,
                     "settled imported successor has invalid confirmed saved days");
             return new Data(history, owner, replay.source, prefix, replay.nextBatchSequence, replay.used,
-                    replay.retiredResume, canonical, successor, replay.latestCycle, replay.saves, currentSavedTicks / 24);
+                    replay.retiredResume, canonical, successor, replay.latestCycle, replay.saves,
+                    confirmedSaveTail ? Optional.of(replay.openBatch) : Optional.empty(), currentSavedTicks / 24);
         }));
     }
 

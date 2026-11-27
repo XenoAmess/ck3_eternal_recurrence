@@ -4058,11 +4058,20 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 StrictJson.require(committedSettledSameGameData == null,
                         "settled imported successor DATA can be adopted only once");
                 requireSettledImportedOriginal(same, data);
-                transitions.requireCommittedImportedSettledReady(same, data, issuedSettledImportedRecovery.history().frontier(), fresh);
+                var frontier = issuedSettledImportedRecovery.history().frontier();
+                transitions.requireCommittedImportedSettledReady(same, data, frontier, fresh);
+                Optional<WriterContracts.Receipt> closed = Optional.empty();
+                if (frontier.openConfirmedSaveBatch().isPresent()) {
+                    var finish = new JournalInput(frontier.owner(), frontier.openConfirmedSaveBatch().orElseThrow(),
+                            JournalKind.BATCH_FINISHED, Optional.empty(), Optional.empty(), Optional.empty(), List.of());
+                    closed = Optional.of(same.commit(same.preview(transitions.batchRequest(finish))));
+                }
+                var accepted = same.head();
                 committedSettledSameGameData = data;
-                acceptedSettledSameGameSequence = data.canonicalSequence();
-                acceptedSettledSameGameDigest = data.canonicalHeadDigest();
-                return Optional.empty();
+                committedSettledSameGameReceipt = closed.orElse(null);
+                acceptedSettledSameGameSequence = accepted.state().sequence();
+                acceptedSettledSameGameDigest = accepted.digest();
+                return closed;
             }
             if(data==issuedSettledSameGameData&&issuedImportedCycleSettlement!=null) {
                 StrictJson.require(committedSettledSameGameData==null,"imported Saved settlement DATA can be adopted only once");
@@ -6738,7 +6747,8 @@ public final class ContinuityBatchJournal implements BatchJournal {
         }
         var boundary = state.path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD);
         var kind = boundary.path("boundary").asText();
-        if (!(JournalKind.BATCH_FINISHED.name().equals(kind) || JournalKind.BATCH_DEFERRED.name().equals(kind))) {
+        if (!(JournalKind.BATCH_FINISHED.name().equals(kind) || JournalKind.BATCH_DEFERRED.name().equals(kind)
+                || JournalKind.SAVE_CONFIRMED.name().equals(kind))) {
             return Optional.empty();
         }
         if (!(state.get("last_current_saved_cold") instanceof ObjectNode marker))
@@ -6752,7 +6762,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
         return Optional.of(readSettledImportedSameGame(same,attachment,owner));
     }
 
-    /** Issues the exact closed imported successor history to this journal's same-Game recovery path. */
+    /** Issues exact settled imported history to this journal's same-Game recovery path. */
     public SettledSameGameData readSettledImportedSameGame(ContinuityStorePort.Session same,
             WriterContracts.Pin actualAttachment, SessionIdentity owner) throws IOException {
         store.requireSession(same);
