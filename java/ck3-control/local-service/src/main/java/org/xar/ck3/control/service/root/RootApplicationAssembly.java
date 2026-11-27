@@ -3045,7 +3045,7 @@ public final class RootApplicationAssembly {
             var context = installed.context();
             var pair = candidate.original().origin().savedPair();
             StrictJson.require(candidate.driver() == driver && context.core() == this
-                    && context.game() == candidate.predecessor().successor() && context.adopted() == driver
+                    && context.game() == candidate.predecessor().successor()
                     && candidate.policy().equals(configuration.cyclePolicy())
                     && configuration.checkpoints().lineageId().equals(pair.lineageId())
                     && configuration.checkpoints().save().equals(RootOrdinaryRuntimeAssembly.importedCheckpointOutput(
