@@ -21,6 +21,7 @@ import org.xar.ck3.control.application.action.*;
 import org.xar.ck3.control.application.driver.*;
 import org.xar.ck3.control.build.ControlBuild;
 import org.xar.ck3.control.build.WindowsJobProcess;
+import org.xar.ck3.control.build.runtime.HostMode;
 import org.xar.ck3.control.continuity.*;
 import org.xar.ck3.control.continuity.writer.*;
 import org.xar.ck3.control.contracts.*;
@@ -28,6 +29,8 @@ import org.xar.ck3.control.g2.common.G2Source;
 import org.xar.ck3.control.nativebridge.*;
 import org.xar.ck3.control.nativebridge.capabilities.frontend_rules.FrontendRulesRequests.Primitive;
 import org.xar.ck3.control.service.root.RootAuthorityRouter;
+import org.xar.ck3.control.service.root.RootApplicationAssembly;
+import org.xar.ck3.control.service.root.RootApplicationConfiguration;
 import org.xar.ck3.control.service.root.RootOrdinaryRuntimeConfiguration;
 import org.xar.ck3.control.application.session.*;
 import static org.xar.ck3.control.application.session.SessionPorts.*;
@@ -184,6 +187,74 @@ public final class FreshGameplayEntryAuthorityIntegrationTest {
             assertEquals(3,peer.writes.get(),"one original START and two genuine full reads, no replay");
         }
     }
+    @Test void publicRootReopensActualWriterAndAdoptsSamePhysicalSoftwareOwnerInOneArchive()throws Exception {
+        var peer=new Peer("\\\\.\\pipe\\root-physical-software-recovery-"+UUID.randomUUID(),2,1,3);
+        var process=WindowsJobProcess.exactProcess(ProcessHandle.current().pid());
+        var generation=ManagedGameSession.generation(process);
+        var launch=plan(peer.pipe);
+        var policy=new OriginalWindowReducer.Policy(10958);
+        peer.start();
+        try(peer) {
+            Actual original;
+            WriterContracts.Head committed;
+            try(var first=NativeGameAttachment.attach(new NativeGameAttachment.Request(launch,generation,List.of(),128,32),deadline())) {
+                assertEquals(process,first.identity());
+                original=actual(first);
+                try(var storage=original.writer().storageGuard()) {
+                    assertSame(storage,original.archive().writer().storageGuard());
+                    original.entry().retainCurrentMap(first,original.read(),original.produced(),original.driver());
+                    assertEquals(1,original.writer().locked(original.entry()::commitInitial).head().sequence());
+                    committed=original.writer().locked(ContinuityStorePort.Session::head);
+                }
+            }
+            assertEquals(2,peer.writes.get());
+            Path ledger=root.resolve("ledger");
+            Path snapshot=ledger.resolve("ROOT-CONTINUITY-WINDOW.json");
+            Path archive=ledger.resolve("artifacts");
+            var layout=new WriterContracts.Layout(snapshot,exactRootTestFile(ledger.resolve("anchor.json")),committed.state().machineId());
+            var planFile=Files.write(root.resolve("physical-software-plan.json"),
+                    StrictJson.canonical(NativeLaunchPlanCodec.toJson(NativeLaunchPlanCodec.describe(launch))));
+            var configuration=new RootApplicationConfiguration(layout.machineId(),HostMode.COMPLETE_MIGRATION,Instant.now(),
+                    exactRootTestFile(planFile),layout,List.of(original.driver().source().sourceRef()),archive,64L<<20);
+            byte[] predecessor=Files.readAllBytes(snapshot);
+            try(var second=NativeGameAttachment.attach(new NativeGameAttachment.Request(launch,generation,List.of(),128,32),deadline());
+                    var core=RootApplicationAssembly.open(configuration,Clock.systemUTC(),List.of(),Optional.empty(),
+                            StorageWriteGuardTestSupport.create(ledger,layout.lock(),256L<<20))) {
+                assertEquals(process,second.identity());
+                assertEquals(original.read().originalFrame().session().connectionGeneration().add(BigInteger.ONE),
+                        second.nativeTransport().diagnostics().session().orElseThrow().connectionGeneration());
+                assertTrue(core.hasCanonicalGameplayEntry());
+                assertTrue(core.readSettledSameGame(second,policy).isEmpty());
+                assertEquals(2,peer.writes.get());
+                var adopted=core.adoptInitialRecovery(second,8,policy,deadline());
+                assertEquals(original.driver().source(),adopted.source());
+                assertEquals(original.driver().currentDriverEvidence(),adopted.currentDriverEvidence());
+                assertEquals(generation,adopted.session().game());
+                assertEquals(second.sessionId(),adopted.session().sessionId());
+                assertEquals(3,adopted.first().identity().frame().identity().nativeRevision().longValueExact());
+                core.writer().locked(same->{
+                    assertEquals(committed.digest(),same.head().digest());
+                    var originalFull=adopted.currentDriverEvidence();
+                    var freshPacket=adopted.first().originalEvidence();
+                    assertEquals(archive,Path.of(originalFull.path()).getParent());
+                    assertEquals(archive,Path.of(freshPacket.path()).getParent());
+                    assertArrayEquals(original.produced().driver().encode(),
+                            core.archive().readArtifact(same,originalFull,DriverJson.MAX_NATIVE_BYTES));
+                    var observed=second.nativeTransport().latestObservedSnapshot().orElseThrow();
+                    assertArrayEquals(observed.originalPacket(),core.archive().readArtifact(same,freshPacket,DriverJson.MAX_NATIVE_BYTES));
+                    return null;
+                });
+            }
+            assertEquals(3,peer.writes.get());
+            assertArrayEquals(predecessor,Files.readAllBytes(snapshot));
+        }
+    }
+
+    private static ExactRef exactRootTestFile(Path path)throws IOException {
+        byte[] bytes=Files.readAllBytes(path);
+        return new ExactRef(path.toString(),bytes.length,ActionCodec.sha256(bytes));
+    }
+
     @Test void regressedNativeRevisionOnNewConnectionRefusesWithoutReplayingStartOrChangingEntry()throws Exception {
         var peer=new Peer("\\\\.\\pipe\\observed-entry-regression-"+UUID.randomUUID(),2,3,1);
         var generation=ManagedGameSession.generation(WindowsJobProcess.exactProcess(ProcessHandle.current().pid()));
