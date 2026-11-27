@@ -4,6 +4,7 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_1210.hpp"
+#include "xar_bridge/ck3_1210_hotfix26757580_v1.hpp"
 #include "xar_bridge/ck3_121003_full_profile111.hpp"
 #include "xar_bridge/ck3_1210_thread_runtime.hpp"
 #include "xar_bridge/fresh_full_state_diagnostic_v1.hpp"
@@ -15,6 +16,7 @@
 #include <condition_variable>
 #include <cstdio>
 #include <cstring>
+#include <string>
 #include <thread>
 #include <utility>
 #include <vector>
@@ -95,6 +97,7 @@ public:
   bool patch4 = false;
   bool florin = false;
   bool florin_current_patch = false;
+  bool florin_hotfix = false;
   bool wrong_build = false;
   mutable std::atomic<DWORD> read_delay_ms{0};
   void *raw_read_context = nullptr;
@@ -135,7 +138,12 @@ public:
       xar::ck3_121003::full111::kAdapterId, xar::ck3_121003::full111::kGameVersion,
       xar::ck3_121003::full111::kExecutableSha256, "offline-fresh-fixture",
       std::span<const std::string_view>{florin_capabilities}};
+    static const game::AdapterDescriptor hotfix_value{
+      xar::ck3_1210::hotfix26757580::kAdapterId, xar::ck3_1210::kGameVersion,
+      xar::ck3_1210::hotfix26757580::kExecutableSha256, "offline-fresh-fixture",
+      std::span<const std::string_view>{florin_capabilities}};
     if (wrong_build) return wrong_value;
+    if (florin_hotfix) return hotfix_value;
     if (florin_current_patch) return current_value;
     if (florin) return florin_value;
     static constexpr std::array<std::string_view, 1> capabilities{
@@ -335,6 +343,7 @@ struct FreshWorkerProbe {
   bool read_result = false;
   game::Snapshot output{};
   build::FreshFullSnapshotDiagnosticV1 diagnostic{};
+  std::string diagnostic_wire;
 };
 void FreshProbeWorker(FreshWorkerProbe &probe, const game::GameAdapter &native,
     api::MainThreadQueryMailboxV1 &mailbox) noexcept;
@@ -357,6 +366,7 @@ void FreshProbeWorker(FreshWorkerProbe &probe, const game::GameAdapter &native, 
       probe.output = {};
       probe.read_result = build::ReadFreshFullSnapshot12002(*adapter, probe.output);
       probe.diagnostic = build::ReadLastFreshFullSnapshotDiagnosticV1();
+      probe.diagnostic_wire = build::SerializeFreshFullSnapshotDiagnosticV1(probe.diagnostic);
       probe.completed.store(req, std::memory_order_release);
     } else {
       Sleep(1);
@@ -367,9 +377,14 @@ void FreshProbeWorker(FreshWorkerProbe &probe, const game::GameAdapter &native, 
   delete adapter;
 }
 
-bool TestFreshOwnerExecutor(bool florin = false, bool poll_only = false) {
+enum class FreshOwnerBuild { v12004, florin, hotfix, full111 };
+
+bool TestFreshOwnerExecutor(FreshOwnerBuild build_id = FreshOwnerBuild::v12004, bool poll_only = false) {
   FixtureAdapter native;
+  const bool florin = build_id != FreshOwnerBuild::v12004;
   native.florin = florin;
+  native.florin_hotfix = build_id == FreshOwnerBuild::hotfix;
+  native.florin_current_patch = build_id == FreshOwnerBuild::full111;
   native.patch4 = true;
   native.frame.paused = true;
   MemoryFixture memory;
@@ -383,9 +398,10 @@ bool TestFreshOwnerExecutor(bool florin = false, bool poll_only = false) {
   auto &mailbox = g_fresh_mailbox;
   std::array<api::MainThreadQueryExecutorV1, 14> executors{};
   executors[13] = &build::ExecuteSemanticAdapter12002;
+  // Use the existing software-owned mailbox for all Florin callback descriptors.
   auto environment = florin
       ? xar::ck3_1210::BindThreadRuntimeImage(0x140000000ULL,
-          native.descriptor().executable_sha256,
+          xar::ck3_1210::kExecutableSha256,
           std::span<const api::MainThreadQueryExecutorV1>{executors.data() + 13, 1})
       : xar::ck3_12004::BindThreadRuntimeImage(
           0x140000000ULL, native.descriptor().executable_sha256, executors);
@@ -428,8 +444,7 @@ bool TestFreshOwnerExecutor(bool florin = false, bool poll_only = false) {
   const auto pump = [&] {
     (void)api::ObserveMainThreadPumpAndDrainV1(mailbox,
         poll_only ? xar::ck3_1210::kPollEventFirstReturnRvaV1
-                  : (florin ? xar::ck3_1210::kSdlWindowsPumpFirstPeekReturnRva
-                            : xar::ck3_12004::kSdlWindowsPumpFirstPeekReturnRva), GetCurrentThreadId());
+                  : environment.build_profile->pump_exact_return_rva, GetCurrentThreadId());
   };
   const auto cleanup = [&] {
     // Detach cancels an actual queued ticket before its stack context can end.
@@ -484,13 +499,27 @@ bool TestFreshOwnerExecutor(bool florin = false, bool poll_only = false) {
        native.wrong_owner.load() == 0;
   if (ok) {
     native.reader_available = false;
-    ok = request(3) && !probe.read_result && probe.output == game::Snapshot{};
+    ok = request(3) && !probe.read_result && probe.output == game::Snapshot{} &&
+         probe.diagnostic.stage == build::FreshFullSnapshotStageV1::raw_read_unavailable;
+    constexpr std::string_view callback_field = "\"callback_cause81\":";
+    if (native.florin_hotfix || native.florin_current_patch) {
+      const auto ticket = "\"ticket_sequence\":\"" + std::to_string(probe.diagnostic.query_sequence) + "\"";
+      ok = ok && probe.diagnostic_wire.find(callback_field) != std::string::npos &&
+           probe.diagnostic_wire.find(ticket) != std::string::npos &&
+           probe.diagnostic_wire.find("\"owner_before\":true,\"owner_after\":true") != std::string::npos &&
+           probe.diagnostic_wire.find("\"raw_read_available\":false") != std::string::npos &&
+           probe.diagnostic_wire.find("\"full_stage\":null,\"full_reason\":null") != std::string::npos;
+      std::printf("fresh-owner-no-data build=%d %s\n", static_cast<int>(build_id), probe.diagnostic_wire.c_str());
+    } else {
+      ok = ok && probe.diagnostic_wire.find(callback_field) == std::string::npos;
+    }
   }
   if (ok) {
     native.reader_available = true;
     native.frame.played_character_gold.raw = 333;
     ok = request(4) && probe.read_result &&
          probe.output.played_character_gold.raw == 333 &&
+         probe.diagnostic_wire.find("\"callback_cause81\":") == std::string::npos &&
          native.raw_reads.load() == 4 &&
          api::ReadMainThreadQueryMailboxDiagnosticsV1(mailbox).failure_flags == 0;
   }
@@ -933,8 +962,9 @@ int main(int argc, char **argv) {
     return TestFreshOwnerWake(true, FreshWakeMode::no_pump) ? 0 : 1;
   if (argc == 2 && std::string_view(argv[1]) == "--running-context-1210")
     return TestFreshOwnerWake(true, FreshWakeMode::running_context) ? 0 : 1;
-  return argc == 1 && TestFreshOwnerExecutor() && TestFreshOwnerExecutor(true) &&
-      TestFreshOwnerExecutor(true, true) &&
+  return argc == 1 && TestFreshOwnerExecutor() && TestFreshOwnerExecutor(FreshOwnerBuild::florin) &&
+      TestFreshOwnerExecutor(FreshOwnerBuild::florin, true) &&
+      TestFreshOwnerExecutor(FreshOwnerBuild::full111) && TestFreshOwnerExecutor(FreshOwnerBuild::hotfix) &&
       TestFreshOwnerWake(false, FreshWakeMode::recover_second_wake) &&
       TestFreshOwnerWake(true, FreshWakeMode::recover_second_wake) &&
       TestFreshOwnerWake(true, FreshWakeMode::wrong_build) && TestFlorinSixExecutorSlots() && TestFlorinSevenExecutorSlots() ? 0 : 1;

@@ -61,7 +61,7 @@ bool ReadOwnerSnapshotForRequest81(const game::GameAdapter &native,game::Snapsho
 #if defined(_MSC_VER)
   __try {
 #endif
-#if defined(XAR_CK3_ENABLE_1210_HOTFIX_26757580_BASIC_V1)
+#if defined(XAR_CK3_ENABLE_1210_HOTFIX_26757580_BASIC_V1) ||     (defined(XAR_CK3_ENABLE_121003_FULL111) && XAR_CK3_ENABLE_121003_FULL111)
     const bool available=xar::diagnostic81::ReadFlorinSnapshotForRequest(native,output,cause);
     if(cause.exact_reader)return available;
 #endif
@@ -754,7 +754,8 @@ bool ExecuteSemanticAdapter12002(void *opaque,
         !OwnsFreshSnapshotSlot(*envelope, stamp)) return false;
     game::Snapshot observed{};
     bool available=false;
-    if(game::IsCk3_1210Hotfix26757580Descriptor(envelope->game->descriptor())) {
+    const auto &descriptor=envelope->game->descriptor();
+    if(game::IsCk3_1210Hotfix26757580Descriptor(descriptor) || game::IsCk3_121003Full111Descriptor(descriptor)) {
       auto &cause=request.callback_cause81;
       cause.entered=true;cause.sequence=envelope->ticket.sequence;cause.pump_epoch=stamp.pump_epoch;
       cause.thread_id=stamp.thread_id;cause.stamp_date_raw=stamp.date_raw;cause.stamp_paused=stamp.paused;
