@@ -6632,6 +6632,9 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 frontier.canonicalActions(), head.state().sequence(), head.digest(), history);
         issuedSettledImportedRecovery = recovered;
         issuedSettledSameGameData = data;
+        // Successor publications are already complete in the replayed Driver.
+        completedEventOutcomeData = data;
+        completedEventOutcomeWitness = null;
         return data;
     }
 

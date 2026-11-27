@@ -2996,7 +2996,8 @@ public final class RootApplicationAssembly {
                         var failure=new java.io.InterruptedIOException("settled same-Game Controller restoration interrupted");
                         failure.initCause(interrupted);throw failure;
                     }
-                    publishMissingSettledCouncilHistory(same,driver,staged);
+                    if (!(settledSameGameData.startingPoint() instanceof ContinuityBatchJournal.SameGameEntry.CommittedImportedRebind))
+                        publishMissingSettledCouncilHistory(same,driver,staged);
                     runtime.capabilities().restoreRetainedPlanning(same);
                 } else if (unresolvedSameGameData != null||reservedLifeRecovery!=null) {
                     // Restore the existing per-graph reader without capture/publication or canonical head changes.

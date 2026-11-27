@@ -21,6 +21,7 @@ import org.xar.ck3.control.application.action.CompositeOperatorQuarantineRequest
 import org.xar.ck3.control.application.action.ContinuityActionJournal;
 import org.xar.ck3.control.application.action.NativeActionPort;
 import org.xar.ck3.control.application.checkpoint.CheckpointFiles;
+import org.xar.ck3.control.application.checkpoint.CheckpointPair;
 import org.xar.ck3.control.application.checkpoint.CheckpointPair.FileWitness;
 import org.xar.ck3.control.application.checkpoint.NativeCheckpointFiles;
 import org.xar.ck3.control.application.driver.DriverBootstrap;
@@ -115,7 +116,7 @@ public final class RootOrdinaryRuntimeAssembly {
         return prepare(config,clock,Optional.empty());
     }
     static Path importedCheckpointOutput(NativeLaunchPlan replacement,
-            org.xar.ck3.control.application.checkpoint.CheckpointPair original)throws IOException {
+            CheckpointPair original)throws IOException {
         Path output=replacement.profileDirectory().resolve("save games/xar_checkpoint.ck3");
         Path source=Path.of(original.save().reference().path());
         if (sameCheckpointFile(output,source))
@@ -127,6 +128,16 @@ public final class RootOrdinaryRuntimeAssembly {
         }
         return output;
     }
+    private static RootApplicationAssembly.FreshSessionConfiguration retainImportedCheckpointPaths(
+            RootApplicationAssembly.FreshSessionConfiguration base, NativeLaunchPlan game, CheckpointPair original)
+            throws IOException {
+        var paths = base.checkpoints();
+        var checkpoints = new RootStartupConfiguration.CheckpointPaths(paths.driverCheckpoint(),paths.checkpointEvidence(),
+                paths.attachmentEvidence(),original.lineageId(),importedCheckpointOutput(game,original));
+        return new RootApplicationAssembly.FreshSessionConfiguration(base.authorityId(),base.policy(),base.freshness(),
+                checkpoints,base.cyclePolicy(),base.deadline());
+    }
+
     private static boolean sameCheckpointFile(Path output,Path source)throws IOException {
         return output.toAbsolutePath().normalize().equals(source.toAbsolutePath().normalize())
                 || Files.exists(output) && Files.isSameFile(output,source);
@@ -1211,11 +1222,8 @@ public final class RootOrdinaryRuntimeAssembly {
             if(!configuredDecision.codexFile())throw new IOException("committed imported recovery requires the configured direct Codex file provider");
             var stage=readCommittedImportedRecovery(attached,loaded,input);
             var history=core.writer().locked(same->core.readCommittedImportedControllerHistory(same,stage.original().attachment(),cyclePolicy));
-            var base=sessionConfiguration(input.deadline());var paths=base.checkpoints();var pair=stage.original().pair();
-            var checkpoints=new RootStartupConfiguration.CheckpointPaths(paths.driverCheckpoint(),paths.checkpointEvidence(),paths.attachmentEvidence(),
-                    pair.lineageId(),importedCheckpointOutput(attached.launchPlan(),pair));
-            var configuration=new RootApplicationAssembly.FreshSessionConfiguration(base.authorityId(),base.policy(),base.freshness(),
-                    checkpoints,base.cyclePolicy(),input.deadline());
+            var configuration=retainImportedCheckpointPaths(sessionConfiguration(input.deadline()),
+                    attached.launchPlan(),stage.original().pair());
             var selector=new RootOnlineDecisionSelector(configuredDecision,clock,raw->{
                 var writer=core.writer();var active=writer.activeSession();
                 if(active.isPresent())return core.archive().withSession(active.orElseThrow()).preserveMaterial(raw);
@@ -1844,6 +1852,10 @@ public Running finishObservedMap(NativeFreshSnapshotPort.Received received, Init
             installed=runOperationPhase(owner.clock,owner.config.operationTimeout(),phaseDeadline->
                     owner.catalogs.install(owner.core,owner.game,source,owner.core.planningReads(),owner.clock,phaseDeadline));
             var configuration=runOperationPhase(owner.clock,owner.config.operationTimeout(),owner::sessionConfiguration);
+            if (data.startingPoint() instanceof ContinuityBatchJournal.SameGameEntry.CommittedImportedRebind) {
+                configuration = retainImportedCheckpointPaths(configuration,owner.game.launchPlan(),
+                        data.controller().savedPair().orElseThrow());
+            }
             var session=owner.core.finishSettledSameGame(installed,driver,configuration,owner.services(source));
             owner.core.completeSettledEventOutcomeOnly(session,data,deadline);
             runOperationPhase(owner.clock,owner.config.operationTimeout(),phaseDeadline->{
