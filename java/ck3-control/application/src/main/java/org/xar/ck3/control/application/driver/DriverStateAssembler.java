@@ -1584,6 +1584,19 @@ public final class DriverStateAssembler implements FrozenDriverSnapshotSupplier.
             Optional<String> activeActionId) {
         return projectInternal(state,durable,activeActionId,Optional.empty());
     }
+    /** Verify the exact retired import within the same current frozen Driver callback. */
+    public static boolean isRetainedImportedAction(Frozen frozen, ActionReceipt action) {
+        Objects.requireNonNull(frozen);
+        Objects.requireNonNull(action);
+        return isRetainedImportedAction(frozen.state(), frozen.actions(), action);
+    }
+
+    private static boolean isRetainedImportedAction(DriverSnapshotFacts.State state, ActionJournal.Snapshot durable,
+            ActionReceipt action) {
+        var imported = importedProjection.get();
+        return imported != null && imported.permits(state, durable, action);
+    }
+
     /** Only the current coordinator-owned parent can be unresolved while reading its own surviving history. */
     public static DriverStateSnapshot projectHistory(DriverSnapshotFacts.Known state,ActionJournal.Snapshot durable,
             Optional<String> activeActionId,ActionCommand actualParent) {
@@ -1736,8 +1749,7 @@ public final class DriverStateAssembler implements FrozenDriverSnapshotSupplier.
                     && action.state() instanceof ActionState.AckReceived
                     && "save-checkpoint".equals(action.command().operation().value()) && action.ack().filter(ack -> ack.nativeOk()).isPresent();
             if (!action.settled()) {
-                var imported = importedProjection.get();
-                if (imported != null && imported.permits(state, durable, action)) continue;
+                if (isRetainedImportedAction(state, durable, action)) continue;
                 boolean currentParent=allowedParent.filter(action.command()::equals).isPresent()
                         && activeActionId.filter(action.command().actionId()::equals).isPresent()
                         && (action.state() instanceof ActionState.IntentDurable || action.state() instanceof ActionState.Submitting

@@ -64,7 +64,8 @@ public final class DriverHistoryAccess {
                 StrictJson.require(frozen.activeActionId().isEmpty() || frozen.activeActionId().equals(java.util.Optional.of(parent.actionId())),
                         "another action owns the Driver history lease");
                 for (var action : frozen.actions().actions()) {
-                    if (!action.settled()) StrictJson.require(action.command().equals(parent),
+                    if (!action.settled()) StrictJson.require(action.command().equals(parent)
+                                    || DriverStateAssembler.isRetainedImportedAction(frozen, action),
                             "another unresolved action prevents route-history admission; UNKNOWN is never replay permission");
                 }
                 ExactRef current = DriverStateAssembler.currentEvidence(frozen, known.stamp(), archive);

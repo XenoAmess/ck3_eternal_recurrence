@@ -2141,7 +2141,16 @@ public final class RootApplicationAssembly {
                 RootExternalSavedOpening opening, ContinuityBatchJournal.PreparedExternalSave original,
                 int retainedFrames, Instant deadline) throws IOException {
             var facts = original.history().retainedFacts();
-            var retained = facts.driver();
+            var bound = archive.withSession(same);
+            var actualPublication = original.full111EventPublication();
+            var retained = actualPublication.isPresent()
+                    ? DriverStateSnapshot.decodeComplete(bound.loadFullMaterial(actualPublication.orElseThrow().afterDriver()).bytes())
+                    : facts.driver();
+            if (original.full111SettledSemantic().isPresent()) {
+                var semantic = original.full111SettledSemantic().orElseThrow();
+                StrictJson.require(actualPublication.filter(value -> value.afterDriver().equals(semantic.originalDriver())).isPresent(),
+                        "named event cycle lost its exact published Driver");
+            }
             var raw = opening.frame();
             StrictJson.require(retained.managedRestoreTransaction() instanceof DriverStateSnapshot.NullValue
                     && retained.session().actorId().longValueExact() == original.origin().opening().actor().value(),
@@ -2156,8 +2165,19 @@ public final class RootApplicationAssembly {
                     org.xar.ck3.control.planning.opportunity.OpportunityJson.parse(raw.state().bytes()), "external save Full");
             var auxiliary = RootRestoreMaterialProjection.reduceAuxiliary(facts.auxiliary(), nativeState,
                     org.xar.ck3.control.application.capabilities.CapabilitySessionPresentation.RestoreKind.EXTERNAL_NAMED_OBSERVATION);
-            var seed = new DriverBootstrap.Seed(reference, facts.originalHistoryBasis(), facts.stamp().driverVersion(),
+            long version = actualPublication.map(org.xar.ck3.control.application.driver.DriverActionHistoryState.Publication::afterVersion)
+                    .orElse(facts.stamp().driverVersion());
+            var seed = new DriverBootstrap.Seed(reference, facts.originalHistoryBasis(), version,
                     facts.stamp().episodeEpoch(), raw.session(), auxiliary, facts.loop());
+            var namedEvent = original.settledFull111Event().or(original::pendingFull111Event)
+                    .map(receipt -> new DriverBootstrap.ExternalSavedEventHistory(receipt, original.pendingFull111Event().isPresent(),
+                            actualPublication.<DriverBootstrap.ArchivedActionCoverage>map(publication -> {
+                                var receiptRef = bound.receiptReferenceOf(receipt);
+                                if (publication.legacyRow().isPresent())
+                                    return new DriverBootstrap.ArchivedHistoryRow(receiptRef, complete.commandHistory().size(),
+                                            publication.legacyRow().orElseThrow());
+                                return new DriverBootstrap.ArchivedCanonicalOnly(receiptRef, publication.originalSource());
+                            })));
             try {
                 var retirement = actions.withFrozen(same, lease -> {
                     lease.assertCurrent();
@@ -2171,8 +2191,7 @@ public final class RootApplicationAssembly {
                         original.history().source(), archive,
                         (ref, maximum) -> RootOriginalArtifacts.read(writer, archive, same, ref, maximum,
                                 original.history().source().sourceRef()),
-                        retainedFrames, deadline, opening, retirement,
-                        original.settledFull111Event().or(original::pendingFull111Event));
+                        retainedFrames, deadline, opening, retirement, namedEvent);
             } catch (UncheckedIOException failure) {
                 throw failure.getCause();
             } catch (InterruptedException interrupted) {
