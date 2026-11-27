@@ -578,6 +578,23 @@ public final class ContinuityBatchJournal implements BatchJournal {
     private RetainedReadDriver retainConfirmedSaveMaterial(RetainedReadDriver previous,CheckpointPair pair,
             ActionReceipt save,ExactRef driverRef,
             org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals)throws IOException {
+        var provenance=save.applied().orElseThrow().observation().provenance();
+        StrictJson.require(provenance instanceof ObservationProvenance.FreshSnapshotQuery fresh
+                &&fresh.basis() instanceof ObservationProvenance.ColdAfterAcknowledgement,
+                "saved Driver READ requires its actual cold checkpoint publisher receipt basis");
+        var cold=(ObservationProvenance.ColdAfterAcknowledgement)((ObservationProvenance.FreshSnapshotQuery)provenance).basis();
+        var publishedFrom=originals.loadReceipt(cold.originalReceipt());
+        StrictJson.require(originals.receiptReferenceOf(publishedFrom).equals(cold.originalReceipt()),
+                "saved Driver row lost its exact original publisher receipt/Attempt/ACK");
+        return retainConfirmedSaveMaterial(previous,pair,save,publishedFrom,driverRef,originals);
+    }
+    static RetainedReadDriver retainConfirmedSaveMaterial(RetainedReadDriver previous,CheckpointPair pair,
+            ActionReceipt save,ActionReceipt publishedFrom,ExactRef driverRef,ActionPorts.OutcomeArchive originals)throws IOException {
+        StrictJson.require(publishedFrom.command().equals(save.command())&&publishedFrom.bodySha256().equals(save.bodySha256())
+                &&!publishedFrom.settled()&&publishedFrom.sequence()<save.sequence()
+                &&ActionTransitions.attempt(publishedFrom.state()).equals(ActionTransitions.attempt(save.state()))
+                &&publishedFrom.ack().filter(NativeActionPort.AckReceived::nativeOk).isPresent()&&publishedFrom.ack().equals(save.ack()),
+                "saved Driver row lost its exact original publisher receipt/Attempt/ACK");
         var known=previous.facts();var old=known.driver();
         byte[] raw=originals.loadFullMaterial(driverRef).bytes();
         StrictJson.require(raw.length==driverRef.bytes()&&ActionCodec.sha256(raw).equals(driverRef.sha256()),
@@ -629,20 +646,6 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 "saved Driver changed its original lifecycle anchor");
         var rowMaterial=new org.xar.ck3.control.application.action.RawJson(rowBytes);var rowRef=originals.materialReferenceOf(rowMaterial);
         StrictJson.require(java.util.Arrays.equals(originals.loadMaterial(rowRef).bytes(),rowBytes),"saved Driver history row differs from its already archived original");
-        var provenance=save.applied().orElseThrow().observation().provenance();
-        StrictJson.require(provenance instanceof org.xar.ck3.control.application.action.ObservationProvenance.FreshSnapshotQuery fresh
-                &&fresh.basis() instanceof org.xar.ck3.control.application.action.ObservationProvenance.ColdAfterAcknowledgement,
-                "saved Driver READ requires its actual cold checkpoint publisher receipt basis");
-        var cold=(org.xar.ck3.control.application.action.ObservationProvenance.ColdAfterAcknowledgement)
-                ((org.xar.ck3.control.application.action.ObservationProvenance.FreshSnapshotQuery)provenance).basis();
-        var publishedFrom=originals.loadReceipt(cold.originalReceipt());
-        StrictJson.require(publishedFrom.command().equals(save.command())&&publishedFrom.bodySha256().equals(save.bodySha256())
-                &&!publishedFrom.settled()&&publishedFrom.sequence()<save.sequence()
-                &&originals.receiptReferenceOf(publishedFrom).equals(cold.originalReceipt())
-                &&org.xar.ck3.control.application.action.ActionTransitions.attempt(publishedFrom.state())
-                        .equals(org.xar.ck3.control.application.action.ActionTransitions.attempt(save.state()))
-                &&publishedFrom.ack().isPresent()&&publishedFrom.ack().orElseThrow().nativeOk()
-                &&publishedFrom.ack().equals(save.ack()),"saved Driver row lost its exact original publisher receipt/Attempt/ACK");
         var coverage=new java.util.ArrayList<>(known.actionRows());coverage.removeIf(value->value.actionId().equals(pair.saveActionId()));
         coverage.add(new DriverSnapshotFacts.ActionRow(pair.saveActionId(),save.bodySha256(),publishedFrom.sequence(),pair.historyIndex(),rowRef));
         var auxiliary=new java.util.LinkedHashMap<>(known.auxiliary().members());
@@ -4941,7 +4944,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     "Opening SAVE must be the actual new confirmation of its retained branch");
             if (located != null) ContinuityActionJournal.requireHistoricalReceipt(edge.before(), receipt, originals);
             var semantic = transitions.openingSavedCycleSemantic(cycleRecord);
-            var verified = requireHistoricalConfirmedSave(same, edge, owner, java.util.List.of(receipt), originals,
+            var verified = requireHistoricalConfirmedSave(transitions, same, edge, owner, java.util.List.of(receipt), originals,
                     semantic, cycles, cycleRecord);
             return new OpeningSaveAnchor(pair, cycles, cycleRecord, verified, originals.receiptReferenceOf(verified),
                     edge.eventPin().reference(), edge.sequence(), semantic);
@@ -4993,7 +4996,9 @@ public final class ContinuityBatchJournal implements BatchJournal {
     }
 
     /** Exact canonical SAVE DATA only; no private recovery or live readiness is issued. */
-    private ActionReceipt requireHistoricalConfirmedSave(ContinuityStorePort.Session same, WriterContracts.HistoricalTransition edge, SessionIdentity owner, java.util.List<ActionReceipt> actions, org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals, SemanticEvidence completedSemantic, long completedCycles, ExactRef cycleHead) throws IOException {
+    static ActionReceipt requireHistoricalConfirmedSave(OrdinaryCycleTransitions transitions, ContinuityStorePort.Session same,
+            WriterContracts.HistoricalTransition edge, SessionIdentity owner, List<ActionReceipt> actions,
+            ActionPorts.OutcomeArchive originals, SemanticEvidence completedSemantic, long completedCycles, ExactRef cycleHead) throws IOException {
         var details = ContinuityJson.parseObject(edge.details(), ContinuityJson.LEDGER_MAX_BYTES);
         StrictJson.require(edge.kind().equals(OrdinaryCycleTransitions.BATCH_KIND), "historical SAVE requires batch kind");
         StrictJson.require("SAVE_CONFIRMED".equals(StrictJson.text(details.get("boundary"))), "historical SAVE requires SAVE_CONFIRMED boundary");
@@ -5120,6 +5125,114 @@ public final class ContinuityBatchJournal implements BatchJournal {
         replay.put("sequence", edge.sequence()); replay.put("last_event_identity", edge.eventIdentity());
         StrictJson.require(ContinuityJson.same(replay, after), "historical SAVE differs from its actual source-owned reducer DATA");
         return receipt;
+    }
+
+    /** Replays the archived acknowledgement and the independent Full that originally confirmed a successor SAVE. */
+    static CommittedImportedSettledFrontier.ConfirmedSave readCommittedImportedSave(ContinuityStorePort.Session same,
+            WriterContracts.HistoricalTransition edge, SessionIdentity owner, CheckpointPair pair, ActionReceipt save,
+            ActionReceipt preceding, ActionPorts.OutcomeArchive originals) throws IOException {
+        var effect = save.applied().orElseThrow().observation();
+        if (!(effect.provenance() instanceof ObservationProvenance.FreshSnapshotQuery fresh))
+            throw new IOException("settled imported successor SAVE requires its original independent Fresh Full");
+        var setter = save.ack().orElseThrow();
+        var original = setter.custody().orElseThrow();
+        ActionReceipt publisher;
+        boolean live;
+        if (fresh.basis() instanceof ObservationProvenance.LiveAfterSetter basis) {
+            StrictJson.require(originals.referenceOf(setter).equals(basis.setterAcknowledgement())
+                    && preceding != null && preceding.state() instanceof ActionState.AckReceived,
+                    "settled imported successor SAVE lost its live canonical ACK publisher");
+            publisher = preceding;
+            live = true;
+        } else if (fresh.basis() instanceof ObservationProvenance.ColdAfterAcknowledgement basis) {
+            publisher = originals.loadReceipt(basis.originalReceipt());
+            StrictJson.require(originals.receiptReferenceOf(publisher).equals(basis.originalReceipt()),
+                    "settled imported successor SAVE lost its cold canonical ACK publisher");
+            ContinuityActionJournal.requireHistoricalReceipt(edge.before(), publisher, originals);
+            live = false;
+        } else throw new IOException("settled imported successor SAVE has another original Fresh basis");
+        var dispatch = originals.load(fresh.readAcknowledgement());
+        if (!(dispatch instanceof NativeActionPort.AckReceived read) || !read.nativeOk())
+            throw new IOException("settled imported successor SAVE lost its original positive Fresh ACK");
+        var custody = read.custody().orElseThrow();
+        custody.verify(read);
+        var transport = custody.session();
+        var received = fresh.snapshotReceived();
+        boolean sameReceiverAfter = transport.equals(original.session()) && custody.custodyEpoch().equals(original.custodyEpoch())
+                && custody.writeEntered().order().compareTo(original.responseReceived().order()) > 0;
+        StrictJson.require(transport.machineId().equals(owner.machineId()) && transport.game().equals(owner.game())
+                && transport.sessionId().equals(owner.sessionId()) && pair.frame().equals(effect.after())
+                && !read.requestId().equals(setter.requestId()) && fresh.requestId().equals(read.requestId())
+                && originals.referenceOf(read).equals(fresh.readAcknowledgement())
+                && !custody.writeEntered().observedAt().isBefore(original.responseReceived().observedAt())
+                && (sameReceiverAfter || !live && transport.connectionGeneration().compareTo(original.session().connectionGeneration()) > 0)
+                && received.order().compareTo(custody.writeCompleted().order()) > 0
+                && received.order().compareTo(custody.responseReceived().order()) < 0
+                && !received.observedAt().isBefore(custody.writeCompleted().observedAt())
+                && !received.observedAt().isAfter(custody.responseReceived().observedAt())
+                && received.observedAt().equals(effect.observedAt()),
+                "settled imported successor SAVE changed its after-ACK Full chronology or owner");
+        requireImportedSaveFreshPackets(read, effect, originals);
+        same.verifyPin(edge.eventPin());
+        return new CommittedImportedSettledFrontier.ConfirmedSave(edge, pair, save, publisher,
+                new RetainedObservation(effect.after(), transport));
+    }
+
+    private static void requireImportedSaveFreshPackets(NativeActionPort.AckReceived read,
+            ActionState.EffectObservation effect, ActionPorts.OutcomeArchive originals) {
+        var request = framedSavedObject(read.outbound().orElseThrow().originalPacket(), ContinuityJson.DOMAIN_MAX_BYTES);
+        StrictJson.object(request, java.util.Set.of("type","protocol_version","request_id","step","expected_revision"));
+        StrictJson.require("execute_step".equals(StrictJson.text(request.get("type")))
+                && StrictJson.integer(request.get("protocol_version"),1,1)==1
+                && read.requestId().equals(StrictJson.text(request.get("request_id")))
+                && "query-fresh-full-state-v1".equals(StrictJson.text(request.get("step")))
+                && StrictJson.integer(request.get("expected_revision"),0,0)==0,
+                "settled imported successor SAVE Fresh request differs from its original wire contract");
+        var ack = framedSavedObject(read.originalPacket(), ContinuityJson.DOMAIN_MAX_BYTES);
+        StrictJson.object(ack, java.util.Set.of("type","protocol_version","request_id","ok","result"));
+        var result = StrictJson.object(ack.get("result"), java.util.Set.of("schema","request_id","snapshot_id","revision"));
+        var frame = effect.after().frame();
+        StrictJson.require("command_result".equals(StrictJson.text(ack.get("type")))
+                && StrictJson.integer(ack.get("protocol_version"),1,1)==1
+                && ack.path("ok").isBoolean() && ack.path("ok").booleanValue()
+                && read.requestId().equals(StrictJson.text(ack.get("request_id")))
+                && java.util.Arrays.equals(read.originalFrame().bytes(), java.util.Arrays.copyOfRange(read.originalPacket(),4,read.originalPacket().length))
+                && result.equals(StrictJson.parse(read.originalResultToken().orElseThrow().bytes()))
+                && "xar.native.fresh-full-state-read/v1".equals(StrictJson.text(result.get("schema")))
+                && read.requestId().equals(StrictJson.text(result.get("request_id")))
+                && frame.snapshotId().equals(StrictJson.text(result.get("snapshot_id")))
+                && result.get("revision").isIntegralNumber() && frame.identity().nativeRevision().equals(result.get("revision").bigIntegerValue()),
+                "settled imported successor SAVE Fresh ACK does not bind the original frame");
+        var ref = effect.originalEvidence();
+        byte[] raw = originals.loadNativeFrame(ref);
+        var snapshot = ContinuityJson.object(org.xar.ck3.control.contracts.FullJsonTree.parse(
+                framedSavedBody(raw, DriverJson.MAX_NATIVE_BYTES), DriverJson.MAX_NATIVE_BYTES));
+        StrictJson.object(snapshot, java.util.Set.of("type","protocol_version","snapshot_id","revision","state","read_request_id"));
+        var state = ContinuityJson.object(snapshot.get("state"));
+        var player = ContinuityJson.object(state.get("played_character"));
+        StrictJson.require(raw.length==ref.bytes() && ActionCodec.sha256(raw).equals(ref.sha256())
+                && "state_snapshot".equals(StrictJson.text(snapshot.get("type")))
+                && StrictJson.integer(snapshot.get("protocol_version"),1,1)==1
+                && read.requestId().equals(StrictJson.text(snapshot.get("read_request_id")))
+                && frame.snapshotId().equals(StrictJson.text(snapshot.get("snapshot_id")))
+                && snapshot.get("revision").isIntegralNumber() && frame.identity().nativeRevision().equals(snapshot.get("revision").bigIntegerValue())
+                && state.get("date_raw").isIntegralNumber() && frame.identity().dateRaw().equals(state.get("date_raw").bigIntegerValue())
+                && state.path("paused").isBoolean() && state.path("paused").booleanValue()
+                && state.path("map_ready").isBoolean() && state.path("map_ready").booleanValue()
+                && player.path("alive").isBoolean() && player.path("alive").booleanValue()
+                && frame.identity().player().equals(org.xar.ck3.control.contracts.NativeCharacterId.fromJson(player.get("character_id")).asBigInteger()),
+                "settled imported successor SAVE Full changed its original paused map or subject");
+    }
+
+    private static ObjectNode framedSavedObject(byte[] packet, int maximum) {
+        return ContinuityJson.parseObject(framedSavedBody(packet, maximum), maximum);
+    }
+
+    private static byte[] framedSavedBody(byte[] packet, int maximum) {
+        StrictJson.require(packet.length>=5 && packet.length-4<=maximum
+                && java.nio.ByteBuffer.wrap(packet,0,4).order(java.nio.ByteOrder.LITTLE_ENDIAN).getInt()==packet.length-4,
+                "settled imported successor SAVE requires its exact framed packet length");
+        return java.util.Arrays.copyOfRange(packet,4,packet.length);
     }
 
     private record CheckedSameGameHistory(SettledSameGameData data, boolean isolated,
@@ -5714,7 +5827,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                         StrictJson.require(!used.isEmpty()&&batch.equals(used.getLast())&&(live||interrupted)
                                 &&pending==null&&latest!=null&&lastCycleRef!=null,
                                 "historical SAVE changed its real open or interrupted batch/cycle frontier");
-                        var save=requireHistoricalConfirmedSave(same,edge,owner,actions,originals,latest,completedCycles,lastCycleRef);
+                        var save=requireHistoricalConfirmedSave(transitions,same,edge,owner,actions,originals,latest,completedCycles,lastCycleRef);
                         StrictJson.require(confirmedSaves.add(originals.receiptReferenceOf(save)),
                                 "historical SAVE cannot confirm the same original twice");
                         var pair=CheckpointPairCodec.decode(ContinuityJson.canonical(details.get("checkpoint_pair")));
@@ -6547,11 +6660,15 @@ public final class ContinuityBatchJournal implements BatchJournal {
         var frontier = transitions.readCommittedImportedSettledFrontier(same,history);
         var attachment = readImportedRestoreAttachment(same,head,history.original().attachment(),
                 frontier.consumedSuccessorBatches());
-        var controller = readCommittedImportedControllerHistory(same,head,attachment);
-        StrictJson.require(controller.batchPrefix().equals(frontier.batchPrefix())
-                && controller.nextBatchSequence() == frontier.nextBatchSequence()
-                && controller.committedSavedDays() == frontier.committedSavedDays(),
+        var inherited = readCommittedImportedControllerHistory(same,head,attachment);
+        var rebound = history.original().rebind().after();
+        long originalDays = Math.subtractExact(rebound.settledDateRaw(), rebound.origin().startDateRaw()) / 24;
+        StrictJson.require(inherited.batchPrefix().equals(frontier.batchPrefix())
+                && inherited.nextBatchSequence() == frontier.nextBatchSequence()
+                && inherited.committedSavedDays() == originalDays,
                 "settled imported successor changed the original Controller sequence or saved days");
+        var controller = new CommittedImportedControllerHistory(inherited.batchPrefix(), inherited.nextBatchSequence(),
+                inherited.usedBatches(), frontier.committedSavedDays());
         return new SettledImportedControllerData(attachment,controller,frontier);
     }
 
@@ -6569,14 +6686,14 @@ public final class ContinuityBatchJournal implements BatchJournal {
         boolean dirty = false;
         int eligible = 0;
         for (var action : ordinaryCycleRoots(frontier.successorActions())) {
-            if (!action.visibleGameplay() && !action.eligibleAdvance()) continue;
+            if (action.sequence() <= frontier.savedThroughSequence() || !action.visibleGameplay() && !action.eligibleAdvance()) continue;
             if (unsaved.add(action.command().actionId())) {
                 dirty |= action.visibleGameplay();
                 if (action.eligibleAdvance()) eligible = Math.addExact(eligible,1);
             }
         }
         var restart = new ControllerRestartState(frontier.owner(),controller.batchPrefix(),controller.nextBatchSequence(),
-                controller.usedBatches(),unsaved,Optional.of(history.attachment().savedPair()),Optional.of(same.persistedHead()),
+                controller.usedBatches(),unsaved,Optional.of(frontier.savedPair()),Optional.of(same.persistedHead()),
                 eligible,dirty,false,false,controller.committedSavedDays(),java.util.Set.of(),false);
         return new SettledImportedRecoveryData(history,driver,restart);
     }
@@ -6590,7 +6707,6 @@ public final class ContinuityBatchJournal implements BatchJournal {
         var cycle = state.path(OrdinaryCycleTransitions.STATE_FIELD);
         if (head.state().status() != ContinuityState.Status.RUNNING
                 || !state.hasNonNull(WriterContracts.ORDINARY_IMPORTED_CYCLE_ORIGIN_FIELD)
-                || state.hasNonNull(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD)
                 || !cycle.hasNonNull("head") || !cycle.path("pending_receipt").isNull()) {
             return Optional.empty();
         }
@@ -6623,7 +6739,8 @@ public final class ContinuityBatchJournal implements BatchJournal {
         var head = same.head();
         StrictJson.require(owner.equals(frontier.owner()) && ContinuityJson.same(head.state().toJson(), frontier.history().current().toJson()),
                 "settled imported history crossed its actual successor or held head");
-        var start = new SameGameEntry.CommittedImportedRebind(original.attachment().eventPin().reference(), original.rebind().eventPin().reference(), original.pair());
+        var start = new SameGameEntry.CommittedImportedRebind(original.attachment().eventPin().reference(),
+                original.rebind().eventPin().reference(), original.pair());
         var history = new java.util.ArrayList<ExactRef>();
         history.add(start.attachment());
         history.add(start.rebind());
@@ -6656,6 +6773,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
         var original = frontier.history().original();
         same.verifyPin(original.attachment().eventPin());
         same.verifyPin(original.rebind().eventPin());
+        if (!frontier.confirmedSaves().isEmpty()) same.verifyPin(frontier.confirmedSaves().getLast().edge().eventPin());
         var archive = transitions.restartArchive(same);
         var canonical = ContinuityActionJournal.receipts(head.state(), archive);
         StrictJson.require(canonical.equals(data.settledActions())

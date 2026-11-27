@@ -577,7 +577,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         var head = same.head();
         var owner = frontier.owner();
         var branch = state(head.state(), owner);
-        var saved = frontier.history().original().pair();
+        var saved = frontier.savedPair();
         StrictJson.require(head.state().status() == ContinuityState.Status.RUNNING && data.controller().owner().equals(owner)
                 && head.digest().equals(data.canonicalHeadDigest()) && head.state().sequence() == data.canonicalSequence()
                 && branch.pending().isEmpty() && branch.head().isPresent() && data.controller().savedPair().filter(saved::equals).isPresent()

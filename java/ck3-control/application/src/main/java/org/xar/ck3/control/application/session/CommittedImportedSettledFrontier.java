@@ -16,6 +16,9 @@ import org.xar.ck3.control.application.action.ActionTransitions;
 import org.xar.ck3.control.application.action.CommandOrigin;
 import org.xar.ck3.control.application.action.ContinuityActionJournal;
 import org.xar.ck3.control.application.action.RawJson;
+import org.xar.ck3.control.application.checkpoint.CheckpointPair;
+import org.xar.ck3.control.application.checkpoint.CheckpointPairCodec;
+import org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialEvidence;
 import org.xar.ck3.control.application.driver.DriverActionHistoryState;
 import org.xar.ck3.control.application.session.SessionPorts.JournalKind;
 import org.xar.ck3.control.application.session.SessionPorts.SemanticEvidence;
@@ -40,13 +43,23 @@ final class CommittedImportedSettledFrontier {
     record Data(CommittedImportedRebindOriginal.Historical history, SessionIdentity owner, G2Source source,
             String batchPrefix, long nextBatchSequence, List<String> consumedSuccessorBatches,
             ActionReceipt retiredResume, List<ActionReceipt> canonicalActions, List<ActionReceipt> successorActions,
-            SemanticEvidence latestCycle, long committedSavedDays) {
+            SemanticEvidence latestCycle, List<ConfirmedSave> confirmedSaves, long committedSavedDays) {
         Data {
             consumedSuccessorBatches = List.copyOf(consumedSuccessorBatches);
             canonicalActions = List.copyOf(canonicalActions);
             successorActions = List.copyOf(successorActions);
+            confirmedSaves = List.copyOf(confirmedSaves);
+        }
+        CheckpointPair savedPair() {
+            return confirmedSaves.isEmpty() ? history.original().pair() : confirmedSaves.getLast().pair();
+        }
+        long savedThroughSequence() {
+            return confirmedSaves.isEmpty() ? history.original().rebind().sequence() : confirmedSaves.getLast().edge().sequence();
         }
     }
+
+    record ConfirmedSave(HistoricalTransition edge, CheckpointPair pair, ActionReceipt receipt,
+            ActionReceipt publisher, ContinuityBatchJournal.RetainedObservation observed) { }
 
     static Data read(Session same, CommittedImportedRebindOriginal.Historical history,
             OrdinaryCycleTransitions transitions, ActionPorts.OutcomeArchive archive) throws IOException {
@@ -80,14 +93,14 @@ final class CommittedImportedSettledFrontier {
         return transitions.withLocked(same, () -> archive.withSession(same)
                 .inSameGameHistoricalRecoveryScope(same, originals -> {
             var replay = new Replay(same, transitions, originals, rebounded, owner, prefix, next,
-                    original.archivedSemantic().frame(), terminalCycleRecord);
+                    original.archivedSemantic().frame(), terminalCycleRecord, original.pair());
             var cursor = rebounded;
             var captured = new HashSet<>(head.documents());
             for (var edge : history.suffix()) {
                 StrictJson.require(edge.sequence() == Math.addExact(cursor.sequence(), 1)
                         && captured.contains(edge.eventPin()) && ContinuityJson.same(cursor.toJson(), edge.before().toJson()),
                         "settled imported successor suffix crossed its original writer edge");
-                requireSameSavedOrigin(rebounded, edge.after(), original.tombstone().reference(), owner);
+                requireSameImportedOrigin(rebounded, edge.after(), original.tombstone().reference(), owner);
                 replay.replay(edge);
                 cursor = edge.after();
             }
@@ -106,7 +119,10 @@ final class CommittedImportedSettledFrontier {
                     "settled imported successor cannot discard an unresolved action or change its inherited action cut");
             var successor = List.copyOf(replay.successor.values());
             for (var root : ContinuityBatchJournal.ordinaryCycleRoots(successor)) {
-                if (root.visibleGameplay() || root.eligibleAdvance())
+                if (ordinarySave(root)) {
+                    StrictJson.require(replay.saves.stream().anyMatch(save -> save.receipt().equals(root)),
+                            "settled imported successor SAVE lacks its exact canonical confirmation");
+                } else if (root.visibleGameplay() || root.eligibleAdvance())
                     StrictJson.require(replay.closedCycles.contains(originals.receiptReferenceOf(root)),
                             "settled imported successor gameplay lacks its original completed cycle");
             }
@@ -114,22 +130,37 @@ final class CommittedImportedSettledFrontier {
                     replay.terminalCycle.semantic()).isPresent()
                     && head.digest().equals(same.head().digest()),
                     "settled imported successor changed its completed branch or actual held head");
+            long currentSavedTicks = Math.subtractExact(current.settledDateRaw(), rebounded.origin().startDateRaw());
+            StrictJson.require(currentSavedTicks >= savedTicks && currentSavedTicks % 24 == 0,
+                    "settled imported successor has invalid confirmed saved days");
             return new Data(history, owner, replay.source, prefix, replay.nextBatchSequence, replay.used,
-                    replay.retiredResume, canonical, successor, replay.latestCycle, savedTicks / 24);
+                    replay.retiredResume, canonical, successor, replay.latestCycle, replay.saves, currentSavedTicks / 24);
         }));
     }
 
-    private static void requireSameSavedOrigin(ContinuityState rebind, ContinuityState current, ExactRef origin, SessionIdentity owner) {
+    private static void requireSameImportedOrigin(ContinuityState rebind, ContinuityState current, ExactRef origin, SessionIdentity owner) {
         var original = rebind.toJson(); var state = current.toJson();
         StrictJson.require(current.status() == ContinuityState.Status.RUNNING
-                && rebind.origin().equals(current.origin()) && rebind.settledCycles() == current.settledCycles()
-                && rebind.settledDateRaw() == current.settledDateRaw()
+                && rebind.origin().equals(current.origin())
                 && ContinuityJson.same(owner.game().toJson(), state.get("game_binding"))
                 && ContinuityJson.same(origin.toJson(), state.get(WriterContracts.ORDINARY_IMPORTED_CYCLE_ORIGIN_FIELD))
                 && Objects.equals(original.get(SavedContinuityBootstrap.FIELD), state.get(SavedContinuityBootstrap.FIELD))
-                && Objects.equals(original.get(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD), state.get(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD))
                 && Objects.equals(original.get("last_current_saved_cold"), state.get("last_current_saved_cold")),
                 "settled imported successor changed the actual saved frontier, owner or imported origin");
+    }
+
+    private static void requireUnchangedPhysicalFrontier(HistoricalTransition edge) {
+        var before = edge.before().toJson();
+        var after = edge.after().toJson();
+        StrictJson.require(edge.before().settledCycles() == edge.after().settledCycles()
+                && edge.before().settledDateRaw() == edge.after().settledDateRaw()
+                && Objects.equals(before.get(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD), after.get(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD))
+                && Objects.equals(before.get(SavedCheckpointMaterialEvidence.FIELD), after.get(SavedCheckpointMaterialEvidence.FIELD)),
+                "settled imported successor changed the actual saved frontier, owner or imported origin");
+    }
+
+    private static boolean ordinarySave(ActionReceipt action) {
+        return action.command().operation().value().equals("save-checkpoint");
     }
 
     private record TerminalCycle(ActionReceipt receipt, SemanticEvidence semantic) { }
@@ -148,6 +179,9 @@ final class CommittedImportedSettledFrontier {
         private final Set<ExactRef> closedCycles = new HashSet<>();
         private final Set<String> openActions = new HashSet<>();
         private final List<String> used = new ArrayList<>();
+        private final List<ConfirmedSave> saves = new ArrayList<>();
+        private final LinkedHashMap<String, ActionReceipt> savePublishers = new LinkedHashMap<>();
+        private CheckpointPair savedPair;
         private long nextBatchSequence;
         private String openBatch;
         private long openedAtSequence;
@@ -159,10 +193,12 @@ final class CommittedImportedSettledFrontier {
         private G2Source source;
 
         private Replay(Session same, OrdinaryCycleTransitions transitions, ActionPorts.OutcomeArchive archive,
-                ContinuityState rebind, SessionIdentity owner, String prefix, long next, ObservationIdentity original, ExactRef terminalCycleRecord) {
+                ContinuityState rebind, SessionIdentity owner, String prefix, long next, ObservationIdentity original,
+                ExactRef terminalCycleRecord, CheckpointPair importedPair) {
             this.same = same; this.transitions = transitions; this.archive = archive; this.owner = owner;
             batchPrefix = prefix; nextBatchSequence = next; observed = original;
             this.terminalCycleRecord = terminalCycleRecord;
+            this.savedPair = importedPair;
             inherited = ContinuityActionJournal.receipts(rebind, archive);
             oldIds = new HashSet<>(inherited.stream().map(action -> action.command().actionId()).toList());
             var pending = inherited.stream().filter(action -> !action.settled()).toList();
@@ -177,6 +213,8 @@ final class CommittedImportedSettledFrontier {
             var request = new WriterContracts.Request(edge.kind(), edge.details(), List.of());
             StrictJson.require(request.identity().equals(edge.eventIdentity()), "settled imported successor event identity differs");
             var details = request.detailsObject();
+            if (!OrdinaryCycleTransitions.BATCH_KIND.equals(edge.kind()) || !JournalKind.SAVE_CONFIRMED.name().equals(details.path("boundary").asText()))
+                requireUnchangedPhysicalFrontier(edge);
             switch (edge.kind()) {
                 case OrdinaryCycleTransitions.BATCH_KIND -> batch(edge, details);
                 case WriterContracts.ACTION_LIFECYCLE_KIND -> action(edge, details);
@@ -189,9 +227,13 @@ final class CommittedImportedSettledFrontier {
             }
         }
 
-        private void batch(HistoricalTransition edge, ObjectNode details) {
+        private void batch(HistoricalTransition edge, ObjectNode details) throws IOException {
             var boundary = JournalKind.valueOf(StrictJson.text(details.get("boundary")));
             String id = StrictJson.text(details.get("batch_id"));
+            if (boundary == JournalKind.SAVE_CONFIRMED) {
+                confirmSave(edge, details, id);
+                return;
+            }
             StrictJson.require(owner.equals(OrdinaryCycleTransitions.sessionFromJson(details.get("session")))
                     && details.path("checkpoint_pair").isNull() && details.path("completed_cycle_proof").isNull()
                     && pendingCycle == null && openActions.isEmpty(),
@@ -210,6 +252,27 @@ final class CommittedImportedSettledFrontier {
                 openBatch = null;
             }
             requireReduction(edge, OrdinaryCycleTransitions.replayCommittedBatchMetadata(edge.before(), owner, id, boundary, edge).toJson());
+        }
+
+        private void confirmSave(HistoricalTransition edge, ObjectNode details, String id) throws IOException {
+            StrictJson.require(id.equals(openBatch) && pendingCycle == null && openActions.isEmpty() && latestCycle != null,
+                    "settled imported successor SAVE requires its actual open batch and completed cycle");
+            var cycle = edge.before().toJson().get(WriterContracts.ORDINARY_CYCLE_FIELD);
+            var receipt = ContinuityBatchJournal.requireHistoricalConfirmedSave(transitions, same, edge, owner, List.copyOf(successor.values()), archive,
+                    latestCycle, StrictJson.integer(cycle.get("completed_cycles"), 0, StrictJson.MAX_SAFE_INTEGER),
+                    ExactRef.fromJson(cycle.get("head")));
+            var pair = CheckpointPairCodec.decode(ContinuityJson.canonical(details.get("checkpoint_pair")));
+            StrictJson.require(receipt.sequence() > openedAtSequence && pair.lineageId().equals(savedPair.lineageId())
+                    && saves.stream().noneMatch(save -> save.receipt().equals(receipt))
+                    && edge.after().settledDateRaw() >= edge.before().settledDateRaw()
+                    && edge.after().settledCycles() >= edge.before().settledCycles(),
+                    "settled imported successor SAVE crossed its original lineage, batch or physical frontier");
+            requireObservedContinuation(pair.frame());
+            var evidence = ContinuityBatchJournal.readCommittedImportedSave(same, edge, owner, pair, receipt,
+                    savePublishers.get(receipt.command().actionId()), archive);
+            saves.add(evidence);
+            savedPair = pair;
+            observed = pair.frame();
         }
 
         private void action(HistoricalTransition edge, ObjectNode details) throws IOException {
@@ -231,6 +294,8 @@ final class CommittedImportedSettledFrontier {
             var previous = Optional.ofNullable(successor.get(command.actionId()));
             if (previous.isEmpty()) requireObservedContinuation(command.before());
             ActionTransitions.validate(previous, command, receipt.bodySha256(), receipt.state());
+            if (ordinarySave(receipt) && receipt.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED)
+                savePublishers.put(command.actionId(), previous.orElseThrow());
             successor.put(command.actionId(), receipt);
             lastActionSequence = receipt.sequence();
             if (receipt.settled()) openActions.remove(command.actionId());
@@ -246,7 +311,7 @@ final class CommittedImportedSettledFrontier {
                     "settled imported successor cycle crossed the action or batch owner");
             var receiptRef = ExactRef.fromJson(details.get("receipt_ref"));
             var receipt = archive.loadReceipt(receiptRef);
-            StrictJson.require(receipt.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED
+            StrictJson.require(receipt.outcome() == ActionReceipt.Outcome.APPLIED_CONFIRMED && !ordinarySave(receipt)
                     && receipt.equals(successor.get(receipt.command().actionId()))
                     && receipt.sequence() > openedAtSequence
                     && receiptRef.equals(archive.receiptReferenceOf(receipt)),

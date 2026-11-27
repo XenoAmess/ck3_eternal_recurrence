@@ -50,9 +50,27 @@ final class CommittedImportedDriverHistory {
                 }
                 var publications = new ArrayList<DriverActionHistoryState.Publication>();
                 var actuals = new ArrayList<ActionReceipt>();
+                var saves = new HashMap<Long, CommittedImportedSettledFrontier.ConfirmedSave>();
+                for (var save : settled.confirmedSaves()) saves.put(save.edge().sequence(), save);
                 SemanticEvidence latest = historical.original().archivedSemantic();
                 var observed = ContinuityBatchJournal.retainedSemanticObservation(latest,settled.owner(),originals);
                 for (var edge : historical.suffix()) {
+                    var save = saves.remove(edge.sequence());
+                    if (save != null) {
+                        var receipt = save.receipt();
+                        StrictJson.require(save.edge() == edge && receipt.equals(pending.remove(receipt.command().actionId()))
+                                && receipt.equals(missing.remove(receipt.sequence())),
+                                "committed imported Driver SAVE lacks its unique confirmed successor receipt");
+                        requireCoverage(missing, edge.before().sequence());
+                        var driverRef = receipt.applied().orElseThrow().observation().supportingEvidence().get(1);
+                        retained = ContinuityBatchJournal.retainConfirmedSaveMaterial(retained, save.pair(), receipt,
+                                save.publisher(), driverRef, originals);
+                        ContinuityBatchJournal.requireSettledObservedContinuation(observed.frame(), save.observed().frame());
+                        StrictJson.require(save.observed().transport().connectionGeneration().compareTo(observed.transport().connectionGeneration()) >= 0,
+                                "committed imported Driver SAVE regressed its original receiver connection");
+                        observed = save.observed();
+                        continue;
+                    }
                     switch (edge.kind()) {
                         case WriterContracts.DRIVER_ACTION_HISTORY_KIND -> {
                             var details = ContinuityJson.parseObject(edge.details(), ContinuityJson.LEDGER_MAX_BYTES);
@@ -84,7 +102,7 @@ final class CommittedImportedDriverHistory {
                 }
                 requireCoverage(missing, head.state().sequence());
                 DriverActionHistoryState.requireOriginals(same, publications, actuals, originals);
-                StrictJson.require(latest.equals(settled.latestCycle()) && head.digest().equals(same.head().digest()),
+                StrictJson.require(saves.isEmpty() && latest.equals(settled.latestCycle()) && head.digest().equals(same.head().digest()),
                         "committed imported Driver lost the latest settled cycle or its held Writer head");
                 return new Data(retained.facts(), retained.fullDriver(), latest, observed);
             });
