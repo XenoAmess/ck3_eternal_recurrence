@@ -23,6 +23,9 @@ import org.xar.ck3.control.application.capabilities.*;
 import org.xar.ck3.control.application.driver.DriverObservationAssembler.Complete;
 import org.xar.ck3.control.application.effects.RootGuardEvidence;
 import org.xar.ck3.control.application.planning.military.MilitaryReadObservation;
+import org.xar.ck3.control.application.checkpoint.DriverStateSnapshot;
+import org.xar.ck3.control.application.session.ContinuityBatchJournal;
+import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
 import org.xar.ck3.control.continuity.ContinuityJson;
 import org.xar.ck3.control.continuity.ContinuityState;
 import org.xar.ck3.control.continuity.writer.WriterContracts;
@@ -72,6 +75,7 @@ final class DriverReadHistoryWriterTest {
                     var produced=DriverCapabilityStateProducer.initializeNewEpisode(lease.frame(),lease.driver(),configuration,session,policy,fixture.archive.withSession(same));
                     fixture.driverAuthority().publishCapabilityInputs(same,lease.driver().stamp(),produced.expectedAuxiliarySha256(),produced);return null;
                 });
+                var initialFacts=fixture.driverAuthority().withFrozenFacts(same,frozen->assertInstanceOf(DriverSnapshotFacts.Known.class,frozen.state()));
                 var originals=new ArrayList<PlanningReadResult.Known<MilitaryReadObservation>>();
                 var queryFrame=new AtomicReference<Complete>();var originalGuard=new AtomicReference<GuardEvidence>();
                 var zero=new AtomicReference<DriverReadHistoryPublisher.ReadOnlyExtension>();long originalVersion=fixture.driverAuthority().withFrozenFacts(same,frozen->((DriverSnapshotFacts.Known)frozen.state()).stamp().driverVersion());
@@ -93,6 +97,30 @@ final class DriverReadHistoryWriterTest {
                     assertEquals(0,same.head().state().sequence());return null;
                 });
                 var first=publisher.flushActualReads(same).orElseThrow();assertEquals(0,first.predecessor().state().sequence());assertEquals(1,first.actual().head().sequence());
+                var contractArchive=fixture.archive.withSession(same);
+                var originalRequest=originals.getFirst().receipt().request();
+                var owner=new SessionIdentity(
+                        originalRequest.before().machineId(),originalRequest.before().game(),originalRequest.sessionId());
+                var firstPin=same.head().documents().stream()
+                        .filter(pin->Path.of(pin.reference().path()).getFileName().toString().equals("00000001.json")).findFirst().orElseThrow();
+                var firstEdge=same.readHistoricalTransition(firstPin);
+                var firstDetails=ContinuityJson.parseObject(firstEdge.details(),ContinuityJson.DOCUMENT_MAX_BYTES);
+                long originalDate=firstEdge.before().settledDateRaw();
+                assertEquals(originalDate,firstEdge.after().settledDateRaw());
+                assertEquals(firstEdge.before().settledCycles(),firstEdge.after().settledCycles());
+                var firstReplay=ContinuityBatchJournal.replayCapturedRead(
+                        same,owner,firstEdge,initialFacts,ExactRef.fromJson(firstDetails.get("before_driver")),contractArchive);
+                assertEquals(2,firstReplay.facts().driver().commandHistory().size());
+                assertEquals(initialFacts.actionRows(),firstReplay.facts().actionRows());
+                assertEquals(initialFacts.stamp().driverVersion()+1,firstReplay.facts().stamp().driverVersion());
+                assertEquals(initialFacts.stamp().episodeEpoch(),firstReplay.facts().stamp().episodeEpoch());
+                var capabilitySource=DriverCapabilityStateProducer.STATE_SOURCE;
+                assertEquals(initialFacts.auxiliary().get(capabilitySource),firstReplay.facts().auxiliary().get(capabilitySource));
+                fixture.driverAuthority().withFrozenFacts(same,frozen->{
+                    var actual=assertInstanceOf(DriverSnapshotFacts.Known.class,frozen.state());
+                    assertArrayEquals(actual.driver().encode(),firstReplay.facts().driver().encode());
+                    return null;
+                });
                 assertFalse(publisher.hasPending(same));assertTrue(publisher.flushActualReads(same).isEmpty());
                 assertThrows(IllegalArgumentException.class,()->zero.get().requireCurrent(same));
                 fixture.collector.current(same,initial.request().before(),Instant.now().plusSeconds(20),lease->{
@@ -113,6 +141,43 @@ final class DriverReadHistoryWriterTest {
                     publisher.enqueue(same,contract,known);return null;
                 });
                 publisher.flushActualReads(same).orElseThrow();
+                var secondPin=same.head().documents().stream()
+                        .filter(pin->Path.of(pin.reference().path()).getFileName().toString().equals("00000002.json")).findFirst().orElseThrow();
+                var secondEdge=same.readHistoricalTransition(secondPin);
+                int writesBeforeReplay=fixture.scenarioReadWrites();
+                var priorFacts=firstReplay.facts();
+                var foreign=priorFacts.auxiliary().with(capabilitySource,DriverJson.fromNode(firstReplay.fullDriver().toJson()));
+                var wrongSource=new DriverSnapshotFacts.Known(priorFacts.driver(),priorFacts.stamp(),priorFacts.originalHistoryBasis(),
+                        priorFacts.actionRows(),foreign,priorFacts.loop(),Optional.empty());
+                assertThrows(IllegalArgumentException.class,()->ContinuityBatchJournal.replayCapturedRead(
+                        same,owner,secondEdge,wrongSource,firstReplay.fullDriver(),contractArchive));
+                var old=priorFacts.driver();
+                var changedDriver=new DriverStateSnapshot.Complete(
+                        old.session(),old.commandHistory(),old.lastCheckpoint(),old.rollbackWarFailure(),old.managedRestoreTransaction(),
+                        old.successionExpectation(),old.successionLifecycle(),
+                        new DriverStateSnapshot.Value(new byte[]{'{','}'}),old.rollbackWarFailures());
+                var stamp=priorFacts.stamp();
+                var wrongBusiness=new DriverSnapshotFacts.Known(changedDriver,new DriverSnapshotFacts.Stamp(
+                        stamp.driverVersion(),stamp.episodeEpoch(),stamp.game(),stamp.episodeRunId(),DriverJson.sha256(changedDriver.encode())),
+                        priorFacts.originalHistoryBasis(),priorFacts.actionRows(),priorFacts.auxiliary(),priorFacts.loop(),Optional.empty());
+                assertThrows(IllegalArgumentException.class,()->ContinuityBatchJournal.replayCapturedRead(
+                        same,owner,secondEdge,wrongBusiness,firstReplay.fullDriver(),contractArchive));
+                var secondReplay=ContinuityBatchJournal.replayCapturedRead(
+                        same,owner,secondEdge,priorFacts,firstReplay.fullDriver(),contractArchive);
+                assertEquals(3,secondReplay.facts().driver().commandHistory().size());
+                assertEquals(originalDate,secondEdge.before().settledDateRaw());
+                assertEquals(originalDate,secondEdge.after().settledDateRaw());
+                assertEquals(secondEdge.before().settledCycles(),secondEdge.after().settledCycles());
+                assertEquals(initialFacts.actionRows(),secondReplay.facts().actionRows());
+                assertEquals(initialFacts.auxiliary().get(capabilitySource),secondReplay.facts().auxiliary().get(capabilitySource));
+                assertEquals(initialFacts.stamp().driverVersion()+2,secondReplay.facts().stamp().driverVersion());
+                fixture.driverAuthority().withFrozenFacts(same,frozen->{
+                    var actual=assertInstanceOf(DriverSnapshotFacts.Known.class,frozen.state());
+                    assertArrayEquals(actual.driver().encode(),secondReplay.facts().driver().encode());
+                    return null;
+                });
+                assertEquals(writesBeforeReplay,fixture.scenarioReadWrites());
+                assertEquals(0,fixture.nativeActionWrites());
                 var retained=new AtomicReference<DriverReadHistoryPublisher.ReadOnlyExtension>();
                 var nonRead=new AtomicReference<WriterContracts.Request>();
                 fixture.collector.current(same,initial.request().before(),Instant.now().plusSeconds(20),lease->{
