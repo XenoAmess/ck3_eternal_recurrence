@@ -11,6 +11,8 @@ import org.xar.ck3.control.contracts.StrictJson;
 
 /** Shared deterministic per-Game journal layout; path derivation grants no runtime observation or writer authority. */
 public final class IncidentJournalLayout {
+    public static final long MAX_SCAN_ORIGINAL_BYTES = 128L << 20;
+
     private IncidentJournalLayout() { }
     public record Scope(Path incidentRoot, Path scanRoot) {
         public Scope { canonical(incidentRoot); canonical(scanRoot); distinct(incidentRoot, scanRoot); }

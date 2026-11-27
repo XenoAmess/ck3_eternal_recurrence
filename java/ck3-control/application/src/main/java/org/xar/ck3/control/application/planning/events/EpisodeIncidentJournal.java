@@ -1,5 +1,7 @@
 package org.xar.ck3.control.application.planning.events;
 
+import static org.xar.ck3.control.contracts.offline.IncidentJournalLayout.MAX_SCAN_ORIGINAL_BYTES;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
@@ -67,9 +69,7 @@ public final class EpisodeIncidentJournal {
     private static final String LEGACY_RECOVERY_AFTER_SCHEMA = "xar.episode-incident-after-index/v3";
     private static final String LEGACY_RECOVERY_UNSETTLED_SCHEMA = "xar.episode-incident-unsettled-observation/v2";
     private static final int MAX_METADATA = 1 << 20;
-    // Complete incident bodies stay within the existing material cap; scan inventory remains separately bounded.
     private static final int MAX_BODY = FullJsonTree.MAXIMUM_BYTES;
-    private static final long MAX_SCAN_BYTES = 128L << 20;
     private final Configuration configured;
     private final ExactRef episodeRef;
     private final Binding episode;
@@ -480,13 +480,13 @@ public final class EpisodeIncidentJournal {
                 String filename = path.getFileName().toString();
                 if (filename.equals(".incident.lock") || filename.matches("incidents-[0-9a-f]{64}[.]batch[.]json")) continue;
                 require(filename.equals("EPISODE.json") || filename.matches("[0-9a-f]{32}[.](?:before|after|before-index|after-index|review-index|unsettled)[.]json"), "Unknown incident-directory entry requires reconciliation");
-                ExactRef pin = measure(path); bytes = Math.addExact(bytes, pin.bytes()); require(bytes <= MAX_SCAN_BYTES, "Incident scan byte limit exceeded");
+                ExactRef pin = measure(path); bytes = Math.addExact(bytes, pin.bytes()); require(bytes <= MAX_SCAN_ORIGINAL_BYTES, "Incident scan byte limit exceeded");
                 originals.add(pin);
                 if (!path.getFileName().toString().endsWith(".before-index.json")) continue;
                 ObjectNode index = object(read(pin)); ReadOriginals readOriginal = beforeIndexRead(index);
                 for (ExactRef ref : readOriginal.refs()) if (!originals.contains(ref)) {
                     originals.add(ref); bytes = Math.addExact(bytes, ref.bytes());
-                    require(bytes <= MAX_SCAN_BYTES, "Incident read-original scan byte limit exceeded");
+                    require(bytes <= MAX_SCAN_ORIGINAL_BYTES, "Incident read-original scan byte limit exceeded");
                 }
                 Binding origin = decodeBinding(index); episode.requireEpisode(origin);
                 String id = text(index, "incident_id"); require(id.matches("[0-9a-f]{32}"), "Original incident identity required");
@@ -649,7 +649,7 @@ public final class EpisodeIncidentJournal {
             Set<Path> paths=new java.util.HashSet<>();long bytes=0;
             for(ExactRef ref:originalRefs) {
                 require(paths.add(Path.of(ref.path())),"Reviewed progress inventory repeats an original path");
-                bytes=Math.addExact(bytes,ref.bytes());require(bytes<=MAX_SCAN_BYTES,"Reviewed progress inventory exceeds its actual bound");
+                bytes=Math.addExact(bytes,ref.bytes());require(bytes<=MAX_SCAN_ORIGINAL_BYTES,"Reviewed progress inventory exceeds its actual bound");
             }
             requireProgress(scanned,progressOriginal);
         }
@@ -712,7 +712,7 @@ public final class EpisodeIncidentJournal {
         ExactRef progressRef=progress?ExactRef.fromJson(scan.get("scan_observation_basis")):null;boolean containsProgress=false;
         for(JsonNode value:scan.get("original_refs")) {
             ExactRef ref=ExactRef.fromJson(value);require(paths.add(Path.of(ref.path())),"Prior review scan repeats an original path");
-            verifyExternal(ref);bytes=Math.addExact(bytes,ref.bytes());require(bytes<=MAX_SCAN_BYTES,"Prior review scan exceeds its bound");
+            verifyExternal(ref);bytes=Math.addExact(bytes,ref.bytes());require(bytes<=MAX_SCAN_ORIGINAL_BYTES,"Prior review scan exceeds its bound");
             containsBefore|=ref.equals(before);containsEpisode|=ref.equals(episodeRef);containsProgress|=ref.equals(progressRef);
         }
         require(containsBefore&&containsEpisode,"Prior review scan lacks its exact before/episode originals");
@@ -874,7 +874,7 @@ public final class EpisodeIncidentJournal {
         boolean hasIndex=false,hasBefore=false;long total=0;int count=0;
         for(JsonNode value:scan.get("original_refs")) {
             require(++count<=4096,"bounded legacy scan inventory required");ExactRef ref=ExactRef.fromJson(value);verifyExternal(ref);
-            total=Math.addExact(total,ref.bytes());require(total<=MAX_SCAN_BYTES,"legacy original scan byte limit exceeded");
+            total=Math.addExact(total,ref.bytes());require(total<=MAX_SCAN_ORIGINAL_BYTES,"legacy original scan byte limit exceeded");
             hasIndex|=ref.equals(index);hasBefore|=ref.equals(oldBefore);
         }
         require(hasIndex&&hasBefore,"legacy selected originals are absent from its pinned complete scan");
@@ -946,7 +946,7 @@ public final class EpisodeIncidentJournal {
             plain(path);require(Files.isRegularFile(path,LinkOption.NOFOLLOW_LINKS),"legacy inventory contains a non-original entry");String name=path.getFileName().toString();
             if(name.equals(".incident.lock")||name.matches("incidents-[0-9a-f]{64}[.]batch[.]json"))continue;
             require(name.equals("EPISODE.json")||name.matches("[0-9a-f]{32}[.](?:before|after|before-index|after-index|review-index|unsettled)[.]json"),"legacy inventory contains an unknown entry");
-            ExactRef pin=measure(path);pins.add(pin);bytes=Math.addExact(bytes,pin.bytes());require(bytes<=MAX_SCAN_BYTES,"legacy inventory byte limit exceeded");
+            ExactRef pin=measure(path);pins.add(pin);bytes=Math.addExact(bytes,pin.bytes());require(bytes<=MAX_SCAN_ORIGINAL_BYTES,"legacy inventory byte limit exceeded");
             if(name.endsWith(".before-index.json")) {
                 ObjectNode row=object(read(pin));episode.requireEpisode(decodeBinding(row));
                 if(command.actionId().equals(row.path("action_id").asText())) {candidates++;require(pin.equals(selected),"another current legacy candidate conflicts with the selected exact original");}

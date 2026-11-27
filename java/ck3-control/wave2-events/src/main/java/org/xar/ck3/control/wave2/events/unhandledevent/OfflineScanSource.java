@@ -1,5 +1,7 @@
 package org.xar.ck3.control.wave2.events.unhandledevent;
 
+import static org.xar.ck3.control.contracts.offline.IncidentJournalLayout.MAX_SCAN_ORIGINAL_BYTES;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
@@ -31,7 +33,6 @@ import org.xar.ck3.control.wave2.events.sourcecatalog.EvidenceGrantManifestPubli
 public final class OfflineScanSource {
     public static final int CAPTURED_DIAGNOSTIC_MAXIMUM = 16 << 20;
     private static final int FILE_MAX = 1 << 20;
-    private static final long TOTAL_INVENTORY_MAX = 64L << 20;
     private OfflineScanSource() { }
     public record ExternalOriginal(ExactRef source, long maximumBytes) { }
     public record Loaded(Binding binding, byte[] manifestBytes, List<ExactRef> scanOriginals, List<ExternalOriginal> externalOriginals, Set<ExactRef> diagnosticBeforeRefs) {
@@ -80,7 +81,7 @@ public final class OfflineScanSource {
         for (JsonNode item : index.path("original_refs")) {
             ExactRef ref = ExactRef.fromJson(item); Path path = absolute(ref.path());
             require(originals.put(path, ref) == null, "Duplicate original journal path");
-            if (path.startsWith(incidentRoot)) { total = Math.addExact(total, ref.bytes()); require(total <= TOTAL_INVENTORY_MAX, "Actual internal journal source inventory exceeds its finite bound"); }
+            if (path.startsWith(incidentRoot)) { total = Math.addExact(total, ref.bytes()); require(total <= MAX_SCAN_ORIGINAL_BYTES, "Actual internal journal source inventory exceeds its finite bound"); }
         }
         ExactRef episodeRef = ExactRef.fromJson(index.get("episode_ref"));
         require(absolute(episodeRef.path()).equals(incidentRoot.resolve("EPISODE.json")) && episodeRef.equals(originals.get(absolute(episodeRef.path()))), "Original episode stamp is outside the actual scan inventory");
@@ -122,7 +123,7 @@ public final class OfflineScanSource {
                 Path path = absolute(ref.path());
                 if (!path.startsWith(incidentRoot) && !external.containsKey(path)) {
                     total = Math.addExact(total, ref.bytes());
-                    require(total <= TOTAL_INVENTORY_MAX, "Actual read-original scan inventory exceeds its finite bound");
+                    require(total <= MAX_SCAN_ORIGINAL_BYTES, "Actual read-original scan inventory exceeds its finite bound");
                 }
                 long maximum = readOriginals instanceof IncidentReadIndex.KnownReceipt ? FILE_MAX : (16L << 20);
                 declareExternal(originals, external, ref, maximum);
@@ -264,7 +265,7 @@ public final class OfflineScanSource {
         for(JsonNode value:selectedScan.get("original_refs")) {
             ExactRef ref=ExactRef.fromJson(value);Path path=absolute(ref.path());
             require(selectedPaths.add(path)&&ref.bytes()>0,"Distinct positive legacy scan originals required");
-            selectedBytes=Math.addExact(selectedBytes,ref.bytes());require(selectedBytes<=TOTAL_INVENTORY_MAX,"Legacy proof scan inventory exceeds its finite bound");
+            selectedBytes=Math.addExact(selectedBytes,ref.bytes());require(selectedBytes<=MAX_SCAN_ORIGINAL_BYTES,"Legacy proof scan inventory exceeds its finite bound");
             int maximum;
             if(path.startsWith(incidentRoot)) {
                 require(ref.equals(originals.get(path)),"Legacy scan internal original differs from the complete current inventory");
@@ -295,7 +296,7 @@ public final class OfflineScanSource {
         long closure=0;Set<Path> closurePaths=new HashSet<>();
         for(var entry:originals.entrySet()){closurePaths.add(entry.getKey());closure=Math.addExact(closure,entry.getValue().bytes());}
         for(var entry:external.entrySet())if(closurePaths.add(entry.getKey()))closure=Math.addExact(closure,entry.getValue().source().bytes());
-        require(closure<=TOTAL_INVENTORY_MAX,"Complete legacy side-evidence closure exceeds its finite inventory bound");
+        require(closure<=MAX_SCAN_ORIGINAL_BYTES,"Complete legacy side-evidence closure exceeds its finite inventory bound");
     }
     private static void verifyLegacyGuard(ObjectNode guard,ObjectNode command,ObjectNode proof,ObjectNode afterIndex,ObservedScan actual) {
         StrictJson.object(guard,Set.of("schema","origin","source","session_id","connection_generation","operation","native_evidence",
