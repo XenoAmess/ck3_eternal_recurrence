@@ -19,6 +19,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import org.xar.ck3.control.application.action.*;
+import org.xar.ck3.control.application.checkpoint.CheckpointPair;
+import org.xar.ck3.control.application.checkpoint.CheckpointPairCodec;
+import org.xar.ck3.control.application.checkpoint.SavedAttachmentAuthority;
+import org.xar.ck3.control.application.checkpoint.SavedAttachmentSourceStore;
 import org.xar.ck3.control.application.checkpoint.DriverCheckpointStore;
 import org.xar.ck3.control.application.checkpoint.DriverStateSnapshot;
 import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService;
@@ -42,6 +46,8 @@ import org.xar.ck3.control.application.lifecycle.NaturalSuccessionPreparation.*;
 import org.xar.ck3.control.application.lifecycle.LifecycleCommit;
 import org.xar.ck3.control.application.lifecycle.LifecycleComposites;
 import org.xar.ck3.control.application.lifecycle.LifecyclePublication;
+import org.xar.ck3.control.application.session.OrdinaryCycleTransitions;
+import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
 import org.xar.ck3.control.application.session.ContinuityBatchJournal;
 import org.xar.ck3.control.build.SharedSourceFiles;
 import org.xar.ck3.control.continuity.ContinuityState;
@@ -108,11 +114,13 @@ public final class RootNaturalSuccessionOriginals implements ActionPorts.IntentP
     private final ThreadLocal<Capture> retainedReplay=new ThreadLocal<>();
     private Prepared preparedOwner;
     private volatile Replacement replacement;
-    private sealed interface ReplacementOrigin permits RestoredReplacement,EpisodeReplacement { }
+    private sealed interface ReplacementOrigin permits RestoredReplacement,CommittedRestoredReplacement,EpisodeReplacement { }
     private record RestoredReplacement(RestoreCheckpointService.RestoreBinding binding,
             RestoreCheckpointService.ReboundOrigin origin) implements ReplacementOrigin {
         private RestoredReplacement {Objects.requireNonNull(binding);Objects.requireNonNull(origin);}
     }
+    private record CommittedRestoredReplacement(RootCommittedOrdinaryRestoration original,
+            DomainBodies.BodyRef predecessor, WriterContracts.Pin basis) implements ReplacementOrigin { }
     private record EpisodeReplacement(LifecyclePublication lifecycle) implements ReplacementOrigin {
         private EpisodeReplacement {Objects.requireNonNull(lifecycle);}
     }
@@ -403,6 +411,75 @@ public final class RootNaturalSuccessionOriginals implements ActionPorts.IntentP
                     proof,new RestoredReplacement(actual,origin));
         }
     }
+    /** Retain the v5 original for replacing a historical clock only after the actual ordinary REBIND. */
+    public void admitCommittedRestoredSource(ContinuityStorePort.Session same,
+            RootCommittedOrdinaryRestoration original, Instant deadline) throws IOException {
+        var runtime=required().runtime();core().writer().requireSession(same);runtime.requireCurrent(deadline);
+        Objects.requireNonNull(original).requireCurrent(same,runtime);
+        var before=same.head();
+        var savedClock=original.withOriginalSavedWriter(same,RootNaturalSuccessionOriginals::originalNaturalClock);
+        var predecessor=originalNaturalClock(same,original.attachmentHead());
+        require(DomainBodies.reference(before.state(),SLOT).equals(predecessor.map(OriginalNaturalClock::reference)),
+                "committed restore changed the original natural clock domain");
+        if(predecessor.isEmpty())return;
+        var retained=predecessor.orElseThrow();
+        var previous=retained.document();
+        var old=previous.capture();var departed=original.departed();
+        require(old.machineId().equals(departed.machineId())&&old.sessionId().equals(departed.sessionId())
+                &&old.gamePid()==departed.game().pid()&&old.gameBirthFiletime().equals(departed.game().creationFiletime().value().toString())
+                &&previous.ready().isEmpty()&&previous.pendingProjection().isEmpty(),
+                "committed restore cannot replace a different or pending natural succession original");
+        var successor=original.successor();var pair=original.pair();var frame=original.semantic().frame();
+        var saved=original.material().savedDriver();
+        var restored=DriverStateSnapshot.decodeComplete(readExact(original.semantic().originalDriver()));
+        require(successor.game().equals(required().game().generation())&&successor.sessionId().equals(required().game().sessionId())
+                &&successor.machineId().equals(required().game().machineId())&&original.source().equals(runtime.source())
+                &&sameImportedClockFrame(frame,successor,pair)
+                &&saved.session().actorId().equals(frame.frame().identity().player())
+                &&saved.session().episodeRunId().equals(frame.frame().episodeRunId())
+                &&restored.session().bridgePid()==successor.game().pid()
+                &&restored.session().actorId().equals(saved.session().actorId())
+                &&restored.session().episodeRunId().equals(saved.session().episodeRunId()),
+                "committed natural clock crossed the original Saved actor, episode or successor source");
+        require(saved.campaignGoal().getClass().equals(restored.campaignGoal().getClass()),
+                "committed natural clock changed the saved goal presence");
+        if(saved.campaignGoal() instanceof DriverStateSnapshot.Value oldGoal
+                &&restored.campaignGoal() instanceof DriverStateSnapshot.Value newGoal)
+            require(StrictJson.parse(oldGoal.json(),DriverCheckpointStore.MAX_DRIVER_BYTES)
+                    .equals(StrictJson.parse(newGoal.json(),DriverCheckpointStore.MAX_DRIVER_BYTES)),
+                    "committed natural clock changed the saved goal/calendar");
+        synchronized(this) {
+            if(replacement!=null) {
+                require(replacement.origin() instanceof CommittedRestoredReplacement existing
+                        &&existing.original().basis().equals(original.basis())&&existing.predecessor().equals(retained.reference()),
+                        "another actual replacement source is already admitted");
+                readExact(replacement.proof());return;
+            }
+            var row=StrictJson.object().put("schema","xar.java.natural-committed-imported-clock-origin/v1");
+            row.set("basis",original.basis().toJson());row.set("attachment",original.attachment().toJson());
+            row.set("successor",OrdinaryCycleTransitions.sessionToJson(successor));row.set("departed_clock",retained.reference().toJson());
+            row.set("saved_clock",savedClock.map(value->value.reference().toJson()).orElse(null));
+            row.set("semantic",OrdinaryCycleTransitions.semanticToJson(original.semantic()));
+            ExactRef proof=put(same,StrictJson.canonical(row,MAX_BYTES));readExact(proof);
+            var originalBasis=same.capturePin(original.basis(),LIMIT);
+            original.requireCurrent(same,runtime);runtime.requireCurrent(deadline);
+            require(before.digest().equals(same.head().digest()),"committed natural source changed its canonical writer head");
+            replacement=new Replacement(successor.game(),restored.session().episodeRunId(),restored.session().actorId(),
+                    proof,new CommittedRestoredReplacement(original,retained.reference(),originalBasis));
+        }
+    }
+
+    record OriginalNaturalClock(DomainBodies.BodyRef reference, Document document) { }
+
+    static Optional<OriginalNaturalClock> originalNaturalClock(ContinuityStorePort.Session same, ContinuityState state) throws IOException {
+        var reference=DomainBodies.reference(state,SLOT);
+        if(reference.isEmpty())return Optional.empty();
+        var body=reference.orElseThrow();
+        require(body.contractSchema().equals(SCHEMA),"unsupported retained natural clock domain");
+        var original=same.readPinned(new WriterContracts.Pin(body.payload(),body.identity()),LIMIT);
+        return Optional.of(new OriginalNaturalClock(body,decode(original)));
+    }
+
     /** Consume only the original shared cycle journal's private episode token, never a resumed PID projection. */
     public void admitEpisodeSource(ContinuityStorePort.Session same,ContinuityBatchJournal journal,ContinuityBatchJournal.ReboundEpisode actual)throws IOException {
         core().writer().requireSession(same);journal.requireCurrent(same,actual);var binding=actual.binding();
@@ -449,15 +526,19 @@ public final class RootNaturalSuccessionOriginals implements ActionPorts.IntentP
             if(pendingDateClocks.containsKey(clock.actionId())){requirePendingDateClock(same,clock);return;}
             core().writer().requireSession(same);required().runtime().requireCurrent(clock.deadline());var selectedParent=clockParent(same,clock);if(selectedParent.isEmpty())return;var parent=selectedParent.orElseThrow();
             var previous=readDocument(same);
+            boolean replacesGame=false;
             if(previous.isPresent()) {
                 Capture old=previous.orElseThrow().capture();
                 require(!old.clockActionId().equals(clock.actionId()),"a retained preclock capture never authorizes re-entry or replay");
                 boolean sameGame=old.gamePid()==clock.before().game().pid()&&old.gameBirthFiletime().equals(clock.before().game().creationFiletime().value().toString())&&old.sessionId().equals(clock.sessionId());
-                if(!sameGame)requireReplacement(same,clock);
+                if(!sameGame){requireReplacement(same,clock);replacesGame=true;}
                 else {ActionReceipt prior=find(same,old.clockActionId());boolean sameActor=old.predecessorFrame().actorCharacterId()==clock.before().frame().identity().player().intValueExact()&&old.episodeRunId().equals(clock.before().frame().episodeRunId());
                     if(sameActor)require(previous.orElseThrow().ready().isEmpty()&&prior.settled(),"an unresolved original clock cannot be replaced in the same episode");
                     else requireCommittedNaturalSuccessor(same,previous.orElseThrow(),clock);require(old.source().equals(clock.source()),"a changed source cannot replace predecessor originals");}
             }
+            var source=replacement;
+            var replacementProof=source==null||source.origin() instanceof CommittedRestoredReplacement&&!replacesGame
+                    ? Optional.<ExactRef>empty() : Optional.of(source.proof());
             String predecessor=same.head().digest();long sequence=same.head().state().sequence();
             var captured=required().runtime().collector().current(same,clock.before(),clock.deadline(),lease->{
                 require(lease.frame().identity().equals(clock.before())&&lease.frame().source().equals(clock.source()),"actual pre-clock frame drift");
@@ -471,7 +552,7 @@ public final class RootNaturalSuccessionOriginals implements ActionPorts.IntentP
                         clock.actionId(),ActionCodec.bodySha256(clock),put(same,ActionCodec.encodeCommand(clock)),clock.before().machineId(),clock.sessionId(),clock.before().game().pid(),clock.before().game().creationFiletime().value().toString(),
                         lease.frame().connectionGeneration().toString(),clock.before().frame().episodeRunId(),clock.source(),frame,exe,file.fileIdDecimal(),mtime(file),
                         known.originalReceipt(),put(same,original.bytes()),lease.frame().originalEvidence(),put(same,DriverJson.encode(lease.frame().semantic())),
-                        put(same,stamp(lease.driver().stamp())),put(same,lease.driver().driver().encode()),lease.originalHello(),lease.originalSourceQualification(),predecessor,sequence,Optional.ofNullable(replacement).map(Replacement::proof));
+                        put(same,stamp(lease.driver().stamp())),put(same,lease.driver().driver().encode()),lease.originalHello(),lease.originalSourceQualification(),predecessor,sequence,replacementProof);
                 var physical=required().sources().verifyLifecycle(same,new NativeObservationPort.TransportSession(capture.machineId(),clock.before().game(),new BigInteger(capture.connectionGeneration()),capture.sessionId()),clock.source(),capture.nativePacket(),required().game().nativeTransport().diagnostics(),clock.deadline());
                 return new PreclockMaterial(new Publication(same,new Document(capture,Optional.empty(),Optional.empty(),lease.frame().observedAt()),predecessor,physical.guard()),lease.driver(),lease.frame(),receipt);
             });
@@ -893,6 +974,72 @@ public final class RootNaturalSuccessionOriginals implements ActionPorts.IntentP
         require(nextClock.before().frame().identity().player().equals(successor.characterId())&&!nextClock.before().frame().episodeRunId().equals(old.capture().episodeRunId())
                 &&nextClock.before().game().equals(continuation.command().lifecycleBefore().game()),"new clock is not the same Game's actually committed living successor episode");
     }
+    /** Historical DATA for a current same-window imported cycle, after its sole original REBIND. */
+    static WriterContracts.HistoricalTransition requireCommittedClockRebind(ContinuityStorePort.Session same,
+            WriterContracts.Pin attachment, SessionIdentity successor, CheckpointPair pair) throws IOException {
+        var head=same.head();var attached=same.readHistoricalTransition(attachment);
+        var current=head.state();var state=current.toJson();
+        require(!head.snapshotNeedsRecovery()&&head.indexRepairs().isEmpty()&&current.status()==ContinuityState.Status.RUNNING
+                &&current.origin().windowId()==attached.after().origin().windowId()
+                &&current.machineId().equals(successor.machineId())
+                &&GameGeneration.fromJson(state.get("game_binding")).equals(successor.game())
+                &&state.hasNonNull(WriterContracts.ORDINARY_CYCLE_FIELD)
+                &&OrdinaryCycleTransitions.sessionFromJson(state.get(WriterContracts.ORDINARY_CYCLE_FIELD).get("session")).equals(successor)
+                &&state.hasNonNull(WriterContracts.ORDINARY_IMPORTED_CYCLE_ORIGIN_FIELD),
+                "committed natural clock requires its active imported REBIND owner and cycle origin");
+        require(attached.eventPin().equals(attachment)&&attached.kind().equals(SavedAttachmentAuthority.KIND),
+                "committed natural clock lost its original Saved attachment");
+        var attachmentDetails=ContinuityJson.parseObject(attached.details(),ContinuityJson.DOCUMENT_MAX_BYTES);
+        var sources=SavedAttachmentSourceStore.Sources.decode(attachmentDetails.get(SavedAttachmentSourceStore.SOURCES_DETAIL));
+        var v5=SavedAttachmentSourceStore.importedRecoveryBasis(attachmentDetails);
+        require(sources.importedOrigin().isPresent()&&v5.filter(value->value.successor().equals(successor)
+                        &&value.departed().equals(sources.importedOrigin().orElseThrow().owner())).isPresent()
+                &&sources.physicalSaveWitness().filter(pair.save()::equals).isPresent()
+                &&pair.equals(CheckpointPairCodec.decode(ContinuityJson.canonical(attachmentDetails.get(SavedAttachmentAuthority.PAIR_DETAIL)))),
+                "committed natural clock requires the exact v5 attachment, successor and paired SAVE");
+        var origin=ExactRef.fromJson(state.get(WriterContracts.ORDINARY_IMPORTED_CYCLE_ORIGIN_FIELD));
+        var eventDirectory=Path.of(attachment.reference().path()).getParent();
+        var history=new java.util.TreeMap<Long,WriterContracts.Pin>();
+        for(var pin:head.documents()) {
+            var path=Path.of(pin.reference().path());var name=path.getFileName().toString();
+            if(!eventDirectory.equals(path.getParent())||!name.matches("[0-9]{8}[.]json"))continue;
+            long sequence=Long.parseLong(name.substring(0,8));
+            if(sequence>attached.sequence()&&sequence<=current.sequence())
+                require(history.put(sequence,pin)==null,"ambiguous canonical imported event pin");
+        }
+        long expected=attached.sequence();
+        for(var entry:history.entrySet()) {
+            require(entry.getKey()==++expected,"canonical imported REBIND history is incomplete");
+            var actual=same.readHistoricalTransition(entry.getValue());
+            if(actual.kind().equals(DomainBodies.IMPORT_KIND))continue;
+            var row=ContinuityJson.parseObject(actual.details(),ContinuityJson.DOCUMENT_MAX_BYTES);
+            var after=actual.after().toJson();
+            require(actual.kind().equals(WriterContracts.ORDINARY_CYCLE_KIND)
+                    &&"REBIND".equals(StrictJson.text(row.get("operation")))
+                    &&WriterContracts.ORDINARY_IMPORTED_CYCLE_RESTORE_SOURCE.equals(StrictJson.text(row.get("source")))
+                    &&attached.eventIdentity().equals(StrictJson.text(row.get("attachment_identity")))
+                    &&ContinuityJson.digest(attached.after().toJson()).equals(StrictJson.text(row.get("attachment_head_digest")))
+                    &&successor.equals(OrdinaryCycleTransitions.sessionFromJson(row.get("session")))
+                    &&pair.equals(CheckpointPairCodec.decode(ContinuityJson.canonical(row.get("restore_pair"))))
+                    &&origin.equals(ExactRef.fromJson(row.get("previous_state_ref")))
+                    &&origin.equals(ExactRef.fromJson(after.get(WriterContracts.ORDINARY_IMPORTED_CYCLE_ORIGIN_FIELD)))
+                    &&sameImportedClockFrame(OrdinaryCycleTransitions.semanticFromJson(row.get("semantic")).frame(),successor,pair),
+                    "canonical natural clock ancestry differs from its original imported REBIND");
+            same.verifyPin(same.capturePin(origin,LIMIT));
+            return actual;
+        }
+        throw new IOException("actual imported REBIND is not committed");
+    }
+
+    private static boolean sameImportedClockFrame(org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity frame,
+            SessionIdentity successor, CheckpointPair pair) {
+        var restored=frame.frame();var saved=pair.frame().frame();
+        return frame.game().equals(successor.game())&&frame.machineId().equals(successor.machineId())
+                &&restored.episodeRunId().equals(saved.episodeRunId())
+                &&restored.identity().player().equals(saved.identity().player())
+                &&restored.identity().dateRaw().equals(saved.identity().dateRaw());
+    }
+
     private void requireReplacement(ContinuityStorePort.Session same,ActionCommand clock)throws IOException {
         core().writer().requireSession(same);required().runtime().requireCurrent(clock.deadline());
         Replacement actual=replacement;
@@ -907,6 +1054,13 @@ public final class RootNaturalSuccessionOriginals implements ActionPorts.IntentP
                 required().runtime().requireRestorationOriginal(same,restored.binding());
                 require(required().runtime().requireRestoredOrigin(same)==restored.origin(),
                         "natural clock lost the actual private original restore source");
+            }
+            case CommittedRestoredReplacement restored -> {
+                var original=restored.original();
+                requireCommittedClockRebind(same,original.attachment(),original.successor(),original.pair());
+                require(DomainBodies.reference(same.head().state(),SLOT).filter(restored.predecessor()::equals).isPresent(),
+                        "committed natural clock replaced or lost its retained original domain");
+                same.verifyPin(restored.basis());
             }
             case EpisodeReplacement episode -> {
                 var original=episode.lifecycle();
