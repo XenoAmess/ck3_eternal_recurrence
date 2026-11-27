@@ -2,6 +2,7 @@ package org.xar.ck3.control.application.session;
 
 import java.io.IOException;
 import org.xar.ck3.control.application.checkpoint.PublicCheckpointMaterialCapture.Captured;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.time.Instant;
@@ -4876,7 +4877,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 && saved.equals(after.get(WriterContracts.ORDINARY_SAVED_CYCLE_FIELD));
     }
 
-    private static java.util.TreeMap<Long, WriterContracts.Pin> canonicalEventPins(ContinuityStorePort.Session same,
+    static java.util.TreeMap<Long, WriterContracts.Pin> canonicalEventPins(ContinuityStorePort.Session same,
             WriterContracts.Head head) throws IOException {
         var directory = java.nio.file.Path.of(same.persistedHead().path()).toAbsolutePath().normalize()
                 .resolveSibling("ROOT-CONTINUITY-WINDOW-EVENTS");
@@ -6396,7 +6397,9 @@ public final class ContinuityBatchJournal implements BatchJournal {
     /** Existing attachment DATA for ordinary recovery. It conveys no cycle admission, current SEM or domain authority. */
     public record ImportedRestoreRebindReadback(WriterContracts.HistoricalTransition attachment,
             SavedAttachmentSourceStore.ImportedRecoveryBasis recoveryBasis,SavedAttachmentSourceStore.ImportedOrigin importedOrigin,
-            CheckpointPair savedPair,RawJson departedCycle,ExactRef departedActionHead) { }
+            CheckpointPair savedPair,RawJson departedCycle,ExactRef departedActionHead,List<String> consumedSuccessorBatches) {
+        public ImportedRestoreRebindReadback { consumedSuccessorBatches=List.copyOf(consumedSuccessorBatches); }
+    }
 
     /** Requires the exact immediate clean imported attachment on this journal's already borrowed writer. */
     public ImportedRestoreRebindReadback readImportedRestoreRebind(ContinuityStorePort.Session same,
@@ -6417,8 +6420,13 @@ public final class ContinuityBatchJournal implements BatchJournal {
 
     private enum ImportedRecoveryEnd { ATTACHMENT,DOMAIN_IMPORTS,REBIND }
 
-    /** Returns the archived SEM only when the actual head is its exact zero-credit REBIND. */
+    /** Returns the original REBIND SEM at the committed frontier or through verified closed actionless batches. */
     public static Optional<SemanticEvidence> requireCommittedImportedAttachmentContinuation(ContinuityStorePort.Session same,
+            WriterContracts.HistoricalTransition attachment)throws IOException {
+        return requireCommittedImportedContinuation(same,attachment).map(CommittedImportedRebindOriginal.Data::archivedSemantic);
+    }
+
+    private static Optional<CommittedImportedRebindOriginal.Data> requireCommittedImportedContinuation(ContinuityStorePort.Session same,
             WriterContracts.HistoricalTransition attachment)throws IOException {
         var head=same.head();
         if(head.snapshotNeedsRecovery()||!head.indexRepairs().isEmpty()
@@ -6428,7 +6436,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
         var anchor=ContinuityJson.digest(attachment.after().toJson());
         if(head.digest().equals(anchor))return Optional.empty();
         if(head.state().toJson().has(WriterContracts.ORDINARY_IMPORTED_CYCLE_ORIGIN_FIELD))
-            return Optional.of(CommittedImportedRebindOriginal.read(same,attachment.eventPin()).archivedSemantic());
+            return Optional.of(CommittedImportedRebindOriginal.read(same,attachment.eventPin()));
         same.requireDomainImportContinuation(attachment.sequence(),anchor);
         return Optional.empty();
     }
@@ -6496,6 +6504,9 @@ public final class ContinuityBatchJournal implements BatchJournal {
             var terminal=before.toJson().path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD);
             StrictJson.require(prefix!=null&&open==null&&!used.isEmpty()&&used.getLast().equals(terminal.path("batch_id").asText()),
                     "committed imported Controller requires the actual last interrupted batch");
+            for(var batch:original.consumedSuccessorBatches())
+                StrictJson.require(batch.equals(prefix+"-"+used.size())&&used.add(batch),
+                        "committed imported Controller successor batch does not follow its exact departed sequence");
             long savedRaw=Math.subtractExact(before.settledDateRaw(),before.origin().startDateRaw());
             StrictJson.require(savedRaw>=0&&savedRaw%24==0,"committed imported Controller requires its original whole saved days");
             return new CommittedImportedControllerHistory(prefix,used.size(),used,savedRaw/24);
@@ -6558,11 +6569,13 @@ public final class ContinuityBatchJournal implements BatchJournal {
         if(!SavedAttachmentAuthority.KIND.equals(edge.kind()))
             throw new IOException("Imported REBIND readback requires the exact immediate committed attachment");
         String attachmentDigest=ContinuityJson.digest(edge.after().toJson());
+        List<String> consumedSuccessorBatches=List.of();
         if(!attachmentDigest.equals(head.digest())) {
             switch(acceptedEnd) {
                 case ATTACHMENT -> throw new IOException("Imported REBIND readback requires the exact immediate committed attachment");
                 case DOMAIN_IMPORTS -> same.requireDomainImportContinuation(edge.sequence(),attachmentDigest);
-                case REBIND -> requireCommittedImportedAttachmentContinuation(same,edge);
+                case REBIND -> consumedSuccessorBatches=requireCommittedImportedContinuation(same,edge)
+                        .map(CommittedImportedRebindOriginal.Data::consumedSuccessorBatches).orElseGet(List::of);
             }
         }
         try {
@@ -6613,7 +6626,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
             same.verifyPin(imported.physicalConfirmation());
             if(!head.digest().equals(same.head().digest()))throw new IOException("Imported REBIND readback changed the canonical head");
             store.requireSession(same);
-            return new ImportedRestoreRebindReadback(edge,basis,imported,pair,new RawJson(ContinuityJson.canonical(cycle)),actionHead);
+            return new ImportedRestoreRebindReadback(edge,basis,imported,pair,new RawJson(ContinuityJson.canonical(cycle)),actionHead,consumedSuccessorBatches);
         } catch(IllegalArgumentException|java.time.DateTimeException invalid){throw new IOException("Invalid imported REBIND attachment DATA",invalid);}
     }
 

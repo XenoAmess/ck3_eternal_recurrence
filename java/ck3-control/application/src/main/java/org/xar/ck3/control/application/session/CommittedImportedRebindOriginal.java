@@ -7,6 +7,8 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
+import java.util.Set;
 import org.xar.ck3.control.application.action.ContinuityActionJournal;
 import org.xar.ck3.control.application.checkpoint.CheckpointPair;
 import org.xar.ck3.control.application.checkpoint.CheckpointPairCodec;
@@ -27,8 +29,8 @@ final class CommittedImportedRebindOriginal {
 
     record Data(HistoricalTransition attachment, HistoricalTransition rebind, SavedAttachmentSourceStore.ImportedOrigin importedOrigin,
             SavedAttachmentSourceStore.ImportedRecoveryBasis recoveryBasis, CheckpointPair pair,
-            SemanticEvidence archivedSemantic, Pin tombstone, List<Pin> semanticPins) {
-        Data { semanticPins = List.copyOf(semanticPins); }
+            SemanticEvidence archivedSemantic, Pin tombstone, List<Pin> semanticPins, List<String> consumedSuccessorBatches) {
+        Data { semanticPins = List.copyOf(semanticPins); consumedSuccessorBatches = List.copyOf(consumedSuccessorBatches); }
     }
 
     static Data read(Session same, Pin actualAttachment) throws IOException {
@@ -39,25 +41,32 @@ final class CommittedImportedRebindOriginal {
         try {
             var eventDirectory = Path.of(same.persistedHead().path()).toAbsolutePath().normalize()
                     .resolveSibling("ROOT-CONTINUITY-WINDOW-EVENTS");
-            var headEvent = eventDirectory.resolve(String.format(Locale.ROOT, "%08d.json", sequence));
-            var eventPin = head.documents().stream().filter(pin -> headEvent.equals(Path.of(pin.reference().path()).toAbsolutePath().normalize()))
-                    .findFirst().orElseThrow(() -> new IOException("Committed imported REBIND lacks its captured current event"));
-            var edges = same.withHistoricalTransitions(List.of(actualAttachment, eventPin), retained -> {
+            var state = head.state().toJson();
+            var batchOwner = state.path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD).path("session");
+            boolean successorBatch = batchOwner.hasNonNull("game") && ContinuityJson.same(batchOwner.get("game"), state.get("game_binding"));
+            var suffix = successorBatch ? Optional.of(findBatchSuffix(same, head, actualAttachment, eventDirectory)) : Optional.<BatchSuffix>empty();
+            var originals = new ArrayList<Pin>();
+            originals.add(actualAttachment);
+            if (suffix.isPresent()) originals.addAll(suffix.orElseThrow().events());
+            else originals.add(document(head,eventDirectory.resolve(String.format(Locale.ROOT, "%08d.json", sequence))));
+            var edges = same.withHistoricalTransitions(originals, retained -> {
                 try { return List.copyOf(retained); }
                 catch (UncheckedIOException failure) { throw failure.getCause(); }
             });
             var attachment = edges.getFirst();
             if (!attachment.kind().equals(SavedAttachmentAuthority.KIND) || sequence <= attachment.sequence())
                 throw new IOException("Committed imported REBIND readback requires an earlier exact imported attachment");
-            var rebind = edges.getLast();
+            var rebind = edges.get(1);
             var source = ContinuityJson.parseObject(rebind.details(), ContinuityJson.DOCUMENT_MAX_BYTES);
             String attachmentDigest = ContinuityJson.digest(attachment.after().toJson());
+            boolean exactRebind = suffix.map(found->rebind.sequence()==found.rebindSequence()&&rebind.eventIdentity().equals(found.rebindIdentity()))
+                    .orElseGet(()->head.digest().equals(ContinuityJson.digest(rebind.after().toJson())));
             if (!WriterContracts.ORDINARY_CYCLE_KIND.equals(rebind.kind()) || !"REBIND".equals(source.path("operation").asText())
                     || !WriterContracts.ORDINARY_IMPORTED_CYCLE_RESTORE_SOURCE.equals(source.path("source").asText())
                     || !attachment.eventIdentity().equals(StrictJson.text(source.get("attachment_identity")))
                     || !attachmentDigest.equals(StrictJson.text(source.get("attachment_head_digest")))
                     || !("restore-cycle:" + attachment.eventIdentity()).equals(StrictJson.text(source.get("evidence_id")))
-                    || !head.digest().equals(ContinuityJson.digest(rebind.after().toJson())))
+                    || !exactRebind)
                 throw new IOException("Current head is not the exact committed imported REBIND");
 
             var original = ContinuityJson.parseObject(attachment.details(), ContinuityJson.DOCUMENT_MAX_BYTES);
@@ -95,17 +104,40 @@ final class CommittedImportedRebindOriginal {
             reduced.put("sequence", rebind.sequence()).put("last_event_identity", rebind.eventIdentity());
             if (!ContinuityJson.same(reduced, rebind.after().toJson()))
                 throw new IOException("Committed imported REBIND differs from the exact zero-credit ordinary reducer");
+            var consumed = CommittedImportedBatchTail.verify(head.state(),attachment,rebind,edges.subList(2,edges.size()));
 
             var semanticPins = new ArrayList<Pin>();
             for (var ref : semantic.references()) semanticPins.add(same.capturePin(ref, WriterContracts.MAX_PIN_BYTES));
             for (var pin : basis.pins()) same.verifyPin(pin);
             same.verifyPin(imported.targetEntry());
             same.verifyPin(imported.physicalConfirmation());
+            if(suffix.isPresent())same.verifyPin(suffix.orElseThrow().index());
             if (!head.digest().equals(same.head().digest()))
                 throw new IOException("Canonical head changed during committed imported REBIND readback");
-            return new Data(attachment, rebind, imported, basis, pair, semantic, tombstone, semanticPins);
+            return new Data(attachment, rebind, imported, basis, pair, semantic, tombstone, semanticPins, consumed);
         } catch (IllegalArgumentException | java.time.DateTimeException invalid) {
             throw new IOException("Invalid committed imported REBIND original", invalid);
         }
+    }
+
+    private record BatchSuffix(Pin index,long rebindSequence,String rebindIdentity,List<Pin> events) { }
+
+    private static BatchSuffix findBatchSuffix(Session same, WriterContracts.Head head, Pin attachment, Path events)throws IOException {
+        var attached=ContinuityJson.parseObject(same.readPinned(attachment,ContinuityJson.LEDGER_MAX_BYTES),ContinuityJson.LEDGER_MAX_BYTES);
+        String identity=StrictJson.text(attached.get("identity"));
+        var key=StrictJson.object().put("kind",WriterContracts.ORDINARY_CYCLE_KIND).put("evidence_id","restore-cycle:"+identity);
+        var index=document(head,events.resolve("source-"+ContinuityJson.digest(key)+".json"));
+        var entry=StrictJson.object(ContinuityJson.parseObject(same.readPinned(index,ContinuityJson.DOCUMENT_MAX_BYTES),ContinuityJson.DOCUMENT_MAX_BYTES),
+                Set.of("identity","sequence"));
+        long start=StrictJson.integer(entry.get("sequence"),1,head.state().sequence()-1);
+        var numbered=ContinuityBatchJournal.canonicalEventPins(same,head).subMap(start,true,head.state().sequence(),true);
+        if(numbered.size()!=Math.addExact(Math.subtractExact(head.state().sequence(),start),1))
+            throw new IOException("Committed imported REBIND batch suffix is missing an original numbered event");
+        return new BatchSuffix(index,start,StrictJson.text(entry.get("identity")),List.copyOf(numbered.values()));
+    }
+
+    private static Pin document(WriterContracts.Head head, Path path)throws IOException {
+        return head.documents().stream().filter(pin->path.equals(Path.of(pin.reference().path()).toAbsolutePath().normalize()))
+                .findFirst().orElseThrow(()->new IOException("Committed imported REBIND lacks its captured canonical document"));
     }
 }
