@@ -2065,6 +2065,7 @@ public final class RootApplicationAssembly {
                 OriginalWindowReducer.Policy policy) { }
 
         private ExternalSavedStage externalSavedStage;
+        private ContinuityBatchJournal.UnresolvedSameGameData externalFull111EventData;
 
         synchronized DriverBootstrap.Adopted adoptExternalSavedObservation(
                 org.xar.ck3.control.platform.JavaGameLifecycle lifecycle,
@@ -2124,6 +2125,13 @@ public final class RootApplicationAssembly {
                 var driver = projectExternalSave(same, game, opening, original, retainedFrames, deadline);
                 departed.requireCurrent(deadline);
                 externalSavedStage = new ExternalSavedStage(departed, opening, cycles, batches, original, driver, policy);
+                if (original.pendingFull111Event().isPresent()) {
+                    externalFull111EventData = batches.externalFull111EventRecovery(same, original);
+                    unresolvedSameGameData = externalFull111EventData;
+                    unresolvedSameGameBatches = batches;
+                    unresolvedSameGameCycles = cycles;
+                    unresolvedSameGamePolicy = policy;
+                }
                 adopted.add(driver);
                 return driver;
             });
@@ -2163,7 +2171,7 @@ public final class RootApplicationAssembly {
                         original.history().source(), archive,
                         (ref, maximum) -> RootOriginalArtifacts.read(writer, archive, same, ref, maximum,
                                 original.history().source().sourceRef()),
-                        retainedFrames, deadline, opening, retirement);
+                        retainedFrames, deadline, opening, retirement, original.pendingFull111Event());
             } catch (UncheckedIOException failure) {
                 throw failure.getCause();
             } catch (InterruptedException interrupted) {
@@ -3064,6 +3072,18 @@ public final class RootApplicationAssembly {
             }
         }
 
+        void reconcileExternalFull111Event(RootApplicationSession session, java.nio.file.Path proofFile, Instant deadline)
+                throws IOException, InterruptedException {
+            if (externalFull111EventData == null) return;
+            var stage = Objects.requireNonNull(externalSavedStage);
+            var proof = RootArchivedFull111EventRecovery.Originals.read(proofFile);
+            session.restoreUnresolvedSameGame(externalFull111EventData);
+            RootArchivedFull111EventRecovery.publish(this, stage.original(), externalFull111EventData, proof);
+            var actual = session.reconcileUnresolvedOriginal(externalFull111EventData, deadline);
+            if (!actual.settled() || session.controllerForPublication().isQuarantined())
+                throw new IOException("External Full111 event is recorded but its original ordinary cycle remains quarantined");
+        }
+
         RootApplicationSession finishExternalSavedObservation(RootInstalledCatalog installed, DriverBootstrap.Adopted driver,
                 FreshSessionConfiguration configuration, FreshSessionServices services) throws IOException, InterruptedException {
             var candidate = Objects.requireNonNull(externalSavedStage, "actual external save Driver adoption required");
@@ -3195,8 +3215,10 @@ public final class RootApplicationAssembly {
                         candidate.opening().requireCurrent(game.nativeTransport());
                     });
                     installed.initializeExternalSavedPlanning(same, driver.first());
-                    var rebound = candidate.batches().rebindExternalSave(same, candidate.original(), semantic);
-                    root.controllerForPublication().restoreExternalSaveObservation(same, rebound);
+                    if (externalFull111EventData == null) {
+                        var rebound = candidate.batches().rebindExternalSave(same, candidate.original(), semantic);
+                        root.controllerForPublication().restoreExternalSaveObservation(same, rebound);
+                    }
                     installed.rebindExternalSavedOpening(same, semantic);
                 } else if(admissionOpt.isPresent()){
                     try { root.restoreCleanRestart(same,admissionOpt.orElseThrow()); }

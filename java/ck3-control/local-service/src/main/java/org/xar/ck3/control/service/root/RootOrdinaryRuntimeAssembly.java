@@ -1089,6 +1089,7 @@ public final class RootOrdinaryRuntimeAssembly {
             }));
             var session = actual.finishExternalSavedObservation(installed, driver, configuration, services(driver.source()));
             session.install(ordinaryHost, deadline);
+            actual.reconcileExternalFull111Event(session, config.stateDirectory().resolve("archived-full111-event-recovery.json"), deadline);
             return new Running(this, session, history.batchPrefix(), history.nextBatchSequence());
         }
 

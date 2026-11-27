@@ -832,26 +832,38 @@ public final class DriverBootstrap {
     public static Adopted adoptExternalSavedObservation(Seed seed, ContinuityStorePort.Session same,
             ActionSnapshotReader actions, NativeGameTransport transport, G2Source source,
             ActionPorts.OutcomeArchive archive, ExactArtifactReader originals, int retainedFrames, Instant deadline,
-            RootExternalSavedOpening opening, ContinuityActionJournal.ImportedRestoreRetirement retirement)
-            throws IOException, InterruptedException {
+            RootExternalSavedOpening opening, ContinuityActionJournal.ImportedRestoreRetirement retirement) throws IOException, InterruptedException {
+        return adoptExternalSavedObservation(seed, same, actions, transport, source, archive, originals, retainedFrames,
+                deadline, opening, retirement, Optional.empty());
+    }
+
+    public static Adopted adoptExternalSavedObservation(Seed seed, ContinuityStorePort.Session same,
+            ActionSnapshotReader actions, NativeGameTransport transport, G2Source source,
+            ActionPorts.OutcomeArchive archive, ExactArtifactReader originals, int retainedFrames, Instant deadline,
+            RootExternalSavedOpening opening, ContinuityActionJournal.ImportedRestoreRetirement retirement,
+            Optional<ActionReceipt> pendingFull111Event) throws IOException, InterruptedException {
         Objects.requireNonNull(opening);
+        Objects.requireNonNull(pendingFull111Event);
         Objects.requireNonNull(retirement);
         opening.requireCurrent(transport);
         var raw = opening.frame();
         StrictJson.require(raw.session().equals(seed.expectedSession()), "named-save Driver seed crossed its actual opening");
         var restored = adoptInternal(seed, same, actions, transport, source, archive, originals, receipt -> Optional.empty(),
                 retainedFrames, deadline, AdoptionKind.JAVA_COLD, Optional.of(raw), Optional.empty(), Optional.empty(),
-                Optional.empty(), () -> deadline, Optional.empty(), Optional.empty(), Optional.of(new NamedSaveDriverRead(retirement)));
+                Optional.empty(), () -> deadline, Optional.empty(), Optional.empty(),
+                Optional.of(new NamedSaveDriverRead(retirement, pendingFull111Event)));
         opening.requireCurrent(transport);
-        StrictJson.require(restored.status() == AdoptionStatus.QUALIFICATION_REQUIRED,
-                "named-save Driver projection did not retain its original resolved history");
+        var expectedStatus = pendingFull111Event.isPresent() ? AdoptionStatus.READ_ONLY_UNRESOLVED : AdoptionStatus.QUALIFICATION_REQUIRED;
+        StrictJson.require(restored.status() == expectedStatus,
+                "named-save Driver projection did not retain its original qualified history");
         return restored;
     }
 
     private sealed interface ColdOpening permits CommittedDriverRead, NamedSaveDriverRead { }
     private record CommittedDriverRead(WriterContracts.Pin attachment, NativeObservationPort.ObservedFrame originalOpening)
             implements ColdOpening { }
-    private record NamedSaveDriverRead(ContinuityActionJournal.ImportedRestoreRetirement retirement)
+    private record NamedSaveDriverRead(ContinuityActionJournal.ImportedRestoreRetirement retirement,
+            Optional<ActionReceipt> pendingFull111Event)
             implements ColdOpening { }
 
     static DriverSnapshotFacts.RestoreSeedSupplement readCommittedImportedSeed(ContinuityStorePort.Session same,
@@ -1040,9 +1052,13 @@ public final class DriverBootstrap {
                                         ? ContinuityActionJournal.admittedImportedRestartRetirement(borrowed,cleanRestart.orElseThrow(),lease.snapshot(),archive)
                                         : Optional.empty();
                     }
+                    var admittedNamedPending = namedDriver.flatMap(NamedSaveDriverRead::pendingFull111Event);
+                    StrictJson.require(admittedNamedPending.isEmpty() || lease.snapshot().actions().contains(admittedNamedPending.orElseThrow()),
+                            "named-save Driver lost its exact pending successor action");
                     for(var actual:lease.snapshot().actions()) {
-                        if(coldOpening.isPresent()&&actual.command().origin().game().equals(stamp.game()))
-                            throw new IOException("Cold opening already contains a successor action");
+                        if (coldOpening.isPresent() && actual.command().origin().game().equals(stamp.game())
+                                && admittedNamedPending.filter(actual::equals).isEmpty())
+                            throw new IOException("Cold opening already contains another successor action");
                         if (!actual.settled()) {
                             if (importedRestart.filter(retirement -> retirement.matches(actual)).isEmpty()) {
                                 unresolved = true; gaps.add("unreconciled_action:" + actual.command().actionId());
