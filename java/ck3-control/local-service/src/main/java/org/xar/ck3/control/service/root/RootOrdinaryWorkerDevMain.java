@@ -92,8 +92,12 @@ public class RootOrdinaryWorkerDevMain implements QuarkusApplication {
     private static final class OwnerPlanReader {
         private GameSupervisorControl.Descriptor descriptor;
 
-        NativeLaunchPlan read(Path path) throws IOException {
+        void readDescriptor(Path path) throws IOException {
             descriptor = GameSupervisorControl.readDescriptor(path);
+        }
+
+        NativeLaunchPlan read(Path path) throws IOException {
+            readDescriptor(path);
             return descriptor.configuration().accept();
         }
     }
@@ -119,7 +123,8 @@ public class RootOrdinaryWorkerDevMain implements QuarkusApplication {
             loadedInput=Optional.of(input);
             configuration=RootOrdinaryWorkerMain.readImportedLoadedWorkerConfiguration(configurationFile,input.request());
         } else if (importedRestore) {
-            configuration = RootOrdinaryRuntimeConfiguration.readSaved(configurationFile, owner.read(Path.of(arguments[0])));
+            owner.readDescriptor(Path.of(arguments[0]));
+            configuration = RootOrdinaryRuntimeConfiguration.readImportedExitedRestore(configurationFile);
         } else if ("resume".equals(mode)) {
             configuration = RootOrdinaryRuntimeConfiguration.readResume(configurationFile,
                     () -> owner.read(Path.of(arguments[0])));

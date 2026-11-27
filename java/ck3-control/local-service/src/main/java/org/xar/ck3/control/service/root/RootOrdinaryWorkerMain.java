@@ -71,7 +71,7 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
         }
         RootOrdinaryRuntimeConfiguration config=retainedConfiguration!=null?retainedConfiguration:
                 importedLoaded?readImportedLoadedWorkerConfiguration(configPath,importedLoadedInput):
-                imported?RootOrdinaryRuntimeConfiguration.readSaved(configPath,plan):
+                imported?RootOrdinaryRuntimeConfiguration.readImportedExitedRestore(configPath):
                 resume?RootOrdinaryRuntimeConfiguration.readResume(configPath,plan):RootOrdinaryRuntimeConfiguration.read(configPath);
         if(!configPath.equals(config.configurationFile()))throw new IOException("retained worker configuration crossed its original path");
         boolean savedResume=resume&&config.initialPolicy().kind()==

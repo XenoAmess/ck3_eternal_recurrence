@@ -45,7 +45,6 @@ import org.xar.ck3.control.nativebridge.NativePrivateActionPermission;
 import org.xar.ck3.control.platform.JavaGameLifecycle;
 import org.xar.ck3.control.platform.ManagedGameSession;
 import org.xar.ck3.control.platform.NativeLaunchPlan;
-import org.xar.ck3.control.platform.NativeLaunchPlanCodec;
 import org.xar.ck3.control.platform.OriginalRuntimeHandoffProof;
 import org.xar.ck3.control.platform.RootProcessAttach;
 import org.xar.ck3.control.service.OfflineAnalysisWorker;
@@ -181,14 +180,7 @@ public final class RootOrdinaryRuntimeAssembly {
         Objects.requireNonNull(config);Objects.requireNonNull(clock);
         var metadata=new RootOrdinaryImplementationMetadata();
         Path root=Objects.requireNonNull(config.stateDirectory().getParent(),"state directory needs an application parent");
-        byte[] raw;
-        try(InputStream input=Files.newInputStream(config.launchPlanFile())) {
-            raw=input.readNBytes(NativeLaunchPlanCodec.MAXIMUM_BYTES+1);
-        }
-        if(raw.length>NativeLaunchPlanCodec.MAXIMUM_BYTES)throw new IOException("launch configuration exceeds its codec limit");
-        var planDocument=org.xar.ck3.control.contracts.StrictJson.parse(raw,NativeLaunchPlanCodec.MAXIMUM_BYTES);
-        var planConfiguration=planDocument.has("configuration")?planDocument.get("configuration"):planDocument;
-        NativeLaunchPlan plan=config.retainBoundLaunchPlan(NativeLaunchPlanCodec.fromJson(planConfiguration).accept());
+        NativeLaunchPlan plan = config.retainBoundLaunchPlan(RootOrdinaryRuntimeConfiguration.readLaunchPlan(config.launchPlanFile()));
         var paths=new WriterContracts.InitialLayout(root.resolve("continuity/continuity.json"),
                 root.resolve("continuity/genesis-anchor.json"),config.machineId());
         Path archiveRoot=root.resolve("continuity/artifacts");
@@ -287,14 +279,7 @@ public final class RootOrdinaryRuntimeAssembly {
         Objects.requireNonNull(config);Objects.requireNonNull(clock);
         var metadata=new RootOrdinaryImplementationMetadata();
         Path root=Objects.requireNonNull(config.stateDirectory().getParent(),"state directory needs an application parent");
-        byte[] raw;
-        try(InputStream input=Files.newInputStream(config.launchPlanFile())) {
-            raw=input.readNBytes(NativeLaunchPlanCodec.MAXIMUM_BYTES+1);
-        }
-        if(raw.length>NativeLaunchPlanCodec.MAXIMUM_BYTES)throw new IOException("launch configuration exceeds its codec limit");
-        var planDocument=org.xar.ck3.control.contracts.StrictJson.parse(raw,NativeLaunchPlanCodec.MAXIMUM_BYTES);
-        var planConfiguration=planDocument.has("configuration")?planDocument.get("configuration"):planDocument;
-        NativeLaunchPlan plan=config.retainBoundLaunchPlan(NativeLaunchPlanCodec.fromJson(planConfiguration).accept());
+        NativeLaunchPlan plan = config.retainBoundLaunchPlan(RootOrdinaryRuntimeConfiguration.readLaunchPlan(config.launchPlanFile()));
         var paths=new WriterContracts.InitialLayout(root.resolve("continuity/continuity.json"),
                 root.resolve("continuity/genesis-anchor.json"),config.machineId());
         Path archiveRoot=root.resolve("continuity/artifacts");

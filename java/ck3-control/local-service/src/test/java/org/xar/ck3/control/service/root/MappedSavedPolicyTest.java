@@ -177,6 +177,54 @@ final class MappedSavedPolicyTest {
         assertThrows(IOException.class,()->RootSavedRuntimeConfigurationInputs.readSource(configuration));
         assertFalse(Files.exists(root.resolve("continuity")));files.verify(f.original());
     }
+    @Test void importedExitedWorkerSelectsTheConfiguredSuccessorBridgeWhileSameGameRetainsItsOwner() throws Exception {
+        var fixture = fixture(false);
+        var runtime = currentConfiguration(fixture, produce(fixture));
+        Path config = Path.of(runtime.path());
+        var original = NativeLaunchPlanCodec.describe(fixture.plan());
+        var candidate = NativeLaunchPlanCodec.toJson(original);
+        candidate.withObjectProperty("review").set("bridge_dll", new ExactRef(root.resolve("successor-bridge.dll").toString(),
+                2, "d".repeat(64)).toJson());
+        var runtimeData = StrictJson.parse(Files.readAllBytes(config), StrictJson.EXPLICIT_MAX_BYTES);
+        Path launchFile = Path.of(StrictJson.text(runtimeData.get("launch_plan_file")));
+        var successor = NativeLaunchPlanCodec.fromJson(candidate).accept();
+        Files.write(launchFile, StrictJson.canonical(candidate), StandardOpenOption.TRUNCATE_EXISTING);
+
+        Path ownerPath = root.resolve("owner.json");
+        var owner = StrictJson.object().put("schema", "xar.java-game-supervisor-owner/v1")
+                .put("machine_id", original.review().machineId()).put("session_id", original.sessionId())
+                .put("stop_request_path", root.resolve(GameSupervisorControl.STOP_FILE).toString())
+                .put("terminal_path", root.resolve(GameSupervisorControl.TERMINAL_FILE).toString());
+        owner.set("configuration", NativeLaunchPlanCodec.toJson(original));
+        owner.putObject("supervisor").put("pid", 20).put("creation_filetime", "10").put("executable", root.resolve("java.exe").toString());
+        owner.putObject("game").put("pid", 123).put("creation_filetime", "11").put("executable", original.review().gameExecutable().path());
+        owner.set("native_hello", new ExactRef(root.resolve("hello.json").toString(), 1, "a".repeat(64)).toJson());
+        owner.set("launch_evidence", new ExactRef(root.resolve("launch-evidence.json").toString(), 1, "b".repeat(64)).toJson());
+        byte[] ownerBytes = StrictJson.canonical(owner);
+        Files.write(ownerPath, ownerBytes, StandardOpenOption.CREATE_NEW);
+
+        var resume = RootOrdinaryWorkerDevMain.prepareInvocation(ownerPath.toString(), config.toString(), "resume");
+        assertThrows(IOException.class, () -> resume.configuration().retainBoundLaunchPlan(successor));
+        var imported = RootOrdinaryWorkerDevMain.prepareInvocation(ownerPath.toString(), config.toString(),
+                "restore-exited", "original-recovery.json", "1", "a".repeat(64));
+        assertEquals(original, imported.retainedOwner().orElseThrow().configuration());
+        var selected = imported.configuration().retainBoundLaunchPlan(successor);
+        assertEquals(successor.sources().review().bridgeDll(), selected.sources().review().bridgeDll());
+        assertEquals(original.load(), selected.load());
+        assertEquals(original.deadline(), selected.deadline());
+        assertEquals(original.profileDirectory(), selected.profileDirectory());
+        assertArrayEquals(ownerBytes, Files.readAllBytes(ownerPath));
+        assertFalse(Files.exists(root.resolve("continuity")));
+
+        var wrapped = StrictJson.object();
+        wrapped.set("configuration", candidate);
+        Files.write(launchFile, StrictJson.canonical(wrapped), StandardOpenOption.TRUNCATE_EXISTING);
+        var wrappedImport = RootOrdinaryWorkerDevMain.prepareInvocation(ownerPath.toString(), config.toString(),
+                "restore-exited", "original-recovery.json", "1", "a".repeat(64));
+        assertEquals(successor.sources().review().bridgeDll(),
+                wrappedImport.configuration().retainBoundLaunchPlan(successor).sources().review().bridgeDll());
+    }
+
     @Test void legacyInPlaceConfigurationKeepsItsExistingLoadedRouteSet()throws Exception {
         var f=fixture(true);var policy=write("v1-config-policy.json",InitialEpisodePolicy.produceSaved(f.env(),((NativeLaunchPlan.SavedGame)f.plan().load()).save()).bytes());
         var configuration=currentConfiguration(f,policy);var loaded=RootSavedRuntimeConfigurationInputs.readLoaded(configuration,f.plan());
