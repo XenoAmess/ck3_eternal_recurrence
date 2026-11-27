@@ -8,6 +8,8 @@ import java.util.Objects;
 import java.util.Optional;
 import org.xar.ck3.control.application.action.ActionReceipt;
 import org.xar.ck3.control.application.action.ActionEffects;
+import org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive;
+import org.xar.ck3.control.application.checkpoint.CheckpointPair;
 import org.xar.ck3.control.application.checkpoint.SavedAttachmentSourceStore;
 import org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterial;
 import org.xar.ck3.control.continuity.ContinuityJson;
@@ -38,13 +40,45 @@ public final class RootActivitySavedOriginalGuard {
         context.game().verify();
         requireRestoration(context, same, original);
         SavedBody saved = readSavedBody(same, original.originalSavedHead(), domain.registration().producerSources());
-        var resolved = saved.ledger().resolved().orElseThrow(() ->
-                new IOException("saved canonical FEAST member has no resolved original Start"));
-        var origin = resolved.activity().orElseThrow(() ->
-                new IOException("saved canonical FEAST member has no actual Activity origin"));
+        var origin = activity(saved);
         ActionReceipt start = settlement.requireStart(same, origin.originalStart());
+        requireStartBeforeSave(original.pair(), start);
+        Optional<ActivityFinalState.State> retained = origin.finalState().isPresent()
+                ? Optional.of(settlement.restore(same, origin)) : Optional.empty();
+        saved.requireUnchanged(same);
+        requireRestoration(context, same, original);
+        return new SavedOrigin(original.basis(), saved, origin, start, retained, (owner, borrowed) -> {
+            requireRestoration(owner, borrowed, original);
+            saved.requireUnchanged(borrowed);
+        });
+    }
+
+    static SavedOrigin requireCommitted(Session old, ContinuityState savedHead, OutcomeArchive archive,
+            RootCommittedOrdinaryRestoration original, SavedBody saved, FeastFinalSettlement settlement) throws IOException {
+        var startOrigin = activity(saved);
+        var head = old.requireHistoricalHead(savedHead.sequence(), ContinuityJson.digest(savedHead.toJson()));
+        ActionReceipt start = settlement.requireArchivedStart(head, archive, startOrigin.originalStart());
+        requireStartBeforeSave(original.pair(), start);
+        Optional<ActivityFinalState.State> retained = startOrigin.finalState().isPresent()
+                ? Optional.of(settlement.restoreArchived(old, archive, startOrigin, start)) : Optional.empty();
+        saved.requireUnchanged(old);
+        return new SavedOrigin(original.basis(), saved, startOrigin, start, retained, (owner, borrowed) -> {
+            original.requireCurrent(borrowed, owner);
+            original.withOriginalSavedWriter(borrowed, (source, retainedHead) -> {
+                saved.requireUnchanged(source);
+                return null;
+            });
+        });
+    }
+
+    private static FeastDomainRuntime.ActivityOrigin activity(SavedBody saved) throws IOException {
+        return saved.ledger().resolved().flatMap(FeastDomainRuntime.Resolved::activity)
+                .orElseThrow(() -> new IOException("saved canonical FEAST member has no actual Activity origin"));
+    }
+
+    private static void requireStartBeforeSave(CheckpointPair pair, ActionReceipt start) {
         var startAfter = ActionEffects.observation(start).orElseThrow();
-        var savedFrame = original.pair().frame();
+        var savedFrame = pair.frame();
         StrictJson.require(startAfter.after().machineId().equals(savedFrame.machineId())
                 && startAfter.after().game().equals(savedFrame.game())
                 && startAfter.after().observationVersion() == savedFrame.observationVersion()
@@ -54,11 +88,6 @@ public final class RootActivitySavedOriginalGuard {
                 && startAfter.after().frame().identity().nativeRevision().compareTo(savedFrame.frame().identity().nativeRevision()) <= 0
                 && startAfter.after().frame().identity().dateRaw().compareTo(savedFrame.frame().identity().dateRaw()) <= 0,
                 "saved FEAST Start differs from the actual SAVE Game/player/episode or occurs after SAVE");
-        Optional<ActivityFinalState.State> retained = origin.finalState().isPresent()
-                ? Optional.of(settlement.restore(same, origin)) : Optional.empty();
-        saved.requireUnchanged(same);
-        requireRestoration(context, same, original);
-        return new SavedOrigin(original, saved, origin, start, retained);
     }
 
     private static void requireRestoration(RootRuntimeContext context, Session same,
@@ -126,28 +155,35 @@ public final class RootActivitySavedOriginalGuard {
         }
     }
 
+    @FunctionalInterface
+    private interface SavedCustody {
+        void require(RootRuntimeContext context, Session same) throws IOException;
+    }
+
     public static final class SavedOrigin {
-        private final RootRestorationOriginalProof.Original restoration;
+        private final ExactRef restorationBasis;
         private final SavedBody saved;
         private final FeastDomainRuntime.ActivityOrigin origin;
         private final ActionReceipt start;
         private final Optional<ActivityFinalState.State> retained;
-        private SavedOrigin(RootRestorationOriginalProof.Original restoration, SavedBody saved,
-                FeastDomainRuntime.ActivityOrigin origin, ActionReceipt start,
-                Optional<ActivityFinalState.State> retained) {
-            this.restoration = restoration; this.saved = saved; this.origin = origin;
-            this.start = start; this.retained = retained;
+        private final SavedCustody custody;
+
+        private SavedOrigin(ExactRef restorationBasis, SavedBody saved, FeastDomainRuntime.ActivityOrigin origin,
+                ActionReceipt start, Optional<ActivityFinalState.State> retained, SavedCustody custody) {
+            this.restorationBasis = restorationBasis;
+            this.saved = saved;
+            this.origin = origin;
+            this.start = start;
+            this.retained = retained;
+            this.custody = custody;
         }
-        public ExactRef restorationBasis() { return restoration.basis(); }
+        public ExactRef restorationBasis() { return restorationBasis; }
         public DomainBodies.BodyRef savedFeastMember() { return saved.reference(); }
         public FeastDomainRuntime.ActivityOrigin originalOrigin() { return origin; }
         public ActionReceipt originalStart() { return start; }
         public Optional<ActivityFinalState.State> retainedOriginalFinal() { return retained; }
         public void requireUnchanged(RootRuntimeContext context, Session same) throws IOException {
-            requireRestoration(context, same, restoration);
-            saved.requireUnchanged(same);
+            custody.require(context, same);
         }
     }
 }
-
-

@@ -117,6 +117,33 @@ final class RootActivitySavedOriginalGuardTest {
         }
     }
 
+    @Test void independentSavedWriterRetainsUnknownWithoutUsingTheTargetsFeastMember() throws IOException {
+        try (var old = new Fixture(root.resolve("old")); var target = new Fixture(root.resolve("target"));
+                var readOnly = StorageWriteGuard.noWrites()) {
+            var pending = new FeastDomainRuntime.Pending("original-episode", old.sources.getFirst(), "b".repeat(64));
+            var saved = old.publish("captured-saved", new FeastDomainRuntime.Ledger(Optional.of(pending), Optional.empty()));
+            var current = target.publish("target-empty", new FeastDomainRuntime.Ledger(Optional.empty(), Optional.empty()));
+            var oldReader = old.readOnly(readOnly);
+            target.writer.locked(same -> {
+                assertThrows(IOException.class, () -> RootActivitySavedOriginalGuard.readSavedBody(same, saved.head(), old.sources));
+                var preserved = oldReader.readOnlyFrom(same, independent -> {
+                    var actual = RootActivitySavedOriginalGuard.readSavedBody(independent, saved.head(), old.sources);
+                    actual.requireUnchanged(independent);
+                    return actual;
+                });
+                assertEquals(pending, preserved.ledger().pending().orElseThrow());
+                assertEquals(RestoredFeastOriginal.Disposition.PENDING, RestoredFeastOriginal.classify(preserved.ledger(),
+                        org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterial.Kind.ORDINARY));
+                assertEquals(current.head().sequence(), same.head().state().sequence());
+                assertEquals(DomainBodies.reference(current.head(), DomainBodies.Slot.FEAST).orElseThrow(),
+                        DomainBodies.reference(same.head().state(), DomainBodies.Slot.FEAST).orElseThrow());
+                return null;
+            });
+            assertFalse(Files.exists(old.layout.event(2)));
+            assertFalse(Files.exists(target.layout.event(2)));
+        }
+    }
+
     private static final class Fixture implements AutoCloseable {
         static final String MACHINE = "activity-saved-member-store-test-machine";
         final Layout layout;
@@ -124,6 +151,8 @@ final class RootActivitySavedOriginalGuardTest {
         final ContinuityWriter writer;
         final List<ExactRef> sources;
         final ContinuityState anchor;
+        final ImmutableArtifactStore.Config archiveConfig;
+        final DomainBodies.Registration registration;
 
         Fixture(Path root) throws IOException {
             assertTrue(System.getProperty("os.name").startsWith("Windows"),
@@ -153,25 +182,34 @@ final class RootActivitySavedOriginalGuardTest {
             Path archive = root.resolve("archive"); Files.createDirectory(archive);
             storage = StorageWriteGuardTestSupport.create(layout);
             try {
-                var store = new ImmutableArtifactStore(new ImmutableArtifactStore.Config(archive, layout.lock(), 1_048_576), storage);
-                var registration = new DomainBodies.Registration(DomainBodies.Slot.FEAST, FeastDomainRuntime.SCHEMA,
+                archiveConfig = new ImmutableArtifactStore.Config(archive, layout.lock(), 1_048_576);
+                var store = new ImmutableArtifactStore(archiveConfig, storage);
+                registration = new DomainBodies.Registration(DomainBodies.Slot.FEAST, FeastDomainRuntime.SCHEMA,
                         1_048_576, sources, (head, previous, request, body) -> {
                             FeastDomainRuntime.decode(body);
                             StrictJson.require(request.producerInput().length > 0, "actual fixture producer input required");
                             return ActionCodec.sha256(body);
                         });
-                writer = new ContinuityWriter(layout, sources, new TransitionAuthority() {
+                writer = new ContinuityWriter(layout, sources, NEVER, Clock.systemUTC(), new ContinuityWriter.Extensions(List.of(registration), Optional.of(store), Optional.empty()), storage);
+            } catch (IOException | RuntimeException | Error failure) {
+                try { storage.close(); } catch (IOException closeFailure) { failure.addSuppressed(closeFailure); }
+                throw failure;
+            }
+        }
+
+        private static final TransitionAuthority NEVER = new TransitionAuthority() {
                     @Override public String revalidate(ContinuityState head, Request input) {
                         throw new AssertionError("domain imports use the actual store verifier");
                     }
                     @Override public ContinuityState reduce(ContinuityState head, Request input) {
                         throw new AssertionError("domain imports use the actual store reducer");
                     }
-                }, Clock.systemUTC(), new ContinuityWriter.Extensions(List.of(registration), Optional.of(store), Optional.empty()), storage);
-            } catch (IOException | RuntimeException | Error failure) {
-                try { storage.close(); } catch (IOException closeFailure) { failure.addSuppressed(closeFailure); }
-                throw failure;
-            }
+                };
+
+        ContinuityWriter readOnly(StorageWriteGuard noWrites) throws IOException {
+            var store = ImmutableArtifactStore.readOnlyExisting(archiveConfig, noWrites);
+            return ContinuityWriter.readOnlyExisting(layout, sources, NEVER, Clock.systemUTC(),
+                    new ContinuityWriter.Extensions(List.of(registration), Optional.of(store), Optional.empty()), noWrites);
         }
 
         @Override public void close() throws IOException { storage.close(); }

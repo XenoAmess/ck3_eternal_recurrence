@@ -166,6 +166,13 @@ public final class GovernanceOrdinaryRuntimeInstaller {
             requireSession(same);var installed=active();installed.requireNativeAvailable();
             return RestoredFeastOriginal.capture(installed.context,same,original,feast,installed.finalSettlement);
         }
+        /** Reads the imported Saved FEAST before the committed successor enters ordinary planning. */
+        public RestoredFeastOriginal captureRestoredFeastOriginal(ContinuityStorePort.Session same,
+                RootCommittedOrdinaryRestoration original) throws IOException {
+            requireSession(same);
+            var installed = active();
+            return RestoredFeastOriginal.captureCommitted(installed.context, same, original, feast, installed.finalSettlement);
+        }
         /** Called only by Core after actual FIRST BASELINE or its privately qualified cold restoration. */
         public List<DomainBodies.BodyRef> initializeNext(RootRuntimeContext context,ContinuityStorePort.Session same,
                 RootApplicationAssembly.EpisodeDomainInitializationProof proof)throws IOException {

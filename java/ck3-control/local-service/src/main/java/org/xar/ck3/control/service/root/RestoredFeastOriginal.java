@@ -1,6 +1,7 @@
 package org.xar.ck3.control.service.root;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.List;
 import java.util.Objects;
 import org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterial;
@@ -53,5 +54,37 @@ public sealed interface RestoredFeastOriginal permits RestoredFeastOriginal.NoOr
         } catch(IOException|IllegalArgumentException failure) {
             return new Unqualified(Reason.ORIGINAL_REPLAY_UNAVAILABLE,failure.getMessage()==null?failure.getClass().getSimpleName():failure.getMessage(),List.of(original.basis(),saved.reference().payload()));
         }
+    }
+
+    static RestoredFeastOriginal captureCommitted(RootRuntimeContext context, ContinuityStorePort.Session same,
+            RootCommittedOrdinaryRestoration original, FeastDomainRuntime domain, FeastFinalSettlement settlement) throws IOException {
+        Objects.requireNonNull(original).requireCurrent(same, context);
+        final RootActivitySavedOriginalGuard.SavedBody saved;
+        try {
+            saved = original.withOriginalSavedWriter(same, (old, savedHead) ->
+                    RootActivitySavedOriginalGuard.readSavedBody(old, savedHead, domain.registration().producerSources()));
+        } catch (IOException | IllegalArgumentException unavailable) {
+            original.requireCurrent(same, context);
+            return new Unqualified(Reason.SAVED_FEAST_UNAVAILABLE, failureDetail(unavailable),
+                    List.of(original.basis(), original.material().reference()));
+        }
+        var disposition = classify(saved.ledger(), SavedCheckpointMaterial.Kind.ORDINARY);
+        if (disposition == Disposition.NONE) return new NoOriginal(original.basis(), saved.reference());
+        if (disposition == Disposition.PENDING)
+            return new Unqualified(Reason.PENDING_OR_UNKNOWN, "The saved FEAST contains its original pending record",
+                    List.of(original.basis(), saved.reference().payload()));
+        try {
+            var evidence = original.withOriginalSavedArchive(same, (old, savedHead, archive) ->
+                    RootActivitySavedOriginalGuard.requireCommitted(old, savedHead, archive, original, saved, settlement));
+            return new Historical(evidence);
+        } catch (IOException | UncheckedIOException | IllegalArgumentException unavailable) {
+            original.requireCurrent(same, context);
+            return new Unqualified(Reason.ORIGINAL_REPLAY_UNAVAILABLE, failureDetail(unavailable),
+                    List.of(original.basis(), saved.reference().payload()));
+        }
+    }
+
+    private static String failureDetail(Exception failure) {
+        return failure.getMessage() == null ? failure.getClass().getSimpleName() : failure.getMessage();
     }
 }

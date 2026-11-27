@@ -45,19 +45,35 @@ public final class FeastFinalSettlement {
     public ActivityFinalState.State restore(ContinuityStorePort.Session same,FeastDomainRuntime.ActivityOrigin origin)throws IOException {
         var start=requireStart(same,origin.originalStart());var retained=origin.finalState().orElseThrow(()->new IOException("no retained final original"));
         byte[] bytes=context.archive().readArtifact(same,retained.state(),1_048_576);var state=bridge.restore(bytes,same);
+        return requireFinalIdentity(start, retained, state);
+    }
+    ActivityFinalState.State restoreArchived(ContinuityStorePort.Session old, ActionPorts.OutcomeArchive archive,
+            FeastDomainRuntime.ActivityOrigin origin, ActionReceipt qualifiedStart) throws IOException {
+        var retained = origin.finalState().orElseThrow(() -> new IOException("no retained final original"));
+        var historicalBridge = new RootActivityFinalReadBridge(activity.definitions(), archive, context.frameLoader());
+        var state = historicalBridge.restore(archive.loadFullMaterial(retained.state()).bytes(), old);
+        return requireFinalIdentity(qualifiedStart, retained, state);
+    }
+    private static ActivityFinalState.State requireFinalIdentity(ActionReceipt start, FeastDomainRuntime.FinalRetention retained,
+            ActivityFinalState.State state) {
         var effect=ActionEffects.observation(start).orElseThrow();
         StrictJson.require(state.identity().equals(identity(start))&&state.origin().equals(effect.after())
                 &&state.identity().activityFullId()==retained.activityFullId()&&state.identity().hostCharacterId()==retained.hostCharacterId()
                 &&state.firstFinal().isPresent(),"retained Feast terminal crossed its original actual Start material");return state;
     }
     public ActionReceipt requireStart(ContinuityStorePort.Session same,ExactRef reference)throws IOException {
-        context.writer().requireSession(same);var archive=context.archive().withSession(same);var start=archive.loadReceipt(reference);
-        var canonical=ContinuityActionJournal.lookup(same.head().state(),start.command().actionId(),archive).orElseThrow(()->new IOException("original Feast Start absent from canonical history"));
+        context.writer().requireSession(same);
+        return requireArchivedStart(same.head(), context.archive().withSession(same), reference);
+    }
+    ActionReceipt requireArchivedStart(WriterContracts.Head head, ActionPorts.OutcomeArchive archive, ExactRef reference) throws IOException {
+        var start = archive.loadReceipt(reference);
+        var canonical = ContinuityActionJournal.lookup(head.state(), start.command().actionId(), archive)
+                .orElseThrow(() -> new IOException("original Feast Start absent from canonical history"));
         StrictJson.require(Arrays.equals(ActionReceiptCodec.encodeReceipt(start,archive),ActionReceiptCodec.encodeReceipt(canonical,archive))
                 &&start.command().operation().equals(OrdinaryFeastPolicy.START)&&start.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED
                 &&start.state() instanceof ActionState.Settled,"final Activity origin must be exact canonical material Start");
         var settled=(ActionState.Settled)start.state();ActionEffects.validate(start.command(),settled.attempt(),settled.settlement());
-        context.bindings().actualArchivedVerifier(OrdinaryFeastPolicy.START).orElseThrow(()->new IOException("actual Feast Start replay verifier absent")).verifier().verify(same.head(),start,archive);
+        context.bindings().actualArchivedVerifier(OrdinaryFeastPolicy.START).orElseThrow(()->new IOException("actual Feast Start replay verifier absent")).verifier().verify(head,start,archive);
         identity(start);return start;
     }
     private static ActivityFinalState.Identity identity(ActionReceipt start) {

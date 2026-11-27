@@ -21,6 +21,7 @@ import org.xar.ck3.control.application.planning.campaign.CrossRunPlanningDomain;
 import org.xar.ck3.control.application.planning.campaign.CrossRunFirstCheckpointReader;
 import org.xar.ck3.control.application.planning.campaign.CrossRunStrategySource;
 import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
+import org.xar.ck3.control.continuity.ContinuityState;
 import org.xar.ck3.control.continuity.writer.*;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
@@ -30,6 +31,16 @@ import static org.xar.ck3.control.application.planning.campaign.CrossRunPlanning
 /** Core-owned actual cross-run producer. Initialization and scored-terminal publication use the original writer session. */
 public final class RootCrossRunPlanning {
     private RootCrossRunPlanning() { }
+
+    static KnownState requireRetainedOrdinary(CrossRunPlanningDomain domain, ContinuityStorePort.Session same,
+            ContinuityState attachment) throws IOException {
+        var member = DomainBodies.reference(attachment, DomainBodies.Slot.CROSS_RUN_PLANNING)
+                .orElseThrow(() -> new IOException("committed ordinary attachment has no original CrossRun strategy"));
+        if (!(domain.read(same) instanceof KnownState current) || !current.body().equals(member))
+            throw new IOException("committed ordinary CrossRun strategy differs from its actual attachment member");
+        return current;
+    }
+
     public enum ProducerRole {
         CORE_PRODUCER("RootCrossRunPlanning.java"), DOMAIN("CrossRunPlanningDomain.java"),
         STRATEGY_SOURCE("CrossRunStrategySource.java"), STRATEGY_REDUCER("CrossRunPlanning.java"),
@@ -160,6 +171,16 @@ public final class RootCrossRunPlanning {
                     &&head.equals(same.head().digest()),"restored FIRST CrossRun original/ancestry changed during comparison");
             return Optional.of(saved);
         }
+        /** Ordinary committed recovery keeps the strategy that belongs to the target attachment. */
+        public KnownState requireCommittedOrdinary(RootRuntimeContext context, ContinuityStorePort.Session same,
+                RootCommittedOrdinaryRestoration original) throws IOException {
+            Objects.requireNonNull(original).requireCurrent(same, context);
+            attachContext(context);
+            var state = requireRetainedOrdinary(domain, same, original.attachmentHead());
+            original.requireCurrent(same, context);
+            return state;
+        }
+
         private void requireSameCanonical(ContinuityStorePort.Session same,CrossRunFirstCheckpointReader.Saved saved)throws IOException {
             StateRead read=domain.read(same);
             StrictJson.require(read instanceof KnownState,"actual complete CrossRun domain is unavailable at FIRST comparison");
