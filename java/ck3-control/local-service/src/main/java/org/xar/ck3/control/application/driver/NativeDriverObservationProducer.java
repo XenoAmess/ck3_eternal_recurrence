@@ -683,8 +683,8 @@ public final class NativeDriverObservationProducer implements DriverObservationF
         cleanNativeCampaign = data.latestObservedFrame().observationVersion() == DriverObservationAssembler.NATIVE_CAMPAIGN_OBSERVATION_VERSION;
     }
 
-    synchronized void bindRecordedExternalSave(ContinuityStorePort.Session same, NativeObservationPort.TransportSession current)
-            throws IOException {
+    synchronized void bindRecordedExternalSave(ContinuityStorePort.Session same, NativeObservationPort.TransportSession current,
+            BigInteger coveredActionRevision) throws IOException {
         var head = same.head().state().toJson();
         StrictJson.require(acceptedSession == null && lastProjectedReceipt == null && publicRevision.signum() == 0
                 && transportRevisionOffset.signum() == 0
@@ -693,6 +693,8 @@ public final class NativeDriverObservationProducer implements DriverObservationF
                 && ContinuityJson.same(head.get("game_binding"), current.game().toJson()),
                 "named-save re-entry requires its actual held successor before setting the producer baseline");
         var revision = StrictJson.integer(head.path("latest_binding").get("revision"), BigInteger.ZERO, StrictJson.UINT64_MAX);
+        // The latest binding stays at the earlier checkpoint after an interrupted successor.
+        revision = revision.max(Objects.requireNonNull(coveredActionRevision));
         new PublicRevision(revision);
         publicRevision = revision;
         transportRevisionOffset = revision;

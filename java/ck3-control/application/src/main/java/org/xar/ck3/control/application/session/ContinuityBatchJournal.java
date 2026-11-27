@@ -3235,7 +3235,8 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 StrictJson.require((positiveEvent || appliedLife || interruptedLife)
                         && command.sessionId().equals(origin.successor().sessionId())
                         && command.source().equals(retained.source())
-                        && (original.sequence() < canonicalSequence || appliedLife && original.sequence() == canonicalSequence),
+                        && (original.sequence() < canonicalSequence
+                            || (appliedLife || interruptedLife) && original.sequence() == canonicalSequence),
                         "named recovery DATA crossed its original positive event, applied Life, current batch or historical source");
                 if (positiveEvent) origin.requireSemantic(command.before());
                 else {
@@ -4500,6 +4501,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
         private final Optional<DriverActionHistoryState.Publication> full111EventPublication;
         private final Optional<ActionReceipt> pendingAppliedLife;
         private final Optional<ActionReceipt> interruptedLife;
+        private final Optional<ActionReceipt> originalInterruptedLife;
         private final long observedDateRaw;
         private final List<DriverActionHistoryState.Publication> lifePublications;
         private final List<ActionReceipt> completedNamedLives;
@@ -4510,7 +4512,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 Optional<SemanticEvidence> full111SettledSemantic,
                 Optional<DriverActionHistoryState.Publication> full111EventPublication, Optional<ActionReceipt> pendingAppliedLife,
                 List<DriverActionHistoryState.Publication> lifePublications, List<ActionReceipt> completedNamedLives,
-                Optional<ActionReceipt> interruptedLife, long observedDateRaw) {
+                Optional<ActionReceipt> interruptedLife, Optional<ActionReceipt> originalInterruptedLife, long observedDateRaw) {
             this.origin = origin;
             this.history = history;
             this.recordedDigest = recordedDigest;
@@ -4525,6 +4527,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
             this.lifePublications = List.copyOf(lifePublications);
             this.completedNamedLives = List.copyOf(completedNamedLives);
             this.interruptedLife = interruptedLife;
+            this.originalInterruptedLife = originalInterruptedLife;
             this.observedDateRaw = observedDateRaw;
         }
 
@@ -4536,6 +4539,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
         public Optional<DriverActionHistoryState.Publication> full111EventPublication() { return full111EventPublication; }
         public Optional<ActionReceipt> pendingAppliedLife() { return pendingAppliedLife; }
         public Optional<ActionReceipt> interruptedLife() { return interruptedLife; }
+        public Optional<ActionReceipt> originalInterruptedLife() { return originalInterruptedLife; }
         public List<DriverActionHistoryState.Publication> lifePublications() { return lifePublications; }
         public Optional<ActionReceipt> pendingFull111Event() {
             return full111EventCaptures.isEmpty() || full111SettledSemantic.isPresent()
@@ -4647,7 +4651,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
         origin.requirePreviousOrigin(original);
         origin.requireOriginal(head.state());
         return new PreparedExternalSave(origin, previous.history(), Optional.empty(), previous.consumedBatches,
-                Optional.empty(), Optional.empty(), List.of(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), List.of(), List.of(), Optional.empty(), origin.opening().dateRaw());
+                Optional.empty(), Optional.empty(), List.of(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), List.of(), List.of(), Optional.empty(), Optional.empty(), origin.opening().dateRaw());
     }
 
     private PreparedExternalSave replayRecordedExternalSave(ContinuityStorePort.Session same, SessionIdentity departed,
@@ -4707,6 +4711,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
             boolean readOnlyInterrupted = false;
             Optional<ActionReceipt> appliedLife = Optional.empty();
             Optional<ActionReceipt> interruptedLife = Optional.empty();
+            Optional<ActionReceipt> originalInterruptedLife = Optional.empty();
             long observedDate = origin.opening().dateRaw();
             var lifePublications = new java.util.ArrayList<DriverActionHistoryState.Publication>();
             var completedLives = new java.util.ArrayList<ActionReceipt>();
@@ -4779,12 +4784,15 @@ public final class ContinuityBatchJournal implements BatchJournal {
                         var life = validated.getKey();
                         lifePublications.addAll(validated.getValue());
                         latestLifeAction = ContinuityActionJournal.recordHead(actualTail.getLast().after());
-                        boolean hadInterruption = actualTail.stream().anyMatch(ContinuityBatchJournal::isNamedLifeInterruption);
-                        if (hadInterruption) open = null;
+                        var interruption = actualTail.stream().filter(ContinuityBatchJournal::isNamedLifeInterruption).findFirst();
+                        if (interruption.isPresent()) open = null;
                         if (end == edges.size()) {
-                            if (hadInterruption) {
+                            if (interruption.isPresent()) {
                                 readOnlyInterrupted = true;
                                 interruptedLife = Optional.of(life);
+                                var sourceRecord = ContinuityActionJournal.recordHead(interruption.orElseThrow().before()).orElseThrow();
+                                originalInterruptedLife = Optional.of(transitions.withLocked(same,
+                                        () -> transitions.restartArchive(same).loadRecord(sourceRecord).receipt()));
                                 observedDate = transitions.withLocked(same, () ->
                                         canonicalNamedProgressDate(same, successor, transitions.restartArchive(same))).orElseThrow();
                             } else {
@@ -4859,7 +4867,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     "named-save re-entry history does not end at the held head");
             return new PreparedExternalSave(origin, old, Optional.of(head.digest()), consumed, Optional.ofNullable(open),
                     captures.isEmpty() ? interruptedAction : Optional.empty(), captures, closedAction, closedCycle, publishedDriver, appliedLife,
-                    lifePublications, completedLives, interruptedLife, observedDate);
+                    lifePublications, completedLives, interruptedLife, originalInterruptedLife, observedDate);
         });
         StrictJson.require(live.digest().equals(same.head().digest()), "named-save re-entry changed its held writer");
         return prepared;
@@ -4949,9 +4957,15 @@ public final class ContinuityBatchJournal implements BatchJournal {
                         && body.path("evidence_id").asText().equals(command.actionId() + ":" + receipt.sequence()),
                         "named Life historical action crossed its exact parent, children or owned branch");
                 if (interrupted) {
-                    StrictJson.require(command.actionId().equals(life.command().actionId()) && receipt.equals(life)
-                            && receipt.eligibleAdvance() && actual.containsKey(command.actionId()) && isReadOnlyLifeRecovery(actual.get(command.actionId())),
-                            "after interruption only the same already-issued Life parent may gain a proved result");
+                    var preceding = actual.get(command.actionId());
+                    StrictJson.require(command.actionId().equals(life.command().actionId())
+                            && preceding != null && isReadOnlyLifeRecovery(preceding)
+                            && preceding.command().equals(command) && preceding.bodySha256().equals(receipt.bodySha256())
+                            && ActionTransitions.composite(preceding.state()).equals(ActionTransitions.composite(receipt.state()))
+                            && (receipt.eligibleAdvance() && receipt.equals(life)
+                                || receipt.state() instanceof ActionState.CompositeUnknown diagnostic
+                                    && diagnostic.reason().startsWith("composite read-only reconciliation unavailable:")),
+                            "after interruption only the same already-issued Life may gain an observation diagnostic or proved result");
                 }
                 ActionTransitions.validate(Optional.ofNullable(actual.put(command.actionId(), receipt)), command,
                         receipt.bodySha256(), receipt.state());
@@ -5222,7 +5236,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
             return null;
         });
         return new PreparedExternalSave(origin, history, Optional.empty(), List.of(), Optional.empty(),
-                Optional.empty(), List.of(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), List.of(), List.of(), Optional.empty(), origin.opening().dateRaw());
+                Optional.empty(), List.of(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), List.of(), List.of(), Optional.empty(), Optional.empty(), origin.opening().dateRaw());
     }
 
     public static final class ExternalSaveRebind {

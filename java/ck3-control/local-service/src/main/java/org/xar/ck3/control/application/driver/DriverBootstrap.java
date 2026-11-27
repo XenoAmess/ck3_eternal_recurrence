@@ -2,6 +2,7 @@ package org.xar.ck3.control.application.driver;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.math.BigInteger;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import org.xar.ck3.control.application.action.ActionJournal;
+import org.xar.ck3.control.application.action.ActionEffects;
 import org.xar.ck3.control.application.action.ContinuityActionJournal;
 import org.xar.ck3.control.application.action.CommandExpectation;
 import org.xar.ck3.control.application.action.ActionPorts;
@@ -872,6 +874,15 @@ public final class DriverBootstrap {
         return restored;
     }
 
+    static BigInteger namedPublicRevisionFloor(List<ActionReceipt> covered, NativeObservationPort.TransportSession current,
+            G2Source source, String episodeRunId) {
+        return covered.stream().map(ActionEffects::observation).flatMap(Optional::stream)
+                .filter(effect -> effect.source().equals(source) && effect.sessionId().equals(current.sessionId())
+                        && effect.after().machineId().equals(current.machineId()) && effect.after().game().equals(current.game())
+                        && effect.after().frame().episodeRunId().equals(episodeRunId))
+                .map(effect -> effect.after().frame().revision()).max(BigInteger::compareTo).orElse(BigInteger.ZERO);
+    }
+
     private sealed interface ColdOpening permits CommittedDriverRead, NamedSaveDriverRead { }
     private record CommittedDriverRead(WriterContracts.Pin attachment, NativeObservationPort.ObservedFrame originalOpening)
             implements ColdOpening { }
@@ -1138,8 +1149,13 @@ public final class DriverBootstrap {
                     if (namedDriver.isPresent()) {
                         var body = borrowed.head().state().toJson();
                         if (body.hasNonNull(WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD)
-                                && org.xar.ck3.control.continuity.ContinuityJson.same(body.get("game_binding"), seed.expectedSession().game().toJson()))
-                            producer.bindRecordedExternalSave(borrowed, seed.expectedSession());
+                                && ContinuityJson.same(body.get("game_binding"), seed.expectedSession().game().toJson())) {
+                            var covered = namedHistory.stream().filter(action -> action.coverage().isPresent())
+                                    .map(ExternalSavedActionHistory::receipt).toList();
+                            var retainedRevision = namedPublicRevisionFloor(covered, seed.expectedSession(), source,
+                                    driver.session().episodeRunId());
+                            producer.bindRecordedExternalSave(borrowed, seed.expectedSession(), retainedRevision);
+                        }
                     }
                     if(savedNative.isPresent()) {
                         var retained=savedNative.orElseThrow();
