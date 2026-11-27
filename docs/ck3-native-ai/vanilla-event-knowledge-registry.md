@@ -6,6 +6,13 @@
 
 A 的原版效果为当前接收角色增加 5 点精神满足度，保留本礼仪。B 仅供非宗教领袖且非礼仪领袖的接收角色，改用新礼仪并执行条件性传播。C 的脚本虔诚基础值为 100，创始人对接收角色的好感减少 15。创立和最初传播发生在 `immediate`，后续传播的排期也由该阶段生成。Full111 仍由原生读回当前显示顺序及合法性后选择首个显示项，接续验收用原实例独立出队和新的 Full/SEM。当前物理记录尚未核对新进程内的实例与按钮列表。精神满足度需当期独立读取才能计材料结果。
 
+
+### 实机回读补记
+
+机器 `xenoamess-full-tower-eb9d2c1186`。R0032 的八份旧离线诊断均来自原版同一 Game 297908、角色 31254、暂停日期 1070.10.09（raw53179944）及实例 14，当时诊断原件均缺 definition 和渲染选项。该 Game 已保留的原生只读直接识别同日同实例为 `rite_growth.0010`，给出 authored 0、1、2。八份诊断归为一个原生渲染读取问题，原始诊断和日后实际选项仍各自保留。离线批 SHA-256 `13f48ba03e8e5a9860e4327a710c4447f4cc36df9e7a10fd1ae2753f6762d76d`，原生读回 `held-current-ritual-read01/ordinary-events/read-ack-payload.json` SHA-256 `e0e64dfa47ea87ea98975f2046c98593cdee28283c116e6851892e938253941b`。
+
+同一物理档后继 R0034 的原版 Full111 实时渲染实际显示并启用 0、1、2，位置第一的 authored 0 已执行一次。同连接与独立连接都读回原事件消失及同一存活玩家，原动作随后在 seq80 核验入账为 APPLIED。实际精神满足度没有独立读回。原件位于 `D:/ck3-state/ck3-runtime-continuation-20261126/source56-autonomous-recovery-20261127/named-lease-remount-preparation/` 下的 `ACTUAL-R0034-RITE-NATIVE-SELECT-AND-POSTCONDITION-BOUNDARY.json` 及 `ACTUAL-R0034-RITE-SEQ80-ORIGINAL-APPLIED-CYCLE-PENDING.json`。同类事件沿用原版真实活动实例与渲染按钮绑定。
+
 ## 2026-11-24 current267：已分析的 `realm_maintenance.2001`
 
 本机1.21.0.3／build26785313的a1410实际D7捕获定义`realm_maintenance.2001`、instance3、recipient44132，完整窗口只有一个authored option0，实际Can=true、显示“皇帝万岁”，原通用首可用策略选择一次，独立完整census证明原instance消失，随后原流程完成8日。该事件来自当前原版头衔取得链的一日延迟提示；两段条件name属于同一个选项。当前定义、调用方和简中本地化的完整SHA／行号、immediate和option效果见[持久知识](evidence/realm-maintenance-2001-current267-a1410.json)。选项可能依实际状态开加冕活动或创建所需物品，不能概括为全局无效果。
