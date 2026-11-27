@@ -4509,7 +4509,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
         StrictJson.require(head.state().sequence()==Math.addExact(request.expectedHeadSequence(),1)
                 &&canonical.sequence()==head.state().sequence()&&canonical.state() instanceof ActionState.CompositeOperatorQuarantined,
                 "exited imported history requires its own dedicated terminal-only successor");
-        source.verify(same,head,canonical,originals);
+        source.verify(same,same.head(),canonical,originals);
         var proof=CompositeOperatorQuarantineObservation.load(canonical,originals);
         var terminalRecord=originals.loadRecord(ContinuityActionJournal.recordHead(head.state()).orElseThrow());
         StrictJson.require(terminalRecord.receipt().equals(canonical)
