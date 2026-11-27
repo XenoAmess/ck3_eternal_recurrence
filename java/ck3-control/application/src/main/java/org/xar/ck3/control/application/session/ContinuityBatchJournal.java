@@ -4357,9 +4357,14 @@ public final class ContinuityBatchJournal implements BatchJournal {
             for (int index = 1; index < edges.size(); index++) {
                 var edge = edges.get(index);
                 if (DomainBodies.IMPORT_KIND.equals(edge.kind())) {
-                    StrictJson.require(open == null && !reboundOpening, "named-save re-entry crossed its one opening import");
-                    requireRecordedExternalOpening(same, edge, origin, originRef, old.source());
-                    reboundOpening = true;
+                    if (reboundOpening) {
+                        StrictJson.require(open != null, "existing-focus read belongs to an actual open successor batch");
+                        requireExternalExistingFocus(same, edge, origin, old.source());
+                    } else {
+                        StrictJson.require(open == null, "named-save re-entry crossed its original opening import");
+                        requireRecordedExternalOpening(same, edge, origin, originRef, old.source());
+                        reboundOpening = true;
+                    }
                     continue;
                 }
                 var payload = ContinuityJson.parseObject(edge.details(), ContinuityJson.DOCUMENT_MAX_BYTES);
@@ -4415,6 +4420,21 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     && document.originals().containsAll(List.of(previous.payload(), originRef)),
                     "named-save re-entry crossed the recorded unissued opening role");
             origin.requireSemantic(document.observed());
+            return null;
+        });
+    }
+
+    private void requireExternalExistingFocus(ContinuityStorePort.Session same, WriterContracts.HistoricalTransition edge,
+            ExternalSaveOrigin origin, G2Source source) throws IOException {
+        var openingRef = DomainBodies.reference(edge.after(), DomainBodies.Slot.OPENING_GATE).orElseThrow().payload();
+        transitions.withLocked(same, () -> {
+            var archive = transitions.restartArchive(same);
+            var opening = GovernanceOpeningDocument.decode(archive.loadMaterial(openingRef).bytes());
+            StrictJson.require(opening.source().equals(source) && opening.sessionId().equals(origin.successor().sessionId()),
+                    "named-save existing-focus read crossed its canonical source or session");
+            origin.requireSemantic(opening.observed());
+            origin.requireSemantic(opening.existingObserved().orElseThrow());
+            requireExistingOpeningImport(same, edge, opening, openingRef, origin.successor(), archive, true);
             return null;
         });
     }
@@ -6617,7 +6637,13 @@ public final class ContinuityBatchJournal implements BatchJournal {
             org.xar.ck3.control.application.planning.governance.GovernanceOpeningDocument.Document opening,
             ExactRef openingRef, SessionIdentity owner,
             org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals) throws IOException {
-        var slot=org.xar.ck3.control.continuity.writer.DomainBodies.Slot.OPENING_GATE;
+        requireExistingOpeningImport(same, edge, opening, openingRef, owner, originals, false);
+    }
+
+    private static void requireExistingOpeningImport(ContinuityStorePort.Session same,
+            WriterContracts.HistoricalTransition edge, GovernanceOpeningDocument.Document opening, ExactRef openingRef,
+            SessionIdentity owner, ActionPorts.OutcomeArchive originals, boolean externalNamed) throws IOException {
+        var slot=DomainBodies.Slot.OPENING_GATE;
         var recorded=same.requireHistoricalImport(slot,edge.sequence(),ContinuityJson.digest(edge.after().toJson()));
         StrictJson.require(recorded.body().payload().equals(openingRef)
                 &&recorded.body().equals(org.xar.ck3.control.continuity.writer.DomainBodies.reference(edge.after(),slot).orElseThrow()),
@@ -6638,19 +6664,22 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 ExactRef.fromJson(rawSemantic.get("semantic")),ExactRef.fromJson(rawSemantic.get("native")),
                 ExactRef.fromJson(rawSemantic.get("stamp")),ExactRef.fromJson(rawSemantic.get("driver")),
                 Instant.parse(StrictJson.utc(StrictJson.text(rawSemantic.get("observed_at")))));
+        boolean following = previous.existingObserved().filter(value -> !value.frame().snapshotId().equals(request.before().frame().snapshotId())).isPresent();
         StrictJson.require(previous.actionReceipt().isEmpty()&&previous.preparedCommand().isEmpty()&&previous.checkpoint().isEmpty()
-                &&previous.existingObserved().isPresent()
-                &&previous.stage()==org.xar.ck3.control.application.planning.governance.GovernanceObservationSupplier.OpeningStage.AWAIT_SUBMIT
-                &&!previous.existingObserved().orElseThrow().frame().snapshotId().equals(request.before().frame().snapshotId())
+                &&previous.stage()==OpeningStage.AWAIT_SUBMIT
+                &&(externalNamed||following)
                 &&request.before().equals(opening.existingObserved().orElseThrow())&&semantic.frame().equals(request.before())
                 &&request.source().equals(opening.source())&&request.sessionId().equals(owner.sessionId())
                 &&request.before().machineId().equals(owner.machineId())&&request.before().game().equals(owner.game()),
                 "existing-focus completion changed its following actual request/SEM/owner");
         org.xar.ck3.control.application.planning.governance.GovernanceOpeningDocument.requireSameEpisode(previous,request.before(),request.source());
         var query=originals.loadRead(queryRef);
-        StrictJson.require(query.contractId().equals("governance.planning.private-query-player-lifestyle-formal-v1")
+        String contract = externalNamed ? "governance.opening-readonly.ck3-26785313-lifestyle-current-v1"
+                : "governance.planning.private-query-player-lifestyle-formal-v1";
+        String operation = externalNamed ? "query-current-lifestyle-state-26785313-v1" : "private-query-player-lifestyle-formal-v1";
+        StrictJson.require(query.contractId().equals(contract)
                 &&query.request().origin() instanceof CommandOrigin.Gameplay
-                &&query.request().operation().value().equals("private-query-player-lifestyle-formal-v1")
+                &&query.request().operation().value().equals(operation)
                 &&query.request().arguments().members().isEmpty()&&query.request().before().equals(request.before())
                 &&query.request().source().equals(request.source())&&query.request().sessionId().equals(request.sessionId())
                 &&query.before().binding().observed().equals(request.before())&&query.after().binding().observed().equals(request.before())
@@ -6658,16 +6687,20 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 &&query.after().binding().nativeEvidence().equals(semantic.originalNativePacket()),
                 "existing-focus formal READ changed its actual contract/request/source/SEM frame");
         query.original().custody().orElseThrow(()->new IOException("existing-focus READ lacks original custody")).verify(query);
-        var result=DriverJson.object(query.original().originalResultToken().orElseThrow(
-                ()->new IOException("existing-focus READ lacks its exact result token")).bytes(),DriverJson.MAX_NATIVE_BYTES);
-        StrictJson.require(org.xar.ck3.control.application.planning.governance.GovernancePolicies.existingFocus(result),
-                "existing-focus READ has no actual qualified focus/progress");
+        if (externalNamed) {
+            org.xar.ck3.control.application.effects.NativeRecordedEvidenceVerifier.requireRead(query, originals);
+        } else {
+            var result=DriverJson.object(query.original().originalResultToken().orElseThrow(
+                    ()->new IOException("existing-focus READ lacks its exact result token")).bytes(),DriverJson.MAX_NATIVE_BYTES);
+            StrictJson.require(org.xar.ck3.control.application.planning.governance.GovernancePolicies.existingFocus(result),
+                    "existing-focus READ has no actual qualified focus/progress");
+        }
         originals.loadFullMaterial(semantic.semantic());originals.loadFullMaterial(semantic.driverStamp());
         originals.loadFullMaterial(semantic.originalDriver());originals.loadNativeFrame(semantic.originalNativePacket());
         settledSemanticTransport(semantic,owner,originals);
         var refs=new java.util.ArrayList<>(previous.originals());refs.add(inputRef);refs.addAll(semantic.references());refs.add(requestRef);refs.add(queryRef);
         var expected=new org.xar.ck3.control.application.planning.governance.GovernanceOpeningDocument.Document(previous.observed(),previous.source(),
-                previous.sessionId(),org.xar.ck3.control.application.planning.governance.GovernanceObservationSupplier.OpeningStage.COMPLETE,
+                previous.sessionId(),following ? OpeningStage.COMPLETE : OpeningStage.AWAIT_SUBMIT,
                 Optional.empty(),Optional.empty(),refs.stream().distinct().toList(),Optional.empty(),Optional.of(request.before()));
         StrictJson.require(java.util.Arrays.equals(org.xar.ck3.control.application.planning.governance.GovernanceOpeningDocument.encode(expected),
                 org.xar.ck3.control.application.planning.governance.GovernanceOpeningDocument.encode(opening))

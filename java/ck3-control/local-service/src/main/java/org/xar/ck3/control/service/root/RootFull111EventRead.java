@@ -10,6 +10,8 @@ import java.util.Optional;
 import org.xar.ck3.control.application.action.ActionCodec;
 import org.xar.ck3.control.application.action.NativeActionPort.AckReceived;
 import org.xar.ck3.control.application.action.NativeActionPort.DispatchOutcome;
+import org.xar.ck3.control.application.action.NativeActionPort.RejectedBeforeDispatch;
+import org.xar.ck3.control.application.action.NativeActionPort.Unknown;
 import org.xar.ck3.control.application.action.NativeObservationPort.ObservedFrame;
 import org.xar.ck3.control.application.planning.PlanningRequest;
 import org.xar.ck3.control.application.planning.events.RegisteredEventCore.Full111EventObservation;
@@ -35,7 +37,9 @@ import org.xar.ck3.control.nativebridge.capabilities.registry.CoreFrame;
 final class RootFull111EventRead implements Full111EventRead {
     private static final BigInteger MIN_INT = BigInteger.valueOf(Integer.MIN_VALUE);
     private static final BigInteger MAX_INT = BigInteger.valueOf(Integer.MAX_VALUE);
+    private static final System.Logger LOG = System.getLogger(RootFull111EventRead.class.getName());
     private final RootRuntimeContext context;
+    private String lastRendererRefusal;
     private final NativeGameTransport transport;
     private final HeldReadMemo reads = new HeldReadMemo();
 
@@ -82,7 +86,10 @@ final class RootFull111EventRead implements Full111EventRead {
         if (!now.isBefore(deadline)) return Optional.empty();
         var subject = new ReadSubject(accepted, frame.identity(), frame.source(), bound, originals.semantic(), foreground);
         EventReadAttempt original = () -> query(same, full, subject, canRender, canReadLyd, deadline);
-        if (!canRender) return reads.observe(subject, now, original);
+        if (!canRender) {
+            recordRendererRefusal(subject, "actual HELLO does not advertise the Full111 renderer", Optional.empty());
+            return reads.observe(subject, now, original);
+        }
         return reads.observe(subject, now, original, base -> {
             var basis = base.rendererBasis().orElseThrow();
             return renderer(same, subject, basis.core(), basis.lyd(), Optional.of(base.evidence().definitionKey()), deadline)
@@ -152,20 +159,48 @@ final class RootFull111EventRead implements Full111EventRead {
             Thread.currentThread().interrupt();
             return Optional.empty();
         }
-        // This also rejects another accepted frame that arrived while the optional reply was being read.
-        subject.occurrence().requireOriginal(transport.currentSnapshot(deadline));
-        if (!(outcome instanceof AckReceived ack) || !ack.nativeOk()) return Optional.empty();
-
+        if (!(outcome instanceof AckReceived ack)) {
+            var reason = switch (outcome) {
+                case RejectedBeforeDispatch zero -> zero.proof().stage() + ": " + zero.proof().reason();
+                case Unknown unknown -> unknown.reason();
+                case AckReceived ignored -> throw new IllegalStateException("Renderer ACK already handled");
+            };
+            recordRendererRefusal(subject, reason, Optional.empty());
+            return Optional.empty();
+        }
         try {
+            if (!ack.nativeOk()) {
+                var reference = context.archive().withSession(same).preserve(ack);
+                var result = CurrentFull111EventRenderer.decodeOutcome(ack);
+                recordRendererRefusal(subject, result.status() + ": " + result.unavailableReason().orElseThrow(),
+                        Optional.of(reference));
+                return Optional.empty();
+            }
+            // A result cannot authorize selection after another accepted frame.
+            subject.occurrence().requireOriginal(transport.currentSnapshot(deadline));
             var expected = ((CoreFrame.Partial) core.frame()).prefix();
             var observed = foregroundRenderer(previous, expected, ack, subject.foreground(), definitionKey);
-            if (observed.isEmpty()) return Optional.empty();
+            if (observed.isEmpty()) {
+                recordRendererRefusal(subject, "Renderer ACK does not match the held Core, owner, or foreground", Optional.empty());
+                return Optional.empty();
+            }
+            lastRendererRefusal = null;
             var options = observed.orElseThrow().options().stream().map(RootFull111EventRead::displayedOption).toList();
             var original = context.archive().withSession(same).preserve(ack);
             return Optional.of(new RenderedEvent(observed.orElseThrow().definitionKey(), new Full111RendererObservation(original, options)));
         } catch (IOException | UncheckedIOException | ContractViolationException unavailable) {
+            recordRendererRefusal(subject, unavailable.getMessage(), Optional.empty());
             return Optional.empty();
         }
+    }
+
+    private void recordRendererRefusal(ReadSubject subject, String reason, Optional<ExactRef> reference) {
+        String fingerprint = subject.foreground().instanceId() + ": " + reason;
+        if (fingerprint.equals(lastRendererRefusal)) return;
+        lastRendererRefusal = fingerprint;
+        LOG.log(System.Logger.Level.WARNING, "Full111 event renderer unavailable for game {0}, instance {1}, snapshot {2}: {3}. Original ACK: {4}",
+                subject.before().game().pid(), subject.foreground().instanceId(), subject.before().frame().snapshotId(),
+                reason, reference.map(ExactRef::path).orElse("absent"));
     }
 
     static Full111RenderedOption displayedOption(CurrentFull111EventRenderer.Option option) {
