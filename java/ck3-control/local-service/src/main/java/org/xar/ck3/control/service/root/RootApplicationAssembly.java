@@ -3140,9 +3140,9 @@ public final class RootApplicationAssembly {
                 RootArchivedFull111EventRecovery.publish(this, stage.original(), externalPendingCycleData, proof);
             }
             var interrupted = stage.original().interruptedLife().filter(action -> !action.settled());
+            var originalStatus = proofFile.resolveSibling("archived-life-status-recovery.json");
             var actual = interrupted.isPresent()
-                    ? RootAdvanceInfrastructureFactory.withArchivedLifeStatus(interrupted.orElseThrow(),
-                            proofFile.resolveSibling("archived-life-status-recovery.json"),
+                    ? RootAdvanceInfrastructureFactory.withArchivedLifeStatus(interrupted.orElseThrow(), originalStatus,
                             () -> session.reconcileUnresolvedOriginal(externalPendingCycleData, deadline))
                     : session.reconcileUnresolvedOriginal(externalPendingCycleData, deadline);
             if (!actual.settled() || session.controllerForPublication().isQuarantined())

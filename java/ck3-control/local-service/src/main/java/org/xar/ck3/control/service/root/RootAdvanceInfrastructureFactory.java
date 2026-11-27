@@ -49,7 +49,7 @@ public final class RootAdvanceInfrastructureFactory {
     public static final int TIMINGS_MAX_BYTES=4096;
     private RootAdvanceInfrastructureFactory() { }
 
-    static <T> T withArchivedLifeStatus(ActionReceipt parent, Path input, ClockStatusRead.ArchivedStatusWork<T> work)
+    static <T> T withArchivedLifeStatus(ActionReceipt parent, Path input, java.util.concurrent.Callable<T> work)
             throws IOException, InterruptedException {
         require(parent.state() instanceof ActionState.CompositeUnknown original
                 && original.execution().handlerId().equals(LifeAdvanceComposite.HANDLER)

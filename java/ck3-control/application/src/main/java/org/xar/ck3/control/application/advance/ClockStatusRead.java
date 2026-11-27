@@ -34,21 +34,21 @@ public final class ClockStatusRead {
     }
     private final Optional<ParentStatusRead> parentStatusRead;
 
-    @FunctionalInterface
-    public interface ArchivedStatusWork<T> {
-        T run() throws java.io.IOException, InterruptedException;
-    }
-
-    private record ArchivedTerminal(ActionCommand parent, ExactRef status) { }
-    private static final ThreadLocal<ArchivedTerminal> ARCHIVED_TERMINAL = new ThreadLocal<>();
+    private static final ThreadLocal<Map.Entry<ActionCommand, ExactRef>> ARCHIVED_TERMINAL = new ThreadLocal<>();
 
     /** The held Root operation supplies one existing terminal Status for this exact original. */
-    public static <T> T withArchivedTerminal(ActionCommand parent, ExactRef status, ArchivedStatusWork<T> work)
+    public static <T> T withArchivedTerminal(ActionCommand parent, ExactRef status, java.util.concurrent.Callable<T> work)
             throws java.io.IOException, InterruptedException {
         require(ARCHIVED_TERMINAL.get() == null, "archived clock Status scope cannot be nested");
-        ARCHIVED_TERMINAL.set(new ArchivedTerminal(Objects.requireNonNull(parent), Objects.requireNonNull(status)));
+        ARCHIVED_TERMINAL.set(Map.entry(Objects.requireNonNull(parent), Objects.requireNonNull(status)));
         try {
-            return work.run();
+            return work.call();
+        } catch (java.io.IOException | InterruptedException failure) {
+            throw failure;
+        } catch (RuntimeException failure) {
+            throw failure;
+        } catch (Exception failure) {
+            throw new java.io.IOException("archived clock Status operation failed", failure);
         } finally {
             ARCHIVED_TERMINAL.remove();
         }
@@ -57,10 +57,10 @@ public final class ClockStatusRead {
     Optional<Observation> archivedTerminal(ActionCommand parent) {
         var retained = ARCHIVED_TERMINAL.get();
         if (retained == null) return Optional.empty();
-        require(retained.parent().equals(parent)
+        require(retained.getKey().equals(parent)
                 && org.xar.ck3.control.application.action.ActionScope.currentActionId().filter(parent.actionId()::equals).isPresent(),
                 "archived clock Status escaped its exact retained parent");
-        var original = archive.loadRead(retained.status());
+        var original = archive.loadRead(retained.getValue());
         var read = new Observation(decode(original.original()), original, archive.referenceOf(original.original()));
         read.requirePhysicalParent(parent);
         org.xar.ck3.control.application.effects.NativeRecordedEvidenceVerifier.requireRead(original, archive);
