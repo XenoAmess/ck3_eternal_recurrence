@@ -267,7 +267,8 @@ public final class GovernancePlanningReads {
                 new DllIdentity(21_568_000L, "18c9272b94fa1a34d8b72a2be0cf23bae41e2756fd84adf536053a3f33677f03"),
                 new DllIdentity(21_625_344L, "9f7d32508da373bb6f2783a583641e6d2393a5c8950ce05ee3fefd3877a339c4"),
                 new DllIdentity(21_625_856L, "dcc27c14b96491519eb7269f994d5f5534d00741637632879ccc8d317d31343d"),
-                new DllIdentity(21_633_024L, "e2b0a10873102ae51faf2863a2dfe6a739860cfa5ee86fcfd21d847a37996693"));
+                new DllIdentity(21_633_024L, "e2b0a10873102ae51faf2863a2dfe6a739860cfa5ee86fcfd21d847a37996693"),
+                new DllIdentity(21_633_536L, "30f82a857597f4a7cfa60024b29979aeaaa2b4b71716add51dc613daff335af8"));
         private static final SourcePins FULL111_PINS = new SourcePins(
                 "d31b5b369f4e121009cdb3b941fc362992e8155782ac5a894daafd48c6f87cc9",
                 "6db7725c631d02cbed843b7c0ebf085ac120448cb1719a5b46f9df0831f0f2b8");
