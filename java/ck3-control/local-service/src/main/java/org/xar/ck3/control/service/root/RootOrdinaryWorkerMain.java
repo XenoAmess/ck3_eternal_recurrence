@@ -110,13 +110,13 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
             }
             if (externalSaved) {
                 var input = RootExternalSavedRecoveryInput.read(args);
-                var deadline = clock.instant().plus(config.operationTimeout());
                 if (!org.xar.ck3.control.platform.NativeLaunchPlanCodec.describe(prepared.plan()).equals(descriptor.configuration()))
                     throw new IOException("external saved recovery requires its actual running owner's plan");
                 attached = NativeGameAttachment.attach(new NativeGameAttachment.Request(prepared.plan(), descriptor.generation(),
                         prepared.privatePermissions(), config.maximumFramesPerOperation(), config.maximumSubmissions()),
-                        deadline, config.operationTimeout());
-                running = prepared.openExternalSavedRecovery(attached, input, deadline);
+                        clock.instant().plus(config.operationTimeout()), config.operationTimeout());
+                var openingDeadline = clock.instant().plus(config.loop().readinessTimeout());
+                running = prepared.openExternalSavedRecovery(attached, input, openingDeadline);
                 var adopted = event(clock, "EXTERNAL_SAVED_OBSERVATION_ADOPTED");
                 adopted.set("game", attached.generation().toJson());
                 adopted.put("date_raw", input.dateRaw()).put("new_game_days", 0).put("new_saved_day_credit", 0)
