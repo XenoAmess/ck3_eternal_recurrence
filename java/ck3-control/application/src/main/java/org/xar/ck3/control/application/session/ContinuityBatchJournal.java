@@ -4401,23 +4401,45 @@ public final class ContinuityBatchJournal implements BatchJournal {
         return Optional.of(life);
     }
 
-    /** Read-only date for the next physical observation. The named journal still replays the complete suffix. */
+    /** Select the date to ask for before the independent Full. Canonical admission still replays the whole branch. */
+    public static Optional<Long> namedProgressDateHint(ContinuityStorePort.Session same, SessionIdentity owner,
+            ActionPorts.OutcomeArchive originals) throws IOException {
+        return canonicalNamedProgressDate(same, owner, originals, true);
+    }
+
     public static Optional<Long> canonicalNamedProgressDate(ContinuityStorePort.Session same, SessionIdentity owner,
             ActionPorts.OutcomeArchive originals) throws IOException {
+        return canonicalNamedProgressDate(same, owner, originals, false);
+    }
+
+    private static Optional<Long> canonicalNamedProgressDate(ContinuityStorePort.Session same, SessionIdentity owner,
+            ActionPorts.OutcomeArchive originals, boolean beforeFull) throws IOException {
         var head = same.head();
         var body = head.state().toJson();
         if (!body.hasNonNull(WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD)
                 || !ContinuityJson.same(body.get("game_binding"), owner.game().toJson())) return Optional.empty();
         var cycle = body.path(WriterContracts.ORDINARY_CYCLE_FIELD);
         if (!OrdinaryCycleTransitions.sessionFromJson(cycle.get("session")).equals(owner)) return Optional.empty();
-        var latest = ContinuityActionJournal.recordHead(head.state()).map(originals::loadRecord).map(record -> record.receipt());
+        var latest = ContinuityActionJournal.recordHead(head.state()).map(originals::loadRecord);
         if (latest.isPresent()) {
-            var action = latest.orElseThrow();
+            var record = latest.orElseThrow();
+            var action = record.receipt();
             if (action.state() instanceof ActionState.CompositeSettled applied
                     && org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER.equals(applied.execution().handlerId())
                     && action.eligibleAdvance())
                 return action.applied().map(result -> result.observation().after().frame().identity().dateRaw().longValueExact());
             if (isReadOnlyLifeRecovery(action)) {
+                if (beforeFull) {
+                    var previous = record.previous().map(originals::loadRecord).map(prior -> prior.receipt());
+                    var execution = ((ActionState.CompositeUnknown) action.state()).execution();
+                    if (!execution.children().isEmpty() && previous.filter(resume -> {
+                        var child = execution.children().getLast();
+                        return resume.sequence() < action.sequence() && resume.bodySha256().equals(child.bodySha256())
+                                && resume.command().actionId().equals(child.actionId())
+                                && org.xar.ck3.control.application.advance.AdvancePrimitives.confirmedResume(resume);
+                    }).isPresent())
+                        return Optional.of(namedInterruptedLifeDate(action, List.of(previous.orElseThrow()), originals));
+                }
                 var actions = ContinuityActionJournal.receipts(head.state(), originals);
                 StrictJson.require(readOnlyObservedLifeRecoveryRoot(same, owner, originals, actions).filter(action::equals).isPresent(),
                         "named Life without a settled parent needs its canonical complete original control prefix");

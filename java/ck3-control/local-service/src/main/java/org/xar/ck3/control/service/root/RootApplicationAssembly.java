@@ -2089,7 +2089,7 @@ public final class RootApplicationAssembly {
             var departed = remountFrom.orElse(predecessor);
             departed.requireCurrent(deadline);
             long expectedNativeDate = writer.locked(same ->
-                    ContinuityBatchJournal.canonicalNamedProgressDate(same, successor, archive.withSession(same)).orElse(rawDate));
+                    ContinuityBatchJournal.namedProgressDateHint(same, successor, archive.withSession(same)).orElse(rawDate));
             var opening = RootExternalSavedOpening.capture(game, departed.previousOwner().game(), namedSave,
                     expectedNativeDate, actor, deadline);
             return writer.locked(same -> {
