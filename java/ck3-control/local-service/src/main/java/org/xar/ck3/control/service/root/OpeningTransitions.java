@@ -29,7 +29,7 @@ public final class OpeningTransitions implements OrdinaryPlanCompletion {
         public CheckpointRequired {Objects.requireNonNull(originalFocus);StrictJson.require(originalFocus.command().operation().equals(GovernancePolicies.FOCUS)
                 &&originalFocus.outcome()==ActionReceipt.Outcome.APPLIED_CONFIRMED,"actual applied opening focus required");}
     }
-    private enum Kind { PENDING,RECEIPT,CHECKPOINT,EXISTING,CONSUME,IMPORTED_UNISSUED_REBIND,COMMITTED_IMPORTED_UNISSUED_REBIND }
+    private enum Kind { PENDING,RECEIPT,CHECKPOINT,EXISTING,CONSUME,IMPORTED_UNISSUED_REBIND,COMMITTED_IMPORTED_UNISSUED_REBIND,EXTERNAL_UNISSUED_REBIND }
     private record Input(Kind kind,ExactRef previous,ExactRef original) { }
     private record CommittedImport(ContinuityStorePort.Session session, RootCommittedOrdinaryRestoration proof) { }
     private record ImportedRebind(SavedAttachmentSourceStore.ImportedOrigin origin, CheckpointPair pair,
@@ -72,6 +72,45 @@ public final class OpeningTransitions implements OrdinaryPlanCompletion {
         } finally {
             committedImport.remove();
         }
+    }
+
+    void rebindExternalUnissued(ContinuityStorePort.Session same, SemanticEvidence observed) throws IOException {
+        context.writer().requireSession(same);
+        context.requireActiveGame();
+        var current = body(same);
+        var old = GovernanceOpeningDocument.decode(current.canonicalBody());
+        var owner = new SessionIdentity(context.game().machineId(), context.game().generation(), context.game().sessionId());
+        if (old.observed().game().equals(owner.game())) {
+            StrictJson.require(old.sessionId().equals(owner.sessionId()), "external opening changed its current owning session");
+            return;
+        }
+        var evidence = namedOpeningEvidence(same, old, observed, current, owner);
+        var input = StrictJson.object();
+        input.set("named_origin", evidence.getFirst().toJson());
+        input.set("semantic", semantic(observed));
+        publish(same, Kind.EXTERNAL_UNISSUED_REBIND, current.reference().payload(), input);
+    }
+
+    private List<ExactRef> namedOpeningEvidence(ContinuityStorePort.Session same, GovernanceOpeningDocument.Document old,
+            SemanticEvidence observed, DomainBodies.Available current, SessionIdentity owner) throws IOException {
+        StrictJson.require(unissuedAtImportedEntry(old), "external opening can carry only the original unissued gate");
+        GovernanceOpeningDocument.requireSameEpisode(old, observed.frame(), context.source());
+        return RootGovernanceOpeningInputs.externalOpeningEvidence(same, context.archive().withSession(same),
+                owner, old, observed.frame(), current).orElseThrow(() -> new IOException("actual external opening origin is unavailable"));
+    }
+
+    static byte[] externalUnissuedDocument(GovernanceOpeningDocument.Document old, ObservationIdentity observation,
+            G2Source source, SessionIdentity owner, List<ExactRef> evidence) {
+        StrictJson.require(unissuedAtImportedEntry(old)
+                && owner.machineId().equals(observation.machineId()) && owner.game().equals(observation.game())
+                && !old.observed().game().equals(owner.game()) && !old.sessionId().equals(owner.sessionId())
+                && observation.frame().identity().dateRaw().compareTo(old.observed().frame().identity().dateRaw()) >= 0,
+                "external opening rebind requires a new actual owner and the original unissued lifecycle");
+        GovernanceOpeningDocument.requireSameEpisode(old, observation, source);
+        var retained = new LinkedHashSet<>(old.originals());
+        retained.addAll(evidence);
+        return GovernanceOpeningDocument.encode(new GovernanceOpeningDocument.Document(observation, source, owner.sessionId(),
+                OpeningStage.AWAIT_SUBMIT, Optional.empty(), Optional.empty(), List.copyOf(retained)));
     }
 
     private static DomainBodies.BodyRef attachedOpening(RootCommittedOrdinaryRestoration restored) throws IOException {
@@ -214,6 +253,13 @@ public final class OpeningTransitions implements OrdinaryPlanCompletion {
         StrictJson.require(Arrays.equals(expected,body),"actual opening reducer differs from proposed body");return ActionCodec.sha256(StrictJson.canonical(StrictJson.object().put("head",head.digest()).put("body",ActionCodec.sha256(body)).put("input",ActionCodec.sha256(request.producerInput()))));}
     private List<ExactRef> importEvidence(ContinuityStorePort.Session same, Input input) throws IOException {
         var exact = List.of(input.previous(), input.original());
+        if (input.kind() == Kind.EXTERNAL_UNISSUED_REBIND) {
+            var original = StrictJson.object(StrictJson.parse(load(same, input.original())), Set.of("named_origin", "semantic"));
+            var retained = new LinkedHashSet<>(exact);
+            retained.add(ExactRef.fromJson(original.get("named_origin")));
+            retained.addAll(semantic(original.get("semantic")).references());
+            return List.copyOf(retained);
+        }
         if (input.kind() != Kind.COMMITTED_IMPORTED_UNISSUED_REBIND) return exact;
         var restored = requireCommittedImport(same);
         var retained = new LinkedHashSet<>(exact);
@@ -227,6 +273,20 @@ public final class OpeningTransitions implements OrdinaryPlanCompletion {
     private byte[] reduce(ContinuityStorePort.Session same,WriterContracts.Head head,DomainBodies.BodyRef previous,Input input)throws IOException{
         requireRetainedPrevious(head,previous,input.previous());
         var old=GovernanceOpeningDocument.decode(readBody(same,previous.payload()));var payload=StrictJson.parse(load(same,input.original()));var refs=new ArrayList<>(old.originals());old.preparedCommand().ifPresent(refs::add);refs.add(input.original());
+        if (input.kind() == Kind.EXTERNAL_UNISSUED_REBIND) {
+            var exact = StrictJson.object(payload, Set.of("named_origin", "semantic"));
+            var observation = semantic(exact.get("semantic"));
+            var owner = new SessionIdentity(context.game().machineId(), context.game().generation(), context.game().sessionId());
+            var retained = body(same);
+            StrictJson.require(retained.reference().equals(previous), "external opening predecessor body differed");
+            var evidence = namedOpeningEvidence(same, old, observation, retained, owner);
+            StrictJson.require(ExactRef.fromJson(exact.get("named_origin")).equals(evidence.getFirst()),
+                    "external opening changed its original named-save rebind");
+            context.semanticVerifier().verify(same, owner, observation);
+            refs.addAll(evidence);
+            refs.addAll(observation.references());
+            return externalUnissuedDocument(old, observation.frame(), context.source(), owner, refs);
+        }
         if(input.kind()==Kind.IMPORTED_UNISSUED_REBIND){
             var exact=StrictJson.object(payload,Set.of("restoration_basis"));
             var basis=ExactRef.fromJson(exact.get("restoration_basis"));

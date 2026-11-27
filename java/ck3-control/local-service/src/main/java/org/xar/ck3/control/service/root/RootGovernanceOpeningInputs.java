@@ -9,9 +9,11 @@ import java.util.Optional;
 import org.xar.ck3.control.application.action.ActionReceipt;
 import org.xar.ck3.control.application.action.ActionPorts;
 import org.xar.ck3.control.application.driver.DriverObservationAssembler.Complete;
+import org.xar.ck3.control.application.session.ExternalSaveOrigin;
 import org.xar.ck3.control.application.session.OrdinaryCycleTransitions.OpeningDateEvidence;
 import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
 import org.xar.ck3.control.application.planning.governance.GovernanceObservationSupplier.OpeningStage;
+import org.xar.ck3.control.continuity.ContinuityJson;
 import org.xar.ck3.control.continuity.ContinuityState;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session;
 import org.xar.ck3.control.planning.opportunity.OpportunityJson.Bool;
@@ -19,6 +21,7 @@ import org.xar.ck3.control.g2.planning.ProposalLifecycle.ObservationIdentity;
 import org.xar.ck3.control.application.planning.governance.GovernanceOpeningDocument;
 import org.xar.ck3.control.application.planning.governance.GovernanceObservationSupplier.OpeningGate;
 import org.xar.ck3.control.continuity.writer.DomainBodies;
+import org.xar.ck3.control.continuity.writer.WriterContracts;
 import org.xar.ck3.control.contracts.ExactRef;
 import org.xar.ck3.control.contracts.StrictJson;
 
@@ -114,6 +117,37 @@ public final class RootGovernanceOpeningInputs implements RootPlanningInputsFact
                 "actual saved opening body no longer matches its physical archived original");
         return List.of(originalProof.basis(),material.reference(),restored.originalHistoryBasis(),restored.pair().driver().reference(),restored.pair().save().reference());
     }
+    static Optional<List<ExactRef>> externalOpeningEvidence(Session same, ActionPorts.OutcomeArchive originals,
+            SessionIdentity owner, GovernanceOpeningDocument.Document document, ObservationIdentity actual,
+            DomainBodies.Available current) throws IOException {
+        var head = same.head();
+        var originReference = ExactRef.optionalFromJson(head.state().toJson().get(WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD));
+        if (originReference.isEmpty()) return Optional.empty();
+        var reference = originReference.orElseThrow();
+        var original = originals.loadMaterial(reference);
+        var origin = ExternalSaveOrigin.fromJson(ContinuityJson.parseObject(original.bytes(), ContinuityJson.DOCUMENT_MAX_BYTES));
+        if (!origin.successor().equals(owner)) return Optional.empty();
+
+        var predecessor = origin.requireOriginal(same);
+        var retained = DomainBodies.reference(predecessor, DomainBodies.Slot.OPENING_GATE);
+        var observed = actual.frame();
+        var archived = document.observed().frame();
+        StrictJson.require(current.head().equals(same.persistedHead())
+                && DomainBodies.reference(head.state(), DomainBodies.Slot.OPENING_GATE).equals(retained)
+                && retained.filter(current.reference()::equals).isPresent()
+                && actual.machineId().equals(owner.machineId()) && actual.game().equals(owner.game())
+                && observed.episodeRunId().equals(origin.savedPair().frame().frame().episodeRunId())
+                && document.observed().game().equals(origin.departed().game())
+                && document.sessionId().equals(origin.departed().sessionId())
+                && archived.episodeRunId().equals(observed.episodeRunId())
+                && archived.identity().player().equals(observed.identity().player())
+                && observed.identity().player().longValueExact() == origin.opening().actor().value()
+                && archived.identity().dateRaw().longValueExact() <= origin.opening().dateRaw()
+                && observed.identity().dateRaw().longValueExact() >= origin.opening().dateRaw(),
+                "external saved opening changed its canonical body, original owner or observed campaign");
+        return Optional.of(List.of(reference, current.reference().payload()));
+    }
+
     private static Optional<ActionReceipt> actualAction(RootRuntimeContext context,org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same,
             GovernanceOpeningDocument.Document document)throws IOException {
         return actualAction(context.archive().withSession(same),same.head().state(),document);

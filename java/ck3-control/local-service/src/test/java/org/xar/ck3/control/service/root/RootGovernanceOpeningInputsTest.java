@@ -2,6 +2,7 @@ package org.xar.ck3.control.service.root;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.io.IOException;
+import java.lang.reflect.Proxy;
 import java.math.BigInteger;
 import java.nio.file.Path;
 import java.time.Instant;
@@ -9,13 +10,23 @@ import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.xar.ck3.control.application.action.ActionCodec;
+import org.xar.ck3.control.application.action.ActionPorts;
+import org.xar.ck3.control.application.action.RawJson;
+import org.xar.ck3.control.application.checkpoint.CheckpointPair;
+import org.xar.ck3.control.application.checkpoint.CheckpointPairCodec;
+import org.xar.ck3.control.application.session.OrdinaryCycleTransitions;
+import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
 import org.xar.ck3.control.application.planning.governance.GovernanceOpeningDocument;
 import org.xar.ck3.control.application.planning.governance.GovernanceObservationSupplier.OpeningStage;
+import org.xar.ck3.control.continuity.ContinuityJson;
 import org.xar.ck3.control.continuity.ContinuityState;
+import org.xar.ck3.control.continuity.SavedContinuityBootstrap;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort;
 import org.xar.ck3.control.continuity.writer.DomainBodies;
+import org.xar.ck3.control.continuity.writer.WriterContracts;
 import org.xar.ck3.control.continuity.writer.WriterContracts.*;
 import org.xar.ck3.control.contracts.ExactRef;
+import org.xar.ck3.control.contracts.FileStatIdentity;
 import org.xar.ck3.control.contracts.GameGeneration;
 import org.xar.ck3.control.contracts.PythonOnlyUInt64;
 import org.xar.ck3.control.contracts.StrictJson;
@@ -38,6 +49,13 @@ final class RootGovernanceOpeningInputsTest {
     }
     private static final class Store implements ContinuityStorePort.Session {
         ContinuityState state;DomainBodies.Read body;int mutations;
+        ContinuityState historical;
+
+        @Override public ContinuityState requireHistoricalState(long sequence, String digest) throws IOException {
+            if (historical == null || historical.sequence() != sequence || !ContinuityJson.digest(historical.toJson()).equals(digest))
+                throw new IOException("test historical state was not retained");
+            return historical;
+        }
         Store(byte[] bytes) {
             var raw=StrictJson.object().put("schema","root.ck3.continuity-window/v1").put("machine_id",MACHINE)
                     .put("sequence",0).put("window_id",1).put("status","running").put("start_date_raw",1000)
@@ -92,6 +110,76 @@ final class RootGovernanceOpeningInputsTest {
             assertSame(before,store.state);assertEquals(0,store.mutations);
         }
     }
+    @Test void namedSaveUsesTheOriginalOpeningBodyWithoutAPhysicalRestore() throws Exception {
+        var original = pending();
+        var document = new GovernanceOpeningDocument.Document(original.observed(), original.source(), original.sessionId(),
+                OpeningStage.AWAIT_SUBMIT, Optional.empty(), Optional.empty(), original.originals());
+        var store = new Store(GovernanceOpeningDocument.encode(document));
+        var departed = new SessionIdentity(MACHINE, document.observed().game(), document.sessionId());
+        var replacement = new GameGeneration(124, new PythonOnlyUInt64(new BigInteger("133700000000000002")));
+        var owner = new SessionIdentity(MACHINE, replacement, "named-session");
+        var frame = new ObservationIdentity(MACHINE, replacement,
+                new JointBudgetSelector.ProposalFrame(
+                        new JointBudgetSelector.Frame(BigInteger.valueOf(29829), BigInteger.ONE, BigInteger.valueOf(1024)),
+                        "named-frame", BigInteger.ONE, "unit-episode"), 1);
+        var saved = new CheckpointPair(witness("original-save","a"), witness("original-driver","a"), document.observed(),
+                "original-lineage", 1, "save-action", ref("save-ack"), AT);
+        var retiredHead = ref("retired-actions");
+        var originState = store.state.toJson().put("sequence", 1).put("status", "repair_required");
+        originState.set("game_binding", departed.game().toJson());
+        originState.set(WriterContracts.ACTION_LIFECYCLE_FIELD, retiredHead.toJson());
+        originState.putObject(SavedContinuityBootstrap.FIELD).set("checkpoint_pair", StrictJson.parse(CheckpointPairCodec.encode(saved)));
+        store.historical = ContinuityState.fromJson(originState, MACHINE);
+
+        var origin = StrictJson.object().put("schema", "xar.java-ordinary-external-save-origin/v1")
+                .put("predecessor_sequence", 1).put("predecessor_digest", ContinuityJson.digest(store.historical.toJson()));
+        origin.set("departed", OrdinaryCycleTransitions.sessionToJson(departed));
+        origin.set("successor", OrdinaryCycleTransitions.sessionToJson(owner));
+        origin.set("saved_pair", StrictJson.parse(CheckpointPairCodec.encode(saved)));
+        origin.set("loaded_file", CheckpointPairCodec.fileWitnessToJson(witness("named-save","b")));
+        origin.set("retired_action_head", retiredHead.toJson());
+        origin.putObject("opening").put("machine_id", MACHINE).put("session_id", owner.sessionId())
+                .put("connection_generation", "1").put("actor", 29829).put("date_raw", 1024)
+                .put("snapshot_id", "named-frame").put("native_revision", "1").set("game", replacement.toJson());
+        var bytes = ContinuityJson.canonical(origin);
+        var originRef = new ExactRef("external-origin", bytes.length, ActionCodec.sha256(bytes));
+        var current = originState.deepCopy().put("sequence", 3).put("status", "running");
+        current.set("game_binding", replacement.toJson());
+        current.set(WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD, originRef.toJson());
+        store.state = ContinuityState.fromJson(current, MACHINE);
+        var archive = (ActionPorts.OutcomeArchive) Proxy.newProxyInstance(getClass().getClassLoader(),
+                new Class<?>[]{ActionPorts.OutcomeArchive.class}, (proxy, method, args) -> {
+                    assertEquals("loadMaterial", method.getName());
+                    assertEquals(originRef, args[0]);
+                    return new RawJson(bytes);
+                });
+        var body = (DomainBodies.Available) store.body;
+        var archived = RootGovernanceOpeningInputs.externalOpeningEvidence(store, archive, owner, document, frame, body).orElseThrow();
+        assertEquals(List.of(originRef, body.reference().payload()), archived);
+        var rebound = GovernanceOpeningDocument.decode(
+                OpeningTransitions.externalUnissuedDocument(document, frame, document.source(), owner, archived));
+        assertEquals(frame, rebound.observed());
+        assertEquals(owner.sessionId(), rebound.sessionId());
+        assertEquals(OpeningStage.AWAIT_SUBMIT, rebound.stage());
+        assertTrue(rebound.originals().containsAll(List.of(originRef, body.reference().payload(), COMMAND)));
+        assertTrue(rebound.preparedCommand().isEmpty());
+        assertTrue(rebound.actionReceipt().isEmpty());
+        assertTrue(rebound.checkpoint().isEmpty());
+        assertThrows(IllegalArgumentException.class, () ->
+                OpeningTransitions.externalUnissuedDocument(original, frame, document.source(), owner, archived));
+        assertTrue(RootGovernanceOpeningInputs.externalOpeningEvidence(store, archive,
+                new SessionIdentity(MACHINE, replacement, "other-session"), document, frame, body).isEmpty());
+        var changed = new DomainBodies.Available(body.reference(), body.canonicalBody(), ref("new-head"), List.of());
+        assertThrows(IllegalArgumentException.class, () ->
+                RootGovernanceOpeningInputs.externalOpeningEvidence(store, archive, owner, document, frame, changed));
+        assertEquals(0, store.mutations);
+    }
+
+    private static CheckpointPair.FileWitness witness(String path, String digestCharacter) {
+        return new CheckpointPair.FileWitness(new ExactRef(path, 17, digestCharacter.repeat(64)),
+                new FileStatIdentity(BigInteger.valueOf(17), "1", "0"));
+    }
+
     @Test void malformedRetainedOpeningStillFailsTheSameStrictDecoderInsteadOfBecomingClear() throws Exception {
         var raw=(com.fasterxml.jackson.databind.node.ObjectNode)StrictJson.parse(GovernanceOpeningDocument.encode(pending()));
         raw.put("stage",true);byte[] bytes=StrictJson.canonical(raw);var store=new Store(bytes);
