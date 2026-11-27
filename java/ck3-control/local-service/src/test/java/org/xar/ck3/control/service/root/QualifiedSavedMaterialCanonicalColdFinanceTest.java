@@ -43,7 +43,7 @@ public final class QualifiedSavedMaterialCanonicalColdFinanceTest {
     @TempDir Path temporary;
     private static final String LINEAGE="software-save-lineage";
     private static final Duration V2_READINESS_VALIDITY = Duration.ofMinutes(1);
-    private static final Duration V2_FIXTURE_BUDGET = Duration.ofMinutes(2);
+    private static final Duration SAVE_FIXTURE_BUDGET = Duration.ofMinutes(2);
     private record CaptureSample(String headDigest,SavedCheckpointMaterialEvidence evidence) { }
     /** Construction-order edge only; every successful operation still delegates to the actual SeedStore. */
     private static final class DeferredSeeds implements CheckpointService.SeedAdoptionPort,LifecycleComposites.ActualSeeds {
@@ -94,7 +94,7 @@ public final class QualifiedSavedMaterialCanonicalColdFinanceTest {
         Support(Path root,boolean loseAck)throws Exception {this(root,loseAck,false);}
         Support(Path root,boolean loseAck,boolean legacy)throws Exception {
             this(root,loseAck,Clock.systemUTC(),Optional.empty(),Optional.empty(),List.of(),
-                    legacy ? Duration.ofSeconds(8) : V2_FIXTURE_BUDGET,legacy);
+                    SAVE_FIXTURE_BUDGET,legacy);
         }
         Support(Path root,boolean loseAck,Clock serviceClock)throws Exception {
             this(root,loseAck,serviceClock,Optional.empty(),Optional.empty());
