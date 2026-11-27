@@ -913,6 +913,10 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
             CommittedImportedRebindOriginal.Historical history)throws IOException {
         return CommittedImportedSettledFrontier.read(same,history,this,archive);
     }
+    CommittedImportedDriverHistory.Data readCommittedImportedDriverHistory(ContinuityStorePort.Session same,
+            CommittedImportedSettledFrontier.Data frontier)throws IOException {
+        return CommittedImportedDriverHistory.read(same,frontier,archive);
+    }
     public Set<String> kinds() { return Set.of(CYCLE_KIND, BATCH_KIND, NEXT_BASELINE_KIND); }
     <T> T withLocked(ContinuityStorePort.Session session, LockedWork<T> work) throws IOException {
         Objects.requireNonNull(session); Objects.requireNonNull(work);

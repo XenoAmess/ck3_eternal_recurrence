@@ -6475,6 +6475,16 @@ public final class ContinuityBatchJournal implements BatchJournal {
         return new SettledImportedControllerData(attachment,controller,frontier);
     }
 
+    record SettledImportedRecoveryData(SettledImportedControllerData history, CommittedImportedDriverHistory.Data driver) { }
+
+    /** Replays the exact saved attachment, settled Controller, and complete Driver publications under one Writer. */
+    SettledImportedRecoveryData readSettledImportedRecoveryData(ContinuityStorePort.Session same,
+            WriterContracts.Pin actualAttachment)throws IOException {
+        var history = readSettledImportedControllerHistory(same,actualAttachment);
+        var driver = transitions.readCommittedImportedDriverHistory(same,history.frontier());
+        return new SettledImportedRecoveryData(history,driver);
+    }
+
     private CommittedImportedControllerHistory readCommittedImportedControllerHistory(ContinuityStorePort.Session same,
             WriterContracts.Head head, ImportedRestoreRebindReadback original)throws IOException {
         var before=original.attachment().before();
