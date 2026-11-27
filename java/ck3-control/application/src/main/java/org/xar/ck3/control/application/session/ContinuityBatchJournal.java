@@ -753,7 +753,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     "captured READ crossed its original paused gameplay guards");
             StrictJson.require(read.before().originalBindingSha256().equals(read.after().originalBindingSha256()),
                     "captured READ changed its original complete semantic binding");
-            known=retainGuardCapabilities(same,owner,read.before().binding(),known,beforeRef,originals,originalsPins,retainPins);
+            known=retainGuardCapabilities(same,owner,read.before().binding(),known,beforeRef,originals,originalsPins,retainPins,Optional.of(before));
             // Definition/decoder references remain metadata; only original DATA is pinned.
             if(retainPins){originalsPins.add(same.capturePin(rowRef,WriterContracts.MAX_PIN_BYTES));originalsPins.add(same.capturePin(readRef,WriterContracts.MAX_PIN_BYTES));}
             if(retainPins)for(var ref:source.supportingEvidence())if(!ref.equals(source.definitionSource())&&!ref.equals(source.decoderSource()))
@@ -772,10 +772,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 known.stamp().game(),known.stamp().episodeRunId(),org.xar.ck3.control.application.driver.DriverJson.sha256(
                         driver.session().actorId().getClass()==java.math.BigInteger.class?encodedDriver:driver.encode()));
         var auxiliary=new java.util.LinkedHashMap<>(known.auxiliary().members());
-        auxiliary.put("driver_read_publication",new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(java.util.Map.of(
-                "event_identity",new org.xar.ck3.control.planning.opportunity.OpportunityJson.Text(edge.eventIdentity()),
-                "request_sha256",new org.xar.ck3.control.planning.opportunity.OpportunityJson.Text(
-                        org.xar.ck3.control.application.driver.DriverJson.sha256(edge.details())))));
+        auxiliary.put(READ_PUBLICATION_AUXILIARY, readPublicationMarker(edge.eventIdentity(), edge.details()));
         var facts=new org.xar.ck3.control.application.driver.DriverSnapshotFacts.Known(driver,stamp,known.originalHistoryBasis(),
                 known.actionRows(),new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(auxiliary),known.loop(),Optional.empty());
         return new RetainedReadDriver(facts,afterRef);
@@ -784,7 +781,8 @@ public final class ContinuityBatchJournal implements BatchJournal {
     private static DriverSnapshotFacts.Known retainGuardCapabilities(ContinuityStorePort.Session same,SessionIdentity owner,
             GuardEvidence guard,DriverSnapshotFacts.Known known,ExactRef beforeRef,
             org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive originals,
-            java.util.List<WriterContracts.Pin> pins,boolean retainPins)throws IOException {
+            java.util.List<WriterContracts.Pin> pins,boolean retainPins,
+            Optional<com.fasterxml.jackson.databind.node.ObjectNode> readPredecessor)throws IOException {
         RootGuardEvidence.requireHistory(guard,originals,same);
         var loader = originals.scopedDriverDecoder();
         if (loader == null) {
@@ -817,12 +815,16 @@ public final class ContinuityBatchJournal implements BatchJournal {
         StrictJson.require(assembled instanceof DriverObservationAssembler.Complete,"READ capability original frame is incomplete");
         var frame=(DriverObservationAssembler.Complete)assembled;
         var driverSource=RootGuardEvidence.originalDriverSource(guard,originals);
-        byte[] knownDriverBytes=null;
+        var knownDriverBytes=known.driver().encode();
+        boolean originalVersion=facts.driverVersion()==known.stamp().driverVersion();
+        boolean carried=facts.driverVersion()<known.stamp().driverVersion()
+                &&Objects.equals(sourceValue,known.auxiliary().get(DriverCapabilityStateProducer.STATE_SOURCE))
+                &&readPredecessor.filter(prior->retainsReadCapability(prior, facts.driver(), known, beforeRef, observed)).isPresent();
         StrictJson.require(driverSource.driverRef().equals(beforeRef)
-                &&java.util.Arrays.equals(facts.driver().encode(),knownDriverBytes=known.driver().encode())
+                &&(carried||originalVersion&&java.util.Arrays.equals(facts.driver().encode(),knownDriverBytes))
                 &&java.util.Arrays.equals(guardFull.facts().driver().encode(),
                     known.driver().session().actorId().getClass()==java.math.BigInteger.class?knownDriverBytes:known.driver().encode())
-                &&facts.driverVersion()==known.stamp().driverVersion()&&facts.episodeEpoch()==known.stamp().episodeEpoch()
+                &&facts.episodeEpoch()==known.stamp().episodeEpoch()
                 &&guardFull.facts().driverVersion()==known.stamp().driverVersion()
                 &&guardFull.facts().episodeEpoch()==known.stamp().episodeEpoch()
                 &&frame.identity().game().equals(owner.game())&&frame.identity().machineId().equals(owner.machineId())
@@ -834,14 +836,22 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 &&frame.identity().frame().identity().nativeRevision().compareTo(observed.identity().frame().identity().nativeRevision())<=0
                 &&frame.identity().frame().revision().compareTo(observed.identity().frame().revision())<=0,
                 "READ capability original crossed its complete historical Driver/owner/source/profile/frame");
-        knownDriverBytes=null;
-        var originalKnown=new DriverSnapshotFacts.Known(known.driver(),known.stamp(),known.originalHistoryBasis(),
+        var originalStamp=carried?new DriverSnapshotFacts.Stamp(facts.driverVersion(),facts.episodeEpoch(),known.stamp().game(),
+                known.stamp().episodeRunId(),DriverJson.sha256(facts.driver().encode())):known.stamp();
+        var originalKnown=new DriverSnapshotFacts.Known(carried?facts.driver():known.driver(),originalStamp,known.originalHistoryBasis(),
                 known.actionRows(),known.auxiliary(),known.loop(),Optional.of(facts));
         var restored=DriverCapabilityStateProducer.replay(frame,originalKnown,source,originals);
         StrictJson.require(!restored.members().containsKey("public_planning_terminal_inputs"),
                 "private public-planning terminal input role cannot become retained cache");
-        for(var field:restored.members().entrySet())StrictJson.require(Objects.equals(semantic.get(field.getKey()),field.getValue()),
-                "READ capability replay differs from its actual original observation: "+field.getKey());
+        for(var field:restored.members().entrySet()) {
+            // The latest READ has its own canonical marker. The original capsule retains its older marker, if any.
+            if(carried&&READ_PUBLICATION_AUXILIARY.equals(field.getKey()))continue;
+            StrictJson.require(Objects.equals(semantic.get(field.getKey()),field.getValue())
+                    &&(!carried||Objects.equals(known.auxiliary().get(field.getKey()),field.getValue())),
+                    "READ capability replay differs from its actual original observation: "+field.getKey());
+        }
+        if(retainPins)for(var ref:java.util.List.of(source,inputs,manifest,nativeRef))pins.add(same.capturePin(ref,WriterContracts.MAX_PIN_BYTES));
+        if(carried)return known;
         var auxiliary=new java.util.LinkedHashMap<>(restored.members());
         var sourceFields=java.util.Set.of("capability_state_version",DriverCapabilityStateProducer.STATE_SOURCE,
                 org.xar.ck3.control.application.capabilities.DriverRuntimeCapabilities.AUXILIARY_KEY);
@@ -864,10 +874,45 @@ public final class ContinuityBatchJournal implements BatchJournal {
                     "READ capability recovery would overwrite retained non-cache DATA: "+field.getKey());
             auxiliary.put(field.getKey(),field.getValue());
         }
-        if(retainPins)for(var ref:java.util.List.of(source,inputs,manifest,nativeRef))pins.add(same.capturePin(ref,WriterContracts.MAX_PIN_BYTES));
         return new DriverSnapshotFacts.Known(known.driver(),known.stamp(),known.originalHistoryBasis(),known.actionRows(),
                 new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(auxiliary),known.loop(),Optional.empty());
     }
+    private static final String READ_PUBLICATION_AUXILIARY="driver_read_publication";
+
+    private static org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj readPublicationMarker(String identity,byte[] details) {
+        return new org.xar.ck3.control.planning.opportunity.OpportunityJson.Obj(java.util.Map.of(
+                "event_identity",new org.xar.ck3.control.planning.opportunity.OpportunityJson.Text(identity),
+                "request_sha256",new org.xar.ck3.control.planning.opportunity.OpportunityJson.Text(DriverJson.sha256(details))));
+    }
+
+    private static boolean retainsReadCapability(com.fasterxml.jackson.databind.node.ObjectNode predecessor,
+            org.xar.ck3.control.application.checkpoint.DriverStateSnapshot.Complete original,DriverSnapshotFacts.Known known,
+            ExactRef beforeRef,DriverObservationAssembler.Complete observed) {
+        var prior=predecessor.get(WriterContracts.DRIVER_READ_HISTORY_FIELD);
+        if(prior==null||!prior.isObject())return false;
+        var previous=new WriterContracts.Request(WriterContracts.DRIVER_READ_HISTORY_KIND,ContinuityJson.canonical(prior),List.of());
+        // An intervening canonical ACTION, domain, cycle or batch edge cannot extend the pure READ capability continuation.
+        if(!previous.identity().equals(predecessor.path("last_event_identity").asText())
+                ||!readPublicationMarker(previous.identity(),previous.details()).equals(known.auxiliary().get(READ_PUBLICATION_AUXILIARY))
+                ||!beforeRef.equals(ExactRef.fromJson(prior.get("after_driver")))
+                ||known.stamp().driverVersion()!=StrictJson.integer(prior.get("after_version"),1,StrictJson.MAX_SAFE_INTEGER)
+                ||known.stamp().episodeEpoch()!=StrictJson.integer(prior.get("episode_epoch"),0,StrictJson.MAX_SAFE_INTEGER))return false;
+        var current=known.driver();
+        var history=current.commandHistory();
+        int originalRows=original.commandHistory().size();
+        if(originalRows>=history.size()||!original.equals(new org.xar.ck3.control.application.checkpoint.DriverStateSnapshot.Complete(
+                current.session(),history.subList(0,originalRows),current.lastCheckpoint(),current.rollbackWarFailure(),
+                current.managedRestoreTransaction(),current.successionExpectation(),current.successionLifecycle(),
+                current.campaignGoal(),current.rollbackWarFailures())))return false;
+        for(var row:history.subList(originalRows,history.size())) {
+            var source=org.xar.ck3.control.application.history.DriverReadHistoryRowProducer.decode(row.originalRow().json()).provenance();
+            if(source.kind().isRich()||source.kind()==org.xar.ck3.control.application.history.DriverReadHistoryRowProducer.Kind.GIFT_COLD_RECOVERY
+                    ||!source.source().equals(observed.source())||!source.sessionId().equals(observed.sessionId())
+                    ||!source.sourceFrame().frame().identity().dateRaw().equals(observed.identity().frame().identity().dateRaw()))return false;
+        }
+        return true;
+    }
+
     /** Non-Applied history requires its exact original zero-credit producer role. */
     static void requireCapturedActionOutcome(ActionReceipt action,
             org.xar.ck3.control.application.driver.DriverActionHistoryState.Publication publication,
@@ -5465,7 +5510,7 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 var importedGuard=importedGuards.remove(edge.before().sequence());
                 if(importedGuard!=null) {
                     var facts=retainGuardCapabilities(same,owner,importedGuard,retained.facts(),retained.fullDriver(),
-                            originals,java.util.List.of(),false);
+                            originals,java.util.List.of(),false,Optional.empty());
                     retained=new RetainedReadDriver(facts,retained.fullDriver());
                     restoredImportedCapabilities=facts.auxiliary().members().containsKey("capability_configuration");
                 }
