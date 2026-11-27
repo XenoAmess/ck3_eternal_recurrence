@@ -1,0 +1,242 @@
+{
+  "capabilities": [
+    "bridge.heartbeat",
+    "bridge.identity",
+    "bridge.ping",
+    "game.command.core-clock-control.v1",
+    "game.command.full-snapshot-clock-control.v1",
+    "game.command.normal-exit-application-v1",
+    "game.command.pause-map",
+    "game.command.research-arm-tactical-daily-sentinel-v1-N",
+    "game.command.research-cancel-tactical-daily-sentinel-v1-generation-N",
+    "game.command.research-query-tactical-daily-sentinel-v1",
+    "game.command.resume-map",
+    "game.command.save-checkpoint",
+    "game.command.select-current-ordinary-event-option.26785313.v2",
+    "game.command.set-speed-1",
+    "game.command.set-speed-2",
+    "game.command.set-speed-3",
+    "game.command.set-speed-4",
+    "game.command.set-speed-5",
+    "game.guard.date-only-postday.v1",
+    "game.query.core-frame.v1",
+    "game.query.current-lifestyle-scope.26785313.v1",
+    "game.query.current-lifestyle-state.26785313.v1",
+    "game.query.current-lyd-events.v1",
+    "game.query.current-ordinary-event-option-prepared-lifetime.26785313.v2",
+    "game.query.current-ordinary-event-queue.26785313.v2",
+    "game.query.current-ordinary-event-renderer.26785313.v1",
+    "game.query.fresh-full-state.v1",
+    "game.query.prepare-current-ordinary-event-option.26785313.v2",
+    "game.state.full111-ordinary-event.v1",
+    "game.state.snapshot"
+  ],
+  "command": {
+    "action_id": "action-39ebc38a47d97e5932f4d884ac1e4b83b40ce94b054d5a3fd56120f8a824519c",
+    "arguments": {
+      "advance_v1": {
+        "campaign_deadline": {
+          "boundary_date_raw": 53180832,
+          "calendar_profile": "ck3-1.20.0.4-cdate-fixed365-raw24/v1",
+          "campaign_id": "resume85_vanilla_game01_20261030",
+          "endpoint_date_raw": 53407128,
+          "requested_target_date_raw": 53180832,
+          "starting_date_raw": 53180808,
+          "status": "advance",
+          "target_date_raw": 53180832
+        },
+        "clock_mode": "CAMPAIGN_SENTINEL",
+        "exact_one_day": false,
+        "horizon_days": 1,
+        "policy": "bounded_non_tactical",
+        "schema": "xar.ck3.java-life-advance-plan/v2",
+        "speed": 5,
+        "starting_date_raw": 53180808,
+        "target_date_raw": 53180832,
+        "war_daily_watch": null
+      },
+      "maximum_target_date_raw": 53180832,
+      "plan": {
+        "battle_control_state": {
+          "evidence": [],
+          "status": "not_in_combat"
+        },
+        "deferred_phase": "current_life_family",
+        "maximum_target_date_raw": 53180832,
+        "phase": "capability_progress",
+        "policy": "one-life-turn-v1",
+        "reason": "selected backend does not yet implement dynasty-review; continue the current life through native events",
+        "required_step": "dynasty-review",
+        "selected_step": "life-advance"
+      }
+    },
+    "before": {
+      "frame": {
+        "date_raw": "53180808",
+        "episode_run_id": "resume91_offline04_20261111T071454Z",
+        "native_revision": "45",
+        "played_character_id": "31254",
+        "revision": "18",
+        "snapshot_id": "native:45"
+      },
+      "game": {
+        "creation_filetime": "134402512317032803",
+        "pid": 233756
+      },
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "observation_version": 3
+    },
+    "claims": {
+      "ally_character_ids": [],
+      "army_ids": [],
+      "character_ids": [],
+      "commitment_keys": []
+    },
+    "deadline": "2026-11-27T14:00:01.127028800Z",
+    "expected": {
+      "before": {
+        "frame": {
+          "date_raw": "53180808",
+          "episode_run_id": "resume91_offline04_20261111T071454Z",
+          "native_revision": "45",
+          "played_character_id": "31254",
+          "revision": "18",
+          "snapshot_id": "native:45"
+        },
+        "game": {
+          "creation_filetime": "134402512317032803",
+          "pid": 233756
+        },
+        "machine_id": "xenoamess-full-tower-eb9d2c1186",
+        "observation_version": 3
+      },
+      "observer_schema": "xar.ck3.java-life-advance-observation/v1",
+      "source": {
+        "exact_build": "859F0D380098ADCB130EB9D453458222749FCDF6D46126AD0ED99D78F9A0AA28",
+        "machine_id": "xenoamess-full-tower-eb9d2c1186",
+        "observed_at_utc": "2026-11-26T08:24:02.234583100Z",
+        "source_ref": {
+          "bytes": 10297471,
+          "path": "D:\\ck3-state\\autoplay-optimize-20261126\\maven-target\\ck3-control\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+          "sha256": "8e218fdfc7114d29f54a0db4721aa899079214f0457333336e4dc177781b8a74"
+        }
+      },
+      "values": [
+        {
+          "field": "advance.completion_verified",
+          "kind": "BOOLEAN",
+          "value": true
+        },
+        {
+          "field": "paused",
+          "kind": "BOOLEAN",
+          "value": true
+        },
+        {
+          "field": "advance.target_date_raw",
+          "kind": "INTEGER",
+          "value": 53180832
+        },
+        {
+          "field": "advance.requested_horizon_days",
+          "kind": "INTEGER",
+          "value": 1
+        },
+        {
+          "field": "advance.timeline_speed",
+          "kind": "INTEGER",
+          "value": 5
+        }
+      ],
+      "version": 1
+    },
+    "operation": "life-advance",
+    "schema": "xar.java-action-command/v1",
+    "session_id": "session-source56-named-r0032-warm-option-lease-20261127",
+    "source": {
+      "exact_build": "859F0D380098ADCB130EB9D453458222749FCDF6D46126AD0ED99D78F9A0AA28",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "observed_at_utc": "2026-11-26T08:24:02.234583100Z",
+      "source_ref": {
+        "bytes": 10297471,
+        "path": "D:\\ck3-state\\autoplay-optimize-20261126\\maven-target\\ck3-control\\ck3-control-local-service\\quarkus-app\\app\\ck3-control-local-service-0.1.0-SNAPSHOT.jar",
+        "sha256": "8e218fdfc7114d29f54a0db4721aa899079214f0457333336e4dc177781b8a74"
+      }
+    }
+  },
+  "planning_deadline": "2026-11-27T14:00:01.127028800Z",
+  "routable_operations": [
+    "close-player-inventory-window-v1-private",
+    "continue-death-succession-modal-v1",
+    "county-conversion-task-submit-private-v1",
+    "g2_player_world_building_action_private_v1",
+    "life-advance",
+    "life-advance-one-day",
+    "open-player-inventory-window-v1-private",
+    "ordinary-sway-opportunity-v1",
+    "pause-map",
+    "private-select-child-education-focus-v1",
+    "private-submit-faction-gift-member-v1",
+    "research-query-tactical-daily-sentinel-v1",
+    "resume-map",
+    "save-checkpoint",
+    "set-speed-1",
+    "set-speed-2",
+    "set-speed-3",
+    "set-speed-4",
+    "set-speed-5",
+    "stop-active-scheme-sway-v1-private",
+    "submit-current-first-heir-betrothal-fulfillment-v1-private",
+    "submit-observed-first-heir-marriage-v1-private",
+    "submit-player-artifact-personal-use-v1-private",
+    "submit-player-child-default-marriage-v1-private",
+    "submit-player-child-matrilineal-marriage-v1-private",
+    "submit-player-pilgrimage-planner-v1-private",
+    "submit-player-prisoner-ransom-private-v1",
+    "submit-player-prisoner-release-private-v1",
+    "submit-player-religion-conversion-private-v1"
+  ],
+  "snapshot": {
+    "active_event": null,
+    "active_wars": [],
+    "adapter_id": "ck3-1.21.0.3-26785313-full111-msvc-x64",
+    "campaign_root_context_query": null,
+    "cold_candidate_rejection": null,
+    "date_raw": 53180808,
+    "diagnostics": {
+      "bridge_pid": 233756,
+      "connection_generation": 14
+    },
+    "driver_state_error": null,
+    "episode_identity_pending": false,
+    "episode_run_id": "resume91_offline04_20261111T071454Z",
+    "episode_transition_error": null,
+    "executable_sha256": "859F0D380098ADCB130EB9D453458222749FCDF6D46126AD0ED99D78F9A0AA28",
+    "game_version": "1.21.0.3",
+    "map_ready": true,
+    "native_revision": 45,
+    "one_life_terminal": false,
+    "one_life_terminal_reason": null,
+    "paused": true,
+    "pending_character_interaction": null,
+    "played_character": {
+      "adapter_id": "ck3-1.21.0.3-26785313-full111-msvc-x64",
+      "alive": true,
+      "backend": "ck3-1.21.0.3-native-headless-main-thread",
+      "betrothed_id": null,
+      "character_id": 31254,
+      "executable_sha256": "859F0D380098ADCB130EB9D453458222749FCDF6D46126AD0ED99D78F9A0AA28",
+      "game_version": "1.21.0.3",
+      "primary_spouse_id": 36311,
+      "schema": "ck3_1210_played_character_v1",
+      "source": "native",
+      "spouse_ids": [
+        36311
+      ],
+      "stress_points": 0
+    },
+    "player_armies": [],
+    "revision": 18,
+    "snapshot_id": "native:45"
+  }
+}

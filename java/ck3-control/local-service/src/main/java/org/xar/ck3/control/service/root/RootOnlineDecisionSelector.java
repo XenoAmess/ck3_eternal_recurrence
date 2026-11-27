@@ -1084,7 +1084,7 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
     }
 
     private static boolean isPeacefulLifeCandidate(PlanningRequest request, PlanningResult.ActionSelected proposal,
-            boolean allowPreparedMonth) {
+            boolean preparedFull111) {
         try {
             ActionCommand command = proposal.command();
             if (!(command.origin() instanceof org.xar.ck3.control.application.action.CommandOrigin.Gameplay)) return false;
@@ -1120,10 +1120,15 @@ public final class RootOnlineDecisionSelector implements OrdinaryDecisionSelecto
             if (plan.clockMode() != AdvancePlan.ClockMode.CAMPAIGN_SENTINEL) return false;
             if (plan.exactOneDay()) return false;
             if (plan.dailyWatch().isPresent()) return false;
+            if (plan.speed() != 5 || plan.campaignDeadline().isEmpty()) return false;
             int horizon = plan.horizonDays();
-            if (horizon < 2 || (horizon > 8 && !(allowPreparedMonth && horizon == 30))) return false;
-            if (plan.speed() != 5) return false;
-            if (plan.campaignDeadline().isEmpty()) return false;
+            if (horizon == 1) {
+                var target = new OpportunityJson.IntegerValue(plan.targetDateRaw());
+                // A quiet ordinary Life can be shortened by the original planner's cadence boundary.
+                if (!preparedFull111 || !target.equals(planObj.get("maximum_target_date_raw"))
+                        || !target.equals(command.arguments().get("maximum_target_date_raw"))
+                        || !plan.campaignDeadline().orElseThrow().boundaryDateRaw().equals(plan.targetDateRaw())) return false;
+            } else if (horizon > 8 && !(preparedFull111 && horizon == 30)) return false;
 
             // Verify command binding to request
             if (!command.before().equals(request.before())) return false;

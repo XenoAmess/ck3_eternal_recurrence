@@ -40,6 +40,32 @@ class RootOnlineDecisionSelectorPeacefulLifeTest {
                 "27d60388b0685d8e6fd4969799fb2eb138293819d9721e17ca699e3605f716c2", 53180808);
     }
 
+    @Test void acceptsTheOrdinaryLifeWithAnExactOneDayCadenceCap() throws Exception {
+        assertPreparedClockProposal(fixture("full111-cadence-one-day-proposal.json"), Instant.parse("2026-11-27T13:50:53Z"),
+                "71e4ba5d7abf4067cc2ce63c6f20b8bb5af96cac2742fae2521f791d3057b31f", 53180832);
+    }
+
+    @Test void onlyTheExactOriginalCadenceBoundaryCanUseOneDayApproval() throws Exception {
+        var configured = config(Files.createDirectory(root.resolve("queue")));
+        var fixture = fixture("full111-cadence-one-day-proposal.json");
+        var selector = new RootOnlineDecisionSelector(configured, fakeClock(fixture.request().deadline().plusSeconds(1)),
+                raw -> { throw new AssertionError("ineligible or expired selection archived evidence"); });
+        var args = fixture.command().arguments();
+        var plan = OpportunityJson.object(args.get("plan"), "planner choice");
+        var advance = OpportunityJson.object(args.get("advance_v1"), "clock plan");
+        var cap = OpportunityJson.object(advance.get("campaign_deadline"), "campaign boundary");
+        var differentDate = new OpportunityJson.IntegerValue(java.math.BigInteger.valueOf(53180856));
+        for (var different : List.of(
+                args.with("maximum_target_date_raw", OpportunityJson.Nil.INSTANCE),
+                args.with("plan", plan.with("maximum_target_date_raw", differentDate)),
+                args.with("advance_v1", advance.with("campaign_deadline", cap.with("boundary_date_raw", differentDate))),
+                args.with("advance_v1", advance.with("exact_one_day", new OpportunityJson.Bool(true))
+                        .with("clock_mode", new OpportunityJson.Text("EXACT_SENTINEL"))))) {
+            var changed = fixture.withCommandArguments(different);
+            assertEquals("model_decision_deadline_exhausted", selector.select(fixture.request(), changed).reason());
+        }
+    }
+
     private void assertPreparedClockProposal(Fixture fixture, Instant now, String bodySha256, long target) throws Exception {
         var archives = new LinkedHashMap<ExactRef, byte[]>();
         var queue = Files.createDirectory(root.resolve("queue"));
@@ -69,6 +95,7 @@ class RootOnlineDecisionSelectorPeacefulLifeTest {
         var configured = config(Files.createDirectory(root.resolve("queue")));
         assertReviewStillRequired(configured, fixture("full111-peaceful-life-proposal.json"));
         assertReviewStillRequired(configured, fixture("full111-monthly-life-proposal.json"));
+        assertReviewStillRequired(configured, fixture("full111-cadence-one-day-proposal.json"));
     }
 
     private void assertReviewStillRequired(RootOrdinaryRuntimeConfiguration.DecisionProvider configured, Fixture fixture) {
@@ -128,6 +155,16 @@ class RootOnlineDecisionSelectorPeacefulLifeTest {
     }
 
     private record Fixture(ActionCommand command, PlanningRequest request, PlanningResult.ActionSelected selected) {
+        PlanningResult.ActionSelected withCommandArguments(OpportunityJson.Obj args) {
+            var changed = new ActionCommand(command.actionId(), command.before(), command.source(), command.sessionId(),
+                    command.operation(), args, command.expected(), command.claims(), command.deadline());
+            var plan = selected.trace().finalPlan().orElseThrow();
+            var changedPlan = new OrdinaryPolicy.Draft(plan.policy(), plan.phase(), plan.reason(), plan.kind(), Optional.of(changed),
+                    plan.purpose(), plan.domain(), OpportunityJson.object(args.get("plan"), "altered plan"));
+            return new PlanningResult.ActionSelected(changed,
+                    new PlanTrace(request.before(), List.of(), Optional.of(changedPlan)));
+        }
+
         PlanningRequest withSnapshot(OpportunityJson.Obj snapshot) {
             var actual = request.observations();
             return new PlanningRequest(request.before(), request.source(), request.sessionId(), request.deadline(),
