@@ -1,5 +1,7 @@
 # CK3 自动游玩智能体进度中心
 
+2026-11-27 度假收尾。保存恢复、观察投影与 Full111 诊断已交付，实机仍为原局。详见 [CK3 自动游玩交接](../handover/2026-11-27-ck3-autoplay-vacation-handoff.md)。
+
 2026-10-31 resume91明确续行（machine_id: `xenoamess-full-tower-eb9d2c1186`）：[当前执行记录](2026-10-31-java-g2-resume91-current.md)、[运行现场](2026-10-31-runtime91-current.md)、[本地模型真实调用与采用](2026-10-31-resume91-models.md)。同原版无mod Game接续为第一优先，八M制作和原生机制研究并行；源码/软件检查/模型HTTP/真实游戏进度分开记录。下方旧休假或暂停段保留历史，不覆盖本次明确续行。
 
 
