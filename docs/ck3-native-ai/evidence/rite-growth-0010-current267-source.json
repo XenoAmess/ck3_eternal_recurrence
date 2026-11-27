@@ -1,0 +1,220 @@
+{
+  "schema": "ck3.current267.stock-event-source-knowledge/v1",
+  "status": "exact_source_reviewed_named_save_definition_correlated_native_instance_pending",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "recorded_at_utc": "2026-11-27T07:04:32.442933+00:00",
+  "repository_source": "b542982609b28695c2483bbe1aaadac5e8f86357",
+  "exact_build": {
+    "version": "1.21.0.3",
+    "steam_build_id": 26785313,
+    "executable_sha256": "859F0D380098ADCB130EB9D453458222749FCDF6D46126AD0ED99D78F9A0AA28",
+    "accepted_runtime_hello": {
+      "file": "D:/ck3-state/ck3-runtime-continuation-20261126/source56-read-core16-steam-day-allow-20261127/native-evidence/new-hello.bin",
+      "sha256": "5214B7C4553C67297A2103712802E49578D7A0D39475FA68F23963161D50B8E8"
+    }
+  },
+  "event": {
+    "definition_key": "rite_growth.0010",
+    "script": "events/religion_events/rite_growth_events.txt",
+    "type": "character_event",
+    "major": true,
+    "localized_title_observed": "新基督教礼仪",
+    "localized_title_source": "rite_growth.0010.t and christianity_religion_adj",
+    "authored_option_count": 3,
+    "after_effects": [],
+    "definition_block": {
+      "lines": [
+        73,
+        413
+      ],
+      "sha256": "ECDB6AD5179B47CFFC2114A3030A1CCE5F9231ECEC29CED3DC4B64A961AB4E42"
+    },
+    "definition_hash_convention": "original bytes from exact definition key through closing brace, excluding following newline",
+    "definition_block_identical_to_1_20_0_3": true
+  },
+  "observed_named_save_occurrence": {
+    "original_receipt": "D:/ck3-state/ck3-runtime-continuation-20261126/source56-autonomous-recovery-20261127/NAMED-SAVE-RITE-GROWTH-RECORD.json",
+    "receipt_sha256": "D09D63F6EBB667813AD6E56D90B491726FA77A20CDB6460602E1EE51E19841D3",
+    "save_sha256": "44a659781863dec57b435ea053727630b7fc2be3234af199da7a8a62d299fe61",
+    "save_date_raw": 53179944,
+    "record_line": 8280371,
+    "recipient_character_id": 31254,
+    "native_instance_id": null,
+    "displayed_option_order": null
+  },
+  "source_pins_relative_to_game": {
+    "events/religion_events/rite_growth_events.txt": {
+      "bytes": 20909,
+      "sha256": "595954A71EB2571E4BC8E01A46CF616EB716950E4017662FD1E957EA9B770EC4",
+      "previous_1_20_0_3_sha256": "D09C0EB94E1A81C0D456F55C049004D7EF1EBE38464A1274CF151D0214418895",
+      "same_whole_file": false
+    },
+    "common/script_values/00_basic_values.txt": {
+      "bytes": 51858,
+      "sha256": "E02FA69743396B862311E3BA85007C5AD2CB37EC06917EBA2945A3D634DD490A",
+      "previous_1_20_0_3_sha256": "C379CC0C58ED1574033F0E07A58697DFC6F8475C26AA4B117F2332008D4A27EF",
+      "same_whole_file": false
+    },
+    "common/scripted_effects/00_religion_effects.txt": {
+      "bytes": 42919,
+      "sha256": "0947420773231F03203771BC55EE75EC8265A4305313DBA6A53AA93600ED90A5",
+      "previous_1_20_0_3_sha256": "5BF6B0DF3316F72F711507C310A349D508A3B83AEF99373EA6440DE20E4E4931",
+      "same_whole_file": false
+    },
+    "common/scripted_triggers/00_religious_triggers.txt": {
+      "bytes": 89485,
+      "sha256": "50FA9D72741ACD616B5E26E7238EEFBBC1F2989EB608543C83220E539843F5EF",
+      "previous_1_20_0_3_sha256": "E9D0B56130464EABDCD670FA6CF814534D11C99DA1E8B3FC1E69E9C3E36D2BB2",
+      "same_whole_file": false
+    },
+    "common/script_values/02_religion_values.txt": {
+      "bytes": 118757,
+      "sha256": "BB7E4FBAA87711003F36D7F0F2D036E9572219AE4CBEE49F060B3BEC84D72FEE",
+      "previous_1_20_0_3_sha256": "9E55618B00B463589AF310BD17511B4F260FEA4D3ACB43E512E209CFC1517DED",
+      "same_whole_file": false
+    },
+    "common/opinion_modifiers/00_opinion_modifiers.txt": {
+      "bytes": 40426,
+      "sha256": "B4DF979008D946CBA9BC3BAE9DFA3C891F7FCF16D4A8AE355289486D9477E019",
+      "previous_1_20_0_3_sha256": "E921CBFEC164E8B36CD3BFBDFCBC05B8152EC17CBF5B49E440D3A71D09AFDDB4",
+      "same_whole_file": false
+    },
+    "common/on_action/religion_on_actions.txt": {
+      "bytes": 61344,
+      "sha256": "29BF44C8F4F65735B59732EA784CD6B7F859FC4914514A175CB6200A312F231A",
+      "previous_1_20_0_3_sha256": "EF9367DDF5F89C912B895743F8B72441E88AF3A5B03A5C1A9EDDEA0E5681EE2D",
+      "same_whole_file": false
+    },
+    "localization/english/event_localization/religion_events/rite_growth_events_l_english.yml": {
+      "bytes": 2436,
+      "sha256": "40999E6130BC6520C6F4E1D1761C0F79151DCB2BA5CE3629013B1CBF07DA29EC",
+      "previous_1_20_0_3_sha256": "40999E6130BC6520C6F4E1D1761C0F79151DCB2BA5CE3629013B1CBF07DA29EC",
+      "same_whole_file": true
+    },
+    "localization/simp_chinese/event_localization/religion_events/rite_growth_events_l_simp_chinese.yml": {
+      "bytes": 2307,
+      "sha256": "F2D34186C7CFD00EDC9EADFF98AE1296C165DA01AFC50C89782A8B4B3CCBF5CF",
+      "previous_1_20_0_3_sha256": "F2D34186C7CFD00EDC9EADFF98AE1296C165DA01AFC50C89782A8B4B3CCBF5CF",
+      "same_whole_file": true
+    },
+    "localization/simp_chinese/religion/religion_christianity_l_simp_chinese.yml": {
+      "bytes": 15792,
+      "sha256": "494CA429BE66822B7AF2E0775F1F64FB28C4C6324FF061CED6846E8E73967F3F"
+    },
+    "gui/event_windows/character_event.gui": {
+      "bytes": 36014,
+      "sha256": "968927929CB1BDCF784634620FA42319334DB09CE36339123333C26D7525658A"
+    },
+    "gui/event_window_widgets/event_window_widget_rite_founder.gui": {
+      "bytes": 206,
+      "sha256": "C1BAA2D2D422222F88F6CABFABCEF19625D5C3902015F07D56A9EAADC85A7C97"
+    }
+  },
+  "source_semantics": {
+    "trigger": {
+      "monthly_faith_dispatch_lines": [
+        1331,
+        1333
+      ],
+      "on_action": "faith_rite_growth_pulse or faith_rite_additional_growth_chance_pulse",
+      "pulse_definition_lines": [
+        [
+          1943,
+          1974
+        ],
+        [
+          1976,
+          1994
+        ]
+      ],
+      "picker_source": {
+        "lines": [
+          14,
+          68
+        ],
+        "sha256": "AD1A0EAE16D80D92F11CE876EDD03625CBF2E255DD05B49124228A5B3E6FC582"
+      },
+      "picker": "Faith scope selects its largest Rite by county count, picks an eligible founder, records cooldowns, and dispatches the major event.",
+      "major_recipients": "Recipient faith must equal origin_faith. Founder and recipient are separate roles and their equality remains unobserved."
+    },
+    "immediate": {
+      "source": {
+        "lines": [
+          138,
+          324
+        ],
+        "sha256": "447EE292D7EF2C794AF88B3B06B5EC2707D22BA482B4BB1584EBC1CEBCD92C86"
+      },
+      "effects": "Create and change the founder's Rite, apply doctrine divergence and certain county/court conversions, mark the founder, and schedule rite_growth.0011 on origin_faith for four to seven days. This work precedes option selection."
+    },
+    "options": [
+      {
+        "authored_index": 0,
+        "localization_key": "rite_growth.0010.a",
+        "source": {
+          "lines": [
+            326,
+            332
+          ],
+          "sha256": "B1998D146ABF8397A1C523F118DCF3B3CD4ABD8D28A67DB8893D2F96B67BC169"
+        },
+        "authored_ai_base": 100,
+        "source_gate": null,
+        "effects": "Recipient change_spiritual_fulfillment=5. The option retains the recipient's Rite with no authored resource payment or founder-opinion change."
+      },
+      {
+        "authored_index": 1,
+        "localization_key": "rite_growth.0010.b",
+        "source": {
+          "lines": [
+            334,
+            399
+          ],
+          "sha256": "F877596FDE2B1762897563D258FEEC9033B9F115C7617E1C88906BDC77F867D5"
+        },
+        "authored_ai_base": 0,
+        "source_gate": "Recipient is not the head of faith or head of Rite.",
+        "effects": "Convert recipient to new_rite with conversion. Founder gains +30 opinion of recipient through pious_opinion. Ten-year conversion flag and conditional county, eligible AI ruler and court conversions."
+      },
+      {
+        "authored_index": 2,
+        "localization_key": "rite_growth.0010.c",
+        "source": {
+          "lines": [
+            401,
+            412
+          ],
+          "sha256": "8F0E51A2D5FCB4F196290CB19900FFE9C0D36B34CEE3FA18728013229B54F625"
+        },
+        "authored_ai_base": 0,
+        "source_gate": null,
+        "effects": "Adds medium_piety_gain (authored base 100). Founder loses 15 opinion of the recipient through contempt_opinion. The option has no Rite conversion."
+      }
+    ],
+    "ordinary_window_sources": {
+      "widget": "event_window_widget_rite_founder adds founder Rite details under custom_widgets_container",
+      "stock_window": "character_event has separate option_grid consuming EventWindowData.GetOptions and button_eventoption. Verify actual renderer ordering and eligibility."
+    },
+    "dependency_anchors": {
+      "medium_piety_value": "common/script_values/00_basic_values.txt:1183",
+      "medium_piety_alias": "common/script_values/00_basic_values.txt:1216",
+      "pious_opinion": "common/opinion_modifiers/00_opinion_modifiers.txt:107-111",
+      "contempt_opinion": "common/opinion_modifiers/00_opinion_modifiers.txt:1646-1649",
+      "source_and_founder_selection": "common/scripted_effects/00_religion_effects.txt:1033,1044",
+      "court_conversion": "common/scripted_effects/00_religion_effects.txt:1200",
+      "ruler_conversion": "common/scripted_effects/00_religion_effects.txt:1268",
+      "eligible_ai_ruler": "common/scripted_triggers/00_religious_triggers.txt:3000"
+    }
+  },
+  "ordinary_policy": {
+    "entry": "Java RegisteredEventCore Full111 and RootFull111EventRead",
+    "decision": "First actual widget-visible choice in renderer order, with both nativeCanSelect and widgetEnabled, and one held prepare/SELECT. No authored index override.",
+    "knowledge_boundary": "Historical Python registry only admits exact up to 1.20.0.4. Full111 stock eligibility uses the native renderer. Current saved-scope variants and dynamic IDs remain unobserved."
+  },
+  "live_verification_boundary": {
+    "required_for_business": "Fresh Full and same-owner Core, native instance and definition+recipient, actual renderer order and legality, one selection, independent complete queue absence of original instance, independent paused Full/SEM, then separately observed advancement and confirmed SAVE.",
+    "material_if_available": "For actual authored option 0, compare independent exact current same-recipient pre/post spiritual fulfillment with observed scale and no imposed fixed delta.",
+    "current_material_gap": "Full111 advertises no generic player religion context. PlayerReligionContext.Build admits Crozier 1.20.0.2/3/4. Existing ordinary select-and-verify route has no material-read prerequisite.",
+    "save_boundary": "Serialized event definition and recipient. Loaded queue and native event instance remain to be observed after restore."
+  }
+}
