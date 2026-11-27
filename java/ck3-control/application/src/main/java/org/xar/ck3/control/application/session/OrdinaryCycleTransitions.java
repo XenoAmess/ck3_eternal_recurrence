@@ -1043,12 +1043,32 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                 next = OriginalWindowReducer.reduce(predecessor.toJson(),
                         "java-ordinary-batch-interruption/v2".equals(text(details,"source"))?"ordinary_batch_interrupted":"repair_required", original, policy);
             }
-            ObjectNode boundaryState = StrictJson.object(); boundaryState.put("evidence_id", text(details, "evidence_id"));
-            boundaryState.set("session", sessionToJson(owner)); boundaryState.put("batch_id", text(details, "batch_id")); boundaryState.put("boundary", boundary.name());
-            if(boundary==JournalKind.WORKER_RESTART_CAPTURE)boundaryState.set("restart_manifest",details.get("restart_manifest"));
-            next.set(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD, boundaryState);
+            recordBatchBoundary(next, details, owner, boundary);
         }
         return ContinuityState.fromJson(next, predecessor.machineId());
+    }
+
+    /** Pure replay of one canonical ordinary batch boundary with no gameplay or SAVE effects. */
+    static ContinuityState replayCommittedBatchMetadata(ContinuityState predecessor, SessionIdentity owner, String batch,
+            JournalKind boundary, WriterContracts.HistoricalTransition actual) {
+        StrictJson.require(Set.of(JournalKind.BATCH_STARTED, JournalKind.BATCH_FINISHED, JournalKind.BATCH_DEFERRED).contains(boundary),
+                "only empty ordinary batch metadata can follow the imported REBIND");
+        requireOwner(predecessor, owner);
+        var input = new JournalInput(owner, batch, boundary, Optional.empty(), Optional.empty(), Optional.empty(), List.of());
+        var request = batchRequest(input, Optional.empty());
+        StrictJson.require(request.kind().equals(actual.kind()) && request.identity().equals(actual.eventIdentity())
+                && java.util.Arrays.equals(request.details(), actual.details()),
+                "committed imported batch metadata differs from the exact ordinary producer");
+        var next = predecessor.toJson();
+        recordBatchBoundary(next, request.detailsObject(), owner, boundary);
+        return ContinuityState.fromJson(next, predecessor.machineId());
+    }
+
+    private static void recordBatchBoundary(ObjectNode next, ObjectNode details, SessionIdentity owner, JournalKind boundary) {
+        ObjectNode boundaryState = StrictJson.object(); boundaryState.put("evidence_id", text(details, "evidence_id"));
+        boundaryState.set("session", sessionToJson(owner)); boundaryState.put("batch_id", text(details, "batch_id")); boundaryState.put("boundary", boundary.name());
+        if (boundary == JournalKind.WORKER_RESTART_CAPTURE) boundaryState.set("restart_manifest", details.get("restart_manifest"));
+        next.set(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD, boundaryState);
     }
 
     Optional<CompletedCycleProof> retainedCycleProof(ContinuityStorePort.Session session, SessionIdentity owner) throws IOException {
@@ -1557,7 +1577,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         else details.putNull("completed_cycle_proof");
         return details;
     }
-    private WriterContracts.Request batchRequest(JournalInput input,
+    private static WriterContracts.Request batchRequest(JournalInput input,
             Optional<org.xar.ck3.control.application.checkpoint.SavedCheckpointMaterialEvidence> material) {
         ObjectNode details = batchDetails(input);
         material.ifPresent(value -> {
