@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import org.xar.ck3.control.application.action.ActionCodec;
 import org.xar.ck3.control.application.action.ActionCommand;
 import org.xar.ck3.control.application.action.ActionObservationWindow;
 import org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive;
@@ -25,7 +26,9 @@ import org.xar.ck3.control.application.action.NativeRequestChronology;
 import org.xar.ck3.control.application.action.ObservationProvenance;
 import org.xar.ck3.control.application.action.OperationKey;
 import org.xar.ck3.control.application.action.RawJson;
+import org.xar.ck3.control.application.driver.DriverObservationAssembler;
 import org.xar.ck3.control.application.driver.DriverObservationAssembler.Complete;
+import org.xar.ck3.control.application.driver.DriverObservationEvidenceReader;
 import org.xar.ck3.control.application.effects.NativeEffectEvidence;
 import org.xar.ck3.control.application.effects.NativeEffectRegistry;
 import org.xar.ck3.control.application.effects.NativeEffectSnapshots;
@@ -96,6 +99,7 @@ final class RootFull111EventOptionEffects implements NativeEffectRegistry.Observ
                 return pendingAfterRead(attempt, "Full111 independent post-SELECT snapshot unavailable: " + unavailable.reason(),
                         archive, unavailable);
             var fresh = (NativeFreshSnapshotPort.Received) snapshot;
+            Optional<AckReceived> verifiedQueue = Optional.empty();
             try {
                 NativeFreshSnapshotPort.verifyAfter(selected, fresh);
                 var proof = transport.readFull111EventQueue(attempt, selected, deadline);
@@ -103,6 +107,7 @@ final class RootFull111EventOptionEffects implements NativeEffectRegistry.Observ
                     return pendingAfterRead(attempt, "Full111 independent complete queue did not verify the selected instance absent",
                             archive, fresh);
                 var queue = proof.orElseThrow();
+                verifiedQueue = Optional.of(queue.original());
                 var before = RootGuardEvidence.loadFrame(attempt.guard(), archive, context.frameLoader());
                 return context.remainingDomains().lifecycle().physical().withReceivedSnapshot(same, deadline, fresh.originalFrame(), lease -> {
                     var after = lease.ordinary().orElseThrow(() -> new IOException("No complete Full111 ordinary after observation"));
@@ -111,10 +116,10 @@ final class RootFull111EventOptionEffects implements NativeEffectRegistry.Observ
                 });
             } catch (InterruptedException interrupted) {
                 Thread.currentThread().interrupt();
-                return pendingAfterRead(attempt, "Full111 independent after observation interrupted", archive, fresh);
-            } catch (IOException | ContractViolationException unavailable) {
+                return pendingAfterRead(attempt, "Full111 independent after observation interrupted", archive, fresh, verifiedQueue);
+            } catch (IOException | UncheckedIOException | ContractViolationException unavailable) {
                 return pendingAfterRead(attempt, "Full111 queue or exact after originals unavailable: " + unavailable.getMessage(),
-                        archive, fresh);
+                        archive, fresh, verifiedQueue);
             }
         } catch (InterruptedException interrupted) {
             Thread.currentThread().interrupt();
@@ -213,8 +218,8 @@ final class RootFull111EventOptionEffects implements NativeEffectRegistry.Observ
                 && frames.before().connectionGeneration().equals(attempt.guard().connectionGeneration())
                 && selection.lineage().sourceRevision().equals(command.before().frame().identity().nativeRevision()),
                 "Full111 option proof crossed its original command, target, deadline or private Native revision");
-        var before = full(frames.before());
-        var after = full(frames.after());
+        var before = full(frames.before(), archive);
+        var after = full(frames.after(), archive);
         var sampled = requireQueue(attempt, selected, fresh, before, after, snapshotReceived, queue, deadline);
 
         var beforeRaw = NativeWire.object(NativeWire.parse(before.state().bytes()));
@@ -343,8 +348,26 @@ final class RootFull111EventOptionEffects implements NativeEffectRegistry.Observ
                 "Full111 option changed or exceeded its exact fresh renderer and prepare deadlines");
     }
 
-    private static ObservedFrame full(Complete frame) throws IOException {
-        return frame.originalProjection().orElseThrow(() -> new IOException("Original Full111 profile projection unavailable")).actual();
+    static ObservedFrame full(Complete frame, OutcomeArchive archive) throws IOException {
+        if (frame.originalProjection().isPresent()) return frame.originalProjection().orElseThrow().actual();
+        if (frame.identity().observationVersion() != DriverObservationAssembler.CANONICAL_OBSERVATION_VERSION)
+            throw new IOException("Original Full111 profile projection unavailable");
+        // Canonical v3 omits the in-memory FullSnapshot. Its existing manifest binds the exact archived native packet.
+        var basis = NativeEffectEvidence.basis(frame);
+        var raw = archive.loadNativeFrame(basis.nativeFrame());
+        if (raw.length != basis.nativeFrame().bytes() || !ActionCodec.sha256(raw).equals(basis.nativeFrame().sha256()))
+            throw new IOException("Original Full111 native frame differs from its archived reference");
+        var original = DriverObservationEvidenceReader.nativeFrame(basis.driverFacts(),
+                archive.loadFullMaterial(basis.driverFacts()), raw);
+        var identity = frame.identity();
+        if (!original.session().machineId().equals(identity.machineId()) || !original.session().game().equals(identity.game())
+                || !original.session().sessionId().equals(frame.sessionId())
+                || !original.session().connectionGeneration().equals(frame.connectionGeneration())
+                || !original.snapshotId().equals(identity.frame().snapshotId())
+                || !original.nativeRevision().equals(identity.frame().identity().nativeRevision())
+                || !original.observedAt().equals(frame.observedAt()))
+            throw new IOException("Original Full111 native frame differs from its complete Driver observation");
+        return original;
     }
 
     private static AckReceived originalAck(OutcomeArchive archive, ExactRef ref) throws IOException {
@@ -389,7 +412,14 @@ final class RootFull111EventOptionEffects implements NativeEffectRegistry.Observ
 
     static NativeEffectRegistry.Projected pendingAfterRead(ActionState.Attempt attempt, String reason, OutcomeArchive archive,
             NativeFreshSnapshotPort.Result read) {
-        return NativeEffectRegistry.Projected.pending(reason, preserveRead(attempt, archive, read));
+        return pendingAfterRead(attempt, reason, archive, read, Optional.empty());
+    }
+
+    static NativeEffectRegistry.Projected pendingAfterRead(ActionState.Attempt attempt, String reason, OutcomeArchive archive,
+            NativeFreshSnapshotPort.Result read, Optional<AckReceived> verifiedQueue) {
+        var evidence = new LinkedHashSet<>(preserveRead(attempt, archive, read));
+        verifiedQueue.map(archive::preserve).ifPresent(evidence::add);
+        return NativeEffectRegistry.Projected.pending(reason, List.copyOf(evidence));
     }
 
     static List<ExactRef> preserveRead(ActionState.Attempt attempt, OutcomeArchive archive, NativeFreshSnapshotPort.Result read) {

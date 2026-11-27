@@ -32,6 +32,8 @@ import org.xar.ck3.control.application.action.NativeRequestChronology.Event;
 import org.xar.ck3.control.application.action.NativeRequestChronology.PacketIdentity;
 import org.xar.ck3.control.application.action.OperationKey;
 import org.xar.ck3.control.application.action.RawJson;
+import org.xar.ck3.control.application.driver.DriverObservationAssembler.Complete;
+import org.xar.ck3.control.application.driver.DriverObservationEvidenceReader;
 import org.xar.ck3.control.contracts.ContractViolationException;
 import org.xar.ck3.control.contracts.ExactCk3Build;
 import org.xar.ck3.control.contracts.ExactRef;
@@ -123,10 +125,13 @@ final class RootFull111EventOptionEffectsTest {
 
     @Test void failedIndependentReadKeepsItsActualAckAndOptionalFrameAsPendingEvidence() throws Exception {
         var proof = fixture(13);
+        var verifiedQueue = queue(5, 30, false, BASE.plusSeconds(60));
+        assertEquals(TARGET, proof.prove(verifiedQueue).target());
         var pendingArchive = (ActionPorts.OutcomeArchive) Proxy.newProxyInstance(
                 ActionPorts.OutcomeArchive.class.getClassLoader(), new Class<?>[]{ActionPorts.OutcomeArchive.class},
                 (proxy, method, arguments) -> switch (method.getName()) {
                     case "preserve" -> {
+                        if (arguments[0] == verifiedQueue) yield ref(6);
                         assertSame(proof.fresh(), arguments[0]);
                         yield ref(4);
                     }
@@ -148,6 +153,66 @@ final class RootFull111EventOptionEffectsTest {
         assertEquals(List.of(proof.attempt().guard().nativeEvidence(), ref(4), ref(5)),
                 assertInstanceOf(ActionPorts.Pending.class, withFrame.result()).evidence());
         assertTrue(withFrame.compatibleResult().isEmpty());
+        var withQueue = RootFull111EventOptionEffects.pendingAfterRead(proof.attempt(), "projection failed", pendingArchive,
+                invalidFrame, Optional.of(verifiedQueue));
+        assertEquals(List.of(proof.attempt().guard().nativeEvidence(), ref(4), ref(5), ref(6)),
+                assertInstanceOf(ActionPorts.Pending.class, withQueue.result()).evidence());
+        assertTrue(withQueue.compatibleResult().isEmpty());
+    }
+
+    @Test void canonicalProfileRestoresTheExactOriginalNativePacketFromItsManifest() throws Exception {
+        var proof = fixture(13);
+        var before = proof.attempt().guard().observed();
+        var identity = new ObservationIdentity(before.machineId(), before.game(), before.frame(), 3);
+        var nativeFrame = proof.before();
+        byte[] packet = nativeFrame.originalPacket();
+        var packetRef = new ExactRef("fixture:profile3-original", packet.length, ActionCodec.sha256(packet));
+        var manifest = StrictJson.object().put("schema", DriverObservationEvidenceReader.SCHEMA)
+                .put("driver_version", 0).put("episode_epoch", 0)
+                .put("snapshot_id", nativeFrame.snapshotId()).put("native_revision", nativeFrame.nativeRevision())
+                .put("native_state_sha256", ActionCodec.sha256(nativeFrame.state().bytes()))
+                .put("native_packet_sha256", packetRef.sha256()).put("native_packet_bytes", packetRef.bytes())
+                .put("observed_at", nativeFrame.observedAt().toString())
+                .put("public_revision", identity.frame().revision()).put("observation_version", 3);
+        manifest.set("driver_ref", ref(3).toJson());
+        manifest.set("source", org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.source(proof.attempt().guard().source()));
+        manifest.putObject("original_semantic_fields");
+        manifest.putObject("transport").put("machine_id", nativeFrame.session().machineId())
+                .put("pid", nativeFrame.session().game().pid())
+                .put("creation_filetime", nativeFrame.session().game().creationFiletime().value().toString())
+                .put("connection_generation", nativeFrame.session().connectionGeneration().toString())
+                .put("session_id", nativeFrame.session().sessionId());
+        var originalManifest = RawJson.fullMaterial(StrictJson.canonical(manifest));
+        var manifestRef = new ExactRef("fixture:profile3-manifest", originalManifest.bytes().length,
+                ActionCodec.sha256(originalManifest.bytes()));
+        var semantic = new OpportunityJson.Obj(java.util.Map.of(
+                "java_driver_facts_evidence", DriverObservationEvidenceReader.reference(manifestRef)));
+        var original = new Complete(identity, proof.attempt().guard().source(), SESSION.sessionId(),
+                SESSION.connectionGeneration(), semantic, packetRef, nativeFrame.observedAt(), "0".repeat(64));
+        var archive = nativeOriginals(packetRef, packet, manifestRef, originalManifest);
+        var loaded = RootFull111EventOptionEffects.full(original, archive);
+        assertEquals(nativeFrame.state(), loaded.state());
+        assertEquals(nativeFrame.session(), loaded.session());
+        assertEquals(nativeFrame.observedAt(), loaded.observedAt());
+        org.junit.jupiter.api.Assertions.assertArrayEquals(packet, loaded.originalPacket());
+
+        var otherConnection = new Complete(identity, original.source(), original.sessionId(),
+                SESSION.connectionGeneration().add(BigInteger.ONE), semantic, packetRef, nativeFrame.observedAt(), original.fullBindingSha256());
+        assertThrows(IOException.class, () -> RootFull111EventOptionEffects.full(otherConnection, archive));
+        byte[] changed = packet.clone();
+        changed[changed.length - 1] ^= 1;
+        assertThrows(IOException.class, () -> RootFull111EventOptionEffects.full(original,
+                nativeOriginals(packetRef, changed, manifestRef, originalManifest)));
+    }
+
+    private static ActionPorts.OutcomeArchive nativeOriginals(ExactRef packetRef, byte[] packet,
+            ExactRef manifestRef, RawJson manifest) {
+        return (ActionPorts.OutcomeArchive) Proxy.newProxyInstance(ActionPorts.OutcomeArchive.class.getClassLoader(),
+                new Class<?>[]{ActionPorts.OutcomeArchive.class}, (proxy, method, arguments) -> switch (method.getName()) {
+                    case "loadFullMaterial" -> { assertEquals(manifestRef, arguments[0]); yield manifest; }
+                    case "loadNativeFrame" -> { assertEquals(packetRef, arguments[0]); yield packet; }
+                    default -> throw new AssertionError(method);
+                });
     }
 
     @Test void preservesDistinctReferencesAndTheExactIndependentOccurrence() {
