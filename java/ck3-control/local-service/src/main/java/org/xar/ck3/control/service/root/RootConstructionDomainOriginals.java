@@ -3,6 +3,7 @@ package org.xar.ck3.control.service.root;
 import static org.xar.ck3.control.planning.opportunity.OpportunityJson.*;
 import static org.xar.ck3.control.application.planning.finance.OrdinaryFinanceCollector.obj;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.LinkedHashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -15,6 +16,7 @@ import org.xar.ck3.control.application.checkpoint.SavedFirstCheckpointMaterialSt
 import org.xar.ck3.control.application.effects.RootGuardEvidence;
 import org.xar.ck3.control.application.effects.NativeRecordedEvidenceVerifier;
 import org.xar.ck3.control.application.planning.finance.*;
+import org.xar.ck3.control.application.session.SessionPorts.SemanticEvidence;
 import org.xar.ck3.control.continuity.ContinuityJson;
 import org.xar.ck3.control.continuity.writer.*;
 import org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session;
@@ -63,6 +65,39 @@ public final class RootConstructionDomainOriginals implements ConstructionDomain
         if (consumed(same, "java_restored_construction_originals_v1", "restore_basis", basis)) return Optional.empty();
         return Optional.of(publish(same, new Restore(context, basis)));
     }
+    public Optional<ConstructionDomainLifecycle.Publication> restoreCommitted(RootRuntimeContext context, Session same,
+            RootCommittedOrdinaryRestoration original) throws IOException {
+        requireContext(context, same);
+        Objects.requireNonNull(original).requireCurrent(same, context);
+        if (consumed(same, "java_restored_construction_originals_v1", "restore_basis", original.basis())) return Optional.empty();
+        original.material().requireRetained(same);
+        var saved = original.withOriginalSavedArchive(same, (old, head, archive) -> {
+            var recorded = ConstructionSavedBody.readRecorded(old, head);
+            var material = ConstructionFullMaterialSource.fromBody(recorded.saved().ledger().original());
+            if (material.isEmpty()) return new SavedConstruction(recorded, Optional.empty());
+            var input = material.orElseThrow().input();
+            try {
+                var raw = archive.loadFullMaterial(input);
+                byte[] bytes = raw.bytes();
+                ConstructionMaterialReducer.decodeFullMaterial(bytes);
+                var pin = old.capturePin(input, ConstructionFullMaterialSource.MAX_INPUT_BYTES);
+                StrictJson.require(input.bytes() == bytes.length && input.sha256().equals(ActionCodec.sha256(bytes)),
+                        "original saved construction full material differs from its recorded bytes");
+                return new SavedConstruction(recorded, Optional.of(new OriginalMaterial(pin, raw)));
+            } catch (UncheckedIOException unavailable) { throw unavailable.getCause(); }
+        });
+        Optional<TransferredMaterial> material = Optional.empty();
+        if (saved.material().isPresent()) {
+            var old = saved.material().orElseThrow();
+            try {
+                var target = new ConstructionFullMaterialSource(core.archive().withSession(same).preserveMaterial(old.raw()));
+                material = Optional.of(new TransferredMaterial(old.pin(), target));
+            } catch (UncheckedIOException unavailable) { throw unavailable.getCause(); }
+        }
+        original.requireCurrent(same, context);
+        return Optional.of(publish(same, new CommittedRestore(context, original, saved.recorded(), material)));
+    }
+
     public ConstructionNextEpisodeReducer.Initialization initializeNext(RootRuntimeContext context, Session same,
             RootApplicationAssembly.EpisodeDomainInitializationProof proof) throws IOException {
         requireContext(context, same); Objects.requireNonNull(proof).requireCurrent(same, context);
@@ -219,7 +254,7 @@ public final class RootConstructionDomainOriginals implements ConstructionDomain
                 "construction original-proof kind/input/head differs from the actual producer");
         return actual.replay(same, head, previous);
     }
-    private sealed interface Transition permits Fresh, CampaignFresh, Restore, Next {
+    private sealed interface Transition permits Fresh, CampaignFresh, Restore, CommittedRestore, Next {
         ConstructionDomainLifecycle.Kind kind();
         Obj input();
         ConstructionDomainLifecycle.OriginalBody replay(Session same, WriterContracts.Head actual, Optional<ConstructionLedgerCodec.Ledger> previous) throws IOException;
@@ -355,36 +390,113 @@ public final class RootConstructionDomainOriginals implements ConstructionDomain
             var saved = ConstructionSavedBody.read(same, savedHead, domain.registration().producerSources());
             ConstructionFullMaterialSource.requireRetained(same, core.archive(), saved.ledger().original());
             if (previous.isPresent()) ConstructionFullMaterialSource.requireRetained(same, core.archive(), previous.orElseThrow().original());
-            var pair = savedMaterial.pair(); var frame = pair.frame().frame().identity();
-            var restoredFrame = original.semantic().frame().frame();
-            StrictJson.require(pair.frame().machineId().equals(context.game().machineId())
-                    && pair.frame().frame().episodeRunId().equals(restoredFrame.episodeRunId())
-                    && frame.player().equals(restoredFrame.identity().player()), "saved construction crossed the actual restored player/episode");
-            var archive = core.archive().withSession(same);
-            List<ConstructionRestoreReducer.Canonical> guards = core.actions().withFrozen(same, lease -> {
-                var rows = lease.snapshot().actions().stream().filter(receipt -> !receipt.settled()
-                        && receipt.command().operation().equals(OrdinaryConstructionPolicy.OPERATION))
-                        .map(receipt -> new ConstructionRestoreReducer.Canonical(receipt, archive.receiptReferenceOf(receipt))).toList();
-                lease.assertCurrent(); return rows;
-            });
-            var audit = new ConstructionRestoreProvenance(basis, savedMaterial.reference(), saved.reference().payload(),
-                    savedHead.sequence(), ContinuityJson.digest(savedHead.toJson()), pair.frame().frame().episodeRunId(), frame.player(),
-                    context.game().generation(), context.game().sessionId());
-            var resolved = new LinkedHashMap<String, ConstructionOriginalSource.Loaded>();
-            for (var row : guards) {
-                Value supplied = row.receipt().command().arguments().get("ordinary_cash_request");
-                if (supplied instanceof Obj manifest && new Text(ConstructionOriginalSource.SCHEMA).equals(manifest.get("schema")))
-                    resolved.put(row.receipt().bodySha256(), ConstructionOriginalSource.resolveCommand(same, core.archive(), row.receipt().command()));
-            }
-            Obj body = ConstructionRestoreReducer.reduce(saved.ledger(), previous, guards, audit, resolved);
             var evidence = new LinkedHashSet<ExactRef>(original.evidence());
-            evidence.addAll(saved.evidence()); guards.forEach(row -> evidence.add(row.originalReceipt()));
-            DomainBodies.reference(actual.state(), DomainBodies.Slot.CONSTRUCTION).ifPresent(row -> evidence.add(row.payload()));
+            evidence.addAll(saved.evidence());
+            var body = reduceRestore(context, same, actual, previous, basis, savedMaterial, original.semantic(), saved, saved.ledger(), evidence);
             saved.requireUnchanged(same);
             savedMaterial.requireRetained(same);
-            return new ConstructionDomainLifecycle.OriginalBody(body, List.copyOf(evidence));
+            return body;
         }
     }
+
+    private record OriginalMaterial(WriterContracts.Pin pin, RawJson raw) {}
+    private record SavedConstruction(ConstructionSavedBody.Recorded recorded, Optional<OriginalMaterial> material) {}
+    private record TransferredMaterial(WriterContracts.Pin original, ConstructionFullMaterialSource target) {
+        private TransferredMaterial {
+            var input = target.input();
+            StrictJson.require(!original.reference().equals(input)
+                    && original.reference().bytes() == input.bytes() && original.reference().sha256().equals(input.sha256()),
+                    "transferred construction material requires identical bytes in the independent target archive");
+        }
+    }
+
+    private final class CommittedRestore implements Transition {
+        private final RootRuntimeContext context;
+        private final RootCommittedOrdinaryRestoration original;
+        private final ConstructionSavedBody.Recorded recorded;
+        private final Optional<TransferredMaterial> material;
+
+        private CommittedRestore(RootRuntimeContext context, RootCommittedOrdinaryRestoration original,
+                ConstructionSavedBody.Recorded recorded, Optional<TransferredMaterial> material) {
+            this.context = context;
+            this.original = original;
+            this.recorded = recorded;
+            this.material = material;
+        }
+
+        @Override public ConstructionDomainLifecycle.Kind kind() { return ConstructionDomainLifecycle.Kind.RESTORE; }
+        @Override public Obj input() {
+            return obj("schema", new Text(SCHEMA), "origin", new Text("actual_committed_imported_saved_restore"),
+                    "basis", ref(original.basis()), "original_publication", ref(recorded.publication()),
+                    "transferred_material", material.<Value>map(transfer -> ref(transfer.target().input())).orElse(Nil.INSTANCE));
+        }
+
+        @Override public ConstructionDomainLifecycle.OriginalBody replay(Session same, WriterContracts.Head actual,
+                Optional<ConstructionLedgerCodec.Ledger> previous) throws IOException {
+            requireContext(context, same);
+            original.requireCurrent(same, context);
+            StrictJson.require(original.successor().game().equals(context.game().generation())
+                    && original.successor().sessionId().equals(context.game().sessionId())
+                    && original.source().equals(context.source()), "committed construction restore lost its adopted Game/session/source");
+
+            var saved = recorded.saved();
+            original.withOriginalSavedWriter(same, (old, head) -> {
+                StrictJson.require(ContinuityJson.same(head.toJson(), saved.head().toJson()),
+                        "committed construction restore changed the independent Saved frontier");
+                recorded.requireUnchanged(old);
+                if (material.isPresent()) old.verifyPin(material.orElseThrow().original());
+                return null;
+            });
+            var evidence = new LinkedHashSet<>(List.of(original.basis(), original.attachment().reference(),
+                    original.importedOrigin().targetEntry().reference(), original.importedOrigin().physicalConfirmation().reference(),
+                    original.material().reference(), recorded.publication()));
+            evidence.addAll(saved.evidence());
+            var savedLedger = saved.ledger();
+            if (material.isPresent()) {
+                var transfer = material.orElseThrow();
+                transfer.target().load(same, core.archive());
+                evidence.add(transfer.original().reference());
+                evidence.add(transfer.target().input());
+                savedLedger = ConstructionLedgerCodec.decodeLedger(encode(transfer.target().retainIn(savedLedger.original())));
+            }
+            var result = reduceRestore(context, same, actual, previous, original.basis(), original.material(),
+                    original.semantic(), saved, savedLedger, evidence);
+            original.requireCurrent(same, context);
+            return result;
+        }
+    }
+
+    private ConstructionDomainLifecycle.OriginalBody reduceRestore(RootRuntimeContext context, Session same,
+            WriterContracts.Head actual, Optional<ConstructionLedgerCodec.Ledger> previous, ExactRef basis,
+            SavedCheckpointMaterial savedMaterial, SemanticEvidence semantic, ConstructionSavedBody.Saved saved,
+            ConstructionLedgerCodec.Ledger savedLedger, LinkedHashSet<ExactRef> evidence) throws IOException {
+        var pair = savedMaterial.pair(); var frame = pair.frame().frame().identity();
+        var restoredFrame = semantic.frame().frame();
+        StrictJson.require(pair.frame().machineId().equals(context.game().machineId())
+                && pair.frame().frame().episodeRunId().equals(restoredFrame.episodeRunId())
+                && frame.player().equals(restoredFrame.identity().player()), "saved construction crossed the actual restored player/episode");
+        var archive = core.archive().withSession(same);
+        List<ConstructionRestoreReducer.Canonical> guards = core.actions().withFrozen(same, lease -> {
+            var rows = lease.snapshot().actions().stream().filter(receipt -> !receipt.settled()
+                    && receipt.command().operation().equals(OrdinaryConstructionPolicy.OPERATION))
+                    .map(receipt -> new ConstructionRestoreReducer.Canonical(receipt, archive.receiptReferenceOf(receipt))).toList();
+            lease.assertCurrent(); return rows;
+        });
+        var audit = new ConstructionRestoreProvenance(basis, savedMaterial.reference(), saved.reference().payload(),
+                saved.head().sequence(), ContinuityJson.digest(saved.head().toJson()), pair.frame().frame().episodeRunId(), frame.player(),
+                context.game().generation(), context.game().sessionId());
+        var resolved = new LinkedHashMap<String, ConstructionOriginalSource.Loaded>();
+        for (var row : guards) {
+            Value supplied = row.receipt().command().arguments().get("ordinary_cash_request");
+            if (supplied instanceof Obj manifest && new Text(ConstructionOriginalSource.SCHEMA).equals(manifest.get("schema")))
+                resolved.put(row.receipt().bodySha256(), ConstructionOriginalSource.resolveCommand(same, core.archive(), row.receipt().command()));
+        }
+        Obj body = ConstructionRestoreReducer.reduce(savedLedger, previous, guards, audit, resolved);
+        guards.forEach(row -> evidence.add(row.originalReceipt()));
+        DomainBodies.reference(actual.state(), DomainBodies.Slot.CONSTRUCTION).ifPresent(row -> evidence.add(row.payload()));
+        return new ConstructionDomainLifecycle.OriginalBody(body, List.copyOf(evidence));
+    }
+
     private Optional<ConstructionLedgerCodec.Ledger> current(Session same) throws IOException {
         var actual = same.readDomain(DomainBodies.Slot.CONSTRUCTION);
         if (actual instanceof DomainBodies.Available known) {

@@ -46,6 +46,57 @@ final class ConstructionSavedBodyStoreTest {
         });
         assertFalse(Files.exists(fixture.layout.event(3)));
     }
+    @Test void recordedSourceUsesTheActualSavedWriterAndEarlierProducerPublication() throws Exception {
+        var original = new Fixture(root.resolve("original"));
+        var target = new Fixture(root.resolve("target"));
+        var savedBody = clear().with("pending", ConstructionCoordinatorPendingTest.original().with("status", new Text("action_state_unknown")));
+        var saved = original.publish("saved", savedBody);
+        original.publish("later-original", clear());
+        target.publish("target", clear());
+
+        original.writer.locked(old -> {
+            var recorded = ConstructionSavedBody.readRecorded(old, saved.head());
+            assertEquals(Fixture.ref(original.layout.event(1)), recorded.publication());
+            assertEquals(original.sources, recorded.saved().reference().producerSources());
+            assertEquals(savedBody, recorded.saved().ledger().original());
+            assertEquals(2, old.head().state().sequence());
+            recorded.requireUnchanged(old);
+            return null;
+        });
+        target.writer.locked(same -> {
+            assertThrows(IllegalArgumentException.class, () -> ConstructionSavedBody.readRecorded(same, saved.head()));
+            assertEquals(1, same.head().state().sequence());
+            return null;
+        });
+    }
+
+    @Test void fullMaterialInTheIndependentArchiveNeedsItsOwnTargetReference() throws Exception {
+        var original = new Fixture(root.resolve("original-full"));
+        var target = new Fixture(root.resolve("target-full"));
+        Obj pending = ConstructionCoordinatorPendingTest.original().with("status", new Text("action_state_unknown"));
+        var body = clear().with("pending", pending);
+        var originalInput = ConstructionMaterialReducer.fullInput(ConstructionMaterialReducer.RefreshKind.COLD_MATERIAL,
+                ConstructionLedgerCodec.decodeLedger(encode(body)), "original-request", obj(), Optional.empty(), Optional.empty());
+        var source = original.writer.locked(old -> ConstructionFullMaterialSource.preserve(old, original.archive, originalInput));
+        var event = original.publish("original-full", source.retainIn(body));
+        var raw = original.writer.locked(old -> {
+            var recorded = ConstructionSavedBody.readRecorded(old, event.head());
+            assertEquals(source, ConstructionFullMaterialSource.fromBody(recorded.saved().ledger().original()).orElseThrow());
+            return original.archive.withSession(old).loadFullMaterial(source.input());
+        });
+        target.writer.locked(same -> {
+            assertThrows(IOException.class, () -> source.load(same, target.archive));
+            var targetSource = new ConstructionFullMaterialSource(target.archive.withSession(same).preserveMaterial(raw));
+            assertNotEquals(source.input().path(), targetSource.input().path());
+            assertEquals(source.input().sha256(), targetSource.input().sha256());
+            assertArrayEquals(raw.bytes(), target.archive.withSession(same).loadFullMaterial(targetSource.input()).bytes());
+            Obj copied = targetSource.retainIn(source.retainIn(body));
+            ConstructionFullMaterialSource.requireRetained(same, target.archive, copied);
+            assertEquals(pending, copied.get("pending"));
+            return null;
+        });
+    }
+
     @Test void replacingTheSavedBodyWithIdenticalBytesStillFailsItsOriginalNativeIdentity() throws Exception {
         Fixture fixture = new Fixture(root);
         var saved = fixture.publish("original", clear());
@@ -134,6 +185,7 @@ final class ConstructionSavedBodyStoreTest {
         static final String MACHINE = "construction-store-test-machine";
         final Layout layout;
         final ContinuityWriter writer;
+        final NativeOutcomeArchive archive;
         final List<ExactRef> sources;
         final ContinuityState anchor;
         Fixture(Path root) throws IOException {
@@ -168,6 +220,7 @@ final class ConstructionSavedBodyStoreTest {
                 @Override public String revalidate(ContinuityState head, Request input) { throw new AssertionError("domain imports use their actual store verifier"); }
                 @Override public ContinuityState reduce(ContinuityState head, Request input) { throw new AssertionError("domain imports use their actual store reducer"); }
             }, Clock.systemUTC(), new ContinuityWriter.Extensions(List.of(registration), Optional.of(store), Optional.empty()), guard);
+            this.archive = new NativeOutcomeArchive(store, writer);
             assertSame(guard, store.storageGuard()); assertSame(guard, writer.storageGuard());
         }
         Receipt publish(String identity, Obj body) throws IOException {
