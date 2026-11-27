@@ -1,7 +1,14 @@
 // Actual owner and wire translation units, with only owner-frame/Raw native dependencies supplied as explicit NoGame DATA fixtures.
 // This exercises process-private query/claim/connection state; it grants no Raw/Native/live qualification.
 #include "ck3_121003_lyd26785313_wire_v1.cpp"
+#include <windows.h>
+namespace fixture {
+std::uint64_t owner_clock_offset_ms = 0;
+std::uint64_t MonotonicTime() noexcept { return ::GetTickCount64() + owner_clock_offset_ms; }
+}
+#define GetTickCount64 fixture::MonotonicTime
 #include "ck3_121003_lyd26785313_owner_v1.cpp"
+#undef GetTickCount64
 #include "ck3_121003_full111_event_read_v1.hpp"
 #include <stdexcept>
 #include <cstring>
@@ -141,7 +148,7 @@ int main([[maybe_unused]] int argc,[[maybe_unused]] char **argv){using namespace
 #if defined(XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2) && XAR_CK3_ENABLE_121003_FULL111_ORDINARY_EVENT_OPTION_V2
  if(argc==3&&std::string_view(argv[1])=="--emit-option-wire") { EmitOptionWire(argv[2]);return 0; }
  if(argc==3&&std::string_view(argv[1])=="--validate-option-request") return ValidateOptionWire(argv[2]);
- VerifyStockOptionOwner();VerifyStockOptionRefusals();VerifyStockRuntimeQueue();effects=0;uncertain=false;
+ VerifyPreparedLeaseAfterDurableDelay();VerifyStockOptionOwner();VerifyStockOptionRefusals();VerifyStockRuntimeQueue();effects=0;uncertain=false;
 #endif
  VerifyQueueWitness();LydSession267V1 session;auto mailbox=std::make_unique<xar::ck3_11906::MainThreadQueryMailboxV1>();mailbox->offline_fixture=false;mailbox->permitted_executor_quinquevigintary=&ExecuteLydOnOwner267V1;xar::ck3_11906::MainThreadExecutionStampV1 stamp;stamp.thread_id=7;stamp.pump_epoch=11;stamp.paused=true;unsigned ids=0;const auto deadline=Wall()+60000;
  const auto request=[&](LydAction267V1 action,std::uint64_t connection){LydContext267V1 q;q.session=&session;q.mailbox=mailbox.get();q.connection_generation=connection;q.ticket.sequence=17;q.request.action=action;q.request.expected=core();q.request.personal=LydPersonal267V1::reverent_heaven;q.request.deadline_unix_ms=deadline;const auto id="fixture-"+std::to_string(++ids);std::copy(id.begin(),id.end(),q.request.request_id.begin());q.request.request_id_size=static_cast<std::uint8_t>(id.size());ArmLydDeadline267V1(q);return q;};

@@ -569,6 +569,7 @@ const AdapterDescriptor &Ck3_121003Full111AdapterDescriptor() noexcept {
     ,ck3_121003::build26785313::kFull111EventOptionCapabilities267V2[0]
     ,ck3_121003::build26785313::kFull111EventOptionCapabilities267V2[1]
     ,ck3_121003::build26785313::kFull111EventOptionCapabilities267V2[2]
+    ,ck3_121003::build26785313::kFull111EventOptionPreparedLifetimeCapability267V2
 #endif
 #endif
 #if defined(XAR_CK3_ENABLE_26785313_OPENING_READONLY56)

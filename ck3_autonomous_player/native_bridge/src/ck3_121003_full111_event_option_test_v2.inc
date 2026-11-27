@@ -9,7 +9,7 @@ struct OptionOwnerFixture {
  xar::ck3_11906::MainThreadQueryMailboxV1 mailbox;
  xar::ck3_11906::MainThreadExecutionStampV1 stamp;
  std::uint64_t ticket=0;
- std::uint64_t wall=Wall()+60000;
+ std::uint64_t wall=Wall()+8000;
 
  OptionOwnerFixture() {
   mailbox.offline_fixture=false;mailbox.permitted_executor_quinquevigintary=&ExecuteLydOnOwner267V1;
@@ -55,6 +55,51 @@ struct OptionOwnerFixture {
  }
 };
 
+void VerifyPreparedLeaseAfterDurableDelay() {
+ using namespace fixture;
+ OptionOwnerFixture delayed;
+ const auto renderer=delayed.renderer();
+ auto prepare=delayed.prepare(renderer);
+ prepare.deadline_unix_ms=Wall()+50000;
+ const auto prepared=delayed.run(prepare);
+ require(prepared.result.status==OptionStatus::available&&!effects,
+     "long-lived option preparation required the old renderer deadline on the wire");
+ owner_clock_offset_ms=31500;
+ require(MonotonicTime()>renderer.monotonic_deadline_ms,"fixture failed to outlast original renderer");
+ const auto choice=OptionOwnerFixture::select(prepare,prepared);
+ auto changed=choice;
+ ++changed.deadline_unix_ms;
+ require(delayed.run(changed).result.status==OptionStatus::stale_source&&!effects,
+     "SELECT extended the fixed prepared wire deadline");
+ const auto selected=delayed.run(choice);
+ require(selected.result.status==OptionStatus::selection_dispatched&&effects==1,
+     "fresh owner callback did not select once after durable writer delay");
+ require(selected.monotonic_deadline_ms<=MonotonicTime()+8000,
+     "SELECT callback inherited the extended prepared lease budget");
+ require(delayed.run(choice).result.status==OptionStatus::claim_consumed&&effects==1,
+     "delayed successful SELECT could be resent");
+ owner_clock_offset_ms=0;
+ effects=0;
+
+ OptionOwnerFixture expired;
+ const auto original=expired.renderer();
+ auto quote=expired.prepare(original);
+ quote.deadline_unix_ms=Wall()+50000;
+ owner_clock_offset_ms=9000;
+ require(expired.run(quote).result.status==OptionStatus::expired&&!effects,
+     "a new lease was granted from an expired renderer");
+ owner_clock_offset_ms=0;
+ const auto renewal=expired.renderer();
+ quote=expired.prepare(renewal);
+ quote.deadline_unix_ms=Wall()+50000;
+ const auto lease=expired.run(quote);
+ require(lease.result.status==OptionStatus::available,"fixture did not mint quote");
+ owner_clock_offset_ms=51000;
+ require(expired.run(OptionOwnerFixture::select(quote,lease)).result.status==OptionStatus::expired&&!effects,
+     "SELECT used a lease beyond the newly acquired monotonic deadline");
+ owner_clock_offset_ms=0;
+}
+
 void VerifyStockOptionOwner() {
  using namespace fixture;
  OptionOwnerFixture fixture;
@@ -62,8 +107,8 @@ void VerifyStockOptionOwner() {
  const auto prepare=fixture.prepare(before);
  require(fixture.run(prepare,13).result.status==OptionStatus::stale_source,"different published Full revision accepted");
  require(fixture.run(prepare,12,22).result.status==OptionStatus::stale_source,"renderer trusted a different connection");
- auto altered=prepare;++altered.deadline_unix_ms;
- require(fixture.run(altered).result.status==OptionStatus::stale_source,"prepare widened the original deadline");
+ auto altered=prepare;altered.deadline_unix_ms=Wall()+61000;
+ require(fixture.run(altered).result.status==OptionStatus::expired,"prepare accepted more than the finite lifetime");
  altered=prepare;altered.deadline_unix_ms=Wall()-1;
  require(fixture.run(altered).result.status==OptionStatus::expired,"expired quote accepted");
  altered=prepare;altered.target.authored_option_index=0;

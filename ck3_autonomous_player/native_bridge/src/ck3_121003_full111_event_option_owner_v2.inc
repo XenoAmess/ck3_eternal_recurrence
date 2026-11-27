@@ -78,8 +78,14 @@ bool ExecuteFull111EventOption267V2(LydContext267V1 &context,
      request.lineage.renderer_provider_generation!=renderer->receipt.lineage.renderer_provider_generation ||
      request.lineage.renderer_query_sequence!=renderer->receipt.lineage.renderer_query_sequence)
   return reject(S::stale_source,"current111_original_renderer_request_replaced");
- context.monotonic_deadline_ms=(std::min)(context.monotonic_deadline_ms,renderer->receipt.mono);
- if (!prepare) context.monotonic_deadline_ms=(std::min)(context.monotonic_deadline_ms,state.active_lease()->evidence.mono);
+ if (prepare) {
+  const auto wall=Wall();
+  if (!wall||wall>=renderer->receipt.wall)
+   return reject(S::expired,"current111_original_renderer_deadline_expired");
+  context.monotonic_deadline_ms=(std::min)(context.monotonic_deadline_ms,renderer->receipt.mono);
+ } else {
+  context.monotonic_deadline_ms=(std::min)(context.monotonic_deadline_ms,state.active_lease()->evidence.mono);
+ }
  if (!Time(context)) return reject(S::expired,"current111_original_renderer_or_lease_deadline_expired");
  LydFrame267V1 frame;
  LydRaw267V1 unused;
@@ -88,14 +94,24 @@ bool ExecuteFull111EventOption267V2(LydContext267V1 &context,
   return reject(Time(context)?S::unavailable:S::expired,"current111_exact_renderer_unavailable");
  }
  LydFrame267V1 after;
- if (!Frame(context,stamp,after)||!SameFrame(frame,after)||!SameFrame(frame,renderer->frame)||
-     !result.renderer||*result.renderer!=renderer->source||context.renderer_material!=renderer->material)
+ if (!Frame(context,stamp,after)||!SameFrame(frame,after))
+  return reject(S::stale_source,"current111_renderer_or_foreground_changed");
+ // Only the time budget differs across operations. Compare the complete current scene.
+ after.scene.wall_deadline=renderer->frame.scene.wall_deadline;
+ if (!SameFrame(after,renderer->frame)||!result.renderer||*result.renderer!=renderer->source||
+     context.renderer_material!=renderer->material)
   return reject(S::stale_source,"current111_renderer_or_foreground_changed");
  const auto *option=QualifiedOption267V2(request.target,*result.renderer,context.renderer_material);
  if (!option) return reject(S::unavailable,"current111_original_option_not_native_visible_and_enabled");
  if (!Time(context)) return reject(S::expired,"current111_original_preclaim_deadline_expired");
  if (prepare) {
-  if (!state.prepare(request,renderer->receipt,owner,context.monotonic_deadline_ms))
+  const auto wall=Wall();
+  if (!wall||wall>=renderer->receipt.wall)
+   return reject(S::expired,"current111_original_renderer_deadline_expired");
+  const auto lease=full111_event_effect::PreparedLeaseMonotonicDeadline(
+      request.deadline_unix_ms,wall,GetTickCount64());
+  if (!lease) return reject(S::expired,"current111_prepared_lease_deadline_outside_window");
+  if (!state.prepare(request,renderer->receipt,owner,lease))
    return reject(S::claim_consumed,"current111_prior_instance_or_lease_retained");
   data.lineage=state.active_lease()->evidence.lineage;
   result.source_available=true;

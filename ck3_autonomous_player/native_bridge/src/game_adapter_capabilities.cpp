@@ -17,6 +17,7 @@ bool GameAdapter::supports(std::string_view capability) const noexcept {
   const auto &event_option_caps=ck3_121003::build26785313::kFull111EventOptionCapabilities267V2;
   if((capability==ck3_121003::full111::kOrdinaryEventCapabilityV1 ||
       capability==ck3_121003::build26785313::kFull111EventRendererCapability267V1 ||
+      capability==ck3_121003::build26785313::kFull111EventOptionPreparedLifetimeCapability267V2 ||
       std::find(event_option_caps.begin(),event_option_caps.end(),capability)!=event_option_caps.end()) &&
       !IsCk3_121003Full111Descriptor(identity))return false;
   if(capability==ck3_121003::build26785313::kPersonalGoldCapabilityV2 &&

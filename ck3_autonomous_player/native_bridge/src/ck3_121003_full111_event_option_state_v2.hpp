@@ -33,6 +33,15 @@ struct Evidence {
     Owner owner;
     std::uint64_t wall = 0, mono = 0;
 };
+inline constexpr std::uint64_t kMaximumPreparedLeaseMillis = 60000;
+
+inline std::uint64_t PreparedLeaseMonotonicDeadline(std::uint64_t deadline, std::uint64_t wall,
+    std::uint64_t mono) noexcept {
+    if (!wall || deadline <= wall) return 0;
+    const auto remaining = deadline - wall;
+    return remaining <= kMaximumPreparedLeaseMillis ? mono + remaining : 0;
+}
+
 struct Lease {
     Evidence evidence;
     Target target;
@@ -48,18 +57,18 @@ public:
 
     bool accepts_renderer(const Request &request, const Evidence &renderer, const Owner &owner) const noexcept {
         return request.lineage == renderer.lineage && LaterOnOwner(owner, renderer.owner) &&
-            SameCore(request.expected, renderer.core) && request.deadline_unix_ms == renderer.wall;
+            SameCore(request.expected, renderer.core);
     }
 
     bool prepare(const Request &request, const Evidence &renderer, const Owner &owner, std::uint64_t mono) {
-        if (!accepts_renderer(request, renderer, owner) || prior_instance(request.target, owner) ||
+        if (!mono || !accepts_renderer(request, renderer, owner) || prior_instance(request.target, owner) ||
             unresolved() || sequence_ == (std::numeric_limits<std::uint64_t>::max)()) return false;
         if (lease_ && lease_->evidence.lineage.renderer_request_id == request.lineage.renderer_request_id &&
             lease_->evidence.owner.connection == owner.connection) return false;
         auto lineage = request.lineage;
         lineage.prepare_request_id = request.request_id;
         lineage.lease_sequence = sequence_ + 1;
-        lease_ = Lease{{std::move(lineage), request.expected, owner, renderer.wall, mono}, request.target};
+        lease_ = Lease{{std::move(lineage), request.expected, owner, request.deadline_unix_ms, mono}, request.target};
         ++sequence_;
         return true;
     }

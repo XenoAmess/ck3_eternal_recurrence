@@ -11,6 +11,8 @@ inline constexpr std::array<std::string_view, 3> kFull111EventOptionCapabilities
     "game.query.prepare-current-ordinary-event-option.26785313.v2",
     "game.command.select-current-ordinary-event-option.26785313.v2",
     "game.query.current-ordinary-event-queue.26785313.v2"};
+inline constexpr std::string_view kFull111EventOptionPreparedLifetimeCapability267V2 =
+    "game.query.current-ordinary-event-option-prepared-lifetime.26785313.v2";
 inline constexpr std::string_view kFull111EventOptionRequestSchema267V2 =
     "ck3.full111.ordinary_event_option_request.v2";
 inline constexpr std::string_view kFull111EventOptionResultSchema267V2 =
