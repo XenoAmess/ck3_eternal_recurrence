@@ -200,9 +200,9 @@ public final class GovernancePolicies {
         public Council(GovernanceObservationSupplier supplier, ExactRef source) { super(supplier, source, PlanningStage.COUNCIL); }
         /** Called by OrdinaryCorePolicy at the original Council19 point, before cross-focus/marriage. */
         public Decision evaluateCoreCouncil(PlanningRequest request, Draft previous) {
-            Read<Durable> durableRead = supplier.durable(request);
-            if (durableRead instanceof Unavailable<Durable> unavailable) return missing(unavailable.reason());
-            Durable state = ((Known<Durable>) durableRead).value(); state.bind(request);
+            Read<CouncilState> councilRead = GovernanceObservationSupplier.councilState(supplier, request);
+            if (councilRead instanceof Unavailable<CouncilState> unavailable) return missing(unavailable.reason());
+            CouncilState state = ((Known<CouncilState>) councilRead).value(); state.bind(request);
             if (state.council().isEmpty()) return missing("actual council domain body is unimported");
             if (state.council().orElseThrow().status() != DomainStatus.KNOWN_CLEAR) return pending(state.council().orElseThrow());
             if (!request.observations().bridgeCapabilities().containsAll(Set.of("game.query.council-composition-candidates-v1", "game.action.assign-councillor-v1")))
@@ -218,15 +218,16 @@ public final class GovernancePolicies {
         }
         @Override public Decision evaluate(PlanningRequest request, Draft previous) {
             if (!advance(previous)) return new NotApplicable("normal council runs only before an otherwise selected life advance");
-            Read<Durable> durableRead = supplier.durable(request);
-            if (durableRead instanceof Unavailable<Durable> unavailable) return missing(unavailable.reason());
-            Durable state = ((Known<Durable>) durableRead).value(); state.bind(request);
+            Read<CouncilState> councilRead = GovernanceObservationSupplier.councilState(supplier, request);
+            if (councilRead instanceof Unavailable<CouncilState> unavailable) return missing(unavailable.reason());
+            CouncilState state = ((Known<CouncilState>) councilRead).value(); state.bind(request);
             if (state.cadence().isEmpty()) return missing("actual optional cadence body is unimported");
             if (state.council().isEmpty()) return missing("actual council domain body is unimported");
             if (state.council().orElseThrow().status() != DomainStatus.KNOWN_CLEAR) return pending(state.council().orElseThrow());
             if (!request.observations().paused() || !request.observations().mapReady() || request.observations().foregroundPresent())
                 return new Keep("the original council ordinary scene is unavailable");
-            if (deferred(state, CadenceModels.Domain.COUNCIL, request)) return new Keep("council optional review is deferred by the existing cadence");
+            if (OptionalCheckCadence.deferred(state.cadence().orElseThrow(), CadenceModels.Domain.COUNCIL, frame(request)).isPresent())
+                return new Keep("council optional review is deferred by the existing cadence");
             Obj detail = previous.detail().with("council_original_state", state.council().orElseThrow().originalBody()); boolean complete = true;
             // The actual legacy producer retains validated FOLLOW JSON; it does not manufacture an ActionReceipt.
             Value retainedApplied = state.council().orElseThrow().originalBody().get("applied");
@@ -300,7 +301,7 @@ public final class GovernancePolicies {
         return detail.with("council_job_progress_observations", new Arr(observations));
     }
 
-    private static Decision technicalRead(PlanningRequest request, Draft previous, Durable state, Obj detail,
+    private static Decision technicalRead(PlanningRequest request, Draft previous, CouncilState state, Obj detail,
             Unavailable<CouncilSelection.Query> unavailable, CouncilSelection.Position role) {
         if (unavailable.councilTechnicalReadFailure().isEmpty()) return Policy.missing(unavailable.reason());
         var failure = unavailable.councilTechnicalReadFailure().orElseThrow();

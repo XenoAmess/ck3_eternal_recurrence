@@ -124,6 +124,19 @@ public final class GovernanceStateSupplier implements GovernanceCollector.StateS
             });
         } catch (IOException error) { return new Unavailable<>("actual continuity domain body read unavailable: " + error.getMessage()); }
     }
+    @Override public Read<CouncilState> councilState(PlanningRequest request) {
+        if (borrowed.isEmpty()) return CouncilState.from(read(request));
+        try {
+            return session(request, same -> {
+                ExactRef head = same.persistedHead();
+                List<ExactRef> originals = new ArrayList<>();
+                Optional<CadenceModels.State> cadenceState = body(same, cadence, request, head, originals);
+                Optional<DomainState> councilState = body(same, council, request, head, originals);
+                if (originals.isEmpty()) originals.add(head);
+                return new Known<>(new CouncilState(request.before(), request.sessionId(), cadenceState, councilState), originals);
+            });
+        } catch (IOException error) { return new Unavailable<>("actual continuity domain body read unavailable: " + error.getMessage()); }
+    }
     private static <T> Optional<T> body(ContinuityStorePort.Session session, Optional<BodyContract<T>> installed,
             PlanningRequest request, ExactRef head, List<ExactRef> originals) throws IOException {
         if (installed.isEmpty()) return Optional.empty(); BodyContract<T> contract = installed.orElseThrow();

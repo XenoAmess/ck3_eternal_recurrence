@@ -34,7 +34,7 @@ import static org.xar.ck3.control.application.planning.governance.GovernanceObse
 import static org.xar.ck3.control.planning.opportunity.OpportunityJson.*;
 
 /** Actual Java collection sequence over the sole guarded read transport. It does not implement another native client. */
-public final class GovernanceCollector implements GovernanceObservationSupplier {
+public final class GovernanceCollector implements GovernanceObservationSupplier.CouncilStateReader {
     /** Partial readonly Opening DATA has no legacy campaign ROOT or final-action qualification. */
     public record ReadOnlyOpening(Obj scope,Obj query) {
         public ReadOnlyOpening {Objects.requireNonNull(scope);Objects.requireNonNull(query);}
@@ -48,6 +48,7 @@ public final class GovernanceCollector implements GovernanceObservationSupplier 
     @FunctionalInterface public interface CrownCooldownReadPort { Read<org.xar.ck3.control.wave3.governance.crowncooldown.CrownCooldownCodec.ClockRequest> read(PlanningRequest request); }
     @FunctionalInterface public interface StateSupplier {
         Read<Durable> read(PlanningRequest request);
+        default Read<CouncilState> councilState(PlanningRequest request) { return CouncilState.from(read(request)); }
         default Read<org.xar.ck3.control.wave3.governance.crownretry.CrownRetryCodec.MatchRequest> crownRetry(PlanningRequest request, String lawKey) {
             return new Unavailable<>("the actual Crown retry body decoder is not installed");
         }
@@ -127,6 +128,11 @@ public final class GovernanceCollector implements GovernanceObservationSupplier 
     @Override public Read<Durable> durable(PlanningRequest request) {
         Read<Durable> read = Objects.requireNonNull(states.read(request));
         if (read instanceof Known<Durable> known) known.value().bind(request);
+        return read;
+    }
+    @Override public Read<CouncilState> councilState(PlanningRequest request) {
+        Read<CouncilState> read = Objects.requireNonNull(states.councilState(request));
+        if (read instanceof Known<CouncilState> known) known.value().bind(request);
         return read;
     }
 

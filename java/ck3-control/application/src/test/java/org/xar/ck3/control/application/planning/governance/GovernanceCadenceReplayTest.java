@@ -84,6 +84,40 @@ final class GovernanceCadenceReplayTest {
         assertEquals(2,actual.calls);assertEquals(0,session.pinChecks);
         assertEquals(1,GovernanceCadencePublication.reduce(material.actualReplayedPlan()).row(CadenceModels.Domain.FEAST).consecutiveNoAction());
     }
+    @Test void councilReplaysTheActualCadenceAndCouncilOriginalsWithoutFullState() throws Exception {
+        var session = new Session();
+        var request = request();
+        var councilRef = new ExactRef("synthetic-council-body.json", 17, "d".repeat(64));
+        var stateReads = new AtomicInteger();
+        class ActualCouncilReads extends GovernanceFixtures.Supplier implements CouncilStateReader {
+            ActualCouncilReads(PlanningRequest original) { super(original); }
+            @Override public Read<Durable> durable(PlanningRequest actualRequest) {
+                throw new AssertionError("Council must use its own original state");
+            }
+            @Override public Read<CouncilState> councilState(PlanningRequest actualRequest) {
+                assertSame(request, actualRequest);
+                stateReads.incrementAndGet();
+                return new Known<>(new CouncilState(state.observed(), state.sessionId(), state.cadence(), state.council()),
+                        List.of(session.body.payload(), councilRef));
+            }
+        }
+        var actual = new ActualCouncilReads(request);
+        var replay = new GovernanceCadenceReplay(() -> session, same -> assertSame(session, same), (same, ref) -> {
+            assertEquals(session.body.payload(), ref);
+            return session.original;
+        });
+        var policy = replay.record(new GovernancePolicies.Council(replay.observe(actual), REF));
+        var produced = assertInstanceOf(OrdinaryPolicy.Replace.class, policy.evaluate(request, advance(request)));
+        var plan = GovernanceCadencePublication.fromDetail(produced.draft().detail()).orElseThrow();
+        assertEquals(List.of(CadenceModels.Domain.COUNCIL), plan.completeNoActionDomains());
+        var evidence = replay.originals(request, planned(request, policy, produced.draft()), plan);
+        assertEquals(List.of(session.body.payload(), councilRef, REF), evidence);
+        var material = replay.replay(session.head(), session.body, plan, evidence);
+        assertEquals(plan, material.actualReplayedPlan());
+        assertEquals(1, stateReads.get(), "recorded typed Council state is consumed again only as DATA");
+        assertThrows(IllegalArgumentException.class,
+                () -> replay.replay(session.head(), session.body, plan, List.of(session.body.payload(), REF)));
+    }
     @Test void handwrittenPlanHasNoPrivateProducerTranscriptAndCannotQualify() {
         var session=new Session();var replay=new GovernanceCadenceReplay(()->session,same->{},(same,ref)->session.original);var request=actualRequest();
         var plan=GovernanceCadencePublication.fromDetail(GovernanceCadencePublication.append(new Obj(Map.of()),CadenceModels.Domain.FEAST,request,

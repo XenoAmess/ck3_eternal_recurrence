@@ -19,6 +19,12 @@ import org.xar.ck3.control.wave3.governance.lifestylehistory.LifestyleHistory;
 /** Domain I/O seam. Missing producer/state evidence is explicit, never an empty ledger or permission. */
 public interface GovernanceObservationSupplier {
     Read<Durable> durable(PlanningRequest request);
+    interface CouncilStateReader extends GovernanceObservationSupplier {
+        Read<CouncilState> councilState(PlanningRequest request);
+    }
+    static Read<CouncilState> councilState(GovernanceObservationSupplier supplier, PlanningRequest request) {
+        return supplier instanceof CouncilStateReader focused ? focused.councilState(request) : CouncilState.from(supplier.durable(request));
+    }
     Read<Life> lifestyle(PlanningRequest request, String preferredFocus, boolean opening);
     Read<OpeningComparison> openingComparison(PlanningRequest request);
     Read<CouncilSelection.Query> council(PlanningRequest request, CouncilSelection.Position position);
@@ -80,6 +86,21 @@ public interface GovernanceObservationSupplier {
             this(episodeRunId, dateRaw, stage, action, checkpoint, List.of());
         }
     }
+    /** Council's cadence and retained intent, for the same original planning observation. */
+    record CouncilState(ObservationIdentity observed, String sessionId, Optional<CadenceModels.State> cadence,
+            Optional<DomainState> council) {
+        public CouncilState {
+            Objects.requireNonNull(observed); StrictJson.text(sessionId); Objects.requireNonNull(cadence); Objects.requireNonNull(council);
+        }
+        public void bind(PlanningRequest request) { bindState(request, observed, sessionId, cadence); }
+        static Read<CouncilState> from(Read<Durable> full) {
+            if (full instanceof Unavailable<Durable> unavailable)
+                return new Unavailable<>(unavailable.reason(), unavailable.councilTechnicalReadFailure());
+            var known = (Known<Durable>) full;
+            var value = known.value();
+            return new Known<>(new CouncilState(value.observed(), value.sessionId(), value.cadence(), value.council()), known.originals());
+        }
+    }
     /** Read under the sole continuity store lock; the domain adapters never publish it. */
     record Durable(ObservationIdentity observed, String sessionId, Optional<CadenceModels.State> cadence,
             Optional<OpeningGate> opening, Optional<DomainState> council, Optional<DomainState> crown) {
@@ -87,12 +108,14 @@ public interface GovernanceObservationSupplier {
             Objects.requireNonNull(observed); StrictJson.text(sessionId); Objects.requireNonNull(cadence);
             Objects.requireNonNull(opening); Objects.requireNonNull(council); Objects.requireNonNull(crown);
         }
-        public void bind(PlanningRequest request) {
-            StrictJson.require(observed.equals(request.before()) && sessionId.equals(request.sessionId()),
-                    "durable state crossed the current Game/session/frame");
-            cadence.ifPresent(state -> StrictJson.require(state.episodeRunId().equals(request.before().frame().episodeRunId()),
-                    "cadence state must be reduced for the current episode by its producer"));
-        }
+        public void bind(PlanningRequest request) { bindState(request, observed, sessionId, cadence); }
+    }
+    private static void bindState(PlanningRequest request, ObservationIdentity observed, String sessionId,
+            Optional<CadenceModels.State> cadence) {
+        StrictJson.require(observed.equals(request.before()) && sessionId.equals(request.sessionId()),
+                "durable state crossed the current Game/session/frame");
+        cadence.ifPresent(state -> StrictJson.require(state.episodeRunId().equals(request.before().frame().episodeRunId()),
+                "cadence state must be reduced for the current episode by its producer"));
     }
     record Life(LifestyleConsumer.Request input, LifestyleHistory.Input history, OpportunityJson.Obj originalQuery) {
         public Life { Objects.requireNonNull(input); Objects.requireNonNull(history); Objects.requireNonNull(originalQuery); }

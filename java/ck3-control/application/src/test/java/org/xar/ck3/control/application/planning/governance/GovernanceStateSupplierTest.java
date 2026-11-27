@@ -31,6 +31,7 @@ final class GovernanceStateSupplierTest {
     private static final String CROWN_SCHEMA = "unit-original-crown-state/v1";
     private static final class Store implements ContinuityStorePort, ContinuityStorePort.Session {
         final EnumMap<DomainBodies.Slot, DomainBodies.Available> bodies = new EnumMap<>(DomainBodies.Slot.class);
+        final List<DomainBodies.Slot> domainReads = new ArrayList<>();
         ContinuityState state; int locks; int mutations; int custodyChecks;
         ExactRef currentHead=REF; boolean replayPins; ExactRef forbiddenPin; final List<ExactRef> capturedPins=new ArrayList<>(); int verifiedPins;
         Store() {
@@ -60,6 +61,7 @@ final class GovernanceStateSupplierTest {
         @Override public Head head() { return new Head(state, List.of(), List.of(), List.of(), false); }
         @Override public ExactRef persistedHead() { return currentHead; }
         @Override public DomainBodies.Read readDomain(DomainBodies.Slot slot) {
+            domainReads.add(slot);
             var value = bodies.get(slot); return value == null ? new DomainBodies.Unavailable(DomainBodies.Reason.UNIMPORTED, Optional.of(REF), "unit slot unimported") : value;
         }
         @Override public Prepared preview(Request request) { mutations++; throw new AssertionError("read-only supplier cannot preview a mutation"); }
@@ -91,6 +93,29 @@ final class GovernanceStateSupplierTest {
         assertEquals(DomainStatus.PENDING, state.crown().orElseThrow().status());
         assertEquals(original, state.crown().orElseThrow().originalBody()); assertTrue(state.crown().orElseThrow().latest().isEmpty());
         assertEquals(pending, state.crown().orElseThrow().legacyPending().orElseThrow()); assertEquals(1, store.locks); assertEquals(0, store.mutations);
+    }
+    @Test void borrowedCouncilStateUsesOnlyItsRequiredOriginalsAndKeepsTheFullContract() {
+        var store = new Store();
+        store.install(DomainBodies.Slot.OPTIONAL_CADENCE, CadenceModels.SCHEMA,
+                CadenceJson.writeState(CadenceModels.State.empty("unit-episode")), List.of(REF));
+        store.install(DomainBodies.Slot.COUNCIL, COUNCIL_SCHEMA, encode(clearCouncil()), List.of(REF));
+        store.install(DomainBodies.Slot.CROWN, CROWN_SCHEMA, encode(clearCrown().with("pending", new Bool(false))), List.of(REF));
+        var scope = new GovernanceBorrowedSession(store, Path.of("unit-writer.lock"), same -> assertSame(store, same));
+        var reader = new GovernanceStateSupplier(scope, Optional.of(GovernanceStateSupplier.cadence(List.of(REF))), Optional.empty(),
+                Optional.of(GovernanceStateSupplier.legacyCouncil(COUNCIL_SCHEMA, List.of(REF))),
+                Optional.of(GovernanceStateSupplier.legacyCrown(CROWN_SCHEMA, List.of(REF))), request -> new Unavailable<>("unit retry absent"));
+        var selected = (Known<CouncilState>) reader.councilState(request());
+        assertEquals(DomainStatus.KNOWN_CLEAR, selected.value().council().orElseThrow().status());
+        assertEquals(List.of(DomainBodies.Slot.OPTIONAL_CADENCE, DomainBodies.Slot.COUNCIL), store.domainReads);
+        assertEquals(store.domainReads.stream().map(slot -> store.bodies.get(slot).reference().payload()).toList(), selected.originals());
+        assertThrows(IllegalArgumentException.class, () -> reader.read(request()), "full read retains the unrelated malformed-domain failure");
+        assertThrows(IllegalArgumentException.class, () -> supplier(store).councilState(request()), "legacy writer keeps the full read and its original failures");
+
+        store.bodies.remove(DomainBodies.Slot.COUNCIL);
+        assertTrue(((Known<CouncilState>) reader.councilState(request())).value().council().isEmpty());
+        store.install(DomainBodies.Slot.COUNCIL, COUNCIL_SCHEMA, encode(clearCouncil().with("pending", new Bool(false))), List.of(REF));
+        assertThrows(IllegalArgumentException.class, () -> reader.councilState(request()), "malformed required Council data must not become clear");
+        assertEquals(0, store.mutations);
     }
     @Test void historicalProducerTraceIsRetainedButWrongHeadIsRejectedBeforeDecoding() {
         var historical = new ExactRef("unit-unavailable-historical-code", 1, "b".repeat(64));

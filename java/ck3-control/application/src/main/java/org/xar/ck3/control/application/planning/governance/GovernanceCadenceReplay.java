@@ -49,7 +49,8 @@ public final class GovernanceCadenceReplay implements GovernanceCadencePublicati
         }
     }
     private static final class Transcript {
-        final Tape<Durable> durable=new Tape<>();final Tape<Life> life=new Tape<>();final Tape<OpeningComparison> comparison=new Tape<>();
+        final Tape<Durable> durable=new Tape<>();final Tape<CouncilState> councilState=new Tape<>();
+        final Tape<Life> life=new Tape<>();final Tape<OpeningComparison> comparison=new Tape<>();
         final Tape<CouncilSelection.Query> council=new Tape<>();final Tape<CouncilSelection.Query> coreCouncil=new Tape<>();final Tape<CouncilRoot> councilRoot=new Tape<>();
         final Tape<CrownRetryDue.VerifiedDue> retryDue=new Tape<>();
         final Tape<Crown> crown=new Tape<>();final Tape<CrownRetryCodec.MatchRequest> retry=new Tape<>();final Tape<CrownCooldownCodec.ClockRequest> cooldown=new Tape<>();
@@ -57,7 +58,7 @@ public final class GovernanceCadenceReplay implements GovernanceCadencePublicati
         final Tape<FeastObservationSupplier.Hosted> hosted=new Tape<>();final Tape<Obj> root=new Tape<>();
         final Tape<OrdinaryFinanceCollector.Spending> spending=new Tape<>();final Tape<OrdinaryFinanceCollector.Feast> feast=new Tape<>();
         final Tape<ActivityConfigurationModels.StageOne> one=new Tape<>();final Tape<ActivityConfigurationModels.StageTwo> two=new Tape<>();final Tape<ActivityConfigurationModels.Location> location=new Tape<>();
-        List<Tape<?>> all() { return List.of(durable,life,comparison,council,coreCouncil,councilRoot,crown,retry,retryDue,cooldown,feastState,planner,hosted,root,spending,feast,one,two,location); }
+        List<Tape<?>> all() { return List.of(durable,councilState,life,comparison,council,coreCouncil,councilRoot,crown,retry,retryDue,cooldown,feastState,planner,hosted,root,spending,feast,one,two,location); }
         List<ExactRef> originals() { return all().stream().flatMap(tape->tape.originals().stream()).distinct().toList(); }
         void reset() { all().forEach(Tape::reset); }
         void consumed() { all().forEach(Tape::consumed); }
@@ -78,8 +79,11 @@ public final class GovernanceCadenceReplay implements GovernanceCadencePublicati
     }
     private Transcript transcript() { Active scope=active.get();return scope==null?new Transcript():scope.transcript(); }
     public GovernanceObservationSupplier observe(GovernanceObservationSupplier actual) {
-        Objects.requireNonNull(actual);return new GovernanceObservationSupplier() {
+        Objects.requireNonNull(actual);return new CouncilStateReader() {
             public Read<Durable> durable(PlanningRequest request) {return read(transcript().durable,Empty.INSTANCE,()->actual.durable(request));}
+            public Read<CouncilState> councilState(PlanningRequest request) {
+                return read(transcript().councilState,Empty.INSTANCE,()->GovernanceObservationSupplier.councilState(actual,request));
+            }
             public Read<Life> lifestyle(PlanningRequest request,String focus,boolean opening) {return read(transcript().life,new LifeArguments(focus,opening),()->actual.lifestyle(request,focus,opening));}
             public Read<OpeningComparison> openingComparison(PlanningRequest request) {return read(transcript().comparison,Empty.INSTANCE,()->actual.openingComparison(request));}
             public Read<CouncilSelection.Query> council(PlanningRequest request,CouncilSelection.Position position) {return read(transcript().council,new PositionArguments(position),()->actual.council(request,position));}

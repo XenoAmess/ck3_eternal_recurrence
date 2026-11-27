@@ -105,7 +105,7 @@ final class GovernanceFixtures {
         return new GovernanceObservationSupplier.Crown(nativeRead,
                 object(parse(org.xar.ck3.control.governance.crownauthority.CrownAuthorityCodec.encodeReadback(nativeRead)), "Crown readback"));
     }
-    static final class Supplier implements GovernanceObservationSupplier {
+    static class Supplier implements GovernanceObservationSupplier {
         Durable state; int lifeReads; int councilReads; final List<String> focusTargets = new ArrayList<>();
         boolean missingState; final EnumMap<CouncilSelection.Position, CouncilSelection.Query> councils = new EnumMap<>(CouncilSelection.Position.class);
         Supplier(PlanningRequest request) { state = GovernanceFixtures.durable(request); }
