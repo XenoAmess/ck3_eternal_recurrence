@@ -17,6 +17,7 @@ import org.xar.ck3.control.application.action.ObservationProvenance;
 import org.xar.ck3.control.application.action.CommandExpectation;
 import org.xar.ck3.control.application.action.CommandOrigin;
 import org.xar.ck3.control.application.action.NativeActionPort;
+import org.xar.ck3.control.application.action.RawJson;
 import org.xar.ck3.control.application.action.ActionPorts;
 import org.xar.ck3.control.application.action.ContinuityActionJournal;
 import org.xar.ck3.control.application.action.CompositeOperatorQuarantineObservation;
@@ -34,6 +35,8 @@ import org.xar.ck3.control.application.driver.DriverObservationEvidenceReader;
 import org.xar.ck3.control.application.driver.DriverSnapshotFacts;
 import org.xar.ck3.control.application.effects.RootGuardEvidence;
 import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService;
+import org.xar.ck3.control.application.checkpoint.SavedAttachmentAuthority;
+import org.xar.ck3.control.application.checkpoint.SavedAttachmentSourceStore;
 import org.xar.ck3.control.application.checkpoint.RestoreCheckpointService.RestoreBinding;
 import org.xar.ck3.control.application.lifecycle.LifecycleEpisodeInputs;
 import org.xar.ck3.control.application.lifecycle.LifecycleHistoricalPublication;
@@ -6389,6 +6392,74 @@ public final class ContinuityBatchJournal implements BatchJournal {
     @Override public CompletedCycleProof settleCycle(SessionIdentity owner, ActionReceipt receipt, SemanticEvidence semantic) throws IOException {
         return store.locked(session -> transitions.withLocked(session, () -> transitions.settle(session, owner, receipt, semantic)));
     }
+    /** Existing attachment DATA for ordinary recovery. It conveys no cycle admission, current SEM or domain authority. */
+    public record ImportedRestoreRebindReadback(WriterContracts.HistoricalTransition attachment,
+            SavedAttachmentSourceStore.ImportedRecoveryBasis recoveryBasis,SavedAttachmentSourceStore.ImportedOrigin importedOrigin,
+            CheckpointPair savedPair,RawJson departedCycle,ExactRef departedActionHead) { }
+
+    /** Requires the exact immediate clean imported attachment on this journal's already borrowed writer. */
+    public ImportedRestoreRebindReadback readImportedRestoreRebind(ContinuityStorePort.Session same,
+            WriterContracts.Pin actualAttachment)throws IOException {
+        store.requireSession(same);
+        var head=same.head();
+        if(head.snapshotNeedsRecovery()||!head.indexRepairs().isEmpty())
+            throw new IOException("Imported REBIND readback requires an immediate clean attachment head");
+        var edge=same.readHistoricalTransition(actualAttachment);
+        if(!SavedAttachmentAuthority.KIND.equals(edge.kind())||edge.sequence()!=head.state().sequence()
+                ||!ContinuityJson.digest(edge.after().toJson()).equals(head.digest()))
+            throw new IOException("Imported REBIND readback requires the exact immediate committed attachment");
+        try {
+            var details=ContinuityJson.parseObject(edge.details(),ContinuityJson.DOCUMENT_MAX_BYTES);
+            var basis=SavedAttachmentSourceStore.importedRecoveryBasis(details)
+                    .orElseThrow(()->new IOException("Imported attachment has no original committed recovery basis"));
+            var sources=SavedAttachmentSourceStore.Sources.decode(details.get(SavedAttachmentSourceStore.SOURCES_DETAIL));
+            var imported=sources.importedOrigin().orElseThrow(()->new IOException("Ordinary REBIND readback needs its explicit imported SAVE origin"));
+            var pair=CheckpointPairCodec.decode(ContinuityJson.canonical(details.get(SavedAttachmentAuthority.PAIR_DETAIL)));
+            var before=edge.before().toJson();var after=edge.after().toJson();
+            var cycle=ContinuityJson.object(before.get(WriterContracts.ORDINARY_CYCLE_FIELD));
+            var opening=ContinuityJson.object(after.get("latest_binding"));
+            var departed=basis.departed();var successor=basis.successor();
+            if(!departed.equals(imported.owner())||!importedSavedInterruptedFrontier(edge.before(),departed)
+                    ||!ContinuityJson.same(cycle,after.get(WriterContracts.ORDINARY_CYCLE_FIELD))
+                    ||after.has(WriterContracts.ORDINARY_IMPORTED_CYCLE_ORIGIN_FIELD)
+                    ||!ContinuityJson.same(after.get("last_current_saved_cold"),details)
+                    ||!basis.predecessorDigest().equals(ContinuityJson.digest(before))||basis.predecessorSequence()!=edge.before().sequence()
+                    ||!basis.requestId().equals(StrictJson.text(details.get("evidence_id")))
+                    ||!successor.machineId().equals(edge.after().machineId())||!ContinuityJson.same(successor.game().toJson(),after.get("game_binding"))
+                    ||!successor.machineId().equals(StrictJson.text(opening.get("machine_id")))
+                    ||!successor.sessionId().equals(StrictJson.text(opening.get("session_id")))
+                    ||!ContinuityJson.same(successor.game().toJson(),opening.get("game"))
+                    ||!pair.save().equals(sources.physicalSaveWitness().orElse(null))
+                    ||!basis.secondNative().reference().equals(sources.restoredNative())
+                    ||!sources.restoredNative().equals(ExactRef.fromJson(opening.get("original_native_packet"))))
+                throw new IOException("Imported attachment changed its exact departed cycle, successor, physical SAVE or original READ role");
+            StrictJson.integer(details.get("new_ordinary_cycle_credit"),0,0);
+            StrictJson.integer(details.get("game_day_credit"),0,0);
+            if(!edge.before().origin().equals(edge.after().origin())||edge.before().settledCycles()!=edge.after().settledCycles()
+                    ||edge.before().settledDateRaw()!=edge.after().settledDateRaw()
+                    ||pair.frame().frame().identity().dateRaw().longValueExact()!=edge.after().settledDateRaw()
+                    ||!details.get("original_actions_replayed").isBoolean()||details.get("original_actions_replayed").booleanValue()
+                    ||!details.get("window_origin_reset").isBoolean()||details.get("window_origin_reset").booleanValue())
+                throw new IOException("Imported REBIND readback must preserve the original confirmed SAVE frontier and zero credit");
+            var actionHead=ContinuityActionJournal.recordHead(edge.before()).orElseThrow(()->new IOException("Original departed action head is unavailable"));
+            if(ContinuityActionJournal.recordHead(edge.after()).filter(actionHead::equals).isEmpty())
+                throw new IOException("Imported attachment changed the original departed action head");
+            var entry=same.readHistoricalTransition(imported.targetEntry());
+            var marker=ContinuityJson.object(before.get(SavedContinuityBootstrap.FIELD));
+            var saved=SavedContinuityBootstrap.request(marker);
+            if(!pair.equals(CheckpointPairCodec.decode(ContinuityJson.canonical(marker.get("checkpoint_pair"))))
+                    ||!ExactRef.fromJson(marker.get("confirmation_reference")).equals(imported.physicalConfirmation().reference())
+                    ||!ContinuityJson.same(marker,after.get(SavedContinuityBootstrap.FIELD)))
+                throw new IOException("Imported REBIND readback lost the original confirmed Saved entry and confirmation");
+            requireImportedSavedEntry(same,entry,saved,marker,edge.before(),pair,
+                    org.xar.ck3.control.g2.planning.ProposalLifecycleCodec.decodeObservation(marker.get("opening")),edge.before().settledCycles());
+            same.verifyPin(imported.physicalConfirmation());
+            if(!head.digest().equals(same.head().digest()))throw new IOException("Imported REBIND readback changed the canonical head");
+            store.requireSession(same);
+            return new ImportedRestoreRebindReadback(edge,basis,imported,pair,new RawJson(ContinuityJson.canonical(cycle)),actionHead);
+        } catch(IllegalArgumentException|java.time.DateTimeException invalid){throw new IOException("Invalid imported REBIND attachment DATA",invalid);}
+    }
+
     /** Root cannot construct this admission from JSON, a SAVE ACK or a public record constructor. */
     public static final class ReboundCycle {
         private final ContinuityBatchJournal issuer;
