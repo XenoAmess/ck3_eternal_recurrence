@@ -423,6 +423,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
 
     private static final String SETTLED_SAME_GAME_OPERATION = "SETTLED_SAME_GAME_RECOVERY";
     private final ThreadLocal<WriterContracts.HistoricalTransition> openReadOnlyRecovery = new ThreadLocal<>();
+    private final ThreadLocal<ActionReceipt> settledExternalEvent = new ThreadLocal<>();
 
     /** Consume one actual unfinished read-only batch; its original STARTED fact remains canonical. */
     WriterContracts.Receipt commitSettledSameGameRecovery(ContinuityStorePort.Session same,
@@ -473,6 +474,48 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         }
     }
 
+    /** The named journal has replayed the already settled event and the following unissued batch. */
+    void recoverSettledExternalEvent(ContinuityStorePort.Session same, SessionIdentity owner, ActionReceipt actual,
+            SemanticEvidence retained, SemanticEvidence fresh, long nextSequence) throws IOException {
+        StrictJson.require(active.get() == same && settledExternalEvent.get() == null,
+                "settled named event recovery requires its one original writer scope");
+        var head = same.head();
+        var branch = state(head.state(), owner);
+        settledExternalEvent.set(actual);
+        try {
+            requireSettledRecoveryFrontier(head.state(), owner, branch);
+            StrictJson.require(load(branch.head().orElseThrow()).semantic().equals(retained),
+                    "settled named event recovery changed its completed cycle");
+            String batch = StrictJson.text(head.state().toJson().get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD).get("batch_id"));
+            publishSettledSameGameRecovery(same, head, owner, branch, batch, nextSequence, fresh,
+                    List.of(archive.receiptReferenceOf(actual)));
+        } finally {
+            settledExternalEvent.remove();
+        }
+    }
+
+    SemanticEvidence verifySettledExternalEvent(ContinuityStorePort.Session same, WriterContracts.HistoricalTransition edge,
+            SessionIdentity owner, ActionReceipt actual, WriterContracts.Request request) throws IOException {
+        StrictJson.require(active.get() == same && request.kind().equals(CYCLE_KIND),
+                "settled named event replay requires its original writer scope");
+        var details = request.detailsObject();
+        strictCycle(details);
+        var ref = ExactRef.fromJson(details.get("receipt_ref"));
+        var recordRef = ExactRef.fromJson(details.get("cycle_record_ref"));
+        var originals = archive.withSession(same);
+        var branch = state(edge.before(), owner);
+        var semantic = semanticFromJson(details.get("semantic"));
+        var verified = verify(same, owner, semantic);
+        var record = CycleRecord.fromJson(details.get("cycle_record"));
+        StrictJson.require(text(details, "operation").equals("SETTLE")
+                && originals.receiptReferenceOf(actual).equals(ref)
+                && originals.loadMaterial(recordRef).equals(new RawJson(ContinuityJson.canonical(record.toJson()))),
+                "settled named event changed its actual archived receipt or cycle record");
+        freshAfter(actual, verified);
+        requireRecord(branch, ref, actual, semantic, record);
+        return semantic;
+    }
+
     /** Recover an already completed dirty cycle; no action or cycle is executed again. */
     WriterContracts.Receipt commitSettledSameGameRecovery(ContinuityStorePort.Session same,
             ContinuityBatchJournal.SettledSameGameData data, SemanticEvidence semantic) throws IOException {
@@ -496,20 +539,28 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         var boundary = head.state().toJson().get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD);
         StrictJson.require(StrictJson.text(boundary.get("batch_id")).equals(data.controller().batchPrefix()
                 + "-" + (data.controller().nextBatchSequence() - 1)), "settled recovery changed its actual consumed batch sequence");
+        var refs = new ArrayList<ExactRef>(data.history());
+        canonicalActions.forEach(action -> refs.add(archive.receiptReferenceOf(action)));
+        return publishSettledSameGameRecovery(same, head, owner, branch, StrictJson.text(boundary.get("batch_id")),
+                data.controller().nextBatchSequence(), semantic, refs);
+    }
+
+    private WriterContracts.Receipt publishSettledSameGameRecovery(ContinuityStorePort.Session same, WriterContracts.Head head,
+            SessionIdentity owner, CycleState branch, String batch, long nextSequence, SemanticEvidence semantic,
+            List<ExactRef> history) throws IOException {
         ObjectNode row = StrictJson.object();
         row.put("evidence_id", "settled-same-game:" + head.digest());
         row.put("source", "java-settled-same-game-recovery/v1");
         row.set("session", sessionToJson(owner));
         row.put("operation", SETTLED_SAME_GAME_OPERATION);
         row.put("predecessor_head_digest", head.digest());
-        row.put("batch_id", StrictJson.text(boundary.get("batch_id")));
-        row.put("next_sequence", data.controller().nextBatchSequence());
+        row.put("batch_id", batch);
+        row.put("next_sequence", nextSequence);
         row.set("cycle_record_ref", branch.head().orElseThrow().toJson());
         row.set("semantic", semanticToJson(semantic));
-        var refs = new ArrayList<ExactRef>(data.history());
+        var refs = new ArrayList<ExactRef>(history);
         refs.addAll(semantic.references());
         refs.add(branch.head().orElseThrow());
-        canonicalActions.forEach(action -> refs.add(archive.receiptReferenceOf(action)));
         var request = new WriterContracts.Request(CYCLE_KIND, ContinuityJson.canonical(row), refs.stream().distinct().toList());
         var prepared = same.preview(request);
         var receipt = same.commit(prepared);
@@ -687,6 +738,19 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
                 && branch.pending().isEmpty() && branch.head().isPresent(),
                 "settled recovery requires a completed interrupted cycle");
         Set<ExactRef> completedReceipts = validatedBranchReceipts(branch);
+        var external = settledExternalEvent.get();
+        if (external != null) {
+            var originals = archive.withSession(active.get());
+            StrictJson.require(head.status() == ContinuityState.Status.REPAIR_REQUIRED
+                    && head.toJson().hasNonNull(WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD)
+                    && external.command().sessionId().equals(owner.sessionId())
+                    && external.command().origin().game().equals(owner.game())
+                    && completedReceipts.contains(originals.receiptReferenceOf(external))
+                    && ContinuityActionJournal.recordHead(head).map(originals::loadRecord)
+                            .map(org.xar.ck3.control.application.action.ActionRecord::receipt).filter(external::equals).isPresent(),
+                    "settled named event recovery lost the original completed event or current action frontier");
+            return;
+        }
         var actions = ContinuityActionJournal.receipts(head, archive);
         StrictJson.require(!actions.isEmpty() && actions.stream().allMatch(ActionReceipt::settled),
                 "settled recovery cannot discard an UNKNOWN or pending original");

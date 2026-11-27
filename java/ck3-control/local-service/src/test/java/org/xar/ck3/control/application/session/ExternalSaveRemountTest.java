@@ -207,6 +207,9 @@ final class ExternalSaveRemountTest {
                     getClass().getClassLoader(),
                     new Class<?>[]{org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session.class},
                     (proxy, method, args) -> {
+                        if (method.getName().equals("head"))
+                            return new WriterContracts.Head(ContinuityState.fromJson(events.get(13).get("after"), owner.machineId()),
+                                    List.of(), List.of(), List.of(), false);
                         assertEquals("requireHistoricalState", method.getName());
                         assertEquals(prior.sequence(), args[0]);
                         assertEquals(ContinuityJson.digest(prior.toJson()), args[1]);
@@ -215,6 +218,41 @@ final class ExternalSaveRemountTest {
             assertTrue(OrdinaryCycleTransitions.matchesRecordedArchivedFull111Completion(same, edge.after(), owner,
                     closure.getValue(), archive));
             assertFalse(OrdinaryCycleTransitions.matchesRecordedArchivedFull111Completion(same, edge.before(), owner, capture, archive));
+            var historyEdge = historicalEdges(events, owner.machineId(), 9, 9).getFirst();
+            var published = ContinuityBatchJournal.verifyExternalFull111Driver(historyEdge, closure.getValue());
+            assertEquals(81, historyEdge.sequence());
+            assertEquals(closure.getValue().sequence(), published.actionSequence());
+            assertEquals(closure.getValue().command(), published.command());
+            assertTrue(published.legacyRow().isEmpty());
+            assertThrows(ContractViolationException.class,
+                    () -> ContinuityBatchJournal.verifyExternalFull111Driver(historyEdge, capture));
+            var completed = historicalEdges(events, owner.machineId(), 10, 13);
+            var cycles = new OrdinaryCycleTransitions(archive, (sameWriter, actualOwner, semantic) -> {
+                assertSame(same, sameWriter);
+                assertEquals(owner, actualOwner);
+                return new OrdinaryCycleTransitions.VerifiedSemantic(semantic.frame(), semantic.observedAt(),
+                        "archived-software-fixture", semantic.semantic().sha256());
+            }, (sameWriter, actualOwner, pair, proof) -> { throw new AssertionError(); },
+                    new OriginalWindowReducer.Policy(edge.after().origin().targetDays()), known -> assertSame(same, known));
+            for (var actual : completed) {
+                var request = new WriterContracts.Request(actual.kind(), actual.details(), List.of());
+                var expected = cycles.reduce(actual.before(), request).toJson()
+                        .put("sequence", actual.sequence()).put("last_event_identity", actual.eventIdentity());
+                assertTrue(ContinuityJson.same(actual.after().toJson(), expected), "WAL sequence " + actual.sequence());
+            }
+            var settled = completed.get(1);
+            var request = new WriterContracts.Request(settled.kind(), settled.details(), List.of());
+            var retained = cycles.withLocked(same, () ->
+                    cycles.verifySettledExternalEvent(same, settled, owner, closure.getValue(), request));
+            var head = completed.getLast().after();
+            assertEquals("native:19", retained.frame().frame().snapshotId());
+            assertEquals(58, head.toJson().get(WriterContracts.ORDINARY_CYCLE_FIELD).path("completed_cycles").longValue());
+            assertEquals(56, head.settledCycles());
+            assertEquals(53179344, head.settledDateRaw());
+            assertEquals("migration121003-current131-root56-6",
+                    head.toJson().get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD).path("batch_id").textValue());
+            assertEquals(closure.getKey(), ContinuityActionJournal.recordHead(head).orElseThrow());
+
         }
     }
 
@@ -232,6 +270,12 @@ final class ExternalSaveRemountTest {
         var receiptRefs = new java.util.HashMap<Object, ExactRef>();
         return (ActionPorts.OutcomeArchive) Proxy.newProxyInstance(ExternalSaveRemountTest.class.getClassLoader(),
                 new Class<?>[]{ActionPorts.OutcomeArchive.class}, (proxy, method, arguments) -> {
+                    if (method.getName().equals("withSession")) return proxy;
+                    if (method.getName().equals("inSession")) {
+                        @SuppressWarnings("unchecked")
+                        var work = (java.util.function.Function<ActionPorts.OutcomeArchive, ?>) arguments[1];
+                        return work.apply((ActionPorts.OutcomeArchive) proxy);
+                    }
                     var arg = arguments[0];
                     return switch (method.getName()) {
                         case "loadRecord" -> {
