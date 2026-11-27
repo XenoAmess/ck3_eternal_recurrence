@@ -75,9 +75,12 @@ final class CommittedImportedSettledFrontier {
                 == original.pair().frame().frame().identity().dateRaw().longValueExact(),
                 "settled imported successor requires its actual physical saved frontier");
 
+        var currentRow = current.toJson();
+        var terminalCycleRecord = ExactRef.fromJson(currentRow.path(OrdinaryCycleTransitions.STATE_FIELD).get("head"));
         return transitions.withLocked(same, () -> archive.withSession(same)
                 .inSameGameHistoricalRecoveryScope(same, originals -> {
-            var replay = new Replay(same, transitions, originals, rebounded, owner, prefix, next, original.archivedSemantic().frame());
+            var replay = new Replay(same, transitions, originals, rebounded, owner, prefix, next,
+                    original.archivedSemantic().frame(), terminalCycleRecord);
             var cursor = rebounded;
             var captured = new HashSet<>(head.documents());
             for (var edge : history.suffix()) {
@@ -88,8 +91,9 @@ final class CommittedImportedSettledFrontier {
                 replay.replay(edge);
                 cursor = edge.after();
             }
-            String terminal = current.toJson().path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD).path("boundary").asText();
-            StrictJson.require(replay.latestCycle != null && replay.openBatch == null && !replay.used.isEmpty()
+            String terminal = currentRow.path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD).path("boundary").asText();
+            StrictJson.require(replay.terminalCycle != null && replay.latestCycle == replay.terminalCycle.semantic()
+                    && replay.openBatch == null && !replay.used.isEmpty()
                     && (JournalKind.BATCH_FINISHED.name().equals(terminal) || JournalKind.BATCH_DEFERRED.name().equals(terminal))
                     && cursor.sequence() == current.sequence() && ContinuityJson.same(cursor.toJson(), current.toJson()),
                     "settled imported successor requires an actual completed cycle and closed batch at the held head");
@@ -106,7 +110,8 @@ final class CommittedImportedSettledFrontier {
                     StrictJson.require(replay.closedCycles.contains(originals.receiptReferenceOf(root)),
                             "settled imported successor gameplay lacks its original completed cycle");
             }
-            StrictJson.require(transitions.cycleProof(same, owner, replay.latestCycle).isPresent()
+            StrictJson.require(transitions.importedTerminalCycleProof(same, owner, replay.terminalCycle.receipt(),
+                    replay.terminalCycle.semantic()).isPresent()
                     && head.digest().equals(same.head().digest()),
                     "settled imported successor changed its completed branch or actual held head");
             return new Data(history, owner, replay.source, prefix, replay.nextBatchSequence, replay.used,
@@ -127,12 +132,15 @@ final class CommittedImportedSettledFrontier {
                 "settled imported successor changed the actual saved frontier, owner or imported origin");
     }
 
+    private record TerminalCycle(ActionReceipt receipt, SemanticEvidence semantic) { }
+
     private static final class Replay {
         private final Session same;
         private final OrdinaryCycleTransitions transitions;
         private final ActionPorts.OutcomeArchive archive;
         private final SessionIdentity owner;
         private final String batchPrefix;
+        private final ExactRef terminalCycleRecord;
         private final List<ActionReceipt> inherited;
         private final Set<String> oldIds;
         private final ActionReceipt retiredResume;
@@ -146,13 +154,15 @@ final class CommittedImportedSettledFrontier {
         private long lastActionSequence;
         private ExactRef pendingCycle;
         private SemanticEvidence latestCycle;
+        private TerminalCycle terminalCycle;
         private ObservationIdentity observed;
         private G2Source source;
 
         private Replay(Session same, OrdinaryCycleTransitions transitions, ActionPorts.OutcomeArchive archive,
-                ContinuityState rebind, SessionIdentity owner, String prefix, long next, ObservationIdentity original) {
+                ContinuityState rebind, SessionIdentity owner, String prefix, long next, ObservationIdentity original, ExactRef terminalCycleRecord) {
             this.same = same; this.transitions = transitions; this.archive = archive; this.owner = owner;
             batchPrefix = prefix; nextBatchSequence = next; observed = original;
+            this.terminalCycleRecord = terminalCycleRecord;
             inherited = ContinuityActionJournal.receipts(rebind, archive);
             oldIds = new HashSet<>(inherited.stream().map(action -> action.command().actionId()).toList());
             var pending = inherited.stream().filter(action -> !action.settled()).toList();
@@ -250,11 +260,19 @@ final class CommittedImportedSettledFrontier {
                 case "SETTLE" -> {
                     StrictJson.require(receiptRef.equals(pendingCycle) && closedCycles.add(receiptRef),
                             "settled imported successor must settle the exact retained cycle");
-                    var original = archive.loadMaterial(ExactRef.fromJson(details.get("cycle_record_ref")));
+                    var recordRef = ExactRef.fromJson(details.get("cycle_record_ref"));
+                    var original = archive.loadMaterial(recordRef);
                     StrictJson.require(original.equals(new RawJson(ContinuityJson.canonical(details.get("cycle_record")))),
                             "settled imported successor cycle record differs from its exact archive");
                     var semantic = OrdinaryCycleTransitions.semanticFromJson(details.get("semantic"));
-                    transitions.requireImportedCycleSemantic(same, owner, receipt, semantic);
+                    if (recordRef.equals(terminalCycleRecord)) {
+                        StrictJson.require(terminalCycle == null, "settled imported successor replayed its retained cycle twice");
+                        // The held terminal proof reads these originals at the final frontier. Both
+                        // semantic contracts must use that verification before the replay returns.
+                        terminalCycle = new TerminalCycle(receipt,semantic);
+                    } else {
+                        transitions.requireImportedCycleSemantic(same, owner, receipt, semantic);
+                    }
                     requireObservedContinuation(semantic.frame());
                     observed = semantic.frame();
                     latestCycle = semantic;

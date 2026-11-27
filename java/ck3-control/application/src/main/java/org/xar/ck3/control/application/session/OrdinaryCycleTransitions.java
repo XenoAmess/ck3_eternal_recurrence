@@ -618,6 +618,11 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
 
     void requireImportedCycleSemantic(ContinuityStorePort.Session same,SessionIdentity owner,ActionReceipt original,
             SemanticEvidence semantic)throws IOException {
+        verifyImportedCycleSemantic(same,owner,original,semantic);
+    }
+
+    private VerifiedSemantic verifyImportedCycleSemantic(ContinuityStorePort.Session same, SessionIdentity owner,
+            ActionReceipt original, SemanticEvidence semantic) throws IOException {
         var verified=verify(same,owner,semantic);freshAfter(original,verified);
         var originalSemantic=archive.loadFullMaterial(semantic.semantic());
         var body=DriverJson.object(originalSemantic.bytes(),DriverJson.MAX_NATIVE_BYTES);
@@ -625,6 +630,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         var manifest=archive.loadFullMaterial(manifestRef);
         StrictJson.require(G2Wire.source(StrictJson.parse(manifest.bytes()).get("source")).equals(original.command().source()),
                 "imported Saved restart SEM changed the actual original action source");
+        return verified;
     }
 
     private String revalidateSettledSameGameRecovery(ContinuityStorePort.Session same,
@@ -1271,10 +1277,21 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
     }
 
     Optional<CompletedCycleProof> cycleProof(ContinuityStorePort.Session session, SessionIdentity owner, SemanticEvidence semantic) throws IOException {
+        return cycleProof(session,owner,semantic,() -> verify(session,owner,semantic));
+    }
+
+    Optional<CompletedCycleProof> importedTerminalCycleProof(ContinuityStorePort.Session session, SessionIdentity owner,
+            ActionReceipt receipt, SemanticEvidence semantic) throws IOException {
+        StrictJson.require(active.get() == session, "imported terminal cycle requires its actual locked replay");
+        return cycleProof(session,owner,semantic,() -> verifyImportedCycleSemantic(session,owner,receipt,semantic));
+    }
+
+    private Optional<CompletedCycleProof> cycleProof(ContinuityStorePort.Session session, SessionIdentity owner,
+            SemanticEvidence semantic, LockedWork<VerifiedSemantic> verification) throws IOException {
         var head = session.head(); requireOwner(head.state(), owner); requireActive(head.state());
         CycleState state = state(head.state(), owner); requireLegacyPendingClear(head.state(), state);
         requireFrontier(head.state(), state); validateChain(state); if (state.pending().isPresent()) return Optional.empty();
-        VerifiedSemantic checked = verify(session, owner, semantic);
+        VerifiedSemantic checked = verification.run();
         requireProofFrame(head.state(), state, checked);
         return Optional.of(new CompletedCycleProof(state.completedCycles(), semantic, ContinuityJson.digest(state.toJson())));
     }
