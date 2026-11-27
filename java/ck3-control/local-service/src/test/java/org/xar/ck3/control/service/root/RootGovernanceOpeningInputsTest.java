@@ -50,11 +50,13 @@ final class RootGovernanceOpeningInputsTest {
     private static final class Store implements ContinuityStorePort.Session {
         ContinuityState state;DomainBodies.Read body;int mutations;
         ContinuityState historical;
+        ContinuityState remountPredecessor;
 
         @Override public ContinuityState requireHistoricalState(long sequence, String digest) throws IOException {
-            if (historical == null || historical.sequence() != sequence || !ContinuityJson.digest(historical.toJson()).equals(digest))
+            var actual = remountPredecessor != null && remountPredecessor.sequence() == sequence ? remountPredecessor : historical;
+            if (actual == null || actual.sequence() != sequence || !ContinuityJson.digest(actual.toJson()).equals(digest))
                 throw new IOException("test historical state was not retained");
-            return historical;
+            return actual;
         }
         Store(byte[] bytes) {
             var raw=StrictJson.object().put("schema","root.ck3.continuity-window/v1").put("machine_id",MACHINE)
@@ -111,14 +113,18 @@ final class RootGovernanceOpeningInputsTest {
         }
     }
     @Test void namedSaveUsesTheOriginalOpeningBodyWithoutAPhysicalRestore() throws Exception {
-        checkNamedOpening(OpeningStage.AWAIT_SUBMIT);
+        checkNamedOpening(OpeningStage.AWAIT_SUBMIT, false);
     }
 
     @Test void namedSaveCanReadTheRetainedReadOnlyCompletionWithoutPhysicalRestoreOrMutation() throws Exception {
-        checkNamedOpening(OpeningStage.COMPLETE);
+        checkNamedOpening(OpeningStage.COMPLETE, false);
     }
 
-    private void checkNamedOpening(OpeningStage stage) throws Exception {
+    @Test void successiveNamedRemountsReadTheOriginalUnchangedOpeningBody() throws Exception {
+        checkNamedOpening(OpeningStage.COMPLETE, true);
+    }
+
+    private void checkNamedOpening(OpeningStage stage, boolean repeatRemount) throws Exception {
         var original = pending();
         boolean complete = stage == OpeningStage.COMPLETE;
         var document = new GovernanceOpeningDocument.Document(original.observed(), original.source(), original.sessionId(),
@@ -192,6 +198,40 @@ final class RootGovernanceOpeningInputsTest {
         if (complete) {
             assertThrows(IllegalArgumentException.class, () ->
                     RootGovernanceOpeningInputs.externalCompletedOpeningEvidence(store, archive, owner, document, frame, changed));
+        }
+        if (repeatRemount) {
+            var previousObserved = store.state.toJson();
+            previousObserved.putObject("latest_binding").put("date_raw", 1024).put("actor_character_id", 29829)
+                    .put("episode_run_id", "unit-episode").put("snapshot_id", "named-frame")
+                    .put("revision", 1).put("native_revision", 1);
+            store.remountPredecessor = ContinuityState.fromJson(previousObserved, MACHINE);
+            var nextGame = new GameGeneration(125, new PythonOnlyUInt64(new BigInteger("133700000000000003")));
+            var nextOwner = new SessionIdentity(MACHINE, nextGame, "named-following-session");
+            var nextFrame = new ObservationIdentity(MACHINE, nextGame, frame.frame(), frame.observationVersion());
+            var remount = origin.deepCopy().put("schema", "xar.java-ordinary-external-save-origin/v2")
+                    .put("predecessor_sequence", store.remountPredecessor.sequence())
+                    .put("predecessor_digest", ContinuityJson.digest(store.remountPredecessor.toJson()))
+                    .putNull("deferred_batch");
+            remount.set("previous_origin", originRef.toJson());
+            remount.set("departed", OrdinaryCycleTransitions.sessionToJson(owner));
+            remount.set("successor", OrdinaryCycleTransitions.sessionToJson(nextOwner));
+            var opening = remount.withObject("/opening").put("session_id", nextOwner.sessionId());
+            opening.set("game", nextGame.toJson());
+            var remountBytes = ContinuityJson.canonical(remount);
+            var remountRef = new ExactRef("second-external-origin", remountBytes.length, ActionCodec.sha256(remountBytes));
+            var following = store.state.toJson().put("sequence", 5);
+            following.set("game_binding", nextGame.toJson());
+            following.set(WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD, remountRef.toJson());
+            store.state = ContinuityState.fromJson(following, MACHINE);
+            var both = (ActionPorts.OutcomeArchive) Proxy.newProxyInstance(getClass().getClassLoader(),
+                    new Class<?>[]{ActionPorts.OutcomeArchive.class}, (proxy, method, args) -> {
+                        assertEquals("loadMaterial", method.getName());
+                        if (remountRef.equals(args[0])) return new RawJson(remountBytes);
+                        assertEquals(originRef, args[0]);
+                        return new RawJson(bytes);
+                    });
+            assertEquals(Optional.of(List.of(remountRef, body.reference().payload(), originRef)),
+                    RootGovernanceOpeningInputs.externalCompletedOpeningEvidence(store, both, nextOwner, document, nextFrame, body));
         }
         assertEquals(0, store.mutations);
     }

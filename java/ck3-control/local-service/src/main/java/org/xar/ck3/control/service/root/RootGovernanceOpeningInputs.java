@@ -150,15 +150,25 @@ public final class RootGovernanceOpeningInputs implements RootPlanningInputsFact
                 && retained.filter(current.reference()::equals).isPresent()
                 && actual.machineId().equals(owner.machineId()) && actual.game().equals(owner.game())
                 && observed.episodeRunId().equals(origin.savedPair().frame().frame().episodeRunId())
-                && document.observed().game().equals(origin.departed().game())
-                && document.sessionId().equals(origin.departed().sessionId())
                 && archived.episodeRunId().equals(observed.episodeRunId())
                 && archived.identity().player().equals(observed.identity().player())
                 && observed.identity().player().longValueExact() == origin.opening().actor().value()
                 && archived.identity().dateRaw().longValueExact() <= origin.opening().dateRaw()
                 && observed.identity().dateRaw().longValueExact() >= origin.opening().dateRaw(),
                 "external saved opening changed its canonical body, original owner or observed campaign");
-        return Optional.of(List.of(reference, current.reference().payload()));
+        var evidence = new ArrayList<>(List.of(reference, current.reference().payload()));
+        while (!document.observed().game().equals(origin.departed().game()) || !document.sessionId().equals(origin.departed().sessionId())) {
+            var previousRef = origin.previousOrigin().orElseThrow(() -> new IOException("Named opening lost the original owner"));
+            var previous = ExternalSaveOrigin.fromJson(ContinuityJson.parseObject(
+                    originals.loadMaterial(previousRef).bytes(), ContinuityJson.DOCUMENT_MAX_BYTES));
+            origin.requirePreviousOrigin(previous);
+            var earlier = previous.requireOriginal(same);
+            StrictJson.require(DomainBodies.reference(earlier, DomainBodies.Slot.OPENING_GATE).equals(retained),
+                    "An earlier named transition changed its retained opening body");
+            evidence.add(previousRef);
+            origin = previous;
+        }
+        return Optional.of(List.copyOf(evidence));
     }
 
     private static Optional<ActionReceipt> actualAction(RootRuntimeContext context,org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same,
