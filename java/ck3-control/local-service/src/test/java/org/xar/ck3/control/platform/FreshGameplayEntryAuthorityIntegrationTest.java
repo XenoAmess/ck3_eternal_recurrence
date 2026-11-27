@@ -278,6 +278,103 @@ public final class FreshGameplayEntryAuthorityIntegrationTest {
         }
     }
 
+    @Test void publicRootRefusesAnActualSuccessorProcessWithoutCommittedImport()throws Exception {
+        String pipe="\\\\.\\pipe\\root-physical-software-successor-"+UUID.randomUUID();
+        var launch=plan(pipe);
+        var policy=new OriginalWindowReducer.Policy(10958);
+        Actual original;
+        WriterContracts.Head committed;
+        WindowsJobProcess.ProcessIdentity departed;
+        try(var owner=softwareOwner("departed-peer",pipe,true)) {
+            departed=owner.process().identity();
+            try(var first=NativeGameAttachment.attach(new NativeGameAttachment.Request(
+                    launch,ManagedGameSession.generation(departed),List.of(),128,32),deadline())) {
+                assertEquals(departed,first.identity());
+                original=actual(first);
+                try(var storage=original.writer().storageGuard()) {
+                    assertSame(storage,original.archive().writer().storageGuard());
+                    original.entry().retainCurrentMap(first,original.read(),original.produced(),original.driver());
+                    assertEquals(1,original.writer().locked(original.entry()::commitInitial).head().sequence());
+                    committed=original.writer().locked(ContinuityStorePort.Session::head);
+                }
+            }
+            assertTrue(owner.process().isRunning());
+        }
+        Path ledger=root.resolve("ledger");
+        Path snapshot=ledger.resolve("ROOT-CONTINUITY-WINDOW.json");
+        byte[] originalSnapshot=Files.readAllBytes(snapshot);
+        var layout=new WriterContracts.Layout(snapshot,exactRootTestFile(ledger.resolve("anchor.json")),committed.state().machineId());
+        var planFile=Files.write(root.resolve("physical-software-plan.json"),
+                StrictJson.canonical(NativeLaunchPlanCodec.toJson(NativeLaunchPlanCodec.describe(launch))));
+        var configuration=new RootApplicationConfiguration(layout.machineId(),HostMode.COMPLETE_MIGRATION,Instant.now(),
+                exactRootTestFile(planFile),layout,List.of(original.driver().source().sourceRef()),ledger.resolve("artifacts"),64L<<20);
+        try(var owner=softwareOwner("successor-peer",pipe,false)) {
+            var successor=owner.process().identity();
+            assertNotEquals(ManagedGameSession.generation(departed),ManagedGameSession.generation(successor));
+            try(var replacement=NativeGameAttachment.attach(new NativeGameAttachment.Request(
+                    launch,ManagedGameSession.generation(successor),List.of(),128,32),deadline());
+                    var core=RootApplicationAssembly.open(configuration,Clock.systemUTC(),List.of(),Optional.empty(),
+                        StorageWriteGuardTestSupport.create(ledger,layout.lock(),256L<<20))) {
+                assertEquals(successor,replacement.identity());
+                assertEquals(successor.pid(),replacement.nativeTransport().originalHello().pid());
+                assertTrue(core.hasCanonicalGameplayEntry());
+                assertTrue(core.readSettledSameGame(replacement,policy).isEmpty());
+                var failure=assertThrows(IllegalArgumentException.class,()->core.adoptInitialRecovery(replacement,8,policy,deadline()));
+                assertEquals("entry-only recovery must retain the actual unchanged Game/episode/date/history basis",failure.getMessage());
+                assertTrue(replacement.nativeTransport().latestObservedSnapshot().isEmpty());
+                assertEquals(committed.digest(),core.writer().locked(ContinuityStorePort.Session::head).digest());
+            }
+            assertTrue(owner.process().isRunning());
+        }
+        assertArrayEquals(originalSnapshot,Files.readAllBytes(snapshot));
+    }
+
+    private SoftwareOwner softwareOwner(String directory,String pipe,boolean departed)throws IOException {
+        Path work=Files.createDirectory(root.resolve(directory));
+        Path release=work.resolve("release");
+        String classPath=System.getProperty("surefire.test.class.path",System.getProperty("java.class.path"));
+        Path args=work.resolve("java.args");
+        Files.write(args,List.of("-Xms8m","-Xmx48m","-XX:+UseSerialGC","-XX:ActiveProcessorCount=1",
+                "-XX:MaxMetaspaceSize=32m","-XX:ReservedCodeCacheSize=16m","-Xss256k",
+                javaArgument("-Djava.io.tmpdir="+System.getProperty("java.io.tmpdir")),
+                javaArgument("-Djna.tmpdir="+System.getProperty("jna.tmpdir",System.getProperty("java.io.tmpdir"))),
+                "-cp",javaArgument(classPath),SoftwarePeer.class.getName(),javaArgument(pipe),
+                javaArgument(release.toString()),Boolean.toString(departed)),StandardCharsets.UTF_8);
+        var environment=new TreeMap<String,String>(String.CASE_INSENSITIVE_ORDER);
+        environment.putAll(System.getenv());
+        for(String name:List.of("JAVA_TOOL_OPTIONS","_JAVA_OPTIONS","JDK_JAVA_OPTIONS"))environment.remove(name);
+        var actual=WindowsJobProcess.start(new WindowsJobProcess.CommandSpec(Path.of(System.getProperty("java.home"),"bin/java.exe"),
+                List.of("@"+args),work,environment,work.resolve("stdout.raw"),work.resolve("stderr.raw"),192L<<20));
+        return new SoftwareOwner(actual,release);
+    }
+
+    private static String javaArgument(String value) {
+        return "\""+value.replace("\\","\\\\").replace("\"","\\\"")+"\"";
+    }
+
+    private record SoftwareOwner(WindowsJobProcess process,Path release) implements AutoCloseable {
+        @Override public void close()throws Exception {
+            try {
+                Files.createFile(release);
+                var result=process.await(Duration.ofSeconds(3),deadline(),()->{});
+                assertTrue(result.passed(),result::toString);
+                assertEquals(process.identity(),result.identity());
+                assertFalse(process.isRunning());
+            } finally {
+                if(process.isRunning())process.terminate(125);
+                process.close();
+            }
+        }
+    }
+
+    public static final class SoftwarePeer {
+        public static void main(String[] args)throws Exception {
+            boolean departed=Boolean.parseBoolean(args[2]);
+            new Peer(args[0],1,new long[]{1},new long[]{53144328},departed?1:0,departed)
+                    .run(Optional.of(Path.of(args[1])));
+        }
+    }
+
     private static void archiveRestoreRead(RootApplicationAssembly.Core core,Path archive,
             NativeFreshSnapshotPort.Received received)throws IOException {
         core.writer().locked(same->{
@@ -739,22 +836,25 @@ public final class FreshGameplayEntryAuthorityIntegrationTest {
     }
 
     private static final class Peer implements AutoCloseable {
-        final String pipe;final int connections,finalConnectionReads;final long[] revisions,dates;final AtomicInteger writes=new AtomicInteger();final AtomicReference<Throwable> failure=new AtomicReference<>();Thread thread;
+        final String pipe;final int connections,finalConnectionReads;final boolean firstConnectionStarts;final long[] revisions,dates;final AtomicInteger writes=new AtomicInteger();final AtomicReference<Throwable> failure=new AtomicReference<>();Thread thread;
         Peer(String pipe){this(pipe,1);}
         Peer(String pipe,int connections){this(pipe,connections,1,1);}
         Peer(String pipe,int connections,long firstRevision,long secondRevision){this(pipe,connections,firstRevision,secondRevision,secondRevision);}
         Peer(String pipe,int connections,long firstRevision,long secondRevision,long thirdRevision){this(pipe,connections,new long[]{firstRevision,secondRevision,thirdRevision},new long[]{53144328,53144328,53144328});}
         Peer(String pipe,int connections,long[] revisions,long[] dates){this(pipe,connections,revisions,dates,1);}
         Peer(String pipe,int connections,long[] revisions,long[] dates,int finalConnectionReads){
-            if(connections<1||revisions.length<connections||dates.length<connections||finalConnectionReads<1)
+            this(pipe,connections,revisions,dates,finalConnectionReads,true);
+        }
+        Peer(String pipe,int connections,long[] revisions,long[] dates,int finalConnectionReads,boolean firstConnectionStarts){
+            if(connections<1||revisions.length<connections||dates.length<connections||finalConnectionReads<0)
                 throw new IllegalArgumentException("finite per-connection software observations required");
             this.pipe=pipe;this.connections=connections;this.revisions=revisions.clone();this.dates=dates.clone();
-            this.finalConnectionReads=finalConnectionReads;
+            this.finalConnectionReads=finalConnectionReads;this.firstConnectionStarts=firstConnectionStarts;
         }
-        void start(){thread=new Thread(()->{try{run();}catch(Throwable thrown){failure.set(thrown);}},"first-map-software-peer");thread.setDaemon(true);thread.start();}
+        void start(){thread=new Thread(()->{try{run(Optional.empty());}catch(Throwable thrown){failure.set(thrown);}},"first-map-software-peer");thread.setDaemon(true);thread.start();}
         void finish()throws Exception{thread.join(2000);assertFalse(thread.isAlive(),"software peer must finish");if(failure.get()!=null)throw new AssertionError(failure.get());}
         @Override public void close()throws Exception{finish();}
-        void run()throws Exception {
+        void run(Optional<Path> release)throws Exception {
             for(int connection=1;connection<=connections;connection++){
             HANDLE client;Instant until=deadline();
             do{client=Kernel32.INSTANCE.CreateFile(pipe,0xC0000000,0,null,3,0,null);if(client!=null&&!WinBase.INVALID_HANDLE_VALUE.equals(client))break;Thread.sleep(10);}while(Instant.now().isBefore(until));
@@ -765,7 +865,7 @@ public final class FreshGameplayEntryAuthorityIntegrationTest {
                         .put("game_adapter_status","ready").put("ck3_build_match",true);
                 hello.putArray("capabilities").add("game.state.snapshot").add(NativeFreshSnapshotPort.CAPABILITY).add(Primitive.START_BOOKMARK.capability());write(client,hello);
                 int readCount=connection==connections?finalConnectionReads:1;
-                for(int i=connection==1?0:1;i<=readCount;i++){
+                for(int i=connection==1&&firstConnectionStarts?0:1;i<=readCount;i++){
                     var request=(ObjectNode)StrictJson.parse(read(client),StrictJson.EXPLICIT_MAX_BYTES);writes.incrementAndGet();String id=StrictJson.text(request.get("request_id"));String step=StrictJson.text(request.get("step"));
                     var ack=StrictJson.object().put("type","command_result").put("protocol_version",1).put("request_id",id).put("ok",true);
                     if(i==0){if(!Primitive.START_BOOKMARK.operation().value().equals(step))throw new IOException("wrong real START");ack.putObject("result").put("step",step).put("accepted",true).put("status","acknowledged_verification_pending").put("backend_id","native-headless");}
@@ -778,6 +878,13 @@ public final class FreshGameplayEntryAuthorityIntegrationTest {
                         var snapshot=StrictJson.object().put("type","state_snapshot").put("protocol_version",1).put("snapshot_id","native:"+nativeRevision).put("revision",nativeRevision).put("read_request_id",id);snapshot.set("state",state);write(client,snapshot);
                         ack.putObject("result").put("schema",NativeFreshSnapshotPort.RESULT_SCHEMA).put("request_id",id).put("snapshot_id","native:"+nativeRevision).put("revision",nativeRevision);
                     }write(client,ack);
+                }
+                if(connection==connections&&release.isPresent()){
+                    Instant releaseDeadline=deadline();
+                    while(!Files.isRegularFile(release.orElseThrow())){
+                        if(!Instant.now().isBefore(releaseDeadline))throw new IOException("software peer release timeout");
+                        Thread.sleep(10);
+                    }
                 }
             }finally{Kernel32.INSTANCE.CloseHandle(client);}
             }
