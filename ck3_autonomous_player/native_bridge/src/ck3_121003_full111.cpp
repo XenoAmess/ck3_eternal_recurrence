@@ -108,6 +108,19 @@ bool PendingOwner(const Roots&r,std::uintptr_t base) noexcept {
  At(r.data,kPendingManager+0x50,owned)&&At(reinterpret_cast<void*>(base+kPendingRegistry),0,global)&&
  owned&&owned==global&&At(global,0,vt)&&vt==base+kPendingRegistryVt;
 }
+std::string_view EventOwnerFailure(build26785313::Full111OrdinaryEventReadFailure failure) noexcept {
+ using Failure=build26785313::Full111OrdinaryEventReadFailure;
+ switch(failure){
+  case Failure::owner: return "current111_ordinary_event_owner_scope_unavailable";
+  case Failure::scene_unavailable: return "current111_ordinary_event_gui_scene_unavailable";
+  case Failure::scene_changed: return "current111_ordinary_event_gui_scene_changed";
+  case Failure::queue_unavailable: return "current111_ordinary_event_queue_witness_unavailable";
+  case Failure::foreground: return "current111_ordinary_event_foreground_unavailable";
+  case Failure::queue_changed: return "current111_ordinary_event_runtime_queue_changed";
+  case Failure::unknown: return "current111_ordinary_event_owner_observation_unavailable";
+ }
+ return "current111_ordinary_event_owner_observation_unavailable";
+}
 bool ReadEventQueue(const Roots &r,const CoreSnapshotPrefix &p,xar::game::Snapshot &s,
  const OrdinaryEventReaderV1 *reader,std::optional<EventWitness> &observed,
  FullSnapshotDiagnosticsV1 &d) {
@@ -123,7 +136,7 @@ bool ReadEventQueue(const Roots &r,const CoreSnapshotPrefix &p,xar::game::Snapsh
   return Fail(d,"event","current111_ordinary_event_queue_out_of_bounds");
  auto &witness=observed.emplace();
  if(!reader->read(reader->context,p,witness))
-  return Fail(d,"event","current111_ordinary_event_owner_observation_unavailable");
+  return Fail(d,"event",EventOwnerFailure(witness.failure));
  const auto &queue=witness.queue;
  const auto &roots=witness.scene.event_roots;
  const auto &raw=witness.raw;

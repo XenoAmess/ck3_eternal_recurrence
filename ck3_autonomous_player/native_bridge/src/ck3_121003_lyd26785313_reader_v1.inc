@@ -106,8 +106,13 @@ bool ReadFull111OrdinaryEventOnOwnerV1(const ReadonlyBindings &bindings,
       std::chrono::system_clock::now().time_since_epoch()).count();
   return now>0&&static_cast<std::uint64_t>(now)<wall&&GetTickCount64()<mono;
  };
+ using Failure=Full111OrdinaryEventReadFailure;
+ const auto fail=[&](Failure failure) {
+  out.failure=failure;
+  return false;
+ };
  if(!bindings.exact_image_admitted||!game||!jomini||!owner_context||!still_owned||
-     !unexpired()||!still_owned(owner_context))return false;
+     !unexpired()||!still_owned(owner_context))return fail(Failure::owner);
  LydRequest267V1 request{};
  request.action=LydAction267V1::query_events;
  request.expected=core;request.deadline_unix_ms=wall;
@@ -115,19 +120,28 @@ bool ReadFull111OrdinaryEventOnOwnerV1(const ReadonlyBindings &bindings,
  first.scene.kind=second.scene.kind=LydKind267V1::events;
  first.scene.wall_deadline=second.scene.wall_deadline=wall;
  std::string reason;
- if(!LydGuiSceneSample267V1(bindings.module_base,first,reason,unexpired,true)||
-     first.scene.jomini!=jomini||!still_owned(owner_context)||
-     !ReadFull111LydEventsWithQueueV1(bindings,core,first.scene,mono,request,game,out.raw,reason,&out.queue)||
-     !still_owned(owner_context)||
-     !LydGuiSceneSample267V1(bindings.module_base,second,reason,unexpired,true)||
-     first.scene!=second.scene||first.witness!=second.witness||!still_owned(owner_context))return false;
+ if(!LydGuiSceneSample267V1(bindings.module_base,first,reason,unexpired,true))
+  return fail(Failure::scene_unavailable);
+ if(first.scene.jomini!=jomini||!still_owned(owner_context))return fail(Failure::owner);
+ if(!ReadFull111LydEventsWithQueueV1(bindings,core,first.scene,mono,request,game,out.raw,reason,&out.queue))
+  return fail(Failure::queue_unavailable);
+ if(!still_owned(owner_context))return fail(Failure::owner);
+ if(!LydGuiSceneSample267V1(bindings.module_base,second,reason,unexpired,true))
+  return fail(Failure::scene_unavailable);
+ if(first.scene!=second.scene||first.witness!=second.witness)
+  return fail(Failure::scene_changed);
+ if(!still_owned(owner_context))return fail(Failure::owner);
  out.scene=std::move(second.scene);out.widgets=std::move(second.witness);
- if(out.queue.count==1)return true;
- full111_event_queue::Sample final_queue{};
- return Full111ForegroundEventRootV1(out)!=0 &&
-     SameFull111ForegroundSourcesV1(bindings.module_base,out) &&
-     full111_event_queue::Capture(bindings,game,final_queue) && final_queue==out.queue &&
-     unexpired() && still_owned(owner_context);
+ if(out.queue.count!=1){
+  if(!Full111ForegroundEventRootV1(out)||!SameFull111ForegroundSourcesV1(bindings.module_base,out))
+   return fail(Failure::foreground);
+  full111_event_queue::Sample final_queue{};
+  if(!full111_event_queue::Capture(bindings,game,final_queue)||final_queue!=out.queue)
+   return fail(Failure::queue_changed);
+  if(!unexpired()||!still_owned(owner_context))return fail(Failure::owner);
+ }
+ out.failure=Failure::unknown;
+ return true;
 }
 #include "ck3_121003_full111_event_renderer_reader_v1.inc"
 #endif

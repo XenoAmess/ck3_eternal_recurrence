@@ -34,11 +34,16 @@ inline bool Matches(const Sample&queue,std::uintptr_t owner_game,std::int32_t pl
 }
 }
 
+enum class Full111OrdinaryEventReadFailure {
+  unknown, owner, scene_unavailable, scene_changed, queue_unavailable, foreground, queue_changed,
+};
+
 struct Full111OrdinaryEventWitnessV1 {
   full111_event_queue::Sample queue;
   LydScene267V1 scene;
   std::vector<GuiWindowNodeV1> widgets;
   LydRaw267V1 raw;
+  Full111OrdinaryEventReadFailure failure=Full111OrdinaryEventReadFailure::unknown;
   friend bool operator==(const Full111OrdinaryEventWitnessV1&,const Full111OrdinaryEventWitnessV1&)=default;
 };
 

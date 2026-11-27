@@ -116,6 +116,7 @@ struct EventFixture {
  std::array<void*,2> rows{full.entry.data(),full.living.data()};
  unsigned calls=0;
  bool hidden=false,different_actor=false,wrong_runtime=false,mixed=false,owner_lost=false,window_drift=false,queue_drift=false;
+ producer::Full111OrdinaryEventReadFailure failure=producer::Full111OrdinaryEventReadFailure::unknown;
  bool multiple=false,reverse_gui=false,gui_drift=false,unread_child=false,unread_child_hidden=false,missing_queue_row=false;
  std::int32_t instance=17,authored_count=3;
  static constexpr std::size_t items=0x44BC0+0x1F18,capacity=items+8,count=items+12;
@@ -159,7 +160,10 @@ struct EventFixture {
  static bool Capture(void *opaque,const ck::CoreSnapshotPrefix &core,producer::Full111OrdinaryEventWitnessV1 &w){
   auto &f=*static_cast<EventFixture *>(opaque);
   ++f.calls;
-  if(f.owner_lost&&f.calls==2)return false;
+  if(f.owner_lost&&f.calls==2){
+   w.failure=f.failure;
+   return false;
+  }
   w.queue.game_data=reinterpret_cast<std::uintptr_t>(f.full.data.data());
   w.queue.items=reinterpret_cast<std::uintptr_t>(f.rows.data());
   w.queue.capacity=2+(f.queue_drift&&f.calls==2?1:0);
@@ -247,7 +251,23 @@ void RunEventFixture(Fixture &full,xar::game::Snapshot &out,ck::FullSnapshotDiag
  event.mixed=true;refused("current111_ordinary_event_witness_mismatch");event.mixed=false;
  event.different_actor=true;refused("current111_ordinary_event_identity_mismatch");event.different_actor=false;
  event.wrong_runtime=true;refused("current111_ordinary_event_identity_mismatch");event.wrong_runtime=false;
- event.owner_lost=true;refused("current111_ordinary_event_owner_observation_unavailable");event.owner_lost=false;
+ event.owner_lost=true;
+ using Failure=producer::Full111OrdinaryEventReadFailure;
+ constexpr std::array diagnostics{
+  std::pair{Failure::unknown,"current111_ordinary_event_owner_observation_unavailable"},
+  std::pair{Failure::owner,"current111_ordinary_event_owner_scope_unavailable"},
+  std::pair{Failure::scene_unavailable,"current111_ordinary_event_gui_scene_unavailable"},
+  std::pair{Failure::scene_changed,"current111_ordinary_event_gui_scene_changed"},
+  std::pair{Failure::queue_unavailable,"current111_ordinary_event_queue_witness_unavailable"},
+  std::pair{Failure::foreground,"current111_ordinary_event_foreground_unavailable"},
+  std::pair{Failure::queue_changed,"current111_ordinary_event_runtime_queue_changed"},
+ };
+ for(const auto &[failure,reason]:diagnostics){
+  event.failure=failure;
+  refused(reason);
+  Need(d.completed_passes==1,"the first pass remains recorded after the second owner read failed");
+ }
+ event.owner_lost=false;
  event.window_drift=true;refused("current111_full_observations_changed");event.window_drift=false;
  event.queue_drift=true;refused("current111_full_observations_changed");event.queue_drift=false;
  event.instance=0;refused("current111_ordinary_event_identity_mismatch");event.instance=17;
