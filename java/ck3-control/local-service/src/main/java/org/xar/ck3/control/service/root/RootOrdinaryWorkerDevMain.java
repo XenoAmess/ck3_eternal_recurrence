@@ -107,11 +107,12 @@ public class RootOrdinaryWorkerDevMain implements QuarkusApplication {
         boolean loaded = "resume-loaded-replacement".equals(mode);
         boolean importedLoaded = "resume-imported-loaded-replacement".equals(mode);
         boolean importedRestore = "restore-exited".equals(mode) && arguments.length == 6;
-        boolean exactRecovery = loaded || importedRestore || importedLoaded;
+        boolean externalSaved = RootExternalSavedRecoveryInput.MODE.equals(mode);
+        boolean exactRecovery = loaded || importedRestore || importedLoaded || externalSaved;
         if (exactRecovery ? arguments.length != 6 : arguments.length != 2 && arguments.length != 3)
             throw new IllegalArgumentException("ordinary-worker-dev requires owner/config/mode and the exact original recovery tuple for a loaded or imported restore");
         if (!"resume".equals(mode) && !"current-map".equals(mode) && !"operator-quarantine".equals(mode)
-                && !"retire-exited".equals(mode) && !"restore-exited".equals(mode) && !loaded && !importedLoaded)
+                && !"retire-exited".equals(mode) && !"restore-exited".equals(mode) && !loaded && !importedLoaded && !externalSaved)
             throw new IllegalArgumentException("unknown ordinary-worker-dev mode");
 
         Path configurationFile = Path.of(arguments[1]);
@@ -122,9 +123,10 @@ public class RootOrdinaryWorkerDevMain implements QuarkusApplication {
             var input=RootOrdinaryWorkerMain.readImportedLoadedWorkerInput(arguments,java.time.Clock.systemUTC());
             loadedInput=Optional.of(input);
             configuration=RootOrdinaryWorkerMain.readImportedLoadedWorkerConfiguration(configurationFile,input.request());
-        } else if (importedRestore) {
+        } else if (importedRestore || externalSaved) {
             owner.readDescriptor(Path.of(arguments[0]));
-            configuration = RootOrdinaryRuntimeConfiguration.readImportedExitedRestore(configurationFile);
+            configuration = externalSaved ? RootOrdinaryRuntimeConfiguration.readExternalSaved(configurationFile)
+                    : RootOrdinaryRuntimeConfiguration.readImportedExitedRestore(configurationFile);
         } else if ("resume".equals(mode)) {
             configuration = RootOrdinaryRuntimeConfiguration.readResume(configurationFile,
                     () -> owner.read(Path.of(arguments[0])));

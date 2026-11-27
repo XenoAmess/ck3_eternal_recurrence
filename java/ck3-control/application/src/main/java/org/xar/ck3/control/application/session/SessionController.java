@@ -473,6 +473,26 @@ public final class SessionController {
         } finally { running.set(false); }
     }
 
+    /** Restore the ordinary controller from the actual external-save observation edge. */
+    public void restoreExternalSaveObservation(org.xar.ck3.control.continuity.writer.ContinuityStorePort.Session same,
+            ContinuityBatchJournal.ExternalSaveRebind actual) throws IOException {
+        Objects.requireNonNull(same);
+        Objects.requireNonNull(actual);
+        StrictJson.require(running.compareAndSet(false, true), "external save recovery requires an idle Controller");
+        try {
+            requireCleanRestartIdle();
+            StrictJson.require(journal instanceof ContinuityBatchJournal && restartDriver != null && usedBatches.isEmpty()
+                    && lastReport.isEmpty() && unsavedGameplayActions.isEmpty() && !dirty,
+                    "external save recovery requires the unused ordinary Controller and its installed Driver");
+            var controller = actual.requireCurrent((ContinuityBatchJournal) journal, same, identity);
+            StrictJson.require(savedPair.equals(controller.savedPair()) && totalCommittedDays == controller.totalCommittedDays(),
+                    "external save observation changed the admitted physical baseline or saved-day credit");
+            restoreCapturedController(same, controller);
+        } finally {
+            running.set(false);
+        }
+    }
+
     public ActionReceipt reconcileUnresolvedOriginal(ContinuityBatchJournal.UnresolvedSameGameData data, Instant deadline) throws IOException, InterruptedException {
         Objects.requireNonNull(data); Objects.requireNonNull(deadline);
         StrictJson.require(running.compareAndSet(false, true), "unresolved original reconciliation requires an idle Controller");

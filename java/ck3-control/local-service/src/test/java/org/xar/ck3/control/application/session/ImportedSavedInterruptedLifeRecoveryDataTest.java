@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Proxy;
+import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Clock;
@@ -35,6 +36,10 @@ import org.xar.ck3.control.application.action.ActionPorts.OutcomeArchive;
 import org.xar.ck3.control.application.action.ActionReceipt;
 import org.xar.ck3.control.application.action.ActionState;
 import org.xar.ck3.control.application.action.ContinuityActionJournal;
+import org.xar.ck3.control.application.action.NativeObservationPort.TransportSession;
+import org.xar.ck3.control.application.checkpoint.CheckpointPair;
+import org.xar.ck3.control.application.session.SessionPorts.JournalInput;
+import org.xar.ck3.control.application.session.SessionPorts.JournalKind;
 import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
 import org.xar.ck3.control.continuity.ContinuityJson;
 import org.xar.ck3.control.continuity.ContinuityState;
@@ -51,8 +56,10 @@ import org.xar.ck3.control.continuity.writer.WriterContracts;
 import org.xar.ck3.control.continuity.writer.WriterContracts.TransitionAuthority;
 import org.xar.ck3.control.contracts.ContractViolationException;
 import org.xar.ck3.control.contracts.ExactRef;
+import org.xar.ck3.control.contracts.FileStatIdentity;
 import org.xar.ck3.control.contracts.FullJsonTree;
 import org.xar.ck3.control.contracts.GameGeneration;
+import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.g2.planning.ProposalLifecycleCodec;
 
@@ -198,8 +205,183 @@ final class ImportedSavedInterruptedLifeRecoveryDataTest {
                     same, prepared, committed, snapshot, archive, foreign));
             assertHistoricalImportedRetirement(fixture,predecessor,archive,request,sources,replacement,raw,resume,root);
             assertImportedKeeperRestartClean(fixture, same, archive, request, sources, replacement, raw);
+            assertObservedExternalSave(predecessor.state(), fixture.owner, resume, archive,
+                    Files.createDirectory(root.resolve("external-save")));
             return null;
         });
+    }
+
+    private static void assertObservedExternalSave(ContinuityState before, SessionIdentity departed,
+            ActionReceipt resume, OutcomeArchive archive, Path root) throws IOException {
+        var original = before.toJson();
+        var oldPair = CheckpointPairCodec.decode(ContinuityJson.canonical(
+                original.path(SavedContinuityBootstrap.FIELD).get("checkpoint_pair")));
+        var namedSaveMetadata = StrictJson.object()
+                .put("sha256", "44a659781863dec57b435ea053727630b7fc2be3234af199da7a8a62d299fe61")
+                .put("file_id", "281474996662852")
+                .put("bytes", 15133986)
+                .put("date_raw", 53179944)
+                .put("actor_character_id", 31254);
+        byte[] witness = ContinuityJson.canonical(namedSaveMetadata);
+        var witnessPath = Files.write(root.resolve("named-save-metadata.json"), witness);
+        var witnessRef = new ExactRef(witnessPath.toString(), witness.length, ActionCodec.sha256(witness));
+        var game = GameGeneration.fromJson(StrictJson.object().put("pid", 21300)
+                .put("creation_filetime", "134401544348311915"));
+        var owner = new SessionIdentity(departed.machineId(), game, "software-loaded-external-save");
+        ObjectNode frame = original.get("latest_binding").deepCopy();
+        frame.put("date_raw", namedSaveMetadata.get("date_raw").longValue())
+                .put("actor_character_id", namedSaveMetadata.get("actor_character_id").longValue())
+                .put("snapshot_id", "native:1").put("revision", 1).put("native_revision", 1);
+
+        byte[] start = before.canonicalBytes();
+        var anchor = Files.write(root.resolve("anchor.json"), start);
+        var source = new ExactRef(anchor.toString(), start.length, ActionCodec.sha256(start));
+        var layout = new WriterContracts.Layout(Files.write(root.resolve("continuity.json"), start), source, before.machineId());
+        Files.createFile(layout.lock());
+        Files.createDirectory(layout.events());
+        var guard = StorageWriteGuardTestSupport.create(layout);
+        var policy = new OriginalWindowReducer.Policy(before.origin().targetDays());
+        var softwareSave = new CheckpointPair.FileWitness(witnessRef, new FileStatIdentity(BigInteger.valueOf(witness.length),
+                namedSaveMetadata.get("file_id").textValue(), "1"));
+        var identity = StrictJson.object().put("machine_id", owner.machineId()).put("observation_version", 3);
+        identity.set("game", owner.game().toJson());
+        identity.putObject("frame").put("played_character_id", frame.get("actor_character_id").asText())
+                .put("date_raw", frame.get("date_raw").asText()).put("native_revision", "1")
+                .put("revision", "1").put("snapshot_id", "native:1").put("episode_run_id", frame.get("episode_run_id").textValue());
+        var nativeOpening = new ExternalSaveOrigin.NativeOpening(
+                new TransportSession(owner.machineId(), owner.game(), BigInteger.ONE, owner.sessionId()),
+                NativeCharacterId.fromJson(frame.get("actor_character_id")), frame.get("date_raw").longValue(), "native:1", BigInteger.ONE);
+        var semantic = new SessionPorts.SemanticEvidence(ProposalLifecycleCodec.decodeObservation(identity),
+                preserveProof(root, new byte[]{1}), preserveProof(root, new byte[]{2}),
+                preserveProof(root, new byte[]{3}), preserveProof(root, new byte[]{4}), Instant.EPOCH);
+        var writerRef = new java.util.concurrent.atomic.AtomicReference<ContinuityWriter>();
+        var scoped = (OutcomeArchive) Proxy.newProxyInstance(ImportedSavedInterruptedLifeRecoveryDataTest.class.getClassLoader(),
+                new Class<?>[]{OutcomeArchive.class}, (proxy, method, arguments) -> {
+                    switch (method.getName()) {
+                        case "withSession" -> {
+                            writerRef.get().requireSession((ContinuityStorePort.Session) arguments[0]);
+                            return proxy;
+                        }
+                        case "inSession" -> {
+                            writerRef.get().requireSession((ContinuityStorePort.Session) arguments[0]);
+                            @SuppressWarnings("unchecked")
+                            var work = (java.util.function.Function<OutcomeArchive, ?>) arguments[1];
+                            return work.apply((OutcomeArchive) proxy);
+                        }
+                        case "inHistoricalReadScope" -> {
+                            writerRef.get().requireSession((ContinuityStorePort.Session) arguments[0]);
+                            var work = (org.xar.ck3.control.application.action.ActionPorts.CheckedArchiveRead<?>) arguments[2];
+                            return work.read((OutcomeArchive) proxy);
+                        }
+                        case "preserveMaterial" -> {
+                            byte[] bytes = ((RawJson) arguments[0]).bytes();
+                            return preserveProof(root, bytes);
+                        }
+                        case "loadMaterial" -> {
+                            var reference = (ExactRef) arguments[0];
+                            Path file = Path.of(reference.path());
+                            if (file.isAbsolute() && file.getParent().equals(root)) return new RawJson(Files.readAllBytes(file));
+                        }
+                        default -> { }
+                    }
+                    try { return method.invoke(archive, arguments); }
+                    catch (InvocationTargetException failure) { throw failure.getCause(); }
+                });
+        var cycles = new OrdinaryCycleTransitions(scoped, (same, actualOwner, actual) -> {
+            assertEquals(owner, actualOwner);
+            assertEquals(semantic, actual);
+            return new OrdinaryCycleTransitions.VerifiedSemantic(semantic.frame(), semantic.observedAt(),
+                    "external-save-software", semantic.semantic().sha256());
+        }, (same, actualOwner, pair, completed) -> { throw Fixture.unavailable(); }, policy,
+                same -> writerRef.get().requireSession(same));
+        var writer = new ContinuityWriter(layout, List.of(source), cycles, Clock.systemUTC(), guard);
+        writerRef.set(writer);
+        var verified = new java.util.concurrent.atomic.AtomicInteger();
+        cycles.bindExternalSaveAuthority((same, origin, actual) -> {
+            assertEquals(owner, origin.successor());
+            assertEquals(semantic, actual);
+            assertEquals(witnessRef, origin.loadedFile().reference());
+            verified.incrementAndGet();
+        });
+        var retirement = writer.locked(same -> {
+            var head = same.head();
+            var origin = new ExternalSaveOrigin(before.sequence(), head.digest(), departed, owner, oldPair, softwareSave,
+                    ContinuityActionJournal.recordHead(before).orElseThrow(), nativeOpening);
+            var actions = ContinuityActionJournal.receipts(head.state(), scoped);
+            var snapshot = new ActionJournal.Snapshot(before.sequence(), head.digest(), actions,
+                    new ActionJournal.BoundHistoryBasis(ExactRef.fromJson(original.get(WriterContracts.DRIVER_HISTORY_BASELINE_FIELD))));
+            var admission = ContinuityActionJournal.externalSaveRetirement(same, origin, snapshot, scoped);
+            assertEquals(resume, admission.retainedResume(same, snapshot, scoped).orElseThrow());
+            assertEquals(List.of(resume), ContinuityActionJournal.blockingUnresolved(same, head, scoped, departed, actions));
+            var edge = cycles.withLocked(same, () -> cycles.rebindExternalSave(same, origin, semantic));
+            assertEquals(before.sequence() + 1, edge.head().sequence());
+            return admission;
+        });
+        assertTrue(verified.get() >= 2); // Preview and commit both use the same actual private authority.
+
+        var reopened = new ContinuityWriter(layout, List.of(source), cycles, Clock.systemUTC(), guard);
+        writerRef.set(reopened);
+        reopened.locked(same -> {
+            var readback = same.head().state();
+            var current = readback.toJson();
+            assertEquals(ContinuityState.Status.RUNNING, readback.status());
+            assertEquals(game, GameGeneration.fromJson(current.get("game_binding")));
+            assertTrue(ContinuityJson.same(frame, current.get("latest_binding")));
+            assertEquals(53179344, readback.settledDateRaw());
+            assertEquals(56, readback.settledCycles());
+            var cycle = current.get(WriterContracts.ORDINARY_CYCLE_FIELD);
+            assertEquals(57, cycle.get("completed_cycles").longValue());
+            assertEquals(57, cycle.get("basis_cycles").longValue());
+            assertTrue(cycle.get("head").isNull());
+            assertTrue(cycle.get("pending_receipt").isNull());
+            assertEquals(semantic.frame(), ProposalLifecycleCodec.decodeObservation(cycle.get("origin_frame")));
+            var originRef = ExactRef.fromJson(current.get(WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD));
+            var origin = ExternalSaveOrigin.fromJson(ContinuityJson.parseObject(scoped.loadMaterial(originRef).bytes(),
+                    ContinuityJson.DOCUMENT_MAX_BYTES));
+            assertEquals(original.get(WriterContracts.ORDINARY_CYCLE_FIELD),
+                    origin.requireOriginal(same).toJson().get(WriterContracts.ORDINARY_CYCLE_FIELD));
+            for (String retained : List.of(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD, SavedContinuityBootstrap.FIELD, "interruption")) {
+                assertEquals(original.get(retained), current.get(retained), retained);
+            }
+            var actions = ContinuityActionJournal.receipts(readback, scoped);
+            var snapshot = new ActionJournal.Snapshot(readback.sequence(), same.head().digest(), actions,
+                    new ActionJournal.BoundHistoryBasis(ExactRef.fromJson(current.get(WriterContracts.DRIVER_HISTORY_BASELINE_FIELD))));
+            assertEquals(resume, retirement.retainedResume(same, snapshot, scoped).orElseThrow());
+            assertTrue(ContinuityActionJournal.blockingUnresolved(same, same.head(), scoped, owner, actions).isEmpty());
+            assertEquals(ContinuityActionJournal.recordHead(before), ContinuityActionJournal.recordHead(readback));
+            assertEquals(resume, ContinuityActionJournal.lookup(readback, resume.command().actionId(), scoped).orElseThrow());
+            long savedDays = (readback.settledDateRaw() - readback.origin().startDateRaw()) / 24;
+            var interruptedBatch = original.path(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD).path("batch_id").asText();
+            var prefix = interruptedBatch.substring(0, interruptedBatch.lastIndexOf('-'));
+            var controller = new ControllerRestartState(owner, prefix, 2, java.util.Set.of(prefix + "-0", interruptedBatch),
+                    java.util.Set.of(), Optional.of(oldPair), Optional.of(same.persistedHead()), 0,
+                    frame.get("date_raw").longValue() > readback.settledDateRaw(), false, false, savedDays,
+                    java.util.Set.of(), false);
+            var restart = ControllerRestartState.decode(controller.encode());
+            assertEquals(controller, restart);
+            assertEquals(oldPair, restart.savedPair().orElseThrow());
+            assertEquals(471, restart.totalCommittedDays());
+            assertEquals(0, restart.totalCommittedDays() - ((before.settledDateRaw() - before.origin().startDateRaw()) / 24));
+            assertEquals(25, (frame.get("date_raw").longValue() - readback.settledDateRaw()) / 24);
+            assertTrue(restart.dirty());
+            var journal = new ContinuityBatchJournal(reopened, cycles);
+            var batch = journal.commit(same, new JournalInput(owner, prefix + "-2",
+                    JournalKind.BATCH_STARTED, Optional.empty(), Optional.empty(), Optional.empty(), List.of()));
+            assertEquals(471, batch.committedSavedDays());
+            assertEquals(53179344, same.head().state().settledDateRaw());
+            var afterBatch = same.head().digest();
+            journal.validateOrdinarySubmission(same, owner, semantic);
+            assertEquals(afterBatch, same.head().digest());
+            assertEquals(ContinuityActionJournal.recordHead(before), ContinuityActionJournal.recordHead(same.head().state()));
+            return null;
+        });
+    }
+
+    private static ExactRef preserveProof(Path root, byte[] bytes) throws IOException {
+        String digest = ActionCodec.sha256(bytes);
+        var file = root.resolve(digest + ".bin");
+        if (!Files.exists(file)) Files.write(file, bytes);
+        return new ExactRef(file.toString(), bytes.length, digest);
     }
 
     private static void assertHistoricalImportedRetirement(Fixture fixture,WriterContracts.Head predecessor,

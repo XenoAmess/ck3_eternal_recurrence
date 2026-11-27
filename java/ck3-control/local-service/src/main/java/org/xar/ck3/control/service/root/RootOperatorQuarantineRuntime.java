@@ -57,24 +57,44 @@ final class RootOperatorQuarantineRuntime {
             org.xar.ck3.control.platform.RootProcessAttach.LoadedReplacement loaded,
             ExactRef configuredRequest,Clock clock,java.time.Instant deadline)throws IOException {
         loaded.requireCurrent(deadline);
-        byte[] bytes=readExact(configuredRequest);var request=CompositeOperatorQuarantineRequest.decode(bytes);
-        var old=loaded.previousOwner();
-        boolean imported=loaded.cachedAck().importedSaveTransfer().isPresent();
-        var terminalRef=imported?java.util.Optional.of(loaded.oldTerminal()):java.util.Optional.<ExactRef>empty();
-        StrictJson.require(imported==request.exitedLife().isPresent()
-                &&request.matchesExitedOwner(old.machineId(),old.game(),old.sessionId(),terminalRef),
-                "loaded recovery requires its actual old configured Life terminal source");
-        var terminal=java.util.Optional.<org.xar.ck3.control.application.action.RawJson>empty();
-        if(imported) {
-            StrictJson.require(!request.issuedAt().isBefore(loaded.oldTerminalObservedAt()),
-                    "exited Life decision predates the original supervisor exit");
-            terminal=java.util.Optional.of(new org.xar.ck3.control.application.action.RawJson(readExact(loaded.oldTerminal(),262144)));
-        }
-        var source=new CompositeOperatorQuarantineSource(configuredRequest,bytes,readExact(request.authorizedBy()),old.game(),old.sessionId(),
-                new org.xar.ck3.control.application.action.OperationKey("life-advance"),
-                org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER,clock,terminal);
-        loaded.requireCurrent(deadline);core.bindOperatorQuarantineSource(source);
+        var terminal = loaded.cachedAck().importedSaveTransfer().isPresent()
+                ? java.util.Optional.of(loaded.oldTerminal()) : java.util.Optional.<ExactRef>empty();
+        var source = departedSource(loaded.previousOwner(), terminal, loaded.oldTerminalObservedAt(), configuredRequest, clock);
+        loaded.requireCurrent(deadline);
+        core.bindOperatorQuarantineSource(source);
     }
+
+    /** The named-save role verifies the actual departed supervisor independently of the current Game. */
+    static void installExternalSaved(RootApplicationAssembly.Core core,
+            org.xar.ck3.control.platform.RootProcessAttach.ExternalSavedPredecessor predecessor,
+            ExactRef configuredRequest, Clock clock, java.time.Instant deadline) throws IOException {
+        predecessor.requireCurrent(deadline);
+        var source = departedSource(predecessor.previousOwner(), java.util.Optional.of(predecessor.oldTerminal()),
+                predecessor.oldTerminalObservedAt(), configuredRequest, clock);
+        predecessor.requireCurrent(deadline);
+        core.bindOperatorQuarantineSource(source);
+    }
+
+    private static CompositeOperatorQuarantineSource departedSource(
+            org.xar.ck3.control.application.session.SessionPorts.SessionIdentity departed,
+            java.util.Optional<ExactRef> terminalRef, java.time.Instant terminalObservedAt,
+            ExactRef configuredRequest, Clock clock) throws IOException {
+        var bytes = readExact(configuredRequest);
+        var request = CompositeOperatorQuarantineRequest.decode(bytes);
+        StrictJson.require(terminalRef.isPresent() == request.exitedLife().isPresent()
+                && request.matchesExitedOwner(departed.machineId(), departed.game(), departed.sessionId(), terminalRef),
+                "loaded recovery requires its actual old configured Life terminal source");
+        var terminal = java.util.Optional.<org.xar.ck3.control.application.action.RawJson>empty();
+        if (terminalRef.isPresent()) {
+            StrictJson.require(!request.issuedAt().isBefore(terminalObservedAt),
+                    "exited Life decision predates the original supervisor exit");
+            terminal = java.util.Optional.of(new org.xar.ck3.control.application.action.RawJson(readExact(terminalRef.orElseThrow(), 262144)));
+        }
+        return new CompositeOperatorQuarantineSource(configuredRequest, bytes, readExact(request.authorizedBy()), departed.game(),
+                departed.sessionId(), new org.xar.ck3.control.application.action.OperationKey("life-advance"),
+                org.xar.ck3.control.application.advance.LifeAdvanceComposite.HANDLER, clock, terminal);
+    }
+
     static void requireRestorableOperatorRequest(ExactRef configuredRequest,boolean imported)throws IOException {
         boolean exitedLife=readConfigured(configuredRequest).exitedLife().isPresent();
         if (exitedLife!=imported) throw new IOException(imported

@@ -1032,6 +1032,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
             if (Set.of(INITIAL_NO_DISPATCH_OPERATION,CAPTURED_NO_DISPATCH_OPERATION).contains(text(details,"operation"))) return revalidateInitialNoDispatchRecovery(session,actualHead,details);
             if (text(details,"operation").equals("TRANSPORT_REBIND")) return revalidateTransport(session,actualHead,details);
             if (text(details, "operation").equals("OPERATOR_REBIND")) return revalidateOperator(session,actualHead,details);
+            if (EXTERNAL_SAVE_REBIND.equals(text(details, "operation"))) return revalidateExternalSave(session, actualHead, details);
             if (text(details, "operation").equals("REBIND")) return revalidateRebind(session,actualHead,details,request.identity());
             if (text(details, "operation").equals("EPISODE_REBIND")) return revalidateEpisode(session,actualHead,details);
             strictCycle(details); String operation = text(details, "operation");
@@ -1097,6 +1098,7 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
             if (Set.of(INITIAL_NO_DISPATCH_OPERATION,CAPTURED_NO_DISPATCH_OPERATION).contains(text(details,"operation"))) return reduceInitialNoDispatchRecovery(predecessor,details);
             if (text(details,"operation").equals("TRANSPORT_REBIND")) return reduceTransport(predecessor,details);
             if (text(details, "operation").equals("OPERATOR_REBIND")) return reduceOperator(predecessor,details);
+            if (EXTERNAL_SAVE_REBIND.equals(text(details, "operation"))) return reduceExternalSave(predecessor, details);
             if (text(details, "operation").equals("REBIND")) return reduceRebind(predecessor, details);
             if (text(details, "operation").equals("EPISODE_REBIND")) return reduceEpisode(predecessor,details);
             strictCycle(details); CycleState before = state(predecessor, owner); ExactRef receipt = ExactRef.fromJson(details.get("receipt_ref"));
@@ -2084,6 +2086,113 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         return ContinuityState.fromJson(result,predecessor.machineId());
     }
     private static void strictOperator(ObjectNode row){StrictJson.object(row,Set.of("evidence_id","source","operation","session","operator_receipt_ref","predecessor_head_digest","semantic","previous_state_ref","new_cycle_state"));}
+    private static final String EXTERNAL_SAVE_REBIND = "REBIND_EXTERNAL_SAVE";
+    private record ExternalSaveRebind(ExternalSaveOrigin origin, SemanticEvidence semantic, ExactRef original) { }
+    private final ThreadLocal<ExternalSaveRebind> externalSaveRebinding = new ThreadLocal<>();
+    private volatile ExternalSaveAuthority externalSaveAuthority;
+
+    /** Root verifies the actual held successor, manually loaded file and current Driver source. */
+    @FunctionalInterface
+    public interface ExternalSaveAuthority {
+        void requireCurrent(ContinuityStorePort.Session same, ExternalSaveOrigin origin, SemanticEvidence semantic)
+                throws IOException;
+    }
+
+    public synchronized void bindExternalSaveAuthority(ExternalSaveAuthority actual) {
+        StrictJson.require(externalSaveAuthority == null, "external save authority is installed once by the actual Root");
+        externalSaveAuthority = Objects.requireNonNull(actual);
+    }
+
+    WriterContracts.Receipt rebindExternalSave(ContinuityStorePort.Session same, ExternalSaveOrigin prepared,
+            SemanticEvidence semantic) throws IOException {
+        StrictJson.require(active.get() == same && externalSaveRebinding.get() == null,
+                "external save observation requires the original borrowed writer and its private producer");
+        var origin = prepared;
+        origin.requireSemantic(semantic.frame());
+        var head = same.head();
+        origin.requireOriginal(head.state());
+        var previous = state(head.state(), origin.departed());
+        validateChain(previous);
+        requireLegacyPendingClear(head.state(), previous);
+        var original = archive.preserveMaterial(new RawJson(ContinuityJson.canonical(origin.toJson())));
+        var details = StrictJson.object().put("evidence_id", "external-save:" + original.sha256())
+                .put("source", ExternalSaveOrigin.SOURCE).put("operation", EXTERNAL_SAVE_REBIND);
+        details.set("session", sessionToJson(origin.successor()));
+        details.set("origin", origin.toJson());
+        details.set("origin_ref", original.toJson());
+        details.set("semantic", semanticToJson(semantic));
+        var refs = new ArrayList<>(semantic.references());
+        refs.add(original);
+        refs.add(origin.loadedFile().reference());
+        var request = new WriterContracts.Request(CYCLE_KIND, ContinuityJson.canonical(details), refs.stream().distinct().toList());
+        externalSaveRebinding.set(new ExternalSaveRebind(origin, semantic, original));
+        try {
+            var preview = same.preview(request);
+            var receipt = same.commit(preview);
+            same.requireCommitted(preview, receipt);
+            return receipt;
+        } finally {
+            externalSaveRebinding.remove();
+        }
+    }
+
+    private String revalidateExternalSave(ContinuityStorePort.Session same, WriterContracts.Head head, ObjectNode details)
+            throws IOException {
+        var actual = externalSaveRebinding.get();
+        StrictJson.require(actual != null && externalSaveAuthority != null,
+                "external save rebind requires the private Root producer");
+        requireExternalSaveDetails(details);
+        var origin = actual.origin();
+        origin.requireOriginal(head.state());
+        StrictJson.require(sessionFromJson(details.get("session")).equals(origin.successor())
+                && ContinuityJson.same(details.get("origin"), origin.toJson())
+                && ContinuityJson.same(details.get("semantic"), semanticToJson(actual.semantic()))
+                && ExactRef.fromJson(details.get("origin_ref")).equals(actual.original())
+                && archive.loadMaterial(actual.original()).equals(new RawJson(ContinuityJson.canonical(origin.toJson())))
+                && text(details, "evidence_id").equals("external-save:" + actual.original().sha256()),
+                "external save observation changed its writer, current semantic or archived origin");
+        externalSaveAuthority.requireCurrent(same, origin, actual.semantic());
+        var originals = archive.withSession(same);
+        var history = ContinuityActionJournal.receipts(head.state(), originals);
+        var unresolved = history.stream().filter(action -> !action.settled()).toList();
+        var retained = ContinuityActionJournal.externalSaveRetiredResume(same, origin, originals, history);
+        StrictJson.require(unresolved.size() == 1 && retained.filter(unresolved.getFirst()::equals).isPresent(),
+                "external save rebind requires the original retired positive-ACK RESUME as its sole unresolved receipt");
+        var verified = verify(same, origin.successor(), actual.semantic());
+        origin.requireSemantic(verified.frame());
+        return verified.materialDigest();
+    }
+
+    private ContinuityState reduceExternalSave(ContinuityState predecessor, ObjectNode details) {
+        requireExternalSaveDetails(details);
+        var origin = ExternalSaveOrigin.fromJson(details.get("origin"));
+        var owner = sessionFromJson(details.get("session"));
+        var reference = ExactRef.fromJson(details.get("origin_ref"));
+        var frame = semanticFromJson(details.get("semantic")).frame();
+        origin.requireOriginal(predecessor);
+        origin.requireSemantic(frame);
+        StrictJson.require(origin.successor().equals(owner), "external save observation differs from its current successor");
+        var previous = state(predecessor, origin.departed());
+        StrictJson.require(previous.pending().isEmpty() && previous.completedCycles() >= predecessor.settledCycles(),
+                "external save rebind cannot grant cycles or discard pending ordinary work");
+        var restored = new CycleState(owner, previous.completedCycles(), previous.completedCycles(), Optional.empty(),
+                Optional.empty(), Optional.of(legacyPendingDigest(predecessor)), Optional.of(frame), Optional.of(reference));
+        var transition = StrictJson.object().put("evidence_id", text(details, "evidence_id"))
+                .put("source", ExternalSaveOrigin.SOURCE);
+        transition.set("successor_game", owner.game().toJson());
+        transition.set("frame", originalFrame(frame));
+        var next = OriginalWindowReducer.reduce(predecessor.toJson(), ExternalSaveOrigin.TRANSITION, transition, policy);
+        next.set(STATE_FIELD, restored.toJson());
+        next.set(WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD, reference.toJson());
+        return ContinuityState.fromJson(next, predecessor.machineId());
+    }
+
+    private static void requireExternalSaveDetails(ObjectNode details) {
+        StrictJson.object(details, Set.of("evidence_id", "source", "operation", "session", "origin", "origin_ref", "semantic"));
+        StrictJson.require(ExternalSaveOrigin.SOURCE.equals(text(details, "source"))
+                && EXTERNAL_SAVE_REBIND.equals(text(details, "operation")), "external save rebind contract differs");
+    }
+
     /** Historical canonical data only. Live Root authority is never invoked while replaying an old branch. */
     private void requireRecordedOperatorOrigin(ObjectNode row,CycleState branch,CycleState before) {
         StrictJson.object(row,Set.of("schema","previous_cycle_state","after_session","operator_receipt_ref","semantic","predecessor_sequence","predecessor_head_digest",
@@ -2893,6 +3002,22 @@ public final class OrdinaryCycleTransitions implements WriterContracts.Transitio
         if(state.episodeOrigin().isPresent()) {
             ExactRef ref=state.episodeOrigin().orElseThrow();StrictJson.require(origins.add(ref)&&origins.size()<=1024,"episode origin chain is cyclic or exceeds its finite bound");
             ObjectNode origin=ContinuityJson.parseObject(archive.loadMaterial(ref).bytes(),ContinuityJson.DOCUMENT_MAX_BYTES);
+            if (ExternalSaveOrigin.SCHEMA.equals(text(origin, "schema"))) {
+                var external = ExternalSaveOrigin.fromJson(origin);
+                var same = active.get();
+                StrictJson.require(same != null && external.successor().equals(state.session()),
+                        "external save cycle history needs its current owner and original writer");
+                external.requireSemantic(state.originFrame().orElseThrow());
+                try {
+                    var previous = state(external.requireOriginal(same), external.departed());
+                    StrictJson.require(previous.completedCycles() == state.basisCycles(),
+                            "external save cycle origin changed the original completed cycle count");
+                    walk(previous, Optional.empty(), origins, allRecords);
+                    return found;
+                } catch (IOException failure) {
+                    throw new java.io.UncheckedIOException(failure);
+                }
+            }
             StrictJson.require(sessionFromJson(origin.get("after_session")).equals(state.session())
                     &&state.originFrame().filter(semanticFromJson(origin.get("semantic")).frame()::equals).isPresent(),"episode/window origin source differs");
             CycleState before=parseState(origin.get("previous_cycle_state"));

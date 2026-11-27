@@ -24,7 +24,7 @@ public record CapabilitySessionPresentation(boolean driverStateRestored,Optional
     }
     public enum RestoreKind {
         NEW_EPISODE, OPERATOR_PLAYED_CHARACTER_REBIND, NEW_EPISODE_SEED, SAME_PID_HOT,
-        MANAGED_RESTORE_CHECKPOINT_REBIND, MANAGED_HOT_RESTORE, COLD_CHECKPOINT, NATURAL_SUCCESSION;
+        MANAGED_RESTORE_CHECKPOINT_REBIND, MANAGED_HOT_RESTORE, COLD_CHECKPOINT, NATURAL_SUCCESSION, EXTERNAL_NAMED_OBSERVATION;
         public String wire() { return name().toLowerCase(java.util.Locale.ROOT); }
         public static RestoreKind decode(String wire) {
             return java.util.Arrays.stream(values()).filter(v -> v.wire().equals(wire)).findFirst()

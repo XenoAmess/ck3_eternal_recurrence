@@ -27,6 +27,57 @@ import org.xar.ck3.control.contracts.StrictJson;
 public final class RootProcessAttach {
     private RootProcessAttach() { }
 
+    /** Exact former supervisor and already-held named-save process. Neither capability owns a CREATE or RESTORE. */
+    public static final class ExternalSavedPredecessor {
+        private final ManagedGameSession successor;
+        private final ExitedGameSource.RetainedExit old;
+        private final Instant deadline;
+
+        private ExternalSavedPredecessor(ManagedGameSession successor, ExitedGameSource.RetainedExit old, Instant deadline) {
+            this.successor = successor;
+            this.old = old;
+            this.deadline = deadline;
+        }
+
+        public ManagedGameSession successor() { return successor; }
+        public SessionIdentity previousOwner() {
+            var descriptor = old.descriptor();
+            return new SessionIdentity(descriptor.machineId(), descriptor.generation(), descriptor.sessionId());
+        }
+        public ExactRef oldSourceEvidence() { return old.terminal().originalEvidence(); }
+        public ExactRef oldTerminal() { return old.terminalReference(); }
+        public Instant oldTerminalObservedAt() { return old.terminal().observedAt(); }
+
+        public void requireMembership(Instant until) throws IOException {
+            if (until == null || until.isAfter(deadline) || !Instant.now().isBefore(until)
+                    || successor.mode() != ManagedGameSession.Mode.ATTACHED)
+                throw new IOException("external save lost its already-held successor or finite operation window");
+        }
+
+        public void requireOriginals() throws IOException { old.requireOriginals(); }
+
+        public void requireCurrent(Instant until) throws IOException {
+            requireMembership(until);
+            successor.verify();
+            old.requireExited(until);
+        }
+    }
+
+    public static ExternalSavedPredecessor retainExternalSavedPredecessor(ManagedGameSession successor,
+            ExactRef previousOwner, GameGeneration departed, Instant deadline) throws IOException {
+        Objects.requireNonNull(successor);
+        var exited = ExitedGameSource.retainExited(previousOwner, departed, deadline);
+        var descriptor = exited.descriptor();
+        if (successor.mode() != ManagedGameSession.Mode.ATTACHED || successor.generation().equals(departed)
+                || !successor.machineId().equals(descriptor.machineId())
+                || !successor.launchPlan().sources().review().gameExecutable().equals(descriptor.configuration().review().gameExecutable())
+                || !(successor.launchPlan().load() instanceof NativeLaunchPlan.SavedGame))
+            throw new IOException("external save successor differs from its actual original machine, executable or Game custody");
+        var result = new ExternalSavedPredecessor(successor, exited, deadline);
+        result.requireCurrent(deadline);
+        return result;
+    }
+
     /** A live original creator capability; its private constructor is never a JSON decoder. */
     public static final class Custody implements AutoCloseable {
         private final JavaGameLifecycle issuer;

@@ -81,6 +81,47 @@ final class ExitedGameSource {
         }
     }
 
+    /** Real supervisor exit and its original bytes, independent of an already running replacement. */
+    record RetainedExit(GameSupervisorControl.Descriptor descriptor, Terminal terminal, ExactRef terminalReference,
+            List<SharedSourceFiles.Witness> originals) {
+        RetainedExit { originals = List.copyOf(originals); }
+
+        void requireOriginals() throws IOException {
+            for (var original : originals) SharedSourceFiles.assertUnchanged(original);
+        }
+
+        void requireExited(Instant deadline) throws IOException {
+            Win32Host.deadline(deadline);
+            requireOriginals();
+            var game = descriptor.gameIdentity();
+            requireExitObservation(Win32Host.inspectProcess(game.pid(), 0, deadline), game, terminal.exitCode());
+        }
+    }
+
+    static RetainedExit retainExited(ExactRef owner, GameGeneration expected, Instant deadline) throws IOException {
+        Win32Host.deadline(deadline);
+        verify(owner);
+        var descriptor = GameSupervisorControl.readDescriptor(Path.of(owner.path()));
+        var terminalRef = exact(descriptor.terminalPath());
+        var terminal = readTerminal(GameSupervisorControl.readBounded(descriptor.terminalPath(), 262144));
+        require(descriptor.machineId().equals(WindowsJobProcess.currentMachineId())
+                && descriptor.generation().equals(expected) && terminal.machineId().equals(descriptor.machineId())
+                && terminal.sessionId().equals(descriptor.sessionId()) && terminal.game().equals(descriptor.gameIdentity()),
+                "external save predecessor does not own its exact supervisor terminal");
+        verifyLaunch(descriptor);
+        verifyTerminalEvent(descriptor, terminal);
+        var originals = new java.util.ArrayList<SharedSourceFiles.Witness>();
+        for (var reference : List.of(owner, terminalRef, descriptor.nativeHello(), descriptor.launchEvidence(), terminal.originalEvidence())) {
+            verify(reference);
+            var witness = SharedSourceFiles.observe(Path.of(reference.path()));
+            require(LifecycleEvidence.exact(witness.source()).equals(reference), "exited supervisor original changed");
+            originals.add(witness);
+        }
+        var result = new RetainedExit(descriptor, terminal, terminalRef, originals);
+        result.requireExited(deadline);
+        return result;
+    }
+
     static Qualified qualify(Path descriptorPath,GameGeneration expected,NativeLaunchPlan template,Instant deadline)throws IOException {
         Win32Host.deadline(deadline);Objects.requireNonNull(expected);Objects.requireNonNull(template);
         var descriptor=GameSupervisorControl.readDescriptor(descriptorPath);

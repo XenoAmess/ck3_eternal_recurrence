@@ -845,33 +845,59 @@ public final class RootApplicationAssembly {
             final org.xar.ck3.control.platform.JavaGameLifecycle owner;
             final org.xar.ck3.control.platform.JavaGameLifecycle.ExitedGeneration original;
             final org.xar.ck3.control.platform.RootProcessAttach.LoadedReplacement loaded;
+            final org.xar.ck3.control.platform.RootProcessAttach.ExternalSavedPredecessor external;
             ColdOwner(org.xar.ck3.control.platform.JavaGameLifecycle owner,
                     org.xar.ck3.control.platform.JavaGameLifecycle.ExitedGeneration original) {
-                this.owner=Objects.requireNonNull(owner);this.original=Objects.requireNonNull(original);loaded=null;
+                this.owner=Objects.requireNonNull(owner);this.original=Objects.requireNonNull(original);loaded=null;external=null;
             }
             ColdOwner(org.xar.ck3.control.platform.JavaGameLifecycle owner,
                     org.xar.ck3.control.platform.RootProcessAttach.LoadedReplacement loaded) {
-                this.owner=Objects.requireNonNull(owner);this.loaded=Objects.requireNonNull(loaded);original=null;
+                this.owner=Objects.requireNonNull(owner);this.loaded=Objects.requireNonNull(loaded);original=null;external=null;
+            }
+            ColdOwner(org.xar.ck3.control.platform.JavaGameLifecycle owner,
+                    org.xar.ck3.control.platform.RootProcessAttach.ExternalSavedPredecessor external) {
+                this.owner = Objects.requireNonNull(owner);
+                this.external = Objects.requireNonNull(external);
+                original = null;
+                loaded = null;
             }
             private void owner(org.xar.ck3.control.platform.JavaGameLifecycle same)throws IOException {
                 if(same!=owner)throw new IOException("cold predecessor crossed its actual lifecycle composition");
             }
-            String machineId(){return loaded==null?original.machineId():loaded.previousOwner().machineId();}
-            org.xar.ck3.control.contracts.GameGeneration generation(){return loaded==null?original.generation():loaded.previousOwner().game();}
-            String sourceSessionId(){return loaded==null?original.sourceSessionId():loaded.previousOwner().sessionId();}
-            org.xar.ck3.control.contracts.ExactRef evidence(){return loaded==null?original.evidence():loaded.oldSourceEvidence();}
+            SessionIdentity identity() {
+                if (external != null) return external.previousOwner();
+                if (loaded != null) return loaded.previousOwner();
+                return new SessionIdentity(original.machineId(), original.generation(), original.sourceSessionId());
+            }
+            String machineId() { return identity().machineId(); }
+            org.xar.ck3.control.contracts.GameGeneration generation() { return identity().game(); }
+            String sourceSessionId() { return identity().sessionId(); }
+            org.xar.ck3.control.contracts.ExactRef evidence() {
+                if (external != null) return external.oldSourceEvidence();
+                return loaded == null ? original.evidence() : loaded.oldSourceEvidence();
+            }
             Optional<org.xar.ck3.control.contracts.ExactRef> terminalForOperator() {
-                if(original!=null)return Optional.of(original.terminalReference());
-                return loaded.cachedAck().importedSaveTransfer().map(ignored->loaded.oldTerminal());
+                if (external != null) return Optional.of(external.oldTerminal());
+                if (original != null) return Optional.of(original.terminalReference());
+                return loaded.cachedAck().importedSaveTransfer().map(ignored -> loaded.oldTerminal());
             }
-            void requireOwner(org.xar.ck3.control.platform.JavaGameLifecycle same,Instant until)throws IOException {
-                owner(same);if(loaded==null)original.requireOwner(same,until);else loaded.requireCurrent(until);
+            void requireOwner(org.xar.ck3.control.platform.JavaGameLifecycle same, Instant until) throws IOException {
+                owner(same);
+                if (external != null) external.requireCurrent(until);
+                else if (loaded != null) loaded.requireCurrent(until);
+                else original.requireOwner(same, until);
             }
-            void requireMembership(org.xar.ck3.control.platform.JavaGameLifecycle same,Instant until)throws IOException {
-                owner(same);if(loaded==null)original.requireMembership(same,until);else loaded.requireMembership(until);
+            void requireMembership(org.xar.ck3.control.platform.JavaGameLifecycle same, Instant until) throws IOException {
+                owner(same);
+                if (external != null) external.requireMembership(until);
+                else if (loaded != null) loaded.requireMembership(until);
+                else original.requireMembership(same, until);
             }
-            void requireHistoricalOwner(org.xar.ck3.control.platform.JavaGameLifecycle same)throws IOException {
-                owner(same);if(loaded==null)original.requireHistoricalOwner(same);else loaded.requireOriginals();
+            void requireHistoricalOwner(org.xar.ck3.control.platform.JavaGameLifecycle same) throws IOException {
+                owner(same);
+                if (external != null) external.requireOriginals();
+                else if (loaded != null) loaded.requireOriginals();
+                else original.requireHistoricalOwner(same);
             }
         }
         /** A private administrative scope: it grants exactly one configured parent retirement, never ordinary ACTION/READ/SDK permission. */
@@ -901,6 +927,16 @@ public final class RootApplicationAssembly {
                     org.xar.ck3.control.application.action.CompositeOperatorQuarantineSource source,Instant deadline) {
                 this.same=same;game=null;this.source=source;this.deadline=deadline;
                 exitedOwner=Objects.requireNonNull(owner);this.exited=new ColdOwner(owner,loaded);
+            }
+            ReservedRetirementScope(ContinuityStorePort.Session same, org.xar.ck3.control.platform.JavaGameLifecycle owner,
+                    org.xar.ck3.control.platform.RootProcessAttach.ExternalSavedPredecessor predecessor,
+                    CompositeOperatorQuarantineSource source, Instant deadline) {
+                this.same = same;
+                game = null;
+                this.source = source;
+                this.deadline = deadline;
+                exitedOwner = Objects.requireNonNull(owner);
+                exited = new ColdOwner(owner, predecessor);
             }
             void initialize() {
                 requireCurrent();
@@ -2017,6 +2053,106 @@ public final class RootApplicationAssembly {
             });
         }
 
+        private record ExternalSavedStage(
+                org.xar.ck3.control.platform.RootProcessAttach.ExternalSavedPredecessor predecessor,
+                RootExternalSavedOpening opening, OrdinaryCycleTransitions cycles, ContinuityBatchJournal batches,
+                ContinuityBatchJournal.PreparedExternalSave original, DriverBootstrap.Adopted driver,
+                OriginalWindowReducer.Policy policy) { }
+
+        private ExternalSavedStage externalSavedStage;
+
+        synchronized DriverBootstrap.Adopted adoptExternalSavedObservation(
+                org.xar.ck3.control.platform.JavaGameLifecycle lifecycle,
+                org.xar.ck3.control.platform.RootProcessAttach.ExternalSavedPredecessor predecessor,
+                CheckpointPair.FileWitness namedSave, long rawDate, org.xar.ck3.control.contracts.NativeCharacterId actor,
+                OriginalWindowReducer.Policy policy, int retainedFrames, Instant deadline)
+                throws IOException, InterruptedException {
+            StrictJson.require(menu == null && !staged && !finished && adopted.isEmpty() && !router.isSealed()
+                    && externalSavedStage == null && reservedRetirement.get() == null,
+                    "external save adoption requires the unused actual Core");
+            var source = operatorQuarantineSource().orElseThrow(() -> new IOException("external save requires the original operator decision"));
+            var previous = predecessor.previousOwner();
+            var game = predecessor.successor();
+            var successor = new SessionIdentity(game.machineId(), game.generation(), game.sessionId());
+            StrictJson.require(source.request().matchesExitedOwner(previous.machineId(), previous.game(), previous.sessionId(),
+                    Optional.of(predecessor.oldTerminal()))
+                    && !source.request().issuedAt().isBefore(predecessor.oldTerminalObservedAt()),
+                    "external save adoption requires the actual exited owner named by the original decision");
+            predecessor.requireCurrent(deadline);
+            var opening = RootExternalSavedOpening.capture(game, previous.game(), namedSave, rawDate, actor, deadline);
+            return writer.locked(same -> {
+                var scope = new ReservedRetirementScope(same, lifecycle, predecessor, source, deadline);
+                reservedRetirement.set(scope);
+                try (scope) {
+                    scope.initialize();
+                    retireExitedLife(scope, archive.withSession(same));
+                } finally {
+                    reservedRetirement.remove();
+                }
+                var openingOriginals = opening.preserve(same, archive);
+                var raw = opening.frame();
+                var cycles = new OrdinaryCycleTransitions(archive, semanticVerifier, checkpointVerifiers, policy, writer::requireSession);
+                cycles.bindTerminalFrameLoader(frames);
+                var batches = new ContinuityBatchJournal(writer, cycles);
+                var original = batches.prepareExternalSave(same, previous, source, successor, openingOriginals.loadedCopy(),
+                        new ExternalSaveOrigin.NativeOpening(raw.session(), actor, rawDate, raw.snapshotId(), raw.nativeRevision()));
+                var driver = projectExternalSave(same, game, opening, original, retainedFrames, deadline);
+                predecessor.requireCurrent(deadline);
+                externalSavedStage = new ExternalSavedStage(predecessor, opening, cycles, batches, original, driver, policy);
+                adopted.add(driver);
+                return driver;
+            });
+        }
+
+        private DriverBootstrap.Adopted projectExternalSave(ContinuityStorePort.Session same, ManagedGameSession game,
+                RootExternalSavedOpening opening, ContinuityBatchJournal.PreparedExternalSave original,
+                int retainedFrames, Instant deadline) throws IOException {
+            var facts = original.history().retainedFacts();
+            var retained = facts.driver();
+            var raw = opening.frame();
+            StrictJson.require(retained.managedRestoreTransaction() instanceof DriverStateSnapshot.NullValue
+                    && retained.session().actorId().longValueExact() == original.origin().opening().actor().value(),
+                    "external save Driver must retain the original episode and a settled managed-restore slot");
+            var session = new DriverStateSnapshot.Session(game.nativeTransport().pipeName(), game.generation().pid(),
+                    retained.session().actorId(), retained.session().episodeRunId());
+            var complete = new DriverStateSnapshot.Complete(session, retained.commandHistory(), retained.lastCheckpoint(),
+                    retained.rollbackWarFailure(), retained.managedRestoreTransaction(), retained.successionExpectation(),
+                    retained.successionLifecycle(), retained.campaignGoal(), retained.rollbackWarFailures());
+            var reference = archive.withSession(same).preserveMaterial(RawJson.fullMaterial(complete.encode()));
+            var nativeState = org.xar.ck3.control.planning.opportunity.OpportunityJson.object(
+                    org.xar.ck3.control.planning.opportunity.OpportunityJson.parse(raw.state().bytes()), "external save Full");
+            var auxiliary = RootRestoreMaterialProjection.reduceAuxiliary(facts.auxiliary(), nativeState,
+                    org.xar.ck3.control.application.capabilities.CapabilitySessionPresentation.RestoreKind.EXTERNAL_NAMED_OBSERVATION);
+            var seed = new DriverBootstrap.Seed(reference, facts.originalHistoryBasis(), facts.stamp().driverVersion(),
+                    facts.stamp().episodeEpoch(), raw.session(), auxiliary, facts.loop());
+            try {
+                var retirement = actions.withFrozen(same, lease -> {
+                    lease.assertCurrent();
+                    try {
+                        return ContinuityActionJournal.externalSaveRetirement(same, original.origin(), lease.snapshot(), archive);
+                    } catch (IOException failure) {
+                        throw new UncheckedIOException(failure);
+                    }
+                });
+                return DriverBootstrap.adoptExternalSavedObservation(seed, same, actions, game.nativeTransport(),
+                        original.history().source(), archive, (ref, maximum) -> originals.read(same, ref, maximum),
+                        retainedFrames, deadline, opening, retirement);
+            } catch (UncheckedIOException failure) {
+                throw failure.getCause();
+            } catch (InterruptedException interrupted) {
+                Thread.currentThread().interrupt();
+                var failure = new java.io.InterruptedIOException("external save Driver adoption interrupted");
+                failure.initCause(interrupted);
+                throw failure;
+            }
+        }
+
+        ControllerRestartState externalSavedControllerHistory(DriverBootstrap.Adopted driver) {
+            var candidate = Objects.requireNonNull(externalSavedStage, "actual external save Driver adoption required");
+            StrictJson.require(candidate.driver() == driver, "external saved history belongs to the actual adopted Driver");
+            return candidate.original().history().controller();
+        }
+
         private ContinuityBatchJournal.RetiredLifeInterruptionOriginal reservedLifeRecovery;
         /** Lexical DATA custody only, also usable by the genuinely installed ordinary Core. Never an ACTION authority. */
         private <T>T withReservedRetirementData(ContinuityStorePort.Session same,ActionPorts.CheckedArchiveRead<T> work)throws IOException {
@@ -2901,6 +3037,21 @@ public final class RootApplicationAssembly {
             }
         }
 
+        RootApplicationSession finishExternalSavedObservation(RootInstalledCatalog installed, DriverBootstrap.Adopted driver,
+                FreshSessionConfiguration configuration, FreshSessionServices services) throws IOException, InterruptedException {
+            var candidate = Objects.requireNonNull(externalSavedStage, "actual external save Driver adoption required");
+            var context = installed.context();
+            var pair = candidate.original().origin().savedPair();
+            StrictJson.require(candidate.driver() == driver && context.core() == this
+                    && context.game() == candidate.predecessor().successor() && context.adopted() == driver
+                    && candidate.policy().equals(configuration.cyclePolicy())
+                    && configuration.checkpoints().lineageId().equals(pair.lineageId())
+                    && configuration.checkpoints().save().equals(RootOrdinaryRuntimeAssembly.importedCheckpointOutput(
+                            context.game().launchPlan(), pair)),
+                    "external save finish crossed its actual Driver, configured policy, original lineage or current SAVE output");
+            return finishObserved(installed, driver, configuration, services, Optional.empty());
+        }
+
         private RootApplicationSession finishObserved(RootInstalledCatalog installed,DriverBootstrap.Adopted driver,FreshSessionConfiguration configuration,FreshSessionServices services,Optional<ContinuityBatchJournal.CleanRestartAdmission> admissionOpt)throws IOException,InterruptedException{
             return finishObserved(installed,driver,configuration,services,admissionOpt,Optional.empty());
         }
@@ -2977,9 +3128,12 @@ public final class RootApplicationAssembly {
                 derived.requireOwner(context,installed.bindings());
                 staged.prepareDispatcher(authorityId,installed.bindings(),installed.frontend().authority(),physical,reconciliation,remaining.lifecycle().closeAdmission(),derived.admission(),derived.replay(),runtime.capabilities(),installed.readHistory(),installed.pendingBindings(),installed.requiredPending(),remaining.lifeReplay());
                 var actualOffline=offline.install(installed,remaining.events().eventSources());actualOffline.requireContext(installed);
-                var savedPair=committed.map(recovery->recovery.original().pair()).or(this::confirmedSavedPair);
-                long savedDays=committed.map(recovery->recovery.history().committedSavedDays())
-                        .orElseGet(()->confirmedSavedEntry==null&&retainedSavedEntry==null?0:confirmedSavedDays());
+                var external = Optional.ofNullable(externalSavedStage);
+                var savedPair = external.map(value -> value.original().origin().savedPair())
+                        .or(() -> committed.map(recovery -> recovery.original().pair())).or(this::confirmedSavedPair);
+                long savedDays = external.map(value -> value.original().history().controller().totalCommittedDays())
+                        .or(() -> committed.map(recovery -> recovery.history().committedSavedDays()))
+                        .orElseGet(() -> confirmedSavedEntry == null && retainedSavedEntry == null ? 0 : confirmedSavedDays());
                 var root=staged.finish(authorityId,installed.bindings(),installed.frontend().authority(),physical,reconciliation,remaining.lifecycle().closeAdmission(),remaining.lifecycle().terminalDecisions(),remaining.lifecycle(),derived.admission(),derived.replay(),runtime.capabilities(),installed.readHistory(),remaining.lifeReplay(),runtime.planningInputs(),installed.pipeline(),installed.pendingBindings(),installed.requiredPending(),cyclePolicy,actualOffline.port(),sessionClock,savedPair,savedDays,installed.completion(),episodes,savedCapture,restoreMaterials,restorePublication);
                 if(committed.isPresent()) {
                     var recovery=committed.orElseThrow();var original=recovery.original();
@@ -3002,6 +3156,20 @@ public final class RootApplicationAssembly {
                         });
                         root.batchJournal().rebindCommittedImported(same,original.attachment(),semantic);
                     }
+                } else if (external.isPresent()) {
+                    var candidate = external.orElseThrow();
+                    var semantic = initialRecoverySemantic(same, driver, root.identity());
+                    candidate.cycles().bindExternalSaveAuthority((held, origin, current) -> {
+                        writer.requireSession(held);
+                        StrictJson.require(origin == candidate.original().origin() && current == semantic
+                                && context.adopted() == driver && root.identity().equals(origin.successor()),
+                                "external save rebind crossed the actual Root Driver and opening semantic");
+                        candidate.predecessor().requireCurrent(deadline);
+                        candidate.opening().requireCurrent(game.nativeTransport());
+                    });
+                    installed.initializeExternalSavedPlanning(same, driver.first());
+                    var rebound = candidate.batches().rebindExternalSave(same, candidate.original(), semantic);
+                    root.controllerForPublication().restoreExternalSaveObservation(same, rebound);
                 } else if(admissionOpt.isPresent()){
                     try { root.restoreCleanRestart(same,admissionOpt.orElseThrow()); }
                     catch(InterruptedException interrupted) {
@@ -4221,6 +4389,11 @@ public final class RootApplicationAssembly {
                     StrictJson.require(core.unresolvedSameGamePolicy.equals(cyclePolicy),"unresolved reconstruction retains its actual cycle policy");
                     cycles=core.unresolvedSameGameCycles;
                 }
+                else if (core.externalSavedStage != null) {
+                    StrictJson.require(core.externalSavedStage.policy().equals(cyclePolicy),
+                            "external save retains its actual cycle policy");
+                    cycles = core.externalSavedStage.cycles();
+                }
                 else if(core.initialNoDispatchCycles!=null){
                     StrictJson.require(core.initialNoDispatchPolicy.equals(cyclePolicy),"initial no-dispatch recovery retains its actual cycle policy");
                     cycles=core.initialNoDispatchCycles;
@@ -4282,7 +4455,8 @@ public final class RootApplicationAssembly {
                 if(!restoring&&!next)cycles.bindOperatorRetirementVerifier((same,head,retired)->
                         core.operatorQuarantineSource().orElseThrow(()->new IOException("actual configured operator retirement source is absent"))
                                 .verify(same,head,retired,core.archive().withSession(same)));
-                ContinuityBatchJournal batches = next?nextEpisode.batches:(core.cleanRestartBatches != null ? core.cleanRestartBatches :
+                ContinuityBatchJournal batches = core.externalSavedStage != null ? core.externalSavedStage.batches() :
+                        next?nextEpisode.batches:(core.cleanRestartBatches != null ? core.cleanRestartBatches :
                         (core.settledSameGameBatches != null ? core.settledSameGameBatches :
                         (core.unresolvedSameGameBatches != null ? core.unresolvedSameGameBatches :
                         (core.initialNoDispatchBatches != null ? core.initialNoDispatchBatches : new ContinuityBatchJournal(core.writer, cycles)))));

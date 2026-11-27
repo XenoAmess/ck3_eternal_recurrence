@@ -99,9 +99,11 @@ public final class RootOrdinaryRuntimeConfiguration {
     private final boolean newMarriageProposalsEnabled;
     private final java.util.Optional<org.xar.ck3.control.contracts.ExactRef> operatorQuarantine;
 
+    private enum ConfiguredSavedPlan { NONE, VERIFIED_POLICY, EXTERNAL_VANILLA }
+
     public static RootOrdinaryRuntimeConfiguration read(Path configPath) throws IOException {
         try {
-            return decode(configPath, Optional.empty(), Optional.empty(), false);
+            return decode(configPath, Optional.empty(), Optional.empty(), ConfiguredSavedPlan.NONE);
         } catch (IllegalArgumentException invalid) {
             throw new IOException("Invalid ordinary runtime configuration: " + configPath, invalid);
         }
@@ -111,7 +113,7 @@ public final class RootOrdinaryRuntimeConfiguration {
     public static RootOrdinaryRuntimeConfiguration readSaved(Path configPath,org.xar.ck3.control.platform.NativeLaunchPlan identicalPlan)throws IOException {
         java.util.Objects.requireNonNull(identicalPlan);
         if(!(identicalPlan.load() instanceof org.xar.ck3.control.platform.NativeLaunchPlan.SavedGame))throw new IOException("explicit Saved configuration requires Saved plan");
-        try{return decode(configPath, Optional.of(identicalPlan), Optional.empty(), false);}
+        try{return decode(configPath, Optional.of(identicalPlan), Optional.empty(), ConfiguredSavedPlan.NONE);}
         catch(IllegalArgumentException invalid){throw new IOException("invalid explicit Saved runtime configuration",invalid);}
     }
     static RootOrdinaryRuntimeConfiguration readResume(Path configPath, NativeLaunchPlan retainedPlan) throws IOException {
@@ -126,14 +128,19 @@ public final class RootOrdinaryRuntimeConfiguration {
 
     /** Resolve the original owner plan only when the same configuration read selects a Saved policy. */
     static RootOrdinaryRuntimeConfiguration readResume(Path configPath, SavedPlanReader retainedPlan) throws IOException {
-        try { return decode(configPath, Optional.empty(), Optional.of(retainedPlan), false); }
+        try { return decode(configPath, Optional.empty(), Optional.of(retainedPlan), ConfiguredSavedPlan.NONE); }
         catch (IllegalArgumentException invalid) { throw new IOException("invalid same-Game runtime configuration", invalid); }
     }
 
     /** The historical owner remains the exited source; its Saved successor uses the configured plan. */
     static RootOrdinaryRuntimeConfiguration readImportedExitedRestore(Path configPath) throws IOException {
-        try { return decode(configPath, Optional.empty(), Optional.empty(), true); }
+        try { return decode(configPath, Optional.empty(), Optional.empty(), ConfiguredSavedPlan.VERIFIED_POLICY); }
         catch (IllegalArgumentException invalid) { throw new IOException("invalid imported exited Saved runtime configuration", invalid); }
+    }
+
+    static RootOrdinaryRuntimeConfiguration readExternalSaved(Path configPath) throws IOException {
+        try { return decode(configPath, Optional.empty(), Optional.empty(), ConfiguredSavedPlan.EXTERNAL_VANILLA); }
+        catch (IllegalArgumentException invalid) { throw new IOException("invalid external Saved runtime configuration", invalid); }
     }
 
     static NativeLaunchPlan readLaunchPlan(Path file) throws IOException {
@@ -160,7 +167,7 @@ public final class RootOrdinaryRuntimeConfiguration {
     }
     private static RootOrdinaryRuntimeConfiguration decode(Path configPath,
             Optional<NativeLaunchPlan> boundSavedPlan, Optional<SavedPlanReader> resumeSavedPlan,
-            boolean useConfiguredSavedPlan) throws IOException {
+            ConfiguredSavedPlan configuredSavedPlan) throws IOException {
         Path absoluteConfigPath = configPath.toAbsolutePath().normalize();
         Path configParent = absoluteConfigPath.getParent();
 
@@ -254,9 +261,12 @@ public final class RootOrdinaryRuntimeConfiguration {
                 boundSavedPlan = Optional.of(plan);
             }
         }
-        if (useConfiguredSavedPlan) boundSavedPlan = Optional.of(readLaunchPlan(launchPlanFile));
+        if (configuredSavedPlan != ConfiguredSavedPlan.NONE) boundSavedPlan = Optional.of(readLaunchPlan(launchPlanFile));
         InitialEpisodePolicy initialPolicy;
-        if(boundSavedPlan.isPresent()) {
+        if (configuredSavedPlan == ConfiguredSavedPlan.EXTERNAL_VANILLA
+                || resumeSavedPlan.isPresent() && boundSavedPlan.filter(plan -> plan.preparedProfile().noMods().isPresent()).isPresent()) {
+            initialPolicy = InitialEpisodePolicy.externalSaved(boundSavedPlan.orElseThrow());
+        } else if(boundSavedPlan.isPresent()) {
             var original=org.xar.ck3.control.build.ControlBuild.FileRef.measure(initialPolicyFile);
             initialPolicy=InitialEpisodePolicy.readExactSaved(new org.xar.ck3.control.contracts.ExactRef(original.path(),original.bytes(),original.sha256()),boundSavedPlan.orElseThrow());
         } else initialPolicy=readInitialPolicy(retainedPolicy == null ? readInitialPolicyDocument(initialPolicyFile) : retainedPolicy);

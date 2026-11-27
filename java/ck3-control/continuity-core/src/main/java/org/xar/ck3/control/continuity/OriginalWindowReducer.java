@@ -3,7 +3,10 @@ package org.xar.ck3.control.continuity;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.math.BigInteger;
 import java.util.Set;
+import org.xar.ck3.control.contracts.GameGeneration;
+import org.xar.ck3.control.continuity.writer.WriterContracts;
 import org.xar.ck3.control.contracts.StrictJson;
 import org.xar.ck3.control.contracts.NativeCharacterId;
 import org.xar.ck3.control.continuity.writer.WriterContracts.Request;
@@ -257,6 +260,29 @@ public final class OriginalWindowReducer {
                 org.xar.ck3.control.contracts.ExactRef.fromJson(details.get("operator_observation"));
                 state.put("status","running");binding(state,actual);
                 if(state.has("last_error"))state.putNull("last_error");
+            }
+            case "external_save_observation_rebind" -> {
+                StrictJson.object(details, Set.of("evidence_id", "source", "successor_game", "frame"));
+                var retained = frame(object(state.get("latest_binding")));
+                var actual = frame(object(details.get("frame")));
+                var boundary = object(state.get(WriterContracts.ORDINARY_BATCH_BOUNDARY_FIELD));
+                var previousGame = GameGeneration.fromJson(state.get("game_binding"));
+                var successorGame = GameGeneration.fromJson(details.get("successor_game"));
+                StrictJson.require("java-external-save-observation/v1".equals(StrictJson.text(source))
+                        && "repair_required".equals(StrictJson.text(state.get("status")))
+                        && "BATCH_INTERRUPTED".equals(StrictJson.text(boundary.get("boundary")))
+                        && !successorGame.equals(previousGame)
+                        && number(actual, "date_raw", 0) >= number(retained, "date_raw", 0)
+                        && number(actual, "date_raw", 0) >= number(state, "last_settled_date_raw", 0)
+                        && NativeCharacterId.fromJson(actual.get("actor_character_id")).equals(NativeCharacterId.fromJson(retained.get("actor_character_id")))
+                        && StrictJson.text(actual.get("episode_run_id")).equals(StrictJson.text(retained.get("episode_run_id"))),
+                        "external save observation must retain the interrupted actor, campaign and date floor");
+                StrictJson.text(actual.get("snapshot_id"));
+                number(actual, "revision", 1);
+                StrictJson.integer(actual.get("native_revision"), BigInteger.ZERO, StrictJson.UINT64_MAX);
+                state.set("game_binding", successorGame.toJson());
+                binding(state, actual);
+                state.put("status", "running");
             }
             case "captured_no_dispatch_recovery" -> {
                 ObjectNode retainedFrame=frame(object(state.get("latest_binding"))),actual=frame(object(details.get("frame")));

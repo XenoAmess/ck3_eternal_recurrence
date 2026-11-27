@@ -101,7 +101,12 @@ public final class RootRestoreMaterialProjection {
     }
     /** Actual cold auxiliary reduction over replayed saved producer data; no caller-supplied empty cache substitutes. */
     public static Obj reduceAuxiliary(Obj verifiedActualSavedAuxiliary,Obj actualNativeState) {
+        return reduceAuxiliary(verifiedActualSavedAuxiliary, actualNativeState, org.xar.ck3.control.application.capabilities.CapabilitySessionPresentation.RestoreKind.COLD_CHECKPOINT);
+    }
+
+    static Obj reduceAuxiliary(Obj verifiedActualSavedAuxiliary, Obj actualNativeState, org.xar.ck3.control.application.capabilities.CapabilitySessionPresentation.RestoreKind restoreKind) {
         Objects.requireNonNull(verifiedActualSavedAuxiliary);Objects.requireNonNull(actualNativeState);
+        Objects.requireNonNull(restoreKind);
         var fields=new LinkedHashMap<>(verifiedActualSavedAuxiliary.members());
         // Transport/native facts are supplied afresh by the same staged producer, rather than borrowing old diagnostics.
         actualNativeState.members().keySet().forEach(fields::remove);fields.remove("diagnostics");
@@ -112,7 +117,7 @@ public final class RootRestoreMaterialProjection {
                 "capability_read_sources","episode_transition_error"))StrictJson.require(fields.containsKey(key),"actual saved private cache missing: "+key);
         StrictJson.require(fields.get("episode_transition")==Nil.INSTANCE,"unresolved original episode transition cannot be erased by restore");
         fields.put("driver_state_restored",new Bool(true));fields.put("driver_state_error",Nil.INSTANCE);
-        fields.put("restore_kind",new Text("cold_checkpoint"));fields.put("episode_binding_state",new Text("active_resumed"));fields.put("cold_candidate_rejection",Nil.INSTANCE);
+        fields.put("restore_kind",new Text(restoreKind.wire()));fields.put("episode_binding_state",new Text("active_resumed"));fields.put("cold_candidate_rejection",Nil.INSTANCE);
         if(fields.containsKey("rollback_war_failures_migration_required")) {
             OpportunityJson.bool(fields.get("rollback_war_failures_migration_required"),"rollback migration marker");
             fields.put("rollback_war_failures_migration_required",new Bool(false));

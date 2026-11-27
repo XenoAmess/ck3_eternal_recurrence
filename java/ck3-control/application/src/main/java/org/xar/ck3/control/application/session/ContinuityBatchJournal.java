@@ -4285,6 +4285,83 @@ public final class ContinuityBatchJournal implements BatchJournal {
                 Optional.of(Objects.requireNonNull(source)));
     }
 
+    public static final class PreparedExternalSave {
+        private final ExternalSaveOrigin origin;
+        private final SettledSameGameData history;
+
+        private PreparedExternalSave(ExternalSaveOrigin origin, SettledSameGameData history) {
+            this.origin = origin;
+            this.history = history;
+        }
+
+        public ExternalSaveOrigin origin() { return origin; }
+        public SettledSameGameData history() { return history; }
+    }
+
+    /** Source-side opening reuses the exact existing imported-exited history and its previously committed retirement. */
+    public PreparedExternalSave prepareExternalSave(ContinuityStorePort.Session same, SessionIdentity departed,
+            CompositeOperatorQuarantineSource source, SessionIdentity successor, CheckpointPair.FileWitness loadedFile,
+            ExternalSaveOrigin.NativeOpening opening) throws IOException {
+        store.requireSession(same);
+        var head = same.head();
+        var history = readExitedImportedHistory(same, departed, source);
+        StrictJson.require(history.canonicalSequence() == head.state().sequence()
+                && history.canonicalHeadDigest().equals(head.digest())
+                && history.controller().owner().equals(departed)
+                && history.startingPoint() instanceof SameGameEntry.ImportedSaved,
+                "external save observation requires the original retired imported history");
+        var pair = history.controller().savedPair().orElseThrow();
+        var actionHead = ContinuityActionJournal.recordHead(head.state()).orElseThrow();
+        var origin = new ExternalSaveOrigin(head.state().sequence(), head.digest(), departed, successor,
+                pair, loadedFile, actionHead, opening);
+        origin.requireOriginal(head.state());
+        transitions.withLocked(same, () -> {
+            var archive = transitions.restartArchive(same);
+            StrictJson.require(ContinuityActionJournal.externalSaveRetiredResume(same, origin, archive, history.settledActions()).isPresent(),
+                    "external save observation requires the actual committed administrative terminal");
+            return null;
+        });
+        return new PreparedExternalSave(origin, history);
+    }
+
+    public static final class ExternalSaveRebind {
+        private final ContinuityBatchJournal issuer;
+        private final long sequence;
+        private final String digest;
+        private final ControllerRestartState controller;
+
+        private ExternalSaveRebind(ContinuityBatchJournal issuer, WriterContracts.Head head, ControllerRestartState controller) {
+            this.issuer = issuer;
+            this.sequence = head.state().sequence();
+            this.digest = head.digest();
+            this.controller = controller;
+        }
+
+        ControllerRestartState requireCurrent(ContinuityBatchJournal journal, ContinuityStorePort.Session same,
+                SessionIdentity owner) throws IOException {
+            journal.store.requireSession(same);
+            var head = same.head();
+            StrictJson.require(journal == issuer && owner.equals(controller.owner()) && head.state().sequence() == sequence
+                    && head.digest().equals(digest), "external save Controller must use its actual newly rebound writer");
+            return controller;
+        }
+    }
+
+    public ExternalSaveRebind rebindExternalSave(ContinuityStorePort.Session same, PreparedExternalSave prepared,
+            SemanticEvidence opening) throws IOException {
+        store.requireSession(same);
+        var origin = prepared.origin();
+        var edge = transitions.withLocked(same, () -> transitions.rebindExternalSave(same, origin, opening));
+        var head = same.head();
+        StrictJson.require(ContinuityJson.digest(edge.head().toJson()).equals(head.digest()) && head.state().settledDateRaw() == origin.savedPair()
+                .frame().frame().identity().dateRaw().longValueExact(), "external save observation changed the settled frontier");
+        var old = prepared.history().controller();
+        var controller = new ControllerRestartState(origin.successor(), old.batchPrefix(), old.nextBatchSequence(), old.usedBatches(),
+                old.unsavedGameplayActions(), old.savedPair(), Optional.of(same.persistedHead()), old.eligibleSinceSave(),
+                true, false, false, old.totalCommittedDays(), old.completedAnalysisIds(), old.stopRequested());
+        return new ExternalSaveRebind(this, head, controller);
+    }
+
     private record ExitedImportedHistory(ActionReceipt original, Optional<ActionReceipt> terminal) { }
 
     private static ExitedImportedHistory requireExitedImportedHistory(ContinuityStorePort.Session same, WriterContracts.Head head,

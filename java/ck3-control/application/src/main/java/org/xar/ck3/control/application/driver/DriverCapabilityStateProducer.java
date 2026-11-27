@@ -662,6 +662,23 @@ public final class DriverCapabilityStateProducer {
         return mint(frame,current,new Obj(aux),nextVersion(current),Cause.INDEPENDENT_READINESS,archive);
     }
 
+    /** Reframe the retained campaign cache using the new actual save directory and current Native observation. */
+    public static InitialAuxiliary rebindExternalSaved(Complete frame, Known current,
+            DynamicCapabilities.Configuration actualConfiguration, ActionPorts.OutcomeArchive archive) {
+        var aux = initialized(current);
+        var presentation = sessionPresentation(new Obj(aux));
+        require(presentation.driverStateRestored()
+                && presentation.bindingState() == CapabilitySessionPresentation.BindingState.ACTIVE_RESUMED
+                && presentation.restoreKind().equals(Optional.of(CapabilitySessionPresentation.RestoreKind.EXTERNAL_NAMED_OBSERVATION)),
+                "external save capability rebind requires its actual retained session presentation");
+        presentation.validateConfiguration(actualConfiguration);
+        aux.put(CONFIG, configuration(actualConfiguration));
+        aux.put("campaign_root_context_query", Nil.INSTANCE);
+        aux.put(READS, new Obj(Map.of("marriage", Nil.INSTANCE, "campaign_root", Nil.INSTANCE)));
+        var fresh = DriverSemanticReadState.invalidate(frame, new Obj(aux), archive);
+        return mint(frame, current, fresh, version(current.auxiliary()).add(BigInteger.ONE), Cause.OBSERVED_FRAME, archive);
+    }
+
     /** Reframe the actual current private state. A repeated unchanged call reuses the exact existing material. */
     public static Optional<InitialAuxiliary> refresh(Complete frame,Known current,ActionPorts.OutcomeArchive archive) {
         return refreshPrepared(frame,current,new Obj(initialized(current)),archive);

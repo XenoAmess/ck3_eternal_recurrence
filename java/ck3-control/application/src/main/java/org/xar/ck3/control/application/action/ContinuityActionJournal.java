@@ -16,6 +16,7 @@ import org.xar.ck3.control.application.checkpoint.SavedAttachmentSourceStore;
 import org.xar.ck3.control.application.session.ContinuityBatchJournal.CleanRestartAdmission;
 import org.xar.ck3.control.application.session.ContinuityBatchJournal;
 import org.xar.ck3.control.application.session.OrdinaryCycleTransitions;
+import org.xar.ck3.control.application.session.ExternalSaveOrigin;
 import org.xar.ck3.control.application.session.SessionPorts.SessionIdentity;
 import org.xar.ck3.control.continuity.ContinuityJson;
 import org.xar.ck3.control.continuity.ContinuityState;
@@ -249,15 +250,32 @@ public final class ContinuityActionJournal implements ActionJournal {
         if (unresolved.isEmpty()) return unresolved;
         var whole = head.state().toJson();
         String importedOrigin = WriterContracts.ORDINARY_IMPORTED_CYCLE_ORIGIN_FIELD;
-        if (!whole.has(importedOrigin) || !whole.hasNonNull(WriterContracts.ORDINARY_CYCLE_FIELD)
+        String externalOrigin = WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD;
+        if ((!whole.hasNonNull(importedOrigin) && !whole.hasNonNull(externalOrigin))
+                || !whole.hasNonNull(WriterContracts.ORDINARY_CYCLE_FIELD)
                 || !head.state().machineId().equals(machineId)
                 || !ContinuityJson.same(whole.get("game_binding"), game.toJson())) return unresolved;
         var owner = OrdinaryCycleTransitions.sessionFromJson(whole.get(WriterContracts.ORDINARY_CYCLE_FIELD).get("session"));
         if (!owner.machineId().equals(machineId) || !owner.game().equals(game) || !owner.sessionId().equals(sessionId)) return unresolved;
         StrictJson.require(same.head().digest().equals(head.digest()), "current action eligibility requires its original locked head");
-        var exact = importedRetiredResume(ExactRef.fromJson(whole.get(importedOrigin)), archive, owner, canonical, unresolved);
+        Optional<ActionReceipt> exact;
+        if (whole.hasNonNull(externalOrigin)) {
+            var origin = ExternalSaveOrigin.fromJson(ContinuityJson.parseObject(archive.loadMaterial(
+                    ExactRef.fromJson(whole.get(externalOrigin))).bytes(), ContinuityJson.DOCUMENT_MAX_BYTES));
+            exact = owner.equals(origin.successor()) ? externalSaveRetiredResume(same, origin, archive, canonical) : Optional.empty();
+        } else {
+            exact = importedRetiredResume(ExactRef.fromJson(whole.get(importedOrigin)), archive, owner, canonical, unresolved);
+        }
         StrictJson.require(same.head().digest().equals(head.digest()), "current action eligibility changed its original locked head");
         return exact.map(old -> unresolved.stream().filter(receipt -> !receipt.equals(old)).toList()).orElse(unresolved);
+    }
+
+    /** Read only the exact positive-ACK UNKNOWN in the original retired owner prefix. */
+    public static Optional<ActionReceipt> externalSaveRetiredResume(ContinuityStorePort.Session same,
+            ExternalSaveOrigin origin, ActionPorts.OutcomeArchive archive, List<ActionReceipt> canonical) throws IOException {
+        origin.requireOriginal(same);
+        return retiredResumeFromImportedPrefix(origin.retiredActionHead(), archive, origin.departed(), origin.savedPair(),
+                canonical, canonical.stream().filter(receipt -> !receipt.settled()).toList());
     }
 
     /** Disposition of the original action derived from the actual v5 attachment and its admitted continuation. */
@@ -267,14 +285,21 @@ public final class ContinuityActionJournal implements ActionJournal {
         private final String attachmentDigest;
         private final ActionReceipt retiredResume;
         private final boolean beforeCycleRebindAllowed;
+        private final Optional<ExternalSaveOrigin> externalOrigin;
 
         private ImportedRestoreRetirement(SessionIdentity owner, long attachmentSequence, String attachmentDigest, ActionReceipt retiredResume,
                 boolean beforeCycleRebindAllowed) {
+            this(owner, attachmentSequence, attachmentDigest, retiredResume, beforeCycleRebindAllowed, Optional.empty());
+        }
+
+        private ImportedRestoreRetirement(SessionIdentity owner, long attachmentSequence, String attachmentDigest,
+                ActionReceipt retiredResume, boolean beforeCycleRebindAllowed, Optional<ExternalSaveOrigin> externalOrigin) {
             this.owner = owner;
             this.attachmentSequence = attachmentSequence;
             this.attachmentDigest = attachmentDigest;
             this.retiredResume = retiredResume;
             this.beforeCycleRebindAllowed = beforeCycleRebindAllowed;
+            this.externalOrigin = externalOrigin;
         }
 
         /** Cheap identity test, followed by retainedResume under the original writer when needed. */
@@ -286,6 +311,17 @@ public final class ContinuityActionJournal implements ActionJournal {
             StrictJson.require(head.state().sequence() == snapshot.ledgerSequence() && head.digest().equals(snapshot.headSha256()),
                     "imported Driver projection requires its actual current raw action snapshot");
             var whole = head.state().toJson();
+            if (externalOrigin.isPresent()) {
+                var origin = externalOrigin.orElseThrow();
+                if (!snapshot.actions().contains(retiredResume)) return Optional.empty();
+                boolean original = head.state().sequence() == origin.predecessorSequence()
+                        && head.digest().equals(origin.predecessorDigest());
+                if (original) return externalSaveRetiredResume(same, origin, archive, snapshot.actions()).filter(retiredResume::equals);
+                if (!whole.hasNonNull(WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD)
+                        || !ContinuityJson.same(whole.get("game_binding"), owner.game().toJson())
+                        || blockingUnresolved(same, head, archive, owner, snapshot.actions()).contains(retiredResume)) return Optional.empty();
+                return Optional.of(retiredResume);
+            }
             if (!owner.machineId().equals(head.state().machineId())
                     || !ContinuityJson.same(whole.get("game_binding"), owner.game().toJson())
                     || !snapshot.actions().contains(retiredResume)) return Optional.empty();
@@ -300,6 +336,18 @@ public final class ContinuityActionJournal implements ActionJournal {
             StrictJson.require(head.digest().equals(same.head().digest()), "imported Driver projection changed its actual writer head");
             return Optional.of(retiredResume);
         }
+    }
+
+    /** Initial Driver classification under the exact retired predecessor and its original writer. */
+    public static ImportedRestoreRetirement externalSaveRetirement(ContinuityStorePort.Session same,
+            ExternalSaveOrigin origin, ActionJournal.Snapshot snapshot, ActionPorts.OutcomeArchive archive) throws IOException {
+        var head = same.head();
+        StrictJson.require(head.state().sequence() == snapshot.ledgerSequence() && head.digest().equals(snapshot.headSha256())
+                && head.state().sequence() == origin.predecessorSequence() && head.digest().equals(origin.predecessorDigest()),
+                "external save Driver requires the exact retired predecessor under the original writer");
+        var retired = externalSaveRetiredResume(same, origin, archive, snapshot.actions()).orElseThrow();
+        return new ImportedRestoreRetirement(origin.successor(), origin.predecessorSequence(), origin.predecessorDigest(),
+                retired, true, Optional.of(origin));
     }
 
     /** The before-REBIND classification can only follow the exact committed imported Saved attachment. */
@@ -383,15 +431,20 @@ public final class ContinuityActionJournal implements ActionJournal {
     public static Optional<ImportedRestoreRetirement> admittedImportedRestartRetirement(ContinuityStorePort.Session same,
             CleanRestartAdmission admission, ActionJournal.Snapshot snapshot, ActionPorts.OutcomeArchive archive) throws IOException {
         var head = same.head();
-        if (!head.state().toJson().has(WriterContracts.ORDINARY_IMPORTED_CYCLE_ORIGIN_FIELD)) return Optional.empty();
+        var state = head.state().toJson();
+        var external = state.get(WriterContracts.ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD);
+        if (!state.hasNonNull(WriterContracts.ORDINARY_IMPORTED_CYCLE_ORIGIN_FIELD) && external == null) return Optional.empty();
         admission.requireCurrent(same);
         StrictJson.require(head.state().sequence() == snapshot.ledgerSequence() && head.digest().equals(snapshot.headSha256()),
                 "clean Driver restart requires its actual current raw action snapshot");
         var owner = admission.controller().owner();
         var blockers = blockingUnresolved(same, head, archive.withSession(same), owner, snapshot.actions());
         StrictJson.require(blockers.isEmpty(), "clean Driver restart retains another unresolved original");
+        Optional<ExternalSaveOrigin> origin = external == null ? Optional.empty() : Optional.of(ExternalSaveOrigin.fromJson(
+                ContinuityJson.parseObject(archive.withSession(same).loadMaterial(ExactRef.fromJson(external)).bytes(),
+                        ContinuityJson.DOCUMENT_MAX_BYTES)));
         return snapshot.actions().stream().filter(receipt -> !receipt.settled()).findFirst()
-                .map(retired -> new ImportedRestoreRetirement(owner, head.state().sequence(), head.digest(), retired, false));
+                .map(retired -> new ImportedRestoreRetirement(owner, head.state().sequence(), head.digest(), retired, false, origin));
     }
 
     private static Optional<ActionReceipt> importedRetiredResume(ExactRef tombstoneRef, ActionPorts.OutcomeArchive archive,

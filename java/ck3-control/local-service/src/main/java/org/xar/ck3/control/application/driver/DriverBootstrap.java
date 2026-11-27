@@ -44,6 +44,7 @@ import org.xar.ck3.control.nativebridge.NativeTransportDiagnostics.AdoptionRefus
 import org.xar.ck3.control.service.root.RootOriginalDriverJournal;
 import org.xar.ck3.control.service.root.RootRestoreMaterials;
 import org.xar.ck3.control.service.root.RootLegacyResumeRuntime;
+import org.xar.ck3.control.service.root.RootExternalSavedOpening;
 import org.xar.ck3.control.wave3.governance.lifecycle.SuccessionLifecycleBinding;
 
 /** Concrete local-service assembly. Source imports and hello/frame ACKs grant no action or readiness authority. */
@@ -827,7 +828,31 @@ public final class DriverBootstrap {
                 Optional.empty(),Optional.empty(),Optional.of(committed));
     }
 
-    private record CommittedDriverRead(WriterContracts.Pin attachment,NativeObservationPort.ObservedFrame originalOpening) { }
+    /** Projects a same-campaign named-save opening with the writer's verified original retirement. */
+    public static Adopted adoptExternalSavedObservation(Seed seed, ContinuityStorePort.Session same,
+            ActionSnapshotReader actions, NativeGameTransport transport, G2Source source,
+            ActionPorts.OutcomeArchive archive, ExactArtifactReader originals, int retainedFrames, Instant deadline,
+            RootExternalSavedOpening opening, ContinuityActionJournal.ImportedRestoreRetirement retirement)
+            throws IOException, InterruptedException {
+        Objects.requireNonNull(opening);
+        Objects.requireNonNull(retirement);
+        opening.requireCurrent(transport);
+        var raw = opening.frame();
+        StrictJson.require(raw.session().equals(seed.expectedSession()), "named-save Driver seed crossed its actual opening");
+        var restored = adoptInternal(seed, same, actions, transport, source, archive, originals, receipt -> Optional.empty(),
+                retainedFrames, deadline, AdoptionKind.JAVA_COLD, Optional.of(raw), Optional.empty(), Optional.empty(),
+                Optional.empty(), () -> deadline, Optional.empty(), Optional.empty(), Optional.of(new NamedSaveDriverRead(retirement)));
+        opening.requireCurrent(transport);
+        StrictJson.require(restored.status() == AdoptionStatus.QUALIFICATION_REQUIRED,
+                "named-save Driver projection did not retain its original resolved history");
+        return restored;
+    }
+
+    private sealed interface ColdOpening permits CommittedDriverRead, NamedSaveDriverRead { }
+    private record CommittedDriverRead(WriterContracts.Pin attachment, NativeObservationPort.ObservedFrame originalOpening)
+            implements ColdOpening { }
+    private record NamedSaveDriverRead(ContinuityActionJournal.ImportedRestoreRetirement retirement)
+            implements ColdOpening { }
 
     static DriverSnapshotFacts.RestoreSeedSupplement readCommittedImportedSeed(ContinuityStorePort.Session same,
             WriterContracts.HistoricalTransition edge,SessionIdentity successor)throws IOException {
@@ -961,7 +986,9 @@ public final class DriverBootstrap {
             Optional<RootRestoreMaterials.ColdAdoption> restoredNative,
             Optional<org.xar.ck3.control.application.session.ContinuityBatchJournal.CleanRestartAdmission> cleanRestart,java.util.function.Supplier<Instant> postPreparationIoDeadline,
             Optional<BorrowedSessionReader> currentSession,Optional<DriverStateAssembler.ReservedLifeRetirementVerifier> retirementVerifier,
-            Optional<CommittedDriverRead> committedDriver)throws IOException,InterruptedException {
+            Optional<ColdOpening> coldOpening)throws IOException,InterruptedException {
+        var committedDriver = coldOpening.filter(CommittedDriverRead.class::isInstance).map(CommittedDriverRead.class::cast);
+        var namedDriver = coldOpening.filter(NamedSaveDriverRead.class::isInstance).map(NamedSaveDriverRead.class::cast);
         Objects.requireNonNull(seed);Objects.requireNonNull(borrowed);Objects.requireNonNull(actions);Objects.requireNonNull(transport);
         Objects.requireNonNull(source);Objects.requireNonNull(archive);Objects.requireNonNull(originals);Objects.requireNonNull(coverage);Objects.requireNonNull(deadline);
         Objects.requireNonNull(resolvedRaw);Objects.requireNonNull(savedNative);Objects.requireNonNull(restoredNative);
@@ -998,16 +1025,24 @@ public final class DriverBootstrap {
                     List<ActionReceipt> cleanActuals=new ArrayList<>();
                     List<DriverActionHistoryCodec.Source> cleanSources=new ArrayList<>();
                     String coverageHead=cleanRestart.isPresent()?borrowed.head().digest():null;
-                    var importedRestart = committedDriver.isPresent()
-                            ? Optional.of(ContinuityActionJournal.committedImportedRestoreRetirement(borrowed,
-                                    committedDriver.orElseThrow().attachment(),lease.snapshot(),archive,new SessionIdentity(
-                                            seed.expectedSession().machineId(),seed.expectedSession().game(),seed.expectedSession().sessionId())))
-                            : cleanRestart.isPresent()
-                                    ? ContinuityActionJournal.admittedImportedRestartRetirement(borrowed,cleanRestart.orElseThrow(),lease.snapshot(),archive)
-                                    : Optional.<ContinuityActionJournal.ImportedRestoreRetirement>empty();
+                    Optional<ContinuityActionJournal.ImportedRestoreRetirement> importedRestart;
+                    if (namedDriver.isPresent()) {
+                        var retirement = namedDriver.orElseThrow().retirement();
+                        retirement.retainedResume(borrowed, lease.snapshot(), archive.withSession(borrowed))
+                                .orElseThrow(() -> new IOException("named-save opening lacks its exact original retired RESUME"));
+                        importedRestart = Optional.of(retirement);
+                    } else {
+                        importedRestart = committedDriver.isPresent()
+                                ? Optional.of(ContinuityActionJournal.committedImportedRestoreRetirement(borrowed,
+                                        committedDriver.orElseThrow().attachment(),lease.snapshot(),archive,new SessionIdentity(
+                                                seed.expectedSession().machineId(),seed.expectedSession().game(),seed.expectedSession().sessionId())))
+                                : cleanRestart.isPresent()
+                                        ? ContinuityActionJournal.admittedImportedRestartRetirement(borrowed,cleanRestart.orElseThrow(),lease.snapshot(),archive)
+                                        : Optional.empty();
+                    }
                     for(var actual:lease.snapshot().actions()) {
-                        if(committedDriver.isPresent()&&actual.command().origin().game().equals(stamp.game()))
-                            throw new IOException("Committed imported opening already contains a successor action");
+                        if(coldOpening.isPresent()&&actual.command().origin().game().equals(stamp.game()))
+                            throw new IOException("Cold opening already contains a successor action");
                         if (!actual.settled()) {
                             if (importedRestart.filter(retirement -> retirement.matches(actual)).isEmpty()) {
                                 unresolved = true; gaps.add("unreconciled_action:" + actual.command().actionId());

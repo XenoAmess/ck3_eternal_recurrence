@@ -25,6 +25,7 @@ public final class WriterContracts {
     public static final String ORDINARY_SAVED_CYCLE_FIELD = "java_ordinary_saved_cycle";
     public static final String ORDINARY_CYCLE_REBIND_FIELD = "java_ordinary_cycle_rebind";
     public static final String ORDINARY_IMPORTED_CYCLE_ORIGIN_FIELD = "java_ordinary_imported_cycle_origin";
+    public static final String ORDINARY_EXTERNAL_SAVE_ORIGIN_FIELD = "java_ordinary_external_save_origin";
     public static final String ORDINARY_IMPORTED_CYCLE_RESTORE_SOURCE = "java-ordinary-imported-source-bound-restore/v1";
     public static final String ORDINARY_BATCH_BOUNDARY_FIELD = "java_ordinary_batch_boundary";
     public static final String GAMEPLAY_ENTRY_KIND = "java_gameplay_entry";

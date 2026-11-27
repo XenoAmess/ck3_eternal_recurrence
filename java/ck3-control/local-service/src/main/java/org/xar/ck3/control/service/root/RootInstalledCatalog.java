@@ -626,6 +626,32 @@ public final class RootInstalledCatalog {
         current.initializePlanning(same,actual);
     }
 
+    void initializeExternalSavedPlanning(ContinuityStorePort.Session same, DriverObservationAssembler.Complete actual)
+            throws IOException {
+        context.writer().requireSession(same);
+        DriverCapabilityRuntime current;
+        synchronized (this) {
+            StrictJson.require(capabilities != null && adopted == context.adopted(),
+                    "external save planning requires its actual installed Driver and capability runtime");
+            current = capabilities;
+        }
+        var authority = context.adopted().authority();
+        current.requireOwner(authority, context.archive(), bindings);
+        requireBaseDomainBodies(same);
+        StrictJson.require(factory.sources().crossRun().domain().read(same) instanceof CrossRunPlanningDomain.KnownState,
+                "external save planning requires its original retained campaign strategy");
+        var archive = context.archive().withSession(same);
+        authority.withFrozenFacts(same, frozen -> {
+            if (!(frozen.state() instanceof DriverSnapshotFacts.Known known))
+                throw new IOException("external save planning requires the actual complete Driver");
+            var cache = DriverCapabilityStateProducer.rebindExternalSaved(actual, known,
+                    factory.sources().frontend().capabilityConfiguration(), archive);
+            authority.publishCapabilityInputs(same, cache.expectedStamp(), cache.expectedAuxiliarySha256(), cache);
+            return null;
+        });
+        current.initializePlanning(same, actual);
+    }
+
     private void initializeCapabilityState(ContinuityStorePort.Session same, DriverObservationAssembler.Complete actual) throws IOException {
         var authority = context.adopted().authority();
         ActionPorts.OutcomeArchive archive = context.archive().withSession(same);

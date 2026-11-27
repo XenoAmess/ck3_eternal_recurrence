@@ -78,6 +78,13 @@ public final class InitialEpisodePolicy {
         return java.util.List.copyOf(refs);
     }
     public void verify() throws IOException {
+        if (source.isEmpty() && environment.isEmpty() && savedPlan.isPresent()) {
+            var plan = savedPlan.orElseThrow();
+            StrictJson.require(kind == Lifecycle.NATIVE_CAMPAIGN_SAVED
+                    && plan.load() instanceof org.xar.ck3.control.platform.NativeLaunchPlan.SavedGame
+                    && plan.preparedProfile().noMods().isPresent(), "external save policy requires the actual vanilla saved plan");
+            return;
+        }
         if (source.isEmpty() || environment.isEmpty()) throw new java.io.IOException("source or environment provenance absent");
         ExactRef source=source();
         ExactRef environment=environment();
@@ -311,6 +318,16 @@ public final class InitialEpisodePolicy {
         RawJson result=new RawJson(StrictJson.canonical(row,1<<20));
         SharedSourceFiles.assertUnchanged(envHeld);SharedSourceFiles.assertUnchanged(saveHeld);actualEnvironment.verify();actualSave.verify();return result;
     }
+    /** The external-save opening supplies actual vanilla load evidence directly from its held Game. */
+    public static InitialEpisodePolicy externalSaved(org.xar.ck3.control.platform.NativeLaunchPlan samePlan) throws IOException {
+        Objects.requireNonNull(samePlan);
+        var policy = new InitialEpisodePolicy(java.util.Optional.empty(), java.util.Optional.empty(),
+                new RawJson(new byte[]{'n','u','l','l'}), Lifecycle.NATIVE_CAMPAIGN_SAVED,
+                java.util.Optional.empty(), java.util.Optional.of(samePlan));
+        policy.verify();
+        return policy;
+    }
+
     public static InitialEpisodePolicy readExactSaved(ExactRef source,org.xar.ck3.control.platform.NativeLaunchPlan samePlan)throws IOException {
         Objects.requireNonNull(samePlan);sourceBound(source);
         StrictJson.require(samePlan.load() instanceof org.xar.ck3.control.platform.NativeLaunchPlan.SavedGame,"explicit Saved plan required for native_campaign");
@@ -330,7 +347,8 @@ public final class InitialEpisodePolicy {
         policy.requireSavedProjection(samePlan);return policy;
     }
     public void requireSavedProjection(org.xar.ck3.control.platform.NativeLaunchPlan identical)throws IOException {
-        StrictJson.require(materializedSaved.isEmpty(),"mapped Saved v2 requires its explicit first-admission path; legacy projection is unsupported");
+        StrictJson.require(materializedSaved.isEmpty() && source.isPresent(),
+                "ordinary Saved projection requires its original explicit admission path");
         StrictJson.require(kind==Lifecycle.NATIVE_CAMPAIGN_SAVED&&savedPlan.orElseThrow()==identical&&fixture.isEmpty(),"Saved native projection crossed the original plan");verify();
     }
     /** Explicit native_campaign preserves the original null lifecycle. This makes no XAR-rule or pact claim. */

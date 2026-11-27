@@ -51,12 +51,13 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
         String mode = args[2];
         boolean loaded="resume-loaded-replacement".equals(mode);
         boolean importedLoaded="resume-imported-loaded-replacement".equals(mode);
+        boolean externalSaved=RootExternalSavedRecoveryInput.MODE.equals(mode);
         boolean imported="restore-exited".equals(mode)&&args.length==6;
         boolean resume="resume".equals(mode);
-        if(args.length!=(loaded||imported||importedLoaded?6:3))
+        if(args.length!=(loaded||imported||importedLoaded||externalSaved?6:3))
             throw new IllegalArgumentException("recovery request requires its original path, byte count and SHA-256");
         if (!"fresh".equals(mode) && !"resume".equals(mode) && !"current-map".equals(mode) && !"operator-quarantine".equals(mode)
-                &&!"retire-exited".equals(mode)&&!"restore-exited".equals(mode)&&!loaded&&!importedLoaded) throw new IllegalArgumentException("unknown ordinary-worker mode");
+                &&!"retire-exited".equals(mode)&&!"restore-exited".equals(mode)&&!loaded&&!importedLoaded&&!externalSaved) throw new IllegalArgumentException("unknown ordinary-worker mode");
         Clock clock = Clock.systemUTC();
         Path configPath=Path.of(args[1]).toAbsolutePath().normalize();
         var descriptor = retainedOwner.isPresent()?retainedOwner.orElseThrow():GameSupervisorControl.readDescriptor(Path.of(args[0]));
@@ -71,6 +72,7 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
         }
         RootOrdinaryRuntimeConfiguration config=retainedConfiguration!=null?retainedConfiguration:
                 importedLoaded?readImportedLoadedWorkerConfiguration(configPath,importedLoadedInput):
+                externalSaved?RootOrdinaryRuntimeConfiguration.readExternalSaved(configPath):
                 imported?RootOrdinaryRuntimeConfiguration.readImportedExitedRestore(configPath):
                 resume?RootOrdinaryRuntimeConfiguration.readResume(configPath,plan):RootOrdinaryRuntimeConfiguration.read(configPath);
         if(!configPath.equals(config.configurationFile()))throw new IOException("retained worker configuration crossed its original path");
@@ -94,7 +96,7 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
         Throwable primary = null;
         try {
             prepared = loaded||importedLoaded?RootOrdinaryRuntimeAssembly.prepareLoadedReplacement(config,clock):
-                    imported||savedResume?RootOrdinaryRuntimeAssembly.prepareExistingSaved(config,clock):RootOrdinaryRuntimeAssembly.prepare(config,clock);
+                    imported||savedResume||externalSaved?RootOrdinaryRuntimeAssembly.prepareExistingSaved(config,clock):RootOrdinaryRuntimeAssembly.prepare(config,clock);
             prepared.bindOrdinaryHost(ordinaryHost);
             if("retire-exited".equals(mode)) {
                 // This branch precedes NativeGameAttachment: an exited original cannot supply a HELLO or current map.
@@ -106,7 +108,21 @@ public final class RootOrdinaryWorkerMain implements QuarkusApplication {
                         .put("game_launch_requested",false).put("native_attachment_requested",false);
                 emit(retired);return 0;
             }
-            if(importedLoaded) {
+            if (externalSaved) {
+                var input = RootExternalSavedRecoveryInput.read(args);
+                var deadline = clock.instant().plus(config.operationTimeout());
+                if (!org.xar.ck3.control.platform.NativeLaunchPlanCodec.describe(prepared.plan()).equals(descriptor.configuration()))
+                    throw new IOException("external saved recovery requires its actual running owner's plan");
+                attached = NativeGameAttachment.attach(new NativeGameAttachment.Request(prepared.plan(), descriptor.generation(),
+                        prepared.privatePermissions(), config.maximumFramesPerOperation(), config.maximumSubmissions()),
+                        deadline, config.operationTimeout());
+                running = prepared.openExternalSavedRecovery(attached, input, deadline);
+                var adopted = event(clock, "EXTERNAL_SAVED_OBSERVATION_ADOPTED");
+                adopted.set("game", attached.generation().toJson());
+                adopted.put("date_raw", input.dateRaw()).put("new_game_days", 0).put("new_saved_day_credit", 0)
+                        .put("ordinary_batch_started", false);
+                emit(adopted);
+            } else if(importedLoaded) {
                 var input=importedLoadedInput;
                 var originals=prepared.prepareImportedLoadedRecovery(input);
                 if(!originals.owner().equals(descriptor))throw new IOException("imported loaded owner changed before Native attachment");

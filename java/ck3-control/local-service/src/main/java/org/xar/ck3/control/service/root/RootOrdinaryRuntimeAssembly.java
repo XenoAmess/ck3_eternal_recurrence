@@ -1055,6 +1055,37 @@ public final class RootOrdinaryRuntimeAssembly {
         }
 
 
+        /** The newly held process has already loaded the separately preserved save. */
+        synchronized Running openExternalSavedRecovery(ManagedGameSession attached, RootExternalSavedRecoveryInput input,
+                Instant deadline) throws IOException, InterruptedException {
+            if (sourceOnly || closed || entered || core != null || game != null || attached.launchPlan() != plan)
+                throw new IOException("external saved recovery requires the unused original business preparation and actual successor");
+            var decision = config.decisionProvider().orElseThrow(() -> new IOException("external saved recovery requires its explicit decision provider"));
+            if (!decision.codexFile()) throw new IOException("external saved recovery requires the configured direct Codex file provider");
+            var operator = config.operatorQuarantine().orElseThrow(() -> new IOException("external saved recovery requires the original operator decision"));
+            var predecessor = RootProcessAttach.retainExternalSavedPredecessor(attached, input.departedOwner(), input.departed(), deadline);
+            var actual = openSavedSourceCore();
+            RootOperatorQuarantineRuntime.installExternalSaved(actual, predecessor, operator, clock, deadline);
+            game = attached;
+            lifecycle.adoptAttached(attached);
+            products.domains().lifecycle().bindManagedLifecycle(lifecycle, plan);
+            var driver = actual.adoptExternalSavedObservation(lifecycle, predecessor, input.namedSave(), input.dateRaw(), input.player(),
+                    cyclePolicy, config.retainedFrames(), deadline);
+            var installed = catalogs.install(actual, attached, driver.source(), actual.planningReads(), clock, deadline);
+            var history = actual.externalSavedControllerHistory(driver);
+            var saved = history.savedPair().orElseThrow();
+            var configuration = retainImportedCheckpointPaths(sessionConfiguration(deadline), attached.launchPlan(), saved, saved, files);
+            actual.bindDecisionSelector(new RootOnlineDecisionSelector(decision, clock, raw -> {
+                var writer = actual.writer();
+                var active = writer.activeSession();
+                if (active.isPresent()) return actual.archive().withSession(active.orElseThrow()).preserveMaterial(raw);
+                return writer.locked(same -> actual.archive().withSession(same).preserveMaterial(raw));
+            }));
+            var session = actual.finishExternalSavedObservation(installed, driver, configuration, services(driver.source()));
+            session.install(ordinaryHost, deadline);
+            return new Running(this, session, history.batchPrefix(), history.nextBatchSequence());
+        }
+
         /** Same canonical writer and already-created Game. This route has no lifecycle replacement call. */
         public synchronized Running openLoadedCheckpointRecovery(
                 org.xar.ck3.control.platform.ManagedGameSession attached,
