@@ -258,8 +258,7 @@ final class MilitaryPeacetimeRuntimeTest {
                     captured = MilitaryPeacetimeRuntime.captureFaction(actual, true, Scenario.this::read);
                     var inputs = new PeacetimeAssembly.Inputs(original.scope(), actual.observations().snapshot(), baseline.detail(),
                             prior.ledgers(), original.after(), prior.constructionRelease(), original.construction(), captured, original.family());
-                    PeacetimeAssembly.compose(inputs);
-                    return new M5PeacetimePolicy.Capture(inputs, new ConstructionEconomyModel.NoCashObservation(), Optional.empty());
+                    return M5PeacetimePolicy.Capture.validated(inputs, new ConstructionEconomyModel.NoCashObservation(), Optional.empty());
                 }
             };
             OrdinaryPolicy construction = owner(PlanningStage.CONSTRUCTION, (actual, baseline) -> {

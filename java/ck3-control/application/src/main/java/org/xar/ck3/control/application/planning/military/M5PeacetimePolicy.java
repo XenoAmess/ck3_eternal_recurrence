@@ -34,9 +34,43 @@ public final class M5PeacetimePolicy implements OrdinaryPolicy {
     public static final String BUILD=OrdinaryConstructionPolicy.OPERATION.value(), FAMILY="submit-observed-first-heir-marriage-v1-private",
             GIFT="private-submit-faction-gift-member-v1", ROOT="query-campaign-root-context-v1";
     public record Options(boolean enabled,boolean giftEnabled,boolean familyEnabled) {}
-    public record Capture(PeacetimeAssembly.Inputs sources,ConstructionEconomyModel.QuoteCashObservation cash,
-                          Optional<ConstructionEconomyModel.QueryOutcome> cashOutcome) {
-        public Capture {Objects.requireNonNull(sources);Objects.requireNonNull(cash);Objects.requireNonNull(cashOutcome);}
+    public static final class Capture {
+        private final PeacetimeAssembly.Inputs sources;
+        private final ConstructionEconomyModel.QuoteCashObservation cash;
+        private final Optional<ConstructionEconomyModel.QueryOutcome> cashOutcome;
+        private final Optional<PeacetimeAssembly.Result> validatedSources;
+
+        public Capture(PeacetimeAssembly.Inputs sources, ConstructionEconomyModel.QuoteCashObservation cash,
+                Optional<ConstructionEconomyModel.QueryOutcome> cashOutcome) {
+            this(sources, cash, cashOutcome, Optional.empty());
+        }
+
+        private Capture(PeacetimeAssembly.Inputs sources, ConstructionEconomyModel.QuoteCashObservation cash,
+                Optional<ConstructionEconomyModel.QueryOutcome> cashOutcome, Optional<PeacetimeAssembly.Result> validatedSources) {
+            this.sources = Objects.requireNonNull(sources);
+            this.cash = Objects.requireNonNull(cash);
+            this.cashOutcome = Objects.requireNonNull(cashOutcome);
+            this.validatedSources = validatedSources;
+        }
+
+        /** Validates and retains the composition while the producer still holds its original read scope. */
+        public static Capture validated(PeacetimeAssembly.Inputs sources, ConstructionEconomyModel.QuoteCashObservation cash,
+                Optional<ConstructionEconomyModel.QueryOutcome> cashOutcome) {
+            return new Capture(sources, cash, cashOutcome, Optional.of(PeacetimeAssembly.compose(sources)));
+        }
+
+        public PeacetimeAssembly.Inputs sources() { return sources; }
+        public ConstructionEconomyModel.QuoteCashObservation cash() { return cash; }
+        public Optional<ConstructionEconomyModel.QueryOutcome> cashOutcome() { return cashOutcome; }
+
+        private PeacetimeAssembly.Result compose(Obj baseline) {
+            if (baseline.equals(sources.baselinePlan())) {
+                return validatedSources.orElseGet(() -> PeacetimeAssembly.compose(sources));
+            }
+            return PeacetimeAssembly.compose(new PeacetimeAssembly.Inputs(sources.scope(), sources.initialSnapshot(),
+                    baseline, sources.before(), sources.after(), sources.constructionRelease(), sources.construction(),
+                    sources.faction(), sources.family()));
+        }
     }
     public record Prior(PeacetimeAssembly.Ledgers ledgers,ConstructionReleaseCodec.Request constructionRelease) {
         public Prior {Objects.requireNonNull(ledgers);Objects.requireNonNull(constructionRelease);}
@@ -118,8 +152,7 @@ public final class M5PeacetimePolicy implements OrdinaryPolicy {
             require(input.initialSnapshot().equals(snapshot)&&input.before().equals(prior.ledgers())&&input.constructionRelease().equals(prior.constructionRelease()),"M5 source collector crossed the actual semantic snapshot or prior ledger/release input");
             if(capture.cashOutcome().isPresent())baseline=OpportunityJson.object(OpportunityJson.parse(ConstructionEconomyCodec.encodeEnrichedPlan(
                     ConstructionEconomyAdapters.enrichM5Plan(ConstructionEconomyCodec.decodePlan(OpportunityJson.encode(baseline)),capture.cashOutcome().orElseThrow()))),"real current-cash enrichment");
-            var actual=new PeacetimeAssembly.Inputs(input.scope(),input.initialSnapshot(),baseline,input.before(),input.after(),input.constructionRelease(),input.construction(),input.faction(),input.family());
-            Obj originalSources=PeacetimeAssembly.source(PeacetimeAssembly.compose(actual));
+            Obj originalSources=PeacetimeAssembly.source(capture.compose(baseline));
             M5FormalCollection.Collected collection=M5FormalCollection.collect(request.source(),snapshot,originalSources);
             return route(request,previous,baseline,capture.cash(),collection,rootUnavailable);
         }catch(org.xar.ck3.control.application.action.PreSubmissionRevisionMismatchException changed){throw changed;}

@@ -75,9 +75,7 @@ public final class MilitaryPeacetimeRuntime implements M5PeacetimePolicy.SourceC
             StrictJson.require(same.head().digest().equals(held.head()),"M5 native collection changed its original canonical body head");
             var actual=new PeacetimeAssembly.Inputs(scope,request.observations().snapshot(),original.detail(),before.ledgers(),after,before.constructionRelease(),
                     build.construction(),faction,relationship);
-            // Compose now, while these exact original bodies and current writer are still held.
-            PeacetimeAssembly.compose(actual);
-            return new M5PeacetimePolicy.Capture(actual,build.cash(),Optional.empty());
+            return M5PeacetimePolicy.Capture.validated(actual,build.cash(),Optional.empty());
         });}catch(IOException unavailable){throw new UncheckedIOException("actual M5 proposal sources unavailable: " + unavailable.getMessage(),unavailable);}
     }
     private PeacetimeAssembly.Ledgers ledgers(Session same,PlanningRequest request,Obj actualConstruction) {
